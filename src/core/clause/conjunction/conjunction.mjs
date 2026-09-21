@@ -1227,11 +1227,14 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
         operationKind === "correlative-conjunction"
         && relationFrame.correlationType === "loose"
         && conjuncts.every(node => node?.unitKind === "nnc")
+        && ["adverbial", "pronominal"].includes(relationFrame.looseCorrelationMemberRole)
       ) {
         select(
           "loose-correlation",
-          "paired-adverbial-nncs",
-          "relationFrame.correlationType"
+          relationFrame.looseCorrelationMemberRole === "adverbial"
+            ? "paired-adverbial-nncs"
+            : "paired-pronominal-nncs",
+          "relationFrame.looseCorrelationMemberRole"
         );
       }
       if (operationKind === "lexical-conjunction") {
@@ -1764,6 +1767,20 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
         ))) {
           return buildClassicalNahuatlClauseConjunctionBlockedResultFrame(operationKind, "loose-correlation-requires-typed-nnc-conjuncts");
         }
+        let looseCorrelationMemberRole = "";
+        if (correlationType === "loose") {
+          const memberRoles = conjuncts.map(node => (
+            node.envelope?.isAdverbialNnc === true
+              ? "adverbial"
+              : node.pronominalSubtype
+                ? "pronominal"
+                : ""
+          ));
+          if (!memberRoles[0] || memberRoles[0] !== memberRoles[1]) {
+            return buildClassicalNahuatlClauseConjunctionBlockedResultFrame(operationKind, "loose-correlation-requires-matching-adverbial-or-pronominal-nnc-roles");
+          }
+          looseCorrelationMemberRole = memberRoles[0];
+        }
         const particles = correlationType === "standard"
           ? CLASSICAL_NAHUATL_CLAUSE_CONJUNCTION_CORRELATIVE_PATTERNS[pattern]
           : ["", ""];
@@ -1780,7 +1797,9 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
           coordinationType: pattern === "ahmo-no-ahmo-no" ? "additive-negative" : "alternative-or-contrastive",
           correlationType,
           pattern,
-          pairedItemsAreAdverbialModifiersNotConjunctors: true
+          ...(correlationType === "loose" ? { looseCorrelationMemberRole } : {}),
+          pairedItemsAreAdverbialModifiersNotConjunctors:
+            correlationType === "standard" || looseCorrelationMemberRole === "adverbial"
         }, {}, formulaSequence);
       }
       if (operationKind === "lexical-conjunction") {
@@ -1839,18 +1858,27 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
           lexicalType,
           arity: conjuncts.length === 2 ? "biclausalism" : "triclausalism",
           metaphoricalDisplacement: true,
+          // The selected contextual reading does not establish an independent
+          // lexical fact or license a compound/incorporation/derivation result.
+          lexicalInterpretationSource: "user-selected-contextual-reading",
+          lexicalInterpretationIndependentlyValidated: false,
           sameSubjectReferent: true,
           stateRealization,
           adjunctorDistribution,
           affectiveCoverage,
           affectiveFormationMustCoverAllMembers: affectiveCoverage === "all-members",
           simpleLiteralConjunctionRemainsSeparate: true,
-          downstreamEligibilityIsLexicalFact: true,
-          downstreamEligibility: [
-            "conjunctive-compound",
-            "incorporation",
-            "verbstem-derivation"
-          ]
+          downstreamEligibilityIsLexicalFact: false,
+          downstreamEligibility: [],
+          downstreamPossibilities: {
+            authority: "none",
+            requiresDownstreamOwnerValidation: true,
+            operations: [
+              "conjunctive-compound",
+              "incorporation",
+              "verbstem-derivation"
+            ]
+          }
         }, {
           lexicalUnit: true
         }, formulaSequence);

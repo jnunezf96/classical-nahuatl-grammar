@@ -222,6 +222,12 @@ export function createClassicalNahuatlLaterLayersRuntime(targetObject = globalTh
         return false;
       }
       const finalTypedFrame = getClassicalNahuatlFinalTypedVncSlotFrame(machineryFrame);
+      const ownerAuthorized = machineryFrame.kind === "classical-nahuatl-ordered-voice-layer-vnc-machinery-frame"
+        ? typeof runtimeTarget?.isClassicalNahuatlOrderedVoiceVncMachineryFrame === "function"
+          && runtimeTarget.isClassicalNahuatlOrderedVoiceVncMachineryFrame(machineryFrame) === true
+        : typeof runtimeTarget?.isClassicalNahuatlVncDerivationBaseSourceMachineryFrame === "function"
+          && runtimeTarget.isClassicalNahuatlVncDerivationBaseSourceMachineryFrame(machineryFrame) === true;
+      if (!ownerAuthorized) return false;
       if (runtimeTarget.isClassicalNahuatlVncSlotFrame(finalTypedFrame) !== true) return false;
       const canonicalFormula = normalizeClassicalNahuatlDerivedVncToken(runtimeTarget.renderClassicalNahuatlVncSlotFrameFormula(finalTypedFrame));
       if (!canonicalFormula) return false;
@@ -1809,13 +1815,10 @@ export function createClassicalNahuatlLaterLayersRuntime(targetObject = globalTh
       const objectRequests = Array.isArray(operationFrame?.targetObjectRequests) ? operationFrame.targetObjectRequests : [];
       if (objectRequests.length === 1) {
         return Object.freeze([Object.freeze({
-          objectId: "source-object-1",
-          objectKind: objectRequests[0].objectKind,
+          ...objectRequests[0],
           objectPerson: objectRequests[0].objectKind === "reflexive" && /^3(?:sg|pl)$/u.test(objectRequests[0].objectPerson)
             ? "nonfirst-common"
             : objectRequests[0].objectPerson,
-          governor: "directive",
-          derivationalLevel: 1,
           prominence: "mainline",
           sounded: true
         })]);

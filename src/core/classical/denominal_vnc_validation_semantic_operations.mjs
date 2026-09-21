@@ -271,11 +271,32 @@ export function createClassicalDenominalVncValidationSemanticOperationsApi(
       classChoice: "A",
     }));
     const operationInventory = CLASSICAL_NAHUATL_DENOMINAL_VNC_LCM;
+    const noCausativeWitnesses = profileId === "ihui-no-causative"
+      ? ["āy", "ce-pāy"].map(nounStem => {
+        const source = target.evaluateClassicalNahuatlDenominalVnc(base({
+          nounStem, operationId: "denominal-a-hui",
+        }));
+        const continuation = target.isClassicalNahuatlDenominalVncResultFrame(source)
+          && source.authorizationStatus === "authorized"
+          ? target.evaluateClassicalNahuatlDenominalVnc(base({
+            nounStem: "", sourceOperationFrame: source.operationFrame,
+            operationId: "a-hui-to-o-a",
+          })) : null;
+        return { nounStem, source, continuation };
+      }) : null;
+    const noCausativeCounterpartsObserved = noCausativeWitnesses
+      ? noCausativeWitnesses.every(({ source, continuation }) =>
+        target.isClassicalNahuatlDenominalVncResultFrame(source)
+        && source.authorizationStatus === "authorized"
+        && continuation?.authorizationStatus === "blocked"
+        && continuation.blockReason === "no-andrews-licensed-denominal-operation-for-source")
+      : null;
     const frame = deepFreeze({
       kind: "classical-denominal-vnc-validation-frame",
       version: 1,
-      authorizationStatus: "authorized",
+      authorizationStatus: noCausativeCounterpartsObserved === false ? "blocked" : "authorized",
       profileId,
+      noCausativeWitnesses,
       result: {
         canonicalResult: true,
         operationId: canonical.operationFrame.operationId,
@@ -288,7 +309,11 @@ export function createClassicalDenominalVncValidationSemanticOperationsApi(
         surfaceRealization: canonical.surfaceRealization,
       },
       analysis: {
-        semanticBoundary: profileId,
+        semanticBoundary: noCausativeWitnesses ? {
+          sourceStems: noCausativeWitnesses.map(({ source }) => source?.operationFrame?.targetStem || null),
+          observationScope: "two-source-intransitive-and-causative-rejection-not-universal-lexical-eligibility",
+        } : profileId,
+        noCausativeCounterpartsObserved,
         typedDenominalExecutionRequired: true,
         operationInventoryCount: operationInventory?.operations?.length || 0,
         operationAxisCount: operationInventory?.axes?.length || 0,
@@ -311,7 +336,7 @@ export function createClassicalDenominalVncValidationSemanticOperationsApi(
         separateOwnerProofRequired: true,
       },
     });
-    ISSUED_VALIDATION_FRAMES.add(frame);
+    if (frame.authorizationStatus === "authorized") ISSUED_VALIDATION_FRAMES.add(frame);
     return frame;
   }
 

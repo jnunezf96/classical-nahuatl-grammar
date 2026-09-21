@@ -1340,7 +1340,7 @@ function isCanonicalPublication(options) {
   return path.resolve(options.outputPath) === path.resolve(
     options.webRoot,
     DEFAULT_OUTPUT_RELATIVE_PATH,
-  ) && path.resolve(options.versionOutputPath) === path.resolve(
+  ) || path.resolve(options.versionOutputPath) === path.resolve(
     options.webRoot,
     DEFAULT_VERSION_OUTPUT_RELATIVE_PATH,
   );

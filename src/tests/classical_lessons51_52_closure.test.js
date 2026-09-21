@@ -657,7 +657,7 @@ function run(ctx = {}) {
                 principalClause: buildVnc(ctx, "pachihui", { subjectReferenceId: "actor" }),
                 complementClause: buildVnc(ctx, "cuīca", {
                     subjectReferenceId: "actor",
-                    tense: "future",
+                    tense: "preterit",
                 }),
                 options: { semanticCategory: "satisfaction" },
             }),
@@ -991,10 +991,26 @@ function run(ctx = {}) {
                 }).authorizationStatus);
             const loose = ctx.evaluateClassicalNahuatlClauseConjunction({
                 operationKind: "correlative-conjunction",
-                conjuncts: [
-                    buildNnc(ctx, "ce", { referenceId: "left" }),
-                    buildNnc(ctx, "occe", { referenceId: "right" }),
-                ],
+                conjuncts: ["left", "right"].map(referenceId => (
+                    ctx.buildClassicalNahuatlClauseCompositionSourceFrame(
+                        ctx.buildClassicalNahuatlPronominalNncFrame({
+                            subtype: "quantitive",
+                            subject: "3common",
+                            quantitiveAuthorityRecord: ctx.buildClassicalNahuatlQuantitiveAuthorityRecord({
+                                subject: "3common",
+                                matrixFamily: "qui",
+                                matrixForm: "qui",
+                                embedStem: "ce",
+                                predicatePluralization: "not-applicable",
+                                plainVariantLexicallyAuthorized: false,
+                                interrogativeMeaning: false,
+                            }),
+                            enteredStem: "ce-qui",
+                            requireEnteredStem: true,
+                        }),
+                        { referenceId }
+                    )
+                )),
                 options: { correlationType: "loose", pattern: "paired-nncs" },
             });
             return { standard, loose: loose.authorizationStatus };
@@ -1006,7 +1022,7 @@ function run(ctx = {}) {
     );
 
     s.eq(
-        "Lesson 52 lexical conjunction covers both semantic types, both arities, state, and adjunctor while downstream compatibility remains a read-only lexical fact",
+        "Lesson 52 lexical conjunction covers both contextual semantic types, both arities, state, and adjunctor without granting downstream eligibility",
         (() => {
             const lexicalNodes = [
                 buildNnc(ctx, "tēuctli", { referenceId: "ruler", animacy: "animate" }),
@@ -1034,9 +1050,9 @@ function run(ctx = {}) {
             });
         })(),
         [
-            ["authorized", "lord-and-master", "biclausalism", ["conjunctive-compound", "incorporation", "verbstem-derivation"], false],
-            ["authorized", "lord-and-master", "triclausalism", ["conjunctive-compound", "incorporation", "verbstem-derivation"], false],
-            ["authorized", "bread-and-butter", "biclausalism", ["conjunctive-compound", "incorporation", "verbstem-derivation"], false],
+            ["authorized", "lord-and-master", "biclausalism", [], false],
+            ["authorized", "lord-and-master", "triclausalism", [], false],
+            ["authorized", "bread-and-butter", "biclausalism", [], false],
         ]
     );
 

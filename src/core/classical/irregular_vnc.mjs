@@ -11,6 +11,7 @@ export function createClassicalNahuatlIrregularVncApi(targetObject = globalThis)
     const CLASSICAL_NAHUATL_LESSON11_SQUARE_ZERO = "\u2395";
     const CLASSICAL_NAHUATL_LESSON11_LEDGER_TAG_ID = "cn-l11-irregular-vnc-paradigm";
     const issuedClassicalNahuatlIdiomFrames = new WeakMap();
+    const issuedLesson11PlanRequests = new WeakMap();
     function freezeClassicalNahuatlIrregularValue(value, seen = new WeakSet()) {
       if (!value || typeof value !== "object" || seen.has(value)) return value;
       seen.add(value);
@@ -891,6 +892,17 @@ export function createClassicalNahuatlIrregularVncApi(targetObject = globalThis)
       })));
     }
     function buildClassicalNahuatlIrregularVncParadigmPlan(stem = "", options = {}) {
+      const request = freezeClassicalNahuatlIrregularValue({
+        stem: String(stem),
+        options: cloneClassicalNahuatlLesson11Value(options)
+      });
+      const plan = freezeClassicalNahuatlIrregularValue(
+        buildClassicalNahuatlIrregularVncParadigmPlanValue(request.stem, request.options)
+      );
+      issuedLesson11PlanRequests.set(plan, request);
+      return plan;
+    }
+    function buildClassicalNahuatlIrregularVncParadigmPlanValue(stem = "", options = {}) {
       const sourceStem = normalizeClassicalNahuatlIrregularVncStem(stem);
       const identity = getClassicalNahuatlLexemeIdentity(sourceStem, options);
       const canonicalSourceStem = getClassicalNahuatlCanonicalSourceStem(identity);
@@ -1555,7 +1567,35 @@ export function createClassicalNahuatlIrregularVncApi(targetObject = globalThis)
         displayTextAuthority: false
       };
     }
-    function applyClassicalNahuatlLesson11PlanToVncSlotFrame(plan = null, vncSlotFrame = null) {
+    function applyClassicalNahuatlLesson11PlanToVncSlotFrame(plan = null, vncSlotFrame = null, lowerResult = null) {
+      const request = issuedLesson11PlanRequests.get(plan);
+      const source = targetObject.getClassicalNahuatlFiniteVncSlotSource?.(vncSlotFrame);
+      const transitive = targetObject.isClassicalNahuatlTransitiveVncObjectFrame?.(lowerResult) === true
+        && lowerResult.vncSlotFrame === vncSlotFrame && lowerResult.blocksInput === false;
+      const expected = request && (source || transitive) && plan.authorizationStatus === "authorized"
+        ? targetObject.buildClassicalNahuatlLesson11LowerInput?.(request.stem, {
+          ...request.options,
+          mood: plan.requestedMood,
+          tense: plan.requestedSemanticTense,
+          semanticTense: plan.requestedSemanticTense
+        })
+        : null;
+      // Transitive lower machinery has its own issuer, not a finite-slot receipt.
+      // Bind its exact slot and recomputed owner frame without accepting copies.
+      const lowerBound = transitive
+        ? targetObject.isClassicalNahuatlTransitiveVncObjectFrame?.(expected) === true
+          && JSON.stringify(lowerResult) === JSON.stringify(expected)
+        : Boolean(source && targetObject.isClassicalNahuatlFiniteVncResult?.(expected)
+          && JSON.stringify(source) === JSON.stringify(expected.source)
+          && JSON.stringify(vncSlotFrame.slots) === JSON.stringify(expected.vncSlotFrame?.slots));
+      if (!request || !expected || !lowerBound) {
+        return {
+          kind: "classical-nahuatl-irregular-vnc-vnc-application-frame",
+          authorizationStatus: "blocked",
+          blockReason: "lesson11-plan-input-binding-required",
+          typedVncSlotFrame: null
+        };
+      }
       if (!plan || plan.kind !== "classical-nahuatl-irregular-vnc-paradigm-plan" || !vncSlotFrame) {
         return {
           kind: "classical-nahuatl-irregular-vnc-vnc-application-frame",

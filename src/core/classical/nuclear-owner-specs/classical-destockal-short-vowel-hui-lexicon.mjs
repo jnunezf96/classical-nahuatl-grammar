@@ -45,19 +45,19 @@ const spec = {
     },
     "claim-p2384::p2384-pil-i-hui-to-become-wrinkled-wilted-for-hairs": {
       "assertionId": "classical-destockal-short-vowel-hui-lexicon:p2384-pil-i-hui-to-become-wrinkled-wilted-for-hairs",
-      "canonicalPath": "sources.polihui.sourceStem"
+      "canonicalPath": "sources.pilihui.sourceStem"
     },
     "claim-p2385::p2385-pol-i-hui-to-become-lost-to-perish": {
       "assertionId": "classical-destockal-short-vowel-hui-lexicon:p2385-pol-i-hui-to-become-lost-to-perish",
-      "canonicalPath": "sources.nolihui.sourceStem"
+      "canonicalPath": "sources.polihui.sourceStem"
     },
     "claim-p2386::p2386-nol-i-hui-to-become-twisted-bent": {
       "assertionId": "classical-destockal-short-vowel-hui-lexicon:p2386-nol-i-hui-to-become-twisted-bent",
-      "canonicalPath": "sources.colihui.sourceStem"
+      "canonicalPath": "sources.nolihui.sourceStem"
     },
     "claim-p2387::p2387-co-l-i-hui-to-become-bent-curved-hook": {
       "assertionId": "classical-destockal-short-vowel-hui-lexicon:p2387-co-l-i-hui-to-become-bent-curved-hook",
-      "canonicalPath": "sources.petzihui.sourceStem"
+      "canonicalPath": "sources.colihui.sourceStem"
     }
   },
   "executionFunctionName": "buildClassicalNahuatlVncDerivationValidationFrame",

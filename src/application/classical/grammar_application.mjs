@@ -111,7 +111,7 @@ const GCD_INVARIANT_IDS = Object.freeze([
 function getClassicalVisibleSurfaceViolation(
   value,
   path = "$",
-  seen = new Set(),
+  seen = new WeakMap(),
   visibleSurfaceCollection = false,
 ) {
   if (
@@ -121,10 +121,15 @@ function getClassicalVisibleSurfaceViolation(
   ) {
     return path;
   }
-  if (!value || typeof value !== "object" || seen.has(value)) {
+  if (!value || typeof value !== "object") {
     return "";
   }
-  seen.add(value);
+  // A visible visit covers the nonvisible case, but not the reverse. Mark
+  // before descending so aliases can upgrade context without looping on cycles.
+  if (seen.has(value) && (!visibleSurfaceCollection || seen.get(value))) {
+    return "";
+  }
+  seen.set(value, visibleSurfaceCollection);
   if (Array.isArray(value)) {
     for (let index = 0; index < value.length; index += 1) {
       const violation = getClassicalVisibleSurfaceViolation(
@@ -437,9 +442,6 @@ function buildClassicalLesson2OwnedWriting(
 ) {
   const expectedSurface = String(expectedOutput?.surface || "");
   if (!expectedSurface) return null;
-  if (["sentence", "sequence"].includes(expectedOutput?.role)) {
-    return buildClassicalLesson2TokenWriting(expectedSurface, targetObject);
-  }
   const writingCandidate = candidateResult?.personalNameResult
     || candidateResult?.scalarFrame
     || (
@@ -450,6 +452,23 @@ function buildClassicalLesson2OwnedWriting(
         : null
     )
     || candidateResult;
+  const affectiveVocative = writingCandidate?.constructionKind === "affective-nnc"
+    ? writingCandidate.operationFrame?.vocativeFrame : null;
+  if (expectedOutput?.role === "sentence" && affectiveVocative) {
+    const slots = writingCandidate.canonicalResult?.nncSlotFrame;
+    if (targetObject.isClassicalNahuatlNominalConstructionResult?.(writingCandidate) !== true
+      || targetObject.isClassicalNahuatlNncSlotFrame?.(slots) !== true
+      || affectiveVocative.particle !== "é") return null;
+    // Retain the exact NNC parts and the owner's separately selected particle.
+    // Never infer a vocative analysis from an accented output string.
+    return buildClassicalLesson2WritingFromParts([
+      ...getClassicalLesson2NncParts(slots.slots),
+      { role: "vocative-particle", value: affectiveVocative.particle },
+    ], "typed-affective-vocative", expectedSurface, targetObject);
+  }
+  if (["sentence", "sequence"].includes(expectedOutput?.role)) {
+    return buildClassicalLesson2TokenWriting(expectedSurface, targetObject);
+  }
   const sourceConstituents = writingCandidate?.sourceAuthorizationFrame
     ?.sourceConstituents;
   const isNominalCompound = Boolean(
@@ -652,15 +671,20 @@ function buildClassicalLesson2OwnedWriting(
     const negativeParticle = String(
       typedContextFrame?.negativeParticle || "",
     ).trim();
+    const adverbialSlot = writingCandidate?.writtenProjection?.boundarySurfaceFrame?.sourceNncSlotFrame;
+    const negativeStem = targetObject.isClassicalNahuatlAdverbialNuclearResult?.(writingCandidate) === true
+      && targetObject.isClassicalNahuatlNncSlotFrame?.(adverbialSlot) === true
+      ? String(adverbialSlot.slots?.predicate?.stem || typedSourceStem)
+      : typedSourceStem;
     if (
       negativeParticle
-      && typedSourceStem
-      && `${negativeParticle}${typedSourceStem}` === expectedSurface
+      && negativeStem
+      && `${negativeParticle}${negativeStem}` === expectedSurface
     ) {
       const written = buildClassicalLesson2WritingFromParts(
         [
           { role: "negative-particle", value: negativeParticle },
-          { role: "typed-source-stem", value: typedSourceStem },
+          { role: "typed-source-stem", value: negativeStem },
         ],
         "typed-adverbial-negative-context",
         expectedSurface,
@@ -3083,6 +3107,10 @@ function canonicalCapabilityNames() {
     "getClassicalNahuatlVncContinuationSourceConstituents",
     "getClassicalNahuatlNncContinuationSourceConstituents",
     "getClassicalNahuatlParticleSourceEntries",
+    "buildClassicalNahuatlOrdinaryNncSourceFrame",
+    "buildClassicalNahuatlPronominalNncSourceFrame",
+    "buildClassicalNahuatlOrdinaryNncOperationFrame",
+    "buildClassicalNahuatlPronominalNncOperationFrame",
     "buildClassicalNahuatlParticleSourceFrame",
     "isClassicalNahuatlParticleSourceFrame",
     "buildClassicalNahuatlParticleResultFrame",
@@ -8655,11 +8683,11 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
       && capture.applicationResult.authorizationStatus === "authorized"
       && capture.operationId === capture.applicationResult.operationId
       && capture.outputKind === capture.applicationResult.outputKind
-      && getIssuedResultProvenance(capture.canonicalResult)
-        ?.applicationResult === capture.applicationResult
-      && ["canonical-result", "continuation-result"].includes(
-        capture.capturedResultRole,
-      )
+      && (capture.capturedResultRole === "canonical-result"
+        ? capture.canonicalResult === capture.applicationResult.canonicalResult
+        : capture.capturedResultRole === "continuation-result"
+          && (continuationResultsByApplicationResult.get(capture.applicationResult) || [])
+            .some(entry => entry.exactResult === capture.canonicalResult))
       && capture.rhymeFullPinFrame
         === getClassicalGrammarApplicationRhymeFullPin(
           capture.applicationResult,
@@ -9197,34 +9225,31 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
     });
   }
 
+  function getCanonicalNncCapability(capabilityName) {
+    return resolveCanonicalCallableCapability(targetObject, capabilityName, api)
+      ?.capability || null;
+  }
+
   function issueCanonicalNncSourceFrame(source = {}) {
+    const ordinaryBuilder = getCanonicalNncCapability("buildClassicalNahuatlOrdinaryNncSourceFrame");
+    const pronominalBuilder = getCanonicalNncCapability("buildClassicalNahuatlPronominalNncSourceFrame");
+    const ordinaryValidator = getCanonicalNncCapability("isClassicalNahuatlOrdinaryNncSourceFrame");
+    const pronominalValidator = getCanonicalNncCapability("isClassicalNahuatlPronominalNncSourceFrame");
     if (
-      typeof targetObject.buildClassicalNahuatlOrdinaryNncSourceFrame
-        !== "function"
-      || typeof targetObject.buildClassicalNahuatlPronominalNncSourceFrame
-        !== "function"
+      !ordinaryBuilder || !pronominalBuilder
+      || !ordinaryValidator || !pronominalValidator
     ) {
       return buildBlockedCanonicalNncApplicationFrame(
         "classical-nahuatl-nnc-source-frame",
         "canonical-nnc-source-capability-missing",
       );
     }
-    const ordinary =
-      targetObject.buildClassicalNahuatlOrdinaryNncSourceFrame(source);
-    if (
-      typeof targetObject.isClassicalNahuatlOrdinaryNncSourceFrame
-        === "function"
-      && targetObject.isClassicalNahuatlOrdinaryNncSourceFrame(ordinary)
-    ) {
+    const ordinary = Reflect.apply(ordinaryBuilder, targetObject, [source]);
+    if (Reflect.apply(ordinaryValidator, targetObject, [ordinary]) === true) {
       return ordinary;
     }
-    const pronominal =
-      targetObject.buildClassicalNahuatlPronominalNncSourceFrame(source);
-    if (
-      typeof targetObject.isClassicalNahuatlPronominalNncSourceFrame
-        === "function"
-      && targetObject.isClassicalNahuatlPronominalNncSourceFrame(pronominal)
-    ) {
+    const pronominal = Reflect.apply(pronominalBuilder, targetObject, [source]);
+    if (Reflect.apply(pronominalValidator, targetObject, [pronominal]) === true) {
       return pronominal;
     }
     return pronominal?.lexicalEntryId
@@ -9235,13 +9260,11 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
   }
 
   function isIssuedCanonicalNncSourceFrame(sourceFrame = null) {
+    const ordinaryValidator = getCanonicalNncCapability("isClassicalNahuatlOrdinaryNncSourceFrame");
+    const pronominalValidator = getCanonicalNncCapability("isClassicalNahuatlPronominalNncSourceFrame");
     return Boolean(
-      typeof targetObject.isClassicalNahuatlOrdinaryNncSourceFrame
-        === "function"
-      && targetObject.isClassicalNahuatlOrdinaryNncSourceFrame(sourceFrame)
-      || typeof targetObject.isClassicalNahuatlPronominalNncSourceFrame
-        === "function"
-      && targetObject.isClassicalNahuatlPronominalNncSourceFrame(sourceFrame),
+      ordinaryValidator && Reflect.apply(ordinaryValidator, targetObject, [sourceFrame]) === true
+      || pronominalValidator && Reflect.apply(pronominalValidator, targetObject, [sourceFrame]) === true,
     );
   }
 
@@ -9249,19 +9272,18 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
     sourceFrame = null,
     selections = {},
   ) {
-    if (
-      typeof targetObject.buildClassicalNahuatlNncOperationSelectionFrame
-        !== "function"
-    ) {
+    const builder = getCanonicalNncCapability("buildClassicalNahuatlNncOperationSelectionFrame");
+    if (!builder) {
       return buildBlockedCanonicalNncApplicationFrame(
         "classical-nahuatl-nnc-operation-selection-frame",
         "canonical-nnc-operation-selection-capability-missing",
         { sourceFrame },
       );
     }
-    return targetObject.buildClassicalNahuatlNncOperationSelectionFrame(
-      sourceFrame,
-      selections,
+    return Reflect.apply(
+      builder,
+      targetObject,
+      [sourceFrame, selections],
     );
   }
 
@@ -9269,16 +9291,17 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
     sourceFrame = null,
     selections = {},
   ) {
+    const ordinaryValidator = getCanonicalNncCapability("isClassicalNahuatlOrdinaryNncSourceFrame");
+    const pronominalValidator = getCanonicalNncCapability("isClassicalNahuatlPronominalNncSourceFrame");
     if (
-      typeof targetObject.isClassicalNahuatlOrdinaryNncSourceFrame
-        === "function"
-      && targetObject.isClassicalNahuatlOrdinaryNncSourceFrame(sourceFrame)
+      ordinaryValidator && Reflect.apply(ordinaryValidator, targetObject, [sourceFrame]) === true
     ) {
-      return typeof targetObject
-        .buildClassicalNahuatlOrdinaryNncOperationFrame === "function"
-        ? targetObject.buildClassicalNahuatlOrdinaryNncOperationFrame(
-          sourceFrame,
-          selections,
+      const builder = getCanonicalNncCapability("buildClassicalNahuatlOrdinaryNncOperationFrame");
+      return builder
+        ? Reflect.apply(
+          builder,
+          targetObject,
+          [sourceFrame, selections],
         )
         : buildBlockedCanonicalNncApplicationFrame(
           "classical-nahuatl-ordinary-nnc-operation-frame",
@@ -9287,15 +9310,14 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
         );
     }
     if (
-      typeof targetObject.isClassicalNahuatlPronominalNncSourceFrame
-        === "function"
-      && targetObject.isClassicalNahuatlPronominalNncSourceFrame(sourceFrame)
+      pronominalValidator && Reflect.apply(pronominalValidator, targetObject, [sourceFrame]) === true
     ) {
-      return typeof targetObject
-        .buildClassicalNahuatlPronominalNncOperationFrame === "function"
-        ? targetObject.buildClassicalNahuatlPronominalNncOperationFrame(
-          sourceFrame,
-          selections,
+      const builder = getCanonicalNncCapability("buildClassicalNahuatlPronominalNncOperationFrame");
+      return builder
+        ? Reflect.apply(
+          builder,
+          targetObject,
+          [sourceFrame, selections],
         )
         : buildBlockedCanonicalNncApplicationFrame(
           "classical-nahuatl-pronominal-nnc-operation-frame",

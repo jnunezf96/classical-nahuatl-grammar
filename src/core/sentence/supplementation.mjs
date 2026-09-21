@@ -286,6 +286,8 @@ function getObjectRecords(frame = null, slotFrame = null) {
         || ""
       ).trim();
       const category = explicitCategory
+        || (["reflexive", "mainline-reflexive"].includes(objectKind)
+          ? getSubjectCategory(slotFrame, frame) : "")
         || (/nonspecific/u.test(objectKind) ? "nonspecific" : "");
       const id = String(
         record?.objectId
@@ -339,7 +341,7 @@ function getObjectRecords(frame = null, slotFrame = null) {
     });
 }
 
-function getPossessorRecord(frame = null, slotFrame = null) {
+function getPossessorRecord(frame = null, slotFrame = null, canonicalRelationalPossessor = "") {
   const stateSlotPossessor = Array.from(
     slotFrame?.slots?.state?.slots || []
   )
@@ -348,7 +350,8 @@ function getPossessorRecord(frame = null, slotFrame = null) {
     ).trim())
     .find(Boolean) || "";
   const category = String(
-    frame?.possessor
+    canonicalRelationalPossessor
+    || frame?.possessor
     || frame?.possessorCategory
     || slotFrame?.possessor
     || slotFrame?.slots?.state?.possessor
@@ -1994,7 +1997,9 @@ export function createClassicalNahuatlSupplementationApi(
         ).map(object => ({
           ...object,
           referenceId: normalizeReferenceId(
-            objectReferenceIds?.[object.id]
+            ["reflexive", "mainline-reflexive"].includes(object.objectKind)
+              ? normalizedSubjectReferenceId
+              : objectReferenceIds?.[object.id]
             || objectReferenceId
             || referenceId
           ),
@@ -2022,7 +2027,9 @@ export function createClassicalNahuatlSupplementationApi(
       : [];
     const possessor = unitKind === "nnc"
       ? (() => {
-          const record = getPossessorRecord(sourceFrame, slotFrame);
+          const record = getPossessorRecord(sourceFrame, slotFrame,
+            relationalNncResultAuthorized && sourceFrame.predicateState === "possessive"
+              ? sourceFrame.sourceFrame?.possessorId || "" : "");
           return record
             ? {
                 ...record,
@@ -2490,6 +2497,40 @@ export function createClassicalNahuatlSupplementationApi(
     };
   }
 
+  function isTypedReflexiveNequiPrincipal(principalClause) {
+    const sourceFrame = clauseEnvelopeSources.get(principalClause);
+    const applicationAuthorized = Boolean(
+      typeof targetObject.isClassicalNahuatlVncApplicationFrame === "function"
+      && targetObject.isClassicalNahuatlVncApplicationFrame(sourceFrame)
+    );
+    const request = sourceFrame?.normalizedRequest;
+    const slotFrame = getVncSlotFrame(sourceFrame);
+    const valenceSlots = slotFrame?.slots?.prePredicate?.filter(
+      slot => slot.role === "va1-va2"
+    ) || [];
+    // 19.3.3.c / 21.4: this exact active/reflexive necessity construction
+    // takes an included subject. A wish label, displayed monequi, or another
+    // reflexive verb does not establish that construction. Keep lexical
+    // identity separate from the tense-conditioned predicate realization.
+    return Boolean(
+      applicationAuthorized
+      && principalClause.unitKind === "vnc"
+      && String(request?.sourceStem || "").normalize("NFC") === "nequi"
+      && request.requestedDerivation === "direct"
+      && request.requestedVoice === "active"
+      && request.derivationType === "direct"
+      && request.targetVoiceOperation === "active"
+      && request.targetValence === "mainline-reflexive"
+      && request.sourceValence === "mainline-reflexive"
+      && request.objectKind === "mainline-reflexive"
+      && typeof targetObject.isClassicalNahuatlVncSlotFrame === "function"
+      && targetObject.isClassicalNahuatlVncSlotFrame(slotFrame)
+      && valenceSlots.length === 1
+      && valenceSlots[0].va1 === "m"
+      && valenceSlots[0].va2 === "o"
+    );
+  }
+
   function validateComplementPolicy(principalClause, supplementClause, options) {
     const group = normalizeToken(principalClause.semanticGroup);
     if (!group) {
@@ -2507,6 +2548,9 @@ export function createClassicalNahuatlSupplementationApi(
       exclamation: "exclamation",
     }[sentenceKind] || "";
     const headRole = normalizeToken(options.headRole);
+    const reflexiveNequiSubject = group === "wish"
+      && headRole === "subject"
+      && isTypedReflexiveNequiPrincipal(principalClause);
     const objectContentGroups = [
       "speech",
       "saying",
@@ -2518,7 +2562,11 @@ export function createClassicalNahuatlSupplementationApi(
     ];
     let authorized = true;
     let blockReason = "";
-    if (objectContentGroups.includes(group) && headRole !== "object") {
+    if (
+      objectContentGroups.includes(group)
+      && headRole !== "object"
+      && !reflexiveNequiSubject
+    ) {
       authorized = false;
       blockReason = "included-content-complement-requires-object-head";
     } else if (group === "affect" && headRole !== "subject") {
@@ -2541,18 +2589,25 @@ export function createClassicalNahuatlSupplementationApi(
           || (mood === "optative" && ["nonpast", "future"].includes(tense))
         );
       } else if (realizability === "present-or-future-impossible") {
-        authorized = mood === "optative" && tense === "past";
-      } else if (realizability === "past-counterfactual") {
+        // 9.5: an expressed ō# restricts the past optative to a past
+        // event; it contradicts an explicitly present/future-only context.
         authorized = mood === "optative"
           && tense === "past"
-          && supplementClause.antecessiveOrder;
+          && !supplementClause.antecessiveOrder;
+      } else if (realizability === "past-counterfactual") {
+        // 19.3.3.c says ō# usually precedes this past optative, not that
+        // it must. 9.5 explicitly gives the same past regret without ō#.
+        authorized = mood === "optative" && tense === "past";
       } else {
         authorized = false;
       }
       blockReason = authorized ? "" : "wish-complement-mood-tense-condition-failed";
     } else if (authorized && group === "perception") {
-      authorized = tense === "present";
-      blockReason = authorized ? "" : "perception-complement-normally-requires-present";
+      // 19.3.3.d describes the ordinary VNC tense, not an exclusive
+      // admission condition. The supplement is still a typed clause (19.3),
+      // not an arbitrary particle or a caller-provided tense exception.
+      authorized = ["nnc", "vnc"].includes(supplementClause.unitKind);
+      blockReason = authorized ? "" : "perception-complement-requires-nuclear-clause";
     } else if (authorized && group === "affect") {
       authorized = true;
       blockReason = "";
@@ -2581,6 +2636,36 @@ export function createClassicalNahuatlSupplementationApi(
         supplementMood: mood,
         supplementTense: tense,
         supplementSentenceKind: sentenceKind,
+        ...(reflexiveNequiSubject ? {
+          principalConstruction: {
+            kind: "reflexive-nequi-necessity",
+            sourceSection: "19.3.3.c",
+            reflexiveUseSection: "21.4",
+            grammaticalVoice: "active",
+            supplementaryRole: "subject",
+            admissionAuthority: false,
+          },
+        } : {}),
+        ...(group === "perception" ? {
+          tenseUsage: {
+            sourceSection: "19.3.3.d",
+            scope: "vnc",
+            normalTense: "present",
+            matchesNormalTense: supplementClause.unitKind === "vnc"
+              ? tense === "present"
+              : null,
+            admissionAuthority: false,
+          },
+        } : {}),
+        ...(group === "wish" && realizability === "past-counterfactual" ? {
+          antecessiveUsage: {
+            sourceSection: "19.3.3.c",
+            usual: true,
+            selected: supplementClause.antecessiveOrder === true,
+            required: false,
+            admissionAuthority: false,
+          },
+        } : {}),
         headRole,
         wishRealizability: realizability,
         speechDirectness,
@@ -3950,49 +4035,78 @@ export function createClassicalNahuatlSupplementationApi(
       can: "ahcan",
       ic: "aic",
     };
-    const normalizedSurface = normalizeLexicalStem(
-      stripClausePunctuation(principalClause.surface)
-    );
-    if (principalClause.polarity === "negative") {
-      const explicitNegativeIdentity = [
-        "ayac",
-        "ahtleh",
-        "ahcan",
-        "aic",
-      ].find(identity => (
-        normalizedSurface === identity
-        || normalizedSurface.endsWith(`-${identity}`)
-      ));
-      if (explicitNegativeIdentity) return explicitNegativeIdentity;
-      const positiveIdentity = [
-        principalClause.interrogativeKind,
-        principalClause.sourceStem,
-      ].map(normalizeLexicalStem).find(identity => (
-        Object.hasOwn(negativeIdentityByPositiveIdentity, identity)
-      ));
-      if (positiveIdentity) {
-        return negativeIdentityByPositiveIdentity[positiveIdentity];
+    // Andrews 58.4–58.6 restricts the principal's lexical/construction
+    // identity. Neither a written suffix nor quantity-folded display text
+    // establishes that identity. Read the privately bound Source instead.
+    const source = clauseEnvelopeSources.get(principalClause);
+    if (!source) return "";
+    const ownedBy = validator => typeof targetObject[validator] === "function"
+      && targetObject[validator](source);
+    const exact = value => String(value || "").normalize("NFC");
+    let identity = "";
+    let negative = false;
+    if (ownedBy("isClassicalNahuatlRelationalResult")) {
+      const facts = source.sourceFrame;
+      if (
+        facts.stemId === "n-locative"
+        && facts.option === "option-two"
+        && facts.sourceKind === "interrogative-empty"
+        && facts.formationId === "can-interrogative"
+        && facts.state === "absolutive"
+        && facts.subjectMode === "adverbialized"
+      ) identity = "can";
+      if (
+        facts.stemId === "c-means-purpose-reason-time"
+        && facts.option === "option-one"
+        && facts.sourceKind === "possessor"
+        && facts.state === "possessive"
+        && facts.possessorId === "3common"
+        && facts.subjectMode === "adverbialized"
+        && facts.relationalFunction === "time"
+      ) identity = "ic";
+      negative = facts.negative === true;
+    } else if (ownedBy("isClassicalNahuatlAdverbialNuclearResult")) {
+      // This owner's lexicalized iuh is the preterit VNC of 58.6;
+      // an NNC merely spelled iuh is not the same construction.
+      if (
+        source.scope === "external-clause"
+        && source.sourceFrame?.clauseKind === "vnc"
+        && exact(source.sourceFrame?.stem) === "iuh"
+        && source.lexicalAuthorizationFrame?.family === "lexicalized-vnc"
+      ) identity = "iuh";
+    } else {
+      const slotFrame = getNncSlotFrame(source);
+      if (
+        typeof targetObject.isClassicalNahuatlNncSlotFrame === "function"
+        && targetObject.isClassicalNahuatlNncSlotFrame(slotFrame)
+      ) {
+        const stem = exact(slotFrame.slots.predicate.stem);
+        // Exact whole lexical predicates, including the lexicalized
+        // preterit-agentive NNC iuhqui, remain valid typed Sources.
+        identity = {
+          "āc": "ac", "tleh": "tleh", "tl-eh": "tleh",
+          "cān": "can", "īc": "ic", "iuhqui": "iuhqui",
+          "ayāc": "ayac", "ahtleh": "ahtleh",
+          "ahcān": "ahcan", "aīc": "aic",
+        }[stem] || "";
+        if (
+          stem === "ā-0"
+          && slotFrame.pronominalSubtype === "interrogative"
+          && slotFrame.pronominalSubtypeDetail === "what-person"
+          && slotFrame.slots.number.num1 === "c"
+        ) identity = "ac";
+        if (
+          ownedBy("isClassicalNahuatlPronominalNncResult")
+          || ownedBy("isClassicalNahuatlOrdinaryNncResult")
+        ) negative = source.operationFrame?.polarity === "negative";
+        else if (ownedBy("isClassicalNahuatlIssuedNncSentenceSurfaceFrame")) {
+          negative = source.polarity === "negative";
+        }
       }
     }
-    const candidates = [
-      principalClause.interrogativeKind,
-      principalClause.sourceStem,
-      normalizedSurface,
-    ].map(normalizeLexicalStem);
-    return [
-      "ac",
-      "tleh",
-      "can",
-      "ic",
-      "iuhqui",
-      "iuh",
-      "ayac",
-      "ahtleh",
-      "ahcan",
-      "aic",
-    ].find(identity => candidates.some(candidate => (
-      candidate === identity || candidate.endsWith(`-${identity}`)
-    ))) || "";
+    return negative
+      ? negativeIdentityByPositiveIdentity[identity] || identity
+      : identity;
   }
 
   function buildClassicalNahuatlExclamatoryUtteranceFrame(
@@ -4287,8 +4401,8 @@ export function createClassicalNahuatlSupplementationApi(
     const negativePrincipalWrittenByIdentity = {
       ayac: "ayāc",
       ahtleh: "ahtleh",
-      ahcan: "ahcan",
-      aic: "aic",
+      ahcan: "ahcān",
+      aic: "aīc",
     };
     const principalWritten = principalNegative
       && Object.hasOwn(
@@ -4441,6 +4555,72 @@ export function createClassicalNahuatlSupplementationApi(
     });
   }
 
+  function hasTypedVocativeSilentPluralIn(nncClause = null) {
+    // The envelope's private Source binding preserves the NNC slots even when
+    // the captured Result is sentence-only. Written endings do not license
+    // the optional num2 realization (Andrews 18.11).
+    const slotFrame = getNncSlotFrame(clauseEnvelopeSources.get(nncClause));
+    return Boolean(
+      typeof targetObject.isClassicalNahuatlNncSlotFrame === "function"
+      && targetObject.isClassicalNahuatlNncSlotFrame(slotFrame)
+      && slotFrame.slots.subject.subject === "3pl"
+      && slotFrame.slots.state.arity === "vacant"
+      && slotFrame.slots.number.num1 === "t"
+      && slotFrame.slots.number.num2 === "in"
+    );
+  }
+
+  function hasTypedVocativeFinalGlottal(
+    nncClause = null,
+    { silentPluralIn = false } = {}
+  ) {
+    const slotFrame = getNncSlotFrame(clauseEnvelopeSources.get(nncClause));
+    if (
+      typeof targetObject.isClassicalNahuatlNncSlotFrame !== "function"
+      || !targetObject.isClassicalNahuatlNncSlotFrame(slotFrame)
+      || typeof targetObject.buildClassicalNahuatlDerivationalBoundarySpellingFrame
+        !== "function"
+      || (silentPluralIn && !hasTypedVocativeSilentPluralIn(nncClause))
+    ) {
+      return false;
+    }
+    const { subject, participant, state, predicate, number } = slotFrame.slots;
+    const carriers = [
+      subject.pers1,
+      subject.pers2,
+      ...(participant?.slots || []).map(slot => slot.carrier),
+      ...state.slots.map(slot => slot.carrier),
+      predicate.stem,
+      number.num1,
+      silentPluralIn ? "⎕" : number.num2,
+    ];
+    const finalCarrier = carriers
+      .flatMap(carrier => String(carrier || "").split("-"))
+      .map(carrier => carrier.trim())
+      .filter(carrier => carrier && !["0", "Ø", "⎕"].includes(carrier))
+      .at(-1);
+    // Lesson 2 segments typed morphs, not the displayed NNC: h is the glottal
+    // spelling, whereas uh and ch are distinct single-consonant digraphs.
+    // A sounded number morph takes precedence over the predicate's ending.
+    if (!finalCarrier) return false;
+    const boundaryFrame =
+      targetObject.buildClassicalNahuatlDerivationalBoundarySpellingFrame({
+        sourceStem: finalCarrier,
+        retainedStem: finalCarrier,
+        followingMorpheme: "e",
+      });
+    return boundaryFrame?.authorizationStatus === "authorized"
+      && boundaryFrame.underlyingFinalConsonant === "h";
+  }
+
+  function getTypedVocativeSupportiveIAnalysis(nncClause = null) {
+    const slotFrame = getNncSlotFrame(clauseEnvelopeSources.get(nncClause));
+    return typeof targetObject.getClassicalNahuatlNncFinalSupportiveIAnalysis
+      === "function"
+      ? targetObject.getClassicalNahuatlNncFinalSupportiveIAnalysis(slotFrame)
+      : null;
+  }
+
   function buildClassicalNahuatlVocativeFrame(
     nncClause = null,
     {
@@ -4490,14 +4670,13 @@ export function createClassicalNahuatlSupplementationApi(
     }
     let base = nncClause.surface;
     let formulaRealization = nncClause.formulaRealization;
+    const supportiveIAnalysis = gender === "male"
+      ? getTypedVocativeSupportiveIAnalysis(nncClause)
+      : null;
     const operations = [];
     if (gender === "male") {
       if (silentPluralIn) {
-        if (
-          nncClause.subject.features?.number !== "plural"
-          || !/tin$/u.test(base)
-          || !/t-in#$/u.test(formulaRealization)
-        ) {
+        if (!hasTypedVocativeSilentPluralIn(nncClause)) {
           return freezeDeep({
             kind: "classical-nahuatl-vocative-frame",
             authorizationStatus: "blocked",
@@ -4511,12 +4690,12 @@ export function createClassicalNahuatlSupplementationApi(
         formulaRealization = formulaRealization.replace(/t-in#$/u, "t-⎕#");
         operations.push("replace-plural-in-with-silent-variant");
       }
-      if (/i$/u.test(base)) {
+      if (supportiveIAnalysis) {
         base = base.slice(0, -1);
         operations.push("absorb-final-supportive-i");
       }
       if (normalizeToken(glottalVariant) === "y") {
-        if (!/h$/u.test(base)) {
+        if (!hasTypedVocativeFinalGlottal(nncClause, { silentPluralIn })) {
           return freezeDeep({
             kind: "classical-nahuatl-vocative-frame",
             authorizationStatus: "blocked",
@@ -4543,6 +4722,7 @@ export function createClassicalNahuatlSupplementationApi(
       sourceClause: nncClause,
       discourseSourceContextFrame,
       speakerGender: gender,
+      supportiveIAnalysis,
       operations,
       prosody: gender === "female"
         ? "final-syllable-high-tone-with-affected-stress"

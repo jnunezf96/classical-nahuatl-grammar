@@ -266,12 +266,21 @@ export function createGrammarContractRegistryModule(targetObject = globalThis) {
       const missing = [];
       const invalid = [];
       listGrammarCapabilityRequirements(registry).forEach(requirement => {
-        const resolution = getGrammarCapabilityValue(capabilitySource, requirement.capability);
+        let resolution;
+        let actualType;
+        try {
+          resolution = getGrammarCapabilityValue(capabilitySource, requirement.capability);
+          actualType = resolution.found ? getGrammarCapabilityValueType(resolution.value) : "missing";
+        } catch {
+          resolution = { found: false, inspectionFailed: true };
+          actualType = "unavailable";
+        }
         const record = Object.freeze({
           requirementId: requirement.requirementId,
           capability: requirement.capability,
           expectedType: requirement.expectedType,
-          actualType: resolution.found ? getGrammarCapabilityValueType(resolution.value) : "missing",
+          actualType,
+          ...(resolution.inspectionFailed ? { inspectionFailed: true } : {}),
           requiredBy: requirement.requiredBy,
           reason: requirement.reason
         });
@@ -3886,7 +3895,9 @@ export function createGrammarContractRegistryModule(targetObject = globalThis) {
           || Boolean(frame?.sourceFrame && frame?.operationFrame && frame?.grammarFrame && frame?.surface && frame?.formula),
         diagnostic: "authorized-lessons45-47-result-typed-path-required"
       }, {
-        ok: frame?.typedGrammarAuthority !== false
+        ok: (frame?.authorizationStatus === "authorized"
+          ? frame?.typedGrammarAuthority === true
+          : frame?.typedGrammarAuthority !== false)
           && frame?.callerSuppliedAuthorityAccepted === false
           && frame?.lessonMetadataAuthority === false
           && frame?.formulaStringAuthority === false

@@ -3953,7 +3953,10 @@ export function createUiStateModule(targetObject = globalThis) {
     Object.defineProperty(api, "ANDREWS_UNIT_SOURCE_TARGET_ROUTE_OPTION_REGISTRY", {
         configurable: true,
         enumerable: true,
-        get() { return ANDREWS_UNIT_SOURCE_TARGET_ROUTE_OPTION_REGISTRY; },
+        get() {
+          const readRegistry = targetObject.getAndrewsUnitSourceTargetRouteOptionRegistry;
+          return typeof readRegistry === "function" ? readRegistry() : null;
+        },
     });
     api.normalizeAndrewsUnitFormulaType = normalizeAndrewsUnitFormulaType;
     api.getAndrewsUnitSourceTargetRouteTransition = getAndrewsUnitSourceTargetRouteTransition;

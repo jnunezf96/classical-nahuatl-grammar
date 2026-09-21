@@ -42,12 +42,6 @@ try {
   if (viewReport.runShardCount !== 2497 || viewReport.routeShardCount !== 2497 || viewReport.overlayOwnerCount !== 350) {
     throw new Error('active-materialization-count-mismatch');
   }
-} catch (error) {
-  atomicReplace(activePath, base, 'automatic-rollback');
-  rolledBackOnFailure = true;
-  throw error;
-}
-
 const active = JSON.parse(fs.readFileSync(activePath, 'utf8'));
 const activation = {
   schemaVersion: 1, version, activated: true, rolledBackOnFailure,
@@ -59,3 +53,8 @@ const activation = {
 };
 fs.writeFileSync(path.join(stage, 'activation-report.json'), `${JSON.stringify(activation, null, 2)}\n`);
 console.log(JSON.stringify(activation, null, 2));
+} catch (error) {
+  atomicReplace(activePath, base, 'automatic-rollback');
+  rolledBackOnFailure = true;
+  throw error;
+}

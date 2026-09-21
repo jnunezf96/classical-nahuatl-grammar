@@ -13,10 +13,7 @@ const spec = {
     "claim-p1656",
     "claim-p1657",
     "claim-p1658",
-    "claim-p1659",
-    "claim-p1660",
-    "claim-p1661",
-    "claim-p1662"
+    "claim-p1659"
   ],
   "coordinates": {
     "claim-p1653::p1653-the-latter-is-used-in-third-person-nncs": {
@@ -46,18 +43,6 @@ const spec = {
     "claim-p1659::p1659-the-nnc-yeh-may-also-be-used-in-this": {
       "assertionId": "classical-simple-personal-pronominal-source-selection:p1659-the-nnc-yeh-may-also-be-used-in-this",
       "canonicalPath": "numberFrame.internalPluralMorph"
-    },
-    "claim-p1660::p1660-que-n-oc-eh-quenoque-que-n-oc-yeh": {
-      "assertionId": "classical-simple-personal-pronominal-source-selection:p1660-que-n-oc-eh-quenoque-que-n-oc-yeh",
-      "canonicalPath": "discourseFrame.EnglishPronounTranslationIsAuthority"
-    },
-    "claim-p1661::p1661-que-n-zan-eh-que-n-zan-yeh-how": {
-      "assertionId": "classical-simple-personal-pronominal-source-selection:p1661-que-n-zan-eh-que-n-zan-yeh-how",
-      "canonicalPath": "contextSelectionRecord.selectionAuthority"
-    },
-    "claim-p1662::p1662-no-zo-eh-noce-because-of-elision-also-maybe": {
-      "assertionId": "classical-simple-personal-pronominal-source-selection:p1662-no-zo-eh-noce-because-of-elision-also-maybe",
-      "canonicalPath": "formulaStringAuthority"
     }
   },
   "executionFunctionName": "buildClassicalNahuatlHigherPronominalNncValidationFrame",
@@ -83,15 +68,6 @@ const spec = {
     ],
     "claim-p1659": [
       "l16-personal-simple"
-    ],
-    "claim-p1660": [
-      "l16-personal-simple"
-    ],
-    "claim-p1661": [
-      "l16-personal-simple"
-    ],
-    "claim-p1662": [
-      "l16-personal-simple"
     ]
   },
   "expectedCanonicalStatusBySelection": {
@@ -101,10 +77,33 @@ const spec = {
     "claim-p1656": "authorized",
     "claim-p1657": "authorized",
     "claim-p1658": "authorized",
-    "claim-p1659": "authorized",
-    "claim-p1660": "authorized",
-    "claim-p1661": "authorized",
-    "claim-p1662": "authorized"
+    "claim-p1659": "authorized"
+  },
+  "nonExecutableObservations": {
+    "claim-p1660::p1660-que-n-oc-eh-quenoque-que-n-oc-yeh": {
+      "assertionId": "classical-simple-personal-pronominal-source-selection:p1660-que-n-oc-eh-quenoque-que-n-oc-yeh",
+      "disposition": "documentary-claim-runtime-observation-unverified",
+      "reason": "Canvas5416–5417 gives quēn oc eh/yeh collocations and traditional spellings. The isolated first-person personal-simple recipe and English-translation authority flag do not observe these collocations.",
+      "retiredCanonicalPath": "discourseFrame.EnglishPronounTranslationIsAuthority",
+      "executionCredit": false,
+      "grammarAuthority": false
+    },
+    "claim-p1661::p1661-que-n-zan-eh-que-n-zan-yeh-how": {
+      "assertionId": "classical-simple-personal-pronominal-source-selection:p1661-que-n-zan-eh-que-n-zan-yeh-how",
+      "disposition": "documentary-claim-runtime-observation-unverified",
+      "reason": "Canvas5418 gives quēn zan eh/yeh collocations and readings. The isolated first-person personal-simple recipe and selection-authority field do not observe these collocations.",
+      "retiredCanonicalPath": "contextSelectionRecord.selectionAuthority",
+      "executionCredit": false,
+      "grammarAuthority": false
+    },
+    "claim-p1662::p1662-no-zo-eh-noce-because-of-elision-also-maybe": {
+      "assertionId": "classical-simple-personal-pronominal-source-selection:p1662-no-zo-eh-noce-because-of-elision-also-maybe",
+      "disposition": "documentary-claim-runtime-observation-unverified",
+      "reason": "Canvas5420 gives no zo eh and traditional noce due to elision. The isolated first-person personal-simple recipe and formula-authority flag do not observe the collocation or its elision.",
+      "retiredCanonicalPath": "formulaStringAuthority",
+      "executionCredit": false,
+      "grammarAuthority": false
+    }
   }
 };
 export default Object.freeze(spec);

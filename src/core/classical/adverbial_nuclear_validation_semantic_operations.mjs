@@ -8,6 +8,24 @@ import {
 
 const ISSUED_VALIDATION_FRAMES = new WeakSet();
 
+const REQUIRED_NEGATIVE_REASONS = Object.freeze({
+  copiedPotential: "owner-issued-adverbial-potential-frame-required",
+  storedSurface: "caller-supplied-derived-authority-rejected:request.resultSurface",
+  vncSecondDegree: "adverbial-source-does-not-license-requested-degree",
+  compoundOnlyExternal: "adverbial-source-is-compound-only",
+});
+
+function validationWitnessesPass(cases, blockedCases) {
+  const positives = Object.values(cases);
+  return positives.length > 0
+    && positives.every(item => item.canonicalResult === true
+      && item.authorizationStatus === "authorized")
+    && Object.entries(REQUIRED_NEGATIVE_REASONS).every(([key, reason]) =>
+      blockedCases[key]?.canonicalResult === true
+      && blockedCases[key]?.authorizationStatus === "blocked"
+      && blockedCases[key]?.blockReason === reason);
+}
+
 function deepFreeze(value) {
   if (!value || typeof value !== "object" || Object.isFrozen(value)) return value;
   Object.values(value).forEach(deepFreeze);
@@ -246,9 +264,20 @@ export function createClassicalAdverbialNuclearValidationSemanticOperationsApi(
       scope: "external-clause",
     });
 
+    const blockedCases = Object.fromEntries(Object.entries({
+      copiedPotential: copiedPotentialResult,
+      storedSurface: storedSurfaceResult,
+      vncSecondDegree: wrongDegreeResult,
+      compoundOnlyExternal,
+    }).map(([key, result]) => [key, {
+      authorizationStatus: result.authorizationStatus,
+      blockReason: result.blockReason,
+      canonicalResult: target.isClassicalNahuatlAdverbialNuclearResult(result) === true,
+    }]));
+
     const frame = deepFreeze({
       kind: "classical-nahuatl-adverbial-nuclear-validation-frame",
-      authorizationStatus: Object.values(cases).every(item => item.canonicalResult)
+      authorizationStatus: validationWitnessesPass(cases, blockedCases)
         ? "authorized"
         : "blocked",
       catalog: {
@@ -261,24 +290,7 @@ export function createClassicalAdverbialNuclearValidationSemanticOperationsApi(
         families: lcm?.axes?.constructionFamilies || [],
       },
       cases,
-      blockedCases: {
-        copiedPotential: {
-          authorizationStatus: copiedPotentialResult.authorizationStatus,
-          blockReason: copiedPotentialResult.blockReason,
-        },
-        storedSurface: {
-          authorizationStatus: storedSurfaceResult.authorizationStatus,
-          blockReason: storedSurfaceResult.blockReason,
-        },
-        vncSecondDegree: {
-          authorizationStatus: wrongDegreeResult.authorizationStatus,
-          blockReason: wrongDegreeResult.blockReason,
-        },
-        compoundOnlyExternal: {
-          authorizationStatus: compoundOnlyExternal.authorizationStatus,
-          blockReason: compoundOnlyExternal.blockReason,
-        },
-      },
+      blockedCases,
       contract: {
         sourceAndAdverbialOperationsRemainSeparate: true,
         sharedProjectionOwnsGrammar: false,

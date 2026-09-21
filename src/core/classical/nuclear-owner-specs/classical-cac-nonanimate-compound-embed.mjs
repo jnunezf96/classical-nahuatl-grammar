@@ -18,7 +18,7 @@ const spec = {
     },
     "claim-p2822::p2822-it-has-the-meaning-of-to-be-quiet-to": {
       "assertionId": "classical-cac-nonanimate-compound-embed:p2822-it-has-the-meaning-of-to-be-quiet-to",
-      "canonicalPath": "blockedCases.animateCac.blockReason"
+      "canonicalPath": "cases.cacNonanimate.facts.cacReadingOptions"
     },
     "claim-p2823::p2823-a-subject-pronoun-on-a-vnc-containing-it-can": {
       "assertionId": "classical-cac-nonanimate-compound-embed:p2823-a-subject-pronoun-on-a-vnc-containing-it-can",

@@ -1,8 +1,23 @@
 // Non-authorizing validation projection for the independently owned sentence-
 // supplementation semantics. This module owns no Inventory atoms and defines
 // no grammar. It selects typed coordinates, invokes the installed canonical
-// runtime, and retains only runtime-emitted frames. Canvas examples, stored
-// answers, curriculum metadata, and oracle declarations are never inputs.
+// runtime, and retains compact runtime observations alongside explicitly labeled
+// handwritten declarations. Neither these snapshots nor declarations authorize
+// grammar; issuance validation is not all-coordinate or equivalence proof.
+
+export function supplementationValidationEvidenceScope() {
+  return Object.freeze({
+    authorizationStatusScope: "shared-coordinate-only",
+    validatorScope: "issued-frozen-snapshot-and-shared-coordinate",
+    allCoordinateSuccess: false,
+    allCoordinateVerification: "not-performed",
+    semanticFacts: "handwritten-declarations-not-observations",
+    operationRequest: "operation-kind-label-only-not-validation",
+    paradigm: "scalar-builder-label-only-not-equivalence",
+    compoundVncs: "application-status-and-source-spelling-only-not-cooperation-proof",
+    compactFrames: "documentary-copies-not-canonical-issued-results",
+  });
+}
 
 import {
   createClassicalNahuatlSupplementationApi,
@@ -28,6 +43,35 @@ function deepFreeze(value, seen = new WeakSet()) {
 
 function frameOfKind(frame, kind) {
   return (frame?.operationFrames || []).find(candidate => candidate?.kind === kind) || null;
+}
+
+// Documentary projection only: never registers or validates canonical issuance.
+export function compactSupplementationValidationRelation(frame, seen = new WeakMap()) {
+  if (!frame || typeof frame !== "object") return null;
+  if (seen.has(frame)) return seen.get(frame);
+  const clause = value => ({
+    kind: value?.kind,
+    authorizationStatus: value?.authorizationStatus,
+    unitKind: value?.unitKind,
+    sourceStem: value?.sourceStem,
+    antecessiveOrder: value?.antecessiveOrder,
+    silentSpecificObjectAuthorized: value?.silentSpecificObjectAuthorized,
+    demonstrativeKind: value?.demonstrativeKind,
+    subject: value?.subject ? { category: value.subject.category } : null,
+  });
+  const projection = {
+    kind: frame.kind,
+    authorizationStatus: frame.authorizationStatus,
+    formulaStringAuthority: frame.formulaStringAuthority,
+    principalClause: clause(frame.principalClause),
+    supplementClause: clause(frame.supplementClause),
+    referenceFrame: cloneValue(frame.referenceFrame),
+    operationFrames: cloneValue(frame.operationFrames),
+  };
+  seen.set(frame, projection);
+  projection.supplementContinuationFrames = (frame.supplementContinuationFrames || [])
+    .map(nested => compactSupplementationValidationRelation(nested, seen));
+  return projection;
 }
 
 export function createClassicalSupplementationValidationSemanticOperationsApi(
@@ -753,8 +797,8 @@ export function createClassicalSupplementationValidationSemanticOperationsApi(
     ]);
 
     // Retain only the typed coordinates needed by the independent owner
-    // declarations.  The canonical frames above remain the source of every
-    // value, but copying their complete VNC/NNc machinery graphs into every
+    // declarations. Runtime frames supply the compact observations; semanticFacts
+    // below are separately labeled handwritten declarations. Copying complete graphs into every
     // proof result would turn a small semantic assertion into a many-megabyte
     // stored result and would make proof aggregation scale with implementation
     // detail rather than with atom obligations.
@@ -768,17 +812,7 @@ export function createClassicalSupplementationValidationSemanticOperationsApi(
       demonstrativeKind: clause?.demonstrativeKind,
       subject: clause?.subject ? { category: clause.subject.category } : null,
     });
-    const compactRelation = frame => ({
-      kind: frame?.kind,
-      authorizationStatus: frame?.authorizationStatus,
-      formulaStringAuthority: frame?.formulaStringAuthority,
-      principalClause: compactClause(frame?.principalClause),
-      supplementClause: compactClause(frame?.supplementClause),
-      referenceFrame: cloneValue(frame?.referenceFrame),
-      operationFrames: cloneValue(frame?.operationFrames),
-      supplementContinuationFrames: (frame?.supplementContinuationFrames || [])
-        .map(compactClause),
-    });
+    const compactRelation = compactSupplementationValidationRelation;
     const compactVocative = frame => ({
       kind: frame?.kind,
       authorizationStatus: frame?.authorizationStatus,
@@ -790,6 +824,7 @@ export function createClassicalSupplementationValidationSemanticOperationsApi(
 
     const projection = deepFreeze({
       kind: "classical-nahuatl-supplementation-validation-frame",
+      evidenceScope: supplementationValidationEvidenceScope(),
       authorizationStatus: shared.authorizationStatus === "authorized"
         ? "authorized"
         : "blocked",
@@ -972,11 +1007,16 @@ export function createClassicalSupplementationValidationSemanticOperationsApi(
   }
 
   function isClassicalNahuatlSupplementationValidationFrame(frame = null) {
+    // Compatibility contract: issuance/shared-coordinate validation only.
+    // Consumers needing a selected coordinate must validate that coordinate;
+    // this predicate never certifies the entire collection or equivalence.
     return Boolean(
       frame
       && issuedFrames.has(frame)
       && frame.kind === "classical-nahuatl-supplementation-validation-frame"
       && frame.authorizationStatus === "authorized"
+      && frame.evidenceScope?.authorizationStatusScope === "shared-coordinate-only"
+      && frame.evidenceScope?.allCoordinateSuccess === false
       && frame.typedFrameAuthority === true
       && frame.formulaStringAuthority === false
       && frame.surfaceStringAuthority === false

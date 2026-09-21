@@ -116,6 +116,23 @@ function validate(target, capabilityName, value) {
   );
 }
 
+function createOwnerPreflightProbe(target) {
+  let completed = true;
+  const invokePreflight = (capabilityName, args = []) => {
+    const result = invoke(target, capabilityName, args);
+    if (result.threw) completed = false;
+    return result;
+  };
+  return {
+    invoke: invokePreflight,
+    validate: (capabilityName, value) => {
+      const result = invokePreflight(capabilityName, [value]);
+      return result.invoked && !result.threw && result.value === true;
+    },
+    get completed() { return completed; },
+  };
+}
+
 function nounstemValenceFromProjection(projection = null) {
   const objectCount = Array.isArray(projection?.sourceObjectRequests)
     ? projection.sourceObjectRequests.length
@@ -186,6 +203,7 @@ function probeNominalConstruction(
   exactResult,
   ownerSelections = {},
 ) {
+  const ownerPreflight = createOwnerPreflightProbe(target);
   const evaluate = callable(
     target,
     "evaluateClassicalNahuatlNominalConstruction",
@@ -237,14 +255,13 @@ function probeNominalConstruction(
     requiredChoiceIds,
     requiredResultRoles,
   }) => {
-    const probe = invoke(target, "evaluateClassicalNahuatlNominalConstruction", [
+    const probe = ownerPreflight.invoke("evaluateClassicalNahuatlNominalConstruction", [
       request,
     ]);
     const sourceAuthorization = probe.value?.sourceAuthorizationFrame || null;
     if (
       probe.threw
-      || !validate(
-        target,
+      || !ownerPreflight.validate(
         "isClassicalNahuatlNominalConstructionSourceAuthorization",
         sourceAuthorization,
       )
@@ -263,8 +280,7 @@ function probeNominalConstruction(
     evidence.push(Object.freeze({ choice, ownerPreflight: sourceAuthorization }));
   };
 
-  const vncProjection = invoke(
-    target,
+  const vncProjection = ownerPreflight.invoke(
     "getClassicalNahuatlVncContinuationSourceConstituents",
     [exactResult],
   ).value;
@@ -307,8 +323,7 @@ function probeNominalConstruction(
     });
   }
 
-  const nncProjection = invoke(
-    target,
+  const nncProjection = ownerPreflight.invoke(
     "getClassicalNahuatlNncContinuationSourceConstituents",
     [exactResult],
   ).value;
@@ -318,7 +333,7 @@ function probeNominalConstruction(
   let constituentSourceClass = "";
   let embedOnly = false;
   if (
-    validate(target, "isClassicalNahuatlOrdinaryNncResult", exactResult)
+    ownerPreflight.validate("isClassicalNahuatlOrdinaryNncResult", exactResult)
     && nncProjection?.canonicalResultFrame === exactResult
   ) {
     const classFacts = ordinaryNncOwnerClassFacts(exactResult, nncProjection);
@@ -327,8 +342,7 @@ function probeNominalConstruction(
     constituentClass = classFacts?.nounClass || "";
     constituentSourceClass = classFacts?.sourceClass || "";
   } else if (
-    validate(
-      target,
+    ownerPreflight.validate(
       "isClassicalNahuatlDeverbalNncGrammarFrame",
       exactResult,
     )
@@ -341,8 +355,7 @@ function probeNominalConstruction(
     constituentSourceClass = constituentClass;
     embedOnly = true;
   } else if (
-    validate(
-      target,
+    ownerPreflight.validate(
       "isClassicalNahuatlNominalConstructionResult",
       exactResult,
     )
@@ -353,8 +366,7 @@ function probeNominalConstruction(
     constituentClass = exactResult.operationFrame?.matrixClass || "";
     constituentSourceClass = constituentClass;
   } else if (
-    validate(
-      target,
+    ownerPreflight.validate(
       "isClassicalNahuatlNominalConstructionResult",
       exactResult,
     )
@@ -434,7 +446,8 @@ function probeNominalConstruction(
     }
   }
 
-  return { choices, evidence, capabilitiesComplete: true };
+  return { choices, evidence, capabilitiesComplete: true,
+    preflightCompleted: ownerPreflight.completed };
 }
 
 function probeDeverbalConstruction(
@@ -442,6 +455,7 @@ function probeDeverbalConstruction(
   exactResult,
   ownerSelections = {},
 ) {
+  const ownerPreflight = createOwnerPreflightProbe(target);
   const choices = [];
   const evidence = [];
   const captureSpecs = [];
@@ -576,10 +590,10 @@ function probeDeverbalConstruction(
     return { choices: [], evidence: [], capabilitiesComplete: false };
   }
   captureSpecs.forEach(spec => {
-    const capture = invoke(target, spec.issuer, spec.args);
+    const capture = ownerPreflight.invoke(spec.issuer, spec.args);
     if (
       capture.threw
-      || !validate(target, spec.validator, capture.value)
+      || !ownerPreflight.validate(spec.validator, capture.value)
       || !exactCaptureIdentityPreserved(capture.value, exactResult)
     ) {
       return;
@@ -594,7 +608,8 @@ function probeDeverbalConstruction(
     choices.push(choice);
     evidence.push(Object.freeze({ choice, ownerPreflight: capture.value }));
   });
-  return { choices, evidence, capabilitiesComplete: true };
+  return { choices, evidence, capabilitiesComplete: true,
+    preflightCompleted: ownerPreflight.completed };
 }
 
 function probeRelationalConstruction(
@@ -602,6 +617,7 @@ function probeRelationalConstruction(
   exactResult,
   ownerSelections = {},
 ) {
+  const ownerPreflight = createOwnerPreflightProbe(target);
   const evaluate = callable(
     target,
     "evaluateClassicalNahuatlRelationalNnc",
@@ -631,7 +647,7 @@ function probeRelationalConstruction(
     ...(!selectedSubject ? ["subject"] : []),
   ];
   RELATIONAL_EXACT_SOURCE_PROBES.forEach(spec => {
-    const preflight = invoke(target, "evaluateClassicalNahuatlRelationalNnc", [{
+    const preflight = ownerPreflight.invoke("evaluateClassicalNahuatlRelationalNnc", [{
       nounstem: {
         kind: "classical-nahuatl-nnc-nounstem-request",
         stemId: spec.stemId,
@@ -649,8 +665,7 @@ function probeRelationalConstruction(
     }]);
     if (
       preflight.threw
-      || !validate(
-        target,
+      || !ownerPreflight.validate(
         "isClassicalNahuatlRelationalResult",
         preflight.value,
       )
@@ -670,10 +685,10 @@ function probeRelationalConstruction(
   });
 
   if (
-    validate(target, "isClassicalNahuatlRelationalResult", exactResult)
+    ownerPreflight.validate("isClassicalNahuatlRelationalResult", exactResult)
     && exactResult.constructionKind === "associated-entity"
   ) {
-    const preflight = invoke(target, "evaluateClassicalNahuatlRelationalNnc", [{
+    const preflight = ownerPreflight.invoke("evaluateClassicalNahuatlRelationalNnc", [{
       nounstem: {
         kind: "classical-nahuatl-nnc-nounstem-request",
         stemId: exactResult.stemId,
@@ -691,8 +706,7 @@ function probeRelationalConstruction(
     }]);
     if (
       !preflight.threw
-      && validate(
-        target,
+      && ownerPreflight.validate(
         "isClassicalNahuatlRelationalResult",
         preflight.value,
       )
@@ -709,7 +723,8 @@ function probeRelationalConstruction(
       evidence.push(Object.freeze({ choice, ownerPreflight: preflight.value }));
     }
   }
-  return { choices, evidence, capabilitiesComplete: true };
+  return { choices, evidence, capabilitiesComplete: true,
+    preflightCompleted: ownerPreflight.completed };
 }
 
 function getExactNncConstituent(target, exactResult) {
@@ -984,6 +999,7 @@ export function createClassicalNahuatlFormationResultBindingApi(
     const rejectionProven = Boolean(
       operationRecognized
       && probe.capabilitiesComplete
+      && probe.preflightCompleted
       && currentResult
       && typeof currentResult === "object"
       && !accepted,
@@ -998,7 +1014,7 @@ export function createClassicalNahuatlFormationResultBindingApi(
           ? "classical-formation-binding-operation-not-recognized"
           : !currentResult || typeof currentResult !== "object"
             ? "classical-formation-binding-exact-result-required"
-            : !probe.capabilitiesComplete
+            : !probe.capabilitiesComplete || !probe.preflightCompleted
               ? "classical-formation-binding-owner-preflight-unavailable"
               : "classical-formation-binding-exact-result-incompatible",
       operationId: operationRecognized ? normalizedOperationId : "",
@@ -1017,6 +1033,7 @@ export function createClassicalNahuatlFormationResultBindingApi(
         || requiredResultRoles.length,
       ),
       ownerPreflightCapabilitiesComplete: probe.capabilitiesComplete === true,
+      ownerPreflightCompleted: probe.preflightCompleted === true,
       ownerInputAcceptanceProven: accepted,
       ownerRejectionProven: rejectionProven,
       exactResultIdentityPreserved: accepted,
@@ -1076,6 +1093,7 @@ export function createClassicalNahuatlFormationResultBindingApi(
         && (
           frame.ownerRejectionProven === true
           || frame.ownerPreflightCapabilitiesComplete === false
+          || frame.ownerPreflightCompleted === false
           || !frame.operationId
           || !frame.inputResult
         ),

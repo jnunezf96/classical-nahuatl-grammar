@@ -16,23 +16,23 @@ const spec = {
   "coordinates": {
     "claim-p1101::p1101-as-shown-in-5-3-3-and-5-4": {
       "assertionId": "classical-admonitive-number-dyad-formation:p1101-as-shown-in-5-3-3-and-5-4",
-      "canonicalPath": "authorizationStatus"
+      "canonicalPath": "sentence.admonitiveNum1Morpheme"
     },
     "claim-p1102::p1102-when-cooperating-with-a-singular-morph-in-num2": {
       "assertionId": "classical-admonitive-number-dyad-formation:p1102-when-cooperating-with-a-singular-morph-in-num2",
-      "canonicalPath": "authorizationStatus"
+      "canonicalPath": "numberDyad"
     },
     "claim-p1103::p1103-the-morpheme-s-regular-morph-occurs-only-in-cooperation": {
       "assertionId": "classical-admonitive-number-dyad-formation:p1103-the-morpheme-s-regular-morph-occurs-only-in-cooperation",
-      "canonicalPath": "authorizationStatus"
+      "canonicalPath": "numberDyad"
     },
     "claim-p1104::p1104-the-morphs-in-num2-are-for-singular-and-either": {
       "assertionId": "classical-admonitive-number-dyad-formation:p1104-the-morphs-in-num2-are-for-singular-and-either",
-      "canonicalPath": "authorizationStatus"
+      "canonicalPath": "sentence.admonitiveDeclaredNum2Morphs"
     },
     "claim-p1105::p1105-sg-pl-t-in-t-ih": {
       "assertionId": "classical-admonitive-number-dyad-formation:p1105-sg-pl-t-in-t-ih",
-      "canonicalPath": "authorizationStatus"
+      "canonicalPath": "sentence.admonitiveDeclaredNumberDyads"
     }
   },
   "executionFunctionName": "buildClassicalNahuatlAdmonitiveValidationFrame",
@@ -42,10 +42,10 @@ const spec = {
       "class-a-singular"
     ],
     "claim-p1102": [
-      "class-b-plural"
+      "class-b-singular"
     ],
     "claim-p1103": [
-      "class-a-singular"
+      "class-b-plural"
     ],
     "claim-p1104": [
       "class-b-plural"

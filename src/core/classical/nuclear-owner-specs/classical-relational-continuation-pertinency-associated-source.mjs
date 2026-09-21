@@ -7,28 +7,31 @@ const spec = {
   "mode": "canonical-operation",
   "canonicalActorId": "classical-nahuatl-relational-continuation-runtime",
   "selections": [
-    "claim-p4543",
-    "claim-p4544"
+    "claim-p4543"
   ],
   "coordinates": {
     "claim-p4543::p4543-the-matrix-stem-yo-tl-can-embed-an-associated": {
       "assertionId": "classical-relational-continuation-pertinency-associated-source:p4543-the-matrix-stem-yo-tl-can-embed-an-associated",
       "canonicalPath": "cases.pertinencyAssociated.canonicalResult"
-    },
+    }
+  },
+  "nonExecutableObservations": {
     "claim-p4544::p4544-the-meaning-is-a-thing-pertaining-to-characteristic-of": {
       "assertionId": "classical-relational-continuation-pertinency-associated-source:p4544-the-meaning-is-a-thing-pertaining-to-characteristic-of",
-      "canonicalPath": "blockedCases.copiedAssociated.authorizationStatus"
+      "disposition": "documentary-claim-runtime-observation-unverified",
+      "reason": "Canvas19894–19897 explains pertinency to an associated entity and the translation's usual omission of morphological complexity. Rejection of a copied upstream Result tests provenance, not this meaning or translation distinction; the inspected observation does not measure that claim.",
+      "retiredCanonicalPath": "blockedCases.copiedAssociated.authorizationStatus",
+      "executionCredit": false,
+      "grammarAuthority": false
     }
   },
   "executionFunctionName": "buildClassicalRelationalContinuationValidationFrame",
   "executionValidatorName": "isClassicalRelationalContinuationValidationFrame",
   "executionArgsBySelection": {
-    "claim-p4543": [],
-    "claim-p4544": []
+    "claim-p4543": []
   },
   "expectedCanonicalStatusBySelection": {
-    "claim-p4543": "authorized",
-    "claim-p4544": "authorized"
+    "claim-p4543": "authorized"
   }
 };
 export default Object.freeze(spec);

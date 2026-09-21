@@ -32,7 +32,7 @@ const spec = {
     },
     "claim-p2921::p2921-in-the-purposive-vnc-the-t-is-a-directional": {
       "assertionId": "classical-purposive-progressive-contrast:p2921-in-the-purposive-vnc-the-t-is-a-directional",
-      "canonicalPath": "contract.progressiveContrast.traditionalSpellingAuthority"
+      "canonicalPath": "cases.singularSeries.outbound-nonpast-indicative.facts"
     },
     "claim-p2922::p2922-in-the-progressive-vnc-the-ti-is-merely-a": {
       "assertionId": "classical-purposive-progressive-contrast:p2922-in-the-progressive-vnc-the-ti-is-merely-a",

@@ -372,6 +372,9 @@ export function createCarrierStructureOwnerMechanicsApi(targetObject = globalThi
     },
     segmentDetails(result) { return segmentResultContexts.get(result) || null; },
     unitDetails(result) {
+      // Issued diagnostics and successful analyses are not necessarily units.
+      // Only an authorized constructed unit can supply a rank prerequisite.
+      if (result?.authorizationStatus !== "authorized" || result.unitConstructed !== true) return null;
       const segment = segmentResultContexts.get(result);
       if (segment) return {
         unitKind: `${segment.segmentClass}-${segment.carrierKind}-instance`,
@@ -383,7 +386,9 @@ export function createCarrierStructureOwnerMechanicsApi(targetObject = globalThi
       };
       for (const mechanism of mechanisms.values()) {
         const context = mechanism.internal(result);
-        if (context) return context.payload;
+        if (context && support.isOwnerResult(mechanism.spec.ownerId, result)
+          && Number.isInteger(context.payload.rankOrdinal)
+          && context.payload.rankOrdinal > 0) return context.payload;
       }
       return null;
     },

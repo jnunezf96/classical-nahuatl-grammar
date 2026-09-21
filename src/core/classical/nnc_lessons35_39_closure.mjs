@@ -33,6 +33,22 @@ const PARADIGM_PLAN_CONTEXTS = new WeakMap();
 const PREDICATE_NNC_CONTINUATION_CONTEXTS = new WeakMap();
 const ACTION_NNC_CONTINUATION_CONTEXTS = new WeakMap();
 const PATIENTIVE_NNC_CONTINUATION_CONTEXTS = new WeakMap();
+const PRETERIT_NNC_RESTRICTED_USE_CITATION_PROJECTIONS = new WeakMap();
+const PRETERIT_NNC_RESTRICTED_USE_CITATION_RECEIPTS = new WeakMap();
+const PREDICATE_NNC_RESTRICTED_USE_CITATION_PROJECTIONS = new WeakMap();
+const PREDICATE_NNC_RESTRICTED_USE_CITATION_RECEIPTS = new WeakMap();
+const DEVERBAL_ACTION_NNC_CITATION_PROJECTIONS = new WeakMap();
+const DEVERBAL_ACTION_NNC_CITATION_RECEIPTS = new WeakMap();
+const PATIENTIVE_NNC_CITATION_PROJECTIONS = new WeakMap();
+const PATIENTIVE_NNC_CITATION_RECEIPTS = new WeakMap();
+const PATIENTIVE_NNC_CITATION_PROJECTION_KIND =
+  "classical-nahuatl-patientive-nnc-restricted-use-citation-projection";
+const DEVERBAL_ACTION_NNC_CITATION_PROJECTION_KIND =
+  "classical-nahuatl-deverbal-action-nnc-restricted-use-citation-projection";
+const PREDICATE_NNC_RESTRICTED_USE_CITATION_PROJECTION_KIND =
+  "classical-nahuatl-predicate-nnc-restricted-use-citation-projection";
+const PRETERIT_NNC_RESTRICTED_USE_CITATION_PROJECTION_KIND =
+  "classical-nahuatl-preterit-nnc-restricted-use-citation-projection";
 const GCD_IDENTITY =
   "typed-source-unit+licensed-source-stage+nominal-or-deverbal-operation+participant-state-transformation+boundary-realization+canonical-target-evaluator";
 const LCM_PROJECTION_IDENTITY =
@@ -5199,6 +5215,692 @@ function isClassicalNahuatlDeverbalNncGrammarFrame(frame = null) {
   );
 }
 
+function hasCanonicalPreteritCitationAnalysis(
+  resultFrame = null,
+  target = globalThis
+) {
+  const sourceFrame = resultFrame?.sourceFrame;
+  const operationFrame = resultFrame?.operationFrame;
+  const canonicalResult = resultFrame?.canonicalResult;
+  const typedSlotFrame = canonicalResult?.nncSlotFrame;
+  const targetStems = operationFrame?.targetStems;
+  const state = canonicalResult?.state;
+  const selectedStem = state === "possessive"
+    ? targetStems?.generalUse
+    : targetStems?.restrictedUse;
+  return Boolean(
+    isClassicalNahuatlDeverbalNncGrammarFrame(resultFrame)
+    && resultFrame.constructionKind === "predicate-nominalization"
+    && ISSUED_SOURCE_FRAMES.has(sourceFrame)
+    && sourceFrame.kind === "classical-nahuatl-deverbal-nnc-source-frame"
+    && sourceFrame.sourceStage === "preterit-predicate"
+    && isClassicalNahuatlLexicalAuthorizationFrame(
+      sourceFrame.lexicalAuthorizationFrame
+    )
+    && operationFrame.kind === "classical-nahuatl-deverbal-nnc-operation-frame"
+    && operationFrame.constructionKind === "predicate-nominalization"
+    && ["preterit-agentive", "preterit-patientive"].includes(
+      operationFrame.nominalizationKind
+    )
+    && operationFrame.operationId
+      === `predicate-nominalization:${operationFrame.nominalizationKind}`
+    && operationFrame.sourceStage === sourceFrame.sourceStage
+    && operationFrame.sourceVoice === sourceFrame.sourceVoice
+    && operationFrame.sourceValence === sourceFrame.sourceValence
+    && operationFrame.sourceObjectPattern === sourceFrame.sourceObjectPattern
+    && operationFrame.verbClass === sourceFrame.verbClass
+    && canonicalResult.kind === "classical-nahuatl-deverbal-nnc-canonical-nnc-result"
+    && ["absolutive", "possessive"].includes(state)
+    && operationFrame.allowedStates.includes(state)
+    && ISSUED_NNC_SLOT_FRAMES.has(typedSlotFrame)
+    && typeof target.isClassicalNahuatlNncSlotFrame === "function"
+    && target.isClassicalNahuatlNncSlotFrame(typedSlotFrame)
+    && selectedStem
+    && selectedStem === typedSlotFrame.slots.predicate.stem
+    && selectedStem === canonicalResult.numberFrame.stem
+    && operationFrame.nounClass === typedSlotFrame.nounClass
+    && operationFrame.nounClass === canonicalResult.numberFrame.nounClass
+    && canonicalResult.subject === typedSlotFrame.slots.subject.subject
+    && (state === "absolutive"
+      ? typedSlotFrame.slots.state.arity === "vacant"
+      : typedSlotFrame.slots.state.arity !== "vacant")
+    && Object.isFrozen(sourceFrame)
+    && Object.isFrozen(operationFrame)
+    && Object.isFrozen(targetStems)
+    && Object.isFrozen(canonicalResult)
+    && Object.isFrozen(typedSlotFrame)
+  );
+}
+
+function getCanonicalPreteritCitationBase(source, operation) {
+  if (operation.preteritAgentiveVariant === "yauh-ti-owner") {
+    const secondary = operation.secondaryPossessiveStemFrame;
+    const possessive = operation.possessiveAgentiveFrame;
+    // §§15.1.5 and 35.6 Note 3 downgrade the possessed predicate to a
+    // secondary GENERAL-use stem, retaining its inner tē > ti. Citation
+    // (§14.1) neither reverses that derivation nor supplies the distinct
+    // restricted-use downgrade described in §15.1.6.
+    if (secondary?.kind !== "classical-nahuatl-secondary-possessive-agentive-stem-frame"
+      || secondary.authorizationStatus !== "authorized"
+      || secondary.sourceFrame !== source
+      || secondary.lexicalAuthorizationFrame !== source.lexicalAuthorizationFrame
+      || secondary.targetRank !== "secondary-general-use-nounstem"
+      || !secondary.stem || secondary.stem !== operation.targetStems.generalUse
+      || secondary.restrictedUseCounterpart !== null
+      || operation.targetStems.restrictedUse !== ""
+      || possessive?.yauhInnerPossessorShift !== true
+      || possessive.sourceStem !== secondary.stem
+      || !Object.isFrozen(secondary)) return null;
+    return {
+      stem: secondary.stem,
+      useKind: "isolated-citation",
+      citationStemSource: "owned-secondary-possessive-predicate",
+      citationNumberConstraint: "secondary-possessive-only",
+    };
+  }
+  return operation.targetStems.restrictedUse ? {
+    stem: operation.targetStems.restrictedUse,
+    useKind: "restricted-use",
+    citationStemSource: "owned-restricted-use-counterpart",
+    citationNumberConstraint: "class-governed",
+  } : null;
+}
+
+function getClassicalNahuatlPreteritNncRestrictedUseCitationProjection(
+  resultFrame = null,
+  target = globalThis
+) {
+  const blocked = blockReason => deepFreeze({
+    kind: PRETERIT_NNC_RESTRICTED_USE_CITATION_PROJECTION_KIND,
+    version: VERSION,
+    authorizationStatus: "blocked",
+    blockReason,
+    callerSuppliedAuthorityAccepted: false,
+    formulaStringAuthority: false,
+    surfaceStringAuthority: false,
+  });
+  if (!isClassicalNahuatlDeverbalNncGrammarFrame(resultFrame)) {
+    return blocked("preterit-nnc-canonical-result-required");
+  }
+  const sourceFrame = resultFrame.sourceFrame;
+  const operationFrame = resultFrame.operationFrame;
+  if (resultFrame.constructionKind !== "predicate-nominalization"
+    || !["preterit-agentive", "preterit-patientive"].includes(
+      operationFrame.nominalizationKind
+    )) {
+    return blocked("preterit-nnc-predicate-nominalization-required");
+  }
+  if (!hasCanonicalPreteritCitationAnalysis(resultFrame, target)) {
+    return blocked("preterit-nnc-canonical-use-stem-analysis-required");
+  }
+  const citationBase = getCanonicalPreteritCitationBase(sourceFrame, operationFrame);
+  if (!citationBase) {
+    return blocked("preterit-nnc-selected-source-has-no-restricted-use-counterpart");
+  }
+  const { stem } = citationBase;
+  const existing = PRETERIT_NNC_RESTRICTED_USE_CITATION_PROJECTIONS.get(
+    resultFrame
+  );
+  if (existing) return existing;
+  const canonicalNncResultFrame = resultFrame.canonicalResult;
+  const typedSlotFrame = canonicalNncResultFrame.nncSlotFrame;
+  // §§14.1 and 35.2–35.6: cite the owner's retained restricted counterpart
+  // or its already downgraded secondary general-use stem, as selected above.
+  // Do not strip a cā matrix or a number connector from a written result,
+  // replay a singular clause, or replace its internal reflexive, affinity,
+  // selected perfective, or genuinely archaic quē derivation.
+  // §35.4 puts an activated specific object outside the nounstem. Retain
+  // that clause's provenance, but do not restore an internal tē/tla or
+  // mistake an isolated citation for a replacement clause.
+  const projection = deepFreeze({
+    kind: PRETERIT_NNC_RESTRICTED_USE_CITATION_PROJECTION_KIND,
+    version: VERSION,
+    authorizationStatus: "authorized",
+    blockReason: "",
+    canonicalResultFrame: resultFrame,
+    canonicalSourceFrame: sourceFrame,
+    canonicalOperationFrame: operationFrame,
+    canonicalNncResultFrame,
+    canonicalLexicalAuthorizationFrame: sourceFrame.lexicalAuthorizationFrame,
+    canonicalTargetStemsFrame: operationFrame.targetStems,
+    canonicalSemanticProfile: operationFrame.semanticProfile,
+    canonicalAffinityFrame: operationFrame.affinityFrame,
+    canonicalOldPersonAnalysisFrame: operationFrame.oldPersonAnalysisFrame,
+    canonicalPossessiveAgentiveFrame: operationFrame.possessiveAgentiveFrame,
+    canonicalSecondaryPossessiveStemFrame: operationFrame.secondaryPossessiveStemFrame,
+    canonicalActivationLicenseFrame: operationFrame.activationLicenseFrame,
+    canonicalExternalObjectFrame: canonicalNncResultFrame.externalObjectFrame,
+    typedSlotFrame,
+    ...citationBase,
+    nounClass: operationFrame.nounClass,
+    nominalizationKind: operationFrame.nominalizationKind,
+    useShape: "base",
+    sourcePredicateStem: typedSlotFrame.slots.predicate.stem,
+    sourceState: canonicalNncResultFrame.state,
+    sourceSubject: canonicalNncResultFrame.subject,
+    sourceObjectPattern: sourceFrame.sourceObjectPattern,
+    sourceAgreementChanged: false,
+    sourceReferenceChanged: false,
+    sourceDerivationChanged: false,
+    sourceClauseFeaturesProjected: false,
+    projectionScope: "isolated-nounstem",
+    projectionRole: "read-only-source-constituents",
+    continuationMode: "licensed-operation-only",
+    directSourceReentryAuthorized: false,
+    grammarAuthority: false,
+    callerSuppliedAuthorityAccepted: false,
+    formulaStringAuthority: false,
+    surfaceStringAuthority: false,
+  });
+  PRETERIT_NNC_RESTRICTED_USE_CITATION_RECEIPTS.set(projection, Object.freeze({
+    resultFrame,
+    sourceFrame,
+    operationFrame,
+    canonicalNncResultFrame,
+    typedSlotFrame,
+    targetStems: operationFrame.targetStems,
+    stem,
+    nounClass: operationFrame.nounClass,
+  }));
+  PRETERIT_NNC_RESTRICTED_USE_CITATION_PROJECTIONS.set(resultFrame, projection);
+  return projection;
+}
+
+function isClassicalNahuatlPreteritNncRestrictedUseCitationProjection(
+  frame = null,
+  target = globalThis
+) {
+  const receipt = frame && typeof frame === "object"
+    ? PRETERIT_NNC_RESTRICTED_USE_CITATION_RECEIPTS.get(frame)
+    : null;
+  const citationBase = receipt && getCanonicalPreteritCitationBase(
+    receipt.sourceFrame, receipt.operationFrame
+  );
+  return Boolean(
+    receipt
+    && PRETERIT_NNC_RESTRICTED_USE_CITATION_PROJECTIONS.get(receipt.resultFrame)
+      === frame
+    && hasCanonicalPreteritCitationAnalysis(receipt.resultFrame, target)
+    && frame.kind === PRETERIT_NNC_RESTRICTED_USE_CITATION_PROJECTION_KIND
+    && frame.version === VERSION
+    && frame.authorizationStatus === "authorized"
+    && frame.blockReason === ""
+    && frame.canonicalResultFrame === receipt.resultFrame
+    && frame.canonicalSourceFrame === receipt.sourceFrame
+    && frame.canonicalOperationFrame === receipt.operationFrame
+    && frame.canonicalNncResultFrame === receipt.canonicalNncResultFrame
+    && frame.typedSlotFrame === receipt.typedSlotFrame
+    && frame.canonicalTargetStemsFrame === receipt.targetStems
+    && frame.canonicalPossessiveAgentiveFrame === receipt.operationFrame.possessiveAgentiveFrame
+    && frame.canonicalSecondaryPossessiveStemFrame === receipt.operationFrame.secondaryPossessiveStemFrame
+    && frame.stem === receipt.stem
+    && citationBase && frame.stem === citationBase.stem
+    && frame.nounClass === receipt.nounClass
+    && frame.sourcePredicateStem === receipt.typedSlotFrame.slots.predicate.stem
+    && frame.useKind === citationBase.useKind
+    && frame.citationStemSource === citationBase.citationStemSource
+    && frame.citationNumberConstraint === citationBase.citationNumberConstraint
+    && frame.useShape === "base"
+    && frame.sourceAgreementChanged === false
+    && frame.sourceReferenceChanged === false
+    && frame.sourceDerivationChanged === false
+    && frame.sourceClauseFeaturesProjected === false
+    && frame.projectionScope === "isolated-nounstem"
+    && frame.projectionRole === "read-only-source-constituents"
+    && frame.continuationMode === "licensed-operation-only"
+    && frame.directSourceReentryAuthorized === false
+    && frame.grammarAuthority === false
+    && frame.callerSuppliedAuthorityAccepted === false
+    && frame.formulaStringAuthority === false
+    && frame.surfaceStringAuthority === false
+    && Object.isFrozen(frame)
+  );
+}
+
+function hasCanonicalPredicateCitationAnalysis(resultFrame, target) {
+  const source = resultFrame?.sourceFrame;
+  const operation = resultFrame?.operationFrame;
+  const canonical = resultFrame?.canonicalResult;
+  const slots = canonical?.nncSlotFrame;
+  const selectedStem = canonical?.state === "possessive"
+    ? operation?.targetStems?.generalUse : operation?.targetStems?.restrictedUse;
+  return Boolean(
+    isClassicalNahuatlDeverbalNncGrammarFrame(resultFrame)
+    && resultFrame.constructionKind === "predicate-nominalization"
+    && ISSUED_SOURCE_FRAMES.has(source)
+    && isClassicalNahuatlLexicalAuthorizationFrame(source.lexicalAuthorizationFrame)
+    && operation.kind === "classical-nahuatl-deverbal-nnc-operation-frame"
+    && operation.constructionKind === "predicate-nominalization"
+    && PREDICATE_NOMINALIZATION_KINDS.includes(operation.nominalizationKind)
+    && !["preterit-agentive", "preterit-patientive"].includes(operation.nominalizationKind)
+    && operation.operationId === `predicate-nominalization:${operation.nominalizationKind}`
+    && operation.sourceStage === source.sourceStage
+    && operation.sourceVoice === source.sourceVoice
+    && operation.sourceValence === source.sourceValence
+    && operation.sourceObjectPattern === source.sourceObjectPattern
+    && operation.verbClass === source.verbClass
+    && canonical.kind === "classical-nahuatl-deverbal-nnc-canonical-nnc-result"
+    && ["absolutive", "possessive"].includes(canonical.state)
+    && operation.allowedStates.includes(canonical.state)
+    && ISSUED_NNC_SLOT_FRAMES.has(slots)
+    && typeof target.isClassicalNahuatlNncSlotFrame === "function"
+    && target.isClassicalNahuatlNncSlotFrame(slots)
+    && selectedStem && selectedStem === slots.slots.predicate.stem
+    && selectedStem === canonical.numberFrame.stem
+    && operation.nounClass === slots.nounClass
+    && operation.nounClass === canonical.numberFrame.nounClass
+    && canonical.subject === slots.slots.subject.subject
+    && canonical.numberFrame.num1 === slots.slots.number.num1
+    && canonical.numberFrame.num2 === slots.slots.number.num2
+    && (slots.slots.state.arity === "vacant") === (canonical.state === "absolutive")
+    && Object.isFrozen(source) && Object.isFrozen(operation)
+    && Object.isFrozen(operation.targetStems) && Object.isFrozen(canonical)
+  );
+}
+
+function getCanonicalPredicateCitationBase(source, operation) {
+  if (operation.nominalizationKind === "instrumentive"
+    && operation.instrumentiveRealizationFrame?.selectedState === "possessive") {
+    const realization = operation.instrumentiveRealizationFrame;
+    const participants = operation.instrumentiveParticipantFrame;
+    // §36.6 has two independently nominalized stems. The exact imperfect
+    // active -ya nounstem can be cited without inventing a customary -ni
+    // counterpart. Note 2 contradicts a possessive-only citation veto.
+    if (source.sourceStage !== "imperfect-predicate" || source.sourceVoice !== "active"
+      || realization.authorizationStatus !== "authorized"
+      || realization.sourcePath !== "imperfect-active"
+      || realization.sourceMorphemicShapeFrame?.predicateStem !== source.sourceStem
+      || realization.sourceObjectPattern !== source.sourceObjectPattern
+      || participants?.authorizationStatus !== "authorized"
+      || participants.selectedState !== "possessive"
+      || participants.selectedSourcePath !== "imperfect-active-vnc-result"
+      || participants.sourceVoice !== source.sourceVoice
+      || participants.sourceSubject !== source.sourceSubject
+      || participants.sourceSubjectBecomesPossessor !== true
+      || participants.transformedPossessor !== operation.transformedPossessor
+      || participants.nounClass !== "tl" || participants.nounSubclass !== "tl-1-b"
+      || operation.nounClass !== "tl"
+      || !realization.targetStem || realization.targetStem !== operation.targetStems.generalUse
+      || operation.targetStems.restrictedUse !== ""
+      || operation.targetStems.citationRestrictedUse !== "") return null;
+    return { stem: realization.targetStem, useKind: "isolated-citation",
+      citationStemSource: "owned-imperfect-active-instrumentive" };
+  }
+  return operation.targetStems.citationRestrictedUse ? {
+    stem: operation.targetStems.citationRestrictedUse, useKind: "restricted-use",
+    citationStemSource: "owned-restricted-use-counterpart",
+  } : null;
+}
+
+function getClassicalNahuatlPredicateNncRestrictedUseCitationProjection(resultFrame, target) {
+  const blocked = blockReason => deepFreeze({
+    kind: PREDICATE_NNC_RESTRICTED_USE_CITATION_PROJECTION_KIND,
+    version: VERSION, authorizationStatus: "blocked", blockReason,
+    callerSuppliedAuthorityAccepted: false, formulaStringAuthority: false,
+    surfaceStringAuthority: false,
+  });
+  if (!hasCanonicalPredicateCitationAnalysis(resultFrame, target)) {
+    return blocked("predicate-nnc-canonical-use-stem-analysis-required");
+  }
+  const source = resultFrame.sourceFrame;
+  const operation = resultFrame.operationFrame;
+  const canonical = resultFrame.canonicalResult;
+  const slots = canonical.nncSlotFrame;
+  const citationBase = getCanonicalPredicateCitationBase(source, operation);
+  if (!citationBase) {
+    return blocked("predicate-nnc-selected-source-has-no-restricted-use-counterpart");
+  }
+  const { stem } = citationBase;
+  const existing = PREDICATE_NNC_RESTRICTED_USE_CITATION_PROJECTIONS.get(resultFrame);
+  if (existing) return existing;
+  const citationRestorationFrame = deepFreeze({
+    kind: "classical-nahuatl-predicate-citation-restoration-frame",
+    authorizationStatus: "authorized",
+    canonicalTargetStemsFrame: operation.targetStems,
+    selectedRestrictedUse: operation.targetStems.restrictedUse,
+    citationRestrictedUse: operation.targetStems.citationRestrictedUse,
+    citationStem: stem,
+    sourceBoundaryVariant: operation.boundaryVariant,
+    sourceBoundaryContext: operation.boundaryContext,
+    action: citationBase.useKind === "isolated-citation"
+      ? "retain-owned-imperfect-active-instrumentive"
+      : operation.boundaryVariant === "drop-real-final-i"
+        ? "restore-retained-pre-boundary-ni" : "retain-owned-restricted-counterpart",
+    surfaceSuffixRecovery: false, sourceReevaluated: false,
+    formulaStringAuthority: false, surfaceStringAuthority: false,
+  });
+  const projection = deepFreeze({
+    kind: PREDICATE_NNC_RESTRICTED_USE_CITATION_PROJECTION_KIND,
+    version: VERSION, authorizationStatus: "authorized", blockReason: "",
+    canonicalResultFrame: resultFrame, canonicalSourceFrame: source,
+    canonicalOperationFrame: operation, canonicalNncResultFrame: canonical,
+    canonicalLexicalAuthorizationFrame: source.lexicalAuthorizationFrame,
+    canonicalTargetStemsFrame: operation.targetStems,
+    canonicalSemanticProfile: operation.semanticProfile,
+    canonicalCustomaryAgentivePossessiveSupplementFrame: operation.customaryAgentivePossessiveSupplementFrame,
+    canonicalInstrumentiveSourcePairFrame: operation.instrumentiveSourcePairFrame,
+    canonicalInstrumentiveParticipantFrame: operation.instrumentiveParticipantFrame || null,
+    canonicalInstrumentiveRealizationFrame: operation.instrumentiveRealizationFrame || null,
+    canonicalParticipantRoleTransitionFrame: operation.participantRoleTransitionFrame,
+    canonicalActivationLicenseFrame: operation.activationLicenseFrame,
+    canonicalExternalObjectFrame: canonical.externalObjectFrame,
+    citationRestorationFrame, typedSlotFrame: slots, ...citationBase,
+    nounClass: operation.nounClass, nominalizationKind: operation.nominalizationKind,
+    useShape: "base",
+    sourcePredicateStem: slots.slots.predicate.stem,
+    sourceState: canonical.state, sourceSubject: canonical.subject,
+    sourceObjectPattern: source.sourceObjectPattern,
+    citationNumberConstraint: "class-governed",
+    sourceAgreementChanged: false, sourceReferenceChanged: false,
+    sourceDerivationChanged: false, sourceClauseFeaturesProjected: false,
+    projectionScope: "isolated-nounstem", projectionRole: "read-only-source-constituents",
+    continuationMode: "licensed-operation-only", directSourceReentryAuthorized: false,
+    grammarAuthority: false, callerSuppliedAuthorityAccepted: false,
+    formulaStringAuthority: false, surfaceStringAuthority: false,
+  });
+  PREDICATE_NNC_RESTRICTED_USE_CITATION_RECEIPTS.set(projection, Object.freeze({
+    resultFrame, source, operation, canonical, slots, stem, citationRestorationFrame,
+  }));
+  PREDICATE_NNC_RESTRICTED_USE_CITATION_PROJECTIONS.set(resultFrame, projection);
+  return projection;
+}
+
+function isClassicalNahuatlPredicateNncRestrictedUseCitationProjection(frame, target) {
+  const receipt = frame && typeof frame === "object"
+    ? PREDICATE_NNC_RESTRICTED_USE_CITATION_RECEIPTS.get(frame) : null;
+  const citationBase = receipt && getCanonicalPredicateCitationBase(receipt.source, receipt.operation);
+  return Boolean(receipt
+    && PREDICATE_NNC_RESTRICTED_USE_CITATION_PROJECTIONS.get(receipt.resultFrame) === frame
+    && hasCanonicalPredicateCitationAnalysis(receipt.resultFrame, target)
+    && frame.kind === PREDICATE_NNC_RESTRICTED_USE_CITATION_PROJECTION_KIND
+    && frame.version === VERSION && frame.authorizationStatus === "authorized"
+    && frame.blockReason === ""
+    && frame.canonicalResultFrame === receipt.resultFrame
+    && frame.canonicalSourceFrame === receipt.source
+    && frame.canonicalOperationFrame === receipt.operation
+    && frame.canonicalNncResultFrame === receipt.canonical
+    && frame.typedSlotFrame === receipt.slots
+    && frame.canonicalTargetStemsFrame === receipt.operation.targetStems
+    && citationBase && frame.stem === receipt.stem && frame.stem === citationBase.stem
+    && frame.useKind === citationBase.useKind
+    && frame.citationStemSource === citationBase.citationStemSource
+    && frame.nounClass === receipt.operation.nounClass
+    && frame.citationRestorationFrame === receipt.citationRestorationFrame
+    && frame.sourcePredicateStem === receipt.slots.slots.predicate.stem
+    && frame.useShape === "base"
+    && frame.sourceAgreementChanged === false && frame.sourceReferenceChanged === false
+    && frame.sourceDerivationChanged === false && frame.sourceClauseFeaturesProjected === false
+    && frame.projectionScope === "isolated-nounstem"
+    && frame.projectionRole === "read-only-source-constituents"
+    && frame.continuationMode === "licensed-operation-only"
+    && frame.directSourceReentryAuthorized === false && frame.grammarAuthority === false
+    && frame.callerSuppliedAuthorityAccepted === false
+    && frame.formulaStringAuthority === false && frame.surfaceStringAuthority === false
+    && Object.isFrozen(frame));
+}
+
+function hasCanonicalDeverbalActionCitationAnalysis(resultFrame, target) {
+  const source = resultFrame?.sourceFrame;
+  const operation = resultFrame?.operationFrame;
+  const canonical = resultFrame?.canonicalResult;
+  const slots = canonical?.nncSlotFrame;
+  const stem = operation?.targetStems?.restrictedUse;
+  return Boolean(
+    isClassicalNahuatlDeverbalNncGrammarFrame(resultFrame)
+    && resultFrame.constructionKind === "deverbal-action"
+    && ISSUED_SOURCE_FRAMES.has(source)
+    && isClassicalNahuatlLexicalAuthorizationFrame(source.lexicalAuthorizationFrame)
+    && operation.constructionKind === "deverbal-action"
+    && ["active-action", "potential-patient", "impersonal-general-action"].includes(operation.actionKind)
+    && ["z", "liz"].includes(operation.actionSuffix)
+    && operation.operationId === `deverbal-action:${operation.actionKind}:${operation.actionSuffix}`
+    && operation.deverbalNounstemAxisFrame?.authorizationStatus === "authorized"
+    && operation.sourceStage === "future-core" && source.sourceStage === "future-core"
+    && operation.sourceVoice === source.sourceVoice
+    && operation.sourceObjectPattern === source.sourceObjectPattern
+    && operation.deverbalActionFrame?.futureVncCore === source.sourceStem
+    && operation.deverbalActionFrame.nominalSuffix === operation.actionSuffix
+    && (!source.deverbalActionVncCaptureFrame
+      || isClassicalNahuatlDeverbalActionVncCaptureFrame(source.deverbalActionVncCaptureFrame))
+    && canonical.kind === "classical-nahuatl-deverbal-nnc-canonical-nnc-result"
+    && operation.allowedStates.includes(canonical.state)
+    && ["absolutive", "possessive"].includes(canonical.state)
+    && ISSUED_NNC_SLOT_FRAMES.has(slots)
+    && target.isClassicalNahuatlNncSlotFrame?.(slots) === true
+    // §37.2 gives the same stem in both uses. Validate that exact owned
+    // analysis; neither the outer tli nor the source future z is its suffix.
+    && stem && stem === operation.targetStems.generalUse
+    && stem === slots.slots.predicate.stem && stem === canonical.numberFrame.stem
+    && operation.nounClass === "tli" && slots.nounClass === operation.nounClass
+    && canonical.numberFrame.nounClass === operation.nounClass
+    && canonical.subject === slots.slots.subject.subject
+    && canonical.numberFrame.num1 === slots.slots.number.num1
+    && canonical.numberFrame.num2 === slots.slots.number.num2
+    && (slots.slots.state.arity === "vacant") === (canonical.state === "absolutive")
+    && Object.isFrozen(source) && Object.isFrozen(operation)
+    && Object.isFrozen(operation.targetStems) && Object.isFrozen(canonical)
+  );
+}
+
+function getClassicalNahuatlDeverbalActionNncRestrictedUseCitationProjection(resultFrame, target) {
+  if (!hasCanonicalDeverbalActionCitationAnalysis(resultFrame, target)) {
+    return deepFreeze({ kind: DEVERBAL_ACTION_NNC_CITATION_PROJECTION_KIND,
+      version: VERSION, authorizationStatus: "blocked",
+      blockReason: "deverbal-action-nnc-canonical-use-stem-analysis-required",
+      callerSuppliedAuthorityAccepted: false, formulaStringAuthority: false,
+      surfaceStringAuthority: false });
+  }
+  const existing = DEVERBAL_ACTION_NNC_CITATION_PROJECTIONS.get(resultFrame);
+  if (existing) return existing;
+  const source = resultFrame.sourceFrame;
+  const operation = resultFrame.operationFrame;
+  const canonical = resultFrame.canonicalResult;
+  const slots = canonical.nncSlotFrame;
+  const projection = deepFreeze({
+    kind: DEVERBAL_ACTION_NNC_CITATION_PROJECTION_KIND, version: VERSION,
+    authorizationStatus: "authorized", blockReason: "",
+    canonicalResultFrame: resultFrame, canonicalSourceFrame: source,
+    canonicalOperationFrame: operation, canonicalNncResultFrame: canonical,
+    canonicalLexicalAuthorizationFrame: source.lexicalAuthorizationFrame,
+    canonicalTargetStemsFrame: operation.targetStems,
+    canonicalDeverbalNounstemAxisFrame: operation.deverbalNounstemAxisFrame,
+    canonicalDeverbalActionFrame: operation.deverbalActionFrame,
+    canonicalVncCaptureFrame: source.deverbalActionVncCaptureFrame || null,
+    canonicalParticipantRoleTransitionFrame: operation.participantRoleTransitionFrame,
+    canonicalActionVoicePossessorRoleFrame: operation.actionVoicePossessorRoleFrame,
+    typedSlotFrame: slots, stem: operation.targetStems.restrictedUse,
+    nounClass: operation.nounClass, actionKind: operation.actionKind,
+    actionSuffix: operation.actionSuffix,
+    useKind: "restricted-use", useShape: "base",
+    sourcePredicateStem: slots.slots.predicate.stem,
+    sourceState: canonical.state, sourceSubject: canonical.subject,
+    sourceObjectPattern: source.sourceObjectPattern,
+    citationNumberConstraint: "class-governed",
+    sourceAgreementChanged: false, sourceReferenceChanged: false,
+    sourceDerivationChanged: false, sourceClauseFeaturesProjected: false,
+    projectionScope: "isolated-nounstem", projectionRole: "read-only-source-constituents",
+    continuationMode: "licensed-operation-only", directSourceReentryAuthorized: false,
+    grammarAuthority: false, callerSuppliedAuthorityAccepted: false,
+    formulaStringAuthority: false, surfaceStringAuthority: false,
+  });
+  DEVERBAL_ACTION_NNC_CITATION_RECEIPTS.set(projection, resultFrame);
+  DEVERBAL_ACTION_NNC_CITATION_PROJECTIONS.set(resultFrame, projection);
+  return projection;
+}
+
+function isClassicalNahuatlDeverbalActionNncRestrictedUseCitationProjection(frame, target) {
+  const result = frame && typeof frame === "object"
+    ? DEVERBAL_ACTION_NNC_CITATION_RECEIPTS.get(frame) : null;
+  return Boolean(result && DEVERBAL_ACTION_NNC_CITATION_PROJECTIONS.get(result) === frame
+    && hasCanonicalDeverbalActionCitationAnalysis(result, target)
+    && frame.kind === DEVERBAL_ACTION_NNC_CITATION_PROJECTION_KIND
+    && frame.version === VERSION && frame.authorizationStatus === "authorized"
+    && frame.canonicalResultFrame === result
+    && frame.canonicalSourceFrame === result.sourceFrame
+    && frame.canonicalOperationFrame === result.operationFrame
+    && frame.canonicalNncResultFrame === result.canonicalResult
+    && frame.typedSlotFrame === result.canonicalResult.nncSlotFrame
+    && frame.canonicalTargetStemsFrame === result.operationFrame.targetStems
+    && frame.stem === result.operationFrame.targetStems.restrictedUse
+    && frame.formulaStringAuthority === false && frame.surfaceStringAuthority === false
+    && frame.callerSuppliedAuthorityAccepted === false && Object.isFrozen(frame));
+}
+
+function hasCanonicalPatientiveCitationAnalysis(resultFrame, target) {
+  const source = resultFrame?.sourceFrame;
+  const operation = resultFrame?.operationFrame;
+  const canonical = resultFrame?.canonicalResult;
+  const slots = canonical?.nncSlotFrame;
+  const characteristic = operation?.patientiveKind === "characteristic-property";
+  const contractId = characteristic ? "patientive:characteristic-property"
+    : `patientive:${operation?.patientiveSourceFamily}`;
+  const contract = DEVERBAL_NOUNSTEM_SOURCE_CONTRACTS[contractId];
+  const axis = operation?.deverbalNounstemAxisFrame;
+  const selectedStem = canonical?.state === "possessive"
+    ? operation?.targetStems?.generalUse : operation?.targetStems?.restrictedUse;
+  return Boolean(
+    isClassicalNahuatlDeverbalNncGrammarFrame(resultFrame)
+    && resultFrame.constructionKind === "patientive"
+    && ISSUED_SOURCE_FRAMES.has(source)
+    && isClassicalNahuatlLexicalAuthorizationFrame(source.lexicalAuthorizationFrame)
+    && operation.constructionKind === "patientive"
+    && ["ordinary", "characteristic-property"].includes(operation.patientiveKind)
+    && contract && source.sourceStage === contract.sourceStage
+    && contract.sourceVoices.includes(source.sourceVoice)
+    && axis?.authorizationStatus === "authorized" && axis.structuralContractSatisfied === true
+    && axis.structuralContractId === contractId && axis.canonicalSourceFrame === source
+    && contract.sourceEvidenceKinds.includes(axis.sourceEvidenceKind)
+    && operation.operationId === (characteristic
+      ? `${contractId}:${operation.characteristicReading}` : contractId)
+    && canonical.kind === "classical-nahuatl-deverbal-nnc-canonical-nnc-result"
+    && ["absolutive", "possessive"].includes(canonical.state)
+    && operation.allowedStates.includes(canonical.state)
+    && ISSUED_NNC_SLOT_FRAMES.has(slots)
+    && target.isClassicalNahuatlNncSlotFrame?.(slots) === true
+    && selectedStem && selectedStem === slots.slots.predicate.stem
+    && selectedStem === canonical.numberFrame.stem
+    && operation.nounClass === slots.nounClass
+    && operation.nounClass === canonical.numberFrame.nounClass
+    && canonical.subject === slots.slots.subject.subject
+    && canonical.numberFrame.num1 === slots.slots.number.num1
+    && canonical.numberFrame.num2 === slots.slots.number.num2
+    && (slots.slots.state.arity === "vacant") === (canonical.state === "absolutive")
+    && Object.isFrozen(source) && Object.isFrozen(operation)
+    && Object.isFrozen(operation.targetStems) && Object.isFrozen(canonical)
+  );
+}
+
+function getCanonicalPatientiveCitationBase(operation) {
+  if (operation.patientiveKind === "characteristic-property"
+    && operation.characteristicReading === "organic-possession") {
+    const organic = operation.characteristicOrganicPossessionFrame;
+    const foundation = operation.characteristicPatientiveFoundationFrame;
+    // §14.1 distinguishes isolated citation from absolutive-NNC formation.
+    // §39.3.4 restricts the organic NNC's state, not citation of its nounstem.
+    // Read the already owned long target; do not invert possessed -yo or
+    // manufacture a restricted-use NNC counterpart for this exact reading.
+    if (organic?.authorizationStatus !== "authorized"
+      || organic.selectedReading !== "organic-possession"
+      || organic.organicPossessionIsPossessiveOnly !== true
+      || foundation?.characteristicOrganicPossessionFrame !== organic
+      || foundation.selectedReading !== "organic-possession"
+      || !organic.organicTargetStem
+      || organic.organicTargetStem !== foundation.characteristicPatientiveTargetStem
+      || foundation.possessiveStateStem !== operation.targetStems.generalUse
+      || operation.targetStems.restrictedUse !== ""
+      || operation.allowedStates.length !== 1 || operation.allowedStates[0] !== "possessive") return null;
+    return {
+      stem: organic.organicTargetStem, useKind: "isolated-citation",
+      citationStemSource: "owned-organic-target", citationNumberConstraint: "possessive-only",
+    };
+  }
+  return operation.targetStems.restrictedUse ? {
+    stem: operation.targetStems.restrictedUse, useKind: "restricted-use",
+    citationStemSource: "owned-restricted-use-counterpart", citationNumberConstraint: "class-governed",
+  } : null;
+}
+
+function getClassicalNahuatlPatientiveNncRestrictedUseCitationProjection(resultFrame, target) {
+  const blocked = blockReason => deepFreeze({
+    kind: PATIENTIVE_NNC_CITATION_PROJECTION_KIND, version: VERSION,
+    authorizationStatus: "blocked", blockReason,
+    callerSuppliedAuthorityAccepted: false, formulaStringAuthority: false,
+    surfaceStringAuthority: false,
+  });
+  if (!hasCanonicalPatientiveCitationAnalysis(resultFrame, target)) {
+    return blocked("patientive-nnc-canonical-use-stem-analysis-required");
+  }
+  const source = resultFrame.sourceFrame;
+  const operation = resultFrame.operationFrame;
+  const canonical = resultFrame.canonicalResult;
+  const citationBase = getCanonicalPatientiveCitationBase(operation);
+  if (!citationBase) {
+    return blocked("patientive-nnc-selected-source-has-no-owned-citation-base");
+  }
+  const existing = PATIENTIVE_NNC_CITATION_PROJECTIONS.get(resultFrame);
+  if (existing) return existing;
+  // Read the existing derivation, including selected object/core/allomorph
+  // and characteristic yō assimilation. Never invert a possessed spelling.
+  const projection = deepFreeze({
+    kind: PATIENTIVE_NNC_CITATION_PROJECTION_KIND, version: VERSION,
+    authorizationStatus: "authorized", blockReason: "",
+    canonicalResultFrame: resultFrame, canonicalSourceFrame: source,
+    canonicalOperationFrame: operation, canonicalNncResultFrame: canonical,
+    canonicalTargetStemsFrame: operation.targetStems,
+    canonicalLexicalAuthorizationFrame: source.lexicalAuthorizationFrame,
+    canonicalDeverbalNounstemAxisFrame: operation.deverbalNounstemAxisFrame,
+    canonicalPatientiveUseFrame: operation.patientiveUseFrame || null,
+    canonicalPatientiveTaxonomyFrame: operation.patientiveTaxonomyFrame || null,
+    canonicalPatientiveTruncationFrame: operation.patientiveTruncationFrame || null,
+    canonicalRootStockPatientiveFrame: operation.rootStockPatientiveFrame || null,
+    canonicalPerfectivePatientiveFrame: operation.perfectivePatientiveFrame || null,
+    canonicalImperfectivePatientiveFrame: operation.imperfectivePatientiveFrame || null,
+    canonicalCharacteristicFoundationFrame: operation.characteristicPatientiveFoundationFrame || null,
+    canonicalCharacteristicOwnerhoodContrastFrame: operation.characteristicOwnerhoodContrastFrame || null,
+    canonicalCharacteristicOrganicPossessionFrame: operation.characteristicOrganicPossessionFrame || null,
+    canonicalCharacteristicPreteritAgentiveFrame: operation.characteristicPreteritAgentiveFrame || null,
+    typedSlotFrame: canonical.nncSlotFrame, ...citationBase, nounClass: operation.nounClass,
+    patientiveKind: operation.patientiveKind,
+    patientiveSourceFamily: operation.patientiveSourceFamily,
+    characteristicReading: operation.characteristicReading || "",
+    sourcePredicateStem: canonical.nncSlotFrame.slots.predicate.stem,
+    sourceState: canonical.state, sourceSubject: canonical.subject,
+    sourceObjectPattern: source.sourceObjectPattern,
+    useShape: "base",
+    sourceAgreementChanged: false, sourceReferenceChanged: false,
+    sourceDerivationChanged: false, sourceClauseFeaturesProjected: false,
+    projectionScope: "isolated-nounstem", projectionRole: "read-only-source-constituents",
+    continuationMode: "licensed-operation-only", directSourceReentryAuthorized: false,
+    grammarAuthority: false, callerSuppliedAuthorityAccepted: false,
+    formulaStringAuthority: false, surfaceStringAuthority: false,
+  });
+  PATIENTIVE_NNC_CITATION_RECEIPTS.set(projection, resultFrame);
+  PATIENTIVE_NNC_CITATION_PROJECTIONS.set(resultFrame, projection);
+  return projection;
+}
+
+function isClassicalNahuatlPatientiveNncRestrictedUseCitationProjection(frame, target) {
+  const result = frame && typeof frame === "object"
+    ? PATIENTIVE_NNC_CITATION_RECEIPTS.get(frame) : null;
+  const citationBase = result && getCanonicalPatientiveCitationBase(result.operationFrame);
+  return Boolean(result && PATIENTIVE_NNC_CITATION_PROJECTIONS.get(result) === frame
+    && hasCanonicalPatientiveCitationAnalysis(result, target)
+    && frame.kind === PATIENTIVE_NNC_CITATION_PROJECTION_KIND
+    && frame.version === VERSION && frame.authorizationStatus === "authorized"
+    && frame.canonicalResultFrame === result
+    && frame.canonicalSourceFrame === result.sourceFrame
+    && frame.canonicalOperationFrame === result.operationFrame
+    && frame.canonicalNncResultFrame === result.canonicalResult
+    && frame.typedSlotFrame === result.canonicalResult.nncSlotFrame
+    && frame.canonicalTargetStemsFrame === result.operationFrame.targetStems
+    && citationBase && frame.stem === citationBase.stem
+    && frame.useKind === citationBase.useKind
+    && frame.citationStemSource === citationBase.citationStemSource
+    && frame.citationNumberConstraint === citationBase.citationNumberConstraint
+    && frame.formulaStringAuthority === false && frame.surfaceStringAuthority === false
+    && frame.callerSuppliedAuthorityAccepted === false && Object.isFrozen(frame));
+}
+
 function resolveCanonicalPreteritPredicateSource(
   request = {},
   nominalizationKind = "",
@@ -5614,6 +6316,7 @@ function buildPredicateNominalizationOperation(
   let generalUseActiveActionFrame = null;
   let restrictedUseActiveActionFrame = null;
   let actionCharacteristicFrame = null;
+  let secondaryPossessiveStemFrame = null;
   const rules = [];
   const appliedAuthorizationIds = [];
   const preteritAgentiveVariant = normalizeKey(
@@ -5728,6 +6431,30 @@ function buildPredicateNominalizationOperation(
       }
       restrictedUse = "";
       generalUse = "ti-yah-0-cā";
+      // §35.6 Note 3 / §15.1.5: the nonspecific inner possessor is now
+      // inside the secondary stem. A later NNC's subject and possessor
+      // remain outer slots; no citation operation demotes them again.
+      secondaryPossessiveStemFrame = deepFreeze({
+        kind: "classical-nahuatl-secondary-possessive-agentive-stem-frame",
+        version: VERSION,
+        authorizationStatus: "authorized",
+        sourceFrame,
+        lexicalAuthorizationFrame: lexicalFrame,
+        stem: generalUse,
+        sourceRank: "possessive-state-predicate",
+        targetRank: "secondary-general-use-nounstem",
+        innerPossessor: {
+          person: "nonspecific-human", underlyingPrefix: "tē",
+          realizedPrefix: "ti", role: "retained-inner-possessor",
+        },
+        embeddedPreterit: { stem: sourceFrame.sourceStem, tenseEnding: "0" },
+        matrix: { stem: "cā", nounClass: "tl", subclass: "tl-1-a" },
+        restrictedUseCounterpart: null,
+        grammarAuthority: false,
+        callerSuppliedAuthorityAccepted: false,
+        formulaStringAuthority: false,
+        surfaceStringAuthority: false,
+      });
       allowedStates = ["possessive"];
       connectorProfile = "preterit-agentive";
       rules.push("35.6-yauh-te-to-ti-inner-possessor");
@@ -5856,10 +6583,12 @@ function buildPredicateNominalizationOperation(
       ? customaryImpersonalStem
       : "";
     generalUse = state === "possessive" ? imperfectActiveStem : "";
-    nounClass = state === "absolutive" ? "tl" : "tli";
+    // §36.6 explicitly assigns the imperfect-active instrumentive to tl
+    // Class 1-B; Note 2's -ya-tl citation is not a tli-class formation.
+    nounClass = "tl";
     connectorProfile = state === "absolutive"
       ? "instrumentive-absolutive"
-      : "derived-tli";
+      : "derived-tl";
     allowedStates = [state];
     transformedPossessor = state === "possessive"
       ? sourceSubjectToPossessor(sourceFrame.sourceSubject)
@@ -6050,6 +6779,10 @@ function buildPredicateNominalizationOperation(
     }
   }
 
+  // §14.1 citation has no following compound/vocative boundary. Retain the
+  // already-derived base before §36.3's locally licensed loss of real ni-i;
+  // never recover it later from an arbitrary n-final written spelling.
+  const citationRestrictedUse = restrictedUse;
   const finalIRealization = normalizeKey(
     request.finalIRealization || "preserve"
   );
@@ -6306,6 +7039,8 @@ function buildPredicateNominalizationOperation(
     targetStems: {
       restrictedUse,
       generalUse,
+      ...(!["preterit-agentive", "preterit-patientive"].includes(nominalizationKind)
+        ? { citationRestrictedUse } : {}),
     },
     nounClass,
     nncFamily: nominalizationKind,
@@ -6349,6 +7084,7 @@ function buildPredicateNominalizationOperation(
     affinityApplied: affinitySelected,
     affinityFrame,
     possessiveAgentiveFrame,
+    secondaryPossessiveStemFrame,
     appliedAuthorizationIds,
     appliedSemanticRules: rules,
     semanticProfile,
@@ -13024,6 +13760,28 @@ export function installClassicalNahuatlDeverbalNncGlobals(
     isClassicalNahuatlInstrumentiveSourcePairFrame,
     isClassicalNahuatlLexicalAuthorizationFrame,
     isClassicalNahuatlDeverbalNncGrammarFrame,
+    getClassicalNahuatlPreteritNncRestrictedUseCitationProjection:
+      result => getClassicalNahuatlPreteritNncRestrictedUseCitationProjection(
+        result,
+        semanticTarget
+      ),
+    isClassicalNahuatlPreteritNncRestrictedUseCitationProjection:
+      frame => isClassicalNahuatlPreteritNncRestrictedUseCitationProjection(
+        frame,
+        semanticTarget
+      ),
+    getClassicalNahuatlPredicateNncRestrictedUseCitationProjection:
+      result => getClassicalNahuatlPredicateNncRestrictedUseCitationProjection(result, semanticTarget),
+    isClassicalNahuatlPredicateNncRestrictedUseCitationProjection:
+      frame => isClassicalNahuatlPredicateNncRestrictedUseCitationProjection(frame, semanticTarget),
+    getClassicalNahuatlDeverbalActionNncRestrictedUseCitationProjection:
+      result => getClassicalNahuatlDeverbalActionNncRestrictedUseCitationProjection(result, semanticTarget),
+    isClassicalNahuatlDeverbalActionNncRestrictedUseCitationProjection:
+      frame => isClassicalNahuatlDeverbalActionNncRestrictedUseCitationProjection(frame, semanticTarget),
+    getClassicalNahuatlPatientiveNncRestrictedUseCitationProjection:
+      result => getClassicalNahuatlPatientiveNncRestrictedUseCitationProjection(result, semanticTarget),
+    isClassicalNahuatlPatientiveNncRestrictedUseCitationProjection:
+      frame => isClassicalNahuatlPatientiveNncRestrictedUseCitationProjection(frame, semanticTarget),
     buildClassicalNahuatlDeverbalNncParadigmPlan:
       request => buildParadigmPlan(request, semanticTarget),
     isClassicalNahuatlParadigmPlan,

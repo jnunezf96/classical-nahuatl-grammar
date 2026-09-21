@@ -246,14 +246,14 @@ export function createGrammarOperationContractOwner({
     const operationIdentityRecord = resolveCanonicalIdentity({
       namespace: "operation",
       semanticName: contract.operationId,
-      stableKey: "primary-operation",
+      stableKey: contract.operationId,
       scopeKey: ownerIdentityRecord.identityId,
       currentLocation: "grammar-operation-contract.operationId",
     });
     const contractIdentityRecord = resolveCanonicalIdentity({
       namespace: "operation-contract",
       semanticName: `${normalizedOwnerId}:${contract.operationId}`,
-      stableKey: "primary-operation-contract",
+      stableKey: contract.operationId,
       scopeKey: ownerIdentityRecord.identityId,
       currentLocation: "grammar-operation-contract",
     });

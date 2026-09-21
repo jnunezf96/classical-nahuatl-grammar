@@ -190,6 +190,34 @@ function inventory(runtime, stem, verbClass, sourceValence) {
   ));
 }
 
+export function buildLoNamedSourceWitnesses(runtime) {
+  const witness = (stem, verbClass) => {
+    const result = inventory(runtime, stem, verbClass, "specific-projective");
+    return {
+      ...result,
+      options: result.options.filter(option => option.suffixFamily === "lō"),
+    };
+  };
+  return {
+    patla: witness("pa-tla", "A"),
+    pitza: witness("pitza", "B"),
+    piya: witness("piya", "B"),
+    celia: witness("ce-liā", "C"),
+  };
+}
+
+export function buildONamedSourceWitnesses(runtime) {
+  return {
+    cuica: inventory(runtime, "cuīca", "A", "intransitive"),
+    tiamiqui: inventory(runtime, "tiāmiqui", "B", "intransitive"),
+    titlani: inventory(runtime, "tītlani", "B", "specific-projective"),
+    itta: inventory(runtime, "itt-a", "B", "specific-projective"),
+    tlaza: inventory(runtime, "tlāza", "B", "specific-projective"),
+    ahci: inventory(runtime, "ahci", "A", "intransitive"),
+    pinahua: inventory(runtime, "pīn-ā-hua", "A", "intransitive"),
+  };
+}
+
 function active(runtime, stem, {
   subject = "3sg",
   mood = "indicative",
@@ -513,6 +541,8 @@ function buildProjection(runtime) {
         grammarContract.callerSuppliedAuthorityAccepted,
     },
     nonactive: {
+      loNamedSources: buildLoNamedSourceWitnesses(runtime),
+      oNamedSources: buildONamedSourceWitnesses(runtime),
       loClassA: inventory(runtime, "chihua", "A", "specific-projective"),
       loClassB: inventory(runtime, "nequi-ya", "B", "intransitive"),
       loClassC: inventory(runtime, "chihua-l-tiā", "C", "specific-projective"),

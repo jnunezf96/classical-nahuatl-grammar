@@ -23,7 +23,7 @@ const spec = {
     },
     "claim-p1986::p1986-tla-pa-tla-to-exchange-s-th": {
       "assertionId": "classical-lo-class-a-formation:p1986-tla-pa-tla-to-exchange-s-th",
-      "canonicalPath": "nonactive.loClassA.options.0.nonactiveStem"
+      "canonicalPath": "nonactive.loNamedSources.patla"
     },
     "claim-p1987::p1987-tla-mo-tla-to-throw-rocks-at-s-th": {
       "assertionId": "classical-lo-class-a-formation:p1987-tla-mo-tla-to-throw-rocks-at-s-th",

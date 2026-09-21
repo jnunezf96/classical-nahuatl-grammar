@@ -9,6 +9,12 @@ import {
 export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = globalThis) {
     const CLASSICAL_NAHUATL_NNC_LAYER_VERSION = 1;
     const issuedNncSentenceSurfaceFrames = new WeakMap();
+    const issuedNncPredicateSupportiveI = new WeakMap();
+    // This is a lexical exception, not a productive final-i formation rule.
+    // Andrews 18.11 identifies (icni)-tl, distinct from ordinary icniuh.
+    const lexicalFinalSupportiveI = Object.freeze({
+      icni: Object.freeze({ nounClass: "tl", attestationScope: "vocative-only" }),
+    });
     const issuedExotlInterpretationSources = new WeakSet();
     const issuedExotlInterpretationResults = new WeakSet();
     const issuedTlehAdmonitoryPairSources = new WeakSet();
@@ -2716,6 +2722,63 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
       }
       return frame.formulaStringAuthority === false && frame.formulaArtifactAuthority === "display-only-not-authority";
     }
+    function bindClassicalNahuatlNncPredicateSupportiveI(
+      slotFrame, sourceFrame, derivedStemFrame
+    ) {
+      if (
+        !isClassicalNahuatlNncSlotFrame(slotFrame)
+        || sourceFrame?.authorizationStatus !== "authorized"
+        || derivedStemFrame?.authorizationStatus !== "authorized"
+        || derivedStemFrame.sourceStem !== sourceFrame.selectedUseStem
+        || slotFrame.slots.predicate.stem !== derivedStemFrame.derivedStem
+      ) return;
+      const repair = sourceFrame.truncationRepairFrame;
+      const lexical = Object.hasOwn(lexicalFinalSupportiveI, sourceFrame.restrictedUseStem)
+        ? lexicalFinalSupportiveI[sourceFrame.restrictedUseStem]
+        : null;
+      const repaired = sourceFrame.selectedUseKind === "general-use"
+        && sourceFrame.generalUseShape === "truncated"
+        && repair?.authorizationStatus === "authorized"
+        && repair.supportiveVowel === "i"
+        && repair.realizedStem === sourceFrame.selectedUseStem;
+      const lexicalSupport = lexical?.nounClass === sourceFrame.nounClass
+        && sourceFrame.generalUseShape === "base"
+        && [sourceFrame.restrictedUseStem, sourceFrame.restrictedUseStem.slice(1)]
+          .includes(sourceFrame.selectedUseStem);
+      if (!repaired && !lexicalSupport) return;
+      issuedNncPredicateSupportiveI.set(slotFrame, Object.freeze({
+        origin: repaired ? "ephemeral-vowel-truncation-repair" : "lexical-final-supportive-i",
+        sourceStem: sourceFrame.restrictedUseStem,
+        predicateStem: slotFrame.slots.predicate.stem,
+        supportiveVowel: "i",
+        attestationScope: repaired ? "formation" : lexical.attestationScope,
+      }));
+    }
+    function getClassicalNahuatlNncFinalSupportiveIAnalysis(slotFrame = null) {
+      if (!isClassicalNahuatlNncSlotFrame(slotFrame)) return null;
+      const { predicate, number } = slotFrame.slots;
+      const silent = carrier => ["0", "Ø", "⎕"].includes(carrier);
+      if (!silent(number.num2)) return null;
+      // Andrews 12.3 and 13.2 explicitly call these morph-final vowels
+      // supportive. The i of num1 in is not final and is not absorbed here.
+      const numberSupport = ["tli", "li", "hui"].includes(number.num1);
+      const predicateSupport = issuedNncPredicateSupportiveI.get(slotFrame);
+      const predicateSupportMatches = silent(number.num1)
+        && predicateSupport?.predicateStem === predicate.stem;
+      if (!numberSupport && !predicateSupportMatches) return null;
+      return Object.freeze({
+        kind: "classical-nahuatl-nnc-final-supportive-i-analysis",
+        origin: numberSupport ? "number-connector-supportive-i" : predicateSupport.origin,
+        slot: numberSupport ? "number.num1" : "predicate.stem",
+        carrier: numberSupport ? number.num1 : predicate.stem,
+        supportiveVowel: "i",
+        sourceStem: numberSupport ? "" : predicateSupport.sourceStem,
+        attestationScope: numberSupport ? "formation" : predicateSupport.attestationScope,
+        typedFrameAuthority: true,
+        formulaStringAuthority: false,
+        surfaceStringAuthority: false,
+      });
+    }
     function renderClassicalNahuatlNncSlotFrameFormula(frame = null) {
       if (!isClassicalNahuatlNncSlotFrame(frame)) {
         return "";
@@ -2725,6 +2788,15 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
       const state = frame.slots.state;
       const predicate = frame.slots.predicate;
       const number = frame.slots.number;
+      // The owner retains a downgraded conjunction as typed clause
+      // constituents. Plus marks are a projection of those boundaries,
+      // never material parsed back into the predicate's grammar.
+      const structure = predicate.structureFrame;
+      const predicateDisplay = structure?.kind === "classical-nahuatl-gross-cardinal-conjunction-embed-frame"
+        && structure.authorizationStatus === "authorized"
+        && structure.stem === predicate.stem
+        ? `${structure.segments.map(segment => segment.orderedMorphs.join("-")).join("+")}-${structure.matrixStem}`
+        : predicate.stem;
       let stateDisplay = "";
       const participantDisplay = participant.arity === "dyadic"
         ? `+${participant.slots[0].carrier}-${participant.slots[1].carrier}`
@@ -2736,7 +2808,7 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
       } else if (state.arity === "reduplicated-dyadic") {
         stateDisplay = `+${state.slots[0].carrier}-${state.slots[1].carrier}-${state.slots[2].carrier}-${state.slots[3].carrier}`;
       }
-      return `#${subject.pers1}-${subject.pers2}${participantDisplay}${stateDisplay}(${predicate.stem})${number.num1}-${number.num2}#`;
+      return `#${subject.pers1}-${subject.pers2}${participantDisplay}${stateDisplay}(${predicateDisplay})${number.num1}-${number.num2}#`;
     }
     function realizeClassicalNahuatlNncSurfaceCarrier(value = "") {
       return normalizeClassicalNahuatlNncToken(value).split("-").map(part => part.trim()).filter(part => part && !["0", "Ø", "⎕"].includes(part)).join("");
@@ -5288,6 +5360,9 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
       const authorized = operationEvaluationFrame.authorizationStatus === "authorized"
         && ambiguityAuthorized
         && orthographicBoundaryFrame.authorizationStatus === "authorized";
+      if (authorized) {
+        bindClassicalNahuatlNncPredicateSupportiveI(nncSlotFrame, sourceFrame, derivedStemFrame);
+      }
       const formulaRealization = authorized ? renderClassicalNahuatlNncSlotFrameFormula(nncSlotFrame) : "";
       const blockReason = authorized ? "" : suppliedSourceAuthorityFrame && !suppliedSourceAuthorityFrameMatches ? nncSourceAuthorityFrame.blockReason || "authorized-matching-nnc-source-authority-frame-required" : sourceFrame.authorizationStatus !== "authorized" ? sourceFrame.blockReason : derivedStemFrame.authorizationStatus !== "authorized" ? derivedStemFrame.blockReason : connectorSelectionFrame.authorizationStatus !== "authorized" ? connectorSelectionFrame.blockReason : !ambiguityAuthorized ? ambiguityFrame.blockReason : lowerNncFrame?.blockReason || operationEvaluationFrame.blockReason;
       const proofFrame = {
@@ -6316,6 +6391,17 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
       const suppliedSourceAuthorityFrame = options.nncSourceAuthorityFrame;
       const inheritedSourceAuthorityFrame = classGovernedFrame?.nncSourceAuthorityFrame;
       const explicitSourcePolicyOptions = Object.prototype.hasOwnProperty.call(options, "naturalPossessionPolicy") || Object.prototype.hasOwnProperty.call(options, "stateAvailability") || Object.prototype.hasOwnProperty.call(options, "metaphoricalOverride") || Object.prototype.hasOwnProperty.call(options, "policySelectionAuthority");
+      const sourceStem = classGovernedFrame?.sourceFrame?.restrictedUseStem
+        || nncSlotFrame?.slots?.predicate?.stem || "";
+      const selectedSourceAuthority = suppliedSourceAuthorityFrame
+        || (!explicitSourcePolicyOptions ? inheritedSourceAuthorityFrame : null);
+      // Internal validity does not bind an authority to this continuation.
+      // Compare the restricted source, not a selected general/suppletive stem.
+      const sourceAuthorityMismatch = Boolean(selectedSourceAuthority && (
+        !isClassicalNahuatlNncSourceAuthorityFrame(selectedSourceAuthority)
+        || selectedSourceAuthority.sourceStem !== sourceStem
+        || selectedSourceAuthority.selectedState !== state
+      ));
       const nncSourceAuthorityFrame = isClassicalNahuatlNncSourceAuthorityFrame(suppliedSourceAuthorityFrame) ? cloneClassicalNahuatlNncValue(suppliedSourceAuthorityFrame) : !explicitSourcePolicyOptions && isClassicalNahuatlNncSourceAuthorityFrame(inheritedSourceAuthorityFrame) ? cloneClassicalNahuatlNncValue(inheritedSourceAuthorityFrame) : buildClassicalNahuatlNncSourceAuthorityFrame(classGovernedFrame?.sourceFrame?.restrictedUseStem || nncSlotFrame?.slots?.predicate?.stem || "", {
         selectedState: state,
         stateAvailability: options.stateAvailability || "",
@@ -6328,6 +6414,8 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
       let blockReason = "";
       if (!inputIsLesson14Frame || !typedInput) {
         blockReason = classGovernedFrame?.blockReason || "authorized-lesson14-typed-frame-required";
+      } else if (sourceAuthorityMismatch) {
+        blockReason = "higher-nnc-source-authority-must-match-stem-and-state";
       } else if (!naturalPolicyKnown) blockReason = nncSourceAuthorityFrame.blockReason || "unknown-natural-possession-policy";else if (naturalPossessionPolicy === "naturally-possessed" && state !== "possessive") {
         blockReason = "naturally-possessed-nounstem-requires-possessive-state";
       } else if (naturalPossessionPolicy === "never-possessive" && state === "possessive" && !metaphoricalOverride) {
@@ -6569,6 +6657,16 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
       });
       const sentenceHandoffFrame = buildClassicalNahuatlSentenceHandoffFrame(typedTransformed ? nncSlotFrame : null, options);
       const authorized = !blockReason && operationEvaluationFrame.authorizationStatus === "authorized" && sentenceHandoffFrame.authorizationStatus !== "blocked";
+      const inputSupportiveI = issuedNncPredicateSupportiveI.get(inputSlot);
+      if (
+        authorized
+        && inputSupportiveI?.predicateStem === inputSlot?.slots?.predicate?.stem
+        && nncSlotFrame.slots.predicate.stem === inputSupportiveI.predicateStem
+      ) {
+        // HigherNnc owns this copy. A replaced predicate must not inherit the
+        // old stem's vowel provenance merely by carrying its annotations.
+        issuedNncPredicateSupportiveI.set(nncSlotFrame, inputSupportiveI);
+      }
       const formulaRealization = authorized ? renderClassicalNahuatlNncSlotFrameFormula(nncSlotFrame) : "";
       const finalBlockReason = authorized ? "" : blockReason || sentenceHandoffFrame.blockReason || operationEvaluationFrame.blockReason;
       const operationFrame = {
@@ -8301,6 +8399,7 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
     api.resolveClassicalNahuatlLesson13PossessiveNumberDyad = resolveClassicalNahuatlLesson13PossessiveNumberDyad;
     api.buildClassicalNahuatlNncSlotFrame = buildClassicalNahuatlNncSlotFrame;
     api.isClassicalNahuatlNncSlotFrame = isClassicalNahuatlNncSlotFrame;
+    api.getClassicalNahuatlNncFinalSupportiveIAnalysis = getClassicalNahuatlNncFinalSupportiveIAnalysis;
     api.renderClassicalNahuatlNncSlotFrameFormula = renderClassicalNahuatlNncSlotFrameFormula;
     api.realizeClassicalNahuatlNncSurfaceCarrier = realizeClassicalNahuatlNncSurfaceCarrier;
     api.realizeClassicalNahuatlNncSurfaceCarriers = realizeClassicalNahuatlNncSurfaceCarriers;

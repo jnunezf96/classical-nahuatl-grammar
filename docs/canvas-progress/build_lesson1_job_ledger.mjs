@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import fs from "node:fs";
+import { directionObservationStatus } from "./direction_observation_status.mjs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
@@ -494,7 +495,7 @@ const SECTION_1_11_2_TRANSITION_OBSERVATIONS = Object.freeze({
   "ACI-P030-L030-9F60B26651-04": "now-fuller-structure-check",
   "ACI-P030-L030-9F60B26651-05": "here-fuller-structure-check",
   "ACI-P030-L031-85B88C9F15": "do-it-now-evidence-check",
-  "ACI-P030-L031-3B09167131": "put-it-here-evidence-check",
+  "ACI-P030-L031-3B09167131": "here-alternative-expansions-evidence-check",
   "ACI-P030-L032-012B1547F4": "english-spanish-paradigmatic-word-analysis",
   "ACI-P030-L032-012B1547F4-02": "english-paradigm-examples-check",
   "ACI-P030-L032-012B1547F4-03": "english-spanish-nonparadigmatic-word-analysis",
@@ -1249,7 +1250,7 @@ function nearestOwner(atoms, index, sectionFamily) {
   return sectionFamily;
 }
 
-function buildLedger() {
+function buildLedger({ directionEvidence = [] } = {}) {
   const source = JSON.parse(fs.readFileSync(SOURCE_PATH, "utf8"));
   const fields = source.codebook.atomTuple;
   const lessonAtoms = source.atoms
@@ -1585,13 +1586,12 @@ function buildLedger() {
       directionClass,
       writingRole: directions.includes("WRITING") ? applicationDirection : "",
       readerInterpreterRole: "GUIDES_READER_AND_INTERPRETER",
-      directionStatus: Object.freeze({
-        WRITING: directions.includes("WRITING")
-          ? "EXACTLY_OBSERVED"
-          : "NOT_APPLICABLE",
-        READING_AND_INTERPRETATION: PRESENTED_READER_JOB_FAMILIES.has(jobFamily)
-          ? "EXACTLY_PRESENTED"
-          : "JOB_ASSIGNED_NOT_YET_PRESENTED",
+      directionStatus: directionObservationStatus({
+        atomId: atom.atomId,
+        writing: directions.includes("WRITING"), accepted,
+        writingDeclared: accepted,
+        readingDeclared: PRESENTED_READER_JOB_FAMILIES.has(jobFamily),
+        evidence: directionEvidence,
       }),
       targetOwnerId,
       relatedGrammarOwnerId: atom.force === "grammar-bearing"
@@ -1699,7 +1699,11 @@ function buildLedger() {
   };
 }
 
-const ledger = buildLedger();
+const evidenceArgument = process.argv.find(arg => arg.startsWith("--direction-evidence="));
+const directionEvidence = evidenceArgument
+  ? JSON.parse(fs.readFileSync(evidenceArgument.slice("--direction-evidence=".length), "utf8")) : [];
+if (!Array.isArray(directionEvidence)) throw new Error("direction evidence must be an array of per-atom outcomes");
+const ledger = buildLedger({ directionEvidence });
 const rendered = `${JSON.stringify(ledger, null, 2)}\n`;
 if (WRITE) {
   fs.writeFileSync(OUTPUT_PATH, rendered, "utf8");

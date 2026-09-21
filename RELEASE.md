@@ -1,16 +1,17 @@
-# Grammar OS v1.2.5 release
+# Grammar OS v1.2.6 release
 
-Release name: **Construction Precision Update**
+Release name: **Source and Result Integrity Update**
 
-Browser build: **20260904-ehua-causative-alias-433**
+Browser build: **20260920-preterit-provenance-548**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Gives `(ich-tequi)` its own canonical specific-object restriction.
-- Adds exact singular and plural `huān+yōl` construction Results.
-- Preserves typed `tech + pa/co-pa`, nested `-tlan + ix/tzin`, and distinct `tlā-n`/`lā-n` source branches through Result continuation.
+- Ships the completed review's Source, operation, and Result integrity repairs.
+- Corrects grammatical admission, contextual explanations, formula rendering, and diagnostic provenance at the reviewed boundaries.
+- Separates observed proof outcomes from documentary declarations and unverified claims.
+- Review closure is not exhaustive grammar or release certification; separate unimplemented extensions remain outside this release's claims.
 
 See [Version History](CHANGELOG.md) for notes from earlier releases.
 
@@ -24,7 +25,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.5/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.6/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.

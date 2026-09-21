@@ -10,7 +10,7 @@ import {
 } from "../diagnostics/classical_play_witness.mjs?v=20260828-private-play-study-handoff-364";
 import {
   installClassicalSessionRecorder,
-} from "../diagnostics/classical_session_recorder.mjs?v=20260828-private-play-study-handoff-364";
+} from "../diagnostics/classical_session_recorder.mjs?v=20260920-recorder-teardown-539";
 import {
   LESSON1_READER_GUIDANCE_GROUPS,
   isLesson1ReaderGuidanceExact,
@@ -5263,7 +5263,7 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
       return `      <footer>
             <p><span id="copyright-label">Copyright © 2026 Jaime Núñez</span></p>
             <p>Thanks to Sigfredo Olmedo</p>
-            <p><a href="privacy.html">Privacy</a> · <a href=".well-known/security.txt">Security</a> · Grammar OS v1.2.5</p>
+            <p><a href="privacy.html">Privacy</a> · <a href=".well-known/security.txt">Security</a> · Grammar OS v1.2.6</p>
           </footer>
     `;
     }

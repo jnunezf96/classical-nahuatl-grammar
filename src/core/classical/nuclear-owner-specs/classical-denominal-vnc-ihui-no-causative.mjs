@@ -12,7 +12,7 @@ const spec = {
   "coordinates": {
     "claim-p5146::p5146-at-times-an-i-hui-a-hui-stem-has": {
       "assertionId": "classical-denominal-vnc-ihui-no-causative:p5146-at-times-an-i-hui-a-hui-stem-has",
-      "canonicalPath": "analysis.unsupportedProductiveGuessBlocked"
+      "canonicalPath": "analysis.noCausativeCounterpartsObserved"
     }
   },
   "executionFunctionName": "buildClassicalDenominalVncValidationFrame",

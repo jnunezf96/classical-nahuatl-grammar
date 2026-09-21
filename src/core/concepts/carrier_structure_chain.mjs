@@ -4,7 +4,7 @@
 // shared mechanics module; global runtime manifest/reachability gates verify
 // this complete catalog afresh.
 
-import { createCarrierStructureOwnerMechanicsApi } from "./carrier_structure_owner_mechanics.mjs";
+import { createCarrierStructureOwnerMechanicsApi } from "./carrier_structure_owner_mechanics.mjs?v=20260912-carrier-rank-prerequisites-481";
 import structuralUnitHierarchy from "./carrier-structure-owner-specs/structural-unit-hierarchy.mjs";
 import carrierRankFormation from "./carrier-structure-owner-specs/carrier-rank-formation.mjs";
 import classicalSyllableStructure from "./carrier-structure-owner-specs/classical-syllable-structure.mjs";

@@ -69,7 +69,29 @@ async function record(siteRoot, relativePath) {
   };
 }
 
+export async function assertGrammarOsReleaseSourceReady() {
+  // Fail closed before replacing any packaged snapshot, including on Git errors.
+  const git = args => execFileSync("git", args, {
+    cwd: WEB_ROOT, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"],
+  });
+  const sourceCommit = git(["rev-parse", "--verify", "HEAD"]).trim();
+  if (!sourceCommit || git(["status", "--porcelain", "--untracked-files=all"]).trim()) {
+    throw new Error("Release requires a clean committed worktree before packaging.");
+  }
+  const tracked = new Set(git(["ls-files", "-z"]).split("\0").filter(Boolean));
+  const shipped = [...ROOT_FILES];
+  for (const directory of RUNTIME_DIRECTORIES) {
+    for (const file of await filesUnder(path.join(WEB_ROOT, directory))) {
+      if (!file.split("/").includes(".DS_Store")) shipped.push(`${directory}/${file}`);
+    }
+  }
+  const untracked = shipped.filter(file => !tracked.has(file));
+  if (untracked.length) throw new Error(`Release contains untracked source files: ${untracked.join(", ")}`);
+  return { sourceCommit, sourceWorktreeDirty: false };
+}
+
 export async function buildGrammarOsRelease({ outputRoot = "" } = {}) {
+  await assertGrammarOsReleaseSourceReady();
   const packageJson = JSON.parse(await fs.readFile(path.join(WEB_ROOT, "package.json"), "utf8"));
   const indexSource = await fs.readFile(path.join(WEB_ROOT, "index.html"), "utf8");
   const version = meta(indexSource, "classical-grammar-os-version");

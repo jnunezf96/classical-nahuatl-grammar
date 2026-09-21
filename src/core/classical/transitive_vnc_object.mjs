@@ -553,7 +553,8 @@ export function createClassicalNahuatlTransitiveVncObjectRuntime(targetObject = 
       subject = "3sg",
       mood = "indicative",
       tense = "present",
-      stem = ""
+      stem = "",
+      verbClass = ""
     } = {}) {
       const builder = getClassicalNahuatlTransitiveVncRuntimeTarget()?.getClassicalNahuatlFiniteSubjectNumberDyad;
       if (typeof builder === "function") {
@@ -561,7 +562,8 @@ export function createClassicalNahuatlTransitiveVncObjectRuntime(targetObject = 
           subject,
           mood,
           tense,
-          stem
+          stem,
+          verbClass
         });
       }
       return null;
@@ -902,7 +904,8 @@ export function createClassicalNahuatlTransitiveVncObjectRuntime(targetObject = 
       const normalizedSubject = normalizeClassicalNahuatlTransitiveVncSubject(subject);
       const requestedInterpretation = String(objectInterpretation || "reflexive").trim().toLowerCase();
       const pluralSubject = normalizedSubject.endsWith("pl");
-      const interpretationAuthorized = requestedInterpretation !== "reciprocal" || pluralSubject;
+      const availableInterpretations = pluralSubject ? ["reflexive", "reciprocal"] : ["reflexive"];
+      const interpretationAuthorized = availableInterpretations.includes(requestedInterpretation);
       const supportiveInitialIFrame = buildClassicalNahuatlTransitiveVncInitialSupportiveIFrame({
         stem,
         objectKind: "mainline-reflexive",
@@ -937,7 +940,7 @@ export function createClassicalNahuatlTransitiveVncObjectRuntime(targetObject = 
         pluralMayBeReciprocal: normalizedSubject.endsWith("pl"),
         requestedInterpretation,
         interpretationAuthorized,
-        availableInterpretations: pluralSubject ? ["reflexive", "reciprocal"] : ["reflexive"],
+        availableInterpretations,
         objectReflectsSubject: true,
         objectRule: va2 === CLASSICAL_NAHUATL_LESSON6_SQUARE_ZERO ? "lesson-6.6.2-square-zero-before-vowel" : "lesson-6.6.2-o-before-consonant",
         stemRealization: supportiveInitialIFrame.stemRealization,
@@ -1417,7 +1420,8 @@ export function createClassicalNahuatlTransitiveVncObjectRuntime(targetObject = 
         subject: normalizedSubject,
         mood: normalizedMood,
         tense: normalizedTense,
-        stem: normalizedStem
+        stem: normalizedStem,
+        verbClass
       });
       const formulas = getClassicalNahuatlObjectOptions({
         subject: normalizedSubject,
@@ -1549,7 +1553,8 @@ export function createClassicalNahuatlTransitiveVncObjectRuntime(targetObject = 
         subject,
         mood,
         tense,
-        stem: normalizedStem
+        stem: normalizedStem,
+        verbClass: options.verbClass || options.perfectiveClass || ""
       });
       const objectFrame = getClassicalNahuatlObjectValenceFrame({
         ...options,

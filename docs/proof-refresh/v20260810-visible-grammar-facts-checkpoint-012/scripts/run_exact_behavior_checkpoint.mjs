@@ -190,6 +190,7 @@ const activePointer = {
   baseProofCorpusRetained: true,
 };
 const temporaryPointerPath = `${pointerPath}.tmp`;
+try {
 for (const candidate of [activePointer, oldPointer, activePointer]) {
   await writeFile(temporaryPointerPath, stableJson(candidate));
   await rename(temporaryPointerPath, pointerPath);
@@ -197,13 +198,7 @@ for (const candidate of [activePointer, oldPointer, activePointer]) {
     "atomic manifest switch/rollback failed");
 }
 let auditOutput;
-try {
   ({ stdout: auditOutput } = await execFile(process.execPath, ["docs/canvas-progress/audit_canvas_true_progress.mjs"], { cwd: repositoryRoot }));
-} catch (error) {
-  await writeFile(temporaryPointerPath, stableJson(oldPointer));
-  await rename(temporaryPointerPath, pointerPath);
-  throw error;
-}
 const progress = JSON.parse(await readFile(path.join(repositoryRoot, "docs/CANVAS_TRUE_GRAMMAR_PROGRESS.json"), "utf8"));
 assert(progress.lessonCorpus.exactProofs.exactBehaviorObserved === 6256, "progress ledger delta is wrong");
 const report = {
@@ -225,3 +220,8 @@ const report = {
 };
 await writeFile(path.join(batchRoot, "validation-report.json"), stableJson(report));
 console.log(stableJson(report));
+} catch (error) {
+  await writeFile(temporaryPointerPath, stableJson(oldPointer));
+  await rename(temporaryPointerPath, pointerPath);
+  throw error;
+}

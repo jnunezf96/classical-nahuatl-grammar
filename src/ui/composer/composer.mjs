@@ -10314,7 +10314,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
             : null;
         const sourceKind = sourceIdentity?.recognized
           ? String(sourceIdentity.nncType || "ordinary").replace(/-/gu, " ")
-          : "unlicensed nounstem";
+          : "unrecognized nounstem";
         const sourceMorphs = normalizedNncStem.includes("-") ? normalizedNncStem.split("-").join(" | ") : normalizedNncStem;
         let sourceRoles = `one nominal predicate stem · ${sourceKind}`;
         if (builtSourceFrame.hasParts) {
@@ -11850,7 +11850,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         "classical-rule-logic-class",
         "classical-rule-logic-valence",
         "classical-rule-logic-nnc-class",
-        "classical-nnc-tl2a-realization",
+        "classical-rule-logic-nnc-tl2a-realization",
         "classical-vnc-source-initial-i-choice",
         "classical-vnc-source-lexeme-choice",
       ]);
@@ -13479,8 +13479,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
     var NONACTIVE_SUFFIX_LABELS = {};
     var NONACTIVE_SUFFIX_DESCRIPTIONS = {};
     var NONACTIVE_PREFIX_LABEL = {
-      labelEs: "no activo",
-      labelEs: "te muselia"
+      labelEs: "no activo"
     };
     var COMBINED_MODE = {};
     var INSTRUMENTIVO_MODE = {};

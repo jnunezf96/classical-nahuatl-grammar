@@ -30,7 +30,7 @@ const spec = {
     },
     "claim-p1276::p1276-these-four-morphs-are-ti-tli-or-ii-in": {
       "assertionId": "classical-absolutive-singular-connector-formation:p1276-these-four-morphs-are-ti-tli-or-ii-in",
-      "canonicalPath": "contractNumberDyadInventory.3.identity"
+      "canonicalPath": "contractSingularCommonNumberDyadInventory"
     },
     "claim-p1277::p1277-the-i-in-tli-or-ii-and-in-is": {
       "assertionId": "classical-absolutive-singular-connector-formation:p1277-the-i-in-tli-or-ii-and-in-is",

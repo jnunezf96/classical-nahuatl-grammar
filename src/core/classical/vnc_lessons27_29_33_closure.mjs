@@ -5480,6 +5480,7 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
         const matrixNonactiveInventory = matrixApplicationFrame?.controlFrame
           ?.nonactiveOptionInventory;
         const matrixNonactiveOptionId = text(
+          matrixNonactiveInventory?.selectionRequired ? "" : (
           matrixNonactiveInventory?.automaticOptionId
           || (
             matrixNonactiveInventory?.options?.length === 1
@@ -5489,7 +5490,7 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
           || matrixNonactiveInventory?.options?.find?.(
             option => option.operationId === "inherent-impersonal"
           )?.optionId
-          || matrixNonactiveInventory?.options?.[0]?.optionId
+          )
         );
         if (matrixNonactiveOptionId) {
           matrixApplicationFrame = targetObject.evaluateClassicalNahuatlVncApplication({

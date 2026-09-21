@@ -3088,6 +3088,14 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
     function isClassicalNahuatlVncDerivationSourceMachineryFrame(frame = null) {
       return getClassicalNahuatlVncDerivationSourceDescriptor(frame, 0, createClassicalNahuatlVncDerivationValidationContext()).authorizationStatus === "authorized";
     }
+    function isClassicalNahuatlVncDerivationBaseSourceMachineryFrame(frame = null) {
+      // Shared lower-frame qualification, without admitting a new derivation.
+      // Never accept a caller-owned validation cache as proof of reconstruction.
+      return isCanonicalClassicalNahuatlVncDerivationBaseSourceMachineryFrame(
+        frame,
+        createClassicalNahuatlVncDerivationValidationContext(),
+      );
+    }
     function sourceUsesClassicalNahuatlLongVowelNotation(stem = "") {
       return /[āēīō]/u.test(normalizeClassicalNahuatlVncDerivationStem(stem));
     }
@@ -7219,6 +7227,12 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
         derivationOptionInventory,
         request
       )));
+      if (!blockReason) {
+        const blockedOperation = operationFrames.find(operation => operation.authorizationStatus !== "authorized");
+        if (blockedOperation) {
+          blockReason = blockedOperation.blockReason || "classical-vnc-derivation-operation-batch-child-blocked";
+        }
+      }
       const frame = {
         kind: "classical-nahuatl-vnc-derivation-operation-batch-frame",
         version: CLASSICAL_NAHUATL_VNC_DERIVATION_VERSION,
@@ -7731,6 +7745,7 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
       getClassicalNahuatlKarttunen1992DerivationEvidenceInventory,
       getClassicalNahuatlKarttunen1992DerivationEvidenceMatches,
       isClassicalNahuatlVncDerivationSourceMachineryFrame,
+      isClassicalNahuatlVncDerivationBaseSourceMachineryFrame,
       getClassicalNahuatlVncDerivationCanonicalSourceStemRecord,
       buildClassicalNahuatlVncDerivationBoundaryEnvironmentFrame,
       buildClassicalNahuatlVncDerivationSourceAnalysisFrame,

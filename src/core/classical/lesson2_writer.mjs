@@ -17,12 +17,12 @@ const LESSON2_WRITING_FAMILIES = Object.freeze([
   "sentence-prosody",
 ]);
 
-const ENDING_CONSONANTS = Object.freeze([
+const STARTING_CONSONANTS = Object.freeze([
   "ch", "tl", "tz", "qu", "cu", "hu", "uh",
   "c", "x", "z", "s", "m", "n", "p", "t", "l", "y", "h",
 ]);
 
-const STARTING_CONSONANTS = ENDING_CONSONANTS;
+const ENDING_CONSONANTS = Object.freeze(["uc", ...STARTING_CONSONANTS]);
 
 function cleanPart(value = "") {
   return String(value == null ? "" : value)
@@ -30,6 +30,14 @@ function cleanPart(value = "") {
     .trim()
     .replace(/^\((.*)\)$/u, "$1")
     .replace(/^-|-$/gu, "");
+}
+
+function isFinalVocativeParticle(part, index, parts) {
+  // §2.7/18.11: the separately selected particle is written joined with
+  // exceptional final stress. It is not an accented lexical-stem grapheme.
+  return part.role === "vocative-particle" && part.value === "é"
+    && index > 0 && index === parts.length - 1
+    && !parts[index - 1].joinAfter && !part.joinAfter && !part.supportiveI;
 }
 
 function boundarySpelling(value, side) {
@@ -45,7 +53,7 @@ function boundarySound(spelling, morph, side, normalizeSound) {
   if (!spelling) return "";
   if (spelling === "c") {
     const following = side === "right" ? morph.slice(1, 2) : "";
-    return following === "e" || following === "i" ? "s" : "k";
+    return ["e", "ē", "i", "ī"].includes(following) ? "s" : "k";
   }
   if (spelling === "qu") return "k";
   if (spelling === "cu" || spelling === "uc") return "kw";
@@ -78,10 +86,11 @@ export function createClassicalNahuatlLesson2WriterApi(targetObject = globalThis
     const separatorsAuthorized = parts.every(part => (
       ["", " ", ", ", "; ", ": "].includes(part.joinAfter || "")
     )) && ["", ".", "!", "?"].includes(terminal);
-    const authorized = !hasForbiddenField && parts.length > 0 && parts.every(part => (
+    const authorized = !hasForbiddenField && parts.length > 0 && parts.every((part, index) => (
       part.value
       && !/[\s#()]/u.test(part.value)
-      && !targetObject.getInvalidClassicalNahuatlGraphemes(part.value).length
+      && (!targetObject.getInvalidClassicalNahuatlGraphemes(part.value).length
+        || isFinalVocativeParticle(part, index, parts))
     )) && separatorsAuthorized;
     const source = Object.freeze({
       kind: "classical-nahuatl-lesson2-writing-source",
@@ -206,9 +215,17 @@ export function createClassicalNahuatlLesson2WriterApi(targetObject = globalThis
     const appliedRuleIds = boundaryActions
       .filter(action => action.status === "applied" && action.ruleId)
       .map(action => action.ruleId);
+    const vocativeStressAction = isFinalVocativeParticle(
+      source.parts.at(-1), source.parts.length - 1, source.parts,
+    ) ? Object.freeze({
+        partIndex: source.parts.length - 1, status: "applied",
+        ruleId: "2.7-vocative-exceptional-stress", writtenParticle: "é",
+        stressPosition: "final-vocative-particle", highPitch: true,
+      }) : null;
     const ownedFamilyIds = new Set([
       "sound-and-spelling",
       "internal-stem-boundaries",
+      ...(vocativeStressAction ? ["stress"] : []),
       ...(supportiveVowelActions.length
         ? ["syllables-and-supportive-i"]
         : []),
@@ -241,6 +258,7 @@ export function createClassicalNahuatlLesson2WriterApi(targetObject = globalThis
       realizedParts: Object.freeze(realizedParts),
       boundaryActions: Object.freeze(boundaryActions),
       supportiveVowelActions: Object.freeze(supportiveVowelActions),
+      vocativeStressAction,
       familyChecks,
       ownedWritingFamilyIds: Object.freeze([...ownedFamilyIds]),
       remainingWritingFamilyIds: Object.freeze(

@@ -1,6 +1,6 @@
 import { cloneStaticRuntimePaths } from "./runtime_paths.mjs?v=20260904-cehui-nominal-root-430";
 import { createRuntimeConfigSnapshot } from "./runtime_config.mjs?v=20260904-cehui-nominal-root-430";
-import { RUNTIME_MODULE_PATHS } from "../runtime/create_runtime.mjs?v=20260904-ehua-causative-alias-433";
+import { RUNTIME_MODULE_PATHS } from "../runtime/create_runtime.mjs?v=20260920-preterit-provenance-548";
 
 export function installRuntimeBridge(globalObject = globalThis, runtime = {}) {
     if (!globalObject || typeof globalObject !== "object") {

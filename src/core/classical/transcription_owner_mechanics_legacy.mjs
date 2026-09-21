@@ -453,6 +453,10 @@ function executeCanonicalSelection(target, spec, selection, familyKernel = null,
       canonicalExecution: sanitize({
         kind: canonicalFrame.kind,
         canonicalAnalysisKind: canonicalFrame.canonicalAnalysisKind,
+        ...(canonicalFrame.canonicalAnalysisKind === "open-transition" ? {
+          analysisRole: canonicalFrame.analysisRole,
+          outputGenerationAllowed: canonicalFrame.outputGenerationAllowed,
+        } : {}),
         sharedOperationId: canonicalFrame.sharedOperationId,
         authorizationStatus: canonicalFrame.authorizationStatus,
         blockReason: canonicalFrame.blockReason,
@@ -732,7 +736,9 @@ function createMechanism(target, spec, familyKernel = null) {
       }),
       unitConstructed: false,
       boundaryRewritten: authorized && realizesCanonicalOutput
-        && canonical.canonicalFrame?.authorizationStatus === "authorized",
+        && canonical.canonicalFrame?.authorizationStatus === "authorized"
+        && !(canonical.canonicalFrame.canonicalAnalysisKind === "open-transition"
+          && canonical.canonicalFrame.analysisRole === "boundary-observation"),
       soundedSurfaceGenerated: false,
       writtenSurfaceGenerated: authorized && realizesCanonicalOutput
         && canonical.canonicalFrame?.authorizationStatus === "authorized"

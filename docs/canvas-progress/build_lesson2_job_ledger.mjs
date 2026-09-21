@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import fs from "node:fs";
+import { directionObservationStatus } from "./direction_observation_status.mjs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -362,11 +363,17 @@ const EXACTLY_IMPLEMENTED_WRITING_ATOMS = Object.freeze({
     "ACI-P050-L014-BF59E2C201",
     "ACI-P050-L017-467770C28E",
     "ACI-P050-L018-F2730C2E59",
+  ].map(atomId => [atomId, Object.freeze({
+    observationKind: "regressive-assimilation-application-result",
+    observationTest: `src/tests/classical_lesson2_regressive_rule_jobs.test.js#${atomId}`,
+    mutationTest: `src/tests/classical_lesson2_regressive_rule_jobs.test.js#${atomId}-broken-regressive-result`,
+  })])),
+  ...Object.fromEntries([
     "ACI-P050-L021-98D398DFAD",
     "ACI-P050-L022-A33747C200",
     "ACI-P050-L023-D4122E6980",
   ].map(atomId => [atomId, Object.freeze({
-    observationKind: "regressive-assimilation-application-result",
+    observationKind: "regressive-dissimilation-application-result",
     observationTest: `src/tests/classical_lesson2_regressive_rule_jobs.test.js#${atomId}`,
     mutationTest: `src/tests/classical_lesson2_regressive_rule_jobs.test.js#${atomId}-broken-regressive-result`,
   })])),
@@ -583,7 +590,7 @@ function writingRequirement(atom, role) {
   return `The normal application path must perform or enforce this Lesson 2 requirement when it applies: ${atom.meaning}`;
 }
 
-function buildLedger() {
+function buildLedger({ directionEvidence = [] } = {}) {
   const source = JSON.parse(fs.readFileSync(SOURCE_PATH, "utf8"));
   const columns = source.codebook.atomTuple;
   const atoms = source.atoms
@@ -620,10 +627,12 @@ function buildLedger() {
       directionClass: role ? "BOTH" : "READING_ONLY",
       writingRole: role,
       readerInterpreterRole: "GUIDES_READER_AND_INTERPRETER",
-      directionStatus: {
-        WRITING: role ? "EXACTLY_OBSERVED" : "NOT_A_WRITING_JOB",
-        READING_AND_INTERPRETATION: "EXACTLY_PRESENTED",
-      },
+      directionStatus: directionObservationStatus({
+        atomId: atom.atomId, writing: Boolean(role),
+        accepted: Boolean(exactImplementation) || !role || ACCEPTED_JOB_FAMILIES.has(family),
+        writingDeclared: Boolean(exactImplementation), readingDeclared: true,
+        evidence: directionEvidence,
+      }),
       normalApplicationRequirement: writingRequirement(atom, role),
       readerRequirement: `Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: ${atom.meaning}`,
       readerGuidanceIdeaId: family,
@@ -710,7 +719,11 @@ function buildLedger() {
   };
 }
 
-const ledger = buildLedger();
+const evidenceArgument = process.argv.find(arg => arg.startsWith("--direction-evidence="));
+const directionEvidence = evidenceArgument
+  ? JSON.parse(fs.readFileSync(evidenceArgument.slice("--direction-evidence=".length), "utf8")) : [];
+if (!Array.isArray(directionEvidence)) throw new Error("direction evidence must be an array of per-atom outcomes");
+const ledger = buildLedger({ directionEvidence });
 const serialized = `${JSON.stringify(ledger, null, 2)}\n`;
 if (WRITE) fs.writeFileSync(OUTPUT_PATH, serialized);
 else process.stdout.write(serialized);

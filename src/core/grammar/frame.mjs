@@ -59,6 +59,9 @@ export function createGrammarFrameModule(targetObject = globalThis, installation
         ])
       })
     });
+    function getAndrewsUnitSourceTargetRouteOptionRegistry() {
+      return ANDREWS_UNIT_SOURCE_TARGET_ROUTE_OPTION_REGISTRY;
+    }
     function getAndrewsUnitSourceTargetRouteOptionRegistryKey(mode = "") {
       const normalized = String(mode || "").trim().toLowerCase();
       if (normalized === "verbo" || normalized === "cnv") return "unit-target-cnv";
@@ -2509,6 +2512,7 @@ export function createGrammarFrameModule(targetObject = globalThis, installation
     });
     api.getAndrewsLogicAuthorityPolicy = getAndrewsLogicAuthorityPolicy;
     api.isAndrewsLogicGenerationAuthorityEnabled = isAndrewsLogicGenerationAuthorityEnabled;
+    api.getAndrewsUnitSourceTargetRouteOptionRegistry = getAndrewsUnitSourceTargetRouteOptionRegistry;
     api.issueAndrewsUnitSourceTargetRouteOptionsSourceFrame = issueAndrewsUnitSourceTargetRouteOptionsSourceFrame;
     api.isIssuedAndrewsUnitSourceTargetRouteOptionsSourceFrame = isIssuedAndrewsUnitSourceTargetRouteOptionsSourceFrame;
     api.cloneAndrewsCnvTenseLogicAuthorityFrame = cloneAndrewsCnvTenseLogicAuthorityFrame;
@@ -2577,6 +2581,7 @@ export function createGrammarFrameModule(targetObject = globalThis, installation
     [
       "getAndrewsLogicAuthorityPolicy",
       "isAndrewsLogicGenerationAuthorityEnabled",
+      "getAndrewsUnitSourceTargetRouteOptionRegistry",
       "issueAndrewsUnitSourceTargetRouteOptionsSourceFrame",
       "isIssuedAndrewsUnitSourceTargetRouteOptionsSourceFrame",
       "cloneAndrewsCnvTenseLogicAuthorityFrame",

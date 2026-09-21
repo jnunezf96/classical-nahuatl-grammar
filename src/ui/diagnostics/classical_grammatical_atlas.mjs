@@ -100,6 +100,12 @@ export function buildClassicalGrammaticalAtlasResultViewCoordinates({
     return Object.freeze([]);
   }
   const coordinates = [];
+  const viewContainers = Array.from(documentObject.querySelectorAll(
+    "#classical-result-panel .classical-rule-surface__linear, "
+    + "#classical-result-panel .classical-rule-surface__diagram, "
+    + "#classical-result-panel .classical-rule-surface__sentence-formula-section, "
+    + "#classical-result-panel .classical-rule-surface__sentence-surface",
+  ));
   const markedElements = Array.from(documentObject.querySelectorAll(
     "#classical-result-panel [data-classical-formula-coordinate]",
   ));
@@ -125,12 +131,7 @@ export function buildClassicalGrammaticalAtlasResultViewCoordinates({
       ? elementIndex(row, "#classical-result-panel .classical-rule-surface__diagram-row")
       : -1;
     const containerIndex = container
-      ? elementIndex(
-        container,
-        "#classical-result-panel .classical-rule-surface__linear, "
-        + "#classical-result-panel .classical-rule-surface__diagram, "
-        + "#classical-result-panel .classical-rule-surface__sentence-formula-section",
-      )
+      ? viewContainers.indexOf(container)
       : -1;
     coordinates.push(Object.freeze({
       kind: "classical-grammatical-atlas-result-view-coordinate",
@@ -189,12 +190,6 @@ export function buildClassicalGrammaticalAtlasResultViewCoordinates({
     }));
   });
 
-  const viewContainers = Array.from(documentObject.querySelectorAll(
-    "#classical-result-panel .classical-rule-surface__linear, "
-    + "#classical-result-panel .classical-rule-surface__diagram, "
-    + "#classical-result-panel .classical-rule-surface__sentence-formula-section, "
-    + "#classical-result-panel .classical-rule-surface__sentence-surface",
-  ));
   viewContainers.forEach((element, ordinal) => {
     const viewKind = resultViewKind(element);
     if (coordinates.some(coordinate => (

@@ -13,6 +13,10 @@ const spec = {
     "pr-s-s"
   ],
   "coordinates": {
+    "/š/::concerning-s-see-25-2-2-s-like-sh": {
+      "assertionId": "classical-sh-phoneme-repertory-analysis:concerning-s-see-25-2-2-s-like-sh",
+      "canonicalPath": "englishComparison"
+    },
     "/š/::pr-s-s": {
       "assertionId": "classical-sh-phoneme-repertory-analysis:pr-s-s",
       "canonicalPath": ""

@@ -2,6 +2,15 @@
 
 User-facing release notes for Classical Nahuatl Grammar.
 
+## Version 1.2.6 — Source and Result Integrity Update
+
+Prepared September 21, 2026.
+
+- Preserves exact Source identity and grammatical context through reviewed operations and Result continuations.
+- Corrects reviewed formation restrictions, formulas, labels, and diagnostic provenance.
+- Strengthens documentary accounting and distinguishes measured proof from unsupported success claims.
+- Includes the completed 122-finding review's supported dispositions; this is not a claim that every possible construction or user journey is certified.
+
 ## Version 1.2.5 — Construction Precision Update
 
 Released September 2, 2026.

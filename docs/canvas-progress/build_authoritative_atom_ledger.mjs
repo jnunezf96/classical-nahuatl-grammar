@@ -5,6 +5,7 @@ import { readdir, readFile, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { validateExactObservationIntegrity } from "./exact_observation_integrity.mjs";
 
 const scriptPath = fileURLToPath(import.meta.url);
 const repositoryRoot = path.resolve(path.dirname(scriptPath), "../..");
@@ -72,19 +73,6 @@ async function ownerReferences(ownerIds) {
   return references;
 }
 
-async function receiptReferences(manifest) {
-  const references = new Map();
-  for (const receiptRecord of manifest.receipts || []) {
-    try {
-      const receipt = await readJson(receiptRecord.path);
-      for (const observation of receipt.observations || []) {
-        references.set(observation.atomId, receiptRecord.path);
-      }
-    } catch {}
-  }
-  return references;
-}
-
 export async function buildAuthoritativeAtomLedger({ checkOnly = false } = {}) {
   const [semanticText, reconciliationText, pointerText, reassignmentText] = await Promise.all(
     Object.values(inputPaths).map(relativePath => readFile(path.join(repositoryRoot, relativePath), "utf8")),
@@ -95,6 +83,11 @@ export async function buildAuthoritativeAtomLedger({ checkOnly = false } = {}) {
   const reassignments = JSON.parse(reassignmentText);
   const manifestText = await readFile(path.join(repositoryRoot, pointer.activeManifest), "utf8");
   const manifest = JSON.parse(manifestText);
+  const { observationByAtomId, receiptByAtomId } = await validateExactObservationIntegrity({
+    pointer,
+    manifestText,
+    readReceipt: relativePath => readFile(path.join(repositoryRoot, relativePath), "utf8"),
+  });
   const fields = reconciliation.codebooks.atomTuple;
   const field = Object.fromEntries(fields.map((name, index) => [name, index]));
   const tupleByAtomId = new Map(reconciliation.atoms.map(tuple => [tuple[field.atomId], tuple]));
@@ -121,8 +114,6 @@ export async function buildAuthoritativeAtomLedger({ checkOnly = false } = {}) {
       `canonical owner reassignment target is invalid: ${atomId}`);
     reassignmentByAtomId.set(atomId, reassignment);
   }
-  const observationByAtomId = new Map(manifest.observations.map(observation => [observation.atomId, observation]));
-  const receiptByAtomId = await receiptReferences(manifest);
   const grammarOwnerIds = new Set(reconciliation.atoms
     .filter(tuple => tuple[field.force] === "grammar-bearing")
     .map(tuple => tuple[field.canonicalOwnerId]));

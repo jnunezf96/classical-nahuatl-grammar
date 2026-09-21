@@ -276,7 +276,9 @@ function buildRecipe(api, recipeId) {
   const simple = (options) => pronominalFrame(api, options);
   if (recipeId === "l16-personal-simple") {
     const built = simple({ subtype: "personal-simple", subject: "1sg" });
-    built.pronominalFamilySystem = {
+    built.pronominalSourceEvidence = {
+      kind: "documentary-source-description", section: "16.1", runtimeAuthority: false,
+      observationStatus: "source-description-not-generated-semantic-proof",
       usualEnglishProjection: "pronoun-word",
       nahuatlStructuralCategory: "nominal-nuclear-clause",
       structurallyEquivalentToIsolatedEnglishPronoun: false,
@@ -285,8 +287,11 @@ function buildRecipe(api, recipeId) {
   }
   if (recipeId === "l16-personal-simple-third") {
     const built = simple({ subtype: "personal-simple", subject: "3sg" });
-    built.simplePersonalSystem = {
-      canonicalFormula: built.mainFrame.formulaRealization,
+    built.simplePersonalSystem = { canonicalFormula: built.mainFrame.formulaRealization,
+      readings: null, adverbialCollocationFinalMember: null };
+    built.pronominalSourceEvidence = {
+      kind: "documentary-source-description", section: "16.3.1", runtimeAuthority: false,
+      observationStatus: "source-readings-and-preference-not-proved-by-single-third-singular-witness",
       readings: {
         singularHumanMale: "he is an entity",
         singularHumanFemale: "she is an entity",
@@ -294,7 +299,7 @@ function buildRecipe(api, recipeId) {
         pluralNonanimate: "they are entities",
       },
       adverbialCollocationFinalMember: {
-        preferred: "eh",
+        sourceQualifiedPreference: "eh seems preferable",
         licensedAlternative: "yeh",
       },
     };
@@ -307,17 +312,21 @@ function buildRecipe(api, recipeId) {
       sounded: sounded.mainFrame,
       silent: silent.mainFrame,
     };
-    sounded.personalCompoundReadings = {
+    sounded.pronominalSourceEvidence = {
+      kind: "documentary-source-description", section: "16.3.2", runtimeAuthority: false,
+      observationStatus: "source-translation-and-context-not-proved-by-two-generated-number-variants",
+      personalCompoundReadings: {
       singularHumanMale: ["he is an entity", "he is the entity"],
       singularHumanFemale: ["she is an entity", "she is the entity"],
       singularNonanimate: ["it is an entity", "it is the entity"],
       pluralNonanimate: ["they are entities", "they are the entities"],
-    };
-    sounded.translationValuesPreservedAcrossNumberVariants = true;
-    sounded.personalContextSystem = {
+      },
+      translationValuesPreservedAcrossNumberVariants: true,
+      personalContextSystem: {
       quenMachHuelSynonymousWithLesson11Construction: true,
       supplementRepeatsBasicAffixalPersonInformation: true,
       supplementalEnglishProjection: "emphatic-wordal-personal-pronoun",
+      },
     };
     return sounded;
   }
@@ -343,11 +352,16 @@ function buildRecipe(api, recipeId) {
       subtype: "interrogative", interrogativeKind: "āc", subject: "3sg",
       adjunctorInMode: "dependent-clause",
     }).mainFrame;
+    const acContext = acWithClause.contextSelectionRecord.adjunctorInFrame;
     built.interrogativeSystem.acWithDependentClause = {
-      principalClause: "āc",
-      adjunctClauseIntroducedBy: "in",
-      writingPolicy: acWithClause.contextSelectionRecord.adjunctorInFrame.writingPolicy,
-      traditionalSolidSpellingCannotOverrideClauseStructure: true,
+      sourceStem: acWithClause.sourceFrame.sourceStem,
+      authorizationStatus: acWithClause.authorizationStatus,
+      mode: acContext.mode,
+      dependentClausePresent: acContext.dependentClausePresent,
+      ellipsisSelected: acContext.ellipsisSelected,
+      writingPolicy: acContext.writingPolicy,
+      traditionalSolidSpellingCannotOverrideClauseStructure: null,
+      observationScope: "selected-pronominal-context-not-generated-dependent-clause-or-spelling-hostility-proof",
     };
     return built;
   }
@@ -363,15 +377,21 @@ function buildRecipe(api, recipeId) {
   if (recipeId === "l16-demonstrative") return simple({ subtype: "demonstrative", demonstrative: "īn", subject: "3common" });
   if (recipeId === "l16-demonstrative-plural") {
     const built = simple({ subtype: "demonstrative", demonstrative: "ōn", subject: "3pl", pluralConnector: "silent-silent" });
-    built.demonstrativeNumberVariants = ["inon", "ini", "ino"];
+    built.pronominalSourceEvidence = {
+      kind: "documentary-source-description", section: "16.5", runtimeAuthority: false,
+      observationStatus: "traditional-writing-not-generated-number-variants",
+      traditionalAdjunctorSpellings: ["inin", "inon", "ini", "ino"],
+    };
     return built;
   }
   if (recipeId === "l16-indefinite-someone") return simple({ subtype: "indefinite", indefiniteKind: "someone", subject: "3sg" });
   if (recipeId === "l16-indefinite-something") {
     const built = simple({ subtype: "indefinite", indefiniteKind: "something", subject: "3common" });
-    built.indefiniteSomethingReference = {
-      referent: "nonspecific-nonhuman-thing",
-      existenceStatus: "questioned",
+    built.pronominalSourceEvidence = {
+      kind: "documentary-source-description", section: "16.6.2", runtimeAuthority: false,
+      observationStatus: "lexical-description-not-contextual-existence-inference",
+      sourceReading: "something",
+      existenceStatus: "not-inferred-from-bare-pronominal-form",
     };
     return built;
   }
@@ -505,6 +525,13 @@ function projectFrame(recipeId, built) {
   if (!main || main.authorizationStatus !== "authorized") {
     return blocked(recipeId, main?.blockReason || "canonical-higher-pronominal-nnc-operation-required");
   }
+  const quantitiveSourceFields = ["quantitiveLexicalSystem", "quantitiveMatrixAllomorphSystem", "quantitivePhonology", "quantitiveInternalNumberSystem"];
+  const quantitiveSourceEntries = quantitiveSourceFields.filter(key => built?.[key]).map(key => [key, built[key]]);
+  const sourceEvidence = quantitiveSourceEntries.length ? {
+    kind: "documentary-source-description", section: "16.7–16.9", runtimeAuthority: false,
+    observationStatus: "source-repertory-not-exhaustively-executed-by-selected-quantitive-recipe",
+    ...Object.fromEntries(quantitiveSourceEntries),
+  } : built?.pronominalSourceEvidence || null;
   return deepFreeze({
     kind: "classical-nahuatl-higher-pronominal-nnc-validation-frame",
     authorizationStatus: "authorized",
@@ -552,7 +579,7 @@ function projectFrame(recipeId, built) {
     } : null,
     personalCompoundReadings: cloneValue(built?.personalCompoundReadings || null),
     translationValuesPreservedAcrossNumberVariants:
-      built?.translationValuesPreservedAcrossNumberVariants === true,
+      built?.translationValuesPreservedAcrossNumberVariants ?? null,
     interrogativeSystem: built?.interrogativeSystem ? {
       tlehSubjectParadigm: Object.fromEntries(
         Object.entries(built.interrogativeSystem.tlehSubjectParadigm).map(([subject, record]) => [subject, {
@@ -568,13 +595,14 @@ function projectFrame(recipeId, built) {
       adverbialCollocationFinalMember: cloneValue(built.simplePersonalSystem.adverbialCollocationFinalMember),
     } : null,
     pronominalFamilySystem: cloneValue(built?.pronominalFamilySystem || null),
+    pronominalSourceEvidence: cloneValue(sourceEvidence),
     personalContextSystem: cloneValue(built?.personalContextSystem || null),
     demonstrativeNumberVariants: cloneValue(built?.demonstrativeNumberVariants || null),
     indefiniteSomethingReference: cloneValue(built?.indefiniteSomethingReference || null),
-    quantitivePhonology: cloneValue(built?.quantitivePhonology || null),
-    quantitiveLexicalSystem: cloneValue(built?.quantitiveLexicalSystem || null),
-    quantitiveMatrixAllomorphSystem: cloneValue(built?.quantitiveMatrixAllomorphSystem || null),
-    quantitiveInternalNumberSystem: cloneValue(built?.quantitiveInternalNumberSystem || null),
+    quantitivePhonology: null,
+    quantitiveLexicalSystem: null,
+    quantitiveMatrixAllomorphSystem: null,
+    quantitiveInternalNumberSystem: null,
     typedSlotAuthority: main.proofFrame?.conclusion?.typedSlotAuthority === true
       || built?.higherFrame?.proofFrame?.conclusion?.typedSlotAuthority === true,
     formulaStringAuthority: false,

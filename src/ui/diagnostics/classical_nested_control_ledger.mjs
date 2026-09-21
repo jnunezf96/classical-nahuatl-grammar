@@ -249,9 +249,9 @@ function describeControl(
   panelId,
   section,
   ordinal,
-  axisEvidence = new Map()
+  axisEvidence = new Map(),
+  sectionRecord = sectionIdentity(panelId, section)
 ) {
-  const sectionRecord = sectionIdentity(panelId, section);
   const locator = cssLocator(control);
   const state = controlState(control);
   return {
@@ -319,7 +319,8 @@ function describePanel(documentObject, spec, axisEvidence = new Map()) {
         spec.id,
         section || root,
         ordinal,
-        axisEvidence
+        axisEvidence,
+        identity
       )
     );
   });
@@ -956,7 +957,11 @@ function describeApplicationAxisBinding(element, documentObject) {
     routeIds: constructionOperationIds(routeWrapper),
     visible: state.visible,
     disabled: state.disabled,
-    interactive: element.matches?.(CONTROL_SELECTOR) === true,
+    interactive: element.matches?.(CONTROL_SELECTOR) === true
+      && element.readOnly !== true
+      && element.getAttribute?.("aria-readonly") !== "true"
+      && !(String(element.tagName || "").toUpperCase() === "INPUT"
+        && String(element.type || "").toLowerCase() === "hidden"),
   };
 }
 
@@ -975,6 +980,7 @@ function buildApplicationAxisCast(
   documentObject.querySelectorAll?.("[data-classical-surface-atom-ids]")
     .forEach(element => {
       const binding = describeApplicationAxisBinding(element, documentObject);
+      if (!binding.interactive) return;
       applicationAxisBindings(element, axisEvidence).forEach(axis => {
         const axisBindings = bindings.get(axis.applicationAxisAtomId);
         if (!axisBindings) return;
@@ -1669,6 +1675,7 @@ export function buildClassicalNestedControlLedger(
   const visibleControls = controls.filter(control => control.state.visible);
   const classifiedVisibleControls = visibleControls.filter(
     control => control.interfaceClassification.role
+      && control.interfaceClassification.role !== "unclassified"
   );
   const unclassifiedVisibleControls = visibleControls.filter(control => (
     control.interfaceClassification.role === "unclassified"

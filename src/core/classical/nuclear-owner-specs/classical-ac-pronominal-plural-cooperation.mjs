@@ -10,8 +10,7 @@ const spec = {
     "claim-p1916",
     "claim-p1917",
     "claim-p1918",
-    "claim-p1919",
-    "claim-p1920"
+    "claim-p1919"
   ],
   "coordinates": {
     "claim-p1916::p1916-these-three-questions-could-have-been-expressed-by-a": {
@@ -29,10 +28,6 @@ const spec = {
     "claim-p1919::p1919-there-is-a-variant-formation-that-has-a-vnc": {
       "assertionId": "classical-ac-pronominal-plural-cooperation:p1919-there-is-a-variant-formation-that-has-a-vnc",
       "canonicalPath": "acCooperation.zeroRootPrincipal"
-    },
-    "claim-p1920::p1920-also-spelled-aya-queh": {
-      "assertionId": "classical-ac-pronominal-plural-cooperation:p1920-also-spelled-aya-queh",
-      "canonicalPath": "acPlural.referenceFrame.agreementException.kind"
     }
   },
   "executionFunctionName": "buildClassicalNahuatlSupplementationValidationFrame",
@@ -41,15 +36,23 @@ const spec = {
     "claim-p1916": [],
     "claim-p1917": [],
     "claim-p1918": [],
-    "claim-p1919": [],
-    "claim-p1920": []
+    "claim-p1919": []
   },
   "expectedCanonicalStatusBySelection": {
     "claim-p1916": "authorized",
     "claim-p1917": "authorized",
     "claim-p1918": "authorized",
-    "claim-p1919": "authorized",
-    "claim-p1920": "authorized"
+    "claim-p1919": "authorized"
+  },
+  "nonExecutableObservations": {
+    "claim-p1920::p1920-also-spelled-aya-queh": {
+      "assertionId": "classical-ac-pronominal-plural-cooperation:p1920-also-spelled-aya-queh",
+      "disposition": "documentary-claim-runtime-observation-unverified",
+      "reason": "The alternative spelling ayāqueh is source evidence in Canvas §19.3 (line 6406); the agreement-exception kind does not observe spelling.",
+      "retiredCanonicalPath": "acPlural.referenceFrame.agreementException.kind",
+      "executionCredit": false,
+      "grammarAuthority": false
+    }
   }
 };
 export default Object.freeze(spec);

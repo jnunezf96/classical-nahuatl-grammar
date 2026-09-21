@@ -874,7 +874,8 @@ export function createGenerationValencyModule(targetObject = globalThis) {
         surface: blocked ? "" : String(surface || ""),
         surfaceForms: blocked || !surface ? [] : String(surface).split(/\s*\/\s*/g).filter(Boolean),
         supported: !blocked,
-        status: blocked ? "unsupported" : status,
+        status: blocked ? "unsupported" : "stored-educational-witness",
+        generationAuthority: false,
         formulaSlots,
         slotModel: {
           valence: formulaSlots.valence,
@@ -1021,10 +1022,12 @@ export function createGenerationValencyModule(targetObject = globalThis) {
         targetSegmentFrames,
         targetSurface: getVncValenceTargetSurfaceFromSegmentFrames(targetSegmentFrames),
         formulaSlotSignature: getVncValenceFormulaSlotSignature(formulaSlots),
-        consumesRenderedInput: false,
+        consumesRenderedInput: true,
         displayStringsAuthorizeGrammar: false,
-        grammarAuthority: "ANDREWS_TRANSCRIPTION_CANVAS.md",
-        orthographyAuthority: "Classical Andrews transcription"
+        generationAuthority: false,
+        outputPolicy: "educational-slot-rendering-demonstration-only",
+        grammarAuthority: "none-educational-demonstration",
+        orthographyAuthority: "supplied-slot-carriers-not-validated"
       });
     }
     function buildVncValenceAndrewsLogicSurfaceOperationFrame(sourceFrame = null) {
@@ -1042,9 +1045,10 @@ export function createGenerationValencyModule(targetObject = globalThis) {
         targetSegmentFrames: sourceFrame.targetSegmentFrames,
         targetSurface: sourceFrame.targetSurface || "",
         operationApplied: "realize-vnc-valence-formula-slots",
-        consumesRenderedInput: false,
+        consumesRenderedInput: true,
         displayStringsAuthorizeGrammar: false,
-        outputPolicy: "formula-slots-and-typed-operation-authorize-vnc-valence-surface"
+        generationAuthority: false,
+        outputPolicy: "educational-slot-rendering-demonstration-only"
       });
     }
     function getVncValenceAndrewsLogicSurfaceFrameMismatch({
@@ -1057,7 +1061,7 @@ export function createGenerationValencyModule(targetObject = globalThis) {
       if (!operationFrame || operationFrame.kind !== "andrews-typed-operation-frame") {
         return "vnc-valence-operation-frame-required";
       }
-      if (operationFrame.operationId !== "andrews-vnc-valence-slot-surface-realization" || operationFrame.routeFamily !== "vnc-valence" || operationFrame.operationApplied !== "realize-vnc-valence-formula-slots" || operationFrame.consumesRenderedInput !== false || operationFrame.displayStringsAuthorizeGrammar !== false) {
+      if (operationFrame.operationId !== "andrews-vnc-valence-slot-surface-realization" || operationFrame.routeFamily !== "vnc-valence" || operationFrame.operationApplied !== "realize-vnc-valence-formula-slots" || operationFrame.consumesRenderedInput !== true || operationFrame.displayStringsAuthorizeGrammar !== false || operationFrame.generationAuthority !== false || operationFrame.outputPolicy !== "educational-slot-rendering-demonstration-only") {
         return "vnc-valence-operation-frame-required";
       }
       if (String(operationFrame.sourceFrameSignature || "") !== String(sourceFrame.formulaSlotSignature || "")) {
@@ -1181,10 +1185,9 @@ export function createGenerationValencyModule(targetObject = globalThis) {
         sourceFrame: andrewsLogicSurfaceSourceFrame,
         operationFrame: andrewsLogicSurfaceOperationFrame
       });
-      const generationSurface = scopedEvidenceSurface || andrewsLogicSurface;
-      const generationStatusWhenAllowed = scopedEvidenceSurface ? "generated-scoped" : "andrews-logic-generated";
-      const generationAllowed = Boolean(normalizedStem && sourceRequirementCheck.ok && !blockedReason && generationSurface);
-      const generationStatus = !normalizedStem ? "blocked" : blockedReason ? "unsupported" : generationAllowed ? generationStatusWhenAllowed : "blocked";
+      const demonstrationAvailable = Boolean(normalizedStem && sourceRequirementCheck.ok && !blockedReason && andrewsLogicSurface);
+      const generationAllowed = false;
+      const generationStatus = "not-authorized-educational-demonstration";
       return {
         kind: "vnc-valence-formula-workbench-slice",
         version: 1,
@@ -1247,19 +1250,31 @@ export function createGenerationValencyModule(targetObject = globalThis) {
           logicAuthority: logicAuthorityPolicy.grammarLogicAuthority,
           generationGate: logicAuthorityPolicy.grammarLogicGate
         },
+        demonstration: {
+          available: demonstrationAvailable,
+          kind: "educational-slot-rendering-demonstration",
+          label: "Slot rendering demonstration — not a generated verb",
+          surface: demonstrationAvailable ? andrewsLogicSurface : "",
+          storedWitnessSurface: scopedEvidenceSurface,
+          storedWitnessRole: "comparison-evidence-only",
+          generationAuthority: false,
+          sourceFrame: andrewsLogicSurfaceSourceFrame,
+          operationFrame: andrewsLogicSurfaceOperationFrame
+        },
         generation: {
           allowed: generationAllowed,
           status: generationStatus,
           routeFamily: sourceRequirementCheck.generationContract?.routeFamily || "vnc-valence",
           routeStage: sourceRequirementCheck.generationContract?.routeStage || "formula-workbench",
-          outputPolicy: sourceRequirementCheck.generationContract?.outputPolicy || "",
-          surface: generationAllowed ? generationSurface : "",
-          surfaceForms: generationAllowed ? generationSurface.split(/\s*\/\s*/g).filter(Boolean) : [],
+          outputPolicy: "canonical-vnc-application-required-for-generated-output",
+          surface: "",
+          surfaceForms: [],
           sourceKind: normalizedStem ? "formula-workbench" : "",
-          logicAuthority: logicAuthorityPolicy.grammarLogicAuthority,
-          orthographyAuthority: logicAuthorityPolicy.orthographyAuthority,
-          generationGate: logicAuthorityPolicy.grammarLogicGate,
-          orthographyExamplesRole: logicAuthorityPolicy.orthographyExamplesRole,
+          logicAuthority: "none-educational-demonstration",
+          orthographyAuthority: "supplied-slot-carriers-not-validated",
+          generationGate: "canonical-vnc-application-required",
+          orthographyExamplesRole: "comparison-evidence-only",
+          generationAuthority: false,
           andrewsLogicSurface,
           scopedEvidenceSurface,
           andrewsLogicSurfaceSourceFrame,

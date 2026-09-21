@@ -22,7 +22,7 @@ const spec = {
     },
     "claim-p4680::p4680-in-this-function-the-adverbial-modifier-always-precedes-its": {
       "assertionId": "classical-adverbial-adjunction-intensifier-order-translation:p4680-in-this-function-the-adverbial-modifier-always-precedes-its",
-      "canonicalPath": "analysis.rawStoredAuthorityBlocked"
+      "canonicalPath": "result.order"
     }
   },
   "executionFunctionName": "buildClassicalAdverbialAdjunctionValidationFrame",

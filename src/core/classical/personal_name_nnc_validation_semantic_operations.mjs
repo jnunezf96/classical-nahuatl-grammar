@@ -158,6 +158,7 @@ export function createClassicalPersonalNameNncValidationSemanticOperationsApi(
       version: 1,
       authorizationStatus: "authorized",
       profileId,
+      canonicalWitness: canonical,
       result: {
         canonicalResult: true,
         operationId: canonical.operationId,
@@ -172,7 +173,16 @@ export function createClassicalPersonalNameNncValidationSemanticOperationsApi(
         surfaceRealization: canonical.surfaceRealization,
       },
       analysis: {
-        semanticBoundary: profileId,
+        semanticBoundary: {
+          operationId: canonical.operationId,
+          sourceFamily: canonical.sourceFamily,
+          sourceUnitKind: canonical.sourceUnitKind,
+          outerNumberDyad: canonical.outerNumberDyad,
+          innerSubjectBarrier: canonical.innerSubjectBarrier,
+          affectiveScope: canonical.affectiveScope,
+          sentenceOperation: sentenceResult?.operation || null,
+          observationScope: "validated-personal-name-result-fields-not-profile-label-or-complete-source-family-proof",
+        },
         typedPersonalNameExecutionRequired: true,
         scalarParadigmEquivalent,
         storedAuthorityBlocked,

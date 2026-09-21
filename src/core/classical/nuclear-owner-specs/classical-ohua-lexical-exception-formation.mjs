@@ -29,7 +29,7 @@ const spec = {
     },
     "claim-p2057::p2057-ca-c-o": {
       "assertionId": "classical-ohua-lexical-exception-formation:p2057-ca-c-o",
-      "canonicalPath": "nonactive.ohuaLexical.options.0.nonactiveStem"
+      "canonicalPath": "nonactive.oNamedSources.cuica"
     },
     "claim-p2058::p2058-qui-c-o": {
       "assertionId": "classical-ohua-lexical-exception-formation:p2058-qui-c-o",
@@ -45,7 +45,7 @@ const spec = {
     },
     "claim-p2061::p2061-ci-xi-hua": {
       "assertionId": "classical-ohua-lexical-exception-formation:p2061-ci-xi-hua",
-      "canonicalPath": "nonactive.ohuaLexical.options.0.nonactiveStem"
+      "canonicalPath": "nonactive.oNamedSources.ahci"
     },
     "claim-p2062::p2062-tzi-tzi-hua": {
       "assertionId": "classical-ohua-lexical-exception-formation:p2062-tzi-tzi-hua",
@@ -61,7 +61,7 @@ const spec = {
     },
     "claim-p2065::p2065-tia-miqui-to-do-business": {
       "assertionId": "classical-ohua-lexical-exception-formation:p2065-tia-miqui-to-do-business",
-      "canonicalPath": "nonactive.ohuaLexical.options.0.nonactiveStem"
+      "canonicalPath": "nonactive.oNamedSources.tiamiqui"
     },
     "claim-p2066::p2066-te-mi-to-become-brimming-full": {
       "assertionId": "classical-ohua-lexical-exception-formation:p2066-te-mi-to-become-brimming-full",
@@ -77,7 +77,7 @@ const spec = {
     },
     "claim-p2069::p2069-pi-n-a-hua-to-be-ashamed": {
       "assertionId": "classical-ohua-lexical-exception-formation:p2069-pi-n-a-hua-to-be-ashamed",
-      "canonicalPath": "nonactive.ohuaLexical.options.0.nonactiveStem"
+      "canonicalPath": "nonactive.oNamedSources.pinahua"
     }
   },
   "executionFunctionName": "buildClassicalNahuatlNonactiveVoiceObjectValidationFrame",

@@ -641,6 +641,8 @@ export function createPreteritApiGlobals(targetObject = globalThis, installation
         hasSlashMarker,
         hasSuffixSeparator,
         hasLeadingDash,
+        hasBoundMarker,
+        hasCompoundMarker,
         hasImpersonalTlaPrefix,
         hasOptionalSupportiveI,
         hasNonspecificValence,

@@ -18,9 +18,6 @@ const PRETERIT_AGENTIVE_RESTRICTED_STEM =
 const PRETERIT_AGENTIVE_RESTRICTED_STATE_USE =
   CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS
     .PRETERIT_AGENTIVE_RESTRICTED_STATE_USE;
-const PRETERIT_AGENTIVE_DERIVATION_ORDER =
-  CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS
-    .PRETERIT_AGENTIVE_DERIVATION_ORDER;
 const PRETERIT_AGENTIVE_GENERAL_USE_DISTRIBUTION =
   CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS
     .PRETERIT_AGENTIVE_GENERAL_USE_DISTRIBUTION;
@@ -40,7 +37,6 @@ const spec = {
     "claim-p3364",
     "claim-p3365",
     "claim-p3366",
-    "claim-p3367",
     "claim-p3368"
   ],
   "coordinates": {
@@ -84,19 +80,22 @@ const spec = {
         PRETERIT_AGENTIVE_RESTRICTED_STATE_USE
       )
     },
-    "claim-p3367::p3367-the-restricted-use-stem-is-discussed-first": {
-      "assertionId": "classical-predicate-nominalization-preterit-agentive:p3367-the-restricted-use-stem-is-discussed-first",
-      "proofAddressId": PRETERIT_AGENTIVE_DERIVATION_ORDER,
-      "canonicalPath": getCanonicalProofPath(
-        PRETERIT_AGENTIVE_DERIVATION_ORDER
-      )
-    },
     "claim-p3368::p3368-the-general-use-stem-is-used-everywhere-else": {
       "assertionId": "classical-predicate-nominalization-preterit-agentive:p3368-the-general-use-stem-is-used-everywhere-else",
       "proofAddressId": PRETERIT_AGENTIVE_GENERAL_USE_DISTRIBUTION,
       "canonicalPath": getCanonicalProofPath(
         PRETERIT_AGENTIVE_GENERAL_USE_DISTRIBUTION
       )
+    }
+  },
+  "nonExecutableObservations": {
+    "claim-p3367::p3367-the-restricted-use-stem-is-discussed-first": {
+      "assertionId": "classical-predicate-nominalization-preterit-agentive:p3367-the-restricted-use-stem-is-discussed-first",
+      "disposition": "documentary-claim-runtime-observation-unverified",
+      "reason": "Canvas12749–12753 distinguishes grammatical embedding and state distribution from the order in which the book discusses the stems. A derivation-order observation does not verify exposition order. The grammatical embedding claim remains separately executable under claim-p3364; exposition order is not a runtime admission condition.",
+      "retiredCanonicalPath": "cases.preteritAgentive.proofObservations.derivationOrder",
+      "executionCredit": false,
+      "grammarAuthority": false
     }
   },
   "executionFunctionName": "buildClassicalNahuatlDeverbalNncValidationFrame",
@@ -108,7 +107,6 @@ const spec = {
     "claim-p3364": [],
     "claim-p3365": [],
     "claim-p3366": [],
-    "claim-p3367": [],
     "claim-p3368": []
   },
   "expectedCanonicalStatusBySelection": {
@@ -118,7 +116,6 @@ const spec = {
     "claim-p3364": "authorized",
     "claim-p3365": "authorized",
     "claim-p3366": "authorized",
-    "claim-p3367": "authorized",
     "claim-p3368": "authorized"
   }
 };

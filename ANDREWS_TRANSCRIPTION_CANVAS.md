@@ -2203,8 +2203,8 @@ no zo = either [traditionally written nozo]
 ahno zo = neither [traditionally written anozo]
 mā cano zo = if only neither
 no zan = still; up until now
-zā zo = -ever; no matter, anyahza
-zo = perhaps, maybe
+zā zo = -ever; no matter, any-
+ahzā zo = perhaps, maybe
 ahzā zo oc = perhaps still, perhaps another [traditionally written azazoc, with elision]
 mā zā zo = be that as it may, regardless
 zā zan = any which way; foolishly, nonsensically [Traditionally written zazan, it is a structure
@@ -3281,7 +3281,7 @@ it is bound to the front of a verbstem, it indicates the leftmost boundary of th
 (see § 30.5); therefore, if an adverb precedes tla in the VNC, the tla is part of the verbstem.
 Contrast the following:
 Nitlahuelmati. = #ni-Ø+tla(huel-mati)Ø+Ø-Ø# = I enjoy s.th.
-Nihuellamati. = #ni-Ø(huel-la-mati)Ø+Ø-Ø# = I am contented. [/1/ + /')J > [11]; see § 2.10.
+Nihuellamati. = #ni-Ø(huel-la-mati)Ø+Ø-Ø# = I am contented. [/l/ + /λ/ > [ll]; see § 2.10.
 For huel see § 44.5.2.]
 
 ## PDF Page 87
@@ -4357,7 +4357,7 @@ The following are a few examples:
 Quēn tonyezqueh? = How shall we be there? I.e., How shall we act? [Also spelled
 toyezqueh, as it is pronounced. For quēn, see § 44.5.7.]
 Ahquēn nicmati. = By no means do I know it, i.e., I know nothing about it. I am not dis-
-about it.
+turbed about it.
 
 ## PDF Page 114
 
@@ -11794,7 +11794,7 @@ embedded in the affective-matrix stem (-tzin)-tli-.
 296 Lesson 32
 nopiltzintzine = #Ø-Ø+n-o(pil-tzin-tzin)Ø-Ø#e = O Sir [There is no affinity-stem
 formation here; the subject pronoun is singular. Compare niltzintzine in § 32.3.1.]
-32.1. Nonanimate Compound Affective Nounstems and Affinity. A special, rather strange situation
+32.7. Nonanimate Compound Affective Nounstems and Affinity. A special, rather strange situation
 arises with certain compound affective nounstems whose embed is a nonanimate stem.
 When given an affinity shape (i.e., with reduplication on the affective-matrix stem), the resultant
 nonanimate stem can be used to form an absolutive-state NNC with a plural-number
@@ -19618,7 +19618,7 @@ nounstem (ne-pan-ō)-tl-, "mutuality, reciprocality" (see § 39.2.1), which is u
 NNC nepanōtl, "mutually, reciprocally": nepanōtl titotlahpaloah, "we order/urge
 one another reciprocally to be healthy," i.e., "we greet one another." In the compound-stemmed
 VNC version of this, titonepantlahpaloah, #ti-Ø+t-o(ne-pan-tlahpal-o-a)Ø+Ø-h#, only (ne-
-tli- is incorporated.
+pan)-tli- is incorporated.
 The stem (pan)-Ø- can serve as an embed for the matrix stem (pa)-Ø- "direction."
 topampa = #Ø-Ø+t-o(pam-pa)Ø-Ø# = in the direction of our surface; i.e., toward
 us
@@ -22662,7 +22662,7 @@ since /w/ + /w/ > [w]; from (tlāhui)-tl-, "red ochre."]
 colored thing [ < (ya-yā-hui), "to become like dark maize kernels"; for (yayauh-
 huī), since /w/ + /w/ > [w]; from (yāhui)-tl-, "dark maize kernel, maize with
 dark-colored kernels"]
-(chi-chil-ti-Ø)-c- = a thing that has become like chili pepper, i.e., a chili-red-colored
+(chī-chīl-ti-Ø)-c- = a thing that has become like chili pepper, i.e., a chili-red-colored
 thing[< (chīl)-li-, "chili pepper"]
 (cue-cuetlax-ti-Ø)-c- = a thing that has become like leather, i.e., a leathery thing [< (cuetlax)-
 tli-, "leather"]

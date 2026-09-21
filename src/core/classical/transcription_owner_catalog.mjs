@@ -35,7 +35,7 @@ import classical_vowel_graphemic_representation from "./transcription-owner-spec
 import classical_vowel_repertory_analysis from "./transcription-owner-specs/classical-vowel-repertory-analysis.mjs";
 import classical_w_phoneme_repertory_analysis from "./transcription-owner-specs/classical-w-phoneme-repertory-analysis.mjs";
 import classical_y_phoneme_repertory_analysis from "./transcription-owner-specs/classical-y-phoneme-repertory-analysis.mjs";
-import { createClassicalTranscriptionOwnerMechanicsApi } from "./transcription_owner_mechanics.mjs";
+import { createClassicalTranscriptionOwnerMechanicsApi } from "./transcription_owner_mechanics.mjs?v=20260913-open-transition-observation-508";
 const OWNER_SPECS = Object.freeze([
   classical_assimilation_taxonomy,
   classical_ch_affricate_repertory_analysis,

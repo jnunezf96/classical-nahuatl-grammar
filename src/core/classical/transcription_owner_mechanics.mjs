@@ -7,7 +7,7 @@
 
 import {
   createRoutineSemanticOwnerMechanicsApi as createLegacyRoutineSemanticOwnerMechanicsApi,
-} from "./transcription_owner_mechanics_legacy.mjs";
+} from "./transcription_owner_mechanics_legacy.mjs?v=20260913-open-transition-observation-508";
 import {
   getCanonicalProofAddress,
   listCanonicalProofAddresses,

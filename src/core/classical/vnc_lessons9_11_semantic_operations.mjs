@@ -114,6 +114,15 @@ function compactSentence(frame) {
     admonitiveStemAspect: sentence.admonitiveStemAspect || "",
     admonitiveTenseMorph: sentence.admonitiveTenseMorph || "",
     admonitiveNumberDyad: sentence.admonitiveNumberDyad || {},
+    admonitiveNum1Morpheme: sentence.admonitiveNum1Morpheme || "",
+    admonitiveDeclaredNum2Morphs: {
+      singular: sentence.admonitiveNum2SingularMorph || "",
+      plural: sentence.admonitiveNum2PluralMorphs || [],
+    },
+    admonitiveDeclaredNumberDyads: {
+      singular: sentence.admonitiveSingularNumberDyad || "",
+      plural: sentence.admonitivePluralNumberDyads || [],
+    },
     admonitiveSingularNumberDyad: sentence.admonitiveSingularNumberDyad || "",
     admonitivePluralNumberDyads: sentence.admonitivePluralNumberDyads || [],
     admonitiveForce: sentence.admonitiveForce || "",

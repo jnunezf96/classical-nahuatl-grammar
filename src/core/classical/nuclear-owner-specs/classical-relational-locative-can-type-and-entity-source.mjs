@@ -22,7 +22,7 @@ const spec = {
     },
     "claim-p4346::p4346-the-x-component-may-be-absent": {
       "assertionId": "classical-relational-locative-can-type-and-entity-source:p4346-the-x-component-may-be-absent",
-      "canonicalPath": "cases.canInitial.contextualFacts.interrogativeForce"
+      "canonicalPath": "cases.canInitial"
     }
   },
   "executionFunctionName": "buildClassicalLocativeRelationalNncValidationFrame",

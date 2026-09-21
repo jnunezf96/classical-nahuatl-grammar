@@ -24,11 +24,11 @@ const spec = {
     },
     "claim-p2043::p2043-cui-ca-to-sing": {
       "assertionId": "classical-o-intransitive-exception-formation:p2043-cui-ca-to-sing",
-      "canonicalPath": "nonactive.intransitiveTi.options.0.nonactiveStem"
+      "canonicalPath": "nonactive.oNamedSources.cuica"
     },
     "claim-p2044::p2044-tia-miqui-to-do-business": {
       "assertionId": "classical-o-intransitive-exception-formation:p2044-tia-miqui-to-do-business",
-      "canonicalPath": "nonactive.intransitiveTi.options.1.nonactiveStem"
+      "canonicalPath": "nonactive.oNamedSources.tiamiqui"
     },
     "claim-p2045::p2045-ilo-ti-to-return": {
       "assertionId": "classical-o-intransitive-exception-formation:p2045-ilo-ti-to-return",

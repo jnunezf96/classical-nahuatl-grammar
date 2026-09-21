@@ -1830,6 +1830,9 @@ function buildSourceFrame(
   }
   const constructionKind = normalized.constructionKind;
   const option = normalized.option;
+  if (!["none", "honorific", "pejorative"].includes(normalized.affective)) {
+    return { diagnostics: ["relational-affective-selection-invalid"], normalized, stem };
+  }
   const allowedConstructionKinds = CLASSICAL_NAHUATL_LESSONS45_47_LCM.nounstemOperations;
   if (!allowedConstructionKinds.includes(constructionKind)) {
     return { diagnostics: ["relational-construction-kind-invalid"], normalized, stem };
@@ -2028,8 +2031,23 @@ function buildSourceFrame(
   const sourceEmbedStem = sourceCompositionFrame
     ? compositionEmbedStem
     : normalized.sourceEmbedStem || (option === OPTION.ONE ? "" : predicateSourceStem);
+  // Lexical labels describe the effective Source; they cannot select another stem's rule.
+  const sourceLexemeId = constructionKind === "relational-nnc"
+    && option === OPTION.TWO && normalized.sourceKind === "nounstem"
+    ? CLASSICAL_NAHUATL_RELATIONAL_LEXICAL_SOURCE_ANALYSES[
+      `${stem.stemId}:${sourceEmbedStem}`
+    ]?.sourceLexemeId || ""
+    : "";
+  const lexicalExceptionId = constructionKind === "relational-nnc"
+    && option === OPTION.THREE && normalized.sourceKind === "nounstem"
+    && stem.stemId === "ca-means" && sourceEmbedStem === "oh"
+    ? "ohtli-ca" : "";
+  if ((normalized.sourceLexemeId && normalized.sourceLexemeId !== sourceLexemeId)
+    || (normalized.lexicalExceptionId && normalized.lexicalExceptionId !== lexicalExceptionId)) {
+    return { diagnostics: ["relational-lexical-exception-source-mismatch"], normalized, stem };
+  }
   const expectedMatrixStem = stem.stemId === "co-c-specific-location"
-    ? sourceFrameMatrixForCoC(sourceEmbedStem, normalized.sourceLexemeId)
+    ? sourceFrameMatrixForCoC(sourceEmbedStem, sourceLexemeId)
     : normalizeStemText(stem.classicalMatrix);
   const sourceMatrixStem = sourceCompositionFrame
     ? compositionMatrixStem
@@ -2140,8 +2158,8 @@ function buildSourceFrame(
       predicateStemFrame,
       sourceCompositionFrame,
       affective: normalized.affective,
-      sourceLexemeId: normalized.sourceLexemeId,
-      lexicalExceptionId: normalized.lexicalExceptionId,
+      sourceLexemeId,
+      lexicalExceptionId,
       relationalFunction: normalized.relationalFunction,
       sentencePosition: normalized.sentencePosition,
       adjunctorIn: normalized.adjunctorIn,
@@ -2185,6 +2203,29 @@ function buildOperationFrame(targetObject, sourceFrame) {
     : buildRelationalPredicate(targetObject, sourceFrame);
   if (predicateRecord.error) {
     return { diagnostics: [predicateRecord.error] };
+  }
+  if (!sourceFrame.huanYolquiAbsolutiveLexicalization
+    && (sourceFrame.nounConnector || sourceFrame.numberConnector)) {
+    const num1 = sourceFrame.nounConnector || predicateRecord.nounConnector || "";
+    const num2 = sourceFrame.numberConnector || "";
+    const possessive = sourceFrame.state === STATE.POSSESSIVE;
+    const singularPairs = possessive ? ["|", "uh|", "hui|"] : ["|", "tl|", "tli|", "li|", "in|"];
+    const pluralPairs = possessive ? ["hu|ān"] : ["t|in", "m|eh", "|h"];
+    const pair = `${num1}|${num2}`;
+    const singular = singularPairs.includes(pair);
+    const plural = pluralPairs.includes(pair);
+    const predicate = predicateRecord.writtenPredicate;
+    const vowelFinal = endsInVowel(predicate);
+    const boundaryValid = num1 === "tl" || num1 === "uh" ? vowelFinal
+      : num1 === "tli" ? !vowelFinal && !predicate.endsWith("l")
+      : num1 === "li" ? predicate.endsWith("l")
+      : num1 === "hui" ? !vowelFinal : true;
+    if ((!singular && !plural) || !boundaryValid
+      || (sourceFrame.subjectMode === "normal"
+        && ((sourceFrame.subjectId.endsWith("sg") && !singular)
+          || (sourceFrame.subjectId.endsWith("pl") && !plural)))) {
+      return { diagnostics: ["relational-number-connector-dyad-incompatible"] };
+    }
   }
   const formulaAndSurface = buildFormulaAndSurface(targetObject, sourceFrame, predicateRecord);
   const predicateStemFrame = freeze({

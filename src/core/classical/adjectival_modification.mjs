@@ -208,6 +208,10 @@ function issueSelectedClause(targetObject, value) {
 
 function getCapturedCanonicalResult(targetObject, input = null) {
   if (!input || typeof input !== "object") return null;
+  if (targetObject.isAdverbialAdjunctionResult?.(input) === true) return input;
+  if (targetObject.isClassicalNahuatlClosureFrame?.(input) === true
+    && input.authorizationStatus === "authorized"
+    && input.operationFrame?.operation === "purposive") return input;
   if (
     getOwnerState(targetObject).results.has(input)
     && input.authorizationStatus === "authorized"
@@ -325,49 +329,49 @@ function buildVncSelectedClause(
     || canonicalInput?.finalTypedVncSlotFrame
     || finite?.typedSlotFrame
     || null;
-  const normalizedRequest = canonicalInput?.normalizedRequest
-    || canonicalInput?.resultFrame?.normalizedRequest
-    || {};
+  const selectedMachinery = canonicalInput?.resultFrame?.selectedMachineryFrame
+    || canonicalInput?.selectedMachineryFrame;
   if (!finite || !formula || !surface || !slotFrame) return null;
-  const sourceValence = normalizeKey(
-    normalizedRequest.sourceValence
-      || normalizedRequest.valence
-      || slotFrame.sourceValence
-      || slotFrame.valence,
-  );
-  const objectRequest = Array.isArray(normalizedRequest.sourceObjectRequests)
-    ? normalizedRequest.sourceObjectRequests[0] || {}
+  // The selected clause is the completed Result, not the pre-derivation
+  // request. Voice may remove an object or promote it to the subject.
+  const transitive = slotFrame.valenceArity !== "vacant";
+  const objectProfile = transitive ? slotFrame.objectProfile || {} : {};
+  const objectPosition = transitive
+    ? slotFrame.slots?.prePredicate?.map(slot => slot.objectPositionFrame)
+      .find(position => position?.objectPerson) || {}
     : {};
+  const sourceValence = normalizeKey(
+    !transitive ? "intransitive" : selectedMachinery?.valence
+      || selectedMachinery?.classTargetValence || objectProfile.objectKind,
+  );
   return issueSelectedClause(targetObject, {
     role: normalizeKey(role) || "unknown",
     sourceResult: canonicalInput,
     unitKind: "vnc",
-    clauseClass: sourceValence && sourceValence !== "intransitive"
+    clauseClass: transitive
       ? "transitive-vnc"
       : "intransitive-vnc",
     formula,
     unitSurface: stripSentenceBoundary(surface),
     subjectId: normalizeKey(
-      normalizedRequest.subject
-        || normalizedRequest.sourceSubject
-        || slotFrame.subject,
+      slotFrame.slots?.subject?.subject || slotFrame.subject
+        || selectedMachinery?.subject || selectedMachinery?.targetSubject
+        || selectedMachinery?.priorVncFrame?.subject
+        || (targetObject.isClassicalNahuatlClosureFrame?.(canonicalInput) === true
+          && canonicalInput.operationFrame?.operation === "purposive"
+          ? canonicalInput.normalizedRequest?.subject : ""),
     ),
     predicateStem: normalizeStem(
-      normalizedRequest.sourceStem
-        || slotFrame.slots?.predicate?.stem
+      slotFrame.slots?.predicate?.stem
         || slotFrame.predicateStem,
     ),
     stateArity: "not-applicable",
     sourceValence: sourceValence || "intransitive",
     objectPerson: normalizeKey(
-      normalizedRequest.objectPerson
-        || objectRequest.objectPerson
-        || slotFrame.objectPerson,
+      objectProfile.objectPerson || objectPosition.objectPerson,
     ),
     objectKind: normalizeKey(
-      normalizedRequest.objectKind
-        || objectRequest.objectKind
-        || slotFrame.objectKind,
+      objectProfile.objectKind || objectPosition.objectKind,
     ),
     compoundHead: false,
     pronominalFamily: "",
@@ -383,6 +387,22 @@ function getSelectedCanonicalClause(
 ) {
   const canonicalInput = getCapturedCanonicalResult(targetObject, input);
   if (!canonicalInput) return null;
+
+  // Adverbial modification preserves the principal NNC's contact features;
+  // the whole issued composition, not its spelling, becomes the selected unit.
+  if (targetObject.isAdverbialAdjunctionResult?.(canonicalInput) === true) {
+    const principal = getSelectedCanonicalClause(targetObject,
+      canonicalInput.sourceContract?.principal?.issuedResult, role);
+    if (!principal || principal.unitKind !== "nnc") return null;
+    return issueSelectedClause(targetObject, {
+      ...principal,
+      sourceResult: canonicalInput,
+      clauseClass: "adverbially-modified-nnc",
+      formula: canonicalInput.formulaRecord?.formula,
+      unitSurface: stripSentenceBoundary(canonicalInput.surface),
+      isComposition: true,
+    });
+  }
 
   if (
     canonicalInput.kind === RESULT_CONTRACT_KIND
@@ -551,6 +571,9 @@ function getSelectedCanonicalClause(
   if (
     typeof targetObject?.isClassicalNahuatlVncApplicationFrame === "function"
     && targetObject.isClassicalNahuatlVncApplicationFrame(canonicalInput)
+    || targetObject.isClassicalNahuatlClosureFrame?.(canonicalInput) === true
+      && canonicalInput.authorizationStatus === "authorized"
+      && canonicalInput.operationFrame?.operation === "purposive"
   ) {
     return buildVncSelectedClause(targetObject, canonicalInput, role);
   }

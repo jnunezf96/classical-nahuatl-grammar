@@ -9,7 +9,6 @@ const spec = {
   "selections": [
     "claim-p4179",
     "claim-p4180",
-    "claim-p4181",
     "claim-p4182",
     "claim-p4183"
   ],
@@ -21,10 +20,6 @@ const spec = {
     "claim-p4180::p4180-the-collocation-mach-eh-traditionally-written-mache-is-translated": {
       "assertionId": "classical-adverbial-mach-idiomatic-collocations:p4180-the-collocation-mach-eh-traditionally-written-mache-is-translated",
       "canonicalPath": "cases.particleMach.context.stressPartner"
-    },
-    "claim-p4181::p4181-after-an-interrogative-mach-is-translated-as-an-exasperated": {
-      "assertionId": "classical-adverbial-mach-idiomatic-collocations:p4181-after-an-interrogative-mach-is-translated-as-an-exasperated",
-      "canonicalPath": "contract.traditionalSpellingAuthority"
     },
     "claim-p4182::p4182-the-mach-translated-negatively-in-16-6-2-mach": {
       "assertionId": "classical-adverbial-mach-idiomatic-collocations:p4182-the-mach-translated-negatively-in-16-6-2-mach",
@@ -40,16 +35,24 @@ const spec = {
   "executionArgsBySelection": {
     "claim-p4179": [],
     "claim-p4180": [],
-    "claim-p4181": [],
     "claim-p4182": [],
     "claim-p4183": []
   },
   "expectedCanonicalStatusBySelection": {
     "claim-p4179": "authorized",
     "claim-p4180": "authorized",
-    "claim-p4181": "authorized",
     "claim-p4182": "authorized",
     "claim-p4183": "authorized"
+  },
+  "nonExecutableObservations": {
+    "claim-p4181::p4181-after-an-interrogative-mach-is-translated-as-an-exasperated": {
+      "assertionId": "classical-adverbial-mach-idiomatic-collocations:p4181-after-an-interrogative-mach-is-translated-as-an-exasperated",
+      "disposition": "documentary-claim-runtime-observation-unverified",
+      "reason": "Canvas17590–17592 describes post-interrogative mach as exasperated/perplexed ever. The current mach-eh fixture and traditional-spelling authority flag do not observe that contextual reading.",
+      "retiredCanonicalPath": "contract.traditionalSpellingAuthority",
+      "executionCredit": false,
+      "grammarAuthority": false
+    }
   }
 };
 export default Object.freeze(spec);

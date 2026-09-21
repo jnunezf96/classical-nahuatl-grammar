@@ -30,6 +30,10 @@ export function createClassicalNahuatlParticlesApi(
       "l3-mah": "mah",
       "l3-ahzo": "ahzo",
       "l3-in-tla": "in-tla",
+      "l50-in-tla-nel": "in-tla-nel",
+      "l50-in-ma-nel": "in-ma-nel",
+      "l50-ma-nel": "ma-nel",
+      "l3-in-tla-ca": "in-tla",
       "l3-ma-zo": "ma-zo",
       "l3-ma-zo-tel": "ma-zo-tel",
       "l58-ahmo": "ahmo",
@@ -582,6 +586,9 @@ l3-ca-no-zotzin|ca no zotzin|honorificized|collocation-sequence|3.5
 l16-quen-mach-huel|quēn mach huel|collocation|collocation-sequence|16.3.2.c
 l16-huel|huel|adverbial-modifier|floating|16.9.3
 l16-achi-adverbial|achi|adverbial-modifier|floating|16.9.7
+l50-in-tla-nel|in tlā nel|collocation|clause-initial|50.8
+l50-in-ma-nel|in mā nel|collocation|clause-initial|50.8
+l50-ma-nel|mā nel|collocation|clause-initial|50.8
 l58-ahmo|ahmō|clause-introducer|clause-initial|58.5
 l58-mah-ca|mah ca#|adjunctor|bound-to-following|58.4
 l58-quemah|quēmah|collocation|independent-utterance|58.4
@@ -700,6 +707,9 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
 l16-quen-mach-huel|how fortunate; how favorable|evaluative exclamation used with a personal-pronominal NNC
 l16-huel|exactly; completely|adverbial modifier of a quantitive NNC
 l16-achi-adverbial|almost|adverbial modifier of mochi; distinct here from the quantitive NNC it modifies
+l50-in-tla-nel|if in truth; even if|concessive introductory collocation
+l50-in-ma-nel|although; although in fact|concessive collocation with usual adjunctor in
+l50-ma-nel|although; although in fact|concessive collocation without optional adjunctor in
 `.trim().split("\n").map(row => Object.freeze(row.split("|"))));
     const CLASSICAL_NAHUATL_PARTICLE_LEXICAL_FACTS_BY_ID =
       Object.freeze(Object.fromEntries(
@@ -1573,8 +1583,10 @@ l16-achi-adverbial|almost|adverbial modifier of mochi; distinct here from the qu
           particleId: entry?.id || "",
           variants: contextualVariants.map(writtenSurface => ({
             kind: "classical-nahuatl-particle-contextual-realization",
-            variantId: "y-initial",
-            formulaSegments: formulaSegments.map(segment => (
+            variantId: entry.id === "l3-ax" ? "tripled" : "y-initial",
+            formulaSegments: entry.id === "l3-ax"
+              ? [...formulaSegments, "ax"]
+              : formulaSegments.map(segment => (
               segment === "eh"
                 ? "yeh"
                 : segment === "ehhuātl"
@@ -1746,6 +1758,7 @@ l16-achi-adverbial|almost|adverbial modifier of mochi; distinct here from the qu
           semanticMarker,
           marking: semanticMarker,
           functionScope: entry.functionScope,
+          conditionalCue: ["l3-at", "l3-ac", "l3-ahzo"].includes(entry.id),
           placementScope: entry.placement?.scope || "",
           authorizedForNuclearClause: false
         },
@@ -1753,6 +1766,7 @@ l16-achi-adverbial|almost|adverbial modifier of mochi; distinct here from the qu
           particleId: entry.id,
           semanticMarker,
           marking: semanticMarker,
+          rightAttachedToFollowingUnit: String(formulaSegments.at(-1) || "").endsWith("#"),
           placementScope: entry.placement?.scope || ""
         },
         nuclearClauseFrame: {
@@ -1964,17 +1978,25 @@ l16-achi-adverbial|almost|adverbial modifier of mochi; distinct here from the qu
       const targetId = request && typeof request === "object"
         && !Array.isArray(request) ? String(request.targetId || "") : "";
       const target = CLASSICAL_NAHUATL_PARTICLE_HONORIFIC_TARGETS[targetId] || null;
+      const selectedSource = request?.particleSourceFrame || null;
+      const typedHost = isClassicalNahuatlParticleSourceFrame(selectedSource);
+      const hostEntry = typedHost
+        ? getClassicalNahuatlParticleSourceEntries().find(entry => entry.id === selectedSource.particleId)
+        : null;
       const recognizedKeys = request && typeof request === "object"
-        ? Reflect.ownKeys(request).every((key) => key === "targetId")
+        ? Reflect.ownKeys(request).every((key) => key === "targetId" || key === "particleSourceFrame")
+          && !(targetId && selectedSource)
         : false;
-      const baseParticleSourceFrames = target && recognizedKeys
+      const baseParticleSourceFrames = typedHost && recognizedKeys
+        ? [selectedSource]
+        : target && recognizedKeys
         ? target.baseParticleIds.map((particleId) =>
           buildClassicalNahuatlParticleSourceFrame(particleId))
         : [];
       const authorized = Boolean(
-        target
+        (target || hostEntry)
         && recognizedKeys
-        && baseParticleSourceFrames.length === target.baseParticleIds.length
+        && baseParticleSourceFrames.length > 0
         && baseParticleSourceFrames.every(isClassicalNahuatlParticleSourceFrame)
       );
       const source = freezeClassicalNahuatlLesson3ParticleResult({
@@ -1986,8 +2008,9 @@ l16-achi-adverbial|almost|adverbial modifier of mochi; distinct here from the qu
           : !recognizedKeys
             ? "classical-particle-honorific-typed-request-required"
             : "classical-particle-honorific-target-not-licensed",
-        targetId: authorized ? targetId : "",
-        hostKind: authorized ? target.hostKind : "",
+        targetId: authorized ? targetId || `${selectedSource.particleId}:honorific` : "",
+        hostKind: authorized ? target?.hostKind || (hostEntry.functionScope === "collocation"
+          ? "collocation-final-member" : "single-particle") : "",
         baseParticleSourceFrames: Object.freeze(baseParticleSourceFrames),
         operation: authorized ? "attach-tzin-to-final-particle-member" : "",
         callerSuppliedSurfaceAuthority: false,
@@ -2044,7 +2067,9 @@ l16-achi-adverbial|almost|adverbial modifier of mochi; distinct here from the qu
         Array.from(result.formulaSegments || []));
       if (formulaSegments.length) formulaSegments.push("tzin");
       const surface = basesAuthorized ? baseSurfaces.join(" ") : "";
-      const formula = basesAuthorized ? baseSurfaces.join(" ") : "";
+      const formula = basesAuthorized
+        ? formatClassicalNahuatlParticleFormulaSegments(formulaSegments)
+        : "";
       const result = freezeClassicalNahuatlLesson3ParticleResult({
         kind: "classical-nahuatl-particle-honorific-result-frame",
         version: CLASSICAL_NAHUATL_LESSON3_PARTICLES_VERSION,
@@ -2946,12 +2971,13 @@ l16-achi-adverbial|almost|adverbial modifier of mochi; distinct here from the qu
         ? findClassicalNahuatlSentenceParticleEntry(requestedParticleId)
         : null;
       const honorificizedEntryId = honorificizedRequested ? CLASSICAL_NAHUATL_SENTENCE_PARTICLE_HONORIFIC_IDS[baseSelectedEntry?.id] || "" : "";
-      const honorificSourceFrame = honorificizedEntryId
+      const honorificSourceFrame = honorificizedRequested && baseSelectedEntry
         ? buildClassicalNahuatlParticleHonorificSourceFrame({
-            targetId: honorificizedEntryId
+            ...(honorificizedEntryId ? { targetId: honorificizedEntryId }
+              : { particleSourceFrame })
           })
         : null;
-      const particleResultFrame = honorificizedEntryId
+      const particleResultFrame = honorificSourceFrame
         ? evaluateClassicalNahuatlParticleHonorificFormation(
             honorificSourceFrame
           )
@@ -2963,12 +2989,14 @@ l16-achi-adverbial|almost|adverbial modifier of mochi; distinct here from the qu
             : null;
       const honorificizedAuthorized = !honorificizedRequested
         || Boolean(
-          honorificizedEntryId
+          honorificSourceFrame
+          && particleResultFrame?.authorizationStatus === "authorized"
           && isClassicalNahuatlParticleHonorificResultFrame(
             particleResultFrame
           )
         );
-      const selectedEntry =
+      const selectedEntry = honorificSourceFrame && !honorificizedEntryId
+        && honorificizedAuthorized ? baseSelectedEntry :
         isClassicalNahuatlSentenceParticleOutputFrame(particleResultFrame)
           ? getClassicalNahuatlParticleSourceEntries()
             .find(entry => entry.id === (
@@ -2976,7 +3004,7 @@ l16-achi-adverbial|almost|adverbial modifier of mochi; distinct here from the qu
             ))
             || null
           : null;
-      const syntacticEntry = honorificizedEntryId
+      const syntacticEntry = honorificSourceFrame
         ? baseSelectedEntry
         : selectedEntry;
       const requiredSpeakerGender = syntacticEntry?.id === "l3-no-interjection"

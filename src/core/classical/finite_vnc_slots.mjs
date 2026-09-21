@@ -259,6 +259,7 @@ export function createClassicalNahuatlFiniteVncRuntime(
 ) {
   const issuedSources = new WeakSet();
   const issuedResults = new WeakSet();
+  const issuedSlotSources = new WeakMap();
   const issuedPersonDyads = new WeakSet();
   const issuedNumberDyads = new WeakSet();
   const issuedTenseFrames = new WeakSet();
@@ -735,6 +736,9 @@ export function createClassicalNahuatlFiniteVncRuntime(
       : null;
     const frozenResult = frozen(result);
     issuedResults.add(frozenResult);
+    if (frozenResult.vncSlotFrame && frozenResult.authorizationStatus === "authorized") {
+      issuedSlotSources.set(frozenResult.vncSlotFrame, frozenResult.source);
+    }
     return frozenResult;
   }
 
@@ -760,6 +764,10 @@ export function createClassicalNahuatlFiniteVncRuntime(
       && result.version === VERSION
       && isClassicalNahuatlFiniteVncSource(result.source),
     );
+  }
+
+  function getClassicalNahuatlFiniteVncSlotSource(slot = null) {
+    return issuedSlotSources.get(slot) || null;
   }
 
   function getClassicalNahuatlFiniteSubjectOptions(
@@ -812,6 +820,7 @@ export function createClassicalNahuatlFiniteVncRuntime(
     evaluateClassicalNahuatlFiniteVncSlots,
     buildClassicalNahuatlFiniteVncResult,
     isClassicalNahuatlFiniteVncResult,
+    getClassicalNahuatlFiniteVncSlotSource,
     getClassicalNahuatlFiniteSubjectOptions,
     getClassicalNahuatlFiniteTenseOptions,
   });

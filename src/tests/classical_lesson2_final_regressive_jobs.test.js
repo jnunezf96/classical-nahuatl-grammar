@@ -105,18 +105,40 @@ function run(ctx) {
             && mexihco.canonicalResult.outputSound === "hk",
         wrong("k", "k", { sourceLeftMorpheme: "Mēxic", sourceRightMorpheme: "co", spellingStyle: "fully-assimilated" }, "mēxicco"));
 
-    const delabialization = request("phonology:consonant-shift", [{
-        sourceConsonant: "kw", position: "exposed", grammaticalConstruction: true,
-    }]);
-    const kkToHk = assimilate("k", "k");
+    const sequence = observeDelabializationSequence(ctx);
     exact("ACI-P050-L026-8BDE89138D",
-        delabialization.authorizationStatus === "authorized"
-            && delabialization.canonicalResult.outputSound === "k"
-            && kkToHk.authorizationStatus === "authorized"
-            && kkToHk.canonicalResult.outputSound === "hk",
-        request("phonology:consonant-shift", [{ sourceConsonant: "kw", position: "syllable-initial", grammaticalConstruction: true }]).authorizationStatus === "authorized");
+        sequence.prerequisiteAuthorized && sequence.downstreamAuthorized
+            && sequence.intermediateSound === "k"
+            && sequence.downstreamInput === sequence.intermediateSound
+            && sequence.outputSound === "hk",
+        observeDelabializationSequence(ctx, "syllable-initial").downstreamAuthorized);
 
     return s;
 }
 
-module.exports = { run };
+// A selected two-step experiment, not an owner-issued continuation or proof
+// of the complete three-variant word/control interface.
+function observeDelabializationSequence(ctx, position = "exposed") {
+    const first = ctx.executeClassicalGrammarApplicationRequest({
+        operationId: "phonology:consonant-shift",
+        args: [{ sourceConsonant: "kw", position, grammaticalConstruction: true }],
+    });
+    const prerequisiteAuthorized = first.authorizationStatus === "authorized"
+        && ctx.isClassicalNahuatlTranscriptionAnalysisFrame(first.canonicalResult);
+    if (!prerequisiteAuthorized) return { prerequisiteAuthorized: false, downstreamAuthorized: false };
+    const intermediateSound = first.canonicalResult.outputSound;
+    const second = ctx.executeClassicalGrammarApplicationRequest({
+        operationId: "phonology:assimilation",
+        args: [{ leftConsonant: intermediateSound, rightConsonant: "k", grammaticalConstruction: true }],
+    });
+    return {
+        prerequisiteAuthorized,
+        intermediateSound,
+        downstreamInput: intermediateSound,
+        downstreamAuthorized: second.authorizationStatus === "authorized"
+            && ctx.isClassicalNahuatlTranscriptionAnalysisFrame(second.canonicalResult),
+        outputSound: second.canonicalResult?.outputSound,
+    };
+}
+
+module.exports = { run, observeDelabializationSequence };

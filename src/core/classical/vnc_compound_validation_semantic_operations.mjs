@@ -423,6 +423,22 @@ function nonactiveOption(runtime, request) {
     || "";
 }
 
+export function buildCompoundEmbedValenceWitnesses(runtime) {
+  return deepFreeze({
+    intransitive: evaluate(runtime),
+    transitive: evaluate(runtime, {
+      sourceStem: "cui",
+      sourceValence: "specific-projective",
+      objectKind: "specific-projective",
+      objectPerson: "3sg",
+    }),
+  });
+}
+
+export function buildCompoundCacReadingWitness(runtime) {
+  return evaluate(runtime, { sourceStem: "cac", verbClass: "B" });
+}
+
 function buildProjection(runtime) {
   const recursiveSource = runtime.evaluateClassicalNahuatlLateVncDerivation(
     baseRequest({ subject: "2sg", tense: "preterit" }),
@@ -512,10 +528,7 @@ function buildProjection(runtime) {
       verbClass: "A",
       compoundMatrixStem: "o",
     }),
-    cacNonanimate: evaluate(runtime, {
-      sourceStem: "cac",
-      verbClass: "B",
-    }),
+    cacNonanimate: buildCompoundCacReadingWitness(runtime),
     itzObservational: evaluate(runtime, {
       sourceStem: "itz",
       verbClass: "B",
@@ -1062,6 +1075,7 @@ function buildProjection(runtime) {
         cases.arbitraryTypedMatrix.facts.canvasExamplesAreEvidenceOnly,
       embedDeterminesCompoundValence:
         cases.basic.facts.embedDeterminesCompoundValence,
+      embedValenceWitnesses: buildCompoundEmbedValenceWitnesses(runtime),
       compoundTypes: ["linked", "integrated"],
       linkedRealizations: ["connective-t", "connectiveless"],
       valencePatterns: [

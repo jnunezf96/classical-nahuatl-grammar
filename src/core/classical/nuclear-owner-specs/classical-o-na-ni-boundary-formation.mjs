@@ -33,7 +33,7 @@ const spec = {
     },
     "claim-p2029::p2029-tla-ti-tlani-to-send-s-th": {
       "assertionId": "classical-o-na-ni-boundary-formation:p2029-tla-ti-tlani-to-send-s-th",
-      "canonicalPath": "nonactive.oNaNi.options.0.nonactiveStem"
+      "canonicalPath": "nonactive.oNamedSources.titlani"
     },
     "claim-p2030::p2030-tla-ih-tlani-to-request-s-th": {
       "assertionId": "classical-o-na-ni-boundary-formation:p2030-tla-ih-tlani-to-request-s-th",

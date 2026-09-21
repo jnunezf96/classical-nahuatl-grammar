@@ -23,7 +23,7 @@ const spec = {
     },
     "claim-p1989::p1989-tla-pitza-to-blow-on-s-th": {
       "assertionId": "classical-lo-class-b-root-ya-formation:p1989-tla-pitza-to-blow-on-s-th",
-      "canonicalPath": "nonactive.loClassB.options.0.nonactiveStem"
+      "canonicalPath": "nonactive.loNamedSources.pitza"
     },
     "claim-p1990::p1990-tla-quetza-to-stands-th-erect": {
       "assertionId": "classical-lo-class-b-root-ya-formation:p1990-tla-quetza-to-stands-th-erect",
@@ -39,7 +39,7 @@ const spec = {
     },
     "claim-p1993::p1993-tla-piya-to-guard-s-th": {
       "assertionId": "classical-lo-class-b-root-ya-formation:p1993-tla-piya-to-guard-s-th",
-      "canonicalPath": "nonactive.loClassB.options.0.nonactiveStem"
+      "canonicalPath": "nonactive.loNamedSources.piya"
     },
     "claim-p1994::p1994-tla-chiya-to-look-tla-fusion": {
       "assertionId": "classical-lo-class-b-root-ya-formation:p1994-tla-chiya-to-look-tla-fusion",

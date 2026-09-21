@@ -1,6 +1,7 @@
 // Canonical modern ESM module.
 
 export function createUiPanelsContext(targetObject = globalThis) {
+    const tenseTabSelectionContexts = new WeakMap();
     var UI_DENSITY_MODE = globalThis.UI_DENSITY_MODE || Object.freeze({
       simple: "simple",
       advanced: "advanced"
@@ -1230,7 +1231,7 @@ export function createUiPanelsContext(targetObject = globalThis) {
         subjectOverride,
         allowPassiveObject
       }) => {
-        const availabilityKey = ["nonactive-availability", availabilityMemoContext, verb || "", tenseValue || "", String(activeValency || 0), String(nonactiveAvailableSlots || 0), hasPromotableObject ? "1" : "0", resolvedFusionMarkers.join(","), objectPrefix || "", subjectOverride?.subjectPrefix || "", subjectOverride?.subjectSuffix || "", allowPassiveObject ? "1" : "0"].join("|");
+        const availabilityKey = ["nonactive-availability", availabilityMemoContext, verb || "", tenseValue || "", String(activeValency || 0), String(nonactiveAvailableSlots || 0), hasPromotableObject ? "1" : "0", resolvedFusionMarkers.join(","), objectPrefix || "", subjectOverride?.pers1 || "", subjectOverride?.pers2 || "", allowPassiveObject ? "1" : "0"].join("|");
         if (shouldUseAvailabilityMemo && availabilityMemo.has(availabilityKey)) {
           const cachedRecord = availabilityMemo.get(availabilityKey);
           targetObject.recordToggleAvailabilityRealization(summary, cachedRecord);
@@ -1256,8 +1257,8 @@ export function createUiPanelsContext(targetObject = globalThis) {
         const hideReflexive = !!(result && result.isReflexive && getObjectCategory(objectPrefix) !== "reflexive");
         const maskState = targetObject.getConjugationMaskState({
           result,
-          subjectPrefix: subjectOverride?.subjectPrefix || "",
-          subjectSuffix: subjectOverride?.subjectSuffix || "",
+          subjectPrefix: subjectOverride?.pers1 || "",
+          subjectSuffix: subjectOverride?.pers2 || "",
           objectPrefix
         });
         const evaluation = targetObject.buildConjugationEvaluationRecord({
@@ -1773,7 +1774,7 @@ export function createUiPanelsContext(targetObject = globalThis) {
       summary.textContent = getAndrewsCnvCnnOperationalLayerDisplayText(sourceTargetRoute);
       summary.title = Array.isArray(sourceTargetRoute.routeSuboperationIds) ? sourceTargetRoute.routeSuboperationIds.join(" | ") : "";
     }
-    function syncAndrewsTenseBlockOperationalLayerElement(element = null, sourceTargetRoute = null) {
+    function syncAndrewsTenseBlockOperationalLayerElement(element = null, sourceTargetRoute = null, allowDeferredSync = true) {
       const count = Number(sourceTargetRoute?.routeSuboperationCount || 0);
       if (!element || typeof element.querySelector !== "function") {
         return;
@@ -1785,13 +1786,16 @@ export function createUiPanelsContext(targetObject = globalThis) {
       }
       const title = element.querySelector(":scope > .tense-block__title");
       if (!title || typeof targetObject.document === "undefined" || typeof targetObject.document.createElement !== "function") {
-        if (title === null && element.dataset && element.dataset.andrewsOperationalLayerSyncPending !== "true" && typeof targetObject.setTimeout === "function") {
+        if (allowDeferredSync && title === null && element.dataset && element.dataset.andrewsOperationalLayerSyncPending !== "true" && typeof targetObject.setTimeout === "function") {
           element.dataset.andrewsOperationalLayerSyncPending = "true";
           targetObject.setTimeout(() => {
             if (element.dataset) {
               element.dataset.andrewsOperationalLayerSyncPending = "";
             }
-            syncAndrewsTenseBlockOperationalLayerElement(element, sourceTargetRoute);
+            if (element.isConnected === false) return;
+            // One deferred attempt permits synchronous title construction but
+            // never turns a missing title into a self-scheduling retry chain.
+            syncAndrewsTenseBlockOperationalLayerElement(element, sourceTargetRoute, false);
           }, 0);
         }
         return;
@@ -2082,12 +2086,16 @@ export function createUiPanelsContext(targetObject = globalThis) {
       isAvailable = null,
       endsWithConsonant = false,
       isBlockedNominalTense = false,
-      isUniversal = false
+      isUniversal = false,
+      selectionContextAvailable = true
     } = {}) {
       const normalizedMode = String(mode || "").trim() || targetObject.TENSE_MODE.verbo;
       const frame = getAndrewsTenseAuthorityFrame(tenseValue, normalizedMode);
       const generationGate = getAndrewsTenseGenerationGateFrame(frame);
       const blockedReasons = [];
+      if (!selectionContextAvailable) {
+        blockedReasons.push("andrews-selection-context-unavailable");
+      }
       if (endsWithConsonant) {
         blockedReasons.push("input-orthography-boundary");
       }
@@ -2339,7 +2347,20 @@ export function createUiPanelsContext(targetObject = globalThis) {
       if (!element || !element.dataset) {
         return getAndrewsTenseTabSelectionAuthorityState(options);
       }
-      const state = getAndrewsTenseTabSelectionAuthorityState(options);
+      const selectionContext = Object.freeze({
+        tenseValue: String(options.tenseValue || "").trim(),
+        mode: String(options.mode || "").trim() || targetObject.TENSE_MODE.verbo,
+        hasOutput: options.hasOutput ?? null,
+        isAvailable: options.isAvailable ?? null,
+        endsWithConsonant: Boolean(options.endsWithConsonant),
+        isBlockedNominalTense: Boolean(options.isBlockedNominalTense),
+        isUniversal: Boolean(options.isUniversal),
+        selectionContextAvailable: options.selectionContextAvailable !== false
+      });
+      const state = getAndrewsTenseTabSelectionAuthorityState(selectionContext);
+      if (selectionContext.selectionContextAvailable) {
+        tenseTabSelectionContexts.set(element, selectionContext);
+      }
       element.dataset.andrewsSelectionGate = state.selectionGate;
       element.dataset.andrewsSelectionBlocked = state.blockedReasons.join("|");
       element.dataset.andrewsOutputAvailability = state.outputAvailability;
@@ -3279,6 +3300,9 @@ export function createUiPanelsContext(targetObject = globalThis) {
           diagnostics.push(diagnostic);
         }
       });
+      if (String(targetFrame.selectionBlocked || "").split("|").includes("andrews-selection-context-unavailable")) {
+        diagnostics.push("andrews-selection-context-unavailable");
+      }
       return {
         isTab,
         selectionGate: targetFrame.selectionGate || "",
@@ -3429,10 +3453,17 @@ export function createUiPanelsContext(targetObject = globalThis) {
             mode,
             blockKind
           });
-          applyAndrewsTenseTabSelectionAuthorityDataset(element, {
-            tenseValue: descriptor.tenseValue,
-            mode: descriptor.mode
-          });
+          const selectionContext = tenseTabSelectionContexts.get(element);
+          const matchingContext = selectionContext
+            && selectionContext.tenseValue === descriptor.tenseValue
+            && selectionContext.mode === descriptor.mode;
+          applyAndrewsTenseTabSelectionAuthorityDataset(element, matchingContext
+            ? selectionContext
+            : {
+              tenseValue: descriptor.tenseValue,
+              mode: descriptor.mode,
+              selectionContextAvailable: false
+            });
           if (selectionRecord.missingSelectionMetadata) {
             selectionAnnotated += 1;
           } else {

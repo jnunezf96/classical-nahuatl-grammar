@@ -20,7 +20,7 @@ const spec = {
     },
     "claim-p1997::p1997-tla-ce-lia-to-receives-th": {
       "assertionId": "classical-lo-class-c-quantity-formation:p1997-tla-ce-lia-to-receives-th",
-      "canonicalPath": "nonactive.loClassC.options.0.nonactiveStem"
+      "canonicalPath": "nonactive.loNamedSources.celia"
     },
     "claim-p1998::p1998-tla-ihcuani-a-to-move-s-th": {
       "assertionId": "classical-lo-class-c-quantity-formation:p1998-tla-ihcuani-a-to-move-s-th",

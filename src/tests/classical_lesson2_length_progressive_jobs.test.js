@@ -24,7 +24,7 @@ const PROGRESSIVE_ATOMS = Object.freeze([
     ["ACI-P048-L031-93FE5B0669", value => value.mīltlah.applied],
     ["ACI-P048-L033-9117D5E59C", value => value.mīltlah.solid === "mīllah"],
     ["ACI-P048-L033-4DBE276D8A", value => value.pilyōtl.solid === "pillōtl"],
-    ["ACI-P048-L036-B8514ED37A", value => value.mīltlah.direction === "progressive"],
+    ["ACI-P048-L036-B8514ED37A", value => value.mīltlah.authorized && value.mīltlah.direction === "progressive" && value.mīltlah.solid === "mīllah" && value.mS.authorized && value.mS.direction === "regressive" && value.mS.solid === "zz"],
     ["ACI-P048-L038-479C0137E2", value => value.mīltlah.direction === "progressive"],
     ["ACI-P049-L002-B51D7D7656", value => value.mīltlah.solid === "mīllah"],
     ["ACI-P049-L003-AD6AB5D703", value => value.pilyōtl.solid === "pillōtl"],
@@ -69,7 +69,17 @@ function run(ctx) {
             direction: result?.boundaryActions?.[0]?.selectedRuleId?.includes("progressive") ? "progressive" : "",
         };
     };
+    const regressiveApplication = ctx.executeClassicalGrammarApplicationRequest({
+        operationId: "phonology:assimilation",
+        args: [{ leftConsonant: "m", rightConsonant: "s", grammaticalConstruction: true }],
+    });
+    const regressiveResult = regressiveApplication.canonicalResult;
     const progressives = {
+        mS: {
+            authorized: regressiveApplication.authorizationStatus === "authorized" && ctx.isClassicalNahuatlTranscriptionAnalysisFrame(regressiveResult),
+            direction: regressiveResult?.direction || "",
+            solid: regressiveResult?.outputSpelling || "",
+        },
         mīltlah: progressive("mīl-tlah"), pilyōtl: progressive("pil-yōtl"),
         chōquizyoh: progressive("chōquiz-yoh"), mixyoh: progressive("mix-yoh"),
         huitzyoh: progressive("huitz-yoh"), oquichyōtl: progressive("oquich-yōtl"),
@@ -81,7 +91,7 @@ function run(ctx) {
         unrelatedLlBlocked: progressives.prohibitedLl.blocked,
     }, {
         authorized: true,
-        outputs: { mīltlah: "mīllah", pilyōtl: "pillōtl", chōquizyoh: "chōquizzoh", mixyoh: "mixxoh", huitzyoh: "huitztzoh", oquichyōtl: "oquichchōtl" },
+        outputs: { mS: "zz", mīltlah: "mīllah", pilyōtl: "pillōtl", chōquizyoh: "chōquizzoh", mixyoh: "mixxoh", huitzyoh: "huitztzoh", oquichyōtl: "oquichchōtl" },
         unrelatedLlBlocked: true,
     });
 

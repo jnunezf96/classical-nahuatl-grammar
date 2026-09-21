@@ -73,7 +73,7 @@ export const LESSON37_READER_GUIDANCE_GROUPS = Object.freeze([
   idea(
     "lesson37-patientive-taxonomy-and-truncation",
     "Patientives keep one of five typed Source families",
-    "The five typed Source families are passive core, impersonal core, perfective active core, imperfective active core, and root or stock. For a typed nonactive core, the application reads the complete morphemic boundary: lō loses final ō, lō-hua loses ō-hua, ō and ō-hua lose the whole suffix, and hua loses hua while the preceding long vowel shortens. The derived noun class and vowel behavior follow automatically. Patientive capability, undergone-action, resulting-state, and product readings remain grammatical or lexical facts; final letters and Canvas examples do not form a route list. A user supplies a Source-family or lexical analysis only when it is genuinely unresolved.",
+    "The five typed Source families are passive core, impersonal core, perfective active core, imperfective active core, and root or stock. For a typed nonactive core, the application reads the complete morphemic boundary: lō loses final ō, lō-hua loses ō-hua, ō and ō-hua lose the whole suffix, and hua loses hua; vowel quantity follows the typed passive or impersonal analysis, with impersonal patientives preserving vowel length that was phonemic in the active Source. The derived noun class and vowel behavior follow automatically. Patientive capability, undergone-action, resulting-state, and product readings remain grammatical or lexical facts; final letters and Canvas examples do not form a route list. A user supplies a Source-family or lexical analysis only when it is genuinely unresolved.",
   ),
   idea(
     "lesson37-passive-patientive-foundation",

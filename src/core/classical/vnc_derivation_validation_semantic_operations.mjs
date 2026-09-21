@@ -2340,6 +2340,21 @@ const DERIVATION_SPECS = Object.freeze({
   huallauh: ["huāl-la-uh", {}],
 });
 
+export function buildCausativeSuffixQuantityWitnesses(runtime) {
+  const select = (stem, options) => {
+    const inventory = compactDerivation(runtime, stem, options);
+    return {
+      authorizationStatus: inventory.authorizationStatus,
+      sourceStem: inventory.sourceStem,
+      options: inventory.options.filter(option => option.derivationSubtype === "type-one"),
+    };
+  };
+  return deepFreeze({
+    afterConsonant: select("tomi", {}),
+    afterVowel: select("xoco-ya", { verbClass: "A" }),
+  });
+}
+
 function buildProjection(runtime) {
   const sources = Object.fromEntries(Object.entries(SOURCE_SPECS)
     .map(([key, [stem, options]]) => [
@@ -2630,6 +2645,7 @@ function buildProjection(runtime) {
     },
     sources,
     derivations,
+    causativeSuffixQuantityWitnesses: buildCausativeSuffixQuantityWitnesses(runtime),
     participants: {
       typeOneSpecific: typeOneSpecific.compact,
       typeOneReflexive: typeOneReflexive.compact,

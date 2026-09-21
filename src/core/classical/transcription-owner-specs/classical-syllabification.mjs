@@ -29,6 +29,10 @@ const spec = {
     "care-should-taken-digraphs-since-represent-a-single-consonant"
   ],
   "coordinates": {
+    "cn-l2-26-u-is-digraph-only::special-care-should-taken-symbol-u-lessons-never-a": {
+      "assertionId": "classical-syllabification:special-care-should-taken-symbol-u-lessons-never-a",
+      "canonicalPath": ""
+    },
     "cn-l2-26-vowel-count-no-diphthongs::a-vocable-nahuatl-many-syllables-vowels-there-no-diphthongs": {
       "assertionId": "classical-syllabification:a-vocable-nahuatl-many-syllables-vowels-there-no-diphthongs",
       "canonicalPath": ""

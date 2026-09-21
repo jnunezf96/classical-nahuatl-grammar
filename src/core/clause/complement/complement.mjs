@@ -4,6 +4,7 @@ export function createComplementClauseGlobals(targetObject = globalThis, install
     const grammarFrameOwnerCapability = installationContext?.grammarFrameOwnerCapability || null;
     const COMPLEMENT_CLAUSE_BOUNDARY_VERSION = 1;
     const issuedClassicalNahuatlClauseComplementationResults = new WeakSet();
+    const issuedClassicalNahuatlClauseCompositionSourceFrames = new WeakSet();
     const COMPLEMENT_CLAUSE_ROLE = Object.freeze({
       objectComplement: "object-complement",
       subjectComplement: "subject-complement",
@@ -874,6 +875,14 @@ export function createComplementClauseGlobals(targetObject = globalThis, install
         "relationalPairId"
       ])
     });
+    // The first value retains the existing absent/null/empty-string default.
+    // Participant/reference IDs are owner-bound identities, not enum choices.
+    const CLASSICAL_NAHUATL_CLAUSE_COMPLEMENTATION_OPTION_VALUE_DOMAINS = Object.freeze({
+      order: Object.freeze(["complement-principal", "principal-complement", "discontinuous"]),
+      linkKind: Object.freeze(["object-subject", "possessor-subject"]),
+      designationStructure: Object.freeze(["ordinary-object-complement", "tla-locative-supplement-plus-place-name", "possessive-name-possessor-complement"]),
+      contactKind: Object.freeze(["subject", "embedded-possessor-cel", "embedded-possessor-el", "preterit-agentive-subject-iyoh"])
+    });
     const CLASSICAL_NAHUATL_CLAUSE_COMPLEMENTATION_FORBIDDEN_AUTHORITY_FIELDS =
       Object.freeze([
         "answer",
@@ -903,11 +912,38 @@ export function createComplementClauseGlobals(targetObject = globalThis, install
       tarrying: Object.freeze(["huehcahua"]),
       "relational-lexicalized": Object.freeze(["cahcayahua", "teca", "chicotlamati", "tlaocoya"])
     });
+    // These are lexical entries, not productive suffixes. Retain the established
+    // compact spellings explicitly; quantity and unrelated compounds stay distinct.
+    const CLASSICAL_NAHUATL_CLAUSE_COMPLEMENTATION_LEXICAL_ALIASES = Object.freeze({
+      chihua: Object.freeze(["chīhua", "chihua"]),
+      cuepa: Object.freeze(["cuepa"]),
+      ihtoa: Object.freeze(["ihtoa"]),
+      tocayotia: Object.freeze(["tōcāyōtia", "tōcāyotīa", "tocayotia"]),
+      mati: Object.freeze(["mati"]),
+      teci: Object.freeze(["teci"]),
+      i: Object.freeze(["ī", "i"]),
+      mi: Object.freeze(["mi"]),
+      quetza: Object.freeze(["quetza"]),
+      moca: Object.freeze(["mo-ca", "moca"]),
+      pehua: Object.freeze(["pēhua", "pehua"]),
+      pachihui: Object.freeze(["pach-i-hui", "pachihui"]),
+      tlahpalihui: Object.freeze(["tlahpal-i-hui", "tlahpalihui"]),
+      motlahpaloa: Object.freeze(["motlahpaloā", "motlahpaloa", "mo-tlahpal-o-ā"]),
+      mocahua: Object.freeze(["mocāhua", "mocahua", "mo-cāhua"]),
+      huehcahua: Object.freeze(["hueh-cāhua", "huehcāhua", "huehcahua"]),
+      cahcayahua: Object.freeze(["cah-cay-ā-hu-a", "cahcayāhua", "cahcayahua", "mocahcayāhua", "mocahcayahua"]),
+      teca: Object.freeze(["tēca", "teca"]),
+      chicotlamati: Object.freeze(["chico-tla-mati", "chicotlamati"]),
+      tlaocoya: Object.freeze(["tlaōco-ya", "tlaōcoya", "tlaocoya"]),
+      cel: Object.freeze(["cē-l", "cēl", "cel"]),
+      el: Object.freeze(["el"]),
+      iyoh: Object.freeze(["iyo-h", "iyoh"])
+    });
     const CLASSICAL_NAHUATL_CLAUSE_COMPLEMENTATION_RELATIONAL_PAIRS = Object.freeze({
-      "te-ca+cahcayahua": Object.freeze({ relationalStem: "teca", principalStem: "cahcayahua" }),
-      "te-pan+teca": Object.freeze({ relationalStem: "tepan", principalStem: "teca" }),
-      "te-tech+chicotlamati": Object.freeze({ relationalStem: "tetech", principalStem: "chicotlamati" }),
-      "te-tech-pa+tlaocoya": Object.freeze({ relationalStem: "tetechpa", principalStem: "tlaocoya" })
+      "te-ca+cahcayahua": Object.freeze({ relationalStem: "teca", relationalStemId: "ca-means", relationalMatrix: "ca", principalStem: "cahcayahua" }),
+      "te-pan+teca": Object.freeze({ relationalStem: "tepan", relationalStemId: "pan-surface-time", relationalMatrix: "pan", principalStem: "teca" }),
+      "te-tech+chicotlamati": Object.freeze({ relationalStem: "tetech", relationalStemId: "tech-contact", relationalMatrix: "tech", principalStem: "chicotlamati" }),
+      "te-tech-pa+tlaocoya": Object.freeze({ relationalStem: "tetechpa", relationalStemId: "pa-direction", relationalMatrix: "pa", relationalEmbeds: Object.freeze(["tētech", "ītech"]), principalStem: "tlaocoya" })
     });
 
     function freezeClassicalNahuatlClauseComposition(value) {
@@ -1297,7 +1333,24 @@ export function createComplementClauseGlobals(targetObject = globalThis, install
         objects: projectedObjects,
         possessor: envelope.possessor,
         predicateStem,
+        underivedVncSourceStem: typeof targetObject.isClassicalNahuatlVncApplicationFrame === "function"
+          && targetObject.isClassicalNahuatlVncApplicationFrame(sourceFrame)
+          && sourceFrame.authorizationStatus === "authorized"
+          && sourceFrame.normalizedRequest?.requestedDerivation === "direct"
+            ? String(sourceFrame.normalizedRequest.sourceStem || "").normalize("NFC") : "",
+        predicateValence: sourceValence,
         normalizedPredicateStem: normalizeClassicalNahuatlClauseCompositionStem(predicateStem),
+        relationalIdentity: envelope.sourceFrameKind === "classical-nahuatl-relational-nnc-relational-result"
+          ? {
+              stemId: sourceFrame.sourceFrame?.stemId || "",
+              sourceKind: sourceFrame.sourceFrame?.sourceKind || "",
+              sourceMode: sourceFrame.sourceFrame?.predicateStemFrame?.sourceMode || "",
+              sourceEmbedStem: sourceFrame.sourceFrame?.predicateStemFrame?.sourceEmbedStem || "",
+              sourceMatrixStem: sourceFrame.sourceFrame?.predicateStemFrame?.sourceMatrixStem || "",
+              compositionLicenseId: sourceFrame.sourceFrame?.predicateStemFrame?.sourceCompositionFrame?.licenseId || "",
+              compositionBranchId: sourceFrame.sourceFrame?.predicateStemFrame?.sourceCompositionFrame?.branchId || ""
+            }
+          : null,
         nounClass: String(sourceFrame?.nounClass || canonicalSourceFrame?.nounClass || nncSlotFrame?.nounClass || nncSlotFrame?.slots?.predicate?.nounClass || ""),
         state: normalizeClassicalNahuatlClauseCompositionToken(sourceFrame?.state || canonicalSourceFrame?.state || nncSlotFrame?.state || ""),
         animacy: normalizeClassicalNahuatlClauseCompositionToken(sourceFrame?.animacy || canonicalSourceFrame?.animacy || nncSlotFrame?.animacy || ""),
@@ -1331,14 +1384,17 @@ export function createComplementClauseGlobals(targetObject = globalThis, install
         surfaceStringAuthority: false,
         callerSuppliedSurfaceAccepted: false
       };
-      return freezeClassicalNahuatlClauseComposition({
+      const result = freezeClassicalNahuatlClauseComposition({
         ...projection,
         canonicalSignature: signClassicalNahuatlClauseComposition(projection, "clause-composition-source")
       });
+      issuedClassicalNahuatlClauseCompositionSourceFrames.add(result);
+      return result;
     }
     function isClassicalNahuatlClauseCompositionSourceFrame(frame = null) {
       if (
-        frame?.kind !== "classical-nahuatl-clause-composition-source-frame"
+        !issuedClassicalNahuatlClauseCompositionSourceFrames.has(frame)
+        || frame?.kind !== "classical-nahuatl-clause-composition-source-frame"
         || frame.version !== CLASSICAL_NAHUATL_CLAUSE_COMPOSITION_CONTRACT_VERSION
         || frame.authorizationStatus !== "authorized"
         || frame.rank !== "nuclear-clause"
@@ -1432,9 +1488,23 @@ export function createComplementClauseGlobals(targetObject = globalThis, install
         ...details
       });
     }
-    function classicalNahuatlClauseComplementationStemLicensed(stem, licenses = []) {
-      const normalized = normalizeClassicalNahuatlClauseCompositionStem(stem);
-      return !licenses.length || licenses.some(license => normalized.endsWith(license));
+    function classicalNahuatlClauseComplementationStemLicensed(source, licenses = []) {
+      const stem = String(source?.predicateStem || "").normalize("NFC").trim().toLowerCase();
+      const reflexive = ["mainline-reflexive", "shuntline-reflexive"].includes(source?.predicateValence)
+        || source?.objects?.some(object => object.objectKind === "reflexive");
+      return !licenses.length || licenses.some(license => {
+        if (CLASSICAL_NAHUATL_CLAUSE_COMPLEMENTATION_LEXICAL_ALIASES[license]?.includes(stem)) return true;
+        // Andrews 51.4.2 retains the lexical beginning construction when
+        // pehua is impersonal; its realized nonactive stem is not a new lexeme.
+        if (license === "pehua" && source.voice === "impersonal"
+          && CLASSICAL_NAHUATL_CLAUSE_COMPLEMENTATION_LEXICAL_ALIASES[license]
+            ?.includes(source.underivedVncSourceStem)) return true;
+        // Reflexive agreement is an owned object, not a removable spelling prefix.
+        return reflexive && (
+          (license === "mocahua" && ["cāhua", "cahua"].includes(stem))
+          || (license === "motlahpaloa" && ["tlahpal-o-ā", "tlahpaloā", "tlahpaloa"].includes(stem))
+        );
+      });
     }
     function orderClassicalNahuatlClauseComplementationClauses(principalClause, complementClause, order) {
       const normalizedOrder = normalizeClassicalNahuatlClauseCompositionToken(order || "complement-principal");
@@ -1624,6 +1694,19 @@ export function createComplementClauseGlobals(targetObject = globalThis, install
         return buildClassicalNahuatlClauseComplementationBlockedResultFrame(operationKind, "typed-principal-and-complement-clause-frames-required");
       }
       const options = operationRequest.options || {};
+      const invalidOptionValue = CLASSICAL_NAHUATL_CLAUSE_COMPLEMENTATION_OPERATION_OPTION_FIELDS[operationKind].find(field => {
+        const domain = CLASSICAL_NAHUATL_CLAUSE_COMPLEMENTATION_OPTION_VALUE_DOMAINS[field];
+        if (!domain) return false;
+        const value = options[field];
+        if (value != null && typeof value !== "string") return true;
+        return !domain.includes(normalizeClassicalNahuatlClauseCompositionToken(value || domain[0]));
+      });
+      if (invalidOptionValue) {
+        return buildClassicalNahuatlClauseComplementationBlockedResultFrame(
+          operationKind,
+          `unrecognized-clause-complementation-operation-option-value:${invalidOptionValue}`
+        );
+      }
       const semanticCategory = normalizeClassicalNahuatlClauseCompositionToken(options.semanticCategory);
       if (operationKind === "object-complement") {
         if (complement.unitKind !== "nnc" || !Object.hasOwn(CLASSICAL_NAHUATL_CLAUSE_COMPLEMENTATION_OBJECT_STEM_LICENSES, semanticCategory)) {
@@ -1652,7 +1735,7 @@ export function createComplementClauseGlobals(targetObject = globalThis, install
           );
         }
         if (!possessiveNameStructure
-          && !classicalNahuatlClauseComplementationStemLicensed(principal.predicateStem, CLASSICAL_NAHUATL_CLAUSE_COMPLEMENTATION_OBJECT_STEM_LICENSES[semanticCategory])) {
+          && !classicalNahuatlClauseComplementationStemLicensed(principal, CLASSICAL_NAHUATL_CLAUSE_COMPLEMENTATION_OBJECT_STEM_LICENSES[semanticCategory])) {
           return buildClassicalNahuatlClauseComplementationBlockedResultFrame(operationKind, "principal-verbstem-not-licensed-for-object-complement-category");
         }
         const requestedPrincipalObjectId = String(
@@ -1749,14 +1832,13 @@ export function createComplementClauseGlobals(targetObject = globalThis, install
         if (!complementReference || complementReference !== principal.subject.referenceId) {
           return buildClassicalNahuatlClauseComplementationBlockedResultFrame(operationKind, "principal-subject-reference-must-match-complement-contact");
         }
-        const normalizedComplementStem = complement.normalizedPredicateStem;
-        if (contactKind === "embedded-possessor-cel" && !normalizedComplementStem.endsWith("cel")) {
+        if (contactKind === "embedded-possessor-cel" && !classicalNahuatlClauseComplementationStemLicensed(complement, ["cel"])) {
           return buildClassicalNahuatlClauseComplementationBlockedResultFrame(operationKind, "cel-contact-requires-typed-cel-nnc");
         }
-        if (contactKind === "embedded-possessor-el" && !normalizedComplementStem.endsWith("el")) {
+        if (contactKind === "embedded-possessor-el" && !classicalNahuatlClauseComplementationStemLicensed(complement, ["el"])) {
           return buildClassicalNahuatlClauseComplementationBlockedResultFrame(operationKind, "el-contact-requires-typed-el-nnc");
         }
-        if (contactKind === "preterit-agentive-subject-iyoh" && !normalizedComplementStem.endsWith("iyoh")) {
+        if (contactKind === "preterit-agentive-subject-iyoh" && !classicalNahuatlClauseComplementationStemLicensed(complement, ["iyoh"])) {
           return buildClassicalNahuatlClauseComplementationBlockedResultFrame(operationKind, "iyoh-contact-requires-typed-iyoh-nnc");
         }
         const passiveTransform = options.passiveTransform === true || semanticCategory === "passive-object-complement-transform";
@@ -1780,7 +1862,7 @@ export function createComplementClauseGlobals(targetObject = globalThis, install
         if (!Object.hasOwn(CLASSICAL_NAHUATL_CLAUSE_COMPLEMENTATION_ADVERBIAL_STEM_LICENSES, semanticCategory)) {
           return buildClassicalNahuatlClauseComplementationBlockedResultFrame(operationKind, "licensed-adverbial-complement-family-required");
         }
-        if (!classicalNahuatlClauseComplementationStemLicensed(principal.predicateStem, CLASSICAL_NAHUATL_CLAUSE_COMPLEMENTATION_ADVERBIAL_STEM_LICENSES[semanticCategory])) {
+        if (!classicalNahuatlClauseComplementationStemLicensed(principal, CLASSICAL_NAHUATL_CLAUSE_COMPLEMENTATION_ADVERBIAL_STEM_LICENSES[semanticCategory])) {
           return buildClassicalNahuatlClauseComplementationBlockedResultFrame(operationKind, "principal-verbstem-not-licensed-for-adverbial-complement-family");
         }
         if (semanticCategory === "coverage") {
@@ -1798,13 +1880,21 @@ export function createComplementClauseGlobals(targetObject = globalThis, install
           const pair = CLASSICAL_NAHUATL_CLAUSE_COMPLEMENTATION_RELATIONAL_PAIRS[relationalPairId];
           const relationalSource = complement.envelope?.sourceFrameKind
             === "classical-nahuatl-relational-nnc-relational-result";
-          const realizedRelationalStem = normalizeClassicalNahuatlClauseCompositionStem(
-            complement.surface,
-          );
+          const relationalIdentity = complement.relationalIdentity;
           if (!pair
             || !relationalSource
-            || !principal.normalizedPredicateStem.endsWith(pair.principalStem)
-            || !realizedRelationalStem.endsWith(pair.relationalStem)) {
+            || !classicalNahuatlClauseComplementationStemLicensed(principal, [pair.principalStem])
+            || relationalIdentity?.stemId !== pair.relationalStemId
+            || relationalIdentity.sourceMatrixStem !== pair.relationalMatrix
+            || (pair.relationalEmbeds
+              ? relationalIdentity.sourceKind !== "relational-compound"
+                || relationalIdentity.sourceMode !== "embed-matrix"
+                || !(relationalIdentity.compositionLicenseId === "tech-embed-pa-copa-matrices"
+                  && relationalIdentity.compositionBranchId === "tech-plus-pa")
+                  && !pair.relationalEmbeds.includes(relationalIdentity.sourceEmbedStem.normalize("NFC"))
+              : relationalIdentity.sourceKind !== "possessor"
+                || relationalIdentity.sourceMode !== "whole-stem"
+                || relationalIdentity.sourceEmbedStem !== "")) {
             return buildClassicalNahuatlClauseComplementationBlockedResultFrame(operationKind, "typed-relational-nnc-and-verbstem-pair-not-licensed");
           }
         } else {
@@ -1815,21 +1905,16 @@ export function createComplementClauseGlobals(targetObject = globalThis, install
             && !["present", "future"].includes(complement.tense)) {
             return buildClassicalNahuatlClauseComplementationBlockedResultFrame(operationKind, "beginning-or-satisfaction-complement-requires-present-or-licensed-future");
           }
-          if (semanticCategory === "satisfaction" && complement.tense !== "present") {
-            return buildClassicalNahuatlClauseComplementationBlockedResultFrame(operationKind, "satisfaction-complement-is-normally-present");
-          }
         }
         return finalizeClassicalNahuatlClauseComplementationResultFrame(operationKind, principal, complement, options, {
           role: "adverbial-complement",
           semanticCategory,
           referenceIdentityUnified: !["coverage", "relational-lexicalized"].includes(semanticCategory),
-          complementTensePolicy: semanticCategory === "beginning"
+          complementTensePolicy: ["beginning", "satisfaction"].includes(semanticCategory)
             ? "normally-present-occasional-future"
-            : semanticCategory === "satisfaction"
-              ? "normally-present"
-              : semanticCategory === "daring"
-                ? "principal-determined-ordinarily-subsequent"
-                : "lexically-governed",
+            : semanticCategory === "daring"
+              ? "principal-determined-ordinarily-subsequent"
+              : "lexically-governed",
           optativeInsecurity: semanticCategory === "daring" && complement.mood === "optative",
           resemblesPurposeOrConjunctionButIsNeither: semanticCategory === "beginning",
           activeActionIncorporationAvailable: semanticCategory === "relational-lexicalized",

@@ -125,6 +125,10 @@ export function createClassicalRelationalContinuationValidationSemanticOperation
     return summarize(target.evaluateClassicalNahuatlRelationalNnc(typedRequest(request)));
   }
 
+  function buildClassicalTechHonorificWitness() {
+    return execute({ stemId: "tech-contact", option: "option-one", affective: "honorific" });
+  }
+
   function sourceStemNode(stem) {
     return {
       kind:
@@ -386,6 +390,7 @@ export function createClassicalRelationalContinuationValidationSemanticOperation
         affective: "pejorative",
       }),
       techPossessive: execute({ stemId: "tech-contact", option: "option-one" }),
+      techHonorific: buildClassicalTechHonorificWitness(),
       techIntegrated: execute({
         stemId: "tech-contact", option: "option-two", sourceKind: "nounstem", embeddedStem: "cal",
       }),
@@ -628,6 +633,7 @@ export function createClassicalRelationalContinuationValidationSemanticOperation
   }
 
   return Object.freeze({
+    buildClassicalTechHonorificWitness,
     buildClassicalIcpacAffectiveFinalCoPair,
     buildClassicalTechEmbedPaCopaMatrixPair,
     buildClassicalTlanNestedBodypartMatrixChoice,

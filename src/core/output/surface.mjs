@@ -3373,7 +3373,13 @@ export function createOutputSurfaceApi(targetObject = globalThis, installationCo
       if (sourceFrame.enabled !== rebuiltSourceFrame.enabled || sourceFrame.objectPrefix !== rebuiltSourceFrame.objectPrefix || sourceFrame.sourceStem !== rebuiltSourceFrame.sourceStem || sourceFrame.alternateFormFrames.length !== rebuiltSourceFrame.alternateFormFrames.length) {
         return null;
       }
-      const alternateSourcesMatch = sourceFrame.alternateFormFrames.every((frame, index) => frame.verb === rebuiltSourceFrame.alternateFormFrames[index]?.verb && frame.subjectSuffix === rebuiltSourceFrame.alternateFormFrames[index]?.subjectSuffix && frame.nominalSuffix === rebuiltSourceFrame.alternateFormFrames[index]?.nominalSuffix);
+      const alternateSourcesMatch = rebuiltSourceFrame.alternateFormFrames.every((expected, index) => {
+        const frame = sourceFrame.alternateFormFrames[index];
+        return frame?.index === expected.index
+          && frame.verb === expected.verb
+          && frame.subjectSuffix === expected.subjectSuffix
+          && frame.nominalSuffix === expected.nominalSuffix;
+      });
       if (!alternateSourcesMatch || rebuiltSourceFrame.supported !== true) {
         return null;
       }
@@ -3386,7 +3392,16 @@ export function createOutputSurfaceApi(targetObject = globalThis, installationCo
       const targetMatches = ["branch", "embeddedMarker", "sourceObjectPrefix", "sourceStem", "targetObjectPrefix", "targetStem"].every(key => targetFrame[key] === expectedTargetFrame[key]);
       const targetAlternates = Array.isArray(targetFrame.alternateFormFrames) ? targetFrame.alternateFormFrames : [];
       const expectedAlternates = Array.isArray(expectedTargetFrame.alternateFormFrames) ? expectedTargetFrame.alternateFormFrames : [];
-      const alternatesMatch = targetAlternates.length === expectedAlternates.length && targetAlternates.every((frame, index) => frame.sourceVerb === expectedAlternates[index]?.sourceVerb && frame.targetVerb === expectedAlternates[index]?.targetVerb && frame.subjectSuffix === expectedAlternates[index]?.subjectSuffix && frame.nominalSuffix === expectedAlternates[index]?.nominalSuffix);
+      // The realizer mutates caller-owned alternates by this destination index.
+      // Validate it against the current producer before any alternate is changed.
+      const alternatesMatch = targetAlternates.length === expectedAlternates.length && expectedAlternates.every((expected, index) => {
+        const frame = targetAlternates[index];
+        return frame?.index === expected.index
+          && frame.sourceVerb === expected.sourceVerb
+          && frame.targetVerb === expected.targetVerb
+          && frame.subjectSuffix === expected.subjectSuffix
+          && frame.nominalSuffix === expected.nominalSuffix;
+      });
       return targetMatches && alternatesMatch ? targetFrame : null;
     }
     function realizeDerivedMuStemInteraction(input = {}) {

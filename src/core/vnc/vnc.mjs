@@ -1,9 +1,20 @@
 // Canonical modern ESM module.
 
 export function createVncApi(targetObject = globalThis) {
+    // These inherited lesson descriptions mix source structure with adaptation
+    // snapshots. They are not current owner output or current product proof.
+    function freezeInheritedVncDescription(value) {
+      const freezeRecord = record => Object.freeze({
+        ...record,
+        metadataScope: "inherited-adaptation-description",
+        currentProductProof: false,
+        grammarGenerationAllowed: false
+      });
+      return Array.isArray(value) ? Object.freeze(value.map(freezeRecord)) : freezeRecord(value);
+    }
     const VNC_LESSON5_VALIDATION_REFS = Object.freeze(["src/tests/vnc.test.js", "src/tests/registry.test.js", "docs/GRAMMAR_SPEC.md"]);
     const VNC_LESSON5_CANVAS_REFS = Object.freeze(["Andrews Lesson 5.1", "Andrews Lesson 5.2", "Andrews Lesson 5.3", "Andrews Lesson 5.4", "Andrews Lesson 5.5"]);
-    const VNC_LESSON5_INTRANSITIVE_FORMULA_FRAME = Object.freeze({
+    const VNC_LESSON5_INTRANSITIVE_FORMULA_FRAME = freezeInheritedVncDescription({
       kind: "lesson-5-intransitive-vnc-formula",
       sourceSection: "Andrews §5.1",
       formulaType: "VNC",
@@ -17,7 +28,7 @@ export function createVncApi(targetObject = globalThis) {
       valenceRole: "intransitive",
       generationScope: "finite-intransitive-vnc-surface"
     });
-    const VNC_LESSON5_SUBJECT_SLOT_FRAME = Object.freeze({
+    const VNC_LESSON5_SUBJECT_SLOT_FRAME = freezeInheritedVncDescription({
       kind: "lesson-5-subject-slot-frame",
       sourceSections: Object.freeze(["Andrews §5.2", "Andrews §5.3", "Andrews §5.4"]),
       caseSlot: Object.freeze({
@@ -31,21 +42,21 @@ export function createVncApi(targetObject = globalThis) {
         number: Object.freeze(["num1", "num2"]),
         animacyHumanness: "no-separate-subposition"
       }),
-      classicalSurfaceAuthority: "repo-evidence-and-user-provided-forms",
+      historicalSurfaceAuthority: "repo-evidence-and-user-provided-forms",
       classicalCarriersAreNotFixtures: true
     });
-    const VNC_LESSON5_SUBJECT_FILLER_PARADIGMS = Object.freeze([Object.freeze({
+    const VNC_LESSON5_SUBJECT_FILLER_PARADIGMS = freezeInheritedVncDescription([Object.freeze({
       id: "main-indicative-present-customary-imperfect-distant-past",
       sourceSection: "Andrews §5.4.1",
       tenseFamily: Object.freeze(["present", "customary-present", "imperfect", "distant-past"]),
-      currentClassicalTenses: Object.freeze(["presente", "presente-habitual", "imperfecto", "pasado-remoto"]),
+      legacyAdaptationTenses: Object.freeze(["presente", "presente-habitual", "imperfecto", "pasado-remoto"]),
       singularConnector: "0-0",
       pluralConnector: "0-h",
-      classicalPluralBridge: Object.freeze({
+      historicalAdaptationPluralBridge: Object.freeze({
         classicalCarrier: "h",
         adaptedCarrier: "t"
       }),
-      currentClassicalSubjectSlots: Object.freeze([Object.freeze({
+      legacyAdaptationSubjectSlots: Object.freeze([Object.freeze({
         person: "1sg",
         pers1: "ni",
         pers2: ""
@@ -74,17 +85,17 @@ export function createVncApi(targetObject = globalThis) {
       id: "future-preterit-indicative",
       sourceSection: "Andrews §5.4.2",
       tenseFamily: Object.freeze(["future", "preterit"]),
-      currentClassicalTenses: Object.freeze(["futuro", "preterito"]),
+      legacyAdaptationTenses: Object.freeze(["futuro", "preterito"]),
       connectorPattern: "c/qu~qui~0 plus 0/eh",
-      implementationNote: "current engine realizes Classical future and preterit through tense suffix rules and preterit class logic, not Classical fixture import"
+      historicalImplementationNote: "current engine realizes Classical future and preterit through tense suffix rules and preterit class logic, not Classical fixture import"
     }), Object.freeze({
       id: "nonpast-optative-admonitive-boundary",
       sourceSections: Object.freeze(["Andrews §5.4.3", "Andrews §5.4.4"]),
       tenseFamily: Object.freeze(["nonpast-optative", "nonpast-admonitive"]),
-      currentClassicalTenses: Object.freeze(["optativo", "presente-desiderativo"]),
-      implementationNote: "sentence-level optative/admonitive meanings remain Lessons 9-10; Lesson 5 only licenses finite-slot diagnostics"
+      legacyAdaptationTenses: Object.freeze(["optativo", "presente-desiderativo"]),
+      historicalImplementationNote: "sentence-level optative/admonitive meanings remain Lessons 9-10; Lesson 5 only licenses finite-slot diagnostics"
     })]);
-    const VNC_LESSON5_TENSE_MORPH_FRAME = Object.freeze({
+    const VNC_LESSON5_TENSE_MORPH_FRAME = freezeInheritedVncDescription({
       kind: "lesson-5-tense-morph-frame",
       sourceSection: "Andrews §5.5",
       tenseSlot: "tns",
@@ -104,58 +115,58 @@ export function createVncApi(targetObject = globalThis) {
           perfectiveStem: Object.freeze(["nonpast"])
         })
       }),
-      currentClassicalTenseInventory: Object.freeze(["presente", "presente-habitual", "presente-desiderativo", "imperfecto", "futuro", "preterito", "pasado-remoto", "condicional", "optativo", "perfecto", "pluscuamperfecto", "condicional-perfecto"]),
+      legacyAdaptationTenseInventory: Object.freeze(["presente", "presente-habitual", "presente-desiderativo", "imperfecto", "futuro", "preterito", "pasado-remoto", "condicional", "optativo", "perfecto", "pluscuamperfecto", "condicional-perfecto"]),
       tenseIsNotTime: true
     });
-    const VNC_LESSON5_SUBSECTION_INVENTORY = Object.freeze([Object.freeze({
+    const VNC_LESSON5_SUBSECTION_INVENTORY = freezeInheritedVncDescription([Object.freeze({
       id: "lesson5-intransitive-vnc-formula",
       andrewsSection: "5.1",
       category: "intransitive-vnc-formula",
-      directiveEs: "La CNV intransitiva usa #pers1-pers2(base)tiempo+núm1-núm2#; la valencia queda implícita y vacante en el núcleo.",
-      engineSurface: "CNV finite surface route with empty objective slots and intransitive valence frame",
+      historicalDirectiveEs: "La CNV intransitiva usa #pers1-pers2(base)tiempo+núm1-núm2#; la valencia queda implícita y vacante en el núcleo.",
+      historicalEngineSurface: "CNV finite surface route with empty objective slots and intransitive valence frame",
       redirectAction: "keep",
-      evidenceStatus: "direct-canvas-audited",
-      implementationState: "implemented-audited"
+      historicalEvidenceStatus: "direct-canvas-audited",
+      historicalImplementationState: "implemented-audited"
     }), Object.freeze({
       id: "lesson5-subject-positions",
       andrewsSection: "5.2",
       category: "subject-positions",
-      directiveEs: "Distribuir persona, caso y número en pers1, pers2, núm1 y núm2; animacidad y humanidad no reciben posición separada.",
-      engineSurface: "pers1/pers2 subject slots plus Classical plural suffix bridge",
+      historicalDirectiveEs: "Distribuir persona, caso y número en pers1, pers2, núm1 y núm2; animacidad y humanidad no reciben posición separada.",
+      historicalEngineSurface: "pers1/pers2 subject slots plus Classical plural suffix bridge",
       redirectAction: "keep",
-      evidenceStatus: "direct-canvas-audited",
-      implementationState: "implemented-audited"
+      historicalEvidenceStatus: "direct-canvas-audited",
+      historicalImplementationState: "implemented-audited"
     }), Object.freeze({
       id: "lesson5-subject-morphic-fillers",
       andrewsSection: "5.3",
       category: "subject-morphic-fillers",
-      directiveEs: "Los rellenos de sujeto son morfos portadores de persona, caso y número; las variantes clásicas no se importan como formas classical.",
-      engineSurface: "agreement slot inventory and Andrews source-gated subject prefixes/suffixes",
+      historicalDirectiveEs: "Los rellenos de sujeto son morfos portadores de persona, caso y número; las variantes clásicas no se importan como formas classical.",
+      historicalEngineSurface: "agreement slot inventory and Andrews source-gated subject prefixes/suffixes",
       redirectAction: "source-gated",
-      evidenceStatus: "direct-canvas-with-classical-realization",
-      implementationState: "implemented-adapted"
+      historicalEvidenceStatus: "direct-canvas-with-classical-realization",
+      historicalImplementationState: "implemented-adapted"
     }), Object.freeze({
       id: "lesson5-subject-paradigms",
       andrewsSection: "5.4",
       category: "subject-pronoun-paradigms",
-      directiveEs: "Agrupar los paradigmas de sujeto por correlación de tiempo con núm1/núm2; el sufijo plural clásico -h pasa por la ortografía classical antes de mostrarse.",
-      engineSurface: "indicative and optative subject-slot identity plus tense-sensitive suffix rules",
+      historicalDirectiveEs: "Agrupar los paradigmas de sujeto por correlación de tiempo con núm1/núm2; el sufijo plural clásico -h pasa por la ortografía classical antes de mostrarse.",
+      historicalEngineSurface: "indicative and optative subject-slot identity plus tense-sensitive suffix rules",
       redirectAction: "keep",
-      evidenceStatus: "direct-canvas-with-classical-realization",
-      implementationState: "implemented-adapted"
+      historicalEvidenceStatus: "direct-canvas-with-classical-realization",
+      historicalImplementationState: "implemented-adapted"
     }), Object.freeze({
       id: "lesson5-predicate-tense-morphs",
       andrewsSection: "5.5",
       category: "predicate-tense-morphs",
-      directiveEs: "El predicado organiza base, voz, aspecto, valencia y tiempo; el slot tiempo fusiona modo y tiempo sin confundir tiempo gramatical con tiempo real.",
-      engineSurface: "TENSE_SUFFIX_RULES, preterit class routing, active/nonactive gates, and finite CNV output",
+      historicalDirectiveEs: "El predicado organiza base, voz, aspecto, valencia y tiempo; el slot tiempo fusiona modo y tiempo sin confundir tiempo gramatical con tiempo real.",
+      historicalEngineSurface: "TENSE_SUFFIX_RULES, preterit class routing, active/nonactive gates, and finite CNV output",
       redirectAction: "keep",
-      evidenceStatus: "direct-canvas-audited",
-      implementationState: "implemented-audited"
+      historicalEvidenceStatus: "direct-canvas-audited",
+      historicalImplementationState: "implemented-audited"
     })]);
     const VNC_LESSON6_VALIDATION_REFS = Object.freeze(["src/tests/vnc.test.js", "src/tests/registry.test.js", "docs/GRAMMAR_SPEC.md"]);
     const VNC_LESSON6_CANVAS_REFS = Object.freeze(["Andrews Lesson 6.1", "Andrews Lesson 6.2", "Andrews Lesson 6.3", "Andrews Lesson 6.4", "Andrews Lesson 6.5", "Andrews Lesson 6.6", "Andrews Lesson 6.7"]);
-    const VNC_LESSON6_TRANSITIVE_FORMULA_FRAME = Object.freeze({
+    const VNC_LESSON6_TRANSITIVE_FORMULA_FRAME = freezeInheritedVncDescription({
       kind: "lesson-6-transitive-vnc-formula",
       sourceSections: Object.freeze(["Andrews §6.1", "Andrews §6.2", "Andrews §6.3"]),
       formulaType: "VNC",
@@ -178,7 +189,7 @@ export function createVncApi(targetObject = globalThis) {
       valencePositionCategories: Object.freeze(["person", "number", "animacy", "humanness", "objective-case"]),
       additionalObjectiveDistinctions: Object.freeze(["trajectory", "specificity", "prominence"])
     });
-    const VNC_LESSON6_OBJECT_CATEGORY_FRAME = Object.freeze({
+    const VNC_LESSON6_OBJECT_CATEGORY_FRAME = freezeInheritedVncDescription({
       kind: "lesson-6-object-category-frame",
       sourceSection: "Andrews §6.1",
       objectiveCaseFeature: "objective",
@@ -188,22 +199,22 @@ export function createVncApi(targetObject = globalThis) {
       nonSpecificIsIndefinite: true,
       shuntlineProminenceDeferredTo: Object.freeze(["Andrews Lesson 21", "Andrews Lesson 22", "Andrews Lesson 23", "Andrews Lesson 24", "Andrews Lesson 25", "Andrews Lesson 26"])
     });
-    const VNC_LESSON6_MONADIC_VALENCE_FILLERS = Object.freeze([Object.freeze({
+    const VNC_LESSON6_MONADIC_VALENCE_FILLERS = freezeInheritedVncDescription([Object.freeze({
       id: "shuntline-reflexive-reciprocative",
       sourceSection: "Andrews §6.2.1",
       classicalCarrier: "ne",
-      currentClassicalSlotValue: "ne",
-      currentClassicalSlotStatus: "direct-classical-generation",
+      legacyAdaptationSlotValue: "ne",
+      legacyAdaptationSlotStatus: "direct-classical-generation",
       trajectory: "reflexive-reciprocative",
       prominence: "shuntline",
       specificity: "specific",
       realizationSource: "Andrews Lección 6 con forma Classical directa provista por el usuario; no se colapsa con mu de línea principal",
-      generationPolicy: "direct-classical-generation"
+      historicalGenerationPolicy: "direct-classical-generation"
     }), Object.freeze({
       id: "nonspecific-human-projective",
       sourceSection: "Andrews §6.2.2a",
       classicalCarrier: "te",
-      currentClassicalSlotValue: "te",
+      legacyAdaptationSlotValue: "te",
       trajectory: "projective",
       specificity: "nonspecific",
       humanness: "human",
@@ -212,51 +223,51 @@ export function createVncApi(targetObject = globalThis) {
       id: "nonspecific-nonhuman-projective",
       sourceSection: "Andrews §6.2.2b",
       classicalCarrier: "tla",
-      currentClassicalSlotValue: "ta",
+      legacyAdaptationSlotValue: "ta",
       trajectory: "projective",
       specificity: "nonspecific",
       humanness: "nonhuman",
       pronounClass: "indefinite",
       classicalRealizationAuthority: "Classical Andrews transcription"
     })]);
-    const VNC_LESSON6_PROJECTIVE_OBJECT_PARADIGM = Object.freeze([Object.freeze({
+    const VNC_LESSON6_PROJECTIVE_OBJECT_PARADIGM = freezeInheritedVncDescription([Object.freeze({
       person: "1sg",
       classicalDyad: "n-ech",
-      currentClassicalDyad: "n-ech",
-      currentClassicalPrefix: "nech",
+      legacyAdaptationDyad: "n-ech",
+      legacyAdaptationPrefix: "nech",
       glossEs: "me"
     }), Object.freeze({
       person: "1pl",
       classicalDyad: "t-ech",
-      currentClassicalDyad: "t-ech",
-      currentClassicalPrefix: "tech",
+      legacyAdaptationDyad: "t-ech",
+      legacyAdaptationPrefix: "tech",
       glossEs: "nos"
     }), Object.freeze({
       person: "2sg",
       classicalDyad: "m-itz",
-      currentClassicalDyad: "m-etz",
-      currentClassicalPrefix: "metz",
+      legacyAdaptationDyad: "m-etz",
+      legacyAdaptationPrefix: "metz",
       glossEs: "te"
     }), Object.freeze({
       person: "2pl",
       classicalDyad: "am-ech",
-      currentClassicalDyad: "m-etz-in",
-      currentClassicalPrefix: "metzin",
+      legacyAdaptationDyad: "m-etz-in",
+      legacyAdaptationPrefix: "metzin",
       glossEs: "los/las a ustedes"
     }), Object.freeze({
       person: "3sg",
       classicalDyad: "c-0/qu-0/qui-0",
-      currentClassicalDyad: "ki-0/k-0",
-      currentClassicalPrefix: "ki/k",
+      legacyAdaptationDyad: "ki-0/k-0",
+      legacyAdaptationPrefix: "ki/k",
       glossEs: "lo/la"
     }), Object.freeze({
       person: "3pl",
       classicalDyad: "qu-im",
-      currentClassicalDyad: "k-in",
-      currentClassicalPrefix: "kin",
+      legacyAdaptationDyad: "k-in",
+      legacyAdaptationPrefix: "kin",
       glossEs: "los/las"
     })]);
-    const VNC_LESSON6_DYADIC_OBJECT_FRAME = Object.freeze({
+    const VNC_LESSON6_DYADIC_OBJECT_FRAME = freezeInheritedVncDescription({
       kind: "lesson-6-dyadic-object-frame",
       sourceSections: Object.freeze(["Andrews §6.3", "Andrews §6.4", "Andrews §6.5"]),
       subpositions: Object.freeze(["va1", "va2"]),
@@ -274,8 +285,8 @@ export function createVncApi(targetObject = globalThis) {
           classicalVa2Variants: Object.freeze(["ech", "itz"])
         })
       }),
-      currentClassicalSpecificPrefixes: Object.freeze(["nech", "tech", "metz", "metzin", "ki", "k", "kin"]),
-      directClassicalDyadByPrefix: Object.freeze({
+      legacyAdaptationSpecificPrefixes: Object.freeze(["nech", "tech", "metz", "metzin", "ki", "k", "kin"]),
+      legacyAdaptationDyadByPrefix: Object.freeze({
         nech: "n-ech",
         tech: "t-ech",
         metz: "m-etz",
@@ -284,9 +295,9 @@ export function createVncApi(targetObject = globalThis) {
         k: "k-0",
         kin: "k-in"
       }),
-      currentClassicalAllomorphyNotes: Object.freeze(["ki-0 is the direct Classical 3sg object dyad; k-0 is the reduced Classical dyad when the object prefix surfaces as k"])
+      legacyAdaptationAllomorphyNotes: Object.freeze(["ki-0 is the direct Classical 3sg object dyad; k-0 is the reduced Classical dyad when the object prefix surfaces as k"])
     });
-    const VNC_LESSON6_REFLEXIVE_OBJECT_FRAME = Object.freeze({
+    const VNC_LESSON6_REFLEXIVE_OBJECT_FRAME = freezeInheritedVncDescription({
       kind: "lesson-6-reflexive-object-frame",
       sourceSections: Object.freeze(["Andrews §6.6", "Andrews §6.7"]),
       valencePosition: "va1-va2",
@@ -303,191 +314,191 @@ export function createVncApi(targetObject = globalThis) {
       }), Object.freeze({
         person: "nonfirst",
         dyad: "m-o/m-0",
-        currentClassicalDyad: "m-u/m-0",
+        legacyAdaptationDyad: "m-u/m-0",
         glossEs: "a sí mismo(s) / entre sí"
       })]),
-      currentClassicalReflexiveSlot: "mu",
-      directClassicalReflexiveParadigm: "m-u/m-0",
-      directClassicalReflexiveCondition: "m-u cuando la alomorfía conserva mu; m-0 cuando obj1-mu-before-vowel-m reduce mu a m",
-      engineBehavior: "same-person specific objects are redirected to dyadic mainline mu by reflexive slot logic",
+      legacyAdaptationReflexiveSlot: "mu",
+      legacyAdaptationReflexiveParadigm: "m-u/m-0",
+      legacyAdaptationReflexiveCondition: "m-u cuando la alomorfía conserva mu; m-0 cuando obj1-mu-before-vowel-m reduce mu a m",
+      historicalEngineBehavior: "same-person specific objects are redirected to dyadic mainline mu by reflexive slot logic",
       generationAddsNoClassicalFixtures: true
     });
-    const VNC_LESSON6_SUBSECTION_INVENTORY = Object.freeze([Object.freeze({
+    const VNC_LESSON6_SUBSECTION_INVENTORY = freezeInheritedVncDescription([Object.freeze({
       id: "lesson6-transitive-vnc-formulas",
       andrewsSection: "6.1",
       category: "transitive-vnc-formulas",
-      directiveEs: "La CNV transitiva difiere de la intransitiva por la posición de valencia, que porta pronombre objetivo.",
-      engineSurface: "CNV route with occupied obj1/valence slot and valency frame",
+      historicalDirectiveEs: "La CNV transitiva difiere de la intransitiva por la posición de valencia, que porta pronombre objetivo.",
+      historicalEngineSurface: "CNV route with occupied obj1/valence slot and valency frame",
       redirectAction: "keep",
-      evidenceStatus: "direct-canvas-audited",
-      implementationState: "implemented-audited"
+      historicalEvidenceStatus: "direct-canvas-audited",
+      historicalImplementationState: "implemented-audited"
     }), Object.freeze({
       id: "lesson6-monadic-valence",
       andrewsSection: "6.2",
       category: "monadic-valence-position",
-      directiveEs: "La valencia monádica cubre reflexivo/recíproco de línea secundaria y objetos inespecíficos humanos/no humanos.",
-      engineSurface: "ne, te, and ta object-slot diagnostics with direct Classical realization",
+      historicalDirectiveEs: "La valencia monádica cubre reflexivo/recíproco de línea secundaria y objetos inespecíficos humanos/no humanos.",
+      historicalEngineSurface: "ne, te, and ta object-slot diagnostics with direct Classical realization",
       redirectAction: "keep",
-      evidenceStatus: "direct-canvas-with-classical-realization",
-      implementationState: "implemented-adapted"
+      historicalEvidenceStatus: "direct-canvas-with-classical-realization",
+      historicalImplementationState: "implemented-adapted"
     }), Object.freeze({
       id: "lesson6-dyadic-valence-formula",
       andrewsSection: "6.3",
       category: "dyadic-valence-formula",
-      directiveEs: "La valencia diádica usa val1-val2 para objetos específicos de línea principal.",
-      engineSurface: "specific obj1 prefixes and valency frame",
+      historicalDirectiveEs: "La valencia diádica usa val1-val2 para objetos específicos de línea principal.",
+      historicalEngineSurface: "specific obj1 prefixes and valency frame",
       redirectAction: "keep",
-      evidenceStatus: "direct-canvas-audited",
-      implementationState: "implemented-audited"
+      historicalEvidenceStatus: "direct-canvas-audited",
+      historicalImplementationState: "implemented-audited"
     }), Object.freeze({
       id: "lesson6-projective-object-distribution",
       andrewsSection: "6.4",
       category: "projective-object-distribution",
-      directiveEs: "Los objetos proyectivos reparten persona, número y caso entre val1 y val2 según sean de 3a persona o no.",
-      engineSurface: "specific object prefix inventory and allomorphy metadata",
+      historicalDirectiveEs: "Los objetos proyectivos reparten persona, número y caso entre val1 y val2 según sean de 3a persona o no.",
+      historicalEngineSurface: "specific object prefix inventory and allomorphy metadata",
       redirectAction: "keep",
-      evidenceStatus: "direct-canvas-with-classical-realization",
-      implementationState: "implemented-adapted"
+      historicalEvidenceStatus: "direct-canvas-with-classical-realization",
+      historicalImplementationState: "implemented-adapted"
     }), Object.freeze({
       id: "lesson6-projective-object-summary",
       andrewsSection: "6.5",
       category: "projective-object-paradigm",
-      directiveEs: "El paradigma de objeto específico se conserva como mapa de función; la fórmula visible expone subcasillas Classical directas.",
-      engineSurface: "n-ech/t-ech/m-etz/m-etz-in/ki-0~k-0/k-in formula dyads plus current surface prefix set",
+      historicalDirectiveEs: "El paradigma de objeto específico se conserva como mapa de función; la fórmula visible expone subcasillas Classical directas.",
+      historicalEngineSurface: "n-ech/t-ech/m-etz/m-etz-in/ki-0~k-0/k-in formula dyads plus current surface prefix set",
       redirectAction: "keep",
-      evidenceStatus: "direct-canvas-with-classical-realization",
-      implementationState: "implemented-adapted"
+      historicalEvidenceStatus: "direct-canvas-with-classical-realization",
+      historicalImplementationState: "implemented-adapted"
     }), Object.freeze({
       id: "lesson6-mainline-reflexive-distribution",
       andrewsSection: "6.6",
       category: "mainline-reflexive-distribution",
-      directiveEs: "El reflexivo de línea principal refleja persona y número del sujeto; no se debe duplicar información fuera del contrato de objeto.",
-      engineSurface: "same-person object auto-switch to reflexive mu with diagnostics",
+      historicalDirectiveEs: "El reflexivo de línea principal refleja persona y número del sujeto; no se debe duplicar información fuera del contrato de objeto.",
+      historicalEngineSurface: "same-person object auto-switch to reflexive mu with diagnostics",
       redirectAction: "keep",
-      evidenceStatus: "direct-canvas-with-classical-realization",
-      implementationState: "implemented-adapted"
+      historicalEvidenceStatus: "direct-canvas-with-classical-realization",
+      historicalImplementationState: "implemented-adapted"
     }), Object.freeze({
       id: "lesson6-mainline-reflexive-summary",
       andrewsSection: "6.7",
       category: "mainline-reflexive-paradigm",
-      directiveEs: "Los paradigmas reflexivos/recíprocos quedan vinculados al sujeto; la fórmula visible expone m-u o m-0 según la alomorfía mu.",
-      engineSurface: "reflexivo slot metadata with conditional direct Classical m-u/m-0 paradigm and unchanged finite output",
+      historicalDirectiveEs: "Los paradigmas reflexivos/recíprocos quedan vinculados al sujeto; la fórmula visible expone m-u o m-0 según la alomorfía mu.",
+      historicalEngineSurface: "reflexivo slot metadata with conditional direct Classical m-u/m-0 paradigm and unchanged finite output",
       redirectAction: "keep",
-      evidenceStatus: "direct-canvas-with-classical-realization",
-      implementationState: "implemented-adapted"
+      historicalEvidenceStatus: "direct-canvas-with-classical-realization",
+      historicalImplementationState: "implemented-adapted"
     })]);
-    const VNC_LESSON6_SHOT_REPORT = Object.freeze([Object.freeze({
+    const VNC_LESSON6_SHOT_REPORT = freezeInheritedVncDescription([Object.freeze({
       andrewsRef: "Andrews Lesson 6.1",
-      requirementEs: "La CNV transitiva se distingue por la posicion de valencia objetiva y por trayectoria, especificidad y prominencia.",
-      shotStatus: "hit-no-edit",
-      missProbeEs: "La ruta renderiza un objeto, pero no distingue valencia monadica/diadica ni especifico/inespecifico/reflexivo.",
+      historicalRequirementEs: "La CNV transitiva se distingue por la posicion de valencia objetiva y por trayectoria, especificidad y prominencia.",
+      historicalShotStatus: "hit-no-edit",
+      historicalMissProbeEs: "La ruta renderiza un objeto, pero no distingue valencia monadica/diadica ni especifico/inespecifico/reflexivo.",
       changedFiles: Object.freeze([])
     }), Object.freeze({
       andrewsRef: "Andrews Lesson 6.2",
-      requirementEs: "La formula monadica +va cubre ne de linea secundaria y objetos inespecificos te/ta.",
-      shotStatus: "hit-no-edit",
-      missProbeEs: "ne, te o ta aparecen como val1-val2 o quedan bloqueados.",
+      historicalRequirementEs: "La formula monadica +va cubre ne de linea secundaria y objetos inespecificos te/ta.",
+      historicalShotStatus: "hit-no-edit",
+      historicalMissProbeEs: "ne, te o ta aparecen como val1-val2 o quedan bloqueados.",
       changedFiles: Object.freeze([])
     }), Object.freeze({
       andrewsRef: "Andrews Lesson 6.2.1",
-      requirementEs: "ne es reflexivo/reciproco de linea secundaria, no mu de linea principal.",
-      shotStatus: "hit-no-edit",
-      missProbeEs: "ne se colapsa en mu, se bloquea, o pierde la formula monadica.",
+      historicalRequirementEs: "ne es reflexivo/reciproco de linea secundaria, no mu de linea principal.",
+      historicalShotStatus: "hit-no-edit",
+      historicalMissProbeEs: "ne se colapsa en mu, se bloquea, o pierde la formula monadica.",
       changedFiles: Object.freeze([])
     }), Object.freeze({
       andrewsRef: "Andrews Lesson 6.2.2a",
-      requirementEs: "te es proyectivo inespecifico humano.",
-      shotStatus: "hit-no-edit",
-      missProbeEs: "te se trata como objeto personal especifico o como valencia diadica.",
+      historicalRequirementEs: "te es proyectivo inespecifico humano.",
+      historicalShotStatus: "hit-no-edit",
+      historicalMissProbeEs: "te se trata como objeto personal especifico o como valencia diadica.",
       changedFiles: Object.freeze([])
     }), Object.freeze({
       andrewsRef: "Andrews Lesson 6.2.2b",
-      requirementEs: "tla corresponde estructuralmente a Classical ta como proyectivo inespecifico no humano.",
-      shotStatus: "hit-no-edit",
-      missProbeEs: "ta se importa como superficie clasica tla o se trata como objeto especifico.",
+      historicalRequirementEs: "tla corresponde estructuralmente a Classical ta como proyectivo inespecifico no humano.",
+      historicalShotStatus: "hit-no-edit",
+      historicalMissProbeEs: "ta se importa como superficie clasica tla o se trata como objeto especifico.",
       changedFiles: Object.freeze([])
     }), Object.freeze({
       andrewsRef: "Andrews Lesson 6.3",
-      requirementEs: "Los objetos especificos de linea principal usan valencia diadica val1-val2.",
-      shotStatus: "hit-no-edit",
-      missProbeEs: "ki, kin, nech, tech, metz, metzin o mu aparecen como valencia monadica.",
+      historicalRequirementEs: "Los objetos especificos de linea principal usan valencia diadica val1-val2.",
+      historicalShotStatus: "hit-no-edit",
+      historicalMissProbeEs: "ki, kin, nech, tech, metz, metzin o mu aparecen como valencia monadica.",
       changedFiles: Object.freeze([])
     }), Object.freeze({
       andrewsRef: "Andrews Lesson 6.4",
-      requirementEs: "Los objetos proyectivos personales distribuyen persona, numero y caso entre val1 y val2.",
-      shotStatus: "hit-no-edit",
-      missProbeEs: "La superficie genera, pero la formula oculta la propiedad de subcasillas.",
+      historicalRequirementEs: "Los objetos proyectivos personales distribuyen persona, numero y caso entre val1 y val2.",
+      historicalShotStatus: "hit-no-edit",
+      historicalMissProbeEs: "La superficie genera, pero la formula oculta la propiedad de subcasillas.",
       changedFiles: Object.freeze([])
     }), Object.freeze({
       andrewsRef: "Andrews Lesson 6.4.1",
-      requirementEs: "val1 siempre manifiesta persona, nunca como unica informacion.",
-      shotStatus: "hit-no-edit",
-      missProbeEs: "val1 queda como persona desnuda sin caso objetivo o numero.",
+      historicalRequirementEs: "val1 siempre manifiesta persona, nunca como unica informacion.",
+      historicalShotStatus: "hit-no-edit",
+      historicalMissProbeEs: "val1 queda como persona desnuda sin caso objetivo o numero.",
       changedFiles: Object.freeze([])
     }), Object.freeze({
       andrewsRef: "Andrews Lesson 6.4.1a",
-      requirementEs: "En tercera persona, val1 combina persona y caso objetivo.",
-      shotStatus: "hit-no-edit",
-      missProbeEs: "ki/k se presenta como monadico o como portador del numero.",
+      historicalRequirementEs: "En tercera persona, val1 combina persona y caso objetivo.",
+      historicalShotStatus: "hit-no-edit",
+      historicalMissProbeEs: "ki/k se presenta como monadico o como portador del numero.",
       changedFiles: Object.freeze([])
     }), Object.freeze({
       andrewsRef: "Andrews Lesson 6.4.1b",
-      requirementEs: "En primera y segunda persona, val1 combina persona y numero.",
-      shotStatus: "hit-no-edit",
-      missProbeEs: "nech, tech, metz o metzin no exponen los dyads Classical adaptados.",
+      historicalRequirementEs: "En primera y segunda persona, val1 combina persona y numero.",
+      historicalShotStatus: "hit-no-edit",
+      historicalMissProbeEs: "nech, tech, metz o metzin no exponen los dyads Classical adaptados.",
       changedFiles: Object.freeze([])
     }), Object.freeze({
       andrewsRef: "Andrews Lesson 6.4.2",
-      requirementEs: "val2 provee la categoria no contenida en val1.",
-      shotStatus: "hit-no-edit",
-      missProbeEs: "val2 queda vacio o se pliega en el prefijo superficial.",
+      historicalRequirementEs: "val2 provee la categoria no contenida en val1.",
+      historicalShotStatus: "hit-no-edit",
+      historicalMissProbeEs: "val2 queda vacio o se pliega en el prefijo superficial.",
       changedFiles: Object.freeze([])
     }), Object.freeze({
       andrewsRef: "Andrews Lesson 6.4.2a",
-      requirementEs: "En tercera persona, val2 manifiesta numero: cero singular e in/im plural.",
-      shotStatus: "hit-edit",
-      missProbeEs: "nikpiya muestra ki-0 en vez de k-0, kipiya muestra k-0 en vez de ki-0, o kin no expone k-in.",
+      historicalRequirementEs: "En tercera persona, val2 manifiesta numero: cero singular e in/im plural.",
+      historicalShotStatus: "hit-edit",
+      historicalMissProbeEs: "nikpiya muestra ki-0 en vez de k-0, kipiya muestra k-0 en vez de ki-0, o kin no expone k-in.",
       changedFiles: Object.freeze(["docs/ANDREWS_TRAJECTORY.md", "docs/GRAMMAR_SPEC.md", "src/core/generation/engine.mjs", "src/core/generation/morphology_engine.mjs", "src/core/orthography/orthography.mjs", "src/core/vnc/vnc.mjs", "src/tests/vnc.test.js"])
     }), Object.freeze({
       andrewsRef: "Andrews Lesson 6.4.2b",
-      requirementEs: "En no tercera persona, val2 expresa caso objetivo.",
-      shotStatus: "hit-no-edit",
-      missProbeEs: "metz/metzin quedan sin division o importan itz sin adaptacion Classical.",
+      historicalRequirementEs: "En no tercera persona, val2 expresa caso objetivo.",
+      historicalShotStatus: "hit-no-edit",
+      historicalMissProbeEs: "metz/metzin quedan sin division o importan itz sin adaptacion Classical.",
       changedFiles: Object.freeze([])
     }), Object.freeze({
       andrewsRef: "Andrews Lesson 6.5",
-      requirementEs: "El paradigma proyectivo especifico se muestra como dyads Classical directos.",
-      shotStatus: "hit-edit",
-      missProbeEs: "Los prefijos generan, pero faltan n-ech, t-ech, m-etz, m-etz-in, ki-0/k-0 o k-in en la formula, o nikpiya no acopla superficie k con formula k-0.",
+      historicalRequirementEs: "El paradigma proyectivo especifico se muestra como dyads Classical directos.",
+      historicalShotStatus: "hit-edit",
+      historicalMissProbeEs: "Los prefijos generan, pero faltan n-ech, t-ech, m-etz, m-etz-in, ki-0/k-0 o k-in en la formula, o nikpiya no acopla superficie k con formula k-0.",
       changedFiles: Object.freeze(["docs/ANDREWS_TRAJECTORY.md", "docs/GRAMMAR_SPEC.md", "src/core/generation/engine.mjs", "src/core/generation/morphology_engine.mjs", "src/core/orthography/orthography.mjs", "src/core/vnc/vnc.mjs", "src/tests/vnc.test.js"])
     }), Object.freeze({
       andrewsRef: "Andrews Lesson 6.6",
-      requirementEs: "El reflexivo principal es diadico y refleja persona/numero del sujeto.",
-      shotStatus: "hit-no-edit",
-      missProbeEs: "mu se duplica como mu-mu o se analiza como valencia monadica.",
+      historicalRequirementEs: "El reflexivo principal es diadico y refleja persona/numero del sujeto.",
+      historicalShotStatus: "hit-no-edit",
+      historicalMissProbeEs: "mu se duplica como mu-mu o se analiza como valencia monadica.",
       changedFiles: Object.freeze([])
     }), Object.freeze({
       andrewsRef: "Andrews Lesson 6.6.1",
-      requirementEs: "En reflexivo principal, val1 es el locus de persona y numero.",
-      shotStatus: "hit-no-edit",
-      missProbeEs: "La formula reflexiva no muestra m en val1 para no primera persona.",
+      historicalRequirementEs: "En reflexivo principal, val1 es el locus de persona y numero.",
+      historicalShotStatus: "hit-no-edit",
+      historicalMissProbeEs: "La formula reflexiva no muestra m en val1 para no primera persona.",
       changedFiles: Object.freeze([])
     }), Object.freeze({
       andrewsRef: "Andrews Lesson 6.6.2",
-      requirementEs: "En reflexivo principal, val2 expresa caso objetivo y alterna u/0 segun alomorfia.",
-      shotStatus: "hit-no-edit",
-      missProbeEs: "m-u/m-0 se elige por atajo amplio y no por la misma regla de superficie.",
+      historicalRequirementEs: "En reflexivo principal, val2 expresa caso objetivo y alterna u/0 segun alomorfia.",
+      historicalShotStatus: "hit-no-edit",
+      historicalMissProbeEs: "m-u/m-0 se elige por atajo amplio y no por la misma regla de superficie.",
       changedFiles: Object.freeze([])
     }), Object.freeze({
       andrewsRef: "Andrews Lesson 6.7",
-      requirementEs: "El paradigma reflexivo Classical visible usa m-u o m-0 acoplado a la superficie.",
-      shotStatus: "hit-no-edit",
-      missProbeEs: "mu+ajsi no da m-u/muajsit o mu+altia no da m-0/maltiat con marco de regla.",
+      historicalRequirementEs: "El paradigma reflexivo Classical visible usa m-u o m-0 acoplado a la superficie.",
+      historicalShotStatus: "hit-no-edit",
+      historicalMissProbeEs: "mu+ajsi no da m-u/muajsit o mu+altia no da m-0/maltiat con marco de regla.",
       changedFiles: Object.freeze([])
     })]);
     const VNC_LESSON7_VALIDATION_REFS = Object.freeze(["src/tests/vnc.test.js", "src/tests/registry.test.js", "src/tests/preterit.test.js", "docs/GRAMMAR_SPEC.md"]);
     const VNC_LESSON7_CANVAS_REFS = Object.freeze(["Andrews Lesson 7.1", "Andrews Lesson 7.2", "Andrews Lesson 7.3", "Andrews Lesson 7.4", "Andrews Lesson 7.5", "Andrews Lesson 7.6", "Andrews Lesson 7.7", "Andrews Lesson 7.8", "Andrews Lesson 7.9", "Andrews Lesson 7.10"]);
-    const VNC_LESSON7_VERBSTEM_STRUCTURE_FRAME = Object.freeze({
+    const VNC_LESSON7_VERBSTEM_STRUCTURE_FRAME = freezeInheritedVncDescription({
       kind: "lesson-7-verbstem-structure-frame",
       sourceSection: "Andrews §7.1",
       stemRole: "lexical-meaning-locus",
@@ -497,39 +508,39 @@ export function createVncApi(targetObject = globalThis) {
       internalMorphsGlossedIndividually: false,
       analysisPolicy: "stem translation stays unified even when internal morph boundaries are shown"
     });
-    const VNC_LESSON7_CITATION_FORM_FRAME = Object.freeze({
+    const VNC_LESSON7_CITATION_FORM_FRAME = freezeInheritedVncDescription({
       kind: "lesson-7-citation-form-frame",
       sourceSection: "Andrews §7.2",
       citationUnit: "verbcore",
       verbcoreFormula: "valence + stem",
-      directiveEs: "Citar el núcleo verbal con su valencia; no citar una base verbal aislada cuando la valencia decide la ruta.",
+      historicalDirectiveEs: "Citar el núcleo verbal con su valencia; no citar una base verbal aislada cuando la valencia decide la ruta.",
       citationObjectMarkers: Object.freeze({
         intransitive: Object.freeze({
           classical: "",
-          currentClassical: ""
+          legacyAdaptation: ""
         }),
         projectiveHuman: Object.freeze({
           classical: "te",
-          currentClassical: "te"
+          legacyAdaptation: "te"
         }),
         projectiveNonhuman: Object.freeze({
           classical: "tla",
-          currentClassical: "ta",
+          legacyAdaptation: "ta",
           classicalRealizationAuthority: "Classical Andrews transcription"
         }),
         reflexive: Object.freeze({
           classical: "m-o/m-0",
-          currentClassical: "mu"
+          legacyAdaptation: "mu"
         }),
         reciprocalHuman: Object.freeze({
           classical: "t-o/t-0",
-          currentClassical: "mu",
+          legacyAdaptation: "mu",
           implementationBoundary: "current reflexive slot; reciprocal interpretation needs context"
         })
       }),
       classicalCitationExamplesAreFixtures: false
     });
-    const VNC_LESSON7_VERBSTEM_CLASS_FRAME = Object.freeze({
+    const VNC_LESSON7_VERBSTEM_CLASS_FRAME = freezeInheritedVncDescription({
       kind: "lesson-7-verbstem-class-frame",
       sourceSection: "Andrews §7.3",
       classBasis: "perfective-stem-shape",
@@ -540,33 +551,33 @@ export function createVncApi(targetObject = globalThis) {
           perfectiveFormation: "same carrier shape as imperfective, with A-2 long-final-vowel alternants",
           imperfectiveShapes: "one or two",
           totalShapeSummary: "A-1 one shape; A-2 two shapes",
-          currentEngineClass: "A"
+          legacyEngineClass: "A"
         }),
         B: Object.freeze({
           id: "B",
           perfectiveFormation: "final vowel disappears or causative final vowel is silently present",
           imperfectiveShapes: "one",
           totalShapeSummary: "two shapes",
-          currentEngineClass: "B"
+          legacyEngineClass: "B"
         }),
         C: Object.freeze({
           id: "C",
           perfectiveFormation: "final long a after o/i is replaced by glottal stop",
           imperfectiveShapes: "four",
           totalShapeSummary: "five shapes",
-          currentEngineClass: "C"
+          legacyEngineClass: "C"
         }),
         D: Object.freeze({
           id: "D",
           perfectiveFormation: "adds glottal stop after final long a and shortens the vowel",
           imperfectiveShapes: "two",
           totalShapeSummary: "three shapes",
-          currentEngineClass: "D"
+          legacyEngineClass: "D"
         })
       }),
-      currentEngineUsesClassLabels: Object.freeze(["A", "B", "C", "D"])
+      legacyEngineUsesClassLabels: Object.freeze(["A", "B", "C", "D"])
     });
-    const VNC_LESSON7_CLASS_B_CHANGE_FRAME = Object.freeze({
+    const VNC_LESSON7_CLASS_B_CHANGE_FRAME = freezeInheritedVncDescription({
       kind: "lesson-7-class-b-change-frame",
       sourceSection: "Andrews §7.4",
       trigger: "loss-or-silencing-of-final-vowel",
@@ -574,82 +585,82 @@ export function createVncApi(targetObject = globalThis) {
       classicalExamples: Object.freeze([Object.freeze({
         pattern: "k spelling",
         example: "(miqui) > (mic)",
-        classicalBoundary: "Classical realization must use repo orthography, not Classical c/qu spelling"
+        historicalAdaptationBoundary: "Classical realization must use repo orthography, not Classical c/qu spelling"
       }), Object.freeze({
         pattern: "s spelling",
         example: "(neci) > (nez)",
-        classicalBoundary: "Classical realization must use repo orthography"
+        historicalAdaptationBoundary: "Classical realization must use repo orthography"
       }), Object.freeze({
         pattern: "m to n-like nasal",
         example: "(nemi) > (nen)",
-        classicalBoundary: "current preterit classes decide attested output"
+        historicalAdaptationBoundary: "current preterit classes decide attested output"
       }), Object.freeze({
         pattern: "y to s/x",
         example: "(tlaoco-ya) > (tlaoco-x)",
-        classicalBoundary: "Classical h/j/x/s choices remain source-gated"
+        historicalAdaptationBoundary: "Classical h/j/x/s choices remain source-gated"
       })]),
       traditionalSpellingWarning: "oa/ia spellings can obscure w/y and mislead class assignment"
     });
-    const VNC_LESSON7_VARIABLE_CLASS_FRAME = Object.freeze({
+    const VNC_LESSON7_VARIABLE_CLASS_FRAME = freezeInheritedVncDescription({
       kind: "lesson-7-variable-class-frame",
       sourceSection: "Andrews §7.5",
       variableMembership: true,
       typicalValence: "mostly-intransitive",
       classOptions: Object.freeze(["A", "B"]),
-      implementationPolicy: "accept class alternatives only from parsed metadata, repo evidence, or user-provided forms"
+      historicalImplementationPolicy: "accept class alternatives only from parsed metadata, repo evidence, or user-provided forms"
     });
-    const VNC_LESSON7_CLASS_GUIDELINES = Object.freeze([Object.freeze({
+    const VNC_LESSON7_CLASS_GUIDELINES = freezeInheritedVncDescription([Object.freeze({
       id: "monosyllabic-long-a",
       sourceSection: "Andrews §7.6.1",
       classId: "D",
-      directiveEs: "Monosílabos con a larga final pertenecen a clase D; otros monosílabos tienden a clase A."
+      historicalDirectiveEs: "Monosílabos con a larga final pertenecen a clase D; otros monosílabos tienden a clase A."
     }), Object.freeze({
       id: "final-vowel-after-cluster",
       sourceSection: "Andrews §7.6.2",
       classId: "A",
-      directiveEs: "Final precedido por dos consonantes o consonante larga apunta a clase A."
+      historicalDirectiveEs: "Final precedido por dos consonantes o consonante larga apunta a clase A."
     }), Object.freeze({
       id: "final-ka",
       sourceSection: "Andrews §7.6.3",
       classId: "A",
-      directiveEs: "Sílabas finales ka apuntan a clase A, con excepciones source-gated."
+      historicalDirectiveEs: "Sílabas finales ka apuntan a clase A, con excepciones source-gated."
     }), Object.freeze({
       id: "final-tla",
       sourceSection: "Andrews §7.6.4",
       classId: "A",
-      directiveEs: "Sílabas finales tla apuntan a clase A en la regla clásica; en Classical la letra visible pasa por ta."
+      historicalDirectiveEs: "Sílabas finales tla apuntan a clase A en la regla clásica; en Classical la letra visible pasa por ta."
     }), Object.freeze({
       id: "intransitive-wa-change",
       sourceSection: "Andrews §7.6.5",
       classId: "A",
-      directiveEs: "Intransitivos en wa que significan cambio apuntan a clase A."
+      historicalDirectiveEs: "Intransitivos en wa que significan cambio apuntan a clase A."
     }), Object.freeze({
       id: "final-ya",
       sourceSection: "Andrews §7.6.6",
       classId: "B",
-      directiveEs: "Final ya apunta a clase B, con opción A frecuente en intransitivos."
+      historicalDirectiveEs: "Final ya apunta a clase B, con opción A frecuente en intransitivos."
     }), Object.freeze({
       id: "final-o",
       sourceSection: "Andrews §7.6.7",
       classId: "A",
-      directiveEs: "Final o corta o larga apunta a clase A."
+      historicalDirectiveEs: "Final o corta o larga apunta a clase A."
     }), Object.freeze({
       id: "class-d-list",
       sourceSection: "Andrews §7.6.8",
       classId: "D",
-      directiveEs: "La lista cerrada de ocho troncos clase D se conserva como regla de clasificación, no como fixture Classical automática."
+      historicalDirectiveEs: "La lista cerrada de ocho troncos clase D se conserva como regla de clasificación, no como fixture Classical automática."
     })]);
-    const VNC_LESSON7_PREDICATE_FORMATION_FRAME = Object.freeze({
+    const VNC_LESSON7_PREDICATE_FORMATION_FRAME = freezeInheritedVncDescription({
       kind: "lesson-7-predicate-formation-frame",
       sourceSection: "Andrews §7.7",
       predicateConstituents: Object.freeze(["core", "tense"]),
       cooperatesWithSubjectPronounsFrom: "Andrews §5.4",
       indicativeSide: Object.freeze(["present", "customary-present", "imperfect", "future", "preterit", "distant-past"]),
       nonIndicativeSide: Object.freeze(["nonpast-optative", "past-optative", "nonpast-admonitive"]),
-      currentClassicalImplementedTenses: Object.freeze(["presente", "presente-habitual", "imperfecto", "futuro", "preterito", "pasado-remoto", "optativo", "presente-desiderativo"]),
-      currentEngineSurfaces: "TENSE_SUFFIX_RULES plus preterit class routing and suppletive path gates"
+      legacyAdaptationImplementedTenses: Object.freeze(["presente", "presente-habitual", "imperfecto", "futuro", "preterito", "pasado-remoto", "optativo", "presente-desiderativo"]),
+      legacyEngineSurfaces: "TENSE_SUFFIX_RULES plus preterit class routing and suppletive path gates"
     });
-    const VNC_LESSON7_ANALYSIS_FRAME = Object.freeze({
+    const VNC_LESSON7_ANALYSIS_FRAME = freezeInheritedVncDescription({
       kind: "lesson-7-analysis-translation-frame",
       sourceSection: "Andrews §7.8",
       requiredDivision: "subject-plus-predicate",
@@ -658,19 +669,19 @@ export function createVncApi(targetObject = globalThis) {
       ambiguityPolicy: "ambiguous surfaces require structural analysis rather than surface-only translation",
       supportiveInitialVowelPolicy: "supportive initial i may drop after reflexive or nonspecific nonhuman object, but real initial vowels do not"
     });
-    const VNC_LESSON7_OBJECT_RELATIONSHIP_FRAME = Object.freeze({
+    const VNC_LESSON7_OBJECT_RELATIONSHIP_FRAME = freezeInheritedVncDescription({
       kind: "lesson-7-indefinite-personal-object-frame",
       sourceSection: "Andrews §7.9",
       humanIndefinite: Object.freeze({
         classical: "te",
-        currentClassical: "te",
+        legacyAdaptation: "te",
         relatesTo: Object.freeze(["reflexive", "specific projective personal objects"]),
         belongsToSection: "7.9.1",
         aboutTopic: "human-object-specified"
       }),
       nonhumanIndefinite: Object.freeze({
         classical: "tla",
-        currentClassical: "ta",
+        legacyAdaptation: "ta",
         relatesTo: Object.freeze(["3sg/3common", "3pl animate"]),
         belongsToSection: "7.9.2",
         aboutTopic: "nonhuman-object-specified"
@@ -687,109 +698,109 @@ export function createVncApi(targetObject = globalThis) {
       }),
       implementationBoundary: "object controls may explain relationships; they do not prove a clause relation by surface alone"
     });
-    const VNC_LESSON7_TLA_FUSION_FRAME = Object.freeze({
+    const VNC_LESSON7_TLA_FUSION_FRAME = freezeInheritedVncDescription({
       kind: "lesson-7-ta-fusion-frame",
       sourceSection: "Andrews §7.10",
       classicalName: "tla fusion",
-      visibleClassicalName: "fusión ta",
+      legacyAdaptationName: "fusión ta",
       processKind: "derivational",
       sourceStructure: "tla + transitive stem",
       targetStructure: "derived intransitive verbstem",
       objectSlotAfterFusion: "none",
       meaningMayShift: true,
       boundaryTest: "incorporated adverb before tla/ta indicates that the nonspecific object has fused into the stem",
-      generationPolicy: "treat as stem derivation evidence, not as an obj1 prefix at finite-generation time"
+      historicalGenerationPolicy: "treat as stem derivation evidence, not as an obj1 prefix at finite-generation time"
     });
-    const VNC_LESSON7_SUBSECTION_INVENTORY = Object.freeze([Object.freeze({
+    const VNC_LESSON7_SUBSECTION_INVENTORY = freezeInheritedVncDescription([Object.freeze({
       id: "lesson7-verbstem-structure",
       andrewsSection: "7.1",
       category: "verbstem-morphemic-structure",
-      directiveEs: "El tronco verbal porta el significado léxico y puede ser mono- o polimorfémico; sus morfos internos no se glosan como palabras separadas.",
-      engineSurface: "stem frame and parser morph-boundary diagnostics",
+      historicalDirectiveEs: "El tronco verbal porta el significado léxico y puede ser mono- o polimorfémico; sus morfos internos no se glosan como palabras separadas.",
+      historicalEngineSurface: "stem frame and parser morph-boundary diagnostics",
       redirectAction: "keep",
-      evidenceStatus: "direct-canvas-audited",
-      implementationState: "implemented-audited"
+      historicalEvidenceStatus: "direct-canvas-audited",
+      historicalImplementationState: "implemented-audited"
     }), Object.freeze({
       id: "lesson7-citation-form",
       andrewsSection: "7.2",
       category: "verbcore-citation-form",
-      directiveEs: "La cita verbal debe incluir valencia: núcleo verbal = valencia + tronco.",
-      engineSurface: "parseVerbInput valence metadata and object-prefix gates",
+      historicalDirectiveEs: "La cita verbal debe incluir valencia: núcleo verbal = valencia + tronco.",
+      historicalEngineSurface: "parseVerbInput valence metadata and object-prefix gates",
       redirectAction: "keep",
-      evidenceStatus: "direct-canvas-with-classical-realization",
-      implementationState: "implemented-adapted"
+      historicalEvidenceStatus: "direct-canvas-with-classical-realization",
+      historicalImplementationState: "implemented-adapted"
     }), Object.freeze({
       id: "lesson7-verbstem-classes",
       andrewsSection: "7.3",
       category: "verbstem-classes",
-      directiveEs: "Las clases A/B/C/D dependen de la forma perfectiva frente a la imperfectiva básica.",
-      engineSurface: "preterit class routing and verbstem class profile metadata",
+      historicalDirectiveEs: "Las clases A/B/C/D dependen de la forma perfectiva frente a la imperfectiva básica.",
+      historicalEngineSurface: "preterit class routing and verbstem class profile metadata",
       redirectAction: "keep",
-      evidenceStatus: "direct-canvas-audited",
-      implementationState: "implemented-audited"
+      historicalEvidenceStatus: "direct-canvas-audited",
+      historicalImplementationState: "implemented-audited"
     }), Object.freeze({
       id: "lesson7-class-b-changes",
       andrewsSection: "7.4",
       category: "class-b-perfective-changes",
-      directiveEs: "La pérdida o silencio de la vocal final en clase B provoca cambios ortográficos o fonológicos; la realización Classical requiere fuente Andrews concreta y verificación ortográfica local.",
-      engineSurface: "preterit class allomorphy and orthography bridge diagnostics",
+      historicalDirectiveEs: "La pérdida o silencio de la vocal final en clase B provoca cambios ortográficos o fonológicos; la realización Classical requiere fuente Andrews concreta y verificación ortográfica local.",
+      historicalEngineSurface: "preterit class allomorphy and orthography bridge diagnostics",
       redirectAction: "source-gated",
-      evidenceStatus: "direct-canvas-with-classical-realization",
-      implementationState: "implemented-adapted"
+      historicalEvidenceStatus: "direct-canvas-with-classical-realization",
+      historicalImplementationState: "implemented-adapted"
     }), Object.freeze({
       id: "lesson7-variable-class",
       andrewsSection: "7.5",
       category: "variable-class-membership",
-      directiveEs: "Algunos verbos pueden pertenecer a A o B sin contraste; las alternativas se aceptan solo con metadatos o evidencia.",
-      engineSurface: "variant-by-class metadata and preterit class selection",
+      historicalDirectiveEs: "Algunos verbos pueden pertenecer a A o B sin contraste; las alternativas se aceptan solo con metadatos o evidencia.",
+      historicalEngineSurface: "variant-by-class metadata and preterit class selection",
       redirectAction: "keep",
-      evidenceStatus: "direct-canvas-audited",
-      implementationState: "implemented-audited"
+      historicalEvidenceStatus: "direct-canvas-audited",
+      historicalImplementationState: "implemented-audited"
     }), Object.freeze({
       id: "lesson7-class-guidelines",
       andrewsSection: "7.6",
       category: "class-determination-guidelines",
-      directiveEs: "Las guías de clase orientan clasificación; no sustituyen evidencia léxica Classical/Classical.",
-      engineSurface: "class guessers, parsed metadata, and preterit class tests",
+      historicalDirectiveEs: "Las guías de clase orientan clasificación; no sustituyen evidencia léxica Classical/Classical.",
+      historicalEngineSurface: "class guessers, parsed metadata, and preterit class tests",
       redirectAction: "source-gated",
-      evidenceStatus: "direct-canvas-diagnostic",
-      implementationState: "implemented-diagnostic"
+      historicalEvidenceStatus: "direct-canvas-diagnostic",
+      historicalImplementationState: "implemented-diagnostic"
     }), Object.freeze({
       id: "lesson7-predicate-formation",
       andrewsSection: "7.7",
       category: "core-tense-predicate-formation",
-      directiveEs: "Las variantes de tronco cooperan con el slot tiempo para formar el predicado de la CNV.",
-      engineSurface: "TENSE_SUFFIX_RULES and preterit class routing",
+      historicalDirectiveEs: "Las variantes de tronco cooperan con el slot tiempo para formar el predicado de la CNV.",
+      historicalEngineSurface: "TENSE_SUFFIX_RULES and preterit class routing",
       redirectAction: "keep",
-      evidenceStatus: "direct-canvas-audited",
-      implementationState: "implemented-audited"
+      historicalEvidenceStatus: "direct-canvas-audited",
+      historicalImplementationState: "implemented-audited"
     }), Object.freeze({
       id: "lesson7-analysis-translation",
       andrewsSection: "7.8",
       category: "vnc-analysis-translation",
-      directiveEs: "La traducción debe respetar la división obligatoria sujeto + predicado y no depender solo de la superficie.",
-      engineSurface: "nuclearClauseShell, grammarFrame, and formula echo diagnostics",
+      historicalDirectiveEs: "La traducción debe respetar la división obligatoria sujeto + predicado y no depender solo de la superficie.",
+      historicalEngineSurface: "nuclearClauseShell, grammarFrame, and formula echo diagnostics",
       redirectAction: "keep",
-      evidenceStatus: "direct-canvas-audited",
-      implementationState: "implemented-audited"
+      historicalEvidenceStatus: "direct-canvas-audited",
+      historicalImplementationState: "implemented-audited"
     }), Object.freeze({
       id: "lesson7-indefinite-personal-object-relationship",
       andrewsSection: "7.9",
       category: "indefinite-personal-object-relationship",
-      directiveEs: "Relacionar te/ta indefinidos con objetos personales específicos sin colapsarlos en la misma función.",
-      engineSurface: "object-prefix sets and valency-frame metadata",
+      historicalDirectiveEs: "Relacionar te/ta indefinidos con objetos personales específicos sin colapsarlos en la misma función.",
+      historicalEngineSurface: "object-prefix sets and valency-frame metadata",
       redirectAction: "keep",
-      evidenceStatus: "direct-canvas-with-classical-realization",
-      implementationState: "implemented-adapted"
+      historicalEvidenceStatus: "direct-canvas-with-classical-realization",
+      historicalImplementationState: "implemented-adapted"
     }), Object.freeze({
       id: "lesson7-ta-fusion",
       andrewsSection: "7.10",
       category: "ta-fusion-derivation",
-      directiveEs: "La fusión ta es derivación: ta + tronco transitivo produce un tronco intransitivo nuevo, no un obj1 visible.",
-      engineSurface: "ta-fusion parser metadata and intransitive derived-stem boundary",
+      historicalDirectiveEs: "La fusión ta es derivación: ta + tronco transitivo produce un tronco intransitivo nuevo, no un obj1 visible.",
+      historicalEngineSurface: "ta-fusion parser metadata and intransitive derived-stem boundary",
       redirectAction: "keep",
-      evidenceStatus: "direct-canvas-with-classical-realization",
-      implementationState: "implemented-adapted"
+      historicalEvidenceStatus: "direct-canvas-with-classical-realization",
+      historicalImplementationState: "implemented-adapted"
     })]);
 
     // Shared agreement combo validation extracted to src/core/agreement/combo_validation.mjs
@@ -825,7 +836,7 @@ export function createVncApi(targetObject = globalThis) {
         ...entry,
         canvasRef: `Andrews Lesson ${entry.andrewsSection}`,
         validationRefs: Array.from(VNC_LESSON5_VALIDATION_REFS),
-        generationPolicy: "solo por rutas de cláusula verbal existentes con fuente Andrews concreta y puente ortografico; esta auditoría no crea fixtures"
+        historicalGenerationPolicy: "solo por rutas de cláusula verbal existentes con fuente Andrews concreta y puente ortografico; esta auditoría no crea fixtures"
       }));
     }
     function getVncTransitiveFormulaFrame() {
@@ -851,7 +862,7 @@ export function createVncApi(targetObject = globalThis) {
         ...entry,
         canvasRef: `Andrews Lesson ${entry.andrewsSection}`,
         validationRefs: Array.from(VNC_LESSON6_VALIDATION_REFS),
-        generationPolicy: "solo por rutas CNV existentes con fuente Andrews concreta y puente ortografico; esta auditoría no crea fixtures"
+        historicalGenerationPolicy: "solo por rutas CNV existentes con fuente Andrews concreta y puente ortografico; esta auditoría no crea fixtures"
       }));
     }
     function getVncShotReport() {
@@ -896,7 +907,7 @@ export function createVncApi(targetObject = globalThis) {
         ...entry,
         canvasRef: `Andrews Lesson ${entry.andrewsSection}`,
         validationRefs: Array.from(VNC_LESSON7_VALIDATION_REFS),
-        generationPolicy: "solo por rutas CNV existentes con fuente Andrews concreta y puente ortografico; esta auditoría no crea fixtures"
+        historicalGenerationPolicy: "solo por rutas CNV existentes con fuente Andrews concreta y puente ortografico; esta auditoría no crea fixtures"
       }));
     }
     function generateNuclearClauseSurface(options = {}) {

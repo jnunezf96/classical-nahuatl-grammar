@@ -21,7 +21,7 @@ const spec = {
     },
     "claim-p2746::p2746-in-linked-compounding-which-is-the-simpler-of-the": {
       "assertionId": "classical-linked-integrated-compound-taxonomy:p2746-in-linked-compounding-which-is-the-simpler-of-the",
-      "canonicalPath": "contract.compoundTypes.1"
+      "canonicalPath": "contract.compoundTypes.0"
     },
     "claim-p2747::p2747-this-compartmentalization-can-be-accomplished-either-overtly-by-means": {
       "assertionId": "classical-linked-integrated-compound-taxonomy:p2747-this-compartmentalization-can-be-accomplished-either-overtly-by-means",
@@ -29,11 +29,11 @@ const spec = {
     },
     "claim-p2748::p2748-stems-of-the-former-kind-are-called-connectivet-compounds": {
       "assertionId": "classical-linked-integrated-compound-taxonomy:p2748-stems-of-the-former-kind-are-called-connectivet-compounds",
-      "canonicalPath": "contract.linkedRealizations.1"
+      "canonicalPath": "contract.linkedRealizations.0"
     },
     "claim-p2749::p2749-in-integrated-compounding-the-matrix-takes-over-or-enslaves": {
       "assertionId": "classical-linked-integrated-compound-taxonomy:p2749-in-integrated-compounding-the-matrix-takes-over-or-enslaves",
-      "canonicalPath": "contract.compoundTypes.0"
+      "canonicalPath": "contract.compoundTypes.1"
     },
     "claim-p2750::p2750-compound-verbstems-are-discussed-in-the-rest-of-this": {
       "assertionId": "classical-linked-integrated-compound-taxonomy:p2750-compound-verbstems-are-discussed-in-the-rest-of-this",

@@ -24,6 +24,7 @@ let regressedCaseCount = 0;
 let mutationCount = 0;
 let mutationStatusDifferenceCount = 0;
 let mutationObservationDifferenceCount = 0;
+let missingBaselineMutationCount = 0;
 const failures = [];
 const owners = [];
 
@@ -44,6 +45,14 @@ for (const ownerId of ownerIds) {
   if (after.cases.some((item) => item.passed !== true)) failures.push(`${ownerId}:staged-case-failure`);
 
   const priorMutations = new Map((before.mutationResults || []).map((item) => [item.mutationId, item]));
+  const currentMutationIds = new Set((after.mutationResults || []).map(item => item.mutationId));
+  const missingMutationIds = [...priorMutations.keys()].filter(id => !currentMutationIds.has(id));
+  missingBaselineMutationCount += missingMutationIds.length;
+  for (const id of missingMutationIds) failures.push(`${ownerId}:baseline-mutation-missing:${id}`);
+  if (priorMutations.size !== (before.mutationResults || []).length
+    || currentMutationIds.size !== (after.mutationResults || []).length) {
+    failures.push(`${ownerId}:duplicate-mutation-identity`);
+  }
   const mutationDiffs = [];
   for (const current of after.mutationResults || []) {
     mutationCount += 1;
@@ -58,7 +67,7 @@ for (const ownerId of ownerIds) {
     }
     if (current.status !== 'killed' || currentKilled.length === 0) failures.push(`${ownerId}:mutation-not-killed:${current.mutationId}`);
   }
-  owners.push({ownerId, caseDiffs, mutationDiffs});
+  owners.push({ownerId, caseDiffs, mutationDiffs, missingMutationIds});
 }
 if (newFailedCaseCount) failures.push(`new-failed-cases:${newFailedCaseCount}`);
 if (regressedCaseCount) failures.push(`regressed-cases:${regressedCaseCount}`);
@@ -68,7 +77,7 @@ if (mutationObservationDifferenceCount) failures.push(`mutation-observation-diff
 const report = {
   schemaVersion: 1, version, ownerCount: ownerIds.length, oldFailedCaseCount, newFailedCaseCount,
   improvedCaseCount, regressedCaseCount, mutationCount, mutationStatusDifferenceCount,
-  mutationObservationDifferenceCount, failures, owners,
+  mutationObservationDifferenceCount, missingBaselineMutationCount, failures, owners,
 };
 report.contentDigest = sha256(report);
 fs.writeFileSync(path.join(stage, 'activation-blocker-old-new-difference-report.json'), `${JSON.stringify(report, null, 2)}\n`);

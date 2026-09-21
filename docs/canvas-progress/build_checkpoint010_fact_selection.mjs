@@ -58,7 +58,11 @@ if (!preserved) {
     const prefix = record.specText.match(/"prefix": "([^"]+)"/)?.[1] || "";
     const coordinate = record.specText.match(/"(claim-[^"]+::[^"]+)": \{/)?.[1] || "";
     const [selection, requestedFacet] = coordinate.split("::");
-    owners.push({ ownerId, prefix, selection, requestedFacet });
+    owners.push({ ownerId, prefix, selection, requestedFacet,
+      observationScope: "owner-representative-coordinate-not-per-atom-proof",
+      perAtomFacetMatchVerified: false,
+      executionCredit: false,
+    });
     atoms.push(...record.atomIds.sort().slice(0, atomLimit - atoms.length)
       .map((atomId) => ({ atomId, semanticOwnerId: ownerId })));
   }

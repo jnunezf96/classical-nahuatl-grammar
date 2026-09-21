@@ -2,6 +2,8 @@
 // Each profile is consumed by one independent Andrews semantic owner. This
 // module owns no grammar, Inventory atom, route, receipt, or migration status.
 
+import { observeFormulaProjectionDifference } from "./validation_projection_observations.mjs";
+
 const ISSUED_VALIDATION_FRAMES = new WeakSet();
 
 function deepFreeze(value) {
@@ -37,17 +39,16 @@ const PROFILE_IDS = Object.freeze([
   "lexical-conjunction-arity", "lexical-shared-referent", "lexical-translation-boundary",
   "lexical-source-boundary", "downstream-conjunctive-compound", "lexical-possessive-state",
   "lexical-synonymy-idiom", "lexical-incorporation", "lexical-derivation",
-  "lexical-adjunctor-distribution", "sex-differentiated-reference",
+  "lexical-adjunctor-distribution", "lexical-adjunctor-left-only", "sex-differentiated-reference",
   "predicate-noun-biclausalism", "lexical-semantic-types", "lord-master-unit",
   "literal-conjunction-contrast", "parallel-structure-creation", "parallel-structure-types",
   "rephrasive-definition", "rephrasive-grammar-variants", "appositive-parallelism",
   "progressive-parallelism",
 ]);
 
-const PROFILE_FACTS = deepFreeze(Object.fromEntries(PROFILE_IDS.map(profileId => [
+const PROFILE_POLICIES = deepFreeze(Object.fromEntries(PROFILE_IDS.map(profileId => [
   profileId,
   {
-    semanticBoundary: profileId,
     typedConjunctionExecutionRequired: true,
     storedTranslationAuthority: false,
     traditionalSpellingAuthority: false,
@@ -63,7 +64,7 @@ const LEXICAL_PROFILES = new Set([
   "lexical-translation-boundary", "lexical-source-boundary",
   "downstream-conjunctive-compound", "lexical-possessive-state",
   "lexical-synonymy-idiom", "lexical-incorporation", "lexical-derivation",
-  "lexical-adjunctor-distribution", "sex-differentiated-reference",
+  "lexical-adjunctor-distribution", "lexical-adjunctor-left-only", "sex-differentiated-reference",
   "predicate-noun-biclausalism", "lexical-semantic-types", "lord-master-unit",
   "literal-conjunction-contrast",
 ]);
@@ -221,7 +222,8 @@ export function createClassicalClauseConjunctionValidationSemanticOperationsApi(
         lexicalType: profileId === "lexical-synonymy-idiom"
           ? "bread-and-butter" : "lord-and-master",
         adjunctorDistribution: profileId === "lexical-adjunctor-distribution"
-          ? "in-before-each" : "none",
+          ? "in-before-each" : profileId === "lexical-adjunctor-left-only"
+            ? "in-before-left-only" : "none",
         stateRealization: profileId === "downstream-conjunctive-compound"
           ? "compound-handoff" : "conjoined-stems",
       },
@@ -259,9 +261,12 @@ export function createClassicalClauseConjunctionValidationSemanticOperationsApi(
       "evaluateClassicalNahuatlClauseConjunction",
       "isClassicalNahuatlClauseConjunctionResultFrame",
     ]) assertRuntime(target, capability);
-    const facts = PROFILE_FACTS[profileId];
+    const facts = PROFILE_POLICIES[profileId];
     if (!facts) throw new Error(`clause-conjunction-validation-profile-required:${profileId}`);
     const liveResult = evaluateProfile(profileId);
+    const liveResults = profileId === "lexical-adjunctor-distribution"
+      ? [liveResult, evaluateProfile("lexical-adjunctor-left-only")]
+      : [liveResult];
     const raw = target.evaluateClassicalNahuatlClauseConjunction({
       operationKind: "conjunction",
       conjuncts: ["stored-left", { surface: "stored-right" }],
@@ -277,12 +282,13 @@ export function createClassicalClauseConjunctionValidationSemanticOperationsApi(
       conjuncts: [copied, genuine[1]],
       options: { relation: "unmarked", coordinationType: "additive", level: "principal", polarity: "positive" },
     });
-    const canonicalResult = target.isClassicalNahuatlClauseConjunctionResultFrame(liveResult) === true;
+    const canonicalResult = liveResults.every(result =>
+      target.isClassicalNahuatlClauseConjunctionResultFrame(result) === true);
     const frame = deepFreeze({
       kind: "classical-nahuatl-clause-conjunction-validation-frame",
       profileId,
       authorizationStatus: canonicalResult
-        && liveResult.authorizationStatus === "authorized"
+        && liveResults.every(result => result.authorizationStatus === "authorized")
         && raw?.authorizationStatus === "blocked"
         && copiedResult?.authorizationStatus === "blocked"
         ? "authorized" : "blocked",
@@ -293,12 +299,31 @@ export function createClassicalClauseConjunctionValidationSemanticOperationsApi(
         relation: liveResult?.relationFrame?.relation || "",
         coordinationType: liveResult?.relationFrame?.coordinationType || "",
         syntacticRank: liveResult?.relationFrame?.syntacticRank || "",
-        formulaIndependentOfWritten:
-          liveResult?.formulaRecord?.formula !== liveResult?.formulaRealizationRecord?.surface,
+        ...observeFormulaProjectionDifference(liveResult?.formulaRecord, liveResult?.formulaRealizationRecord),
         liveResult,
+        liveResults,
+      },
+      declaredAuthorityPolicy: {
+        kind: "declared-validation-policy",
+        runtimeAuthority: false,
+        observationStatus: "policy-not-exhaustive-metadata-carrier-proof",
+        ...facts,
       },
       analysis: {
-        ...facts,
+        semanticBoundary: canonicalResult
+          && liveResults.every(result => result.authorizationStatus === "authorized")
+          ? liveResults.map(result => ({
+            operationKind: result.operationKind,
+            relationFrame: result.relationFrame,
+          })) : null,
+        ...(profileId === "lexical-adjunctor-distribution" ? {
+          semanticBoundary: canonicalResult
+            && liveResults.every(result => result.authorizationStatus === "authorized")
+            ? liveResults.map(result => ({
+              operationKind: result.operationKind,
+              adjunctorDistribution: result.relationFrame?.adjunctorDistribution,
+            })) : null,
+        } : {}),
         rawStoredAuthorityBlocked: raw?.authorizationStatus === "blocked",
         copiedSignedNodeBlocked: copiedResult?.authorizationStatus === "blocked",
       },

@@ -5,8 +5,19 @@
   "grammarAuthority": "Andrews transcription",
   "sourceDocument": "ANDREWS_TRANSCRIPTION_CANVAS.md",
   "reportAuthority": false,
-  "resolvedCount": 10,
+  "resolvedCount": 9,
   "unresolvedCount": 0,
+  "supersededCount": 1,
+  "currentControlPolicyId": "lesson3-clause-introducer-duplication",
+  "policyEvidenceScope": "Current sentence-particle inventory and Lesson 3 test contracts; not a fresh browser control-placement proof.",
+  "superseded": [
+    {
+      "id": "lesson3-duplicate-user-choices",
+      "historicalResolution": "Cuix, mā, and tlā use their existing sentence controls and are not repeated in the general Particle control.",
+      "supersededBy": "lesson3-clause-introducer-duplication",
+      "reason": "The current inventory and Lesson 3 normal-picker test contracts retain these clause introducers as particle choices. The earlier exclusion is not current policy."
+    }
+  ],
   "resolved": [
     {
       "id": "lesson3-hidden-particle-boundaries",
@@ -15,10 +26,6 @@
     {
       "id": "lesson3-example-punctuation",
       "resolution": "Canvas question marks, exclamation marks, and ellipses remain source witnesses; generated particle Results contain only grammatical particle material."
-    },
-    {
-      "id": "lesson3-duplicate-user-choices",
-      "resolution": "Cuix, mā, and tlā use their existing sentence controls and are not repeated in the general Particle control."
     },
     {
       "id": "lesson3-negative-context",

@@ -270,6 +270,10 @@ function nonactiveOption(runtime, request) {
     || "";
 }
 
+export function buildPurposiveSingularSeriesWitness(runtime, series) {
+  return evaluate(runtime, { purposiveSeries: series });
+}
+
 function buildProjection(runtime) {
   const seriesIds = [
     "outbound-nonpast-indicative",
@@ -280,7 +284,7 @@ function buildProjection(runtime) {
     "inbound-nonpast-optative",
   ];
   const singularSeries = Object.fromEntries(seriesIds.map(
-    series => [series, evaluate(runtime, { purposiveSeries: series })],
+    series => [series, buildPurposiveSingularSeriesWitness(runtime, series)],
   ));
   const pluralSeries = Object.fromEntries(seriesIds.map(
     series => [series, evaluate(runtime, {

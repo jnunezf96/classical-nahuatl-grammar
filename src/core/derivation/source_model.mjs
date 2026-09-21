@@ -2687,7 +2687,7 @@ export function createDerivationSourceModelContext(targetObject = globalThis, in
         characteristicSurface: String(characteristicSurface || "").trim(),
         omittedMatrix: {
           classical: "(-yo)-tl",
-          classical: omittedSuffix,
+          omittedSuffix,
           omissionScope: "matrix-only",
           leavesEmbedMeaning: true
         },

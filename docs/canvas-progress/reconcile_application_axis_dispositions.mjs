@@ -59,9 +59,8 @@ function compactLedgerJson(ledger) {
   )}\n`;
 }
 
-function reconcileLedger() {
-  const ledger = JSON.parse(fs.readFileSync(LEDGER_PATH, "utf8"));
-  const liveRows = applicationRows();
+export function reconcileAxisLedger(inputLedger, liveRows, { directProvenance = DIRECT_PROVENANCE } = {}) {
+  const ledger = structuredClone(inputLedger);
   const liveIds = new Set(liveRows.map(row => row.atomId));
   const existingById = new Map(ledger.entries.map(entry => [entry.atomId, entry]));
   const templates = new Map();
@@ -74,12 +73,23 @@ function reconcileLedger() {
   const entries = liveRows.map(row => {
     const existing = existingById.get(row.atomId);
     if (existing) {
+      const changedRole = row.semanticFactRole !== "unresolved"
+        && row.semanticFactRole !== existing.semanticFactRole;
+      const surfaceDisposition = row.semanticFactRole === "genuine-user-choice"
+        ? "interactive-choice" : "intentionally-unsurfaced";
+      const template = changedRole ? templates.get(surfaceDisposition) : null;
+      if (changedRole && !template) throw new Error(`Missing disposition template: ${surfaceDisposition}`);
       return row.semanticFactRole === "unresolved"
         ? existing
         : {
           ...existing,
           semanticFactRole: row.semanticFactRole,
           roleEvidenceKind: "live-application-declaration",
+          ...(changedRole ? {
+            surfaceDisposition,
+            surfaceRationale: template.surfaceRationale,
+            proofObligation: template.proofObligation,
+          } : {}),
         };
     }
     if (row.semanticFactRole === "unresolved") {
@@ -117,7 +127,8 @@ function reconcileLedger() {
     entry.applicationAxisAtomId,
     entry,
   ]));
-  Object.entries(DIRECT_PROVENANCE).forEach(([applicationAxisAtomId, canvasAtomIds]) => {
+  Object.entries(directProvenance).forEach(([applicationAxisAtomId, canvasAtomIds]) => {
+    if (!liveIds.has(applicationAxisAtomId)) return;
     bridgeById.set(applicationAxisAtomId, {
       applicationAxisAtomId,
       canvasAtomIds: [...canvasAtomIds],
@@ -127,6 +138,13 @@ function reconcileLedger() {
     left.applicationAxisAtomId.localeCompare(right.applicationAxisAtomId)
   ));
   const linkedAtomIds = bridgeEntries.flatMap(entry => entry.canvasAtomIds);
+  const interactiveIds = new Set(entries.filter(entry =>
+    entry.surfaceDisposition === "interactive-choice").map(entry => entry.atomId));
+  const mappedIds = new Set(bridgeEntries.filter(entry =>
+    interactiveIds.has(entry.applicationAxisAtomId)
+    && Array.isArray(entry.canvasAtomIds) && entry.canvasAtomIds.length > 0)
+    .map(entry => entry.applicationAxisAtomId));
+  const unmappedAxisIds = [...interactiveIds].filter(id => !mappedIds.has(id)).sort();
 
   ledger.version = 7;
   ledger.entries = entries;
@@ -164,17 +182,17 @@ function reconcileLedger() {
     ),
   };
   ledger.canvasProvenance.entries = bridgeEntries;
+  ledger.canvasProvenance.unmappedAxisIds = unmappedAxisIds;
   ledger.canvasProvenance.counts = {
     ...ledger.canvasProvenance.counts,
     interactiveAxisCount: entries.filter(entry => (
       entry.surfaceDisposition === "interactive-choice"
     )).length,
-    mappedAxisCount: bridgeEntries.length,
-    unmappedAxisCount: 0,
+    mappedAxisCount: mappedIds.size,
+    unmappedAxisCount: unmappedAxisIds.length,
     directProvenanceLinkCount: linkedAtomIds.length,
     uniqueDirectProvenanceAtomCount: new Set(linkedAtomIds).size,
   };
-  fs.writeFileSync(LEDGER_PATH, compactLedgerJson(ledger));
   return ledger;
 }
 
@@ -197,8 +215,11 @@ function reconcileState(ledger) {
   fs.writeFileSync(STATE_PATH, source);
 }
 
-const ledger = reconcileLedger();
-reconcileState(ledger);
-process.stdout.write(
-  `Reconciled ${ledger.counts.entryCount} application axes across ${ledger.counts.operationCount} operations.\n`,
-);
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  const ledger = reconcileAxisLedger(JSON.parse(fs.readFileSync(LEDGER_PATH, "utf8")), applicationRows());
+  fs.writeFileSync(LEDGER_PATH, compactLedgerJson(ledger));
+  reconcileState(ledger);
+  process.stdout.write(
+    `Reconciled ${ledger.counts.entryCount} application axes across ${ledger.counts.operationCount} operations; ${ledger.canvasProvenance.counts.unmappedAxisCount} interactive axes lack Canvas provenance.\n`,
+  );
+}

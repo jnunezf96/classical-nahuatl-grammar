@@ -132,7 +132,8 @@ function run(ctx = {}) {
     });
 
     const preteritHonorific = executeOwner(ctx, "ClassicalAttitudeHonorificPreteritEmbed", "classical-attitude-honorific-preterit-embed", "claim-p3232", "p3232-vncs-with-a-mainline-reflexive-object-pronoun-create-their").cases.honorificPreteritEmbed;
-    observe(s, "ACI-P318-L002-3717CEFDF0-03", "the preterit-embed honorific replacement", {
+    // This xīn fixture does not prove the tlāl-i-h replacement anchored by ACI-P318-L002-3717CEFDF0-03.
+    observe(s, "FIXTURE-xin-preterit-honorific", "the preterit-embed honorific replacement", {
         variant: preteritHonorific.variant,
         targetStem: preteritHonorific.targetStem,
         formula: preteritHonorific.formulaRealization,
@@ -154,7 +155,8 @@ function run(ctx = {}) {
     });
 
     const continuation = executeOwner(ctx, "ClassicalContinuationPreteritAgentiveVnc", "classical-continuation-preterit-agentive-vnc", "claim-p3476", "p3476-the-use-of-a-preterit-agentive-nounstem-as-an").cases.preteritVncContinuation;
-    observe(s, "ACI-P350-L025-0696726FB9-06", "preterit-agentive continuation as an adverbial compound", {
+    // This mic-ca-chōca fixture does not prove the shuntline ne/transitive matrix claim ACI-P350-L025-0696726FB9-06.
+    observe(s, "FIXTURE-mic-ca-choca-continuation", "preterit-agentive continuation as an adverbial compound", {
         relation: continuation.continuationRelation,
         target: continuation.targetStems.generalUse,
         operation: continuation.operationId,

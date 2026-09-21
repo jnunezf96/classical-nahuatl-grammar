@@ -8,7 +8,6 @@ const spec = {
   "canonicalActorId": "classical-nahuatl-compound-runtime",
   "selections": [
     "claim-p2741",
-    "claim-p2742",
     "claim-p2743",
     "claim-p2744"
   ],
@@ -16,10 +15,6 @@ const spec = {
     "claim-p2741::p2741-the-nuclear-clause-whose-stem-occupies-the-embed-subposition": {
       "assertionId": "classical-compound-embed-function-system:p2741-the-nuclear-clause-whose-stem-occupies-the-embed-subposition",
       "canonicalPath": "contract.embedNeverFunctionsAsSubject"
-    },
-    "claim-p2742::p2742-it-can-never-function-as-an-incorporated-subject-there": {
-      "assertionId": "classical-compound-embed-function-system:p2742-it-can-never-function-as-an-incorporated-subject-there",
-      "canonicalPath": "contract.operationOrder.0"
     },
     "claim-p2743::p2743-subject-and-predicate-are-antipodal-mutually-exclusive-functions-and": {
       "assertionId": "classical-compound-embed-function-system:p2743-subject-and-predicate-are-antipodal-mutually-exclusive-functions-and",
@@ -34,15 +29,23 @@ const spec = {
   "executionValidatorName": "isClassicalNahuatlCompoundValidationFrame",
   "executionArgsBySelection": {
     "claim-p2741": [],
-    "claim-p2742": [],
     "claim-p2743": [],
     "claim-p2744": []
   },
   "expectedCanonicalStatusBySelection": {
     "claim-p2741": "authorized",
-    "claim-p2742": "authorized",
     "claim-p2743": "authorized",
     "claim-p2744": "authorized"
+  },
+  "nonExecutableObservations": {
+    "claim-p2742::p2742-it-can-never-function-as-an-incorporated-subject-there": {
+      "assertionId": "classical-compound-embed-function-system:p2742-it-can-never-function-as-an-incorporated-subject-there",
+      "disposition": "documentary-claim-runtime-observation-unverified",
+      "reason": "Canvas9366–9369 excludes incorporated-subject function for an embed; operation order does not witness that structural restriction. The adapter has a handwritten no-subject flag, not a matching negative-execution observation.",
+      "retiredCanonicalPath": "contract.operationOrder.0",
+      "executionCredit": false,
+      "grammarAuthority": false
+    }
   }
 };
 export default Object.freeze(spec);

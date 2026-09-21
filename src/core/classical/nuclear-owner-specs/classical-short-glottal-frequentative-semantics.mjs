@@ -6,22 +6,21 @@ const spec = {
   "domain": "classical-short-glottal-frequentative-semantics",
   "mode": "canonical-operation",
   "canonicalActorId": "classical-nahuatl-frequentative-runtime",
-  "selections": [
-    "claim-p2659"
-  ],
-  "coordinates": {
+  "selections": [],
+  "coordinates": {},
+  "nonExecutableObservations": {
     "claim-p2659::p2659-generally-speaking-this-formation-signifies-intensity-with-the-implication": {
       "assertionId": "classical-short-glottal-frequentative-semantics:p2659-generally-speaking-this-formation-signifies-intensity-with-the-implication",
-      "canonicalPath": "cases.ordinaryShortGlottal.operationFacts.shape"
+      "disposition": "documentary-claim-runtime-observation-unverified",
+      "reason": "Canvas9020–9025 describes intensity and separately executed reiteration generally speaking; Canvas9043–9049 includes contrasting and idiomatic meanings. The chōca fixture supplies a short-glottal shape and open semantic scopes, with no lexical meaning frame. Neither shape nor available scope proves this qualified meaning description.",
+      "retiredCanonicalPath": "cases.ordinaryShortGlottal.operationFacts.shape",
+      "executionCredit": false,
+      "grammarAuthority": false
     }
   },
   "executionFunctionName": "buildClassicalNahuatlFrequentativeValidationFrame",
   "executionValidatorName": "isClassicalNahuatlFrequentativeValidationFrame",
-  "executionArgsBySelection": {
-    "claim-p2659": []
-  },
-  "expectedCanonicalStatusBySelection": {
-    "claim-p2659": "authorized"
-  }
+  "executionArgsBySelection": {},
+  "expectedCanonicalStatusBySelection": {}
 };
 export default Object.freeze(spec);

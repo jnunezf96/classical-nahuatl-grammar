@@ -5157,7 +5157,7 @@ export function createVncAllomorphyModule(targetObject = globalThis, installatio
           descriptor: causativeDescriptor
         };
       }
-      const extractExampleBases = examples => Array.isArray(examples) ? examples.map(entry => String(entry || "").split("->")[0].trim()).filter(Boolean) : [];
+      const explicitCausativeBases = policy => Array.isArray(policy?.verbs) ? policy.verbs : null;
       const resolveIntransitiveTypeOnePolicy = (baseStem = "") => {
         const normalized = normalizeDerivationStemValue(baseStem);
         if (!isIntransitive || !normalized) {
@@ -6118,11 +6118,11 @@ export function createVncAllomorphyModule(targetObject = globalThis, installatio
         const preferTransitiveWiUBase = isTransitive && hasEndingFamily("w+i") && hasOptionFamily(typeTwoOptions, "o");
         if (isIntransitive && finalNucleus === "o" && hasNonactiveFamily("hua")) {
           const uRules = rules.intransitiveEndsWithU?.nonactiveWa?.typeTwo || {};
-          const additionBases = Array.isArray(uRules?.addition?.verbs) ? uRules.addition.verbs : extractExampleBases(uRules?.addition?.examples);
-          const replacementBases = Array.isArray(uRules?.replacement?.verbs) ? uRules.replacement.verbs : extractExampleBases(uRules?.replacement?.examples);
+          const additionBases = explicitCausativeBases(uRules.addition);
+          const replacementBases = explicitCausativeBases(uRules.replacement);
           const matchBase = baseList => targetObject.matchesDerivationRuleBaseList(baseList, ruleBase, fullRuleBase);
-          const useAddition = additionBases.length ? matchBase(additionBases) : true;
-          const useReplacement = replacementBases.length ? matchBase(replacementBases) : true;
+          const useAddition = additionBases !== null && (additionBases.length ? matchBase(additionBases) : true);
+          const useReplacement = replacementBases !== null && (replacementBases.length ? matchBase(replacementBases) : true);
           if (useAddition) {
             pushWithRoute(buildAppendMorphStemSpec(ruleBase, "wia", {
               sourceBase: ruleBase,
@@ -6219,8 +6219,9 @@ export function createVncAllomorphyModule(targetObject = globalThis, installatio
             // or by replacement (panu -> panawia). If the verb is listed as replacement,
             // suppress the default -wia output derived from the -wa nonactive base.
             const uRules = rules.intransitiveEndsWithU?.nonactiveWa?.typeTwo || {};
-            const additionBases = Array.isArray(uRules?.addition?.verbs) ? uRules.addition.verbs : extractExampleBases(uRules?.addition?.examples);
-            const replacementBases = Array.isArray(uRules?.replacement?.verbs) ? uRules.replacement.verbs : extractExampleBases(uRules?.replacement?.examples);
+            const additionBases = explicitCausativeBases(uRules.addition);
+            const replacementBases = explicitCausativeBases(uRules.replacement);
+            if (additionBases === null || replacementBases === null) return;
             if (replacementBases.length) {
               const matchBase = baseList => targetObject.matchesDerivationRuleBaseList(baseList, ruleBase, fullRuleBase);
               const inAdditionList = additionBases.length ? matchBase(additionBases) : false;
@@ -10030,7 +10031,7 @@ export function createVncAllomorphyModule(targetObject = globalThis, installatio
         diagnostics: supportedContract.diagnostics,
         orthographyFrame: {
           classicalRuleSpelling: supportedContract.classicalEnding,
-          classicalRuleSpelling: supportedContract.classicalEndings.join("/"),
+          routeRuleSpellings: supportedContract.classicalEndings,
           surfaceForms: supportedContract.classicalEndings,
           spellingAuthority: "Classical Andrews transcription",
           noClassicalSurfaceImport: true,
@@ -10902,28 +10903,28 @@ export function createVncAllomorphyModule(targetObject = globalThis, installatio
     }
     const PATIENTIVO_ROOT_STOCK_VARIANT_CONSONANTS = Object.freeze([Object.freeze({
       classical: "c",
-      classical: "k"
+      adaptation: "k"
     }), Object.freeze({
       classical: "x",
-      classical: "sh"
+      adaptation: "sh"
     }), Object.freeze({
       classical: "z",
-      classical: "s"
+      adaptation: "s"
     }), Object.freeze({
       classical: "ch",
-      classical: "ch"
+      adaptation: "ch"
     })]);
     function buildPatientivoRootStockVariantOrthographyConversions() {
       return Object.freeze(PATIENTIVO_ROOT_STOCK_VARIANT_CONSONANTS.map(entry => ({
         input: entry.classical,
-        output: entry.classical,
+        output: entry.adaptation,
         generationAllowed: true
       })));
     }
     function normalizePatientivoRootStockVariantConsonant(value = "") {
       const normalized = String(value || "").trim().toLowerCase();
-      const matched = PATIENTIVO_ROOT_STOCK_VARIANT_CONSONANTS.find(entry => entry.classical === normalized || entry.classical === normalized);
-      return matched ? matched.classical : "";
+      const matched = PATIENTIVO_ROOT_STOCK_VARIANT_CONSONANTS.find(entry => entry.classical === normalized || entry.adaptation === normalized);
+      return matched ? matched.adaptation : "";
     }
     function buildPatientivoRootStockSourceContractRecord(options = {}) {
       const normalizedSourceStem = normalizeDerivationStemValue(options.sourceStem || "");
@@ -10954,7 +10955,7 @@ export function createVncAllomorphyModule(targetObject = globalThis, installatio
         variantSelectionStatus: "not-fully-recoverable-from-surface-grammar",
         variantConsonant,
         classicalVariantConsonants: Object.freeze(PATIENTIVO_ROOT_STOCK_VARIANT_CONSONANTS.map(entry => entry.classical)),
-        classicalVariantConsonants: Object.freeze(PATIENTIVO_ROOT_STOCK_VARIANT_CONSONANTS.map(entry => entry.classical)),
+        adaptationVariantConsonants: Object.freeze(PATIENTIVO_ROOT_STOCK_VARIANT_CONSONANTS.map(entry => entry.adaptation)),
         orthographyConversions: buildPatientivoRootStockVariantOrthographyConversions(),
         routeStemOnly,
         grammarAuthority: "ANDREWS_TRANSCRIPTION_CANVAS.md",
@@ -10978,7 +10979,7 @@ export function createVncAllomorphyModule(targetObject = globalThis, installatio
         diagnostics: contract.diagnostics,
         orthographyFrame: {
           classicalRuleSpelling: contract.classicalVariantConsonants.join("/"),
-          classicalRuleSpelling: contract.classicalVariantConsonants.join("/"),
+          adaptationRuleSpelling: contract.adaptationVariantConsonants.join("/"),
           surface: contract.outputSurface,
           surfaceForms: contract.outputSurface ? [contract.outputSurface] : [],
           spellingAuthority: "Classical Andrews transcription",

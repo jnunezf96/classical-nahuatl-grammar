@@ -3,7 +3,7 @@ import { execFileSync } from "node:child_process";
 import path from "node:path";
 import { pathToFileURL, fileURLToPath } from "node:url";
 import { gzipSync } from "node:zlib";
-import { buildGrammarOsRelease } from "./build_grammar_os_release.mjs";
+import { buildGrammarOsRelease, assertGrammarOsReleaseSourceReady } from "./build_grammar_os_release.mjs";
 
 const SCRIPT_DIR = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(SCRIPT_DIR, "..");
@@ -19,6 +19,7 @@ function meta(source, name) {
   return source.match(new RegExp(`<meta\\s+name=["']${name}["']\\s+content=["']([^"']+)["']`, "iu"))?.[1] || "";
 }
 
+await assertGrammarOsReleaseSourceReady();
 const packageJson = JSON.parse(await fs.readFile(path.join(ROOT, "package.json"), "utf8"));
 const packageLock = JSON.parse(await fs.readFile(path.join(ROOT, "package-lock.json"), "utf8"));
 const indexSource = await fs.readFile(path.join(ROOT, "index.html"), "utf8");

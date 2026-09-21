@@ -12,7 +12,7 @@ const spec = {
   "coordinates": {
     "claim-p4504::p4504-the-honorific-nounstem-for-tech-tli-is-tecb-tzin": {
       "assertionId": "classical-relational-continuation-tech-assimilation-analysis:p4504-the-honorific-nounstem-for-tech-tli-is-tecb-tzin",
-      "canonicalPath": "analyses.techAssimilation.surfaceAssimilationAuthorizesStructure"
+      "canonicalPath": "cases.techHonorific"
     }
   },
   "executionFunctionName": "buildClassicalRelationalContinuationValidationFrame",

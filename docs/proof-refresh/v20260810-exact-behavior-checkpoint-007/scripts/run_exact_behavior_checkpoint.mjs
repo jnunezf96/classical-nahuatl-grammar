@@ -141,6 +141,7 @@ await writeFile(path.join(batchRoot, "rollback-active-manifest.json"), stableJso
 const activePointer = { schemaVersion: 1, activeManifest: `docs/proof-refresh/${version}/manifest.json`, activeManifestDigest: manifestDigest,
   rollbackManifest: oldPointer.activeManifest, rollbackManifestDigest: oldPointer.activeManifestDigest, baseProofCorpusRetained: true };
 const temporaryPointerPath = `${pointerPath}.tmp`;
+try {
 for (const candidate of [activePointer, oldPointer, activePointer]) {
   await writeFile(temporaryPointerPath, stableJson(candidate));
   await rename(temporaryPointerPath, pointerPath);
@@ -148,13 +149,7 @@ for (const candidate of [activePointer, oldPointer, activePointer]) {
     "atomic manifest switch/rollback failed");
 }
 let auditOutput;
-try {
   ({ stdout: auditOutput } = await execFile(process.execPath, ["docs/canvas-progress/audit_canvas_true_progress.mjs"], { cwd: repositoryRoot }));
-} catch (error) {
-  await writeFile(temporaryPointerPath, stableJson(oldPointer));
-  await rename(temporaryPointerPath, pointerPath);
-  throw error;
-}
 const progress = JSON.parse(await readFile(path.join(repositoryRoot, "docs/CANVAS_TRUE_GRAMMAR_PROGRESS.json"), "utf8"));
 assert(progress.lessonCorpus.exactProofs.exactBehaviorObserved === 5706, "progress ledger delta is wrong");
 const report = { schemaVersion: 1, version, status: "passed",
@@ -164,3 +159,8 @@ const report = { schemaVersion: 1, version, status: "passed",
     focusedRuntimeTestsPassed: true, ledgerRegenerated: true, rollbackPassed: true }, auditSummary: JSON.parse(auditOutput) };
 await writeFile(path.join(batchRoot, "validation-report.json"), stableJson(report));
 console.log(stableJson(report));
+} catch (error) {
+  await writeFile(temporaryPointerPath, stableJson(oldPointer));
+  await rename(temporaryPointerPath, pointerPath);
+  throw error;
+}

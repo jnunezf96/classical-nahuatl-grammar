@@ -42,11 +42,11 @@ const spec = {
   "coordinates": {
     "claim-p1290::p1290-each-of-the-persons-has-four-variant-personal-pronoun": {
       "assertionId": "classical-absolutive-subject-pronoun-paradigm:p1290-each-of-the-persons-has-four-variant-personal-pronoun",
-      "canonicalPath": "contractSubjectPronounShapeInventory.length"
+      "canonicalPath": "contractSubjectPronounShapesBySubject"
     },
     "claim-p1291::p1291-singular-number-and-three-for-the-plural-number-the": {
       "assertionId": "classical-absolutive-subject-pronoun-paradigm:p1291-singular-number-and-three-for-the-plural-number-the",
-      "canonicalPath": "formulaTemplate"
+      "canonicalPath": "contractSubjectPronounShapesBySubject"
     },
     "claim-p1292::p1292-13-3-con-number-connector-morph": {
       "assertionId": "classical-absolutive-subject-pronoun-paradigm:p1292-13-3-con-number-connector-morph",

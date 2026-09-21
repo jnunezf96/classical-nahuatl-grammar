@@ -985,6 +985,25 @@ export function createParsingApi(targetObject = globalThis, installationContext 
         return null;
       }
     }
+    function freezeEntradaGrammarObjectRecord(record, seen = new WeakSet()) {
+      if (!record || typeof record !== "object" || seen.has(record)) return record;
+      seen.add(record);
+      // Some operation targets are already shallow-frozen. Their owned
+      // arrays and vectors still need to be traversed before issuance.
+      for (const key of Reflect.ownKeys(record)) {
+        const descriptor = Object.getOwnPropertyDescriptor(record, key);
+        if (descriptor && Object.prototype.hasOwnProperty.call(descriptor, "value")) {
+          freezeEntradaGrammarObjectRecord(descriptor.value, seen);
+        }
+      }
+      return Object.freeze(record);
+    }
+    function issueEntradaGrammarObject(entradaGrammarObject = null) {
+      if (!entradaGrammarObject) return null;
+      freezeEntradaGrammarObjectRecord(entradaGrammarObject);
+      ISSUED_ENTRADA_GRAMMAR_OBJECTS.add(entradaGrammarObject);
+      return entradaGrammarObject;
+    }
     function hasEntradaGrammarFormulaSlotEvidence(sourceFormulaSlots = null, sourceFormulaEcho = "") {
       return Boolean(sourceFormulaSlots && typeof sourceFormulaSlots === "object" && Object.keys(sourceFormulaSlots).length) || Boolean(String(sourceFormulaEcho || "").trim());
     }
@@ -1230,7 +1249,7 @@ export function createParsingApi(targetObject = globalThis, installationContext 
         allomorphs
       };
     }
-    function buildEntradaGrammarObjectFromCanonicalVerbSpec(spec = null, {
+    function assembleEntradaGrammarObjectFromCanonicalVerbSpec(spec = null, {
       rawInput = "",
       sourceBlock = "#1 Entrada",
       sourceUnit = "CNV",
@@ -1281,10 +1300,15 @@ export function createParsingApi(targetObject = globalThis, installationContext 
         version: 1,
         sourceBlock: String(sourceBlock || "#1 Entrada"),
         rawInput: String(rawInput || ""),
-        currentRegexParseOperationFrame,
-        currentRegexEntradaGrammarObjectSourceFrame,
-        currentRegexEntradaGrammarObjectOperationFrame,
-        currentRegexEntradaGrammarObjectTargetFrame,
+        // Keep authentic parser lineage by identity. Foreign documentary
+        // records are copied, so freezing this Result cannot freeze callers.
+        currentRegexParseOperationFrame: ISSUED_CURRENT_REGEX_PARSE_OPERATION_FRAMES.has(currentRegexParseOperationFrame)
+          ? currentRegexParseOperationFrame : cloneEntradaGrammarObjectRecord(currentRegexParseOperationFrame),
+        currentRegexEntradaGrammarObjectSourceFrame: ISSUED_CURRENT_REGEX_ENTRADA_SOURCE_FRAMES.has(currentRegexEntradaGrammarObjectSourceFrame)
+          && ISSUED_CURRENT_REGEX_PARSE_OPERATION_FRAMES.has(currentRegexEntradaGrammarObjectSourceFrame?.currentRegexParseOperationFrame)
+          ? currentRegexEntradaGrammarObjectSourceFrame : cloneEntradaGrammarObjectRecord(currentRegexEntradaGrammarObjectSourceFrame),
+        currentRegexEntradaGrammarObjectOperationFrame: cloneEntradaGrammarObjectRecord(currentRegexEntradaGrammarObjectOperationFrame),
+        currentRegexEntradaGrammarObjectTargetFrame: cloneEntradaGrammarObjectRecord(currentRegexEntradaGrammarObjectTargetFrame),
         layerOrder: Array.from(ENTRADA_GRAMMAR_OBJECT_LAYER_ORDER),
         sourceUnit: String(sourceUnit || "CNV"),
         sourceKind: String(sourceKind || "verbal-nuclear-clause"),
@@ -1315,7 +1339,8 @@ export function createParsingApi(targetObject = globalThis, installationContext 
           sourceLayer: "stem-frame"
         },
         valenceFrame: {
-          transitivity,
+          transitivity: typeof transitivity === "object"
+            ? cloneEntradaGrammarObjectRecord(transitivity) : transitivity,
           tokens: valenceSlots.map(entry => entry.token),
           lexicalEmbeds: Array.isArray(spec.valenceEmbeds) ? spec.valenceEmbeds.map(entry => targetObject.normalizeRuleBase(entry)).filter(Boolean) : [],
           slots: valenceSlots,
@@ -1350,8 +1375,10 @@ export function createParsingApi(targetObject = globalThis, installationContext 
         },
         antiConflationRules: Array.from(ENTRADA_GRAMMAR_OBJECT_ANTI_CONFLATION_RULES)
       };
-      ISSUED_ENTRADA_GRAMMAR_OBJECTS.add(entradaGrammarObject);
       return entradaGrammarObject;
+    }
+    function buildEntradaGrammarObjectFromCanonicalVerbSpec(spec = null, options = {}) {
+      return issueEntradaGrammarObject(assembleEntradaGrammarObjectFromCanonicalVerbSpec(spec, options));
     }
     function isIssuedEntradaGrammarObject(entradaGrammarObject = null) {
       return Boolean(
@@ -1359,6 +1386,10 @@ export function createParsingApi(targetObject = globalThis, installationContext 
         && typeof entradaGrammarObject === "object"
         && entradaGrammarObject.kind === "andrews-entrada-grammar-object"
         && ISSUED_ENTRADA_GRAMMAR_OBJECTS.has(entradaGrammarObject)
+        && Object.isFrozen(entradaGrammarObject)
+        && Object.isFrozen(entradaGrammarObject.valenceFrame)
+        && Object.isFrozen(entradaGrammarObject.objectFrame)
+        && Object.isFrozen(entradaGrammarObject.formulaBoundaryFrame)
       );
     }
     function buildEntradaGrammarObjectFromComposerSemantic(semantic = null, options = {}) {
@@ -1501,7 +1532,7 @@ export function createParsingApi(targetObject = globalThis, installationContext 
       }
       const operationParsed = buildMovingTargetParsedFromCurrentRegexParseOperationFrame(currentRegexParseOperationFrame);
       const spec = buildCanonicalVerbSpecFromMovingTargetParsed(raw, operationParsed, tiInputMetadata, currentRegexParseOperationFrame);
-      const entradaGrammarObject = buildEntradaGrammarObjectFromCanonicalVerbSpec(spec, {
+      const entradaGrammarObject = assembleEntradaGrammarObjectFromCanonicalVerbSpec(spec, {
         rawInput: raw,
         ...options,
         currentRegexParseOperationFrame,
@@ -1516,7 +1547,7 @@ export function createParsingApi(targetObject = globalThis, installationContext 
       }
       entradaGrammarObject.currentRegexEntradaGrammarObjectOperationFrame = operationFrame;
       entradaGrammarObject.currentRegexEntradaGrammarObjectTargetFrame = operationFrame.targetFrame;
-      return entradaGrammarObject;
+      return issueEntradaGrammarObject(entradaGrammarObject);
     }
     function getCompoundAstExternalObjectSlotId(index = 0) {
       const numeric = Number(index);
@@ -3855,15 +3886,11 @@ export function createParsingApi(targetObject = globalThis, installationContext 
         }
         matches.push({
           parsed,
-          isExactRedup: Boolean(exactRedupCandidate && parsedBase === exactRedupCandidate),
           isExactBase: parsedBase === normalizedBase,
           length: targetObject.getVerbLetterCount(parsedBase)
         });
       });
       matches.sort((left, right) => {
-        if (left.isExactRedup !== right.isExactRedup) {
-          return left.isExactRedup ? -1 : 1;
-        }
         if (left.isExactBase !== right.isExactBase) {
           return left.isExactBase ? -1 : 1;
         }

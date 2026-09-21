@@ -468,6 +468,10 @@ export function createClauseModule(targetObject = globalThis, installationContex
       }
       return profile.morph || "";
     }
+    const LESSON5_CONNECTOR_ALIASES = Object.freeze({
+      c: "c-0", c0: "c-0", qui: "qui-0", qui0: "qui-0",
+      qu: "qu-eh", queh: "qu-eh", h: "0-h", "ān": "c-ān"
+    });
     function resolveLesson5VncProfileConnector(profile = null, rawConnector = "") {
       const raw = String(rawConnector || "").trim();
       if (!profile?.connectorOptions) {
@@ -476,12 +480,9 @@ export function createClauseModule(targetObject = globalThis, installationContex
       if (profile.connectorOptions.includes(raw)) {
         return raw;
       }
-      if (raw === "c" || raw === "c0") return "c-0";
-      if (raw === "qui" || raw === "qui0") return "qui-0";
-      if (raw === "qu" || raw === "queh") return "qu-eh";
-      if (raw === "h") return "0-h";
-      if (raw === "ān") return "c-ān";
-      return "";
+      const alias = Object.hasOwn(LESSON5_CONNECTOR_ALIASES, raw)
+        ? LESSON5_CONNECTOR_ALIASES[raw] : "";
+      return profile.connectorOptions.includes(alias) ? alias : "";
     }
     function buildVncNumberConnectorSlot({
       subjectNumberConnector = "",
@@ -493,6 +494,15 @@ export function createClauseModule(targetObject = globalThis, installationContex
       const profile = getVncTenseProfile(tenseValue, tenseLabel);
       const hasPluralConnector = hasLesson5VncPluralConnector(rawConnector);
       const selectedProfileConnector = resolveLesson5VncProfileConnector(profile, rawConnector);
+      if (profile && Object.hasOwn(LESSON5_CONNECTOR_ALIASES, rawConnector)
+        && !selectedProfileConnector) {
+        return {
+          connector: "", displayConnector: "", num1: "", num2: "",
+          available: false,
+          diagnostic: "connector-alias-not-in-selected-profile",
+          connectorOptions: [...profile.connectorOptions]
+        };
+      }
       if (hasPluralConnector && profile?.pluralConnector) {
         const selectedConnector = selectedProfileConnector || profile.pluralConnector;
         const [num1, num2] = selectedConnector.includes("-") ? selectedConnector.split("-", 2) : ["", selectedConnector];

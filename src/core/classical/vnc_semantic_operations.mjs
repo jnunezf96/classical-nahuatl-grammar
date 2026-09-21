@@ -116,9 +116,13 @@ export function createClassicalVncSemanticOperationsApi(targetObject = globalThi
       const build = requireFunction(targetObject, "buildClassicalNahuatlVerbstemInitialSupportiveIFrame");
       const afterTla = build("itta", { valence: "projective-nonhuman", supportiveInitialI: true });
       const afterTe = build("itta", { valence: "projective-human", supportiveInitialI: true });
+      const afterReflexive = build("itta", { valence: "mainline-reflexive", supportiveInitialI: true });
       const real = build("itta", { valence: "projective-nonhuman", initialVowelKind: "real" });
       return {
         tlaStemRealization: afterTla.stemRealization,
+        reflexiveStemRealization: afterReflexive.stemRealization,
+        reflexiveDropsSupportiveI: afterReflexive.initialSupportiveIDropped,
+        reflexiveBoundaryValence: afterReflexive.valence,
         tlaDropsSupportiveI: afterTla.initialSupportiveIDropped,
         teStemRealization: afterTe.stemRealization,
         teBlocksSupportiveIDrop: afterTe.humanProjectiveBlocksDrop,

@@ -4870,7 +4870,20 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         && normalizedTargetTense
         && normalizedTargetTense === frame.tense);
     }
-    function applyClassicalNahuatlLesson23ObjectClusterToMachineryFrame(lowerMachineryFrame = null, objectClusterFrame = null, {
+    function isCanonicalClassicalNahuatlLesson23LowerMachineryFrame(frame = null) {
+      const runtimeTarget = getClassicalNahuatlVncLayerRuntimeTarget();
+      // A valid object cluster cannot authenticate independently supplied lower
+      // predicate/tense/number slots. Qualify their enclosing owner Result first.
+      return typeof runtimeTarget?.isClassicalNahuatlVncDerivationBaseSourceMachineryFrame === "function"
+        && runtimeTarget.isClassicalNahuatlVncDerivationBaseSourceMachineryFrame(frame) === true;
+    }
+    function applyClassicalNahuatlLesson23ObjectClusterToMachineryFrame(lowerMachineryFrame = null, objectClusterFrame = null, options = {}) {
+      if (!isCanonicalClassicalNahuatlLesson23LowerMachineryFrame(lowerMachineryFrame)) {
+        return null;
+      }
+      return applyClassicalNahuatlLesson23ObjectClusterToQualifiedMachineryFrame(lowerMachineryFrame, objectClusterFrame, options);
+    }
+    function applyClassicalNahuatlLesson23ObjectClusterToQualifiedMachineryFrame(lowerMachineryFrame = null, objectClusterFrame = null, {
       sourceFrameKind = "classical-nahuatl-multiple-object-vnc-multiple-object-vnc-machinery-frame"
     } = {}) {
       const normalizedSourceFrameKind = normalizeClassicalNahuatlVncSlotCarrier(sourceFrameKind);
@@ -5109,7 +5122,8 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
     } = {}) {
       const lowerTypedFrame = lowerActiveMachineryFrame?.proofFrame?.conclusion?.finalTypedVncSlotFrame || lowerActiveMachineryFrame?.proofFrame?.conclusion?.finalBoundaryRealizationFrame?.typedSlotFrame;
       const sourceStem = normalizeClassicalNahuatlVncSlotStem(lowerActiveMachineryFrame?.sourceVerbstem || lowerActiveMachineryFrame?.stem);
-      if (!isClassicalNahuatlVncSlotFrame(lowerTypedFrame)) {
+      if (!isCanonicalClassicalNahuatlLesson23LowerMachineryFrame(lowerActiveMachineryFrame)
+        || !isClassicalNahuatlVncSlotFrame(lowerTypedFrame)) {
         return buildClassicalNahuatlBlockedFrame({
           voice: "active",
           blockReason: "lesson23-authorized-lower-active-vnc-required",
@@ -5138,7 +5152,7 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
           sourceValence: "multiple-object"
         });
       }
-      return applyClassicalNahuatlLesson23ObjectClusterToMachineryFrame(lowerActiveMachineryFrame, objectClusterFrame) || buildClassicalNahuatlBlockedFrame({
+      return applyClassicalNahuatlLesson23ObjectClusterToQualifiedMachineryFrame(lowerActiveMachineryFrame, objectClusterFrame) || buildClassicalNahuatlBlockedFrame({
         voice: "active",
         blockReason: "lesson23-multiple-object-slot-application-failed",
         activeMachineryFrame: lowerActiveMachineryFrame,
@@ -5248,6 +5262,18 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         blocksInput: true
       };
     }
+    function isCanonicalClassicalNahuatlNonactiveActiveMachineryFrame(frame = null) {
+      const runtimeTarget = getClassicalNahuatlVncLayerRuntimeTarget();
+      // Qualify the active Result before a voice operation consumes it. This
+      // does not constrain the requested target environment or admit another
+      // derivation, and includes already-derived active predicates.
+      if (frame?.kind === "classical-nahuatl-vnc-derived-machinery-frame") {
+        return typeof runtimeTarget?.isClassicalNahuatlDerivedVncMachineryFrame === "function"
+          && runtimeTarget.isClassicalNahuatlDerivedVncMachineryFrame(frame) === true;
+      }
+      return typeof runtimeTarget?.isClassicalNahuatlVncDerivationBaseSourceMachineryFrame === "function"
+        && runtimeTarget.isClassicalNahuatlVncDerivationBaseSourceMachineryFrame(frame) === true;
+    }
     function buildClassicalNahuatlDerivedVncFrame(activeMachineryFrame = null, {
       voice = "active",
       nonactiveStemRecord = null,
@@ -5267,7 +5293,9 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
       if (normalizedVoice === "active") {
         return activeMachineryFrame;
       }
-      const activeAuthorized = activeMachineryFrame?.proofFrame?.authorizationStatus === "authorized" && isClassicalNahuatlVncSlotFrame(activeMachineryFrame?.proofFrame?.conclusion?.finalTypedVncSlotFrame || activeMachineryFrame?.proofFrame?.conclusion?.finalBoundaryRealizationFrame?.typedSlotFrame);
+      const activeAuthorized = isCanonicalClassicalNahuatlNonactiveActiveMachineryFrame(activeMachineryFrame)
+        && activeMachineryFrame?.proofFrame?.authorizationStatus === "authorized"
+        && isClassicalNahuatlVncSlotFrame(activeMachineryFrame?.proofFrame?.conclusion?.finalTypedVncSlotFrame || activeMachineryFrame?.proofFrame?.conclusion?.finalBoundaryRealizationFrame?.typedSlotFrame);
       const normalizedSourceStem = normalizeClassicalNahuatlVncSlotStem(activeMachineryFrame?.sourceVerbstem || activeMachineryFrame?.stem);
       const normalizedSourceValence = normalizeClassicalNahuatlVncSlotCarrier(sourceValence || activeMachineryFrame?.valence);
       const normalizedSourceSubject = normalizeClassicalNahuatlVncSlotCarrier(sourceSubject || activeMachineryFrame?.priorVncFrame?.subject);
@@ -5586,12 +5614,30 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         derivedMachineryFrame?.proofFrame?.conclusion?.finalTypedVncSlotFrame
         || derivedMachineryFrame?.proofFrame?.conclusion?.finalBoundaryRealizationFrame?.typedSlotFrame
         || null;
+      // The validated voice operation owns this transfer to its freshly built
+      // target. It is not a license to apply a source irregular plan to any
+      // unrelated slot through the public Lesson 11 application API.
       const inheritedLesson11ApplicationFrame = inheritedTenseOnlyEnvironment
-        && typeof runtimeTarget?.applyClassicalNahuatlLesson11PlanToVncSlotFrame === "function"
-        ? runtimeTarget.applyClassicalNahuatlLesson11PlanToVncSlotFrame(
-          sourceLesson11Plan,
-          lowerDerivedTypedVncSlotFrame
-        )
+        && derivedMachineryFrame?.proofFrame?.authorizationStatus === "authorized"
+        && lowerDerivedTypedVncSlotFrame?.slots?.predicate
+        ? (() => {
+          const frame = cloneClassicalNahuatlVncSlotValue(lowerDerivedTypedVncSlotFrame);
+          frame.slots.predicate.tns = sourceLesson11Plan.tnsOverride;
+          frame.lesson11Plan = cloneClassicalNahuatlVncSlotValue(sourceLesson11Plan);
+          frame.phase = "lesson11-irregular-tense-inherited-by-nonactive";
+          const { subject, prePredicate, predicate, number } = frame.slots;
+          frame.semanticIdentity = [subject?.pers1 || "", subject?.pers2 || "",
+            ...(prePredicate || []).map(slot => slot.carrier), predicate.stem,
+            predicate.tns, number.num1, number.num2].join("|");
+          return {
+            kind: "classical-nahuatl-irregular-vnc-vnc-application-frame",
+            authorizationStatus: "authorized",
+            operation: "nonactive-conditioned-tense-inheritance",
+            plan: sourceLesson11Plan,
+            sourceTypedVncSlotFrame: cloneClassicalNahuatlVncSlotValue(lowerDerivedTypedVncSlotFrame),
+            typedVncSlotFrame: frame
+          };
+        })()
         : null;
       const inheritedLesson11BoundaryFrame = inheritedLesson11ApplicationFrame?.authorizationStatus === "authorized"
         && typeof runtimeTarget?.realizeClassicalNahuatlVncSlotFrameAtFinalBoundary === "function"

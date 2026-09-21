@@ -30,7 +30,7 @@ const spec = {
     },
     "claim-p2034::p2034-tla-tla-za-to-hurl-s-th": {
       "assertionId": "classical-o-za-ci-cui-boundary-formation:p2034-tla-tla-za-to-hurl-s-th",
-      "canonicalPath": "nonactive.oCui.options.0.nonactiveStem"
+      "canonicalPath": "nonactive.oNamedSources.tlaza"
     },
     "claim-p2035::p2035-tla-icza-to-tread-on-s-th": {
       "assertionId": "classical-o-za-ci-cui-boundary-formation:p2035-tla-icza-to-tread-on-s-th",

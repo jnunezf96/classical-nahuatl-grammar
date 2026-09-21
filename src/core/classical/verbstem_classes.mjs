@@ -6743,7 +6743,9 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
           optionalIrregularFormulaRealizations: authorized ? optionalIrregularFormulaRealizations : [],
           optionalIrregularPreference: authorized ? predicateFormationRuleFrame?.optionalIrregularPreference || "" : "",
           selectedFormula,
-          selectedFormulaWithoutExpandedVncBoundary: authorized ? priorVncFrame?.formulaRealization || "" : "",
+          selectedFormulaWithoutExpandedVncBoundary: authorized
+            ? runtimeTarget.renderClassicalNahuatlVncSlotFrameFormula(priorVncSlotFrame)
+            : "",
           priorVncSlotFrame: authorized ? priorVncSlotFrame : null,
           typedVncSlotAuthority: authorized ? finalBoundaryRealizationFrame?.typedSlotAuthority === true : false,
           formulaStringAuthority: authorized ? finalBoundaryRealizationFrame?.formulaStringAuthority === true : false,
@@ -7613,6 +7615,14 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
       };
     }
     function buildClassicalNahuatlVerbstemClassFrame(stem = "", options = {}) {
+      return buildClassicalNahuatlVerbstemClassFrameInternal(stem, options);
+    }
+    // Reuse the actual lower-input construction, stopping before Lesson 11
+    // application. The private mode is never a caller-supplied bypass flag.
+    function buildClassicalNahuatlLesson11LowerInput(stem = "", options = {}) {
+      return buildClassicalNahuatlVerbstemClassFrameInternal(stem, options, true);
+    }
+    function buildClassicalNahuatlVerbstemClassFrameInternal(stem = "", options = {}, lowerInputOnly = false) {
       const normalizedStem = normalizeClassicalNahuatlVerbstem(stem);
       const canonicalSourceSelectionCandidate =
         options.canonicalSourceSelectionFrame || null;
@@ -7750,7 +7760,8 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
         ? basePriorVncFrame
         : null;
       const activeLesson11ParadigmPlan = lesson11ParadigmPlan && (lesson11ParadigmPlan.applies === true || lesson11ParadigmPlan.authorizationStatus === "blocked") ? lesson11ParadigmPlan : null;
-      const lesson11VncApplicationFrame = activeLesson11ParadigmPlan?.applies && typeof lesson11RuntimeTarget?.applyClassicalNahuatlLesson11PlanToVncSlotFrame === "function" ? lesson11RuntimeTarget.applyClassicalNahuatlLesson11PlanToVncSlotFrame(activeLesson11ParadigmPlan, predicateEnvironmentPriorVncFrame?.vncSlotFrame || null) : null;
+      if (lowerInputOnly) return predicateEnvironmentPriorVncFrame;
+      const lesson11VncApplicationFrame = activeLesson11ParadigmPlan?.applies && typeof lesson11RuntimeTarget?.applyClassicalNahuatlLesson11PlanToVncSlotFrame === "function" ? lesson11RuntimeTarget.applyClassicalNahuatlLesson11PlanToVncSlotFrame(activeLesson11ParadigmPlan, predicateEnvironmentPriorVncFrame?.vncSlotFrame || null, predicateEnvironmentPriorVncFrame) : null;
       // Preserve the issued lower result as the operation source.  The proof
       // consumes the Lesson 11 application's issued typed slot as its final
       // VNC coordinate instead of trying to reinterpret those selected
@@ -8018,6 +8029,7 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
         buildClassicalNahuatlVerbstemDisplayReceiptFrame,
         buildClassicalNahuatlVerbstemReceiptAuthorityFrame,
         buildClassicalNahuatlVerbstemClassFrame,
+        buildClassicalNahuatlLesson11LowerInput,
         isClassicalNahuatlFuenteSourceSelectionFrame,
         isClassicalNahuatlVerbstemClassFrame
       });
@@ -8412,6 +8424,7 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
     api.buildClassicalNahuatlVerbstemDisplayReceiptFrame = buildClassicalNahuatlVerbstemDisplayReceiptFrame;
     api.buildClassicalNahuatlVerbstemReceiptAuthorityFrame = buildClassicalNahuatlVerbstemReceiptAuthorityFrame;
     api.buildClassicalNahuatlVerbstemClassFrame = buildClassicalNahuatlVerbstemClassFrame;
+    api.buildClassicalNahuatlLesson11LowerInput = buildClassicalNahuatlLesson11LowerInput;
     api.isClassicalNahuatlVerbstemClassFrame = isClassicalNahuatlVerbstemClassFrame;
     api.installClassicalNahuatlVerbstemClassesClassicGlobals = installClassicalNahuatlVerbstemClassesClassicGlobals;
     return api;

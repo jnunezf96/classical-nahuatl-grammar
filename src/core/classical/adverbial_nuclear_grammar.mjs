@@ -231,12 +231,12 @@ const NNC_FOUNDATION_RECORDS = Object.freeze([
 ]);
 
 const PARTICLE_LOOKING_RECORDS = Object.freeze([
-  ["nel", "nel", "degree", "obligatorily-adverbial", []],
+  ["nel", "nel", "manner", "obligatorily-adverbial", []],
   ["huel", "huel", "manner", "lexicalized", ["negative-ahhuel-licensed", "ability-possibility-or-degree"]],
   ["nen", "nēn", "manner", "obligatorily-adverbial", ["may-embed-in-nnc-or-vnc"]],
   ["mo", "mō", "degree", "conjectural-analysis", ["not-inherently-interrogative", "negative-ahmo-and-camo-licensed", "subordinate-negative-reading"]],
   ["cuel", "cuēl", "time", "obsolete-source", ["source-nounstem-unattested"]],
-  ["mach", "mach", "degree", "lexicalized", ["kinship-homophone-never-adverbializes", "mach-eh-collocation", "post-interrogative-ever-reading"]],
+  ["mach", "mach", "manner", "lexicalized", ["kinship-homophone-never-adverbializes", "mach-eh-collocation", "post-interrogative-ever-reading"]],
   ["quen", "quēn", "manner", "lexicalized", ["fused-in-adjunctor", "another-in-may-follow", "noninitial-loses-interrogative-force", "lexicalized-collocations"]],
 ].map(([id, surface, domain, lexicalStatus, restrictions]) => makeRecord({
   id: `44.5-${id}`,
@@ -646,7 +646,11 @@ function getAdverbialExactSourceRecord({
   clauseKind = "",
   slotFrame = null,
 } = {}) {
-  const predicateStem = normalizeTypedSourceStem(
+  // Raw-entry aliases may omit quantity. An already-typed Result may not:
+  // normalize Unicode composition, not the phonemic vowel distinction.
+  const exactStemKey = value => normalizeToken(value).normalize("NFC")
+    .toLowerCase().replace(/[^\p{L}\p{N}]/gu, "");
+  const predicateStem = exactStemKey(
     realizeCarrier(slotFrame?.slots?.predicate?.stem || ""),
   );
   const exactStateSlots = (
@@ -655,15 +659,15 @@ function getAdverbialExactSourceRecord({
     || []
   ).filter(slot => (
     !slot?.kind || slot.kind === "vnc-internal-state"
-  )).map(slot => normalizeTypedSourceStem(slot?.carrier || ""))
+  )).map(slot => exactStemKey(slot?.carrier || ""))
     .filter(Boolean);
   const matches = SOURCE_RECORDS.filter(record => (
     record.clauseKind === clauseKind
-    && normalizeTypedSourceStem(realizeCarrier(record.predicateStem))
+    && exactStemKey(realizeCarrier(record.predicateStem))
       === predicateStem
     && (
       !record.stateSlots.length
-      || record.stateSlots.map(normalizeTypedSourceStem).join("|")
+      || record.stateSlots.map(exactStemKey).join("|")
         === exactStateSlots.join("|")
     )
   ));
@@ -1421,6 +1425,12 @@ function evaluateExternalContext(record, request = {}, canonicalWord = "") {
     return {
       authorizationStatus: "blocked",
       blockReason: "lesson44-required-preceding-particle-choice-missing-or-invalid",
+    };
+  }
+  if (precedingParticle && !record.requiredPrecedingParticles.includes(precedingParticle)) {
+    return {
+      authorizationStatus: "blocked",
+      blockReason: "lesson44-source-does-not-license-preceding-particle-context",
     };
   }
   const negativeParticle = normalizeKey(context.negativeParticle);

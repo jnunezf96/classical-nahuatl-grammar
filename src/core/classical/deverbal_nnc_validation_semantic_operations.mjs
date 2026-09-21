@@ -353,7 +353,7 @@ function buildProjection(runtime) {
     })),
     vocativeBoundary: evaluate(runtime, {
       constructionKind: "vocative",
-      source: { wordStem: "pix", numberConnector: "c" },
+      canonicalNncResult: preterit.canonicalResult,
     }),
     doubleNucleusOwnerhood: evaluate(runtime, doubleNucleusRequest),
     customaryTwoDegrees: compare(
@@ -418,6 +418,14 @@ function buildProjection(runtime) {
     copiedNucleus.slots.predicate.stem = "forged";
   }
   const blockedCases = {
+    rawVocative: evaluate(runtime, {
+      constructionKind: "vocative",
+      source: { wordStem: "pix", numberConnector: "c" },
+    }),
+    copiedVocative: evaluate(runtime, {
+      constructionKind: "vocative",
+      canonicalNncResult: { ...preterit.canonicalResult },
+    }),
     wrongPreteritStage: evaluate(runtime, patchSource(
       predicateRequest("preterit-agentive"),
       { sourceStage: "present-predicate" },
@@ -443,6 +451,8 @@ function buildProjection(runtime) {
   ));
   const blockedValid = Boolean(
     blockedCases.wrongPreteritStage.authorizationStatus === "blocked"
+    && blockedCases.rawVocative.authorizationStatus === "blocked"
+    && blockedCases.copiedVocative.authorizationStatus === "blocked"
     && blockedCases.forgedDoubleNucleus.authorizationStatus === "blocked"
     && blockedCases.callerPoison.authorizationStatus === "blocked"
     && cases.customaryTwoDegrees.distinctOperationIds === true

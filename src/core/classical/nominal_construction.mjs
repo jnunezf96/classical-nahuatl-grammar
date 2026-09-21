@@ -22,6 +22,20 @@ const ISSUED_CLOSED_CONSTRUCTION_EXCEPTION_VALIDATIONS = new WeakSet();
 const ISSUED_INCORPORATED_NOUN_ROLE_VALIDATIONS = new WeakSet();
 const ISSUED_PATIENTIVE_EMBED_CONSTITUENT_FRAMES = new WeakSet();
 const ISSUED_PATIENTIVE_MATRIX_CONSTITUENT_FRAMES = new WeakSet();
+const COMPOUND_NNC_RESTRICTED_USE_CITATION_PROJECTIONS = new WeakMap();
+const COMPOUND_NNC_RESTRICTED_USE_CITATION_RECEIPTS = new WeakMap();
+const COMPOUND_NNC_RESTRICTED_USE_CITATION_PROJECTION_KIND =
+  "classical-nahuatl-compound-nnc-restricted-use-citation-projection";
+const AFFECTIVE_NNC_RESTRICTED_USE_CITATION_PROJECTIONS = new WeakMap();
+const AFFECTIVE_NNC_RESTRICTED_USE_CITATION_RECEIPTS = new WeakMap();
+const AFFECTIVE_NNC_RESTRICTED_USE_CITATION_PROJECTION_KIND =
+  "classical-nahuatl-affective-nnc-restricted-use-citation-projection";
+const CARDINAL_NNC_RESTRICTED_USE_CITATION_PROJECTIONS = new WeakMap();
+const CARDINAL_NNC_RESTRICTED_USE_CITATION_RECEIPTS = new WeakMap();
+const ISSUED_COB_GROSS_FORMATION_FRAMES = new WeakSet();
+const ISSUED_GROSS_CONJUNCTION_EMBED_FRAMES = new WeakSet();
+const CARDINAL_NNC_RESTRICTED_USE_CITATION_PROJECTION_KIND =
+  "classical-nahuatl-cardinal-nnc-restricted-use-citation-projection";
 const PARADIGM_PLAN_CONTEXTS = new WeakMap();
 const UI_PROJECTION_CONTEXTS = new WeakMap();
 const LCM_AXIS_IDS = Object.freeze([
@@ -464,6 +478,9 @@ function cloneNominalConstructionRequest(request = {}) {
     clone.source.cobPreteritAgentiveResultFrame =
       cobPreteritAgentiveResultFrame;
   }
+  if (request?.source?.cobConjunctionResultFrame && clone?.source) {
+    clone.source.cobConjunctionResultFrame = request.source.cobConjunctionResultFrame;
+  }
   const matrixResultFrame =
     request?.source?.matrixConstituent?.resultFrame || null;
   if (matrixResultFrame && clone?.source?.matrixConstituent) {
@@ -484,10 +501,12 @@ function deepFreeze(value) {
 }
 
 function issueClassicalNahuatlPatientiveEmbedConstituentFrame(
-  captureFrame = null
+  captureFrame = null,
+  target = null
 ) {
   if (
     !captureFrame
+    || target?.isClassicalNahuatlPatientiveNncContinuationCaptureFrame?.(captureFrame) !== true
     || captureFrame.authorizationStatus !== "authorized"
     || captureFrame.kind
       !== "classical-nahuatl-patientive-nnc-matrix-continuation-capture-frame"
@@ -556,10 +575,12 @@ function isClassicalNahuatlPatientiveEmbedConstituentFrame(frame = null) {
 }
 
 function issueClassicalNahuatlPatientiveMatrixConstituentFrame(
-  captureFrame = null
+  captureFrame = null,
+  target = null
 ) {
   if (
     !captureFrame
+    || target?.isClassicalNahuatlPatientiveNncContinuationCaptureFrame?.(captureFrame) !== true
     || captureFrame.authorizationStatus !== "authorized"
     || captureFrame.kind
       !== "classical-nahuatl-patientive-nnc-matrix-continuation-capture-frame"
@@ -818,6 +839,8 @@ function getNominalConstructionTrustedResultFrames(request = {}) {
   ].forEach(frame => {
     if (frame && typeof frame === "object") trusted.add(frame);
   });
+  const conjunction = request?.source?.cobConjunctionResultFrame;
+  if (isClassicalNahuatlNominalConstructionResult(conjunction)) trusted.add(conjunction);
   return trusted;
 }
 
@@ -933,6 +956,79 @@ function projectSourceConstituents(constructionKind = "", source = {}) {
   return deepFreeze(projected);
 }
 
+function resolveExactOrdinaryNncPredicateEmbed(source, target) {
+  const constituent = source.embedConstituent;
+  const result = constituent?.resultFrame;
+  const blocked = blockReason => ({ authorizationStatus: "blocked", blockReason });
+  if (
+    target.isClassicalNahuatlOrdinaryNncResult?.(result) !== true
+    || typeof target.getClassicalNahuatlNncContinuationSourceConstituents
+      !== "function"
+  ) return blocked("ordinary-nnc-predicate-embed-issued-result-required");
+  const projection = target.getClassicalNahuatlNncContinuationSourceConstituents(result);
+  const predicateStem = normalizeStem(projection?.predicateStem);
+  const finalNounClass = normalizeNounClass(projection?.typedSlotFrame?.nounClass);
+  if (
+    !projection
+    || projection.canonicalResultFrame !== result
+    || projection.canonicalSourceFrame !== result.sourceFrame
+    || projection.canonicalOperationFrame !== result.operationFrame
+    || projection.typedSlotFrame !== result.typedSlotFrame
+    || projection.projectionRole !== "read-only-source-constituents"
+    || projection.continuationMode !== "licensed-operation-only"
+    || !predicateStem
+    || predicateStem !== normalizeStem(source.embedStem)
+    || predicateStem !== normalizeStem(constituent.stem)
+  ) return blocked("ordinary-nnc-predicate-embed-constituent-mismatch");
+  if (!finalNounClass || normalizeNounClass(source.embedClass) !== finalNounClass) {
+    return blocked("ordinary-nnc-predicate-embed-final-class-mismatch");
+  }
+  const lexicalSource = projection.canonicalSourceFrame;
+  const sourceStemOperation = projection.stemOperation?.predicateFormation === "source-stem";
+  let useStemFrame = null;
+  let realizedStem = predicateStem;
+  let compoundFinalARetained = false;
+  // The final predicate owns its class. Only an unchanged source-stem
+  // operation retains the lexical Source's ephemeral-vowel analysis.
+  if (sourceStemOperation) {
+    if (typeof target.buildClassicalNahuatlNounstemSourceFrame !== "function") {
+      return blocked("ordinary-nnc-predicate-embed-use-stem-capability-required");
+    }
+    useStemFrame = target.buildClassicalNahuatlNounstemSourceFrame(lexicalSource.stem, {
+      state: "absolutive", nounClass: lexicalSource.nounClass,
+      classSelectionAuthority: lexicalSource.lexicalSelectionAuthority,
+      classMembershipOptions: lexicalSource.classMembershipOptions,
+      generalUseShape: lexicalSource.useShape,
+      tlSubclass: normalizeKey(lexicalSource.subclass).replace(/^tl-/u, ""),
+      ephemeralFinalVowel: lexicalSource.ephemeralFinalVowel,
+      truncationRepair: lexicalSource.truncationRepair,
+    });
+    if (useStemFrame.authorizationStatus !== "authorized") return useStemFrame;
+    const restricted = normalizeStem(useStemFrame.selectedRestrictedUseStem);
+    const general = normalizeStem(useStemFrame.generalUseStem);
+    compoundFinalARetained = useStemFrame.subclassSourceShapeFrame?.tlSubclass === "2B"
+      && useStemFrame.generalUseShape === "truncated"
+      && useStemFrame.ephemeralFinalVowel === "a";
+    const embedUseStem = compoundFinalARetained ? restricted : general;
+    const inheritedUseStem = [restricted, general].filter(Boolean).find(stem => (
+      predicateStem === stem || predicateStem.endsWith(`-${stem}`)
+    ));
+    if (!inheritedUseStem || !embedUseStem) {
+      return blocked("ordinary-nnc-predicate-embed-source-use-analysis-required");
+    }
+    realizedStem = `${predicateStem.slice(0, -inheritedUseStem.length)}${embedUseStem}`;
+  }
+  return deepFreeze({
+    kind: "classical-nahuatl-exact-ordinary-nnc-predicate-embed-frame",
+    authorizationStatus: "authorized", blockReason: "",
+    canonicalResultFrame: result, canonicalSourceProjection: projection,
+    predicateStem, finalNounClass, sourceStemOperation, useStemFrame,
+    compoundFinalARetained, realizedStem,
+    exactResultIdentityPreserved: true,
+    formulaStringAuthority: false, surfaceStringAuthority: false,
+  });
+}
+
 function issueClassicalNahuatlNominalConstructionSourceAuthorization(
   request = {},
   target = globalThis
@@ -960,6 +1056,7 @@ function issueClassicalNahuatlNominalConstructionSourceAuthorization(
   let capturedEmbedTruncationRepair = "";
   let capturedEmbedPatientiveCaptureFrame = null;
   let capturedAdjectivalModificationFrame = null;
+  let capturedExactOrdinaryNncPredicateFrame = null;
   if (embedConstituent !== undefined) {
     const constituentObject = embedConstituent
       && typeof embedConstituent === "object"
@@ -1013,6 +1110,12 @@ function issueClassicalNahuatlNominalConstructionSourceAuthorization(
       && target.isClassicalNahuatlOrdinaryNncResult?.(suppliedResult) === true
       && normalizeStem(suppliedResult.sourceFrame?.stem) === constituentStem
     );
+    const exactOrdinaryNncPredicateFrame = constituentKind === "ordinary-nnc-predicate"
+      && constructionKind === "nominal-embed-vnc"
+      ? resolveExactOrdinaryNncPredicateEmbed(source, target)
+      : null;
+    const ordinaryNncPredicateAuthorized =
+      exactOrdinaryNncPredicateFrame?.authorizationStatus === "authorized";
     const compoundNncAuthorized = Boolean(
       constituentKind === "compound-nnc"
       && suppliedResult
@@ -1095,6 +1198,7 @@ function issueClassicalNahuatlNominalConstructionSourceAuthorization(
     );
     const resultAuthorized = preteritAgentiveAuthorized
       || ordinaryNncAuthorized
+      || ordinaryNncPredicateAuthorized
       || compoundNncAuthorized
       || affectiveNncAuthorized
       || patientiveNncAuthorized
@@ -1103,6 +1207,7 @@ function issueClassicalNahuatlNominalConstructionSourceAuthorization(
       forbiddenKey
       || ![
         "ordinary-nnc",
+        "ordinary-nnc-predicate",
         "preterit-agentive-nnc",
         "compound-nnc",
         "affective-nnc",
@@ -1113,7 +1218,10 @@ function issueClassicalNahuatlNominalConstructionSourceAuthorization(
       || constituentStem !== embedStem
       || !resultAuthorized
     ) {
-      blockReason = constituentKind === "ordinary-nnc"
+      blockReason = constituentKind === "ordinary-nnc-predicate"
+        ? exactOrdinaryNncPredicateFrame?.blockReason
+          || "ordinary-nnc-predicate-embed-constituent-mismatch"
+        : constituentKind === "ordinary-nnc"
         ? "ordinary-nnc-embed-constituent-mismatch"
         : constituentKind === "compound-nnc"
           ? "compound-nnc-embed-constituent-mismatch"
@@ -1128,7 +1236,9 @@ function issueClassicalNahuatlNominalConstructionSourceAuthorization(
       agentiveEmbed = preteritAgentiveAuthorized;
       capturedEmbedResult = suppliedResult;
       capturedEmbedNounClass = normalizeNounClass(
-        adjectivalModificationAuthorized
+        ordinaryNncPredicateAuthorized
+          ? exactOrdinaryNncPredicateFrame.finalNounClass
+          : adjectivalModificationAuthorized
           ? "zero"
           : patientiveNncAuthorized
           ? patientiveCaptureFrame?.sourceNounClass
@@ -1184,6 +1294,16 @@ function issueClassicalNahuatlNominalConstructionSourceAuthorization(
         adjectivalModificationAuthorized
           ? adjectivalModificationFrame
           : null;
+      capturedExactOrdinaryNncPredicateFrame = ordinaryNncPredicateAuthorized
+        ? exactOrdinaryNncPredicateFrame
+        : null;
+      if (ordinaryNncPredicateAuthorized && !exactOrdinaryNncPredicateFrame.sourceStemOperation) {
+        capturedEmbedSourceClass = capturedEmbedNounClass;
+        capturedEmbedUseShape = "base";
+        capturedEmbedSubclass = "";
+        capturedEmbedEphemeralFinalVowel = "";
+        capturedEmbedTruncationRepair = "none";
+      }
     }
   }
   let matrixResultProjection = null;
@@ -2510,10 +2630,14 @@ function issueClassicalNahuatlNominalConstructionSourceAuthorization(
   })();
   const lexicalFacts = deepFreeze({
     embedLexicalRule,
-    embedSubclass: constructionKind === "nominal-embed-vnc"
-      && NOMINAL_EMBED_2B_FINAL_A_STEMS.has(embedStem)
-      ? "2b-final-a"
-      : "",
+    // Exact Result analysis outranks the legacy convenience inventory. In
+    // particular, cihuā's long ā is not a tagged ephemeral short a (§30.1).
+    embedSubclass: capturedExactOrdinaryNncPredicateFrame
+      ? capturedExactOrdinaryNncPredicateFrame.compoundFinalARetained ? "2b-final-a" : ""
+      : constructionKind === "nominal-embed-vnc"
+        && NOMINAL_EMBED_2B_FINAL_A_STEMS.has(embedStem)
+        ? "2b-final-a"
+        : "",
     embedLexicalFamily: constructionKind === "nominal-embed-vnc"
       ? embedLexicalFamily
       : "",
@@ -2551,6 +2675,7 @@ function issueClassicalNahuatlNominalConstructionSourceAuthorization(
     capturedEmbedTruncationRepair,
     capturedEmbedPatientiveCaptureFrame,
     capturedAdjectivalModificationFrame,
+    capturedExactOrdinaryNncPredicateFrame,
     capturedMatrixNncResult,
     capturedMatrixPatientiveCaptureFrame,
     capturedMatrixNounClass,
@@ -2946,8 +3071,13 @@ function realizeNominalEmbed(
   const characteristicPatientiveEmbed =
     lexicalFacts.capturedEmbedPatientiveCaptureFrame
       ?.characteristicPropertyPatientive === true;
-  let stem = original;
-  let ruleId = "nominal-embed-general-use-embed";
+  const exactOrdinaryNncPredicateFrame = lexicalFacts.capturedExactOrdinaryNncPredicateFrame || null;
+  let stem = exactOrdinaryNncPredicateFrame?.realizedStem || original;
+  let ruleId = exactOrdinaryNncPredicateFrame
+    ? exactOrdinaryNncPredicateFrame.compoundFinalARetained
+      ? "nominal-embed-typed-final-a-retention"
+      : "nominal-embed-exact-ordinary-nnc-predicate-use"
+    : "nominal-embed-general-use-embed";
   const patientiveIncorporatedObject = Boolean(
     lexicalFacts.patientiveNncEmbed
     && normalizeKey(source.matrixSemanticFamily)
@@ -2996,6 +3126,7 @@ function realizeNominalEmbed(
     sourceStem: original,
     realizedStem: stem,
     ruleId,
+    exactOrdinaryNncPredicateFrame,
     patientiveNncEmbed: lexicalFacts.patientiveNncEmbed === true,
     patientiveNounClass: lexicalFacts.patientiveNncEmbed
       ? patientiveNounClass
@@ -3970,6 +4101,7 @@ function evaluateNominalEmbedConstruction(request, target, sourceAuthorizationFr
 
   const embedReduplication = normalizeKey(request.embedReduplication || "none");
   const matrixReduplication = normalizeKey(request.matrixReduplication || "none");
+  const similarityReduplicationShape = normalizeKey(request.similarityReduplicationShape);
   if (!["none", "affinity", "distributive-varietal", "similarity"].includes(
     embedReduplication
   )) {
@@ -3988,11 +4120,42 @@ function evaluateNominalEmbedConstruction(request, target, sourceAuthorizationFr
       request
     );
   }
+  if (
+    similarityReduplicationShape
+    && (embedReduplication !== "similarity"
+      || !["short-cv", "long-cv", "glottalized-cv"].includes(similarityReduplicationShape))
+  ) return buildBlockedFrame("nominal-embed-vnc", "nominal-embed-similarity-reduplication-shape-invalid", request);
+  if (embedReduplication === "similarity"
+    && lexicalFacts.capturedExactOrdinaryNncPredicateFrame
+    && !similarityReduplicationShape
+  ) return buildBlockedFrame("nominal-embed-vnc", "nominal-embed-similarity-reduplication-shape-required", request);
+  let similarityPrefixFrame = null;
+  if (embedReduplication === "similarity" && similarityReduplicationShape) {
+    const vowelCapability = similarityReduplicationShape === "long-cv"
+      ? "getClassicalNahuatlLongVowel" : "getClassicalNahuatlShortVowel";
+    if (typeof target.getClassicalNahuatlInitialVowelFrame !== "function"
+      || typeof target[vowelCapability] !== "function"
+    ) return buildBlockedFrame("nominal-embed-vnc", "nominal-embed-similarity-vowel-capability-required", request);
+    const initial = target.getClassicalNahuatlInitialVowelFrame(embedShape.realizedStem);
+    if (initial?.authorizationStatus !== "authorized") {
+      return buildBlockedFrame("nominal-embed-vnc", initial?.blockReason || "nominal-embed-similarity-initial-vowel-required", request);
+    }
+    const vowel = target[vowelCapability](initial.vowel);
+    if (!vowel) return buildBlockedFrame("nominal-embed-vnc", "nominal-embed-similarity-vowel-required", request);
+    similarityPrefixFrame = deepFreeze({
+      kind: "classical-nahuatl-nominal-embed-similarity-prefix-frame",
+      authorizationStatus: "authorized", initial, shape: similarityReduplicationShape,
+      prefix: `${initial.onset}${vowel}${similarityReduplicationShape === "glottalized-cv" ? "h" : ""}`,
+      sourceQuantityPreserved: true, formulaStringAuthority: false, surfaceStringAuthority: false,
+    });
+  }
   if (embedReduplication !== "none" || matrixReduplication !== "none") {
     appliedSemanticRules.add("nominal-embed/reduplication");
     if (lexicalFamily === "ih") appliedSemanticRules.add("nominal-embed/ih-interaction");
   }
-  const realizedEmbed = ["affinity", "distributive-varietal", "similarity"].includes(embedReduplication)
+  const realizedEmbed = similarityPrefixFrame
+    ? joinStemParts([similarityPrefixFrame.prefix, embedShape.realizedStem])
+    : ["affinity", "distributive-varietal", "similarity"].includes(embedReduplication)
     ? reduplicateInitial(embedShape.realizedStem, embedReduplication === "affinity" ? "affinity" : "distributive", "initial")
     : embedShape.realizedStem;
   const realizedMatrix = ["affinity", "distributive-varietal", "frequentative"].includes(matrixReduplication)
@@ -4094,6 +4257,8 @@ function evaluateNominalEmbedConstruction(request, target, sourceAuthorizationFr
           ? "matrix"
           : "none",
     embedOperation: embedReduplication,
+    similarityReduplicationShape,
+    similarityPrefixFrame,
     matrixOperation: matrixReduplication,
     sourceEmbedStem: embedShape.realizedStem,
     realizedEmbedStem: realizedEmbed,
@@ -4462,6 +4627,65 @@ function evaluateNominalEmbedConstruction(request, target, sourceAuthorizationFr
     || canonicalResult?.wordSurface
     || canonicalResult?.surfaceRealization
     || "";
+  let nominalWritingProjection = null;
+  if (authorized && lexicalFacts.capturedExactOrdinaryNncPredicateFrame && similarityPrefixFrame) {
+    const requiredWritingCapabilities = [
+      "buildClassicalNahuatlDerivationalBoundarySpellingFrame",
+      "isClassicalNahuatlVncSlotFrame",
+      "realizeClassicalNahuatlLesson25TypedVncWord",
+    ];
+    if (requiredWritingCapabilities.some(name => typeof target[name] !== "function")) {
+      return buildBlockedFrame("nominal-embed-vnc", "nominal-embed-exact-writing-capability-required", request);
+    }
+    const sourceTypedSlotFrame = canonicalResult?.resultFrame?.finalTypedVncSlotFrame
+      || canonicalResult?.finiteSurfaceFrame?.typedFrame
+      || canonicalResult?.typedSlotFrame;
+    if (target.isClassicalNahuatlVncSlotFrame(sourceTypedSlotFrame) !== true) {
+      return buildBlockedFrame("nominal-embed-vnc", "nominal-embed-exact-writing-typed-result-required", request);
+    }
+    const predicateStem = normalizeStem(sourceTypedSlotFrame.slots.predicate.stem);
+    const embedBoundary = `${boundaryRealizedEmbed}-`;
+    if (!predicateStem.startsWith(embedBoundary)) {
+      return buildBlockedFrame("nominal-embed-vnc", "nominal-embed-exact-writing-boundary-mismatch", request);
+    }
+    const exactEmbed = lexicalFacts.capturedExactOrdinaryNncPredicateFrame;
+    const followingMatrix = predicateStem.slice(embedBoundary.length);
+    const boundarySpellingFrame = target.buildClassicalNahuatlDerivationalBoundarySpellingFrame({
+      sourceStem: exactEmbed.predicateStem,
+      retainedStem: boundaryRealizedEmbed,
+      followingMorpheme: followingMatrix,
+      sourceFollowingVowel: exactEmbed.sourceStemOperation
+        ? exactEmbed.useStemFrame?.ephemeralFinalVowel || "" : "",
+    });
+    if (boundarySpellingFrame?.authorizationStatus !== "authorized") {
+      return buildBlockedFrame("nominal-embed-vnc", boundarySpellingFrame?.blockReason || "nominal-embed-exact-boundary-spelling-required", request);
+    }
+    // This is a written projection of the exact owner-issued finite predicate,
+    // not a second grammatical Source. Only the newly formed embed boundary
+    // changes spelling; all pre-existing internal source boundaries stay intact.
+    const targetTypedSlotFrame = deepClone(sourceTypedSlotFrame);
+    targetTypedSlotFrame.slots.predicate.stem = joinStemParts([
+      boundarySpellingFrame.realizedRetainedStem, followingMatrix,
+    ]);
+    if (target.isClassicalNahuatlVncSlotFrame(targetTypedSlotFrame) !== true) {
+      return buildBlockedFrame("nominal-embed-vnc", "nominal-embed-exact-writing-target-invalid", request);
+    }
+    const writtenWord = target.realizeClassicalNahuatlLesson25TypedVncWord(targetTypedSlotFrame);
+    if (!writtenWord) return buildBlockedFrame("nominal-embed-vnc", "nominal-embed-exact-written-projection-required", request);
+    nominalWritingProjection = deepFreeze({
+      kind: "classical-nahuatl-exact-nominal-embed-writing-projection",
+      authorizationStatus: "authorized", blockReason: "",
+      canonicalFiniteResult: canonicalResult,
+      sourceTypedSlotFrame, boundarySpellingFrame, targetTypedSlotFrame,
+      wordSurface: writtenWord,
+      sentenceSurface: "",
+      sentenceRequested: false,
+      projectionRole: "independent-written-realization",
+      typedBoundaryAuthority: true,
+      formulaStringAuthority: false, surfaceStringAuthority: false,
+      sourceReentryAuthorized: false,
+    });
+  }
   const formulaRealization = fullCharacteristicEmbedSelected
     ? canonicalFormulaRealization.replace(
       canonicalCharacteristicEmbedStem,
@@ -4473,7 +4697,9 @@ function evaluateNominalEmbedConstruction(request, target, sourceAuthorizationFr
         `${boundaryRealizedEmbed}-l`
       )
       : canonicalFormulaRealization;
-  const wordSurface = boundaryAssimilationFrame?.targetSequence === "l-l"
+  const wordSurface = nominalWritingProjection
+    ? nominalWritingProjection.wordSurface
+    : boundaryAssimilationFrame?.targetSequence === "l-l"
     ? canonicalWordSurface.replace(
       `${boundaryRealizedEmbed.replace(/-/gu, "")}tl`,
       `${boundaryRealizedEmbed.replace(/-/gu, "")}l`
@@ -4533,9 +4759,12 @@ function evaluateNominalEmbedConstruction(request, target, sourceAuthorizationFr
     operationFrame,
     canonicalTargetEvaluator: vncEvaluation.canonicalTargetEvaluator,
     canonicalResult,
+    nominalWritingProjection,
     formulaRealization,
     wordSurface,
-    sentenceSurface: canonicalResult?.resultFrame?.sentenceSurface
+    sentenceSurface: nominalWritingProjection
+      ? nominalWritingProjection.sentenceSurface
+      : canonicalResult?.resultFrame?.sentenceSurface
       || canonicalResult?.finiteSurfaceFrame?.sentenceSurface
       || canonicalResult?.sentenceSurface
       || "",
@@ -4555,16 +4784,28 @@ function buildCustomNumberFrame({
   num2,
   animacy,
   ruleId,
+  nounClassApplicability = "ordinary-class",
 }) {
+  // §14.2 defines class by singular/common num1. The §34.1 totality
+  // matrix is plural-only; its special number dyad does not establish an
+  // ordinary class (and short ix is not the face noun īx-tli).
+  const classAuthorized = Boolean(nounClass) || (
+    nounClass === ""
+    && nounClassApplicability === "not-applicable-plural-only-totality"
+    && subject.endsWith("pl")
+    && ["cardinal-nominal-gross-count-plural-t-in",
+      "cardinal-nominal-gross-possessive-nonanimate-ti-zero"].includes(ruleId)
+  );
   return {
     kind: "classical-nahuatl-nominal-construction-number-frame",
     version: VERSION,
-    authorizationStatus: subject && stem && nounClass && num1 && num2 ? "authorized" : "blocked",
-    blockReason: subject && stem && nounClass && num1 && num2 ? "" : "incomplete-nominal-construction-number-frame",
+    authorizationStatus: subject && stem && classAuthorized && num1 && num2 ? "authorized" : "blocked",
+    blockReason: subject && stem && classAuthorized && num1 && num2 ? "" : "incomplete-nominal-construction-number-frame",
     subject,
     subjectNumber: subject.endsWith("pl") ? "plural" : subject === "3common" ? "common" : "singular",
     stem,
     nounClass,
+    ...(nounClassApplicability === "ordinary-class" ? {} : { nounClassApplicability }),
     nounClassAuthority: ruleId,
     ruleId,
     num1,
@@ -4593,13 +4834,21 @@ function buildNncTarget({
   operationIds = [],
   nncLayerOperationIds = [],
   sentenceModifier = "",
+  predicateStructureFrame = null,
 }) {
+  if (predicateStructureFrame && !ISSUED_GROSS_CONJUNCTION_EMBED_FRAMES.has(predicateStructureFrame)) {
+    return { authorizationStatus: "blocked", blockReason: "issued-cardinal-conjunction-embed-required" };
+  }
   if (typeof target.buildClassicalNahuatlNncSubjectPersonFrame !== "function"
     || typeof target.buildClassicalNahuatlNncSlotFrame !== "function"
     || typeof target.renderClassicalNahuatlNncSlotFrameFormula !== "function") {
     return { authorizationStatus: "blocked", blockReason: "canonical-nnc-evaluator-unavailable" };
   }
-  const personFrame = target.buildClassicalNahuatlNncSubjectPersonFrame({ subject, followingMaterial: stem });
+  const followingMaterial = predicateStructureFrame
+    ? predicateStructureFrame.segments.flatMap(segment => segment.orderedMorphs)
+      .find(morph => !["0", "Ø", "⎕"].includes(morph)) || stem
+    : stem;
+  const personFrame = target.buildClassicalNahuatlNncSubjectPersonFrame({ subject, followingMaterial });
   const stateFrame = state === "possessive"
     ? target.buildClassicalNahuatlPossessiveStateFrame({
       possessor,
@@ -4632,6 +4881,21 @@ function buildNncTarget({
         metaphoricalOverride: false,
       });
   }
+  if (
+    ["nominal-compound", "affective-nominal"].includes(constructionFamily)
+    && state === "possessive"
+    && numberFrame?.authorizationStatus === "authorized"
+  ) {
+    // Possessive number morphology does not select a noun class. Preserve
+    // the construction's already governed class on its canonical frame.
+    numberFrame = {
+      ...numberFrame,
+      nounClass,
+      nounClassAuthority: constructionFamily === "nominal-compound"
+        ? "typed-compound-matrix"
+        : "typed-affective-construction",
+    };
+  }
   const appliedNncOperationIds = nncLayerOperationIds.length
     ? nncLayerOperationIds
     : operationIds;
@@ -4649,6 +4913,9 @@ function buildNncTarget({
     nncFamily: `${constructionFamily}-construction`,
   });
   const authorized = target.isClassicalNahuatlNncSlotFrame?.(nncSlotFrame) === true;
+  if (authorized && predicateStructureFrame) {
+    nncSlotFrame.slots.predicate.structureFrame = predicateStructureFrame;
+  }
   const formulaRealization = authorized ? target.renderClassicalNahuatlNncSlotFrameFormula(nncSlotFrame) : "";
   const carriers = authorized
     ? [
@@ -4663,11 +4930,70 @@ function buildNncTarget({
   const realize = typeof target.realizeClassicalNahuatlNncSurfaceCarrier === "function"
     ? target.realizeClassicalNahuatlNncSurfaceCarrier
     : value => normalizeStem(value).replace(/[0Ø⎕-]/gu, "");
-  const wordSurface = typeof target.realizeClassicalNahuatlNncSurfaceCarriers === "function"
+  let wordSurface = typeof target.realizeClassicalNahuatlNncSurfaceCarriers === "function"
     ? target.realizeClassicalNahuatlNncSurfaceCarriers(carriers)
     : carriers.map(realize).join("");
+  let structuredWritingSource = null;
+  let structuredWrittenResult = null;
+  let structuredBoundarySpellingFrame = null;
+  if (authorized && predicateStructureFrame) {
+    if (typeof target.issueClassicalNahuatlLesson2WritingSource !== "function"
+      || typeof target.writeClassicalNahuatlLesson2Result !== "function"
+      || typeof target.isClassicalNahuatlLesson2WrittenResult !== "function"
+      || typeof target.buildClassicalNahuatlDerivationalBoundarySpellingFrame !== "function") {
+      return { authorizationStatus: "blocked", blockReason: "cardinal-conjunction-embed-writing-owner-required" };
+    }
+    const nonzero = (morphs, role) => morphs.map(realize).filter(Boolean)
+      .map(value => ({ role, value }));
+    const rightmost = predicateStructureFrame.rightmostEmbedFrame;
+    structuredBoundarySpellingFrame = target.buildClassicalNahuatlDerivationalBoundarySpellingFrame({
+      sourceStem: rightmost.sourcePredicateStem,
+      retainedStem: rightmost.embedStem,
+      followingMorpheme: predicateStructureFrame.matrixStem,
+    });
+    if (structuredBoundarySpellingFrame?.authorizationStatus !== "authorized") {
+      return { authorizationStatus: "blocked", blockReason: structuredBoundarySpellingFrame?.blockReason || "cardinal-conjunction-embed-boundary-spelling-required" };
+    }
+    const parts = nonzero([
+      nncSlotFrame.slots.subject.pers1,
+      nncSlotFrame.slots.subject.pers2,
+      ...nncSlotFrame.slots.state.slots.map(slot => slot.carrier),
+    ], "outer-gross-person-state");
+    predicateStructureFrame.segments.forEach((segment, index) => {
+      const slots = segment.canonicalNncSlotFrame.slots;
+      const earlier = index < predicateStructureFrame.segments.length - 1;
+      // Existing predicate-internal boundaries have already been owned.
+      // Project those predicates intact, as in ordinary NNC writing; only
+      // the new rightmost embed/ix boundary receives a spelling operation.
+      const predicate = earlier ? segment.predicateStem : joinStemParts([
+        additionalNumberLink(rightmost.embedStem),
+        structuredBoundarySpellingFrame.realizedRetainedStem,
+      ]);
+      parts.push(...nonzero([
+        slots.subject.pers1, slots.subject.pers2,
+        ...slots.participant.slots.map(slot => slot.carrier),
+        ...slots.state.slots.map(slot => slot.carrier), predicate,
+        ...(earlier ? [slots.number.num1, slots.number.num2] : []),
+      ], `embedded-clause-${index + 1}`));
+      if (earlier) {
+        parts.at(-1).joinAfter = " ";
+      }
+    });
+    parts.push(...nonzero([predicateStructureFrame.matrixStem,
+      nncSlotFrame.slots.number.num1, nncSlotFrame.slots.number.num2], "outer-gross-matrix-number"));
+    structuredWritingSource = target.issueClassicalNahuatlLesson2WritingSource({
+      parts, boundaryKind: "downgraded-nuclear-clause-conjunction",
+    });
+    structuredWrittenResult = target.writeClassicalNahuatlLesson2Result(structuredWritingSource);
+    if (!target.isClassicalNahuatlLesson2WrittenResult(structuredWrittenResult)) {
+      return { authorizationStatus: "blocked", blockReason: structuredWrittenResult?.blockReason || "cardinal-conjunction-embed-writing-required" };
+    }
+    wordSurface = structuredWrittenResult.surface;
+  }
+  const sentenceWord = sentenceModifier && predicateStructureFrame
+    ? wordSurface : `${wordSurface.charAt(0).toUpperCase()}${wordSurface.slice(1)}`;
   const sentenceSurface = authorized
-    ? `${sentenceModifier ? `${sentenceModifier} ` : ""}${wordSurface.charAt(0).toUpperCase()}${wordSurface.slice(1)}.`
+    ? `${sentenceModifier ? `${sentenceModifier} ` : ""}${sentenceWord}.`
     : "";
   return {
     authorizationStatus: authorized ? "authorized" : "blocked",
@@ -4680,6 +5006,8 @@ function buildNncTarget({
     formulaRealization,
     wordSurface,
     sentenceSurface,
+    ...(predicateStructureFrame ? { predicateStructureFrame, structuredWritingSource,
+      structuredWrittenResult, structuredBoundarySpellingFrame } : {}),
   };
 }
 
@@ -6699,6 +7027,7 @@ function numeralSourceProfile(value) {
       freeShapes: ["cē"],
       embedShapes: ["cem"],
       pluralStem: "cem",
+      pluralStemFormationKind: "conditioned-nasal",
     },
     2: {
       sourceStem: "ōme",
@@ -6706,6 +7035,9 @@ function numeralSourceProfile(value) {
       freeShapes: ["ōme"],
       embedShapes: ["ōm", "ōme"],
       pluralStem: "ōme-n",
+      pluralStemFormationKind: "internal-plural",
+      internalPluralMorph: "n",
+      grossCountMorph: "x",
     },
     3: {
       sourceStem: "ēyi",
@@ -6714,6 +7046,8 @@ function numeralSourceProfile(value) {
       orthographicShapes: ["ēi", "yēi"],
       embedShapes: ["ē", "yē", "ēx"],
       pluralStem: "ēi-n",
+      pluralStemFormationKind: "internal-plural",
+      internalPluralMorph: "n",
     },
     4: {
       sourceStem: "nāhui",
@@ -6721,6 +7055,8 @@ function numeralSourceProfile(value) {
       freeShapes: ["nāhui"],
       embedShapes: ["nāhu", "nāuh"],
       pluralStem: "nāhui-n",
+      pluralStemFormationKind: "internal-plural",
+      internalPluralMorph: "n",
     },
     5: {
       sourceStem: "mā-cu-ī-l",
@@ -6737,6 +7073,8 @@ function numeralSourceProfile(value) {
       freeShapes: ["chicua-cē"],
       embedShapes: ["chicua-cem", "chicua-cen"],
       pluralStem: "chicua-cem-in",
+      pluralStemFormationKind: "internal-plural",
+      internalPluralMorph: "in",
       grossStem: "chicua-cem-ix",
       morphemicParts: ["chicua", "cem"],
     },
@@ -6746,6 +7084,9 @@ function numeralSourceProfile(value) {
       freeShapes: ["chic-ōme"],
       embedShapes: ["chic-ōm", "chic-ōn", "chic-ōme"],
       pluralStem: "chic-ōme-n",
+      pluralStemFormationKind: "internal-plural",
+      internalPluralMorph: "n",
+      grossCountMorph: "x",
       grossStem: "chic-ōme-x",
       morphemicParts: ["chic", "ōme"],
     },
@@ -6755,6 +7096,8 @@ function numeralSourceProfile(value) {
       freeShapes: ["chicu-ēi"],
       embedShapes: ["chicu-ē", "chicu-yē", "chicu-ēx"],
       pluralStem: "chicu-ēi-n",
+      pluralStemFormationKind: "internal-plural",
+      internalPluralMorph: "n",
       grossStem: "chicu-ē-ix",
       morphemicParts: ["chicu", "ēyi"],
     },
@@ -6764,6 +7107,8 @@ function numeralSourceProfile(value) {
       freeShapes: ["chiuc-nāhui"],
       embedShapes: ["chiuc-nāhu", "chiuc-nāuh"],
       pluralStem: "chiuc-nāhui-n",
+      pluralStemFormationKind: "internal-plural",
+      internalPluralMorph: "n",
       grossStem: "chiuc-nāhu-ix",
       morphemicParts: ["chiuc", "nāhui"],
     },
@@ -7179,18 +7524,346 @@ function buildCardinalClassifierFrame({
   });
 }
 
+function isCanonicalCobPreteritAgentiveResult(result, selection, target) {
+  const source = result?.sourceFrame;
+  const operation = result?.operationFrame;
+  const canonical = result?.canonicalResult;
+  const slots = canonical?.nncSlotFrame;
+  const selectedSourceState = selection.sourceUse === "general-use"
+    ? canonical?.state : "absolutive";
+  const selectedPredicateStem = selectedSourceState === "possessive"
+    ? operation?.targetStems?.generalUse : operation?.targetStems?.restrictedUse;
+  return Boolean(
+    typeof target.isClassicalNahuatlDeverbalNncGrammarFrame === "function"
+    && target.isClassicalNahuatlDeverbalNncGrammarFrame(result)
+    && result.authorizationStatus === "authorized"
+    && result.constructionKind === "predicate-nominalization"
+    && source.sourceStage === "preterit-predicate"
+    && source.sourceStem === "tlami"
+    && source.verbClass === "A"
+    && source.sourceVoice === "active"
+    && source.sourceValence === "intransitive"
+    && source.sourceObjectPattern === "none"
+    && operation.nominalizationKind === "preterit-agentive"
+    && operation.nounClass === "zero"
+    && operation.targetStems.restrictedUse
+    && canonical.authorizationStatus === "authorized"
+    && ["absolutive", "possessive"].includes(selectedSourceState)
+    && canonical.state === selectedSourceState
+    && canonical.subject === selection.subject
+    && operation.numberAnimacyFrame?.selectedAnimacy === selection.animacy
+    && typeof target.isClassicalNahuatlNncSlotFrame === "function"
+    && target.isClassicalNahuatlNncSlotFrame(slots)
+    && slots.slots.subject.subject === selection.subject
+    && (slots.slots.state.arity === "vacant") === (selectedSourceState === "absolutive")
+    && slots.slots.predicate.stem === selectedPredicateStem
+    && slots.nounClass === operation.nounClass
+    && canonical.numberFrame.stem === slots.slots.predicate.stem
+    && canonical.numberFrame.nounClass === slots.nounClass
+    && canonical.numberFrame.num1 === slots.slots.number.num1
+    && canonical.numberFrame.num2 === slots.slots.number.num2
+  );
+}
+
+function buildCobGrossConjunction(value, source, selection, target) {
+  const blocked = blockReason => ({ authorizationStatus: "blocked", blockReason });
+  const supplied = source.cobConjunctionResultFrame || null;
+  const suppliedAgentive = source.cobPreteritAgentiveResultFrame || null;
+  // The default source is the ordinary common-number counting clause.
+  // A supplied source retains its own agreement, independently of outer ix.
+  const sourceResult = supplied || evaluateNominalConstruction({
+    constructionKind: "cardinal-numeral-nnc",
+    value, classifier: "cob", countKind: "ordinary", state: "absolutive",
+    subject: suppliedAgentive?.canonicalResult?.subject || "3common",
+    animacy: suppliedAgentive?.operationFrame?.numberAnimacyFrame?.selectedAnimacy || "nonanimate",
+    reduplication: selection.reduplication,
+    source: suppliedAgentive ? { cobPreteritAgentiveResultFrame: suppliedAgentive } : {},
+  }, target);
+  const operation = sourceResult?.operationFrame;
+  const conjunction = operation?.conjunctionFrame;
+  const capture = operation?.conjunctionCaptureFrame;
+  const members = capture?.conjunctResults;
+  if (!isClassicalNahuatlNominalConstructionResult(sourceResult)
+    || sourceResult.authorizationStatus !== "authorized"
+    || sourceResult.constructionKind !== "cardinal-numeral-nnc"
+    || operation.value !== value || operation.classifier !== "cob"
+    || operation.countKind !== "ordinary"
+    || conjunction?.selectedForm !== "separate" || !conjunction.conjoined
+    || capture?.authorizationStatus !== "authorized"
+    || !Array.isArray(members) || members.length < 2
+    || members.length !== conjunction.conjuncts.length
+    || capture.principalResult !== sourceResult.canonicalResult.nncSlotFrame
+    || members[0].canonicalNncResultFrame !== sourceResult.canonicalResult
+    || (suppliedAgentive && operation.cobPreteritAgentiveResultFrame !== suppliedAgentive)
+    || members.some(member => !target.isClassicalNahuatlNncSlotFrame?.(member.canonicalResult))) {
+    return blocked("gross-count-exact-ordinary-cob-conjunction-source-required");
+  }
+  if (supplied && selection.reduplicationExplicit
+    && selection.reduplication !== operation.reduplication) {
+    return blocked("gross-conjunction-source-reduplication-selection-mismatch");
+  }
+  const rightmostEmbedFrame = buildCardinalConjunctionRightmostEmbed(
+    members.at(-1).canonicalNumeralResultFrame,
+    source.rightmostNumeralVariant || "", target
+  );
+  if (rightmostEmbedFrame.authorizationStatus !== "authorized") return rightmostEmbedFrame;
+  // §§34.8.3, 35.14: downgrade the whole conjunction, retaining the earlier
+  // complete clauses and every inner person/state position. Only the final
+  // number position is deleted; internal plural n/in remains in its stem.
+  const segments = members.map((member, index) => {
+    const canonicalNncSlotFrame = member.canonicalResult;
+    const slots = canonicalNncSlotFrame.slots;
+    const earlier = index < members.length - 1;
+    const sourcePredicateStem = slots.predicate.stem;
+    const predicateStem = earlier ? sourcePredicateStem
+      : joinStemParts([additionalNumberLink(rightmostEmbedFrame.embedStem), rightmostEmbedFrame.embedStem]);
+    return {
+      rank: index + 1, canonicalNncSlotFrame, sourcePredicateStem, predicateStem,
+      personPositionPreserved: true, statePositionPreserved: true,
+      numberPosition: earlier ? "preserved" : "deleted",
+      orderedMorphs: [
+        slots.subject.pers1, slots.subject.pers2,
+        ...slots.participant.slots.map(slot => slot.carrier),
+        ...slots.state.slots.map(slot => slot.carrier),
+        ...predicateStem.split("-"),
+        ...(earlier ? [slots.number.num1, slots.number.num2] : []),
+      ],
+    };
+  });
+  const stem = joinStemParts([...segments.flatMap(segment => segment.orderedMorphs), "ix"]);
+  const cobGrossConjunctionFrame = deepFreeze({
+    kind: "classical-nahuatl-gross-cardinal-conjunction-embed-frame",
+    version: VERSION, authorizationStatus: "authorized",
+    canonicalConjunctionResultFrame: sourceResult,
+    canonicalConjunctionCaptureFrame: capture,
+    rightmostEmbedFrame, segments,
+    matrixStem: "ix", matrixClass: "",
+    matrixNumberJurisdiction: "plural-only-totality",
+    compositionScope: "whole-conjunction", stem, numeralValue: value,
+    reduplication: operation.reduplication,
+    sourceAgreementChanged: false, sourceStateChanged: false,
+    onlyRightmostNumberDeleted: true,
+    formulaStringAuthority: false, surfaceStringAuthority: false,
+  });
+  ISSUED_GROSS_CONJUNCTION_EMBED_FRAMES.add(cobGrossConjunctionFrame);
+  // This is one outer NNC. The exact original arithmetic clauses live in
+  // its typed predicate structure, not in a second outer conjunction.
+  const terms = [{ order: 1, multiplier: value, value, stem }];
+  return {
+    authorizationStatus: "authorized", stem, terms, matrixStem: "ix",
+    restrictions: ["tlamic-preterit-agentive-class-a-exception"],
+    cobPreteritAgentiveResultFrame: operation.cobPreteritAgentiveResultFrame,
+    cobGrossConjunctionFrame, conjunctionForm: "separate",
+    conjunctionFrame: buildCardinalConjunctionFrame({
+      value, classifier: "cob", conjunctionForm: "separate", terms, stems: [stem],
+    }),
+  };
+}
+
+function buildCardinalConjunctionRightmostEmbed(
+  result = null,
+  variant = "",
+  target = globalThis
+) {
+  const blocked = blockReason => deepFreeze({
+    kind: "classical-nahuatl-cardinal-conjunction-rightmost-embed-frame",
+    version: VERSION,
+    authorizationStatus: "blocked",
+    blockReason,
+    embedStem: "",
+    formulaStringAuthority: false,
+    surfaceStringAuthority: false,
+  });
+  if (!isClassicalNahuatlNominalConstructionResult(result)
+    || result.authorizationStatus !== "authorized"
+    || !hasCanonicalCardinalCitationAnalysis(result, target)) {
+    return blocked("cardinal-conjunction-rightmost-issued-numeral-analysis-required");
+  }
+  const source = result.sourceFrame;
+  const operation = result.operationFrame;
+  const formation = operation.numeralStemFormationFrame;
+  const canonical = result.canonicalResult;
+  const slots = canonical.nncSlotFrame;
+  const number = canonical.numberFrame;
+  const terms = source.terms;
+  const value = operation.value;
+  if (operation.classifier !== "basic"
+    || operation.countKind !== "ordinary"
+    || source.state !== "absolutive"
+    || slots.slots.state.arity !== "vacant"
+    || operation.conjunctionFrame?.conjoined !== false
+    || operation.conjunctionCaptureFrame
+    || operation.adjectivalModificationFrame
+    || !Array.isArray(terms) || terms.length !== 1
+    || terms[0].order !== 1 || terms[0].value !== value
+    || operation.conjunctionFrame.conjuncts.length !== 1
+    || formation.retainedDerivationalConstituents !== true
+    || number.authorizationStatus !== "authorized"
+    || number.subject !== slots.slots.subject.subject
+    || number.num1 !== slots.slots.number.num1
+    || number.num2 !== slots.slots.number.num2
+    || number.animacy !== source.animacy
+    || !Object.isFrozen(number)) {
+    return blocked("cardinal-conjunction-rightmost-single-basic-number-source-required");
+  }
+  const internalPluralMorph = formation.internalPluralMorph;
+  const sourcePredicateStem = slots.slots.predicate.stem;
+  const reduplication = formation.reduplication;
+  if (!["none", "affinity", "distributive-varietal"].includes(reduplication)) {
+    return blocked("cardinal-conjunction-rightmost-canonical-reduplication-required");
+  }
+  const availableVariants = internalPluralMorph !== "none"
+    ? ["automatic"] : availableNumeralVariants(value, true);
+  const requestedVariant = normalizeKey(variant);
+  const selectedVariant = !requestedVariant || requestedVariant === "automatic"
+    ? availableVariants[0] : requestedVariant;
+  if (!availableVariants.includes(selectedVariant)) {
+    return blocked("cardinal-conjunction-rightmost-embed-variant-not-licensed");
+  }
+  let embedBaseStem = sourcePredicateStem;
+  let embedStem = sourcePredicateStem;
+  let embedReduplicationFrame = null;
+  if (internalPluralMorph === "none") {
+    // §§34.3–34.4 supply the numeral's boundary-conditioned use shape;
+    // §34.14 applies the source's selected reduplication to that same stem.
+    // This is a use projection, not a second derivation of the source.
+    embedBaseStem = simpleNumeralStem(value, {
+      embedded: true,
+      following: "ix",
+      variant: selectedVariant,
+    });
+    if (!embedBaseStem) {
+      return blocked("cardinal-conjunction-rightmost-general-use-stem-required");
+    }
+    embedReduplicationFrame = reduplicateNumeral(
+      value,
+      embedBaseStem,
+      reduplication,
+      [{ ...terms[0], stem: embedBaseStem }],
+      null,
+      "basic",
+      "",
+      embedBaseStem
+    );
+    embedStem = embedReduplicationFrame.stem;
+  }
+  // §34.8.3 deletes the rightmost number POSITION. Internal n/in belongs
+  // to the already-derived predicate, so neither it nor its selected
+  // reduplication/allomorph is reconstructed from the unpluralized lexeme.
+  // The containing rank owner, not this nounstem projection, removes slots.
+  return deepFreeze({
+    kind: "classical-nahuatl-cardinal-conjunction-rightmost-embed-frame",
+    version: VERSION,
+    authorizationStatus: "authorized",
+    blockReason: "",
+    canonicalNumeralResultFrame: result,
+    canonicalNumeralStemFormationFrame: formation,
+    canonicalNumeralSourceAnalysisFrame: source.numeralSourceAnalysisFrame,
+    canonicalNncSlotFrame: slots,
+    canonicalNumberFrame: number,
+    sourcePredicateStem,
+    embedBaseStem,
+    embedStem,
+    matrixStem: "ix",
+    selectedVariant,
+    availableVariants,
+    internalPluralMorph,
+    reduplication,
+    canonicalSourceReduplicationFrame: formation.reduplicationFrame,
+    embedReduplicationFrame,
+    useKind: "general-use",
+    projectionScope: "nounstem-only",
+    sourceDerivationChanged: false,
+    sourceAgreementChanged: false,
+    sourceNumberPositionChanged: false,
+    sourceClauseFeaturesProjected: false,
+    formulaStringAuthority: false,
+    surfaceStringAuthority: false,
+  });
+}
+
+function buildCobGrossFormation(agentiveResult, target) {
+  const restrictedUseStem = agentiveResult.operationFrame.targetStems.restrictedUse;
+  const generalUseStem = agentiveResult.operationFrame.targetStems.generalUse;
+  if (!generalUseStem) return {
+    authorizationStatus: "blocked",
+    blockReason: "cob-gross-count-canonical-general-use-stem-required",
+  };
+  const matrixStem = "ix";
+  const compoundSource = {
+    embedStem: generalUseStem,
+    embedConstituent: {
+      kind: "preterit-agentive-nnc",
+      stem: generalUseStem,
+      resultFrame: agentiveResult,
+    },
+    matrixStem,
+  };
+  // Reuse the compound owner's exact issued general-use constituent
+  // validation and embed realization, without evaluating an ordinary NNC
+  // or inventing a singular/common class for the plural-only matrix.
+  const sourceAuthorizationFrame = issueClassicalNahuatlNominalConstructionSourceAuthorization({
+    constructionKind: "compound-nnc", source: compoundSource,
+  }, target);
+  if (sourceAuthorizationFrame.authorizationStatus !== "authorized") {
+    return sourceAuthorizationFrame;
+  }
+  const embedShapeFrame = realizeCompoundEmbed(
+    compoundSource, matrixStem, sourceAuthorizationFrame.lexicalFacts
+  );
+  if (embedShapeFrame.authorizationStatus !== "authorized") return embedShapeFrame;
+  const embedStem = realizeBoundaryAssimilation(embedShapeFrame.realizedStem, matrixStem);
+  const frame = deepFreeze({
+    kind: "classical-nahuatl-cob-gross-general-use-formation-frame",
+    version: VERSION,
+    authorizationStatus: "authorized",
+    canonicalPreteritAgentiveResultFrame: agentiveResult,
+    sourceAuthorizationFrame,
+    embedShapeFrame,
+    restrictedUseStem,
+    generalUseStem,
+    embedStem,
+    matrixStem,
+    matrixClass: "",
+    matrixNumberJurisdiction: "plural-only-totality",
+    compoundStem: joinStemParts([embedStem, matrixStem]),
+    compositionScope: "single-nounstem",
+    sourceAgreementChanged: false,
+    sourceStateChanged: false,
+    sourceClauseFeaturesProjected: false,
+    formulaStringAuthority: false,
+    surfaceStringAuthority: false,
+  });
+  ISSUED_COB_GROSS_FORMATION_FRAMES.add(frame);
+  return frame;
+}
+
 function realizeNumeralConstruction(
   value,
   classifier,
   source = {},
-  target = globalThis
+  target = globalThis,
+  selection = {}
 ) {
   const restrictions = [];
   if (classifier === "cob" && value > 39) {
     return { authorizationStatus: "blocked", blockReason: "cob-classifier-is-not-licensed-beyond-thirty-nine" };
   }
   if (classifier === "cob" && value >= 20) {
+    const gross = selection.countKind === "gross";
+    if (gross && value > 20) {
+      return buildCobGrossConjunction(value, source, selection, target);
+    }
     const suppliedAgentiveResult = source.cobPreteritAgentiveResultFrame || null;
+    // For gross20 it is the nounstem, not the source clause's agreement,
+    // that is embedded. Retain a supplied clause's actual agreement; the
+    // ordinary citation clause is the default when no child is supplied.
+    const agentiveSubject = gross
+      ? suppliedAgentiveResult?.canonicalResult?.subject || "3common"
+      : selection.subject;
+    const agentiveAnimacy = gross
+      ? suppliedAgentiveResult?.operationFrame?.numberAnimacyFrame?.selectedAnimacy || "nonanimate"
+      : selection.animacy;
     const derivedAgentiveResult = !suppliedAgentiveResult
       && typeof target.evaluateClassicalNahuatlDeverbalNnc === "function"
       ? target.evaluateClassicalNahuatlDeverbalNnc({
@@ -7203,22 +7876,19 @@ function realizeNumeralConstruction(
           sourceVoice: "active",
           sourceValence: "intransitive",
           sourceObjectPattern: "none",
-          sourceSubject: "3sg",
+          sourceSubject: agentiveSubject,
         },
-        subject: "3sg",
+        subject: agentiveSubject,
+        animacy: agentiveAnimacy,
         state: "absolutive",
       })
       : null;
     const agentiveResult = suppliedAgentiveResult || derivedAgentiveResult;
-    const canonicalAgentive = Boolean(
-      typeof target.isClassicalNahuatlDeverbalNncGrammarFrame === "function"
-      && target.isClassicalNahuatlDeverbalNncGrammarFrame(agentiveResult)
-      && agentiveResult?.authorizationStatus === "authorized"
-      && agentiveResult?.operationFrame?.nominalizationKind
-        === "preterit-agentive"
-      && agentiveResult?.sourceFrame?.sourceStem === "tlami"
-      && agentiveResult?.sourceFrame?.verbClass === "A"
-      && agentiveResult?.wordSurface === "tlamic"
+    const canonicalAgentive = isCanonicalCobPreteritAgentiveResult(
+      agentiveResult,
+      { subject: agentiveSubject, animacy: agentiveAnimacy,
+        sourceUse: gross ? "general-use" : "restricted-use" },
+      target
     );
     if (!canonicalAgentive) {
       return {
@@ -7227,10 +7897,36 @@ function realizeNumeralConstruction(
           "cob-twenty-route-requires-engine-issued-tlamic-preterit-agentive",
       };
     }
+    if (gross) {
+      const cobGrossFormationFrame = buildCobGrossFormation(agentiveResult, target);
+      if (cobGrossFormationFrame.authorizationStatus !== "authorized") {
+        return cobGrossFormationFrame;
+      }
+      const principalStem = cobGrossFormationFrame.generalUseStem;
+      const terms = [{ order: 20, multiplier: 1, value: 20, stem: principalStem }];
+      return {
+        authorizationStatus: "authorized",
+        stem: principalStem,
+        terms,
+        restrictions: ["tlamic-preterit-agentive-class-a-exception"],
+        matrixStem: principalStem,
+        cobPreteritAgentiveResultFrame: agentiveResult,
+        cobGrossFormationFrame,
+        conjunctionForm: "separate",
+        conjunctionFrame: buildCardinalConjunctionFrame({
+          value, classifier, conjunctionForm: "separate", terms, stems: [principalStem],
+        }),
+      };
+    }
     const remainder = value - 20;
     const remainderTerms = remainder ? decomposeVigesimal(remainder) : [];
+    // §34.12 substitutes a complete preterit-agentive NNC, not a tl-class
+    // nounstem made from its written output. Keep its number outside the
+    // restricted predicate; the Class-A analysis is the lexical exception.
+    const principalStem =
+      agentiveResult.canonicalResult.nncSlotFrame.slots.predicate.stem;
     const terms = [
-      { order: 20, multiplier: 1, value: 20, stem: "tlamic" },
+      { order: 20, multiplier: 1, value: 20, stem: principalStem },
       ...remainderTerms,
     ];
     const stems = terms.map((term, index) => (
@@ -7244,7 +7940,7 @@ function realizeNumeralConstruction(
       stem,
       terms,
       restrictions: ["tlamic-preterit-agentive-class-a-exception"],
-      matrixStem: "tlamic",
+      matrixStem: principalStem,
       cobPreteritAgentiveResultFrame: agentiveResult,
       conjunctionForm: "separate",
       conjunctionFrame: buildCardinalConjunctionFrame({
@@ -7682,30 +8378,62 @@ function evaluateCardinalNominalConstruction(request, target) {
     value,
     classifier,
     source,
-    target
+    target,
+    { countKind, subject, animacy,
+      reduplication: normalizeKey(request.reduplication || "none"),
+      reduplicationExplicit: request.reduplication !== undefined }
   );
   if (numeral.authorizationStatus !== "authorized") return buildBlockedFrame("cardinal-numeral-nnc", numeral.blockReason, request);
+  const cobPreteritAgentiveResultFrame =
+    numeral.cobPreteritAgentiveResultFrame || null;
+  const cobGrossFormationFrame = numeral.cobGrossFormationFrame || null;
+  const cobGrossConjunctionFrame = numeral.cobGrossConjunctionFrame || null;
+  const cobCanonicalResult = !cobGrossFormationFrame && !cobGrossConjunctionFrame
+    ? cobPreteritAgentiveResultFrame?.canonicalResult : null;
   const plural = subject.endsWith("pl");
-  let stem = inflectedSimpleNumeralStem(value, numeral.stem, {
+  const sourceProfile = numeralSourceProfile(value);
+  let stem = cobCanonicalResult
+    ? cobCanonicalResult.nncSlotFrame.slots.predicate.stem
+    : cobGrossFormationFrame ? cobGrossFormationFrame.compoundStem
+    : cobGrossConjunctionFrame ? cobGrossConjunctionFrame.stem
+    : inflectedSimpleNumeralStem(value, numeral.stem, {
     plural,
     countKind,
     classifier,
   });
-  const reduplication = normalizeKey(request.reduplication || "none");
+  const preReduplicationStem = stem;
+  const reduplication = cobGrossConjunctionFrame?.reduplication
+    || normalizeKey(request.reduplication || "none");
   if (!["none", "affinity", "distributive-varietal"].includes(reduplication)) {
     return buildBlockedFrame("cardinal-numeral-nnc", "cardinal-nominal-reduplication-kind-invalid", request);
   }
-  const reduplicationRealization = reduplicateNumeral(
+  // §34.4/§34.5: plural n/in is already inside the selected numeral
+  // nounstem. Reduplicate that owned stem, including its allomorph, rather
+  // than guessing a suffix by comparing it with an uninflected spelling.
+  const selectedPluralStemIsReduplicationSource = countKind === "ordinary"
+    && classifier === "basic" && plural && numeral.terms.length === 1
+    && sourceProfile?.pluralStemFormationKind === "internal-plural";
+  const reduplicationTerms = selectedPluralStemIsReduplicationSource
+    ? [{ ...numeral.terms[0], stem }] : numeral.terms;
+  const reduplicationRealization = cobGrossConjunctionFrame ? {
+    stem, conjunctStems: [stem], targetScope: "all-embedded-conjuncts",
+    scopeTargets: cobGrossConjunctionFrame.segments.map(segment => ({
+      rank: segment.rank, sourceStem: segment.sourcePredicateStem,
+      realizedStem: segment.predicateStem,
+    })),
+  } : reduplicateNumeral(
     value,
     stem,
     reduplication,
-    numeral.terms,
+    reduplicationTerms,
     numeral.conjunctionFrame,
     classifier,
     numeral.matrixStem,
-    numeral.stem
+    selectedPluralStemIsReduplicationSource ? stem : numeral.stem
   );
-  stem = reduplicationRealization.stem;
+  stem = cobCanonicalResult
+    ? reduplicationRealization.conjunctStems[0]
+    : reduplicationRealization.stem;
   const modifier = normalizeKey(request.modifier || "none");
   const modifierSurface = {
     none: "",
@@ -7733,7 +8461,10 @@ function evaluateCardinalNominalConstruction(request, target) {
       request
     );
   }
-  const nounClass = classifier === "basic"
+  const nounClass = cobCanonicalResult
+    ? cobCanonicalResult.nncSlotFrame.nounClass
+    : cobGrossFormationFrame || cobGrossConjunctionFrame ? ""
+    : classifier === "basic"
     ? (normalizeKey(source.conjunctionForm) === "compound"
       ? "zero"
       : [1, 2, 3, 4, 6, 7, 8, 9].includes(value) ? "zero" : "tli")
@@ -7748,11 +8479,12 @@ function evaluateCardinalNominalConstruction(request, target) {
     source,
     value,
   });
-  const conjunctionFrame = reduplication !== "none"
+  let conjunctionFrame = reduplication !== "none"
     ? buildCardinalConjunctionFrame({
       value,
       classifier,
-      conjunctionForm: normalizeKey(source.conjunctionForm || "separate"),
+      conjunctionForm: numeral.conjunctionForm
+        || normalizeKey(source.conjunctionForm || "separate"),
       terms: numeral.terms,
       stems: reduplicationRealization.conjunctStems,
     })
@@ -7768,6 +8500,53 @@ function evaluateCardinalNominalConstruction(request, target) {
           : `${additionalNumberLink(term.stem)}-${term.stem}`
       )),
     });
+  // §34.8's short om introduces a basic numeral NNC, not an ordinary
+  // noun rebuilt from an uninflected numeral label. Let the cardinal owner
+  // retain each addend's internal n/in, selected reduplication and number
+  // analysis before adding that independent additional-number constituent.
+  const canonicalConjunctSourceFrames = Object.freeze(
+    conjunctionFrame.conjuncts.map((conjunct, index) => {
+      if (countKind !== "ordinary"
+        || conjunctionFrame.selectedForm !== "separate"
+        || index === 0
+        || numeral.terms[index - 1].order >= 400
+        || conjunct.order !== 1) return null;
+      return evaluateNominalConstruction({
+        constructionKind: "cardinal-numeral-nnc",
+        value: conjunct.value,
+        classifier: "basic",
+        countKind: "ordinary",
+        state: "absolutive",
+        subject,
+        animacy,
+        reduplication,
+      }, target);
+    })
+  );
+  const rejectedConjunctSource = canonicalConjunctSourceFrames.find(result => (
+    result && (!isClassicalNahuatlNominalConstructionResult(result)
+      || result.authorizationStatus !== "authorized")
+  ));
+  if (rejectedConjunctSource) return buildBlockedFrame(
+    "cardinal-numeral-nnc",
+    rejectedConjunctSource.blockReason || "cardinal-conjunct-canonical-numeral-source-required",
+    request
+  );
+  if (canonicalConjunctSourceFrames.some(Boolean)) {
+    conjunctionFrame = buildCardinalConjunctionFrame({
+      value,
+      classifier,
+      conjunctionForm: "separate",
+      terms: numeral.terms,
+      stems: conjunctionFrame.conjuncts.map((conjunct, index) => {
+        const child = canonicalConjunctSourceFrames[index];
+        const predicate = child?.canonicalResult.nncSlotFrame.slots.predicate.stem;
+        return child
+          ? joinStemParts([additionalNumberLink(predicate), predicate])
+          : conjunct.realizedStem;
+      }),
+    });
+  }
   const reduplicationFrame = reduplication === "none"
     ? null
     : deepFreeze({
@@ -7809,6 +8588,73 @@ function evaluateCardinalNominalConstruction(request, target) {
       surfaceStringAuthority: false,
     })
     : null;
+  const internalPluralMorph = countKind === "ordinary"
+    && plural
+    && classifier === "basic"
+    && sourceProfile?.pluralStemFormationKind === "internal-plural"
+    ? sourceProfile.internalPluralMorph
+    : "none";
+  const grossCountMorph = countKind === "gross"
+    ? sourceProfile?.grossCountMorph || "ix"
+    : "none";
+  const requiredDerivationalConstituents = [
+    ...(internalPluralMorph === "none" ? [] : [internalPluralMorph]),
+    ...(grossCountMorph === "none" ? [] : [grossCountMorph]),
+  ];
+  const retainedDerivationalConstituents = requiredDerivationalConstituents
+    .every(morph => preReduplicationStem.endsWith(`-${morph}`)
+      && stem.endsWith(`-${morph}`));
+  const conditionedNasal = countKind === "ordinary"
+    && classifier === "basic"
+    && sourceProfile?.pluralStemFormationKind === "conditioned-nasal"
+    && reduplication === "none";
+  // Retain the already generated free form before the plural subject
+  // conditions cem. Do not replay that subject or strip derivational n/ix.
+  const citationStem = conditionedNasal ? numeral.stem : stem;
+  const numeralStemFormationFrame = deepFreeze({
+    kind: "classical-nahuatl-cardinal-numeral-stem-formation-frame",
+    version: VERSION,
+    authorizationStatus: "authorized",
+    value,
+    classifier,
+    countKind,
+    preInflectionStem: cobCanonicalResult
+      ? cobCanonicalResult.nncSlotFrame.slots.predicate.stem
+      : numeral.stem,
+    preReduplicationStem,
+    derivedStem: stem,
+    nounClass,
+    internalPluralMorph,
+    internalPluralBelongsTo: "predicate-stem-derivation",
+    internalPluralIsSubjectNumberConnector: false,
+    grossCount: countKind === "gross",
+    grossCountMorph,
+    reduplication,
+    reduplicationFrame,
+    conjunctionFrame,
+    classifierFrame,
+    measureFrame,
+    cobPreteritAgentiveResultFrame,
+    cobGrossFormationFrame,
+    cobGrossConjunctionFrame,
+    canonicalConjunctSourceFrames,
+    requiredDerivationalConstituents,
+    retainedDerivationalConstituents,
+    citationStem,
+    stemProjectionAction: cobCanonicalResult
+      ? (reduplication === "none"
+        ? "retain-preterit-agentive-restricted-stem"
+        : "retain-reduplicated-preterit-agentive-numeral-stem")
+      : conditionedNasal && citationStem !== stem
+      ? "restore-unconditioned-free-one-stem"
+      : "retain-derived-cardinal-stem",
+    citationNumberConstraint: countKind === "gross"
+      || internalPluralMorph !== "none"
+      ? "plural-only"
+      : "class-governed",
+    formulaStringAuthority: false,
+    surfaceStringAuthority: false,
+  });
   const sourceFrame = deepFreeze({
     kind: "classical-nahuatl-cardinal-nominal-source-frame",
     version: VERSION,
@@ -7834,6 +8680,11 @@ function evaluateCardinalNominalConstruction(request, target) {
       conjunctionFrame,
       classifierFrame,
     }),
+    numeralStemFormationFrame,
+    cobPreteritAgentiveResultFrame,
+    cobGrossFormationFrame,
+    cobGrossConjunctionFrame,
+    canonicalConjunctSourceFrames,
     conjunctionFrame,
     classifierFrame,
     reduplicationFrame,
@@ -7880,7 +8731,13 @@ function evaluateCardinalNominalConstruction(request, target) {
     num2 = "0";
     ruleId = "cardinal-nominal-singular-common-tli";
   }
-  const numberFrameOverride = buildCustomNumberFrame({
+  // §34.14 numeral reduplication acts on the nounstem. It does not replace
+  // the §35.3 preterit-agentive number analysis with a cardinal t-in/tl dyad.
+  const numberFrameOverride = cobCanonicalResult
+    ? (reduplication === "none"
+      ? cobCanonicalResult.numberFrame
+      : deepFreeze({ ...cobCanonicalResult.numberFrame, stem }))
+    : buildCustomNumberFrame({
     subject,
     stem,
     nounClass,
@@ -7888,8 +8745,12 @@ function evaluateCardinalNominalConstruction(request, target) {
     num2,
     animacy,
     ruleId,
+    nounClassApplicability: cobGrossFormationFrame || cobGrossConjunctionFrame
+      ? "not-applicable-plural-only-totality" : "ordinary-class",
   });
-  const targetResult = buildNncTarget({
+  const targetResult = cobCanonicalResult && reduplication === "none"
+    ? cobCanonicalResult
+    : buildNncTarget({
     target,
     constructionFamily: "cardinal-nominal",
     sourceFrame,
@@ -7900,9 +8761,43 @@ function evaluateCardinalNominalConstruction(request, target) {
     possessor,
     animacy: countKind === "gross" ? "animate" : animacy,
     numberFrameOverride,
+    predicateStructureFrame: cobGrossConjunctionFrame,
     operationIds: ["cardinal-nominal-cardinal-nnc", `cardinal-nominal-${countKind}`, `cardinal-nominal-classifier-${classifier}`],
     sentenceModifier: modifierSurface,
   });
+  const cobNumeralFrame = cobCanonicalResult
+    ? deepFreeze({
+      kind: "classical-nahuatl-cob-numeral-preterit-agentive-frame",
+      version: VERSION,
+      authorizationStatus: targetResult.authorizationStatus,
+      canonicalPreteritAgentiveResultFrame: cobPreteritAgentiveResultFrame,
+      canonicalPreteritNncResultFrame: cobCanonicalResult,
+      canonicalPreteritSlotFrame: cobCanonicalResult.nncSlotFrame,
+      canonicalSelectedNncResultFrame: targetResult,
+      canonicalSelectedSlotFrame: targetResult.nncSlotFrame,
+      canonicalPreteritNumberFrame: cobCanonicalResult.numberFrame,
+      sourcePredicateStem: cobCanonicalResult.nncSlotFrame.slots.predicate.stem,
+      selectedPredicateStem: stem,
+      nounClass,
+      subject,
+      animacy,
+      countKind,
+      numeralValue: value,
+      principalNumeralValue: 20,
+      reduplication,
+      reduplicationFrame,
+      numeralStemFormationFrame,
+      conjunctionFrame,
+      selectedNumberFrame: targetResult.numberFrame,
+      numberAnalysisPreserved: true,
+      preteritResultRebuiltAsOrdinaryNoun: false,
+      sourceAgreementChanged: false,
+      selectedResultRole: conjunctionFrame.conjoined
+        ? "first-conjunct" : "complete-numeral-nnc",
+      formulaStringAuthority: false,
+      surfaceStringAuthority: false,
+    })
+    : null;
   const conjunctionCaptureFrame = conjunctionFrame.conjoined
     ? deepFreeze({
       kind: "classical-nahuatl-cardinal-conjunction-capture-frame",
@@ -7911,6 +8806,64 @@ function evaluateCardinalNominalConstruction(request, target) {
       principalResult: targetResult.nncSlotFrame,
       conjunctResults: Object.freeze(
         conjunctionFrame.conjuncts.map((conjunct, index) => {
+          if (index === 0 && cobNumeralFrame) {
+            return deepFreeze({
+              rank: 1,
+              role: conjunct.relation,
+              value: conjunct.value,
+              canonicalResult: targetResult.nncSlotFrame,
+              canonicalNncResultFrame: targetResult,
+              canonicalPreteritAgentiveResultFrame: cobPreteritAgentiveResultFrame,
+              formulaRealization: targetResult.formulaRealization,
+              wordSurface: targetResult.wordSurface,
+              formulaStringAuthority: false,
+              surfaceStringAuthority: false,
+            });
+          }
+          const canonicalNumeralResultFrame = canonicalConjunctSourceFrames[index];
+          if (canonicalNumeralResultFrame) {
+            const child = canonicalNumeralResultFrame.canonicalResult;
+            const sourcePredicateStem = child.nncSlotFrame.slots.predicate.stem;
+            const selectedPredicateStem = conjunct.realizedStem;
+            const conjunctResult = buildNncTarget({
+              target,
+              constructionFamily: "cardinal-conjunction-member",
+              sourceFrame,
+              stem: selectedPredicateStem,
+              nounClass: child.nncSlotFrame.nounClass,
+              subject,
+              state: "absolutive",
+              animacy,
+              numberFrameOverride: deepFreeze({ ...child.numberFrame, stem: selectedPredicateStem }),
+              operationIds: ["cardinal-numeral-conjunction", "cardinal-numeral-rightward-conjunct"],
+            });
+            return deepFreeze({
+              rank: index + 1,
+              role: conjunct.relation,
+              value: conjunct.value,
+              canonicalNumeralResultFrame,
+              canonicalNncResultFrame: conjunctResult,
+              canonicalResult: conjunctResult.nncSlotFrame,
+              numeralStemFormationFrame: canonicalNumeralResultFrame.operationFrame.numeralStemFormationFrame,
+              additionalNumberFrame: {
+                kind: "classical-nahuatl-cardinal-additional-number-frame",
+                authorizationStatus: conjunctResult.authorizationStatus,
+                canonicalNumeralResultFrame,
+                sourcePredicateStem,
+                selectedPredicateStem,
+                additionalNumberStem: "om",
+                prefix: additionalNumberLink(sourcePredicateStem),
+                numberAnalysisPreserved: true,
+                sourceAgreementChanged: false,
+                formulaStringAuthority: false,
+                surfaceStringAuthority: false,
+              },
+              formulaRealization: conjunctResult.formulaRealization,
+              wordSurface: conjunctResult.wordSurface,
+              formulaStringAuthority: false,
+              surfaceStringAuthority: false,
+            });
+          }
           const conjunctClass = index === 0 && classifier !== "basic"
             ? (["rock", "cob"].includes(classifier)
               && !(classifier === "cob" && conjunct.sourceStem === "tlamic")
@@ -7991,6 +8944,9 @@ function evaluateCardinalNominalConstruction(request, target) {
   let formulaRealization = targetResult.formulaRealization;
   let wordSurface = targetResult.wordSurface;
   let sentenceSurface = targetResult.sentenceSurface;
+  if (cobNumeralFrame && modifierSurface) {
+    sentenceSurface = `${modifierSurface} ${targetResult.wordSurface}.`;
+  }
   if (conjunctionCaptureFrame
     && conjunctionFrame.selectedForm === "separate") {
     formulaRealization = conjunctionCaptureFrame.conjunctResults
@@ -7999,7 +8955,7 @@ function evaluateCardinalNominalConstruction(request, target) {
     wordSurface = conjunctionCaptureFrame.conjunctResults
       .map(conjunct => conjunct.wordSurface)
       .join(" ");
-    sentenceSurface = `${wordSurface}.`;
+    sentenceSurface = `${cobNumeralFrame && modifierSurface ? `${modifierSurface} ` : ""}${wordSurface}.`;
   }
   if (measureComposition === "with-measured-nnc") {
     const measuredStem = normalizeStem(source.measuredStem);
@@ -8123,6 +9079,7 @@ function evaluateCardinalNominalConstruction(request, target) {
       stem,
       nounClass,
       numeralSourceAnalysisFrame: sourceFrame.numeralSourceAnalysisFrame,
+      numeralStemFormationFrame,
       grossPossessiveFrame,
       conjunctionFrame,
       classifierFrame,
@@ -8138,12 +9095,20 @@ function evaluateCardinalNominalConstruction(request, target) {
       restrictions: numeral.restrictions,
       cobPreteritAgentiveResultFrame:
         numeral.cobPreteritAgentiveResultFrame || null,
+      cobNumeralFrame,
+      cobGrossFormationFrame,
+      cobGrossConjunctionFrame,
+      canonicalConjunctSourceFrames,
       appliedSemanticRules: Object.freeze([...appliedSemanticRules]),
       measureComposition,
       adjectivalModificationFrame,
       formulaStringAuthority: false,
     },
-    canonicalTargetEvaluator: "buildClassicalNahuatlNncSlotFrame",
+    canonicalTargetEvaluator: cobNumeralFrame
+      ? (reduplication === "none"
+        ? "exact-preterit-agentive-nnc-result"
+        : "typed-numeral-reduplication-with-preterit-number-analysis")
+      : "buildClassicalNahuatlNncSlotFrame",
     canonicalResult: targetResult,
     formulaRealization,
     wordSurface,
@@ -8736,6 +9701,955 @@ function isClassicalNahuatlNominalConstructionResult(frame = null) {
   );
 }
 
+function getClassicalNahuatlCompoundNncRestrictedUseCitationProjection(
+  resultFrame = null,
+  target = globalThis
+) {
+  const blocked = blockReason => deepFreeze({
+    kind: COMPOUND_NNC_RESTRICTED_USE_CITATION_PROJECTION_KIND,
+    version: VERSION,
+    authorizationStatus: "blocked",
+    blockReason,
+    stem: "",
+    nounClass: "",
+    projectionRole: "read-only-source-constituents",
+    directSourceReentryAuthorized: false,
+    grammarAuthority: false,
+    callerSuppliedAuthorityAccepted: false,
+    formulaStringAuthority: false,
+    surfaceStringAuthority: false,
+  });
+  if (
+    !isClassicalNahuatlNominalConstructionResult(resultFrame)
+    || resultFrame.authorizationStatus !== "authorized"
+    || resultFrame.constructionKind !== "compound-nnc"
+  ) {
+    return blocked("issued-authorized-compound-nnc-result-required");
+  }
+  const sourceFrame = resultFrame.sourceFrame;
+  const operationFrame = resultFrame.operationFrame;
+  const sourceAuthorizationFrame = resultFrame.sourceAuthorizationFrame;
+  const lexicalFacts = sourceAuthorizationFrame?.lexicalFacts;
+  const typedSlotFrame = resultFrame.typedSlotFrame;
+  const stem = normalizeStem(operationFrame?.compoundStem);
+  const sourceStateStem = normalizeStem(
+    operationFrame?.stateRealizedCompoundStem
+  );
+  const nounClass = normalizeNounClass(operationFrame?.matrixClass);
+  if (
+    typeof target.isClassicalNahuatlNncSlotFrame !== "function"
+    || !target.isClassicalNahuatlNncSlotFrame(typedSlotFrame)
+    || typedSlotFrame !== resultFrame.nncSlotFrame
+    || typedSlotFrame !== resultFrame.canonicalResult?.nncSlotFrame
+    || sourceFrame?.authorizationStatus !== "authorized"
+    || operationFrame?.authorizationStatus !== "authorized"
+    || !isClassicalNahuatlNominalConstructionSourceAuthorization(
+      sourceAuthorizationFrame
+    )
+    || !lexicalFacts?.matrixSourceClassFrame
+    || !lexicalFacts?.embedSourceClassFrame
+    || operationFrame.matrixSourceClassFrame
+      !== lexicalFacts.matrixSourceClassFrame
+    || operationFrame.embedSourceClassFrame
+      !== lexicalFacts.embedSourceClassFrame
+    || !stem
+    || !sourceStateStem
+    || sourceStateStem !== typedSlotFrame.slots.predicate.stem
+    || !nounClass
+    || nounClass !== typedSlotFrame.nounClass
+    || nounClass !== sourceFrame.matrixClass
+  ) {
+    return blocked("compound-nnc-canonical-use-stem-analysis-required");
+  }
+  // The compound owner retains the derived base before state realization.
+  // Reading it does not rebuild a clause or change the captured agreement,
+  // relation, embed history, reduplication, or constituent hierarchy.
+  // A typed possessive-only matrix does not supply a restricted counterpart;
+  // this disposition is about this projection, not a ban on citing its form.
+  if (lexicalFacts.fellowshipMatrixFrame?.requiredState === "possessive") {
+    return blocked("compound-nnc-selected-matrix-has-no-restricted-use-counterpart");
+  }
+  const existing = COMPOUND_NNC_RESTRICTED_USE_CITATION_PROJECTIONS.get(
+    resultFrame
+  );
+  if (existing) return existing;
+  const projection = deepFreeze({
+    kind: COMPOUND_NNC_RESTRICTED_USE_CITATION_PROJECTION_KIND,
+    version: VERSION,
+    authorizationStatus: "authorized",
+    blockReason: "",
+    canonicalResultFrame: resultFrame,
+    canonicalSourceFrame: sourceFrame,
+    canonicalOperationFrame: operationFrame,
+    canonicalSourceAuthorizationFrame: sourceAuthorizationFrame,
+    typedSlotFrame,
+    stem,
+    nounClass,
+    useKind: "restricted-use",
+    useShape: "base",
+    sourcePredicateStem: typedSlotFrame.slots.predicate.stem,
+    sourceStateStem,
+    sourceAgreementChanged: false,
+    sourceReferenceChanged: false,
+    sourceDerivationChanged: false,
+    projectionRole: "read-only-source-constituents",
+    continuationMode: "licensed-operation-only",
+    directSourceReentryAuthorized: false,
+    grammarAuthority: false,
+    callerSuppliedAuthorityAccepted: false,
+    formulaStringAuthority: false,
+    surfaceStringAuthority: false,
+  });
+  COMPOUND_NNC_RESTRICTED_USE_CITATION_RECEIPTS.set(projection, Object.freeze({
+    resultFrame,
+    sourceFrame,
+    operationFrame,
+    sourceAuthorizationFrame,
+    typedSlotFrame,
+    stem,
+    nounClass,
+    sourceStateStem,
+  }));
+  COMPOUND_NNC_RESTRICTED_USE_CITATION_PROJECTIONS.set(resultFrame, projection);
+  return projection;
+}
+
+function isClassicalNahuatlCompoundNncRestrictedUseCitationProjection(
+  frame = null,
+  target = globalThis
+) {
+  const receipt = frame && typeof frame === "object"
+    ? COMPOUND_NNC_RESTRICTED_USE_CITATION_RECEIPTS.get(frame)
+    : null;
+  return Boolean(
+    receipt
+    && frame.kind === COMPOUND_NNC_RESTRICTED_USE_CITATION_PROJECTION_KIND
+    && frame.version === VERSION
+    && frame.authorizationStatus === "authorized"
+    && frame.blockReason === ""
+    && isClassicalNahuatlNominalConstructionResult(receipt.resultFrame)
+    && receipt.resultFrame.authorizationStatus === "authorized"
+    && receipt.resultFrame.constructionKind === "compound-nnc"
+    && typeof target.isClassicalNahuatlNncSlotFrame === "function"
+    && target.isClassicalNahuatlNncSlotFrame(receipt.typedSlotFrame)
+    && frame.canonicalResultFrame === receipt.resultFrame
+    && frame.canonicalSourceFrame === receipt.sourceFrame
+    && frame.canonicalOperationFrame === receipt.operationFrame
+    && frame.canonicalSourceAuthorizationFrame
+      === receipt.sourceAuthorizationFrame
+    && frame.typedSlotFrame === receipt.typedSlotFrame
+    && receipt.typedSlotFrame === receipt.resultFrame.typedSlotFrame
+    && receipt.typedSlotFrame === receipt.resultFrame.nncSlotFrame
+    && receipt.typedSlotFrame
+      === receipt.resultFrame.canonicalResult.nncSlotFrame
+    && frame.stem === receipt.stem
+    && frame.stem === receipt.operationFrame.compoundStem
+    && frame.nounClass === receipt.nounClass
+    && frame.nounClass === receipt.typedSlotFrame.nounClass
+    && frame.sourceStateStem === receipt.sourceStateStem
+    && frame.sourceStateStem === receipt.operationFrame.stateRealizedCompoundStem
+    && frame.sourcePredicateStem === receipt.typedSlotFrame.slots.predicate.stem
+    && frame.useKind === "restricted-use"
+    && frame.useShape === "base"
+    && frame.sourceAgreementChanged === false
+    && frame.sourceReferenceChanged === false
+    && frame.sourceDerivationChanged === false
+    && frame.projectionRole === "read-only-source-constituents"
+    && frame.continuationMode === "licensed-operation-only"
+    && frame.directSourceReentryAuthorized === false
+    && frame.grammarAuthority === false
+    && frame.callerSuppliedAuthorityAccepted === false
+    && frame.formulaStringAuthority === false
+    && frame.surfaceStringAuthority === false
+    && Object.isFrozen(frame)
+  );
+}
+
+function hasCanonicalAffectiveCitationAnalysis(resultFrame, target) {
+  const sourceFrame = resultFrame?.sourceFrame;
+  const operationFrame = resultFrame?.operationFrame;
+  const canonicalResult = resultFrame?.canonicalResult;
+  const typedSlotFrame = canonicalResult?.nncSlotFrame;
+  const stem = normalizeStem(operationFrame?.compoundStem);
+  const nounClass = normalizeNounClass(operationFrame?.nounClass);
+  return Boolean(
+    isClassicalNahuatlNominalConstructionResult(resultFrame)
+    && resultFrame.authorizationStatus === "authorized"
+    && resultFrame.constructionKind === "affective-nnc"
+    && resultFrame.constructionFamily === "affective-nnc"
+    && sourceFrame?.kind === "classical-nahuatl-affective-nominal-source-frame"
+    && sourceFrame.authorizationStatus === "authorized"
+    && operationFrame?.kind
+      === "classical-nahuatl-affective-nominal-operation-frame"
+    && operationFrame.authorizationStatus === "authorized"
+    && isClassicalNahuatlNominalConstructionSourceAuthorization(
+      resultFrame.sourceAuthorizationFrame
+    )
+    && canonicalResult?.authorizationStatus === "authorized"
+    && typeof target.isClassicalNahuatlNncSlotFrame === "function"
+    && target.isClassicalNahuatlNncSlotFrame(typedSlotFrame)
+    && (!resultFrame.typedSlotFrame
+      || resultFrame.typedSlotFrame === typedSlotFrame)
+    && (!resultFrame.nncSlotFrame
+      || resultFrame.nncSlotFrame === typedSlotFrame)
+    && stem
+    && stem === operationFrame.compoundStem
+    && stem === typedSlotFrame.slots.predicate.stem
+    && nounClass
+    && nounClass === operationFrame.nounClass
+    && nounClass === operationFrame.matrixClass
+    && nounClass === typedSlotFrame.nounClass
+    && nounClass === canonicalResult.numberFrame?.nounClass
+    && operationFrame.attitudeRouteFrame === sourceFrame.attitudeRouteFrame
+    && sourceFrame.attitudeRouteFrame?.authorizationStatus === "authorized"
+    && operationFrame.affectRoute === sourceFrame.affectRoute
+    && Object.isFrozen(sourceFrame)
+    && Object.isFrozen(operationFrame)
+    && Object.isFrozen(canonicalResult)
+  );
+}
+
+function getCanonicalAffectiveCitationUse(operationFrame) {
+  const vocative = operationFrame.vocativeFrame;
+  if (vocative?.selectedForm === "abbreviated") {
+    if (operationFrame.affectRoute !== "compound"
+      || operationFrame.affectiveMatrix !== "tzin"
+      || operationFrame.affectiveMatrixStem !== "tz"
+      || vocative.matrixStem !== "tz" || vocative.particle !== "é") return null;
+    // §32.3 cites (-tz)-tli- itself. Quoting the selected matrix neither
+    // expands it to tzin (which can change register/meaning) nor licenses
+    // a new nonvocative NNC with this vocative-conditioned abbreviation.
+    return { useKind: "isolated-citation", citationNumberConstraint: "vocative-only" };
+  }
+  return { useKind: "restricted-use", citationNumberConstraint: "class-governed" };
+}
+
+function getClassicalNahuatlAffectiveNncRestrictedUseCitationProjection(
+  resultFrame = null,
+  target = globalThis
+) {
+  const blocked = blockReason => deepFreeze({
+    kind: AFFECTIVE_NNC_RESTRICTED_USE_CITATION_PROJECTION_KIND,
+    version: VERSION,
+    authorizationStatus: "blocked",
+    blockReason,
+    stem: "",
+    nounClass: "",
+    projectionRole: "read-only-source-constituents",
+    directSourceReentryAuthorized: false,
+    grammarAuthority: false,
+    callerSuppliedAuthorityAccepted: false,
+    formulaStringAuthority: false,
+    surfaceStringAuthority: false,
+  });
+  if (
+    !isClassicalNahuatlNominalConstructionResult(resultFrame)
+    || resultFrame.authorizationStatus !== "authorized"
+    || resultFrame.constructionKind !== "affective-nnc"
+  ) {
+    return blocked("issued-authorized-affective-nnc-result-required");
+  }
+  if (!hasCanonicalAffectiveCitationAnalysis(resultFrame, target)) {
+    return blocked("affective-nnc-canonical-use-stem-analysis-required");
+  }
+  const sourceFrame = resultFrame.sourceFrame;
+  const operationFrame = resultFrame.operationFrame;
+  const sourceAuthorizationFrame = resultFrame.sourceAuthorizationFrame;
+  const typedSlotFrame = resultFrame.canonicalResult.nncSlotFrame;
+  const citationUse = getCanonicalAffectiveCitationUse(operationFrame);
+  if (!citationUse) {
+    return blocked("affective-nnc-owned-vocative-matrix-analysis-required");
+  }
+  const existing = AFFECTIVE_NNC_RESTRICTED_USE_CITATION_PROJECTIONS.get(
+    resultFrame
+  );
+  if (existing) return existing;
+  const stem = operationFrame.compoundStem;
+  const nounClass = operationFrame.nounClass;
+  const canonicalAttitudeRouteFrame = operationFrame.attitudeRouteFrame;
+  const canonicalFlawedSubjectFrame = operationFrame.flawedSubjectFrame;
+  const canonicalPilHonorificVocativeFrame =
+    operationFrame.pilHonorificVocativeFrame;
+  // Citation isolates the already derived nounstem, including its selected
+  // affinity and inner hierarchy. It does not reconstruct the source clause
+  // or transfer its possessor or flawed subject pronoun into that nounstem.
+  // Affective affinity alone is not plural-only: nonanimate stems can occur
+  // with common-number subjects (Andrews 32.7).
+  const projection = deepFreeze({
+    kind: AFFECTIVE_NNC_RESTRICTED_USE_CITATION_PROJECTION_KIND,
+    version: VERSION,
+    authorizationStatus: "authorized",
+    blockReason: "",
+    canonicalResultFrame: resultFrame,
+    canonicalSourceFrame: sourceFrame,
+    canonicalOperationFrame: operationFrame,
+    canonicalSourceAuthorizationFrame: sourceAuthorizationFrame,
+    typedSlotFrame,
+    canonicalAttitudeRouteFrame,
+    canonicalFlawedSubjectFrame,
+    canonicalPilHonorificVocativeFrame,
+    canonicalVocativeFrame: operationFrame.vocativeFrame || null,
+    stem,
+    nounClass,
+    ...citationUse,
+    useShape: "base",
+    sourcePredicateStem: typedSlotFrame.slots.predicate.stem,
+    sourceAgreementChanged: false,
+    sourceReferenceChanged: false,
+    sourceDerivationChanged: false,
+    sourceClauseFeaturesProjected: false,
+    sourcePronounAttitudeProjected: false,
+    sourceVocativeConditionProjected: false,
+    projectionScope: "isolated-nounstem",
+    projectionRole: "read-only-source-constituents",
+    continuationMode: "licensed-operation-only",
+    directSourceReentryAuthorized: false,
+    grammarAuthority: false,
+    callerSuppliedAuthorityAccepted: false,
+    formulaStringAuthority: false,
+    surfaceStringAuthority: false,
+  });
+  AFFECTIVE_NNC_RESTRICTED_USE_CITATION_RECEIPTS.set(projection, Object.freeze({
+    resultFrame,
+    sourceFrame,
+    operationFrame,
+    sourceAuthorizationFrame,
+    typedSlotFrame,
+    canonicalAttitudeRouteFrame,
+    canonicalFlawedSubjectFrame,
+    canonicalPilHonorificVocativeFrame,
+    stem,
+    nounClass,
+  }));
+  AFFECTIVE_NNC_RESTRICTED_USE_CITATION_PROJECTIONS.set(resultFrame, projection);
+  return projection;
+}
+
+function isClassicalNahuatlAffectiveNncRestrictedUseCitationProjection(
+  frame = null,
+  target = globalThis
+) {
+  const receipt = frame && typeof frame === "object"
+    ? AFFECTIVE_NNC_RESTRICTED_USE_CITATION_RECEIPTS.get(frame)
+    : null;
+  const citationUse = receipt && getCanonicalAffectiveCitationUse(receipt.operationFrame);
+  return Boolean(
+    receipt
+    && frame.kind === AFFECTIVE_NNC_RESTRICTED_USE_CITATION_PROJECTION_KIND
+    && frame.version === VERSION
+    && frame.authorizationStatus === "authorized"
+    && frame.blockReason === ""
+    && hasCanonicalAffectiveCitationAnalysis(receipt.resultFrame, target)
+    && citationUse
+    && frame.canonicalResultFrame === receipt.resultFrame
+    && frame.canonicalSourceFrame === receipt.sourceFrame
+    && frame.canonicalOperationFrame === receipt.operationFrame
+    && frame.canonicalSourceAuthorizationFrame
+      === receipt.sourceAuthorizationFrame
+    && receipt.sourceFrame === receipt.resultFrame.sourceFrame
+    && receipt.operationFrame === receipt.resultFrame.operationFrame
+    && receipt.sourceAuthorizationFrame
+      === receipt.resultFrame.sourceAuthorizationFrame
+    && frame.typedSlotFrame === receipt.typedSlotFrame
+    && receipt.typedSlotFrame
+      === receipt.resultFrame.canonicalResult.nncSlotFrame
+    && frame.canonicalAttitudeRouteFrame === receipt.canonicalAttitudeRouteFrame
+    && frame.canonicalAttitudeRouteFrame
+      === receipt.operationFrame.attitudeRouteFrame
+    && frame.canonicalFlawedSubjectFrame === receipt.canonicalFlawedSubjectFrame
+    && frame.canonicalFlawedSubjectFrame
+      === receipt.operationFrame.flawedSubjectFrame
+    && frame.canonicalPilHonorificVocativeFrame
+      === receipt.canonicalPilHonorificVocativeFrame
+    && frame.canonicalPilHonorificVocativeFrame
+      === receipt.operationFrame.pilHonorificVocativeFrame
+    && frame.stem === receipt.stem
+    && frame.stem === receipt.operationFrame.compoundStem
+    && frame.nounClass === receipt.nounClass
+    && frame.nounClass === receipt.operationFrame.nounClass
+    && frame.sourcePredicateStem === receipt.typedSlotFrame.slots.predicate.stem
+    && frame.canonicalVocativeFrame === (receipt.operationFrame.vocativeFrame || null)
+    && frame.useKind === citationUse.useKind
+    && frame.citationNumberConstraint === citationUse.citationNumberConstraint
+    && frame.useShape === "base"
+    && frame.sourceAgreementChanged === false
+    && frame.sourceReferenceChanged === false
+    && frame.sourceDerivationChanged === false
+    && frame.sourceClauseFeaturesProjected === false
+    && frame.sourcePronounAttitudeProjected === false
+    && frame.sourceVocativeConditionProjected === false
+    && frame.projectionScope === "isolated-nounstem"
+    && frame.projectionRole === "read-only-source-constituents"
+    && frame.continuationMode === "licensed-operation-only"
+    && frame.directSourceReentryAuthorized === false
+    && frame.grammarAuthority === false
+    && frame.callerSuppliedAuthorityAccepted === false
+    && frame.formulaStringAuthority === false
+    && frame.surfaceStringAuthority === false
+    && Object.isFrozen(frame)
+  );
+}
+
+function hasCanonicalCobGrossFormation(resultFrame, target) {
+  const source = resultFrame?.sourceFrame;
+  const operation = resultFrame?.operationFrame;
+  const formation = operation?.numeralStemFormationFrame;
+  const gross = operation?.cobGrossFormationFrame;
+  const child = operation?.cobPreteritAgentiveResultFrame;
+  const canonical = resultFrame?.canonicalResult;
+  const number = canonical?.numberFrame;
+  const slots = canonical?.nncSlotFrame;
+  if (!ISSUED_COB_GROSS_FORMATION_FRAMES.has(gross)
+    || !isCanonicalCobPreteritAgentiveResult(child, {
+      subject: child?.canonicalResult?.subject,
+      animacy: child?.operationFrame?.numberAnimacyFrame?.selectedAnimacy,
+      sourceUse: "general-use",
+    }, target)) return false;
+  const authorization = gross.sourceAuthorizationFrame;
+  const useClass = authorization.lexicalFacts.embedSourceClassFrame;
+  return Boolean(
+    isClassicalNahuatlNominalConstructionResult(resultFrame)
+    && resultFrame.authorizationStatus === "authorized"
+    && operation.value === 20
+    && operation.classifier === "cob"
+    && operation.countKind === "gross"
+    && operation.cobNumeralFrame === null
+    && source.cobGrossFormationFrame === gross
+    && formation.cobGrossFormationFrame === gross
+    && source.cobPreteritAgentiveResultFrame === child
+    && formation.cobPreteritAgentiveResultFrame === child
+    && gross.canonicalPreteritAgentiveResultFrame === child
+    && isClassicalNahuatlNominalConstructionSourceAuthorization(authorization)
+    && authorization.lexicalFacts.capturedEmbedResult === child
+    && authorization.lexicalFacts.agentiveEmbed === true
+    && useClass.nounClass === "tl" && useClass.sourceClass === "tl-1-a"
+    && gross.generalUseStem === child.operationFrame.targetStems.generalUse
+    && gross.restrictedUseStem === child.operationFrame.targetStems.restrictedUse
+    && gross.embedShapeFrame.sourceStem === gross.generalUseStem
+    && gross.embedShapeFrame.sourceShapeAuthority === "owner-issued-nnc-result"
+    && gross.embedStem === realizeBoundaryAssimilation(gross.embedShapeFrame.realizedStem, gross.matrixStem)
+    && gross.matrixStem === "ix"
+    && gross.matrixClass === ""
+    && gross.matrixNumberJurisdiction === "plural-only-totality"
+    && gross.compoundStem === joinStemParts([gross.embedStem, gross.matrixStem])
+    && gross.compositionScope === "single-nounstem"
+    && gross.sourceAgreementChanged === false
+    && gross.sourceStateChanged === false
+    && gross.sourceClauseFeaturesProjected === false
+    && gross.formulaStringAuthority === false
+    && gross.surfaceStringAuthority === false
+    && formation.preInflectionStem === gross.generalUseStem
+    && formation.preReduplicationStem === gross.compoundStem
+    && formation.citationNumberConstraint === "plural-only"
+    && formation.retainedDerivationalConstituents === true
+    && !operation.conjunctionFrame.conjoined
+    && number.authorizationStatus === "authorized"
+    && number.subject.endsWith("pl")
+    && number.subject === slots.slots.subject.subject
+    && number.nounClass === "" && slots.nounClass === ""
+    && operation.nounClass === "" && formation.nounClass === ""
+    && number.nounClassApplicability === "not-applicable-plural-only-totality"
+    && number.nounClassAuthority === number.ruleId
+    && (operation.grossPossessiveFrame?.selectedNumberVariant === "ti"
+      ? number.ruleId === "cardinal-nominal-gross-possessive-nonanimate-ti-zero"
+        && number.num1 === "ti" && number.num2 === "0"
+      : number.ruleId === "cardinal-nominal-gross-count-plural-t-in"
+        && number.num1 === "t" && number.num2 === "in")
+    && number.num1 === slots.slots.number.num1
+    && number.num2 === slots.slots.number.num2
+    && Object.isFrozen(gross)
+  );
+}
+
+function hasCanonicalGrossConjunctionCitationSource(resultFrame, target) {
+  const operation = resultFrame?.operationFrame;
+  const source = resultFrame?.sourceFrame;
+  const formation = operation?.numeralStemFormationFrame;
+  const gross = operation?.cobGrossConjunctionFrame;
+  const selected = resultFrame?.canonicalResult;
+  const slots = selected?.nncSlotFrame;
+  const number = selected?.numberFrame;
+  const ordinary = gross?.canonicalConjunctionResultFrame;
+  const capture = gross?.canonicalConjunctionCaptureFrame;
+  return Boolean(
+    isClassicalNahuatlNominalConstructionResult(resultFrame)
+    && resultFrame.authorizationStatus === "authorized"
+    && ISSUED_GROSS_CONJUNCTION_EMBED_FRAMES.has(gross)
+    && source.cobGrossConjunctionFrame === gross
+    && formation.cobGrossConjunctionFrame === gross
+    && slots.slots.predicate.structureFrame === gross
+    && operation.stem === gross.stem
+    && formation.citationStem === gross.stem
+    && formation.retainedDerivationalConstituents === true
+    && formation.citationNumberConstraint === "plural-only"
+    && operation.classifier === "cob" && operation.countKind === "gross"
+    && operation.value === gross.numeralValue
+    && operation.reduplication === gross.reduplication
+    && gross.compositionScope === "whole-conjunction"
+    && gross.matrixStem === "ix" && gross.matrixClass === ""
+    && gross.matrixNumberJurisdiction === "plural-only-totality"
+    && !operation.conjunctionFrame.conjoined && !operation.conjunctionCaptureFrame
+    && isClassicalNahuatlNominalConstructionResult(ordinary)
+    && ordinary.authorizationStatus === "authorized"
+    && ordinary.operationFrame.countKind === "ordinary"
+    && ordinary.operationFrame.value === operation.value
+    && ordinary.operationFrame.conjunctionCaptureFrame === capture
+    && typeof target.isClassicalNahuatlNncSlotFrame === "function"
+    && gross.segments.length === capture.conjunctResults.length
+    && gross.segments.every((segment, index) => (
+      segment.canonicalNncSlotFrame === capture.conjunctResults[index].canonicalResult
+      && target.isClassicalNahuatlNncSlotFrame(segment.canonicalNncSlotFrame)
+      && segment.personPositionPreserved && segment.statePositionPreserved
+      && segment.numberPosition === (index < gross.segments.length - 1 ? "preserved" : "deleted")
+    ))
+    && gross.rightmostEmbedFrame.canonicalNumeralResultFrame
+      === capture.conjunctResults.at(-1).canonicalNumeralResultFrame
+    && gross.sourceAgreementChanged === false && gross.sourceStateChanged === false
+    && gross.onlyRightmostNumberDeleted === true
+    && number.authorizationStatus === "authorized"
+    && number.subject.endsWith("pl") && number.subject === slots.slots.subject.subject
+    && number.nounClass === "" && slots.nounClass === "" && operation.nounClass === ""
+    && number.nounClassApplicability === "not-applicable-plural-only-totality"
+    && (operation.grossPossessiveFrame?.selectedNumberVariant === "ti"
+      ? number.num1 === "ti" && number.num2 === "0"
+      : number.num1 === "t" && number.num2 === "in")
+    && number.num1 === slots.slots.number.num1 && number.num2 === slots.slots.number.num2
+    && selected.structuredBoundarySpellingFrame?.authorizationStatus === "authorized"
+    && selected.structuredBoundarySpellingFrame.sourceStem === gross.rightmostEmbedFrame.sourcePredicateStem
+    && selected.structuredBoundarySpellingFrame.retainedStem === gross.rightmostEmbedFrame.embedStem
+    && selected.structuredBoundarySpellingFrame.followingMorpheme === gross.matrixStem
+  );
+}
+
+function buildGrossConjunctionCitationParts(resultFrame, target) {
+  const structure = resultFrame.operationFrame.cobGrossConjunctionFrame;
+  const parts = [];
+  structure.segments.forEach((segment, index) => {
+    const earlier = index < structure.segments.length - 1;
+    const slots = segment.canonicalNncSlotFrame.slots;
+    const predicate = earlier ? segment.predicateStem : joinStemParts([
+      additionalNumberLink(structure.rightmostEmbedFrame.embedStem),
+      resultFrame.canonicalResult.structuredBoundarySpellingFrame.realizedRetainedStem,
+    ]);
+    const morphs = [slots.subject.pers1, slots.subject.pers2,
+      ...slots.participant.slots.map(slot => slot.carrier),
+      ...slots.state.slots.map(slot => slot.carrier), predicate,
+      ...(earlier ? [slots.number.num1, slots.number.num2] : [])];
+    parts.push(...morphs.map(value => target.realizeClassicalNahuatlNncSurfaceCarrier(value))
+      .filter(Boolean).map(value => ({ role: `citation-inner-clause-${index + 1}`, value })));
+    if (earlier) parts.at(-1).joinAfter = " ";
+  });
+  parts.push({ role: "citation-totality-matrix", value: structure.matrixStem });
+  return deepFreeze(parts);
+}
+
+function hasCanonicalCardinalCitationAnalysis(resultFrame, target) {
+  const sourceFrame = resultFrame?.sourceFrame;
+  const operationFrame = resultFrame?.operationFrame;
+  const canonicalResult = resultFrame?.canonicalResult;
+  const typedSlotFrame = canonicalResult?.nncSlotFrame;
+  const analysis = sourceFrame?.numeralSourceAnalysisFrame;
+  const formation = sourceFrame?.numeralStemFormationFrame;
+  const stem = normalizeStem(operationFrame?.stem);
+  const nounClass = normalizeNounClass(operationFrame?.nounClass);
+  return Boolean(
+    isClassicalNahuatlNominalConstructionResult(resultFrame)
+    && resultFrame.authorizationStatus === "authorized"
+    && resultFrame.constructionKind === "cardinal-numeral-nnc"
+    && resultFrame.constructionFamily === "cardinal-numeral-nnc"
+    && sourceFrame?.kind === "classical-nahuatl-cardinal-nominal-source-frame"
+    && sourceFrame.authorizationStatus === "authorized"
+    && operationFrame?.kind
+      === "classical-nahuatl-cardinal-nominal-operation-frame"
+    && operationFrame.authorizationStatus === "authorized"
+    && isClassicalNahuatlNominalConstructionSourceAuthorization(
+      resultFrame.sourceAuthorizationFrame
+    )
+    && canonicalResult?.authorizationStatus === "authorized"
+    && typeof target.isClassicalNahuatlNncSlotFrame === "function"
+    && target.isClassicalNahuatlNncSlotFrame(typedSlotFrame)
+    && (!resultFrame.typedSlotFrame
+      || resultFrame.typedSlotFrame === typedSlotFrame)
+    && (!resultFrame.nncSlotFrame
+      || resultFrame.nncSlotFrame === typedSlotFrame)
+    && stem
+    && stem === operationFrame.stem
+    && stem === typedSlotFrame.slots.predicate.stem
+    && stem === canonicalResult.numberFrame?.stem
+    && (nounClass || hasCanonicalCobGrossFormation(resultFrame, target)
+      || hasCanonicalGrossConjunctionCitationSource(resultFrame, target))
+    && nounClass === operationFrame.nounClass
+    && nounClass === typedSlotFrame.nounClass
+    && nounClass === canonicalResult.numberFrame.nounClass
+    && analysis?.kind
+      === "classical-nahuatl-cardinal-numeral-source-analysis-frame"
+    && analysis.authorizationStatus === "authorized"
+    && analysis === operationFrame.numeralSourceAnalysisFrame
+    && analysis.selectedStem === stem
+    && formation?.kind
+      === "classical-nahuatl-cardinal-numeral-stem-formation-frame"
+    && formation.authorizationStatus === "authorized"
+    && formation === operationFrame.numeralStemFormationFrame
+    && formation.derivedStem === stem
+    && formation.nounClass === nounClass
+    && formation.value === sourceFrame.value
+    && formation.value === operationFrame.value
+    && formation.countKind === sourceFrame.countKind
+    && formation.countKind === operationFrame.countKind
+    && formation.classifier === sourceFrame.classifier
+    && formation.classifier === operationFrame.classifier
+    && formation.reduplication === operationFrame.reduplication
+    && formation.reduplicationFrame === sourceFrame.reduplicationFrame
+    && formation.reduplicationFrame === operationFrame.reduplicationFrame
+    && formation.conjunctionFrame === sourceFrame.conjunctionFrame
+    && formation.conjunctionFrame === operationFrame.conjunctionFrame
+    && formation.classifierFrame === sourceFrame.classifierFrame
+    && formation.classifierFrame === operationFrame.classifierFrame
+    && formation.measureFrame === sourceFrame.measureFrame
+    && formation.measureFrame === operationFrame.measureFrame
+    && formation.internalPluralBelongsTo === "predicate-stem-derivation"
+    && formation.internalPluralIsSubjectNumberConnector === false
+    && ["none", "n", "in"].includes(formation.internalPluralMorph)
+    && ["none", "x", "ix"].includes(formation.grossCountMorph)
+    && formation.grossCount === (formation.countKind === "gross")
+    && formation.citationNumberConstraint === (
+      formation.grossCount || formation.internalPluralMorph !== "none"
+        ? "plural-only" : "class-governed"
+    )
+    && formation.citationStem
+    && normalizeStem(formation.citationStem) === formation.citationStem
+    && Object.isFrozen(sourceFrame)
+    && Object.isFrozen(operationFrame)
+    && Object.isFrozen(canonicalResult)
+    && Object.isFrozen(analysis)
+    && Object.isFrozen(formation)
+  );
+}
+
+function getCanonicalCobNumeralCitationAnalysis(resultFrame, target) {
+  const operation = resultFrame?.operationFrame;
+  const cob = operation?.cobNumeralFrame;
+  const child = operation?.cobPreteritAgentiveResultFrame;
+  if (!child) return { cob: null, projection: null, blockReason: "" };
+  const blocked = blockReason => ({ cob: null, projection: null, blockReason });
+  if (operation.cobGrossConjunctionFrame) {
+    return hasCanonicalGrossConjunctionCitationSource(resultFrame, target)
+      ? { cob: null, projection: null,
+        grossConjunction: operation.cobGrossConjunctionFrame, blockReason: "" }
+      : blocked("cardinal-nnc-canonical-gross-conjunction-required");
+  }
+  if (operation.cobGrossFormationFrame) {
+    return hasCanonicalCobGrossFormation(resultFrame, target)
+      ? { cob: null, projection: null,
+        grossFormation: operation.cobGrossFormationFrame, blockReason: "" }
+      : blocked("cardinal-nnc-cob-canonical-gross-composition-required");
+  }
+  if (typeof target.getClassicalNahuatlPreteritNncRestrictedUseCitationProjection
+      !== "function"
+    || typeof target.isClassicalNahuatlPreteritNncRestrictedUseCitationProjection
+      !== "function") {
+    return blocked("cardinal-nnc-cob-preterit-citation-capability-required");
+  }
+  if (!cob
+    || !isCanonicalCobPreteritAgentiveResult(child, {
+      subject: cob.subject,
+      animacy: cob.animacy,
+    }, target)) {
+    return blocked("cardinal-nnc-cob-canonical-preterit-analysis-required");
+  }
+  const projection = target.getClassicalNahuatlPreteritNncRestrictedUseCitationProjection(child);
+  if (!target.isClassicalNahuatlPreteritNncRestrictedUseCitationProjection(projection)
+    || projection.canonicalResultFrame !== child
+    || projection.typedSlotFrame !== child.canonicalResult.nncSlotFrame) {
+    return blocked("cardinal-nnc-cob-canonical-preterit-projection-required");
+  }
+  const selected = resultFrame.canonicalResult;
+  const number = selected.numberFrame;
+  const sourceNumber = child.canonicalResult.numberFrame;
+  if (cob.kind !== "classical-nahuatl-cob-numeral-preterit-agentive-frame"
+    || cob.authorizationStatus !== "authorized"
+    || operation.classifier !== "cob"
+    || operation.countKind !== "ordinary"
+    || operation.value < 20 || operation.value > 39
+    || cob.canonicalPreteritAgentiveResultFrame !== child
+    || resultFrame.sourceFrame.cobPreteritAgentiveResultFrame !== child
+    || operation.numeralStemFormationFrame.cobPreteritAgentiveResultFrame !== child
+    || cob.canonicalPreteritNncResultFrame !== child.canonicalResult
+    || cob.canonicalPreteritSlotFrame !== projection.typedSlotFrame
+    || cob.canonicalPreteritNumberFrame !== sourceNumber
+    || cob.canonicalSelectedNncResultFrame !== selected
+    || cob.canonicalSelectedSlotFrame !== selected.nncSlotFrame
+    || cob.selectedNumberFrame !== number
+    || cob.nounClass !== projection.nounClass
+    || cob.nounClass !== operation.nounClass
+    || cob.sourcePredicateStem !== projection.stem
+    || cob.selectedPredicateStem !== operation.stem
+    || cob.subject !== selected.nncSlotFrame.slots.subject.subject
+    || cob.animacy !== resultFrame.sourceFrame.animacy
+    || cob.countKind !== operation.countKind
+    || cob.numeralValue !== operation.value
+    || cob.principalNumeralValue !== 20
+    || cob.numeralStemFormationFrame !== operation.numeralStemFormationFrame
+    || cob.conjunctionFrame !== operation.conjunctionFrame
+    || cob.reduplicationFrame !== operation.reduplicationFrame
+    || cob.reduplication !== operation.reduplication
+    || operation.conjunctionFrame.conjuncts[0].realizedStem !== operation.stem
+    || !Object.keys(sourceNumber).every(key => key === "stem"
+      || sourceNumber[key] === number[key])
+    || Object.keys(sourceNumber).length !== Object.keys(number).length
+    || cob.numberAnalysisPreserved !== true
+    || cob.preteritResultRebuiltAsOrdinaryNoun !== false
+    || cob.sourceAgreementChanged !== false
+    || cob.formulaStringAuthority !== false
+    || cob.surfaceStringAuthority !== false
+    || (cob.reduplication === "none"
+      ? selected !== child.canonicalResult || operation.stem !== projection.stem
+      : !cob.reduplicationFrame
+        || cob.reduplicationFrame.selectedMeaning !== cob.reduplication)
+    || !Object.isFrozen(cob)) {
+    return blocked("cardinal-nnc-cob-canonical-selected-result-required");
+  }
+  return { cob, projection, blockReason: "" };
+}
+
+function cardinalCitationCounterpartBlockReason(operationFrame) {
+  if (operationFrame.conjunctionFrame?.conjoined
+    && operationFrame.conjunctionFrame.selectedForm === "separate") {
+    return "cardinal-nnc-separate-conjunction-restricted-counterpart-required";
+  }
+  if (operationFrame.measureComposition === "with-measured-nnc") {
+    return "cardinal-nnc-measured-composition-restricted-counterpart-required";
+  }
+  if (operationFrame.cobPreteritAgentiveResultFrame
+    && !operationFrame.cobNumeralFrame
+    && !operationFrame.cobGrossFormationFrame
+    && !operationFrame.cobGrossConjunctionFrame) {
+    return "cardinal-nnc-cob-agentive-restricted-counterpart-required";
+  }
+  if (!operationFrame.numeralStemFormationFrame
+    .retainedDerivationalConstituents) {
+    return "cardinal-nnc-source-derivational-constituent-not-retained";
+  }
+  return "";
+}
+
+function getClassicalNahuatlCardinalNncRestrictedUseCitationProjection(
+  resultFrame = null,
+  target = globalThis
+) {
+  const blocked = blockReason => deepFreeze({
+    kind: CARDINAL_NNC_RESTRICTED_USE_CITATION_PROJECTION_KIND,
+    version: VERSION,
+    authorizationStatus: "blocked",
+    blockReason,
+    stem: "",
+    nounClass: "",
+    projectionRole: "read-only-source-constituents",
+    directSourceReentryAuthorized: false,
+    grammarAuthority: false,
+    callerSuppliedAuthorityAccepted: false,
+    formulaStringAuthority: false,
+    surfaceStringAuthority: false,
+  });
+  if (
+    !isClassicalNahuatlNominalConstructionResult(resultFrame)
+    || resultFrame.authorizationStatus !== "authorized"
+    || resultFrame.constructionKind !== "cardinal-numeral-nnc"
+  ) {
+    return blocked("issued-authorized-cardinal-nnc-result-required");
+  }
+  if (!hasCanonicalCardinalCitationAnalysis(resultFrame, target)) {
+    return blocked("cardinal-nnc-canonical-use-stem-analysis-required");
+  }
+  const counterpartBlockReason = cardinalCitationCounterpartBlockReason(
+    resultFrame.operationFrame
+  );
+  if (counterpartBlockReason) return blocked(counterpartBlockReason);
+  const cobCitation = getCanonicalCobNumeralCitationAnalysis(resultFrame, target);
+  if (cobCitation.blockReason) return blocked(cobCitation.blockReason);
+  const existing = CARDINAL_NNC_RESTRICTED_USE_CITATION_PROJECTIONS.get(
+    resultFrame
+  );
+  if (existing) return existing;
+  const sourceFrame = resultFrame.sourceFrame;
+  const operationFrame = resultFrame.operationFrame;
+  const sourceAuthorizationFrame = resultFrame.sourceAuthorizationFrame;
+  const typedSlotFrame = resultFrame.canonicalResult.nncSlotFrame;
+  const canonicalNumeralSourceAnalysisFrame =
+    sourceFrame.numeralSourceAnalysisFrame;
+  const canonicalNumeralStemFormationFrame =
+    sourceFrame.numeralStemFormationFrame;
+  const stem = canonicalNumeralStemFormationFrame.citationStem;
+  const nounClass = canonicalNumeralStemFormationFrame.nounClass;
+  const predicateStructureFrame = cobCitation.grossConjunction || null;
+  if (predicateStructureFrame
+    && typeof target.realizeClassicalNahuatlNncSurfaceCarrier !== "function") {
+    return blocked("cardinal-nnc-structured-citation-carrier-capability-required");
+  }
+  // The entire downgraded conjunction is part of this nounstem (§34.8.3).
+  // Only OUTER clause features are excluded from citation. Its inner person,
+  // state and earlier number positions remain protected (§35.14).
+  const reduplicationSourceStem = predicateStructureFrame
+    ? predicateStructureFrame.segments[0].orderedMorphs
+      .filter(morph => !["0", "Ø", "⎕"].includes(morph)).join("-") : stem;
+  const citationFormulaStem = predicateStructureFrame
+    ? `${predicateStructureFrame.segments.map(segment => segment.orderedMorphs.join("-")).join("+")}-${predicateStructureFrame.matrixStem}`
+    : stem;
+  const citationWritingParts = predicateStructureFrame
+    ? buildGrossConjunctionCitationParts(resultFrame, target) : null;
+  const {
+    internalPluralMorph,
+    grossCount,
+    citationNumberConstraint,
+    stemProjectionAction,
+  } = canonicalNumeralStemFormationFrame;
+  // Citation removes no derivational constituent. Gross-count ix/x and
+  // internal plural n/in remain distinct from the outer number dyad. Their
+  // plural-subject restriction applies to a new NNC, not bare discussion
+  // of the nounstem (Andrews 14.1, 16.1, 34.1, 34.3-34.6).
+  const projection = deepFreeze({
+    kind: CARDINAL_NNC_RESTRICTED_USE_CITATION_PROJECTION_KIND,
+    version: VERSION,
+    authorizationStatus: "authorized",
+    blockReason: "",
+    canonicalResultFrame: resultFrame,
+    canonicalSourceFrame: sourceFrame,
+    canonicalOperationFrame: operationFrame,
+    canonicalSourceAuthorizationFrame: sourceAuthorizationFrame,
+    typedSlotFrame,
+    canonicalNumeralSourceAnalysisFrame,
+    canonicalNumeralStemFormationFrame,
+    canonicalCobNumeralFrame: cobCitation.cob,
+    canonicalCobPreteritCitationProjection: cobCitation.projection,
+    canonicalCobGrossFormationFrame: cobCitation.grossFormation || null,
+    canonicalCobGrossConjunctionFrame: predicateStructureFrame,
+    predicateStructureFrame, reduplicationSourceStem, citationFormulaStem, citationWritingParts,
+    stem,
+    nounClass,
+    useKind: "restricted-use",
+    useShape: "base",
+    sourcePredicateStem: typedSlotFrame.slots.predicate.stem,
+    internalPluralMorph,
+    grossCount,
+    citationNumberConstraint,
+    stemProjectionAction,
+    sourceAgreementChanged: false,
+    sourceReferenceChanged: false,
+    sourceDerivationChanged: false,
+    sourceClauseFeaturesProjected: false,
+    projectionScope: "isolated-nounstem",
+    projectionRole: "read-only-source-constituents",
+    continuationMode: "licensed-operation-only",
+    directSourceReentryAuthorized: false,
+    grammarAuthority: false,
+    callerSuppliedAuthorityAccepted: false,
+    formulaStringAuthority: false,
+    surfaceStringAuthority: false,
+  });
+  CARDINAL_NNC_RESTRICTED_USE_CITATION_RECEIPTS.set(projection, Object.freeze({
+    resultFrame,
+    sourceFrame,
+    operationFrame,
+    sourceAuthorizationFrame,
+    typedSlotFrame,
+    canonicalNumeralSourceAnalysisFrame,
+    canonicalNumeralStemFormationFrame,
+    canonicalCobNumeralFrame: cobCitation.cob,
+    canonicalCobPreteritCitationProjection: cobCitation.projection,
+    canonicalCobGrossFormationFrame: cobCitation.grossFormation || null,
+    canonicalCobGrossConjunctionFrame: predicateStructureFrame,
+    predicateStructureFrame, reduplicationSourceStem, citationFormulaStem, citationWritingParts,
+    stem,
+    nounClass,
+    internalPluralMorph,
+    grossCount,
+    citationNumberConstraint,
+    stemProjectionAction,
+  }));
+  CARDINAL_NNC_RESTRICTED_USE_CITATION_PROJECTIONS.set(resultFrame, projection);
+  return projection;
+}
+
+function isClassicalNahuatlCardinalNncRestrictedUseCitationProjection(
+  frame = null,
+  target = globalThis
+) {
+  const receipt = frame && typeof frame === "object"
+    ? CARDINAL_NNC_RESTRICTED_USE_CITATION_RECEIPTS.get(frame)
+    : null;
+  const cobCitation = receipt
+    ? getCanonicalCobNumeralCitationAnalysis(receipt.resultFrame, target)
+    : null;
+  return Boolean(
+    receipt
+    && frame.kind === CARDINAL_NNC_RESTRICTED_USE_CITATION_PROJECTION_KIND
+    && frame.version === VERSION
+    && frame.authorizationStatus === "authorized"
+    && frame.blockReason === ""
+    && hasCanonicalCardinalCitationAnalysis(receipt.resultFrame, target)
+    && !cardinalCitationCounterpartBlockReason(receipt.operationFrame)
+    && !cobCitation.blockReason
+    && frame.canonicalCobNumeralFrame === receipt.canonicalCobNumeralFrame
+    && frame.canonicalCobNumeralFrame === cobCitation.cob
+    && frame.canonicalCobPreteritCitationProjection
+      === receipt.canonicalCobPreteritCitationProjection
+    && frame.canonicalCobPreteritCitationProjection === cobCitation.projection
+    && frame.canonicalCobGrossFormationFrame === receipt.canonicalCobGrossFormationFrame
+    && frame.canonicalCobGrossFormationFrame === (cobCitation.grossFormation || null)
+    && frame.canonicalCobGrossConjunctionFrame === (cobCitation.grossConjunction || null)
+    && frame.canonicalCobGrossConjunctionFrame === receipt.canonicalCobGrossConjunctionFrame
+    && frame.predicateStructureFrame === receipt.predicateStructureFrame
+    && frame.predicateStructureFrame === frame.canonicalCobGrossConjunctionFrame
+    && frame.reduplicationSourceStem === receipt.reduplicationSourceStem
+    && frame.citationFormulaStem === receipt.citationFormulaStem
+    && frame.citationWritingParts === receipt.citationWritingParts
+    && frame.canonicalResultFrame === receipt.resultFrame
+    && frame.canonicalSourceFrame === receipt.sourceFrame
+    && frame.canonicalOperationFrame === receipt.operationFrame
+    && frame.canonicalSourceAuthorizationFrame
+      === receipt.sourceAuthorizationFrame
+    && receipt.sourceFrame === receipt.resultFrame.sourceFrame
+    && receipt.operationFrame === receipt.resultFrame.operationFrame
+    && receipt.sourceAuthorizationFrame
+      === receipt.resultFrame.sourceAuthorizationFrame
+    && frame.typedSlotFrame === receipt.typedSlotFrame
+    && receipt.typedSlotFrame
+      === receipt.resultFrame.canonicalResult.nncSlotFrame
+    && frame.canonicalNumeralSourceAnalysisFrame
+      === receipt.canonicalNumeralSourceAnalysisFrame
+    && frame.canonicalNumeralSourceAnalysisFrame
+      === receipt.operationFrame.numeralSourceAnalysisFrame
+    && frame.canonicalNumeralStemFormationFrame
+      === receipt.canonicalNumeralStemFormationFrame
+    && frame.canonicalNumeralStemFormationFrame
+      === receipt.operationFrame.numeralStemFormationFrame
+    && frame.stem === receipt.stem
+    && frame.stem === receipt.canonicalNumeralStemFormationFrame.citationStem
+    && frame.nounClass === receipt.nounClass
+    && frame.nounClass === receipt.operationFrame.nounClass
+    && frame.sourcePredicateStem === receipt.typedSlotFrame.slots.predicate.stem
+    && frame.internalPluralMorph === receipt.internalPluralMorph
+    && frame.grossCount === receipt.grossCount
+    && frame.citationNumberConstraint === receipt.citationNumberConstraint
+    && frame.stemProjectionAction === receipt.stemProjectionAction
+    && frame.useKind === "restricted-use"
+    && frame.useShape === "base"
+    && frame.sourceAgreementChanged === false
+    && frame.sourceReferenceChanged === false
+    && frame.sourceDerivationChanged === false
+    && frame.sourceClauseFeaturesProjected === false
+    && frame.projectionScope === "isolated-nounstem"
+    && frame.projectionRole === "read-only-source-constituents"
+    && frame.continuationMode === "licensed-operation-only"
+    && frame.directSourceReentryAuthorized === false
+    && frame.grammarAuthority === false
+    && frame.callerSuppliedAuthorityAccepted === false
+    && frame.formulaStringAuthority === false
+    && frame.surfaceStringAuthority === false
+    && Object.isFrozen(frame)
+  );
+}
+
 function validateClassicalNahuatlIncorporatedNounRole(
   constructionFrame = null,
   claim = {}
@@ -9161,11 +11075,43 @@ export function installClassicalNahuatlNominalConstructionGlobals(targetObject =
       ),
     evaluateClassicalNahuatlNominalConstruction:
       request => evaluateNominalConstructionRequest(request, target),
-    issueClassicalNahuatlPatientiveEmbedConstituentFrame,
+    issueClassicalNahuatlPatientiveEmbedConstituentFrame:
+      capture => issueClassicalNahuatlPatientiveEmbedConstituentFrame(capture, target),
     isClassicalNahuatlPatientiveEmbedConstituentFrame,
-    issueClassicalNahuatlPatientiveMatrixConstituentFrame,
+    issueClassicalNahuatlPatientiveMatrixConstituentFrame:
+      capture => issueClassicalNahuatlPatientiveMatrixConstituentFrame(capture, target),
     isClassicalNahuatlPatientiveMatrixConstituentFrame,
     isClassicalNahuatlNominalConstructionResult,
+    getClassicalNahuatlCompoundNncRestrictedUseCitationProjection:
+      frame => getClassicalNahuatlCompoundNncRestrictedUseCitationProjection(
+        frame,
+        target
+      ),
+    isClassicalNahuatlCompoundNncRestrictedUseCitationProjection:
+      frame => isClassicalNahuatlCompoundNncRestrictedUseCitationProjection(
+        frame,
+        target
+      ),
+    getClassicalNahuatlAffectiveNncRestrictedUseCitationProjection:
+      frame => getClassicalNahuatlAffectiveNncRestrictedUseCitationProjection(
+        frame,
+        target
+      ),
+    isClassicalNahuatlAffectiveNncRestrictedUseCitationProjection:
+      frame => isClassicalNahuatlAffectiveNncRestrictedUseCitationProjection(
+        frame,
+        target
+      ),
+    getClassicalNahuatlCardinalNncRestrictedUseCitationProjection:
+      frame => getClassicalNahuatlCardinalNncRestrictedUseCitationProjection(
+        frame,
+        target
+      ),
+    isClassicalNahuatlCardinalNncRestrictedUseCitationProjection:
+      frame => isClassicalNahuatlCardinalNncRestrictedUseCitationProjection(
+        frame,
+        target
+      ),
     validateClassicalNahuatlIncorporatedNounRole,
     isClassicalNahuatlIncorporatedNounRoleValidation,
     buildClassicalNahuatlNominalConstructionParadigmPlan: request => buildParadigmPlan(request, target),

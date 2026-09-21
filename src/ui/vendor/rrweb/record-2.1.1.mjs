@@ -2893,6 +2893,10 @@ function initStyleSheetObserver({ styleSheetRuleCb, mirror: mirror2, stylesheetM
     };
   }
   const insertRule = win.CSSStyleSheet.prototype.insertRule;
+  // Local lifecycle fix: retain legacy aliases, including their original absence.
+  const legacyRuleDescriptors = Object.fromEntries(["addRule", "removeRule"].map(
+    (name) => [name, Object.getOwnPropertyDescriptor(win.CSSStyleSheet.prototype, name)]
+  ));
   win.CSSStyleSheet.prototype.insertRule = new Proxy(insertRule, {
     apply: callbackWrapper(
       (target, thisArg, argumentsList) => {
@@ -3072,6 +3076,10 @@ function initStyleSheetObserver({ styleSheetRuleCb, mirror: mirror2, stylesheetM
   return callbackWrapper(() => {
     win.CSSStyleSheet.prototype.insertRule = insertRule;
     win.CSSStyleSheet.prototype.deleteRule = deleteRule;
+    Object.entries(legacyRuleDescriptors).forEach(([name, descriptor]) => {
+      if (descriptor) Object.defineProperty(win.CSSStyleSheet.prototype, name, descriptor);
+      else delete win.CSSStyleSheet.prototype[name];
+    });
     replace && (win.CSSStyleSheet.prototype.replace = replace);
     replaceSync && (win.CSSStyleSheet.prototype.replaceSync = replaceSync);
     Object.entries(supportedNestedCSSRuleTypes).forEach(([typeKey, type]) => {

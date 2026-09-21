@@ -23,9 +23,18 @@ const spec = {
     "s-y-s-s-mix-yoh-mixxoh",
     "¢-y-¢¢-huitz-yoh-huitztzoh",
     "c-y-c-c-oquich-yo-tl-oquichcho-tl",
-    "rules-1-2-above-ways-ll-sequence-occur-therefore",
-    "example-ollin-incorrect-cannot-day-name-component-meaning-a"
+    "rules-1-2-above-ways-ll-sequence-occur-therefore"
   ],
+  "nonExecutableFacets": {
+    "example-ollin-incorrect-cannot-day-name-component-meaning-a": {
+      "disposition": "reading-only-in-this-owner",
+      "reason": "The lexical contrast ōlīn (quake) versus ōlli (latex) requires intended meaning; generic progressive assimilation does not establish the reading.",
+      "canvasSection": "2.10",
+      "relatedAnalysisFunction": "buildClassicalNahuatlLateralReadingFrame",
+      "grammarAuthority": false,
+      "executionCredit": false
+    }
+  },
   "coordinates": {
     "cn-l2-29-progressive-vs-regressive::following-rules-deal-most-frequent-cases-progressive-assimilation-first": {
       "assertionId": "classical-progressive-assimilation:following-rules-deal-most-frequent-cases-progressive-assimilation-first",

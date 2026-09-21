@@ -117,6 +117,16 @@ export function createClassicalLocativeRelationalNncValidationSemanticOperations
     return summarize(target.evaluateClassicalNahuatlRelationalNnc(typedRequest(request)));
   }
 
+  function buildClassicalCanEmptySourceWitness() {
+    return execute({
+      stemId: "n-locative",
+      formationId: "can-interrogative",
+      sourceKind: "interrogative-empty",
+      embeddedStem: "",
+      sentencePosition: "initial",
+    });
+  }
+
   function buildClassicalTlahAffectiveFinalCoPair(candidateCases = {}) {
     const expected = {
       honorific: { caseId: "tlahAffective", morpheme: "tzin" },
@@ -290,13 +300,7 @@ export function createClassicalLocativeRelationalNncValidationSemanticOperations
         embeddedStem: "cal",
         affective: "honorific",
       }),
-      canInitial: execute({
-        stemId: "n-locative",
-        formationId: "can-interrogative",
-        sourceKind: "interrogative-empty",
-        embeddedStem: "",
-        sentencePosition: "initial",
-      }),
+      canInitial: buildClassicalCanEmptySourceWitness(),
       canFused: execute({
         stemId: "n-locative",
         formationId: "can-interrogative",
@@ -571,6 +575,7 @@ export function createClassicalLocativeRelationalNncValidationSemanticOperations
   }
 
   return Object.freeze({
+    buildClassicalCanEmptySourceWitness,
     buildClassicalTlahAffectiveFinalCoPair,
     buildClassicalLocativeRelationalNncValidationFrame,
     isClassicalLocativeRelationalNncValidationFrame,

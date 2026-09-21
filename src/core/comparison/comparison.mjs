@@ -18,6 +18,14 @@ export function createComparisonApi(targetObject = globalThis, installationConte
     const issuedOperationFrames = new WeakSet();
     const issuedAstFrames = new WeakSet();
     const issuedResultFrames = new WeakSet();
+    const sourceTypedSlots = new WeakMap();
+    const sourceCanonicalResults = new WeakMap();
+    const reduplicativeHuiFrames = new WeakMap();
+    const reduplicativeTiFrames = new WeakMap();
+    const reduplicativeComparedMannerFrames = new WeakMap();
+    const comparedMannerMatrixResults = new Map();
+    const citationSourceUseFrames = new WeakMap();
+    const incorporatedSuperlativeFrames = new WeakMap();
 
     const freeze = value => {
       if (Array.isArray(value)) return Object.freeze(value.map(freeze));
@@ -204,11 +212,20 @@ export function createComparisonApi(targetObject = globalThis, installationConte
       "absolutive-tl": { suffix: "tl", formulaSuffix: "-tl-", shortenStem: false },
       "absolutive-tli": { suffix: "tli", formulaSuffix: "-tli-", shortenStem: false },
       "absolutive-li": { suffix: "li", formulaSuffix: "-li-", shortenStem: false },
-      "hui-preterit-agentive": { suffix: "uhqui", formulaSuffix: "-uh-Ø-qui-", shortenStem: false },
-      "ti-agentive": { suffix: "tic", formulaSuffix: "-ti-Ø-c-", shortenStem: true },
-      "oyotl-nehnemi": { suffix: "nehnemi", formulaSuffix: "-neh-nemi", shortenStem: false },
-      "cihuatl-tlahtoa": { suffix: "tlahtoā", formulaSuffix: "-tla-ht-o-ā", shortenStem: false },
+      "hui-preterit-agentive": { owner: "denominal-hui-preterit-agentive", suffix: "", formulaSuffix: "", shortenStem: false },
+      "ti-agentive": { owner: "denominal-ti-preterit-agentive", suffix: "", formulaSuffix: "", shortenStem: false },
+      "oyotl-nehnemi": { owner: "nominal-compared-manner-vnc", suffix: "", formulaSuffix: "", shortenStem: false },
+      "cihuatl-tlahtoa": { owner: "nominal-compared-manner-vnc", suffix: "", formulaSuffix: "", shortenStem: false },
       bare: { suffix: "", formulaSuffix: "", shortenStem: false }
+    });
+    const TI_REDUPLICATION_SHAPES = freeze({
+      "short-cv": "short-cv",
+      "long-cv": "long-cv",
+      "glottalized-cv": "glottalized-cv",
+    });
+    const COMPARED_MANNER_MATRICES = freeze({
+      nehnemi: { stem: "neh-nemi", verbClass: "B" },
+      tlahtoa: { stem: "tla-ht-o-ā", verbClass: "C" },
     });
     const COMPARISON_CHOICE_FORMULAS = freeze({
       sameAsMarker: {
@@ -332,7 +349,7 @@ export function createComparisonApi(targetObject = globalThis, installationConte
     }
 
     const COMPARISON_ROUTE_INVENTORY = freeze([
-      route("similarity-reduplicative-prefix", COMPARISON_RELATION.similarity, "derive-similarity-reduplicative-word", ["source"], "REDUPLICATIVE_PREFIX(STEM)+CONTINUATION -> SIMILARITY_WORD", ["continuationFamily"], ["word-formation", "reduplication", "continuation"]),
+      route("similarity-reduplicative-prefix", COMPARISON_RELATION.similarity, "derive-similarity-reduplicative-word", ["source"], "REDUPLICATIVE_PREFIX(STEM)+CONTINUATION -> SIMILARITY_WORD", ["continuationFamily", "reduplicationShape", "tiClass"], ["word-formation", "reduplication", "continuation"]),
       route("similarity-downgraded-possessive-tla", COMPARISON_RELATION.similarity, "downgrade-possessive-predicate-to-nounstem", ["source"], "tla+NOUNSTEM+ABSOLUTIVE -> QUASI_NOUN", [], ["word-formation", "possessive-state", "downgrading"]),
       route("similarity-tloc-relational-nnc", COMPARISON_RELATION.similarity, "compose-relational-nnc-similarity", ["comparand", "standard"], "COMPARAND+DEGREE+POSSESSIVE(tloc)+in+STANDARD", ["degreeMarker", "sentenceType"], ["principal-nnc", "relational", "degree"]),
       route("similarity-same-as-pronominal", COMPARISON_RELATION.similarity, "compose-nonpreposed-same-as", ["comparand", "standard"], "COMPARAND+SAME_AS_MARKER+in+STANDARD", ["sameAsMarker", "sentenceType"], ["principal-clause", "nonpreposed-adjectival", "marker-variant"]),
@@ -588,6 +605,30 @@ export function createComparisonApi(targetObject = globalThis, installationConte
         || value?.output?.resultFrame
         || null;
     }
+    function getComparisonNestedNncSlotFrame(value = null) {
+      // These owners retain the constructed noun under canonicalResult.
+      // Only an exact issued parent can expose it; a similarly shaped object
+      // or an arbitrary descendant is not a new source of noun authority.
+      const nominal = typeof targetObject.isClassicalNahuatlNominalConstructionResult === "function"
+        && targetObject.isClassicalNahuatlNominalConstructionResult(value);
+      const deverbal = typeof targetObject.isClassicalNahuatlDeverbalNncGrammarFrame === "function"
+        && targetObject.isClassicalNahuatlDeverbalNncGrammarFrame(value);
+      if ((!nominal && !deverbal) || value?.authorizationStatus !== "authorized") return null;
+      const operation = value.operationFrame;
+      if (nominal && (operation?.adjectivalModificationFrame
+        || (operation?.conjunctionCaptureFrame
+          && operation?.conjunctionFrame?.selectedForm === "separate"))) {
+        // A measure plus its measured NNC, or separate conjoined numerals,
+        // is not the single noun clause stored as one of its components.
+        return null;
+      }
+      const result = value.canonicalResult;
+      const slots = result?.nncSlotFrame;
+      return result?.authorizationStatus === "authorized"
+        && typeof targetObject.isClassicalNahuatlNncSlotFrame === "function"
+        && targetObject.isClassicalNahuatlNncSlotFrame(slots)
+        ? slots : null;
+    }
     function getComparisonNncSlotFrame(value = null) {
       const resultFrame = getComparisonResultFrame(value);
       return value?.typedSlotFrame
@@ -599,6 +640,7 @@ export function createComparisonApi(targetObject = globalThis, installationConte
         || resultFrame?.nncSlotFrame
         || resultFrame?.sourceNncSlotFrame
         || resultFrame?.selectedNncSlotFrame
+        || getComparisonNestedNncSlotFrame(value)
         || null;
     }
     function getComparisonVncSlotFrame(value = null) {
@@ -692,6 +734,37 @@ export function createComparisonApi(targetObject = globalThis, installationConte
       return ["tl", "tli", "li", "in"].includes(nounClass)
         ? nounClass
         : "";
+    }
+    function getReduplicativeAbsolutiveClassFrame(source = null, citationStem = "") {
+      const typedSlots = sourceTypedSlots.get(source);
+      if (
+        !isClassicalComparisonSourceUnit(source)
+        || source.authorizationStatus !== "authorized"
+        || source.baseUnitKind !== "nnc"
+        || typeof targetObject.isClassicalNahuatlNncSlotFrame !== "function"
+        || !targetObject.isClassicalNahuatlNncSlotFrame(typedSlots)
+        || !text(typedSlots.nounClass)
+        || !text(typedSlots.slots?.predicate?.stem)
+        || typeof targetObject.resolveClassicalNahuatlLesson12AbsolutiveNumberDyad !== "function"
+      ) return null;
+      // Class is identified by its singular/common absolutive connector;
+      // li is the final-l allomorph of tli, not a fifth noun class. This
+      // word-formation check does not replace the captured Source's agreement
+      // or read its possessive/plural connector as an absolutive class label.
+      const numberFrame = targetObject.resolveClassicalNahuatlLesson12AbsolutiveNumberDyad({
+        subject: "3common",
+        nounClass: typedSlots.nounClass,
+        stem: citationStem || typedSlots.slots.predicate.stem
+      });
+      if (numberFrame?.authorizationStatus !== "authorized" || numberFrame.num2 !== "0") return null;
+      return freeze({
+        nounClass: typedSlots.nounClass,
+        numberFrame,
+        role: "word-formation-class-connector-admission",
+        sourceAgreementChanged: false,
+        formulaStringAuthority: false,
+        surfaceStringAuthority: false
+      });
     }
     function getComparisonFormulaConstituents(
       ownerIssuedResult = null
@@ -969,6 +1042,10 @@ export function createComparisonApi(targetObject = globalThis, installationConte
         resultAuthority: false
       });
       issuedSourceFrames.add(frame);
+      if (baseUnitKind === "nnc" || baseUnitKind === "vnc") {
+        sourceTypedSlots.set(frame, baseUnitKind === "nnc" ? nncSlotFrame : vncSlotFrame);
+        sourceCanonicalResults.set(frame, canonicalResult);
+      }
       return frame;
     }
     function isClassicalComparisonSourceUnit(frame = null) {
@@ -1095,6 +1172,13 @@ export function createComparisonApi(targetObject = globalThis, installationConte
       if (sentenceType === "invalid") diagnostics.push("comparison-sentence-type-not-recognized");
 
       const choices = { sentenceType };
+      let absolutiveContinuationFrame = null;
+      let huiAgentiveFrame = null;
+      let tiAgentiveFrame = null;
+      let nehnemiFrame = null;
+      let tlahtoaFrame = null;
+      let citationNounFrame = null;
+      let citationSourceUseFrame = null;
       const addChoice = (field, inventory, fallback) => {
         const choice = normalizeChoice(
           operationRequest,
@@ -1146,8 +1230,77 @@ export function createComparisonApi(targetObject = globalThis, installationConte
       if (routeId === "similarity-reduplicative-prefix" && !text(slots.source?.stem)) {
         diagnostics.push("comparison-reduplicative-source-stem-required");
       }
+      if (!diagnostics.length && routeId === "similarity-reduplicative-prefix"
+        && ["bare", "absolutive-tl", "absolutive-tli", "absolutive-li"].includes(choices.continuationFamily?.id)) {
+        citationSourceUseFrame = getCitationSourceUseFrame(slots.source);
+        if (citationSourceUseFrame.authorizationStatus !== "authorized") diagnostics.push(citationSourceUseFrame.blockReason);
+      }
+      if (!diagnostics.length && routeId === "similarity-reduplicative-prefix"
+        && ["absolutive-tl", "absolutive-tli", "absolutive-li"].includes(choices.continuationFamily?.id)) {
+        if (citationSourceUseFrame.citationNumberConstraint === "plural-only") {
+          diagnostics.push(citationSourceUseFrame.canonicalResultFrame?.constructionKind === "cardinal-numeral-nnc"
+            ? "comparison-citation-cardinal-stem-requires-plural-number-continuation"
+            : "comparison-citation-pluralized-pronominal-stem-requires-plural-number-continuation");
+        } else if (citationSourceUseFrame.citationNumberConstraint === "possessive-only") {
+          diagnostics.push("comparison-citation-patientive-organic-reading-has-no-absolutive-continuation");
+        } else if (citationSourceUseFrame.citationNumberConstraint === "vocative-only") {
+          diagnostics.push("comparison-citation-abbreviated-vocative-has-no-nonvocative-absolutive-continuation");
+        } else if (citationSourceUseFrame.citationNumberConstraint === "secondary-possessive-only") {
+          diagnostics.push("comparison-citation-secondary-possessive-stem-requires-owned-absolutive-counterpart");
+        } else {
+          absolutiveContinuationFrame = getReduplicativeAbsolutiveClassFrame(slots.source, citationSourceUseFrame.citationStem);
+          if (!absolutiveContinuationFrame) {
+            diagnostics.push("comparison-typed-absolutive-class-analysis-required");
+          } else if (choices.continuationFamily.surface.suffix !== absolutiveContinuationFrame.numberFrame.num1) {
+            diagnostics.push("comparison-absolutive-continuation-connector-mismatch");
+          }
+        }
+      }
+      if (!diagnostics.length && citationSourceUseFrame) {
+        addChoice("reduplicationShape", TI_REDUPLICATION_SHAPES, "");
+        if (!diagnostics.length) {
+          citationNounFrame = getCitationNounFrame(slots.source, citationSourceUseFrame,
+            absolutiveContinuationFrame, choices.reduplicationShape.id);
+          if (citationNounFrame.authorizationStatus !== "authorized") diagnostics.push(citationNounFrame.blockReason);
+        }
+      }
       if (routeId === "similarity-incorporated-nehnequi" && !text(slots.source?.stem)) {
         diagnostics.push("comparison-incorporated-source-stem-required");
+      }
+      if (!diagnostics.length && routeId === "similarity-reduplicative-prefix"
+        && choices.continuationFamily?.id === "hui-preterit-agentive") {
+        huiAgentiveFrame = getReduplicativeHuiAgentiveFrame(slots.source);
+        if (huiAgentiveFrame.authorizationStatus !== "authorized") {
+          diagnostics.push(huiAgentiveFrame.blockReason);
+        }
+      }
+      if (!diagnostics.length && routeId === "similarity-reduplicative-prefix"
+        && ["oyotl-nehnemi", "cihuatl-tlahtoa"].includes(choices.continuationFamily?.id)) {
+        addChoice("reduplicationShape", TI_REDUPLICATION_SHAPES, "");
+        if (!diagnostics.length) {
+          const matrixId = choices.continuationFamily.id === "oyotl-nehnemi" ? "nehnemi" : "tlahtoa";
+          const frame = getReduplicativeComparedMannerFrame(slots.source, choices.reduplicationShape.id, matrixId);
+          if (matrixId === "nehnemi") nehnemiFrame = frame; else tlahtoaFrame = frame;
+          if (frame.authorizationStatus !== "authorized") diagnostics.push(frame.blockReason);
+        }
+      }
+      if (!diagnostics.length && routeId === "similarity-reduplicative-prefix"
+        && choices.continuationFamily?.id === "ti-agentive") {
+        // Prefix shape is not predicted from the noun's spelling. The source
+        // offers several formations; the caller selects the intended one.
+        addChoice("reduplicationShape", TI_REDUPLICATION_SHAPES, "");
+        const inventory = getClassicalComparisonTiAgentiveChoiceInventory(slots.source);
+        if (inventory.authorizationStatus !== "authorized") {
+          diagnostics.push(inventory.blockReason);
+        } else {
+          addChoice("tiClass", Object.fromEntries(inventory.classChoices.map(value => [value, value])),
+            inventory.classChoices.length === 1 ? inventory.classChoices[0] : "");
+        }
+        if (!diagnostics.length) {
+          tiAgentiveFrame = getReduplicativeTiAgentiveFrame(slots.source,
+            choices.reduplicationShape.id, choices.tiClass.id);
+          if (tiAgentiveFrame.authorizationStatus !== "authorized") diagnostics.push(tiAgentiveFrame.blockReason);
+        }
       }
       if (
         routeId === "similarity-resemblance-verbstem-nnc"
@@ -1201,6 +1354,12 @@ export function createComparisonApi(targetObject = globalThis, installationConte
           Object.keys(slots).map(slotId => [slotId, slotId])
         )),
         choices,
+        ...(absolutiveContinuationFrame ? { absolutiveContinuationFrame } : {}),
+        ...(huiAgentiveFrame ? { huiAgentiveFrame } : {}),
+        ...(tiAgentiveFrame ? { tiAgentiveFrame } : {}),
+        ...(nehnemiFrame ? { nehnemiFrame } : {}),
+        ...(tlahtoaFrame ? { tlahtoaFrame } : {}),
+        ...(citationNounFrame ? { citationNounFrame } : {}),
         formulaTemplate: routeSpec.formulaTemplate,
         axes: Array.from(routeSpec.axes),
         diagnostics: ["comparison-typed-operation-authorized"],
@@ -1231,20 +1390,541 @@ export function createComparisonApi(targetObject = globalThis, installationConte
       );
     }
 
-    const SHORT_VOWELS = freeze({ ā: "a", ē: "e", ī: "i", ō: "o" });
-    const INITIAL_CONSONANT = /^(?:ch|cu|hu|qu|tl|tz|[cçhlmnpqstxyz])/u;
-    function deriveSimilarityReduplicant(stem = "") {
-      const normalized = text(stem).replace(/[()#-]/gu, "");
-      const consonant = normalized.match(INITIAL_CONSONANT)?.[0] || "";
-      const remainder = normalized.slice(consonant.length);
-      const vowel = remainder.match(/[aāeēiīoō]/u)?.[0] || "";
-      const vowelIndex = remainder.indexOf(vowel);
-      const postVowel = vowelIndex >= 0 ? remainder.slice(vowelIndex + vowel.length) : "";
-      const cihuaCoda = postVowel.startsWith("hu") ? "h" : "";
-      return `${consonant}${SHORT_VOWELS[vowel] || vowel}${cihuaCoda}`;
+    function getReduplicativeHuiAgentiveFrame(source) {
+      if (reduplicativeHuiFrames.has(source)) return reduplicativeHuiFrames.get(source);
+      const blocked = reason => freeze({ authorizationStatus: "blocked", blockReason: reason });
+      const required = [
+        "evaluateClassicalNahuatlDenominalVnc", "isClassicalNahuatlDenominalVncResultFrame",
+        "evaluateClassicalNahuatlDeverbalNnc", "isClassicalNahuatlDeverbalNncGrammarFrame",
+        "getClassicalNahuatlInitialVowelFrame", "getClassicalNahuatlShortVowel",
+        "isClassicalNahuatlNncSlotFrame", "renderClassicalNahuatlNncSlotFrameFormula",
+        "realizeClassicalNahuatlNncSurfaceCarriers",
+        "issueClassicalNahuatlLesson2WritingSource", "writeClassicalNahuatlLesson2Result",
+      ];
+      if (required.some(name => typeof targetObject[name] !== "function")) {
+        return blocked("comparison-hui-agentive-canonical-capability-required");
+      }
+      const canonicalNncResult = sourceCanonicalResults.get(source);
+      if (!canonicalNncResult || source.baseUnitKind !== "nnc") {
+        return blocked("comparison-hui-agentive-canonical-nnc-required");
+      }
+      // Exact NNC state/use-stem admission and the hui boundary belong to the
+      // denominal owner. Class A/B perfective and agentive c/qui are not a
+      // Comparison suffix choice. No surface is re-entered as a new Source.
+      const denominal = targetObject.evaluateClassicalNahuatlDenominalVnc({
+        canonicalNncResult, operationId: "inceptive-hui",
+        subject: "3sg", mood: "indicative", tense: "preterit",
+      });
+      if (!targetObject.isClassicalNahuatlDenominalVncResultFrame(denominal)) {
+        return blocked(`comparison-hui-source:${denominal?.blockReason || "canonical-denominal-required"}`);
+      }
+      const agentive = targetObject.evaluateClassicalNahuatlDeverbalNnc({
+        constructionKind: "predicate-nominalization", nominalizationKind: "preterit-agentive",
+        canonicalVncResult: denominal.canonicalVncFrame.resultFrame,
+        subject: "3common", state: "absolutive", animacy: "nonanimate",
+      });
+      if (!targetObject.isClassicalNahuatlDeverbalNncGrammarFrame(agentive)) {
+        return blocked(`comparison-hui-agentive:${agentive?.blockReason || "canonical-agentive-required"}`);
+      }
+      const initial = targetObject.getClassicalNahuatlInitialVowelFrame(denominal.sourceFrame.nounStem);
+      const vowel = targetObject.getClassicalNahuatlShortVowel(initial.vowel);
+      if (initial.authorizationStatus !== "authorized" || !vowel) {
+        return blocked("comparison-hui-similarity-initial-vowel-required");
+      }
+      const reduplicant = `${initial.onset}${vowel}`;
+      const sourceTypedSlotFrame = agentive.canonicalResult.nncSlotFrame;
+      if (!targetObject.isClassicalNahuatlNncSlotFrame(sourceTypedSlotFrame)) {
+        return blocked("comparison-hui-agentive-typed-nnc-required");
+      }
+      // Short-CV similarity is independent of the suffix-side transformations.
+      // Apply it to their typed predicate, retaining the preterit zero and
+      // owner-selected number dyad. This is a citation-word formation, not
+      // inheritance or mutation of the original NNC's subject agreement.
+      const targetTypedSlotFrame = clone(sourceTypedSlotFrame);
+      const slots = targetTypedSlotFrame.slots;
+      slots.predicate.stem = `${reduplicant}-${slots.predicate.stem}`;
+      targetTypedSlotFrame.semanticIdentity = `${sourceTypedSlotFrame.semanticIdentity}|similarity-short-cv:${reduplicant}`;
+      if (!targetObject.isClassicalNahuatlNncSlotFrame(targetTypedSlotFrame)) {
+        return blocked("comparison-hui-agentive-target-nnc-invalid");
+      }
+      const formulaRealization = text(targetObject.renderClassicalNahuatlNncSlotFrameFormula(targetTypedSlotFrame));
+      const citationFormula = `(${slots.predicate.stem.replace(/(^|-)0(?=-|$)/gu, "$1Ø")})-${slots.number.num1}-`;
+      const wordSurface = text(targetObject.realizeClassicalNahuatlNncSurfaceCarriers([
+        slots.subject.pers1, slots.subject.pers2,
+        ...slots.predicate.stem.split("-"), slots.number.num1, slots.number.num2,
+      ]));
+      if (!formulaRealization || !wordSurface) return blocked("comparison-hui-agentive-projection-required");
+      const frame = freeze({
+        kind: "classical-comparison-reduplicative-hui-agentive-frame",
+        authorizationStatus: "authorized", blockReason: "",
+        canonicalNncResult, denominal, agentive, initial, reduplicant,
+        sourceTypedSlotFrame, targetTypedSlotFrame,
+        formulaRealization, citationFormula, wordSurface,
+        formulaAndWrittenDerivedIndependently: true,
+        sourceAgreementChanged: false,
+        formulaStringAuthority: false, surfaceStringAuthority: false,
+      });
+      reduplicativeHuiFrames.set(source, frame);
+      return frame;
     }
-    function shortenStemVowels(stem = "") {
-      return text(stem).replace(/[āēīō]/gu, vowel => SHORT_VOWELS[vowel] || vowel);
+    function buildSimilarityPrefixFrame(stem, shape) {
+      const blocked = reason => freeze({ authorizationStatus: "blocked", blockReason: reason, prefix: "" });
+      if (!Object.hasOwn(TI_REDUPLICATION_SHAPES, shape)) {
+        return blocked("comparison-citation-reduplication-shape-required");
+      }
+      if (["getClassicalNahuatlInitialVowelFrame", "getClassicalNahuatlShortVowel",
+        "getClassicalNahuatlLongVowel"].some(name => typeof targetObject[name] !== "function")) {
+        return blocked("comparison-citation-reduplication-vowel-capability-required");
+      }
+      const initial = targetObject.getClassicalNahuatlInitialVowelFrame(stem);
+      if (initial?.authorizationStatus !== "authorized") {
+        return blocked(initial?.blockReason || "comparison-citation-initial-vowel-required");
+      }
+      const vowel = shape === "long-cv"
+        ? targetObject.getClassicalNahuatlLongVowel(initial.vowel)
+        : targetObject.getClassicalNahuatlShortVowel(initial.vowel);
+      if (!vowel) return blocked("comparison-citation-reduplicative-vowel-required");
+      return freeze({ kind: "classical-comparison-citation-similarity-prefix-frame",
+        authorizationStatus: "authorized", blockReason: "", initial, shape,
+        prefix: `${initial.onset}${vowel}${shape === "glottalized-cv" ? "h" : ""}`,
+        sourceQuantityPreserved: true, formulaStringAuthority: false, surfaceStringAuthority: false });
+    }
+    function deriveSimilarityReduplicant(stem = "", shape = "short-cv") {
+      // Compatibility projection only. Public generation still requires an
+      // exact captured Source and an explicit shape on its operation frame.
+      return buildSimilarityPrefixFrame(stem, shape).prefix;
+    }
+    function getClassicalComparisonCitationChoiceInventory(source) {
+      const sourceUseFrame = getCitationSourceUseFrame(source);
+      const prefix = sourceUseFrame.authorizationStatus === "authorized"
+        ? buildSimilarityPrefixFrame(sourceUseFrame.reduplicationSourceStem, "short-cv") : sourceUseFrame;
+      if (prefix.authorizationStatus !== "authorized") {
+        return freeze({ authorizationStatus: "blocked", blockReason: prefix.blockReason,
+          reduplicationShapes: [] });
+      }
+      return freeze({ authorizationStatus: "authorized", blockReason: "", sourceUseFrame,
+        reduplicationShapes: Object.keys(TI_REDUPLICATION_SHAPES),
+        formulaStringAuthority: false, surfaceStringAuthority: false });
+    }
+    function getClassicalComparisonTiAgentiveChoiceInventory(source) {
+      const blocked = reason => freeze({ authorizationStatus: "blocked", blockReason: reason,
+        classChoices: [], reduplicationShapes: Object.keys(TI_REDUPLICATION_SHAPES) });
+      const canonicalNncResult = sourceCanonicalResults.get(source);
+      if (!isClassicalComparisonSourceUnit(source) || !canonicalNncResult || source.baseUnitKind !== "nnc") {
+        return blocked("comparison-ti-agentive-canonical-nnc-required");
+      }
+      if (typeof targetObject.getClassicalNahuatlDenominalVncOperationInventory !== "function"
+        || typeof targetObject.isClassicalNahuatlDenominalVncOperationInventory !== "function") {
+        return blocked("comparison-ti-agentive-canonical-capability-required");
+      }
+      const inventory = targetObject.getClassicalNahuatlDenominalVncOperationInventory({ canonicalNncResult });
+      if (!targetObject.isClassicalNahuatlDenominalVncOperationInventory(inventory)) {
+        return blocked(`comparison-ti-source:${inventory?.blockReason || "canonical-denominal-inventory-required"}`);
+      }
+      const option = inventory.options.find(entry => entry.operationId === "inceptive-ti");
+      if (!option) return blocked("comparison-ti-source:selected-denominal-operation-not-licensed-for-source");
+      return freeze({ authorizationStatus: "authorized", blockReason: "", canonicalNncResult, inventory,
+        classChoices: option.classOptions.map(value => value.toLowerCase()),
+        reduplicationShapes: Object.keys(TI_REDUPLICATION_SHAPES),
+        formulaStringAuthority: false, surfaceStringAuthority: false });
+    }
+    function getReduplicativeTiAgentiveFrame(source, reduplicationShape, tiClass) {
+      const coordinate = `${reduplicationShape}:${tiClass}`;
+      const cached = reduplicativeTiFrames.get(source)?.get(coordinate);
+      if (cached) return cached;
+      const blocked = reason => freeze({ authorizationStatus: "blocked", blockReason: reason });
+      const required = [
+        "evaluateClassicalNahuatlDenominalVnc", "isClassicalNahuatlDenominalVncResultFrame",
+        "evaluateClassicalNahuatlDeverbalNnc", "isClassicalNahuatlDeverbalNncGrammarFrame",
+        "getClassicalNahuatlInitialVowelFrame", "getClassicalNahuatlShortVowel", "getClassicalNahuatlLongVowel",
+        "isClassicalNahuatlNncSlotFrame", "renderClassicalNahuatlNncSlotFrameFormula",
+        "realizeClassicalNahuatlNncSurfaceCarriers",
+        "issueClassicalNahuatlLesson2WritingSource", "writeClassicalNahuatlLesson2Result",
+      ];
+      if (required.some(name => typeof targetObject[name] !== "function")) {
+        return blocked("comparison-ti-agentive-canonical-capability-required");
+      }
+      const canonicalNncResult = sourceCanonicalResults.get(source);
+      const denominal = targetObject.evaluateClassicalNahuatlDenominalVnc({
+        canonicalNncResult, operationId: "inceptive-ti", classChoice: tiClass.toUpperCase(),
+        subject: "3sg", mood: "indicative", tense: "preterit",
+      });
+      if (!targetObject.isClassicalNahuatlDenominalVncResultFrame(denominal)) {
+        return blocked(`comparison-ti-source:${denominal?.blockReason || "canonical-denominal-required"}`);
+      }
+      const agentive = targetObject.evaluateClassicalNahuatlDeverbalNnc({
+        constructionKind: "predicate-nominalization", nominalizationKind: "preterit-agentive",
+        canonicalVncResult: denominal.canonicalVncFrame.resultFrame,
+        subject: "3common", state: "absolutive", animacy: "nonanimate",
+      });
+      if (!targetObject.isClassicalNahuatlDeverbalNncGrammarFrame(agentive)) {
+        return blocked(`comparison-ti-agentive:${agentive?.blockReason || "canonical-agentive-required"}`);
+      }
+      const initial = targetObject.getClassicalNahuatlInitialVowelFrame(denominal.sourceFrame.nounStem);
+      const vowel = reduplicationShape === "long-cv"
+        ? targetObject.getClassicalNahuatlLongVowel(initial.vowel)
+        : targetObject.getClassicalNahuatlShortVowel(initial.vowel);
+      if (initial.authorizationStatus !== "authorized" || !vowel) {
+        return blocked("comparison-ti-reduplication-initial-vowel-required");
+      }
+      const reduplicant = `${initial.onset}${vowel}${reduplicationShape === "glottalized-cv" ? "h" : ""}`;
+      const sourceTypedSlotFrame = agentive.canonicalResult.nncSlotFrame;
+      if (!targetObject.isClassicalNahuatlNncSlotFrame(sourceTypedSlotFrame)) {
+        return blocked("comparison-ti-agentive-typed-nnc-required");
+      }
+      // Modify only the copied prefix. The exact source-use predicate, Class
+      // A/B perfective, internal preterit zero and c/qui dyad remain owner-issued.
+      const targetTypedSlotFrame = clone(sourceTypedSlotFrame);
+      const slots = targetTypedSlotFrame.slots;
+      slots.predicate.stem = `${reduplicant}-${slots.predicate.stem}`;
+      targetTypedSlotFrame.semanticIdentity = `${sourceTypedSlotFrame.semanticIdentity}|ti-reduplication:${coordinate}`;
+      if (!targetObject.isClassicalNahuatlNncSlotFrame(targetTypedSlotFrame)) {
+        return blocked("comparison-ti-agentive-target-nnc-invalid");
+      }
+      const formulaRealization = text(targetObject.renderClassicalNahuatlNncSlotFrameFormula(targetTypedSlotFrame));
+      const citationFormula = `(${slots.predicate.stem.replace(/(^|-)0(?=-|$)/gu, "$1Ø")})-${slots.number.num1}-`;
+      const wordSurface = text(targetObject.realizeClassicalNahuatlNncSurfaceCarriers([
+        slots.subject.pers1, slots.subject.pers2,
+        ...slots.predicate.stem.split("-"), slots.number.num1, slots.number.num2,
+      ]));
+      if (!formulaRealization || !wordSurface) return blocked("comparison-ti-agentive-projection-required");
+      const frame = freeze({ kind: "classical-comparison-reduplicative-ti-agentive-frame",
+        authorizationStatus: "authorized", blockReason: "",
+        canonicalNncResult, denominal, agentive, initial, reduplicant, reduplicationShape,
+        sourceTypedSlotFrame, targetTypedSlotFrame, formulaRealization, citationFormula, wordSurface,
+        matrixQuantityPreserved: true, sourceAgreementChanged: false,
+        formulaAndWrittenDerivedIndependently: true, formulaStringAuthority: false, surfaceStringAuthority: false });
+      if (!reduplicativeTiFrames.has(source)) reduplicativeTiFrames.set(source, new Map());
+      reduplicativeTiFrames.get(source).set(coordinate, frame);
+      return frame;
+    }
+    function getClassicalComparisonNehnemiChoiceInventory(source) {
+      return getComparedMannerChoiceInventory(source, "nehnemi");
+    }
+    function getClassicalComparisonTlahtoaChoiceInventory(source) {
+      return getComparedMannerChoiceInventory(source, "tlahtoa");
+    }
+    function getComparedMannerChoiceInventory(source, matrixId) {
+      const blocked = reason => freeze({ authorizationStatus: "blocked", blockReason: reason,
+        reduplicationShapes: [] });
+      const canonicalNncResult = sourceCanonicalResults.get(source);
+      if (!isClassicalComparisonSourceUnit(source) || !canonicalNncResult || source.baseUnitKind !== "nnc") {
+        return blocked(`comparison-${matrixId}-canonical-nnc-required`);
+      }
+      if (typeof targetObject.isClassicalNahuatlOrdinaryNncResult !== "function"
+        || typeof targetObject.getClassicalNahuatlNncContinuationSourceConstituents !== "function") {
+        return blocked(`comparison-${matrixId}-canonical-capability-required`);
+      }
+      const projection = targetObject.getClassicalNahuatlNncContinuationSourceConstituents(canonicalNncResult);
+      if (!targetObject.isClassicalNahuatlOrdinaryNncResult(canonicalNncResult)
+        || projection?.nncType !== "ordinary"
+        || projection.canonicalResultFrame !== canonicalNncResult
+        || projection.canonicalSourceFrame !== canonicalNncResult.sourceFrame
+        || projection.canonicalOperationFrame !== canonicalNncResult.operationFrame
+        || projection.typedSlotFrame !== canonicalNncResult.typedSlotFrame) {
+        return blocked(`comparison-${matrixId}-exact-ordinary-nnc-required`);
+      }
+      return freeze({ authorizationStatus: "authorized", blockReason: "", canonicalNncResult, projection,
+        reduplicationShapes: Object.keys(TI_REDUPLICATION_SHAPES),
+        formulaStringAuthority: false, surfaceStringAuthority: false });
+    }
+    function getReduplicativeComparedMannerFrame(source, reduplicationShape, matrixId) {
+      const coordinate = `${matrixId}:${reduplicationShape}`;
+      const matrix = COMPARED_MANNER_MATRICES[matrixId];
+      const cached = reduplicativeComparedMannerFrames.get(source)?.get(coordinate);
+      if (cached) return cached;
+      const blocked = reason => freeze({ authorizationStatus: "blocked", blockReason: reason });
+      const inventory = getComparedMannerChoiceInventory(source, matrixId);
+      if (inventory.authorizationStatus !== "authorized") return blocked(inventory.blockReason);
+      const required = ["executeClassicalGrammarApplicationRequest",
+        "getClassicalNahuatlVncContinuationSourceConstituents",
+        "evaluateClassicalNahuatlNominalConstruction", "isClassicalNahuatlNominalConstructionResult"];
+      if (required.some(name => typeof targetObject[name] !== "function")) {
+        return blocked(`comparison-${matrixId}-canonical-capability-required`);
+      }
+      if (!comparedMannerMatrixResults.has(matrixId)) {
+        // §§7.3, 7.10, 27.2.1 and 53.1: the matrix is either Class-B
+        // walking neh-nemi or Class-C tla-fused speaking tla-ht-o-ā.
+        // The nominal embed supplies neither an actor nor an external tla object.
+        const application = targetObject.executeClassicalGrammarApplicationRequest({
+          operationId: "vnc:application", languageId: "classical-nahuatl", args: [{
+            sourceStem: matrix.stem, verbClass: matrix.verbClass, sourceValence: "intransitive",
+            sourceSubject: "3sg", subject: "3sg", mood: "indicative", tense: "present",
+            requestedDerivation: "direct", requestedVoice: "active",
+          }],
+        });
+        if (application?.authorizationStatus !== "authorized") {
+          return blocked(`comparison-${matrixId}-matrix:${application?.blockReason || "canonical-application-required"}`);
+        }
+        const candidate = application.canonicalResult?.resultFrame;
+        const matrixProjection = targetObject.getClassicalNahuatlVncContinuationSourceConstituents(candidate);
+        if (matrixProjection?.sourceStem !== matrix.stem || matrixProjection.verbClass !== matrix.verbClass) {
+          return blocked(`comparison-${matrixId}-canonical-matrix-required`);
+        }
+        comparedMannerMatrixResults.set(matrixId, candidate);
+      }
+      const matrixResult = comparedMannerMatrixResults.get(matrixId);
+      const { canonicalNncResult, projection } = inventory;
+      const nominalConstruction = targetObject.evaluateClassicalNahuatlNominalConstruction({
+        constructionKind: "nominal-embed-vnc", source: {
+          embedStem: projection.predicateStem, embedClass: projection.typedSlotFrame.nounClass,
+          embedConstituent: { kind: "ordinary-nnc-predicate", stem: projection.predicateStem,
+            resultFrame: canonicalNncResult },
+          matrixStem: matrix.stem, matrixVerbClass: matrix.verbClass, matrixValence: "intransitive",
+          matrixConstituent: { kind: "vnc-result", stem: matrix.stem, resultFrame: matrixResult },
+        },
+        relation: "adverb", route: "direct-adverb", adverbRole: "compared-manner", orientation: "subject",
+        embedReduplication: "similarity", similarityReduplicationShape: reduplicationShape,
+        subject: "3sg", mood: "indicative", tense: "present", voice: "active",
+      });
+      if (!targetObject.isClassicalNahuatlNominalConstructionResult(nominalConstruction)) {
+        return blocked(`comparison-${matrixId}-incorporation:${nominalConstruction?.blockReason || "canonical-nominal-construction-required"}`);
+      }
+      const compoundStem = text(nominalConstruction.operationFrame?.compoundStem);
+      const wordSurface = text(nominalConstruction.wordSurface);
+      if (!compoundStem || !wordSurface) return blocked(`comparison-${matrixId}-canonical-projections-required`);
+      const frame = freeze({ kind: `classical-comparison-reduplicative-${matrixId}-frame`,
+        authorizationStatus: "authorized", blockReason: "", canonicalNncResult, projection,
+        matrixResult, nominalConstruction, reduplicationShape, compoundStem,
+        citationFormula: `(${compoundStem})`, wordSurface,
+        matrixQuantityPreserved: true, sourceAgreementChanged: false,
+        formulaAndWrittenDerivedIndependently: true, formulaStringAuthority: false, surfaceStringAuthority: false });
+      if (!reduplicativeComparedMannerFrames.has(source)) reduplicativeComparedMannerFrames.set(source, new Map());
+      reduplicativeComparedMannerFrames.get(source).set(coordinate, frame);
+      return frame;
+    }
+    function getCitationSourceUseFrame(source) {
+      const cached = citationSourceUseFrames.get(source);
+      if (cached) return cached;
+      const blocked = reason => freeze({ authorizationStatus: "blocked", blockReason: reason });
+      const canonicalResultFrame = sourceCanonicalResults.get(source);
+      const typedSlotFrame = sourceTypedSlots.get(source);
+      if (!isClassicalComparisonSourceUnit(source) || !canonicalResultFrame
+        || typeof targetObject.isClassicalNahuatlNncSlotFrame !== "function"
+        || !targetObject.isClassicalNahuatlNncSlotFrame(typedSlotFrame)) {
+        return blocked("comparison-citation-typed-nnc-required");
+      }
+      if (typeof targetObject.isClassicalNahuatlOrdinaryNncResult !== "function") {
+        return blocked("comparison-citation-canonical-source-kind-capability-required");
+      }
+      let citationStem = "";
+      let canonicalCitationProjection = null;
+      if (targetObject.isClassicalNahuatlOrdinaryNncResult(canonicalResultFrame)) {
+        if (typeof targetObject.getClassicalNahuatlNncRestrictedUseCitationProjection !== "function"
+          || typeof targetObject.isClassicalNahuatlNncRestrictedUseCitationProjection !== "function") {
+          return blocked("comparison-citation-use-projection-capability-required");
+        }
+        canonicalCitationProjection = targetObject.getClassicalNahuatlNncRestrictedUseCitationProjection(canonicalResultFrame);
+        if (!targetObject.isClassicalNahuatlNncRestrictedUseCitationProjection(canonicalCitationProjection)
+          || canonicalCitationProjection.canonicalResultFrame !== canonicalResultFrame
+          || canonicalCitationProjection.nounClass !== typedSlotFrame.nounClass) {
+          return blocked(`comparison-citation-source:${canonicalCitationProjection?.blockReason || "exact-restricted-use-projection-required"}`);
+        }
+        citationStem = text(canonicalCitationProjection.stem);
+      } else if (typeof targetObject.isClassicalNahuatlPronominalNncResult === "function"
+        && targetObject.isClassicalNahuatlPronominalNncResult(canonicalResultFrame)) {
+        if (typeof targetObject.getClassicalNahuatlPronominalNncRestrictedUseCitationProjection !== "function"
+          || typeof targetObject.isClassicalNahuatlPronominalNncRestrictedUseCitationProjection !== "function") {
+          return blocked("comparison-citation-pronominal-use-projection-capability-required");
+        }
+        canonicalCitationProjection = targetObject.getClassicalNahuatlPronominalNncRestrictedUseCitationProjection(canonicalResultFrame);
+        if (!targetObject.isClassicalNahuatlPronominalNncRestrictedUseCitationProjection(canonicalCitationProjection)
+          || canonicalCitationProjection.canonicalResultFrame !== canonicalResultFrame
+          || canonicalCitationProjection.typedSlotFrame !== typedSlotFrame
+          || canonicalCitationProjection.nounClass !== typedSlotFrame.nounClass) {
+          return blocked(`comparison-citation-pronominal-source:${canonicalCitationProjection?.blockReason || "exact-restricted-use-projection-required"}`);
+        }
+        citationStem = text(canonicalCitationProjection.stem);
+      } else if (typeof targetObject.isClassicalNahuatlNominalConstructionResult === "function"
+        && targetObject.isClassicalNahuatlNominalConstructionResult(canonicalResultFrame)
+        && canonicalResultFrame.constructionKind === "compound-nnc") {
+        if (typeof targetObject.getClassicalNahuatlCompoundNncRestrictedUseCitationProjection !== "function"
+          || typeof targetObject.isClassicalNahuatlCompoundNncRestrictedUseCitationProjection !== "function") {
+          return blocked("comparison-citation-compound-use-projection-capability-required");
+        }
+        canonicalCitationProjection = targetObject.getClassicalNahuatlCompoundNncRestrictedUseCitationProjection(canonicalResultFrame);
+        if (!targetObject.isClassicalNahuatlCompoundNncRestrictedUseCitationProjection(canonicalCitationProjection)
+          || canonicalCitationProjection.canonicalResultFrame !== canonicalResultFrame
+          || canonicalCitationProjection.typedSlotFrame !== typedSlotFrame
+          || canonicalCitationProjection.nounClass !== typedSlotFrame.nounClass) {
+          return blocked(`comparison-citation-compound-source:${canonicalCitationProjection?.blockReason || "exact-restricted-use-projection-required"}`);
+        }
+        citationStem = text(canonicalCitationProjection.stem);
+      } else if (typeof targetObject.isClassicalNahuatlNominalConstructionResult === "function"
+        && targetObject.isClassicalNahuatlNominalConstructionResult(canonicalResultFrame)
+        && canonicalResultFrame.constructionKind === "affective-nnc") {
+        if (typeof targetObject.getClassicalNahuatlAffectiveNncRestrictedUseCitationProjection !== "function"
+          || typeof targetObject.isClassicalNahuatlAffectiveNncRestrictedUseCitationProjection !== "function") {
+          return blocked("comparison-citation-affective-use-projection-capability-required");
+        }
+        canonicalCitationProjection = targetObject.getClassicalNahuatlAffectiveNncRestrictedUseCitationProjection(canonicalResultFrame);
+        if (!targetObject.isClassicalNahuatlAffectiveNncRestrictedUseCitationProjection(canonicalCitationProjection)
+          || canonicalCitationProjection.canonicalResultFrame !== canonicalResultFrame
+          || canonicalCitationProjection.typedSlotFrame !== typedSlotFrame
+          || canonicalCitationProjection.nounClass !== typedSlotFrame.nounClass) {
+          return blocked(`comparison-citation-affective-source:${canonicalCitationProjection?.blockReason || "exact-restricted-use-projection-required"}`);
+        }
+        citationStem = text(canonicalCitationProjection.stem);
+      } else if (typeof targetObject.isClassicalNahuatlNominalConstructionResult === "function"
+        && targetObject.isClassicalNahuatlNominalConstructionResult(canonicalResultFrame)
+        && canonicalResultFrame.constructionKind === "cardinal-numeral-nnc") {
+        if (typeof targetObject.getClassicalNahuatlCardinalNncRestrictedUseCitationProjection !== "function"
+          || typeof targetObject.isClassicalNahuatlCardinalNncRestrictedUseCitationProjection !== "function") {
+          return blocked("comparison-citation-cardinal-use-projection-capability-required");
+        }
+        canonicalCitationProjection = targetObject.getClassicalNahuatlCardinalNncRestrictedUseCitationProjection(canonicalResultFrame);
+        if (!targetObject.isClassicalNahuatlCardinalNncRestrictedUseCitationProjection(canonicalCitationProjection)
+          || canonicalCitationProjection.canonicalResultFrame !== canonicalResultFrame
+          || canonicalCitationProjection.typedSlotFrame !== typedSlotFrame
+          || canonicalCitationProjection.nounClass !== typedSlotFrame.nounClass) {
+          return blocked(`comparison-citation-cardinal-source:${canonicalCitationProjection?.blockReason || "exact-restricted-use-projection-required"}`);
+        }
+        citationStem = text(canonicalCitationProjection.stem);
+      } else if (typeof targetObject.isClassicalNahuatlDeverbalNncGrammarFrame === "function"
+        && targetObject.isClassicalNahuatlDeverbalNncGrammarFrame(canonicalResultFrame)
+        && canonicalResultFrame.constructionKind === "predicate-nominalization"
+        && ["preterit-agentive", "preterit-patientive"].includes(canonicalResultFrame.operationFrame.nominalizationKind)) {
+        if (typeof targetObject.getClassicalNahuatlPreteritNncRestrictedUseCitationProjection !== "function"
+          || typeof targetObject.isClassicalNahuatlPreteritNncRestrictedUseCitationProjection !== "function") {
+          return blocked("comparison-citation-preterit-use-projection-capability-required");
+        }
+        canonicalCitationProjection = targetObject.getClassicalNahuatlPreteritNncRestrictedUseCitationProjection(canonicalResultFrame);
+        if (!targetObject.isClassicalNahuatlPreteritNncRestrictedUseCitationProjection(canonicalCitationProjection)
+          || canonicalCitationProjection.canonicalResultFrame !== canonicalResultFrame
+          || canonicalCitationProjection.typedSlotFrame !== typedSlotFrame
+          || canonicalCitationProjection.nounClass !== typedSlotFrame.nounClass) {
+          return blocked(`comparison-citation-preterit-source:${canonicalCitationProjection?.blockReason || "exact-restricted-use-projection-required"}`);
+        }
+        citationStem = text(canonicalCitationProjection.stem);
+      } else if (typeof targetObject.isClassicalNahuatlDeverbalNncGrammarFrame === "function"
+        && targetObject.isClassicalNahuatlDeverbalNncGrammarFrame(canonicalResultFrame)
+        && canonicalResultFrame.constructionKind === "predicate-nominalization") {
+        if (typeof targetObject.getClassicalNahuatlPredicateNncRestrictedUseCitationProjection !== "function"
+          || typeof targetObject.isClassicalNahuatlPredicateNncRestrictedUseCitationProjection !== "function") {
+          return blocked("comparison-citation-predicate-use-projection-capability-required");
+        }
+        canonicalCitationProjection = targetObject.getClassicalNahuatlPredicateNncRestrictedUseCitationProjection(canonicalResultFrame);
+        if (!targetObject.isClassicalNahuatlPredicateNncRestrictedUseCitationProjection(canonicalCitationProjection)
+          || canonicalCitationProjection.canonicalResultFrame !== canonicalResultFrame
+          || canonicalCitationProjection.typedSlotFrame !== typedSlotFrame
+          || canonicalCitationProjection.nounClass !== typedSlotFrame.nounClass) {
+          return blocked(`comparison-citation-predicate-source:${canonicalCitationProjection?.blockReason || "exact-restricted-use-projection-required"}`);
+        }
+        citationStem = text(canonicalCitationProjection.stem);
+      } else if (typeof targetObject.isClassicalNahuatlDeverbalNncGrammarFrame === "function"
+        && targetObject.isClassicalNahuatlDeverbalNncGrammarFrame(canonicalResultFrame)
+        && canonicalResultFrame.constructionKind === "deverbal-action") {
+        if (typeof targetObject.getClassicalNahuatlDeverbalActionNncRestrictedUseCitationProjection !== "function"
+          || typeof targetObject.isClassicalNahuatlDeverbalActionNncRestrictedUseCitationProjection !== "function") {
+          return blocked("comparison-citation-deverbal-action-use-projection-capability-required");
+        }
+        canonicalCitationProjection = targetObject.getClassicalNahuatlDeverbalActionNncRestrictedUseCitationProjection(canonicalResultFrame);
+        if (!targetObject.isClassicalNahuatlDeverbalActionNncRestrictedUseCitationProjection(canonicalCitationProjection)
+          || canonicalCitationProjection.canonicalResultFrame !== canonicalResultFrame
+          || canonicalCitationProjection.typedSlotFrame !== typedSlotFrame
+          || canonicalCitationProjection.nounClass !== typedSlotFrame.nounClass) {
+          return blocked(`comparison-citation-deverbal-action-source:${canonicalCitationProjection?.blockReason || "exact-restricted-use-projection-required"}`);
+        }
+        citationStem = text(canonicalCitationProjection.stem);
+      } else if (typeof targetObject.isClassicalNahuatlDeverbalNncGrammarFrame === "function"
+        && targetObject.isClassicalNahuatlDeverbalNncGrammarFrame(canonicalResultFrame)
+        && canonicalResultFrame.constructionKind === "patientive") {
+        if (typeof targetObject.getClassicalNahuatlPatientiveNncRestrictedUseCitationProjection !== "function"
+          || typeof targetObject.isClassicalNahuatlPatientiveNncRestrictedUseCitationProjection !== "function") {
+          return blocked("comparison-citation-patientive-use-projection-capability-required");
+        }
+        canonicalCitationProjection = targetObject.getClassicalNahuatlPatientiveNncRestrictedUseCitationProjection(canonicalResultFrame);
+        if (!targetObject.isClassicalNahuatlPatientiveNncRestrictedUseCitationProjection(canonicalCitationProjection)
+          || canonicalCitationProjection.canonicalResultFrame !== canonicalResultFrame
+          || canonicalCitationProjection.typedSlotFrame !== typedSlotFrame
+          || canonicalCitationProjection.nounClass !== typedSlotFrame.nounClass) {
+          return blocked(`comparison-citation-patientive-source:${canonicalCitationProjection?.blockReason || "exact-restricted-use-projection-required"}`);
+        }
+        citationStem = text(canonicalCitationProjection.stem);
+      } else if (typedSlotFrame.slots.state.arity === "vacant"
+        && ["1sg", "2sg", "3sg", "3common"].includes(text(typedSlotFrame.slots.subject.subject))) {
+        // §14.4: an already singular/common absolutive predicate is the
+        // restricted-use base of that noun, including its inner derivation.
+        citationStem = text(typedSlotFrame.slots.predicate.stem);
+      } else {
+        return blocked("comparison-citation-conditioned-nnc-owner-use-projection-required");
+      }
+      if (!citationStem) return blocked("comparison-citation-restricted-use-stem-required");
+      const frame = freeze({ kind: "classical-comparison-citation-source-use-frame",
+        authorizationStatus: "authorized", blockReason: "", canonicalResultFrame, typedSlotFrame,
+        canonicalCitationProjection, citationStem, nounClass: typedSlotFrame.nounClass,
+        predicateStructureFrame: canonicalCitationProjection?.predicateStructureFrame || null,
+        reduplicationSourceStem: canonicalCitationProjection?.reduplicationSourceStem || citationStem,
+        citationNumberConstraint: canonicalCitationProjection?.citationNumberConstraint || "class-governed",
+        useKind: canonicalCitationProjection?.useKind || "restricted-use",
+        projectionRole: "read-only-citation-source-use",
+        sourceAgreementChanged: false, formulaStringAuthority: false, surfaceStringAuthority: false });
+      citationSourceUseFrames.set(source, frame);
+      return frame;
+    }
+    function getCitationNounFrame(source, sourceUseFrame, absolutiveFrame, reduplicationShape) {
+      const blocked = reason => freeze({ authorizationStatus: "blocked", blockReason: reason });
+      if (typeof targetObject.realizeClassicalNahuatlNncSurfaceCarriers !== "function") {
+        return blocked("comparison-citation-canonical-writer-required");
+      }
+      // Prefix shape is chosen independently of the matrix spelling. Only
+      // the copied vowel changes; the exact restricted-use matrix is retained.
+      const similarityPrefixFrame = buildSimilarityPrefixFrame(sourceUseFrame.reduplicationSourceStem, reduplicationShape);
+      if (similarityPrefixFrame.authorizationStatus !== "authorized") return blocked(similarityPrefixFrame.blockReason);
+      const reduplicant = similarityPrefixFrame.prefix;
+      const predicateStem = `${reduplicant}-${sourceUseFrame.citationStem}`;
+      const numberFrame = absolutiveFrame?.numberFrame || null;
+      if (sourceUseFrame.predicateStructureFrame) {
+        // This is a new prefix on the complete source NOUNSTEM (§53.1),
+        // not affinity/distribution on each inner numeral (§34.14). Inner
+        // person carriers belong to the downgraded stem and remain intact.
+        const projection = sourceUseFrame.canonicalCitationProjection;
+        if (numberFrame) return blocked("comparison-structured-gross-citation-is-plural-only");
+        if (typeof targetObject.isClassicalNahuatlCardinalNncRestrictedUseCitationProjection !== "function"
+          || !targetObject.isClassicalNahuatlCardinalNncRestrictedUseCitationProjection(projection)
+          || projection.predicateStructureFrame !== sourceUseFrame.predicateStructureFrame
+          || typeof targetObject.issueClassicalNahuatlLesson2WritingSource !== "function"
+          || typeof targetObject.writeClassicalNahuatlLesson2Result !== "function"
+          || typeof targetObject.isClassicalNahuatlLesson2WrittenResult !== "function") {
+          return blocked("comparison-structured-citation-exact-owner-writing-required");
+        }
+        const citationFormula = `(${reduplicant}-${projection.citationFormulaStem})`;
+        const writingParts = freeze([
+          { role: "outer-citation-similarity-prefix", value: reduplicant },
+          ...projection.citationWritingParts,
+        ]);
+        const writingSource = targetObject.issueClassicalNahuatlLesson2WritingSource({
+          parts: writingParts, boundaryKind: "structured-nounstem-similarity-citation",
+        });
+        const writtenResult = targetObject.writeClassicalNahuatlLesson2Result(writingSource);
+        if (!targetObject.isClassicalNahuatlLesson2WrittenResult(writtenResult)) {
+          return blocked(writtenResult?.blockReason || "comparison-structured-citation-writing-required");
+        }
+        return freeze({ kind: "classical-comparison-reduplicative-citation-noun-frame",
+          authorizationStatus: "authorized", blockReason: "", sourceUseFrame,
+          canonicalNncResult: sourceCanonicalResults.get(source), predicateStem, reduplicant,
+          similarityPrefixFrame, reduplicationShape, numberFrame: null,
+          predicateStructureFrame: projection.predicateStructureFrame,
+          reduplicationScope: "complete-structured-nounstem",
+          sourceInitialCarriers: projection.reduplicationSourceStem,
+          citationFormula, writingParts, writingSource, writtenResult,
+          writtenCarriers: writingParts.map(part => part.value), wordSurface: writtenResult.surface,
+          sourceAgreementChanged: false, innerClauseFeaturesRetained: true,
+          sourceOuterClauseFeaturesProjected: false,
+          formulaAndWrittenDerivedIndependently: true,
+          formulaStringAuthority: false, surfaceStringAuthority: false });
+      }
+      const citationFormula = numberFrame ? `(${predicateStem})-${numberFrame.num1}-` : `(${predicateStem})`;
+      const writtenCarriers = [...predicateStem.split("-"), ...(numberFrame ? [numberFrame.num1, numberFrame.num2] : [])];
+      const wordSurface = text(targetObject.realizeClassicalNahuatlNncSurfaceCarriers(writtenCarriers));
+      if (!wordSurface) return blocked("comparison-citation-written-projection-required");
+      return freeze({ kind: "classical-comparison-reduplicative-citation-noun-frame",
+        authorizationStatus: "authorized", blockReason: "", sourceUseFrame,
+        canonicalNncResult: sourceCanonicalResults.get(source), predicateStem, reduplicant,
+        similarityPrefixFrame, reduplicationShape,
+        numberFrame, citationFormula, writtenCarriers, wordSurface,
+        sourceAgreementChanged: false, formulaAndWrittenDerivedIndependently: true,
+        formulaStringAuthority: false, surfaceStringAuthority: false });
     }
     function slotSurface(operationFrame, slotId) {
       return text(operationFrame.sourceSlots?.[slotId]?.surface);
@@ -1284,6 +1964,72 @@ export function createComparisonApi(targetObject = globalThis, installationConte
     function joinComparisonFormula(...values) {
       return values.flat().map(text).filter(Boolean).join(" + ");
     }
+    function getIncorporatedSuperlativeFrame(operationFrame) {
+      if (incorporatedSuperlativeFrames.has(operationFrame)) {
+        return incorporatedSuperlativeFrames.get(operationFrame);
+      }
+      const source = operationFrame.sourceSlots.predicate;
+      const sourceTypedSlotFrame = sourceTypedSlots.get(source);
+      const nnc = source.baseUnitKind === "nnc";
+      const validator = nnc ? targetObject.isClassicalNahuatlNncSlotFrame
+        : targetObject.isClassicalNahuatlVncSlotFrame;
+      const renderFormula = nnc ? targetObject.renderClassicalNahuatlNncSlotFrameFormula
+        : targetObject.renderClassicalNahuatlVncSlotFrameFormula;
+      const realizeWord = nnc ? targetObject.realizeClassicalNahuatlNncSurfaceCarriers
+        : targetObject.realizeClassicalNahuatlLesson25TypedVncWord;
+      if (typeof validator !== "function" || !validator(sourceTypedSlotFrame)
+        || typeof renderFormula !== "function" || typeof realizeWord !== "function"
+        || (nnc && (typeof targetObject.realizeClassicalNahuatlNncSurfaceCarrier !== "function"
+          || typeof targetObject.buildClassicalNahuatlNncSubjectPersonFrame !== "function"
+          || typeof targetObject.issueClassicalNahuatlLesson2WritingSource !== "function"
+          || typeof targetObject.writeClassicalNahuatlLesson2Result !== "function"))) return null;
+      const targetTypedSlotFrame = clone(sourceTypedSlotFrame);
+      const slots = targetTypedSlotFrame.slots;
+      const embed = choiceFormula(operationFrame, "incorporatedSuperlative");
+      if (!embed) return null;
+      // 53.7 / 44.9: incorporate inside the predicate, not before the word.
+      // Preserve the underlying embed and matrix as distinct boundary inputs.
+      slots.predicate.stem = `${embed}-${slots.predicate.stem}`;
+      if (nnc) {
+        const outer = [
+          ...(slots.participant?.slots || []), ...slots.state.slots,
+        ].map(slot => slot.carrier);
+        const followingMaterial = [...outer, slots.predicate.stem]
+          .map(targetObject.realizeClassicalNahuatlNncSurfaceCarrier).find(Boolean);
+        const person = targetObject.buildClassicalNahuatlNncSubjectPersonFrame?.({
+          subject: slots.subject.subject, followingMaterial,
+          animacy: slots.subject.participantFrame?.animacy,
+          humanness: slots.subject.participantFrame?.humanness,
+        });
+        if (person?.authorizationStatus === "authorized") {
+          for (const field of ["pers1", "pers2", "pers1BaseMorph", "supportiveISurfacePolicy",
+            "supportiveISurfaceAction", "supportiveISurfaceReason"]) slots.subject[field] = person[field];
+        }
+      }
+      targetTypedSlotFrame.semanticIdentity = `${sourceTypedSlotFrame.semanticIdentity || ""}|comparison-incorporation:${slots.predicate.stem}|subject:${slots.subject.pers1}-${slots.subject.pers2}`;
+      if (!validator(targetTypedSlotFrame)) return null;
+      const formulaRealization = text(renderFormula(targetTypedSlotFrame));
+      // The NNC carrier writer needs the new embed boundary explicitly: a
+      // single flattened predicate carrier would hide cem + c from its writer.
+      const wordSurface = text(nnc ? realizeWord([
+        slots.subject.pers1, slots.subject.pers2,
+        ...(slots.participant?.slots || []).map(slot => slot.carrier),
+        ...slots.state.slots.map(slot => slot.carrier),
+        ...slots.predicate.stem.split("-"), slots.number.num1, slots.number.num2,
+      ]) : realizeWord(targetTypedSlotFrame));
+      if (!formulaRealization || !wordSurface) return null;
+      const frame = freeze({
+        kind: "classical-comparison-incorporated-predicate-frame",
+        authorizationStatus: "authorized",
+        sourceTypedSlotFrame, targetTypedSlotFrame,
+        embedStem: embed, matrixStem: sourceTypedSlotFrame.slots.predicate.stem,
+        formulaRealization, wordSurface,
+        formulaAndWrittenDerivedIndependently: true,
+        formulaStringAuthority: false, surfaceStringAuthority: false,
+      });
+      incorporatedSuperlativeFrames.set(operationFrame, frame);
+      return frame;
+    }
     function renderComparisonFormulaConstituentsWithStem(
       sourceFrame = null,
       predicateStem = ""
@@ -1309,31 +2055,15 @@ export function createComparisonApi(targetObject = globalThis, installationConte
       return "";
     }
     function buildReduplicativeComparisonFormula(operationFrame) {
-      const sourceStem = slotStem(operationFrame, "source");
       const continuation =
         operationFrame.choices?.continuationFamily?.id || "bare";
-      const continuationFrame = REDUPLICATIVE_CONTINUATIONS[continuation]
-        || REDUPLICATIVE_CONTINUATIONS.bare;
-      const reduplicant = deriveSimilarityReduplicant(sourceStem);
-      const stem = continuationFrame.shortenStem
-        ? shortenStemVowels(sourceStem)
-        : sourceStem;
-      if (continuation.startsWith("absolutive-")) {
-        return `(${reduplicant}-${stem})${continuationFrame.formulaSuffix}`;
-      }
       if (continuation === "hui-preterit-agentive") {
-        return `(${reduplicant}-${stem}-uh-Ø)-qui-`;
+        return operationFrame.huiAgentiveFrame?.citationFormula || "";
       }
-      if (continuation === "ti-agentive") {
-        return `(${reduplicant}-${stem}-ti-Ø)-c-`;
-      }
-      if (continuation === "oyotl-nehnemi") {
-        const stemFormula = stem.endsWith("ō")
-          ? `${stem.slice(0, -1)}-ō`
-          : stem;
-        return `(${reduplicant}-${stemFormula}-neh-nemi)`;
-      }
-      return `(${reduplicant}-${stem}${continuationFrame.formulaSuffix})`;
+      if (continuation === "ti-agentive") return operationFrame.tiAgentiveFrame?.citationFormula || "";
+      if (continuation === "oyotl-nehnemi") return operationFrame.nehnemiFrame?.citationFormula || "";
+      if (continuation === "cihuatl-tlahtoa") return operationFrame.tlahtoaFrame?.citationFormula || "";
+      return operationFrame.citationNounFrame?.citationFormula || "";
     }
     function buildOperationFormula(operationFrame) {
       const routeId = operationFrame.routeId;
@@ -1500,17 +2230,11 @@ export function createComparisonApi(targetObject = globalThis, installationConte
           slotFormula(operationFrame, "predicate")
         );
       } else if (routeId === "superlative-incorporated") {
-        const predicate = operationFrame.sourceSlots.predicate;
-        const incorporatedStem = joinComparisonFormula(
-          choiceFormula(operationFrame, "incorporatedSuperlative"),
-          slotStem(operationFrame, "predicate")
-        ).replace(/\s*\+\s*/gu, "-");
+        const incorporated = getIncorporatedSuperlativeFrame(operationFrame);
+        if (!incorporated) return "";
         formula = joinComparisonFormula(
           slotFormula(operationFrame, "topic"),
-          renderComparisonFormulaConstituentsWithStem(
-            predicate,
-            incorporatedStem
-          )
+          incorporated.formulaRealization
         );
       } else if (routeId === "superlative-principal-ic") {
         formula = joinComparisonFormula(
@@ -1532,12 +2256,25 @@ export function createComparisonApi(targetObject = globalThis, installationConte
       let formulaSlots = [];
 
       if (routeId === "similarity-reduplicative-prefix") {
-        const continuation = choices.continuationFamily.surface;
-        const sourceStem = slotStem(operationFrame, "source");
-        const realizedStem = continuation.shortenStem ? shortenStemVowels(sourceStem) : sourceStem;
-        const prefix = deriveSimilarityReduplicant(realizedStem);
-        surface = compact(`${prefix}${realizedStem}${continuation.suffix}`);
-        formulaSlots = [prefix, realizedStem, continuation.formulaSuffix].filter(Boolean);
+        if (operationFrame.citationNounFrame) {
+          return { surface: terminal(operationFrame.citationNounFrame.wordSurface, statementType),
+            formulaSlots: operationFrame.citationNounFrame.writtenCarriers };
+        }
+        if (["oyotl-nehnemi", "cihuatl-tlahtoa"].includes(choices.continuationFamily.id)) {
+          const frame = choices.continuationFamily.id === "oyotl-nehnemi"
+            ? operationFrame.nehnemiFrame : operationFrame.tlahtoaFrame;
+          return { surface: terminal(frame.wordSurface, statementType), formulaSlots: [frame.compoundStem] };
+        }
+        if (["hui-preterit-agentive", "ti-agentive"].includes(choices.continuationFamily.id)) {
+          const frame = choices.continuationFamily.id === "ti-agentive"
+            ? operationFrame.tiAgentiveFrame : operationFrame.huiAgentiveFrame;
+          return {
+            surface: terminal(frame?.wordSurface || "", statementType),
+            formulaSlots: frame ? [frame.targetTypedSlotFrame.slots.predicate.stem,
+              frame.targetTypedSlotFrame.slots.number.num1] : [],
+          };
+        }
+        return { surface: "", formulaSlots: [] };
       } else if (routeId === "similarity-downgraded-possessive-tla") {
         const stem = slotSourceIdentityStem(operationFrame, "source");
         const suffix = text(slots.source.absolutiveSuffix);
@@ -1621,7 +2358,9 @@ export function createComparisonApi(targetObject = globalThis, installationConte
         surface = join(slotSurface(operationFrame, "topic"), choices.copula ? "ca" : "", choiceSurface(operationFrame, "superlativeAdverbial"), slotSurface(operationFrame, "predicate"));
         formulaSlots = ["TOPIC", choices.copula ? "ca" : "", "SUPERLATIVE_ADVERBIAL", "PREDICATE"].filter(Boolean);
       } else if (routeId === "superlative-incorporated") {
-        surface = join(slotSurface(operationFrame, "topic"), compact(`${choiceSurface(operationFrame, "incorporatedSuperlative")}${slotSurface(operationFrame, "predicate")}`));
+        const incorporated = getIncorporatedSuperlativeFrame(operationFrame);
+        if (!incorporated) return { surface: "", formulaSlots: [] };
+        surface = join(slotSurface(operationFrame, "topic"), incorporated.wordSurface);
         formulaSlots = ["TOPIC", "INCORPORATED_SUPERLATIVE", "PREDICATE"];
       } else if (routeId === "superlative-principal-ic") {
         surface = join(slotSurface(operationFrame, "topic"), choiceSurface(operationFrame, "superlativePrincipal"), choices.adjunctorIn ? "in" : "", "īc", slotSurface(operationFrame, "predicate"));
@@ -1820,6 +2559,14 @@ export function createComparisonApi(targetObject = globalThis, installationConte
         formulaSlots: realization.formulaSlots,
         operationFrame,
         astFrame,
+        ...(operationFrame.routeId === "superlative-incorporated" ? {
+          incorporatedPredicateFrame: getIncorporatedSuperlativeFrame(operationFrame),
+        } : {}),
+        ...(operationFrame.huiAgentiveFrame ? { huiAgentiveFrame: operationFrame.huiAgentiveFrame } : {}),
+        ...(operationFrame.tiAgentiveFrame ? { tiAgentiveFrame: operationFrame.tiAgentiveFrame } : {}),
+        ...(operationFrame.nehnemiFrame ? { nehnemiFrame: operationFrame.nehnemiFrame } : {}),
+        ...(operationFrame.tlahtoaFrame ? { tlahtoaFrame: operationFrame.tlahtoaFrame } : {}),
+        ...(operationFrame.citationNounFrame ? { citationNounFrame: operationFrame.citationNounFrame } : {}),
         typedFrameAuthority: true,
         lessonMetadataAuthority: false,
         evidenceAuthority: false,
@@ -1965,6 +2712,10 @@ export function createComparisonApi(targetObject = globalThis, installationConte
       getComparisonAntiConflationRules,
       getComparisonStructuralQuestions,
       getClassicalComparisonRouteInventory,
+      getClassicalComparisonTiAgentiveChoiceInventory,
+      getClassicalComparisonNehnemiChoiceInventory,
+      getClassicalComparisonTlahtoaChoiceInventory,
+      getClassicalComparisonCitationChoiceInventory,
       getClassicalComparisonLcmInventory,
       buildClassicalComparisonGcdFrame,
       buildClassicalComparisonSourceUnit,

@@ -17,7 +17,7 @@ const spec = {
     },
     "claim-p4797::p4797-this-object-complement-construction-serves-as-the-source-for": {
       "assertionId": "classical-clause-complement-object-material-composition:p4797-this-object-complement-construction-serves-as-the-source-for",
-      "canonicalPath": "result.canonicalResult"
+      "canonicalPath": "analysis.transformedSentenceWitness"
     }
   },
   "executionFunctionName": "buildClassicalClauseComplementValidationFrame",
@@ -27,7 +27,7 @@ const spec = {
       "object-material-composition"
     ],
     "claim-p4797": [
-      "object-material-composition"
+      "object-material-transformation"
     ]
   },
   "expectedCanonicalStatusBySelection": {

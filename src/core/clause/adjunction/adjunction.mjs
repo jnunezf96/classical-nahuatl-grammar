@@ -605,6 +605,7 @@ export function createAdverbialAdjunctionGlobals(targetObject = globalThis, inst
             antecessive: false,
             futureEmbed: false,
             sentenceType: "supplementation",
+            nuclearCenter: input.principalClause?.unitKind || "",
             adverbialCenter: "",
             negativizedParticle: "",
           }),
@@ -979,6 +980,9 @@ export function createAdverbialAdjunctionGlobals(targetObject = globalThis, inst
           antecessive,
           futureEmbed,
           sentenceType: String(nuclearClauseFrame.sentenceType || ""),
+          conditionalCue: grammarFrame?.unitFrame?.conditionalCue === true
+            || (isAdverbialAdjunctionResult(input) && input.ruleProfile?.relation === "manner"
+              && input.sourceContract?.adjoined?.features?.conditionalCue === true),
           adverbialCenter: String(
             nuclearClauseFrame.adverbialCenter
             || nuclearClauseFrame.predicateCenter
@@ -997,7 +1001,8 @@ export function createAdverbialAdjunctionGlobals(targetObject = globalThis, inst
             || ""
           ).trim().toLowerCase()
         }),
-        grammarFrame
+        grammarFrame,
+        ...(isAdverbialAdjunctionResult(input) ? { issuedResult: input } : {})
       });
     }
     function getAdverbialAdjunctionRanksForUnit(
@@ -1309,6 +1314,37 @@ export function createAdverbialAdjunctionGlobals(targetObject = globalThis, inst
         explicitAdverbialIndicator: request.explicitAdverbialIndicator === true
       });
     }
+    function adverbialAdjunctionMarkerMatchesProfile(markerSource, marking) {
+      if (!markerSource?.ok || marking === ADVERBIAL_ADJUNCTION_MARKING.unknown) return false;
+      if (marking === ADVERBIAL_ADJUNCTION_MARKING.particle) {
+        return (markerSource.features?.unitKind || markerSource.unitType)
+          === ADVERBIAL_ADJUNCTION_UNIT.particle;
+      }
+      const grammarFrame = markerSource.grammarFrame;
+      const result = markerSource.issuedResult;
+      if (isAdverbialAdjunctionResult(result) && result.ok && result.supported
+        && result.ruleProfile?.relation === "manner" && result.ruleProfile?.order === "head-modifier"
+        && result.sourceContract?.adjoined?.issuedResult?.sourceFrame?.familyId === "personal-simple"
+        && result.sourceContract.adjoined.issuedResult.operationFrame?.subject === "3common"
+        && result.sourceContract?.principal?.grammarFrame?.unitFrame?.semanticMarker === "in-tla-nel") {
+        return marking === ADVERBIAL_ADJUNCTION_MARKING.inTlaNel;
+      }
+      const semanticMarker = result?.semanticMarker
+        || grammarFrame?.unitFrame?.semanticMarker
+        || grammarFrame?.morphBoundaryFrame?.semanticMarker
+        || grammarFrame?.unitFrame?.marking
+        || grammarFrame?.morphBoundaryFrame?.marking
+        || "";
+      if (semanticMarker) {
+        return normalizeAdverbialAdjunctionMarking(semanticMarker) === marking;
+      }
+      // iuh is an adverbial NNC identity, not a particle inventory spelling.
+      return marking === ADVERBIAL_ADJUNCTION_MARKING.iuh
+        && (result?.lexicalEntryId === "44.3-iuh"
+          || result?.lexicalAuthorizationFrame?.lexicalEntryId === "44.3-iuh"
+          || grammarFrame?.nuclearClauseFrame?.adverbialCenter === "iuh"
+          || grammarFrame?.morphBoundaryFrame?.adverbialCenter === "iuh");
+    }
     function validateAdverbialAdjunctionRuleProfile({
       principalSource = null,
       adjoinedSource = null,
@@ -1349,6 +1385,11 @@ export function createAdverbialAdjunctionGlobals(targetObject = globalThis, inst
       }
       if (profile.marking !== ADVERBIAL_ADJUNCTION_MARKING.unmarked && !markerSource?.ok) {
         diagnostics.push("adverbial-adjunction-canonical-marker-result-required");
+      }
+      if (profile.marking !== ADVERBIAL_ADJUNCTION_MARKING.unmarked
+        && markerSource?.ok
+        && !adverbialAdjunctionMarkerMatchesProfile(markerSource, profile.marking)) {
+        diagnostics.push("adverbial-adjunction-marker-identity-does-not-match-marking");
       }
       const isAdverbialized = profile.degree === ADVERBIAL_ADJUNCTION_DEGREE.first
         || profile.degree === ADVERBIAL_ADJUNCTION_DEGREE.second;
@@ -1463,7 +1504,9 @@ export function createAdverbialAdjunctionGlobals(targetObject = globalThis, inst
             diagnostics.push("adverbial-adjunction-condition-marker-or-cue-required");
           }
           if (profile.conditionType === ADVERBIAL_ADJUNCTION_CONDITION.open
-            && ![ADVERBIAL_ADJUNCTION_UNIT.nnc, ADVERBIAL_ADJUNCTION_UNIT.vnc, ADVERBIAL_ADJUNCTION_UNIT.clause].includes(profile.unitType)) {
+            && ![ADVERBIAL_ADJUNCTION_UNIT.nnc, ADVERBIAL_ADJUNCTION_UNIT.vnc, ADVERBIAL_ADJUNCTION_UNIT.clause].includes(profile.unitType)
+            && !(adjoinedSource?.features?.sentenceType === "supplementation"
+              && adjoinedSource.features.nuclearCenter === "nnc")) {
             diagnostics.push("adverbial-adjunction-open-condition-center-required");
           }
           if (profile.conditionType === ADVERBIAL_ADJUNCTION_CONDITION.open
@@ -1642,7 +1685,8 @@ export function createAdverbialAdjunctionGlobals(targetObject = globalThis, inst
             marking: relationalNumeralCoCContract.marking,
           }
           : request;
-      const profile = buildAdverbialAdjunctionRuleProfile(effectiveRequest);
+      const profile = buildAdverbialAdjunctionRuleProfile({ ...effectiveRequest,
+        conditionalCuePresent: adjoinedSource?.features?.conditionalCue === true });
       const markerSource = profile.marking === ADVERBIAL_ADJUNCTION_MARKING.unmarked
         ? Object.freeze({
           kind: "canonical-adverbial-adjunction-source-unit",
@@ -1672,6 +1716,7 @@ export function createAdverbialAdjunctionGlobals(targetObject = globalThis, inst
         recursion: profile.recursion,
         marking: profile.marking,
         marker: markerSource.surface,
+        markerRightAttached: markerSource.grammarFrame?.morphBoundaryFrame?.rightAttachedToFollowingUnit === true,
         adjoinedClauseAdverbialized: profile.degree !== ADVERBIAL_ADJUNCTION_DEGREE.nonadverbialized,
         conditionType: profile.conditionType,
         purposeMood: adjoinedSource.features.mood,
@@ -1953,14 +1998,15 @@ export function createAdverbialAdjunctionGlobals(targetObject = globalThis, inst
       adjoinedSurface = "",
       order = ADVERBIAL_ADJUNCTION_ORDER.modifierHead,
       marking = ADVERBIAL_ADJUNCTION_MARKING.unmarked,
-      marker = ""
+      marker = "",
+      markerRightAttached = false
     } = {}) {
       const principal = String(principalSurface || "").trim();
       const adjoined = String(adjoinedSurface || "").trim();
       const normalizedOrder = normalizeAdverbialAdjunctionOrder(order);
       const normalizedMarking = normalizeAdverbialAdjunctionMarking(marking || marker);
       const markerText = String(marker || "").trim() || (normalizedMarking === ADVERBIAL_ADJUNCTION_MARKING.unmarked ? "" : normalizedMarking.replace("-", " "));
-      const markedAdjoined = [markerText, adjoined].filter(Boolean).join(" ");
+      const markedAdjoined = [markerText, adjoined].filter(Boolean).join(markerRightAttached ? "" : " ");
       switch (normalizedOrder) {
         case ADVERBIAL_ADJUNCTION_ORDER.headModifier:
         case ADVERBIAL_ADJUNCTION_ORDER.appositiveHeadModifier:
@@ -2048,6 +2094,7 @@ export function createAdverbialAdjunctionGlobals(targetObject = globalThis, inst
       recursion = ADVERBIAL_ADJUNCTION_RECURSION.none,
       marking = ADVERBIAL_ADJUNCTION_MARKING.unmarked,
       marker = "",
+      markerRightAttached = false,
       adjoinedClauseAdverbialized = true,
       conditionType = "",
       purposeMood = "",
@@ -2092,7 +2139,8 @@ export function createAdverbialAdjunctionGlobals(targetObject = globalThis, inst
         adjoinedSurface: adjoinedNode.surface,
         order: normalizedOrder,
         marking: normalizedMarking,
-        marker
+        marker,
+        markerRightAttached
       }) : [];
       return targetObject.attachGrammarAstContract({
         kind: "adverbial-adjunction-ast",

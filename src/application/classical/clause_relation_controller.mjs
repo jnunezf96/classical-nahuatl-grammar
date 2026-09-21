@@ -550,6 +550,8 @@ const ALLOWED_SELECTION_KEYS = Object.freeze([
   "iuhquiModifier",
   "principalNnc",
   "continuationFamily",
+  "reduplicationShape",
+  "tiClass",
   "adjunctorIn",
   "icRelation",
   "copula",
@@ -2510,8 +2512,53 @@ export function createClassicalClauseRelationControllerGlobals(
       const operationSelections = {
         comparisonRoute: routeSpec?.id || "",
       };
+      const tiContinuation = routeSpec?.id === "similarity-reduplicative-prefix"
+        && normalizeToken(selectionObject.continuationFamily) === "ti-agentive";
+      const nehnemiContinuation = routeSpec?.id === "similarity-reduplicative-prefix"
+        && normalizeToken(selectionObject.continuationFamily) === "oyotl-nehnemi";
+      const tlahtoaContinuation = routeSpec?.id === "similarity-reduplicative-prefix"
+        && normalizeToken(selectionObject.continuationFamily) === "cihuatl-tlahtoa";
+      const citationContinuation = routeSpec?.id === "similarity-reduplicative-prefix"
+        && ["bare", "absolutive-tl", "absolutive-tli", "absolutive-li"].includes(
+          normalizeToken(selectionObject.continuationFamily) || "bare");
+      const reduplicativeSource = (tiContinuation || nehnemiContinuation || tlahtoaContinuation || citationContinuation) && getValidatedCapture("principal")
+        && typeof targetObject.buildClassicalComparisonSourceUnit === "function"
+        ? targetObject.buildClassicalComparisonSourceUnit({ sourceResult: getValidatedCapture("principal").canonicalResult })
+        : null;
+      const tiChoices = tiContinuation && reduplicativeSource && typeof targetObject.getClassicalComparisonTiAgentiveChoiceInventory === "function"
+        ? targetObject.getClassicalComparisonTiAgentiveChoiceInventory(reduplicativeSource) : null;
+      const nehnemiChoices = nehnemiContinuation && reduplicativeSource
+        && typeof targetObject.getClassicalComparisonNehnemiChoiceInventory === "function"
+        ? targetObject.getClassicalComparisonNehnemiChoiceInventory(reduplicativeSource) : null;
+      const tlahtoaChoices = tlahtoaContinuation && reduplicativeSource
+        && typeof targetObject.getClassicalComparisonTlahtoaChoiceInventory === "function"
+        ? targetObject.getClassicalComparisonTlahtoaChoiceInventory(reduplicativeSource) : null;
+      const citationChoices = citationContinuation && reduplicativeSource
+        && typeof targetObject.getClassicalComparisonCitationChoiceInventory === "function"
+        ? targetObject.getClassicalComparisonCitationChoiceInventory(reduplicativeSource) : null;
+      if (tiContinuation && tiChoices?.authorizationStatus !== "authorized") {
+        diagnostics.push(tiChoices?.blockReason || "classical-comparison-ti-canonical-choice-inventory-required");
+      }
+      if (nehnemiContinuation && nehnemiChoices?.authorizationStatus !== "authorized") {
+        diagnostics.push(nehnemiChoices?.blockReason || "classical-comparison-nehnemi-canonical-choice-inventory-required");
+      }
+      if (tlahtoaContinuation && tlahtoaChoices?.authorizationStatus !== "authorized") {
+        diagnostics.push(tlahtoaChoices?.blockReason || "classical-comparison-tlahtoa-canonical-choice-inventory-required");
+      }
+      if (citationContinuation && citationChoices?.authorizationStatus !== "authorized") {
+        diagnostics.push(citationChoices?.blockReason || "classical-comparison-citation-canonical-choice-inventory-required");
+      }
       Array.from(routeSpec?.choiceFields || []).forEach(field => {
-        const values = getComparisonChoiceValues(routeSpec.id, field);
+        if (field === "tiClass" && !tiContinuation) return;
+        if (field === "reduplicationShape" && !tiContinuation && !nehnemiContinuation && !tlahtoaContinuation && !citationContinuation) return;
+        const values = field === "reduplicationShape" ? (tiChoices || nehnemiChoices || tlahtoaChoices || citationChoices)?.reduplicationShapes || []
+          : field === "tiClass" ? tiChoices?.classChoices || []
+            : getComparisonChoiceValues(routeSpec.id, field);
+        // A sole verbal class is an owner-derived fact, not a user control.
+        if (field === "tiClass" && values.length === 1) {
+          operationSelections.tiClass = values[0];
+          return;
+        }
         const selectionKey = field;
         const requestedValue = normalizeToken(selectionObject[selectionKey]);
         const defaultValue = getComparisonChoiceDefault(
@@ -2545,6 +2592,8 @@ export function createClassicalClauseRelationControllerGlobals(
           operationKind: routeSpec?.operation || "",
           comparisonRelation: routeSpec?.relation || "",
           comparisonRoute: routeSpec?.id || "",
+          ...(tiContinuation ? { tiClass: operationSelections.tiClass || "",
+            tiClassChoices: freezeArray(tiChoices?.classChoices || []) } : {}),
           captureSlotLayout: Object.freeze({ ...layout }),
           requiredCaptureRoles: Object.freeze(
             Object.entries(layout)
@@ -2565,6 +2614,7 @@ export function createClassicalClauseRelationControllerGlobals(
           "capture-slot-layout",
           "required-capture-roles",
           "optional-capture-roles",
+          ...(tiContinuation && tiChoices?.classChoices.length === 1 ? ["ti-class"] : []),
         ],
       });
     }
@@ -2963,14 +3013,30 @@ export function createClassicalClauseRelationControllerGlobals(
           );
         }
         operationSelections.derivedSpeakerGender = speakerGender;
-        const glottalValues = speakerGender === "male"
-          && /h$/u.test(vocativePreview?.surface || "")
+        // The vocative owner has the exact captured Source, including nested
+        // supplementation sources. The controller must not infer its choices
+        // from the spelling of a formula or surface projection.
+        const ownerLicensesVariant = options => {
+          if (
+            speakerGender !== "male"
+            || !vocativePreview
+            || typeof targetObject.evaluateClassicalNahuatlSupplementationOperation !== "function"
+            || typeof targetObject.isClassicalNahuatlVocativeFrame !== "function"
+          ) return false;
+          const result = targetObject.evaluateClassicalNahuatlSupplementationOperation({
+            operationKind: "vocative",
+            nncClause: vocativePreview,
+            options: {
+              discourseSourceContextFrame: vocativeSourceContext,
+              ...options,
+            },
+          });
+          return targetObject.isClassicalNahuatlVocativeFrame(result);
+        };
+        const glottalValues = ownerLicensesVariant({ glottalVariant: "y" })
           ? ["plain-e", "glottal-e"]
           : ["plain-e"];
-        const silentPluralValues = speakerGender === "male"
-          && vocativePreview?.subject?.features?.number === "plural"
-          && /tin$/u.test(vocativePreview?.surface || "")
-          && /t-in#$/u.test(vocativePreview?.formulaRealization || "")
+        const silentPluralValues = ownerLicensesVariant({ silentPluralIn: true })
           ? ["absent", "present"]
           : ["absent"];
         [
@@ -2994,7 +3060,7 @@ export function createClassicalClauseRelationControllerGlobals(
               values,
               selectedValue,
               reason:
-                "the typed vocative source licenses this realization choice",
+                "the canonical vocative owner licenses this realization choice",
             }));
           }
           if (requested && !selectedValue) {

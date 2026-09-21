@@ -641,6 +641,7 @@ export function createClassicalLateGrammarValidationSemanticOperationsApi(
       version: 1,
       authorizationStatus: "authorized",
       profileId,
+      canonicalWitness: result.canonical,
       result: {
         canonicalResult: true,
         operationKind: result.operationKind,
@@ -649,7 +650,14 @@ export function createClassicalLateGrammarValidationSemanticOperationsApi(
           result.canonical?.authorizationStatus || "authorized",
       },
       analysis: {
-        semanticBoundary: profileId,
+        semanticBoundary: {
+          canonicalKind: result.canonical.kind,
+          canonicalAuthorizationStatus: result.canonical.authorizationStatus || null,
+          ...Object.fromEntries(["timeReading", "classification", "computedPolarity", "derivedRole", "constructionFamily"]
+            .filter(key => Object.hasOwn(result.canonical, key))
+            .map(key => [key, result.canonical[key]])),
+          observationScope: "validated-result-identity-and-present-semantic-fields-not-profile-name-or-complete-lesson-proof",
+        },
         hostileAuthorityBlocked,
         documentaryAnalysisOnly: profileId === "textual-diagnostic",
         documentaryProductionRouteAbsent: profileId === "textual-diagnostic"

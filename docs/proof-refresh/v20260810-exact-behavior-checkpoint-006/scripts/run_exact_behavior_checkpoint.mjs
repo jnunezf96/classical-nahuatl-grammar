@@ -126,6 +126,9 @@ for (const ownerId of owners) {
     version,
     ownerId,
     canonicalResultDigest: digest(stableJson(ownerObservations.map(item => ({ canonicalPath: item.canonicalPath, actual: item.actual })))),
+    canonicalResultDigestScope: "captured-canonicalPath-actual-pairs-only",
+    completeCanonicalResultCaptured: false,
+    observationLabelsEstablishCompleteness: false,
     observations: ownerObservations,
     counts: { atoms: ownerObservations.length, passed: ownerObservations.length, failed: 0, mutationsRejected: ownerObservations.length },
   };
@@ -168,6 +171,7 @@ const activePointer = {
   baseProofCorpusRetained: true,
 };
 const temporaryPointerPath = `${activePointerPath}.tmp`;
+try {
 for (const candidate of [activePointer, oldPointer, activePointer]) {
   await writeFile(temporaryPointerPath, stableJson(candidate));
   await rename(temporaryPointerPath, activePointerPath);
@@ -176,13 +180,7 @@ for (const candidate of [activePointer, oldPointer, activePointer]) {
 }
 
 let auditOutput;
-try {
   ({ stdout: auditOutput } = await execFile(process.execPath, ["docs/canvas-progress/audit_canvas_true_progress.mjs"], { cwd: repositoryRoot }));
-} catch (error) {
-  await writeFile(temporaryPointerPath, stableJson(oldPointer));
-  await rename(temporaryPointerPath, activePointerPath);
-  throw error;
-}
 const progress = JSON.parse(await readFile(path.join(repositoryRoot, "docs/CANVAS_TRUE_GRAMMAR_PROGRESS.json"), "utf8"));
 assert(progress.lessonCorpus.exactProofs.exactBehaviorObserved === 8514, "progress ledger delta is wrong");
 const report = {
@@ -203,3 +201,8 @@ const report = {
 };
 await writeFile(path.join(batchRoot, "validation-report.json"), stableJson(report));
 console.log(stableJson(report));
+} catch (error) {
+  await writeFile(temporaryPointerPath, stableJson(oldPointer));
+  await rename(temporaryPointerPath, activePointerPath);
+  throw error;
+}

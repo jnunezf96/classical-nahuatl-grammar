@@ -1892,49 +1892,112 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
         }
       };
     }
+    function getClassicalNahuatlSupportiveSegmentSounds(segment) {
+      if (CLASSICAL_NAHUATL_TRANSCRIPTION_PHONEMES.includes(segment)) return [segment];
+      // An isolated phoneme name (e.g. k) is not a written k. Keep its
+      // identity through insertion, then let the typed transcription owner
+      // supply its contextual spelling. Arbitrary phonetic strings are not
+      // silently mixed with Classical orthographic segments.
+      const phoneme = `/${segment}/`;
+      if (CLASSICAL_NAHUATL_TRANSCRIPTION_PHONEMES.includes(phoneme)) return [phoneme];
+      if (!/^[acehilmnopqtuxyzāēīō]+$/u.test(segment)) return null;
+      const graphemes = getClassicalNahuatlSyllableSoundSegmentations(segment)[0];
+      if (!graphemes?.length) return null;
+      return graphemes.map((sound, index) => {
+        if (isClassicalNahuatlSyllableVowel(sound)) return sound;
+        if (sound === "c") return ["e", "ē", "i", "ī"].includes(graphemes[index + 1]) ? "/s/" : "/k/";
+        if (sound === "qu") return "/k/";
+        if (sound === "z") return "/s/";
+        if (["hu", "uh"].includes(sound)) return "/w/";
+        if (["cu", "uc"].includes(sound)) return "/kʷ/";
+        return Object.entries(CLASSICAL_NAHUATL_TRANSCRIPTION_CONSONANT_SPELLINGS)
+          .find(([, spelling]) => spelling === sound)?.[0] || "";
+      });
+    }
+    function analyzeClassicalNahuatlSupportiveSequence(soundSegments) {
+      const sounds = soundSegments.flat();
+      const { syllables, violations } = buildClassicalNahuatlSyllablesFromSounds(sounds);
+      return {
+        soundSegments, sounds, syllables, violations,
+        tokenLevelLegal: violations.length === 0,
+        hasIllegalConsonantSequence: violations.some(value => [
+          "initial-consonant-cluster", "final-consonant-cluster", "too-many-medial-consonants",
+        ].includes(value)) || (violations.includes("missing-vowel") && sounds.length >= 2),
+      };
+    }
     function buildClassicalNahuatlSupportiveVowelMechanicsFrame(options = {}) {
-      const sourceSegments = Array.isArray(options.sourceSegments)
-        ? options.sourceSegments.map(value => String(value || "").trim()).filter(Boolean)
-        : [];
-      const insertionPosition = normalizeClassicalNahuatlOrthographyInput(
-        options.insertionPosition || "between",
-      );
-      const supportiveIndex = Number.isInteger(options.supportiveIndex)
-        ? options.supportiveIndex
-        : insertionPosition === "before" ? 0 : insertionPosition === "after"
-          ? sourceSegments.length - 1 : 1;
-      const tokenLevelLegal = options.tokenLevelLegal === true;
-      const supportiveVowelNeeded = options.supportiveVowelNeeded !== false;
-      const inferredRuleId = supportiveVowelNeeded === false
-        ? "cn-l2-263-supportive-i-drop-when-unneeded"
-        : "cn-l2-263-supportive-i-illegal-sequence";
-      const selectedRule = CLASSICAL_NAHUATL_LESSON2_SUPPORTIVE_VOWEL_RULES
-        .find(rule => rule.id === inferredRuleId) || null;
-      let outputSegments = sourceSegments.slice();
-      if (selectedRule?.action === "insert") {
-        const insertAt = insertionPosition === "before"
-          ? 0
-          : insertionPosition === "after"
-            ? sourceSegments.length
-            : Math.min(Math.max(1, supportiveIndex), sourceSegments.length);
-        outputSegments.splice(insertAt, 0, "i");
-      } else if (selectedRule?.action === "drop") {
-        if (outputSegments[supportiveIndex] === "i") outputSegments.splice(supportiveIndex, 1);
+      const request = options && typeof options === "object" && !Array.isArray(options) ? options : {};
+      const rawSegments = Array.isArray(request.sourceSegments) ? Array.from(request.sourceSegments) : [];
+      const sourceSegments = rawSegments.map(value => typeof value === "string"
+        ? value.normalize("NFC").trim().toLowerCase() : "");
+      const soundSegments = sourceSegments.map(getClassicalNahuatlSupportiveSegmentSounds);
+      const segmentsValid = sourceSegments.length > 0 && sourceSegments.every(Boolean)
+        && soundSegments.every(sounds => sounds?.length && sounds.every(Boolean));
+      const sourceSequenceFrame = segmentsValid
+        ? analyzeClassicalNahuatlSupportiveSequence(soundSegments) : null;
+      // §2.6 Note 1 requires contextual need and morphosyntactic placement.
+      // Unknown is not false legality / true need, and a caller's legality
+      // assertion must agree with the independently analyzed sound sequence.
+      const tokenLevelLegal = typeof request.tokenLevelLegal === "boolean" ? request.tokenLevelLegal : null;
+      const supportiveVowelNeeded = typeof request.supportiveVowelNeeded === "boolean" ? request.supportiveVowelNeeded : null;
+      const insertionPosition = typeof request.insertionPosition === "string"
+        ? request.insertionPosition.trim().toLowerCase() : "";
+      const positionValid = ["before", "between", "after"].includes(insertionPosition);
+      const contextPresent = tokenLevelLegal !== null && supportiveVowelNeeded !== null;
+      const selectedRule = contextPresent ? CLASSICAL_NAHUATL_LESSON2_SUPPORTIVE_VOWEL_RULES
+        .find(rule => rule.action === (supportiveVowelNeeded ? "insert" : "drop")) : null;
+      const supportiveIndex = request.supportiveIndex !== undefined ? request.supportiveIndex
+        : insertionPosition === "before" ? 0
+          : insertionPosition === "after" ? sourceSegments.length - 1
+            : sourceSegments.length === 2 ? 1 : null;
+      const indexValid = Number.isInteger(supportiveIndex) && supportiveIndex >= 0
+        && supportiveIndex < sourceSegments.length
+        && (insertionPosition !== "between" || supportiveIndex > 0);
+      let blockReason = !segmentsValid ? "supportive-vowel-sound-segments-required"
+        : !contextPresent ? "supportive-vowel-explicit-context-required"
+          : !positionValid ? "supportive-vowel-morphosyntactic-position-required"
+            : !indexValid ? "supportive-vowel-index-required-or-out-of-range"
+              : tokenLevelLegal !== sourceSequenceFrame.tokenLevelLegal ? "supportive-vowel-token-legality-mismatch"
+                : selectedRule.action === "insert" && !sourceSequenceFrame.hasIllegalConsonantSequence
+                  ? "illegal-token-level-consonant-sequence-required"
+                  : selectedRule.action === "drop" && (sourceSegments[supportiveIndex] !== "i"
+                    || insertionPosition === "between") ? "unneeded-supportive-vowel-at-edge-required" : "";
+      const outputSegments = sourceSegments.slice();
+      const outputSoundSegments = segmentsValid ? soundSegments.map(sounds => sounds.slice()) : [];
+      let outputSequenceFrame = null;
+      let canonicalTranscriptionFrame = null;
+      if (!blockReason) {
+        if (selectedRule.action === "insert") {
+          const insertAt = insertionPosition === "before" ? 0
+            : insertionPosition === "after" ? sourceSegments.length : supportiveIndex;
+          outputSegments.splice(insertAt, 0, "i");
+          outputSoundSegments.splice(insertAt, 0, ["i"]);
+        } else {
+          // The request identifies this i as supportive in its supplied
+          // morphology, e.g. tla + i + htic. Do not infer that lexical role
+          // from an initial letter or apply a blanket preceding-vowel rule.
+          outputSegments.splice(supportiveIndex, 1);
+          outputSoundSegments.splice(supportiveIndex, 1);
+        }
+        outputSequenceFrame = analyzeClassicalNahuatlSupportiveSequence(outputSoundSegments);
+        if (!outputSequenceFrame.tokenLevelLegal) {
+          blockReason = "supportive-vowel-result-token-sequence-illegal";
+        } else {
+          // One resolved vocable, not artificial open transition at every
+          // segment boundary. In particular /k/ + inserted i writes qui,
+          // whereas /s/ + i writes ci; the sounds must not be changed.
+          canonicalTranscriptionFrame = buildClassicalNahuatlTranscriptionFrame(
+            buildClassicalNahuatlTranscriptionSourceFrame({
+              constituents: [{ segments: outputSequenceFrame.sounds }],
+            })
+          );
+          if (canonicalTranscriptionFrame.authorizationStatus !== "authorized") {
+            blockReason = canonicalTranscriptionFrame.blockReason;
+          }
+        }
       }
-      const insertLicensed = selectedRule?.action !== "insert" || (
-        sourceSegments.length >= 2
-        && tokenLevelLegal === false
-        && selectedRule.licensedPositions.includes(insertionPosition)
-      );
-      const dropLicensed = selectedRule?.action !== "drop" || (
-        sourceSegments[supportiveIndex] === "i"
-        && supportiveVowelNeeded === false
-        && (insertionPosition === "before" || insertionPosition === "after")
-      );
-      const authorized = Boolean(selectedRule)
-        && insertLicensed
-        && dropLicensed
-        && outputSegments.join("") !== sourceSegments.join("");
+      const authorized = !blockReason;
+      const outputForm = authorized ? canonicalTranscriptionFrame.surface : "";
       return {
         kind: "classical-nahuatl-transcription-supportive-vowel-frame",
         version: CLASSICAL_NAHUATL_LESSON2_FRAME_VERSION,
@@ -1946,23 +2009,20 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
         supportiveIndex,
         tokenLevelLegal,
         supportiveVowelNeeded,
+        sourceSequenceFrame,
+        outputSequenceFrame,
+        canonicalTranscriptionFrame,
+        morphosyntacticPositionInferred: false,
+        supportiveStatusDerivedFromSpelling: false,
         outputSegments: authorized ? outputSegments : [],
-        outputForm: authorized ? outputSegments.join("") : "",
+        outputForm,
         authorizationStatus: authorized ? "authorized" : "blocked",
         proofStatus: authorized ? "proven" : "blocked",
-        blockReason: authorized
-          ? ""
-          : !selectedRule
-            ? "supportive-vowel-rule-required"
-            : selectedRule.action === "insert" && !insertLicensed
-              ? "illegal-token-level-consonant-sequence-required"
-              : selectedRule.action === "drop" && !dropLicensed
-                ? "unneeded-supportive-vowel-at-edge-required"
-                : "supportive-vowel-change-required",
+        blockReason,
         conclusion: {
           authorized,
           action: selectedRule?.action || "",
-          outputForm: authorized ? outputSegments.join("") : "",
+          outputForm,
         },
       };
     }
@@ -2485,7 +2545,7 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
         "unreleased-t-plus-right", "contracted",
       ]);
       const surfaceConsonants = ["tz", "ch", "tl", "qu", "cu", "hu", "uh", "c", "m", "n", "p", "s", "z", "x", "y", "w", "l", "t"];
-      const leftSurfaceConsonant = surfaceConsonants.find(item => sourceLeftMorpheme.endsWith(item)) || "";
+      const leftSurfaceConsonant = ["uc", ...surfaceConsonants].find(item => sourceLeftMorpheme.endsWith(item)) || "";
       const rightSurfaceConsonant = surfaceConsonants.find(item => sourceRightMorpheme.startsWith(item)) || "";
       const morphsComplete = Boolean(sourceLeftMorpheme && sourceRightMorpheme);
       let realizedLeftMorpheme = sourceLeftMorpheme;
@@ -3746,10 +3806,13 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
       };
     }
     function buildClassicalNahuatlProsodicContourMechanicsFrame(options = {}) {
+      options = options && typeof options === "object" && !Array.isArray(options) ? options : {};
       const contourType = normalizeClassicalNahuatlOrthographyInput(options.contourType || options.kind || "sentential-prosody");
-      const vocable = normalizeClassicalNahuatlOrthographyInput(
-        options.vocable || options.sourceVocable || ""
-      );
+      const lowPitchAnalysis = contourType === "long-final-vowel-low-pitch";
+      const rawVocable = options.vocable || options.sourceVocable || "";
+      const vocable = lowPitchAnalysis
+        ? typeof rawVocable === "string" ? rawVocable.normalize("NFC").trim().toLowerCase() : ""
+        : normalizeClassicalNahuatlOrthographyInput(rawVocable);
       let selectedRule = null;
       if (contourType === "nuclear-clause-stress" || contourType === "stress-group") {
         selectedRule = CLASSICAL_NAHUATL_LESSON2_PROSODIC_CONTOUR_RULES.find(rule => rule.id === "cn-l2-216-known-stress-rules") || null;
@@ -3759,10 +3822,49 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
         selectedRule = CLASSICAL_NAHUATL_LESSON2_PROSODIC_CONTOUR_RULES.find(rule => rule.id === "cn-l2-216-sentential-prosody-unknown") || null;
       }
       const sententialUnknown = selectedRule?.id === "cn-l2-216-sentential-prosody-unknown";
-      const authorized =
-        Boolean(selectedRule)
-        && !sententialUnknown
-        && Boolean(vocable);
+      // §2.16 summarizes the local fact made precise in §2.2: a FULL-long
+      // phone is low only utterance-finally. A macron or a contour selection
+      // cannot supply the missing phone analysis or utterance position.
+      const vocableAnalysis = lowPitchAnalysis && /^[acehilmnopqtuxyzāēīō]+$/u.test(vocable)
+        ? buildClassicalNahuatlSyllableStructureMechanicsFrame(vocable) : null;
+      const finalVowel = vocableAnalysis?.authorizationStatus === "authorized"
+        ? vocableAnalysis.sounds.at(-1) || "" : "";
+      const longFinalVowel = CLASSICAL_NAHUATL_TRANSCRIPTION_VOWEL_CARRIERS[finalVowel]?.quantity === "long";
+      const utterancePosition = typeof options.utterancePosition === "string"
+        ? options.utterancePosition.trim().toLowerCase() : "";
+      const phoneAnalysis = options.finalVowelAnalysis
+        && typeof options.finalVowelAnalysis === "object"
+        && !Array.isArray(options.finalVowelAnalysis) ? options.finalVowelAnalysis : null;
+      const fullLongPhone = phoneAnalysis?.realizationClass === "full"
+        && typeof phoneAnalysis.phone === "string"
+        && normalizeClassicalNahuatlPhoneSymbol(phoneAnalysis.phone).endsWith(":");
+      let blockReason = sententialUnknown ? "sentential-prosody-lacks-information"
+        : !vocable ? "prosodic-source-vocable-required"
+          : lowPitchAnalysis && vocableAnalysis?.authorizationStatus !== "authorized"
+            ? "prosodic-valid-single-vocable-required"
+            : lowPitchAnalysis && !longFinalVowel ? "prosodic-long-final-vowel-required"
+              : lowPitchAnalysis && !["final", "nonfinal"].includes(utterancePosition)
+                ? "prosodic-utterance-position-required"
+                : lowPitchAnalysis && utterancePosition !== "final" ? "prosodic-utterance-final-required"
+                  : lowPitchAnalysis && !fullLongPhone ? "prosodic-full-long-final-vowel-analysis-required" : "";
+      const finalVowelRealizationFrame = lowPitchAnalysis && !blockReason
+        ? buildClassicalNahuatlSegmentRealizationFrame({
+          segment: finalVowel,
+          phone: phoneAnalysis.phone,
+          realizationClass: phoneAnalysis.realizationClass,
+          finalLicense: phoneAnalysis.finalLicense,
+          lexicalVariantLicensed: phoneAnalysis.lexicalVariantLicensed === true,
+          position: "vocable-final",
+          vocable,
+        }) : null;
+      const finalVowelQualified = isClassicalNahuatlTranscriptionAnalysisFrame(finalVowelRealizationFrame)
+        && finalVowelRealizationFrame.authorizationStatus === "authorized"
+        && finalVowelRealizationFrame.quantity === "long"
+        && finalVowelRealizationFrame.outputSpelling === finalVowel;
+      if (lowPitchAnalysis && !blockReason && !finalVowelQualified) {
+        blockReason = "prosodic-final-vowel-realization-not-qualified";
+      }
+      const authorized = Boolean(selectedRule) && !blockReason;
       return {
         kind: "classical-nahuatl-transcription-prosodic-contour-frame",
         version: CLASSICAL_NAHUATL_LESSON2_FRAME_VERSION,
@@ -3778,15 +3880,21 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
         vocable,
         selectedRuleId: selectedRule?.id || "",
         selectedRule: copyClassicalNahuatlLesson2ProsodicContourRule(selectedRule),
-        sententialProsodyKnown: !sententialUnknown,
-        outputGenerationAllowed: authorized,
+        sententialProsodyKnown: lowPitchAnalysis ? false : !sententialUnknown,
+        ...(lowPitchAnalysis ? {
+          analysisRole: "pitch-observation",
+          utterancePosition,
+          finalVowelSegment: finalVowel,
+          finalVowelLicense: typeof phoneAnalysis?.finalLicense === "string" ? phoneAnalysis.finalLicense : "",
+          finalVowelRealizationFrame,
+          finalVowelPitch: authorized ? "low" : "",
+          pitchScope: "utterance-final-full-long-vowel",
+          phoneticOutputGenerated: false,
+        } : {}),
+        outputGenerationAllowed: authorized && !lowPitchAnalysis,
         authorizationStatus: authorized ? "authorized" : "blocked",
         proofStatus: authorized ? "proven" : "blocked",
-        blockReason: authorized
-          ? ""
-          : sententialUnknown
-            ? "sentential-prosody-lacks-information"
-            : "prosodic-source-vocable-required",
+        blockReason,
         premises: [{
           layer: "known-contour-domain",
           rule: "Only nuclear-clause/stress-group stress and long-final-vowel low pitch are available as known contour facts.",
@@ -3795,12 +3903,23 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
         }, {
           layer: "sentential-prosody-limit",
           rule: "Sentential prosodic features must be left undiscussed for lack of information.",
-          passed: !sententialUnknown,
+          passed: lowPitchAnalysis || !sententialUnknown,
           sententialUnknown
-        }],
+        }, ...(lowPitchAnalysis ? [{
+          layer: "full-long-final-vowel",
+          rule: "The actual final vowel must have an explicitly analyzed, owner-qualified full-long phone.",
+          passed: finalVowelQualified,
+          finalVowel,
+        }, {
+          layer: "utterance-final-context",
+          rule: "The full-long vowel's low pitch applies utterance-finally, not at every vocable boundary.",
+          passed: utterancePosition === "final",
+          utterancePosition,
+        }] : [])],
         conclusion: {
           authorized,
-          outputGenerationAllowed: authorized,
+          outputGenerationAllowed: authorized && !lowPitchAnalysis,
+          ...(lowPitchAnalysis ? { finalVowelPitch: authorized ? "low" : "" } : {}),
           selectedRuleId: authorized ? selectedRule?.id || "" : ""
         }
       };
@@ -3874,6 +3993,8 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
         requestedSpelling,
         selectedRuleId: selectedRule?.id || "",
         selectedRule: copyClassicalNahuatlLesson2OpenTransitionRule(selectedRule),
+        analysisRole: expectedSpelling ? "spelling-realization" : "boundary-observation",
+        outputGenerationAllowed: authorized && Boolean(expectedSpelling),
         outputSpelling: authorized ? expectedSpelling : "",
         outputExample: authorized ? selectedRule?.outputExample || selectedRule?.examples?.[0] || "" : "",
         authorizationStatus: authorized ? "authorized" : "blocked",
@@ -3905,6 +4026,7 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
         conclusion: {
           authorized,
           selectedRuleId: selectedRule?.id || "",
+          outputGenerationAllowed: authorized && Boolean(expectedSpelling),
           outputSpelling: authorized ? expectedSpelling : "",
           outputExample: authorized ? selectedRule?.outputExample || selectedRule?.examples?.[0] || "" : "",
           spelledAsVocableFinal: selectedRule?.spelledAsVocableFinal === true,
@@ -4335,6 +4457,12 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
       frame = {},
       analysisKind = ""
     ) {
+      // §2.5's general boundary observation does not itself supply a
+      // spelling. Its rule identifier and documentary examples are never
+      // written output. Concrete consequences use only the owned spelling.
+      if (analysisKind === "open-transition") {
+        return String(frame.outputSpelling || "").trim();
+      }
       if (
         analysisKind === "derivational-boundary-spelling"
         && frame.realizedRetainedStem
@@ -4395,15 +4523,47 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
           candidate || {},
           normalizedAnalysisKind
         );
+      const supportiveAnalysis = normalizedAnalysisKind === "supportive-vowel-realization";
+      const canonicalTranscriptionFrame = supportiveAnalysis
+        ? candidate?.canonicalTranscriptionFrame || null : null;
+      const lowPitchAnalysis = normalizedAnalysisKind === "prosodic-contour"
+        && candidate?.contourType === "long-final-vowel-low-pitch";
+      const finalVowelRealizationFrame = lowPitchAnalysis
+        ? candidate.finalVowelRealizationFrame || null : null;
+      const openTransitionAnalysis = normalizedAnalysisKind === "open-transition";
+      const openTransitionRule = openTransitionAnalysis
+        ? CLASSICAL_NAHUATL_LESSON2_OPEN_TRANSITION_RULES.find(
+          rule => rule.id === candidate?.selectedRuleId
+        ) : null;
+      const observationOnly = lowPitchAnalysis || (openTransitionAnalysis
+        && openTransitionRule?.outcome === "open-transition"
+        && !openTransitionRule.outputSpelling);
       const resultAuthorized =
         authorized
-        && isClassicalNahuatlTranscriptionAnalysisSourceFrame(sourceFrame);
+        && isClassicalNahuatlTranscriptionAnalysisSourceFrame(sourceFrame)
+        && (!openTransitionAnalysis || (openTransitionRule
+          && candidate.outputSpelling === (openTransitionRule.outputSpelling || "")))
+        && (!lowPitchAnalysis || (
+          isClassicalNahuatlTranscriptionAnalysisFrame(finalVowelRealizationFrame)
+          && finalVowelRealizationFrame.canonicalAnalysisKind === "segment-realization"
+          && finalVowelRealizationFrame.authorizationStatus === "authorized"
+          && finalVowelRealizationFrame.quantity === "long"
+          && finalVowelRealizationFrame.realizationClass === "full"
+          && finalVowelRealizationFrame.phone.endsWith(":")
+          && finalVowelRealizationFrame.outputSpelling === candidate.finalVowelSegment
+          && candidate.utterancePosition === "final"
+        ))
+        && (!supportiveAnalysis || (
+          isClassicalNahuatlTranscriptionFrame(canonicalTranscriptionFrame)
+          && canonicalTranscriptionFrame.authorizationStatus === "authorized"
+          && candidate.outputForm === canonicalTranscriptionFrame.surface
+        ));
       const formula = resultAuthorized
         ? projectClassicalNahuatlTranscriptionAnalysisFormula(
           sourceFrame
         )
         : "";
-      const surface = resultAuthorized
+      const surface = resultAuthorized && !observationOnly
         ? projectClassicalNahuatlTranscriptionAnalysisWritten(
           candidate,
           normalizedAnalysisKind
@@ -4419,7 +4579,7 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
           derivedFromWrittenProjection: false,
         })
         : null;
-      const writtenProjection = resultAuthorized
+      const writtenProjection = resultAuthorized && !observationOnly
         ? deepFreezeClassicalNahuatlTranscriptionValue({
           kind: "classical-nahuatl-transcription-analysis-written-projection",
           analysisKind: normalizedAnalysisKind,
@@ -4435,6 +4595,29 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
         );
       const issued = deepFreezeClassicalNahuatlTranscriptionValue({
         ...semanticAnalysis,
+        // Retain the actual spelling owner's Result, not a sanitized copy
+        // that loses its private issuance and sound-source identity.
+        ...(supportiveAnalysis ? { canonicalTranscriptionFrame } : {}),
+        ...(lowPitchAnalysis ? {
+          finalVowelRealizationFrame,
+          analysisRole: "pitch-observation",
+          finalVowelPitch: resultAuthorized ? "low" : "",
+          outputGenerationAllowed: false,
+          conclusion: {
+            ...semanticAnalysis.conclusion,
+            authorized: resultAuthorized,
+            finalVowelPitch: resultAuthorized ? "low" : "",
+            outputGenerationAllowed: false,
+          },
+        } : {}),
+        ...(openTransitionAnalysis ? {
+          analysisRole: observationOnly ? "boundary-observation" : "spelling-realization",
+          outputGenerationAllowed: resultAuthorized && !observationOnly,
+          conclusion: {
+            ...semanticAnalysis.conclusion,
+            outputGenerationAllowed: resultAuthorized && !observationOnly,
+          },
+        } : {}),
         kind: "classical-nahuatl-transcription-analysis-frame",
         version: CLASSICAL_NAHUATL_TRANSCRIPTION_FRAME_VERSION,
         authorizationStatus: resultAuthorized ? "authorized" : "blocked",
@@ -4469,6 +4652,10 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
         Object.freeze({
           analysisKind: normalizedAnalysisKind,
           authorizationStatus: issued.authorizationStatus,
+          canonicalTranscriptionFrame,
+          lowPitchAnalysis,
+          finalVowelRealizationFrame,
+          observationOnly,
           sourceFrame,
           formulaProjection,
           writtenProjection,
@@ -4499,19 +4686,46 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
         && frame.writtenProjection === receipt.writtenProjection
         && frame.formula === receipt.formula
         && frame.surface === receipt.surface
+        && (receipt.analysisKind !== "open-transition" || (
+          frame.analysisRole === (receipt.observationOnly ? "boundary-observation" : "spelling-realization")
+          && frame.outputGenerationAllowed === (authorized && !receipt.observationOnly)
+        ))
+        && (!receipt.lowPitchAnalysis || (
+          frame.analysisRole === "pitch-observation"
+          && frame.outputGenerationAllowed === false
+          && frame.sententialProsodyKnown === false
+          && frame.phoneticOutputGenerated === false
+          && frame.finalVowelPitch === (authorized ? "low" : "")
+          && frame.finalVowelRealizationFrame === receipt.finalVowelRealizationFrame
+          && (!authorized || (
+            frame.utterancePosition === "final"
+            && isClassicalNahuatlTranscriptionAnalysisFrame(frame.finalVowelRealizationFrame)
+            && frame.finalVowelRealizationFrame.authorizationStatus === "authorized"
+            && frame.finalVowelRealizationFrame.outputSpelling === frame.finalVowelSegment
+          ))
+        ))
+        && (receipt.analysisKind !== "supportive-vowel-realization" || (
+          frame.canonicalTranscriptionFrame === receipt.canonicalTranscriptionFrame
+          && (!authorized || (
+            isClassicalNahuatlTranscriptionFrame(frame.canonicalTranscriptionFrame)
+            && frame.canonicalTranscriptionFrame.authorizationStatus === "authorized"
+            && frame.surface === frame.canonicalTranscriptionFrame.surface
+          ))
+        ))
         && (
           authorized
             ? Boolean(
               frame.formula
-              && frame.surface
               && frame.typedFrameAuthority === true
               && isClassicalNahuatlTranscriptionAnalysisSourceFrame(
                 frame.sourceFrame
               )
               && frame.formulaProjection
-              && frame.writtenProjection
               && frame.formulaProjection.sourceFrame === frame.sourceFrame
-              && frame.writtenProjection.sourceFrame === frame.sourceFrame
+              && (receipt.observationOnly
+                ? frame.surface === "" && frame.writtenProjection === null
+                : frame.surface && frame.writtenProjection
+                  && frame.writtenProjection.sourceFrame === frame.sourceFrame)
             )
             : frame.typedFrameAuthority === false
               && frame.formula === ""

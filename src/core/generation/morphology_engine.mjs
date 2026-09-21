@@ -2,6 +2,7 @@
 
 export function createMorphologyEngineApi(targetObject = globalThis, installationContext = null) {
     const grammarFrameOwnerCapability = installationContext?.grammarFrameOwnerCapability || null;
+    const issuedMorphologyStemForms = new WeakMap();
     // core/generation/morphology_engine.js
     // Shared morphology engine.
     // Global-scope module: all functions defined directly on the global object.
@@ -85,6 +86,9 @@ export function createMorphologyEngineApi(targetObject = globalThis, installatio
     function getMorphologyApplicationSurfaceForms(result = null, fallbackSurface = "") {
       void fallbackSurface;
       const grammarFrame = getMorphologyApplicationResultFrame(result);
+      if (grammarFrame && issuedMorphologyStemForms.has(grammarFrame)) {
+        return [...issuedMorphologyStemForms.get(grammarFrame)];
+      }
       return grammarFrame
         && typeof targetObject.getIssuedGrammarFrameCanonicalSurfaceForms
           === "function"
@@ -191,10 +195,16 @@ export function createMorphologyEngineApi(targetObject = globalThis, installatio
         value: diagnostics
       });
       const outputVerb = String(output.verb || verb || "");
-      const surfaceForms = output.error ? [] : getMorphologyApplicationSurfaceForms(output, outputVerb);
+      // This private attachment receives the computation itself, not caller output.
+      // Public readers still require the issued frame produced below.
+      const surfaceForms = output.error ? [] : [...new Set([
+        outputVerb,
+        ...(Array.isArray(output.alternateForms) ? output.alternateForms : [])
+          .map(form => typeof form === "string" ? form : form?.verb || "")
+      ].map(form => String(form || "").trim()).filter(Boolean))];
       const surface = output.error ? "" : surfaceForms[0] || "";
       const ok = Boolean(surface) && output.error !== true;
-      const soundSpellingFrames = getMorphologyApplicationSoundSpellingFrames(output);
+      const soundSpellingFrames = output.error ? [] : [...(output.soundSpellingFrames || [])];
       const grammarFrame = typeof targetObject.buildGrammarFrame === "function" ? targetObject.buildGrammarFrame({
         authorityFrame: typeof targetObject.buildGrammarAuthorityFrame === "function" ? targetObject.buildGrammarAuthorityFrame({
           sourceEvidence: {
@@ -283,6 +293,9 @@ export function createMorphologyEngineApi(targetObject = globalThis, installatio
           blockers: ok ? [] : diagnostics
         }) : null
       }, grammarFrameOwnerCapability) : null;
+      if (grammarFrame && targetObject.isIssuedGrammarFrame?.(grammarFrame)) {
+        issuedMorphologyStemForms.set(grammarFrame, Object.freeze([...surfaceForms]));
+      }
       const resultContract = typeof targetObject.buildGrammarResultContract === "function" ? targetObject.buildGrammarResultContract({
         result: output,
         grammarFrame

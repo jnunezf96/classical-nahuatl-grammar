@@ -9,7 +9,6 @@ const spec = {
   "selections": [
     "claim-p4108",
     "claim-p4110",
-    "claim-p4111",
     "claim-p4112",
     "claim-p4113"
   ],
@@ -21,10 +20,6 @@ const spec = {
     "claim-p4110::p4110-a-c-is-translated-someone-or-anyone-and-the": {
       "assertionId": "classical-adjectival-ac-interrogative-modification-readings:p4110-a-c-is-translated-someone-or-anyone-and-the",
       "canonicalPath": "cases.interrogativeHead.headClauseType"
-    },
-    "claim-p4111::p4111-the-sequence-a-c-in-can-also-be-translated": {
-      "assertionId": "classical-adjectival-ac-interrogative-modification-readings:p4111-the-sequence-a-c-in-can-also-be-translated",
-      "canonicalPath": "contract.documentarySpellingAuthority"
     },
     "claim-p4112::p4112-when-za-zo-modifies-a-c-the-sequence-za": {
       "assertionId": "classical-adjectival-ac-interrogative-modification-readings:p4112-when-za-zo-modifies-a-c-the-sequence-za",
@@ -40,16 +35,24 @@ const spec = {
   "executionArgsBySelection": {
     "claim-p4108": [],
     "claim-p4110": [],
-    "claim-p4111": [],
     "claim-p4112": [],
     "claim-p4113": []
   },
   "expectedCanonicalStatusBySelection": {
     "claim-p4108": "authorized",
     "claim-p4110": "authorized",
-    "claim-p4111": "authorized",
     "claim-p4112": "authorized",
     "claim-p4113": "authorized"
+  },
+  "nonExecutableObservations": {
+    "claim-p4111::p4111-the-sequence-a-c-in-can-also-be-translated": {
+      "assertionId": "classical-adjectival-ac-interrogative-modification-readings:p4111-the-sequence-a-c-in-can-also-be-translated",
+      "disposition": "documentary-claim-runtime-observation-unverified",
+      "reason": "Canvas line 17168 gives the reading whoever; a documentary-spelling authority flag does not observe translation.",
+      "retiredCanonicalPath": "contract.documentarySpellingAuthority",
+      "executionCredit": false,
+      "grammarAuthority": false
+    }
   }
 };
 export default Object.freeze(spec);

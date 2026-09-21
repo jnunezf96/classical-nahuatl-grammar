@@ -8,8 +8,8 @@ const ROOT = path.resolve(__dirname, "..", "..");
 
 const CASES = Object.freeze([
     ["ACI-P050-L022-A33747C200", "select", ["assimilation", { leftConsonant: "k", rightConsonant: "k", grammaticalConstruction: true }], "cn-l2-211-regressive-dissimilation-kk-hk", "hc"],
-    ["ACI-P050-L025-12876984C1", "select", ["shift", { sourceConsonant: "kw", position: "exposed", grammaticalConstruction: true }], "cn-l2-213-kw-exposed-k", "c"],
-    ["ACI-P050-L027-6ECB43F0B4", "select", ["assimilation", { leftConsonant: "k", rightConsonant: "k", grammaticalConstruction: true }], "cn-l2-211-regressive-dissimilation-kk-hk", "hc"],
+    ["FIXTURE-optional-delabialization-single-step", "select", ["shift", { sourceConsonant: "kw", position: "exposed", grammaticalConstruction: true }], "cn-l2-213-kw-exposed-k", "c"],
+    ["FIXTURE-optional-dissimilation-single-step", "select", ["assimilation", { leftConsonant: "k", rightConsonant: "k", grammaticalConstruction: true }], "cn-l2-211-regressive-dissimilation-kk-hk", "hc"],
     ["ACI-P050-L031-20EA88210A", "select", ["loss", { leftConsonant: "tz", rightConsonant: "w", grammaticalConstruction: true }], "cn-l2-212-tz-w-tz", "tz"],
     ["ACI-P050-L033-8ED17977BE", "select", ["loss", { leftConsonant: "ch", rightConsonant: "w", grammaticalConstruction: true }], "cn-l2-212-ch-w-ch", "ch"],
     ["ACI-P050-L035-9EFC19B9DD", "select", ["loss", { leftConsonant: "glottal", rightConsonant: "y", grammaticalConstruction: true }], "cn-l2-212-glottal-y-h", "h"],
@@ -18,6 +18,15 @@ const CASES = Object.freeze([
     ["ACI-P052-L014-75267806EC", "select", ["shift", { sourceConsonant: "t", position: "exposed", grammaticalConstruction: true }], "cn-l2-213-t-final-h", "h"],
     ["ACI-P052-L017-66E82EE5B5", "select", ["shift", { sourceConsonant: "glottal", position: "nonfinal", grammaticalConstruction: true }], "cn-l2-213-rare-glottal-nonfinal-t", "t"],
     ["ACI-P052-L020-B62AAD1010", "checkbox", ["elision", { sourceMorpheme: "oc", targetMorpheme: "c", vowelLength: "short", stressGroupCombination: true }], "cn-l2-214-short-vowel-stress-group-elision", "c"],
+]);
+
+// These useful single-step checks cannot award whole-sequence or whole-word
+// variant credit. Historical ledger pointers do not override this disposition.
+const UNVERIFIED_SEQUENCE_CLAIMS = Object.freeze([
+    Object.freeze({ atomId: "ACI-P050-L025-12876984C1", executionCredit: false, grammarAuthority: false,
+        missingEvidence: "combined-optional-selection-and-prerequisite-sequence" }),
+    Object.freeze({ atomId: "ACI-P050-L027-6ECB43F0B4", executionCredit: false, grammarAuthority: false,
+        missingEvidence: "three-full-word-variants-and-their-selection" }),
 ]);
 
 function observe(record) {
@@ -75,7 +84,10 @@ function run(ctx) {
             controlKind: controls[expectedControlKind] ? expectedControlKind : "",
             expectedControlKind,
         };
-        s.eq(`${atomId}: normal application offers and performs the exact Canvas choice`, observe(record), true);
+        const scope = atomId.startsWith("FIXTURE-")
+            ? "single-step application result and static control wiring only"
+            : "normal application offers and performs the exact Canvas choice";
+        s.eq(`${atomId}: ${scope}`, observe(record), true);
         const broken = { ...record, surface: "broken", controlKind: "" };
         s.eq(`${atomId}: breaking either the Result or its genuine control fails`, observe(broken), false);
     }
@@ -83,4 +95,4 @@ function run(ctx) {
     return s;
 }
 
-module.exports = { run };
+module.exports = { run, CASES, UNVERIFIED_SEQUENCE_CLAIMS };

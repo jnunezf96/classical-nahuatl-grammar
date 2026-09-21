@@ -1,4 +1,4 @@
-import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260904-ehua-causative-alias-433";
+import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260920-preterit-provenance-548";
 
 const bootstrapPromise = bootstrapBrowserApp();
 

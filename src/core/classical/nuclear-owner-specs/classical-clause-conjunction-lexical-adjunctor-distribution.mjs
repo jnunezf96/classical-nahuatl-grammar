@@ -22,7 +22,7 @@ const spec = {
     },
     "claim-p4900::p4900-it-can-however-also-appear-only-in-front-of": {
       "assertionId": "classical-clause-conjunction-lexical-adjunctor-distribution:p4900-it-can-however-also-appear-only-in-front-of",
-      "canonicalPath": "analysis.rawStoredAuthorityBlocked"
+      "canonicalPath": "result.liveResult.relationFrame.adjunctorDistribution"
     }
   },
   "executionFunctionName": "buildClassicalClauseConjunctionValidationFrame",
@@ -35,7 +35,7 @@ const spec = {
       "lexical-adjunctor-distribution"
     ],
     "claim-p4900": [
-      "lexical-adjunctor-distribution"
+      "lexical-adjunctor-left-only"
     ]
   },
   "expectedCanonicalStatusBySelection": {

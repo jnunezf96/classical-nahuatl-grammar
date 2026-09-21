@@ -172,7 +172,7 @@ export const ANDREWS_SECTION_DIGEST_ROUTE_REFS_BY_LESSON = Object.freeze({
         "Andrews Lesson 16.4",
         "Andrews Lesson 16.5",
         "Andrews Lesson 16.6",
-        "Andrews Lesson 16.1",
+        "Andrews Lesson 16.7",
         "Andrews Lesson 16.8",
         "Andrews Lesson 16.9"
     ],
@@ -210,7 +210,7 @@ export const ANDREWS_SECTION_DIGEST_ROUTE_REFS_BY_LESSON = Object.freeze({
         "Andrews Lesson 20.4",
         "Andrews Lesson 20.5",
         "Andrews Lesson 20.6",
-        "Andrews Lesson 20.1",
+        "Andrews Lesson 20.7",
         "Andrews Lesson 20.8"
     ],
     "21": [
@@ -312,7 +312,7 @@ export const ANDREWS_SECTION_DIGEST_ROUTE_REFS_BY_LESSON = Object.freeze({
         "Andrews Lesson 29.4",
         "Andrews Lesson 29.5",
         "Andrews Lesson 29.6",
-        "Andrews Lesson 29.1"
+        "Andrews Lesson 29.7"
     ],
     "30": [
         "Andrews Lesson 30.2",
@@ -355,7 +355,7 @@ export const ANDREWS_SECTION_DIGEST_ROUTE_REFS_BY_LESSON = Object.freeze({
         "Andrews Lesson 32.4",
         "Andrews Lesson 32.5",
         "Andrews Lesson 32.6",
-        "Andrews Lesson 32.1",
+        "Andrews Lesson 32.7",
         "Andrews Lesson 32.8"
     ],
     "33": [
@@ -394,7 +394,7 @@ export const ANDREWS_SECTION_DIGEST_ROUTE_REFS_BY_LESSON = Object.freeze({
         "Andrews Lesson 35.4",
         "Andrews Lesson 35.5",
         "Andrews Lesson 35.6",
-        "Andrews Lesson 35.1",
+        "Andrews Lesson 35.7",
         "Andrews Lesson 35.8",
         "Andrews Lesson 35.9",
         "Andrews Lesson 35.10",
@@ -446,7 +446,7 @@ export const ANDREWS_SECTION_DIGEST_ROUTE_REFS_BY_LESSON = Object.freeze({
         "Andrews Lesson 40.4",
         "Andrews Lesson 40.5",
         "Andrews Lesson 40.6",
-        "Andrews Lesson 40.1",
+        "Andrews Lesson 40.7",
         "Andrews Lesson 40.8",
         "Andrews Lesson 40.9",
         "Andrews Lesson 40.10",
@@ -13371,7 +13371,7 @@ const ANDREWS_TRAJECTORY_GROUPS = Object.freeze([
         range: [51, 58],
         label: "Lecciones 51-58",
         directive: "Capa de cláusula, denominal, nombres y miscelánea: Andrews dirige límites de complemento, conjunción, comparación, denominales, nombres y análisis.",
-        validationRefs: ["src/tests/registry.test.js", "src/tests/classical_lessons51_52_closure.test.js", "src/tests/classical_lessons51_52_closure.test.js"],
+        validationRefs: ["src/tests/registry.test.js", "src/tests/classical_lessons51_52_closure.test.js"],
     },
 ]);
 

@@ -30,6 +30,10 @@ const PRONOMINAL_NNC_PARADIGM_COORDINATE_KIND =
   "classical-nahuatl-pronominal-nnc-paradigm-coordinate-frame";
 const NNC_OPERATION_SELECTION_FRAME_KIND =
   "classical-nahuatl-nnc-operation-selection-frame";
+const NNC_RESTRICTED_USE_CITATION_PROJECTION_KIND =
+  "classical-nahuatl-nnc-restricted-use-citation-projection";
+const PRONOMINAL_NNC_RESTRICTED_USE_CITATION_PROJECTION_KIND =
+  "classical-nahuatl-pronominal-nnc-restricted-use-citation-projection";
 
 const ORDINARY_NNC_STATES = Object.freeze(["absolutive", "possessive"]);
 const ORDINARY_NNC_SUBJECTS = Object.freeze([
@@ -1079,6 +1083,10 @@ export function createClassicalNahuatlNncApplicationModule(
   const issuedPronominalParadigmPlanReceipts = new WeakMap();
   const issuedPronominalCoordinateReceipts = new WeakMap();
   const continuationSourceProjections = new WeakMap();
+  const restrictedUseCitationProjections = new WeakMap();
+  const issuedRestrictedUseCitationProjectionReceipts = new WeakMap();
+  const pronominalRestrictedUseCitationProjections = new WeakMap();
+  const issuedPronominalRestrictedUseCitationProjectionReceipts = new WeakMap();
 
   function normalizeNounClass(value = "") {
     return typeof targetObject.normalizeOrdinaryNncNounClass === "function"
@@ -2726,6 +2734,14 @@ export function createClassicalNahuatlNncApplicationModule(
     issuedResultReceipts.set(frame, Object.freeze({
       sourceFrame,
       operationFrame,
+      // Keep the canonical pre-number use-stem analysis privately. A final
+      // predicate may already have possessive truncation or plural quantity
+      // changes; its written/formula stem cannot reconstruct this analysis.
+      nounstemUseFrame: authorized
+        ? deepFreeze(classGovernedFrame.sourceFrame) : null,
+      nounstemDerivedFrame: authorized
+        ? deepFreeze(classGovernedFrame.derivedStemFrame) : null,
+      stemOperationRecord: authorized ? deepFreeze(stemOperationRecord) : null,
       contextualRealizations: frame.contextualRealizations,
       typedSlotFrame: authorized ? slotFrame : null,
       sentenceFrame: authorized ? sentenceFrame : null,
@@ -2920,6 +2936,7 @@ export function createClassicalNahuatlNncApplicationModule(
       polarity: ownDataValue(request, "polarity", "positive"),
     };
     const operationFrames = [];
+    let firstCandidateBlockReason = "";
     if (!blockReason) {
       const appendCoordinateOperations = ({
         state,
@@ -2968,6 +2985,10 @@ export function createClassicalNahuatlNncApplicationModule(
             );
             if (isClassicalNahuatlOrdinaryNncResult(scalarProbe)) {
               operationFrames.push(operationFrame);
+            } else if (!firstCandidateBlockReason) {
+              firstCandidateBlockReason = operationFrame?.blockReason
+                || scalarProbe?.blockReason
+                || "ordinary-nnc-paradigm-scalar-not-authorized";
             }
           });
         });
@@ -2989,13 +3010,9 @@ export function createClassicalNahuatlNncApplicationModule(
           });
         });
       });
-      const blockedOperation = operationFrames.find(
-        (frame) =>
-          !isClassicalNahuatlOrdinaryNncOperationFrame(frame),
-      );
-      if (blockedOperation) {
-        blockReason = blockedOperation.blockReason
-          || "ordinary-nnc-paradigm-operation-not-authorized";
+      if (!operationFrames.length) {
+        blockReason = firstCandidateBlockReason
+          || "ordinary-nnc-paradigm-no-authorized-coordinates";
       }
     }
     const authorized = !blockReason && operationFrames.length > 0;
@@ -4006,6 +4023,10 @@ export function createClassicalNahuatlNncApplicationModule(
     issuedPronominalResultReceipts.set(frame, Object.freeze({
       sourceFrame,
       operationFrame,
+      coreSourceFrame: deepFreeze(coreFrame?.sourceFrame || null),
+      coreNumberFrame: deepFreeze(coreFrame?.numberFrame || null),
+      coreContextSelectionRecord:
+        deepFreeze(coreFrame?.contextSelectionRecord || null),
       typedSlotFrame: frame.typedSlotFrame,
       sentenceFrame: frame.sentenceFrame,
       cooperationFrame: frame.cooperationFrame,
@@ -4046,6 +4067,197 @@ export function createClassicalNahuatlNncApplicationModule(
         === "evaluateClassicalNahuatlPronominalNnc"
       && frame.callerSuppliedAuthorityAccepted === false
       && frame.lessonMetadataAuthority === false
+      && frame.formulaStringAuthority === false
+      && frame.surfaceStringAuthority === false
+      && Object.isFrozen(frame)
+    );
+  }
+
+  function hasCanonicalPronominalCitationAnalysis(resultFrame, receipt) {
+    const source = receipt?.coreSourceFrame;
+    const number = receipt?.coreNumberFrame;
+    const context = receipt?.coreContextSelectionRecord;
+    const slots = receipt?.typedSlotFrame;
+    return Boolean(
+      source?.authorizationStatus === "authorized"
+      && number?.authorizationStatus === "authorized"
+      && context?.authorizationStatus === "authorized"
+      && source.contextSelectionRecord === context
+      && source.state === "absolutive"
+      && source.enteredStem === resultFrame.sourceFrame.stem
+      && source.subject === resultFrame.operationFrame.subject
+      && number.subject === source.subject
+      && context.subject === source.subject
+      && slots === resultFrame.typedSlotFrame
+      && slots?.authorizationStatus === "authorized"
+      && slots.nncFamily === "pronominal"
+      && slots.slots?.state?.arity === "vacant"
+      && Array.isArray(slots.slots.state.slots)
+      && slots.slots.state.slots.length === 0
+      && slots.slots.subject.subject === source.subject
+      && slots.nounClass === source.nounClass
+      && slots.nounClass === number.nounClass
+      && slots.slots.predicate.stem === number.predicateStem
+      && slots.slots.number.num1 === number.num1
+      && slots.slots.number.num2 === number.num2
+      && slots.internalPluralMorph === number.internalPluralMorph
+      && number.internalPluralBelongsTo === "predicate-stem-derivation"
+      && number.internalPluralIsSubjectNumberConnector === false
+      && Object.isFrozen(source)
+      && Object.isFrozen(number)
+      && Object.isFrozen(context)
+    );
+  }
+
+  function getClassicalNahuatlPronominalNncRestrictedUseCitationProjection(
+    resultFrame = null,
+  ) {
+    const blocked = (reason) => buildBlockedFrame(
+      PRONOMINAL_NNC_RESTRICTED_USE_CITATION_PROJECTION_KIND,
+      reason,
+      { stem: "", nounClass: "", projectionRole: "read-only-source-constituents" },
+    );
+    if (!isClassicalNahuatlPronominalNncResult(resultFrame)) {
+      return blocked("issued-authorized-pronominal-nnc-result-required");
+    }
+    const existing = pronominalRestrictedUseCitationProjections.get(resultFrame);
+    if (existing) return existing;
+    const receipt = issuedPronominalResultReceipts.get(resultFrame);
+    if (!hasCanonicalPronominalCitationAnalysis(resultFrame, receipt)) {
+      return blocked("pronominal-nnc-canonical-citation-analysis-required");
+    }
+    const sourceAnalysisFrame = receipt.coreSourceFrame;
+    const numberAnalysisFrame = receipt.coreNumberFrame;
+    const contextSelectionRecord = receipt.coreContextSelectionRecord;
+    const internalPluralMorph = numberAnalysisFrame.internalPluralMorph;
+    const internalPlural = internalPluralMorph === "n-inside-stem";
+    if (!internalPlural && internalPluralMorph !== "none") {
+      return blocked("pronominal-nnc-citation-internal-plural-analysis-unsupported");
+    }
+    let stem = "";
+    let stemProjectionAction = "";
+    if (numberAnalysisFrame.predicateStemAction === "identity") {
+      stem = numberAnalysisFrame.predicateStem;
+      stemProjectionAction = internalPlural
+        ? "retain-internal-plural-stem-derivation"
+        : "retain-canonical-predicate-stem";
+    } else if (
+      numberAnalysisFrame.predicateStemAction
+        === "realize-long-quantitive-matrix-before-internal-plural-n"
+      && internalPlural
+    ) {
+      stem = numberAnalysisFrame.predicateStem;
+      stemProjectionAction = "retain-internal-plural-stem-derivation";
+    } else if (
+      numberAnalysisFrame.predicateStemAction
+        === "realize-final-in-as-i-before-m-eh"
+      && !internalPlural
+      && sourceAnalysisFrame.structuralPluralType
+        === "fused-in-to-i-plus-m-eh"
+    ) {
+      // The plural connector conditions -in as -i; it is not the distinct
+      // derivational plural n of §16.1. Cite the retained compound constituent.
+      stem = sourceAnalysisFrame.sourceStem;
+      stemProjectionAction = "restore-final-in-before-plural-number-dyad";
+    } else {
+      return blocked("pronominal-nnc-citation-predicate-action-unsupported");
+    }
+    if (!normalizeStem(stem) || !numberAnalysisFrame.nounClass) {
+      return blocked("pronominal-nnc-restricted-use-citation-stem-required");
+    }
+    // This projection is not a newly singular/common NNC. The plural n is
+    // inside the derived stem (§§14.3, 16.1), and a later finite shell must
+    // still obey that stem's plural subject-number requirement.
+    const citationNumberConstraint = internalPlural ? "plural-only" : "class-governed";
+    const projection = deepFreeze({
+      kind: PRONOMINAL_NNC_RESTRICTED_USE_CITATION_PROJECTION_KIND,
+      version: 1,
+      authorizationStatus: "authorized",
+      blockReason: "",
+      canonicalResultFrame: resultFrame,
+      canonicalSourceFrame: resultFrame.sourceFrame,
+      canonicalOperationFrame: resultFrame.operationFrame,
+      typedSlotFrame: resultFrame.typedSlotFrame,
+      sourceAnalysisFrame,
+      numberAnalysisFrame,
+      contextSelectionRecord,
+      stem,
+      nounClass: numberAnalysisFrame.nounClass,
+      useKind: "restricted-use",
+      useShape: "base",
+      sourcePredicateStem: numberAnalysisFrame.predicateStem,
+      internalPluralMorph,
+      citationNumberConstraint,
+      stemProjectionAction,
+      sourceAgreementChanged: false,
+      sourceReferenceChanged: false,
+      sourceDerivationChanged: false,
+      projectionRole: "read-only-source-constituents",
+      continuationMode: "licensed-operation-only",
+      directSourceReentryAuthorized: false,
+      grammarAuthority: false,
+      callerSuppliedAuthorityAccepted: false,
+      formulaStringAuthority: false,
+      surfaceStringAuthority: false,
+    });
+    issuedPronominalRestrictedUseCitationProjectionReceipts.set(
+      projection,
+      Object.freeze({
+        resultFrame,
+        sourceAnalysisFrame,
+        numberAnalysisFrame,
+        contextSelectionRecord,
+        stem,
+        nounClass: numberAnalysisFrame.nounClass,
+        internalPluralMorph,
+        citationNumberConstraint,
+        stemProjectionAction,
+      }),
+    );
+    pronominalRestrictedUseCitationProjections.set(resultFrame, projection);
+    return projection;
+  }
+
+  function isClassicalNahuatlPronominalNncRestrictedUseCitationProjection(
+    frame = null,
+  ) {
+    const receipt = frame && typeof frame === "object"
+      ? issuedPronominalRestrictedUseCitationProjectionReceipts.get(frame) : null;
+    if (!receipt || !isClassicalNahuatlPronominalNncResult(receipt.resultFrame)) {
+      return false;
+    }
+    const resultReceipt = issuedPronominalResultReceipts.get(receipt.resultFrame);
+    return Boolean(
+      hasCanonicalPronominalCitationAnalysis(receipt.resultFrame, resultReceipt)
+      && frame.kind === PRONOMINAL_NNC_RESTRICTED_USE_CITATION_PROJECTION_KIND
+      && frame.version === 1
+      && frame.authorizationStatus === "authorized"
+      && frame.canonicalResultFrame === receipt.resultFrame
+      && frame.canonicalSourceFrame === resultReceipt.sourceFrame
+      && frame.canonicalOperationFrame === resultReceipt.operationFrame
+      && frame.typedSlotFrame === resultReceipt.typedSlotFrame
+      && frame.sourceAnalysisFrame === receipt.sourceAnalysisFrame
+      && frame.sourceAnalysisFrame === resultReceipt.coreSourceFrame
+      && frame.numberAnalysisFrame === receipt.numberAnalysisFrame
+      && frame.numberAnalysisFrame === resultReceipt.coreNumberFrame
+      && frame.contextSelectionRecord === receipt.contextSelectionRecord
+      && frame.contextSelectionRecord === resultReceipt.coreContextSelectionRecord
+      && frame.stem === receipt.stem
+      && frame.nounClass === receipt.nounClass
+      && frame.sourcePredicateStem === resultReceipt.coreNumberFrame.predicateStem
+      && frame.internalPluralMorph === receipt.internalPluralMorph
+      && frame.citationNumberConstraint === receipt.citationNumberConstraint
+      && frame.stemProjectionAction === receipt.stemProjectionAction
+      && frame.useKind === "restricted-use"
+      && frame.useShape === "base"
+      && frame.sourceAgreementChanged === false
+      && frame.sourceReferenceChanged === false
+      && frame.sourceDerivationChanged === false
+      && frame.projectionRole === "read-only-source-constituents"
+      && frame.continuationMode === "licensed-operation-only"
+      && frame.directSourceReentryAuthorized === false
+      && frame.grammarAuthority === false
+      && frame.callerSuppliedAuthorityAccepted === false
       && frame.formulaStringAuthority === false
       && frame.surfaceStringAuthority === false
       && Object.isFrozen(frame)
@@ -4138,6 +4350,195 @@ export function createClassicalNahuatlNncApplicationModule(
     return projection;
   }
 
+  function getClassicalNahuatlNncRestrictedUseCitationProjection(
+    resultFrame = null,
+  ) {
+    const blocked = (reason) => buildBlockedFrame(
+      NNC_RESTRICTED_USE_CITATION_PROJECTION_KIND,
+      reason,
+      { stem: "", nounClass: "", projectionRole: "read-only-source-constituents" },
+    );
+    if (!isClassicalNahuatlOrdinaryNncResult(resultFrame)) {
+      return blocked("issued-authorized-ordinary-nnc-result-required");
+    }
+    const existing = restrictedUseCitationProjections.get(resultFrame);
+    if (existing) return existing;
+    const receipt = issuedResultReceipts.get(resultFrame);
+    const sourceFrame = receipt.sourceFrame;
+    const operationFrame = receipt.operationFrame;
+    const sourceUseFrame = receipt.nounstemUseFrame;
+    const sourceDerivedFrame = receipt.nounstemDerivedFrame;
+    const sourceStemOperationRecord = receipt.stemOperationRecord;
+    const nounClass = resultFrame.typedSlotFrame.nounClass;
+    if (
+      sourceUseFrame?.authorizationStatus !== "authorized"
+      || sourceDerivedFrame?.authorizationStatus !== "authorized"
+      || !normalizeStem(sourceUseFrame.selectedRestrictedUseStem)
+      || sourceDerivedFrame.stemFormation !== operationFrame.stemFormation
+      || typeof targetObject.isClassicalNahuatlStemOperationRecord !== "function"
+      || !targetObject.isClassicalNahuatlStemOperationRecord(sourceStemOperationRecord)
+    ) {
+      return blocked("ordinary-nnc-canonical-use-stem-analysis-required");
+    }
+
+    let stem = "";
+    let citationDerivedStemFrame = null;
+    let citationStemOperationRecord = sourceStemOperationRecord;
+    if (sourceStemOperationRecord.operation === "regular") {
+      if (typeof targetObject.buildClassicalNahuatlDerivedStemFrame !== "function") {
+        return blocked("ordinary-nnc-citation-derived-stem-capability-required");
+      }
+      // This is a use-stem projection, not a new singular/common NNC. Keep
+      // the original relation and reference while deriving the restricted
+      // counterpart, before any clause-number boundary changes its shape.
+      citationDerivedStemFrame = targetObject.buildClassicalNahuatlDerivedStemFrame(
+        sourceUseFrame.selectedRestrictedUseStem,
+        {
+          stemFormation: operationFrame.stemFormation,
+          subject: operationFrame.subject,
+          animacy: operationFrame.referentialAnimacy,
+        },
+      );
+      if (
+        citationDerivedStemFrame?.authorizationStatus !== "authorized"
+        || nounClass !== sourceUseFrame.nounClass
+      ) {
+        return blocked(citationDerivedStemFrame?.blockReason
+          || "ordinary-nnc-citation-derived-stem-analysis-required");
+      }
+      stem = normalizeStem(citationDerivedStemFrame.derivedStem);
+    } else {
+      if (
+        typeof targetObject.getClassicalNahuatlPredicateOptionContract !== "function"
+        || typeof targetObject.buildClassicalNahuatlStemOperationRecord !== "function"
+      ) {
+        return blocked("ordinary-nnc-citation-predicate-operation-capability-required");
+      }
+      const predicateOptionId = operationFrame.sourceClassPredicateOptionId
+        || operationFrame.predicateFormation;
+      const citationContext = {
+        selectedState: "absolutive",
+        subject: operationFrame.subject,
+        possessor: operationFrame.possessor,
+        nounClass: sourceStemOperationRecord.sourceNounClass,
+        useShape: sourceStemOperationRecord.sourceUseShape,
+        subclass: sourceStemOperationRecord.sourceSubclass,
+        stemFormation: sourceStemOperationRecord.sourceStemFormation,
+        secondaryPossessorCarrier: sourceStemOperationRecord.secondaryPossessorCarrier,
+      };
+      // The canonical operation must have a restricted-use counterpart.
+      // In particular, a possessive-only secondary or suppletive predicate
+      // must not be silently replaced by its original lexical Source.
+      const contract = targetObject.getClassicalNahuatlPredicateOptionContract(
+        sourceFrame.stem, citationContext,
+      );
+      const option = contract?.options?.find((candidate) => (
+        candidate.optionId === predicateOptionId
+        && candidate.operation === sourceStemOperationRecord.operation
+      ));
+      if (contract?.authorizationStatus !== "authorized" || !option) {
+        return blocked("ordinary-nnc-selected-predicate-has-no-restricted-use-counterpart");
+      }
+      citationStemOperationRecord = targetObject.buildClassicalNahuatlStemOperationRecord(
+        sourceFrame.stem,
+        {
+          ...citationContext,
+          operation: sourceStemOperationRecord.operation,
+          predicateOptionId,
+          selectionAuthority: sourceStemOperationRecord.selectionAuthority,
+          suppletiveConnector: sourceStemOperationRecord.suppletiveConnector,
+        },
+      );
+      if (
+        !targetObject.isClassicalNahuatlStemOperationRecord(citationStemOperationRecord)
+        || citationStemOperationRecord.targetNounClass !== nounClass
+        || citationStemOperationRecord.operation !== sourceStemOperationRecord.operation
+        || citationStemOperationRecord.sourceStemFormation !== operationFrame.stemFormation
+      ) {
+        return blocked(citationStemOperationRecord?.blockReason
+          || "ordinary-nnc-citation-predicate-counterpart-analysis-required");
+      }
+      stem = normalizeStem(citationStemOperationRecord.targetStem);
+    }
+    if (!stem || !nounClass) {
+      return blocked("ordinary-nnc-restricted-use-citation-stem-required");
+    }
+    const projection = deepFreeze({
+      kind: NNC_RESTRICTED_USE_CITATION_PROJECTION_KIND,
+      version: 1,
+      authorizationStatus: "authorized",
+      blockReason: "",
+      canonicalResultFrame: resultFrame,
+      canonicalSourceFrame: sourceFrame,
+      canonicalOperationFrame: operationFrame,
+      typedSlotFrame: resultFrame.typedSlotFrame,
+      stem,
+      nounClass,
+      useKind: "restricted-use",
+      useShape: "base",
+      sourcePredicateStem: resultFrame.typedSlotFrame.slots.predicate.stem,
+      sourceUseKind: sourceUseFrame.selectedUseKind,
+      sourceUseFrame,
+      sourceDerivedFrame,
+      sourceStemOperationRecord,
+      citationDerivedStemFrame,
+      citationStemOperationRecord,
+      sourceStemFormation: operationFrame.stemFormation,
+      sourcePredicateFormation: operationFrame.predicateFormation,
+      sourceAgreementChanged: false,
+      sourceReferenceChanged: false,
+      sourceDerivationChanged: false,
+      projectionRole: "read-only-source-constituents",
+      continuationMode: "licensed-operation-only",
+      directSourceReentryAuthorized: false,
+      grammarAuthority: false,
+      callerSuppliedAuthorityAccepted: false,
+      formulaStringAuthority: false,
+      surfaceStringAuthority: false,
+    });
+    issuedRestrictedUseCitationProjectionReceipts.set(projection, Object.freeze({
+      resultFrame, stem, nounClass,
+      sourceUseFrame, sourceDerivedFrame, sourceStemOperationRecord,
+      citationDerivedStemFrame, citationStemOperationRecord,
+    }));
+    restrictedUseCitationProjections.set(resultFrame, projection);
+    return projection;
+  }
+
+  function isClassicalNahuatlNncRestrictedUseCitationProjection(frame = null) {
+    const receipt = frame && typeof frame === "object"
+      ? issuedRestrictedUseCitationProjectionReceipts.get(frame) : null;
+    return Boolean(
+      receipt
+      && frame.kind === NNC_RESTRICTED_USE_CITATION_PROJECTION_KIND
+      && frame.version === 1
+      && frame.authorizationStatus === "authorized"
+      && frame.canonicalResultFrame === receipt.resultFrame
+      && isClassicalNahuatlOrdinaryNncResult(receipt.resultFrame)
+      && frame.canonicalSourceFrame === receipt.resultFrame.sourceFrame
+      && frame.canonicalOperationFrame === receipt.resultFrame.operationFrame
+      && frame.typedSlotFrame === receipt.resultFrame.typedSlotFrame
+      && frame.stem === receipt.stem
+      && frame.nounClass === receipt.nounClass
+      && frame.sourceUseFrame === receipt.sourceUseFrame
+      && frame.sourceDerivedFrame === receipt.sourceDerivedFrame
+      && frame.sourceStemOperationRecord === receipt.sourceStemOperationRecord
+      && frame.citationDerivedStemFrame === receipt.citationDerivedStemFrame
+      && frame.citationStemOperationRecord === receipt.citationStemOperationRecord
+      && frame.useKind === "restricted-use"
+      && frame.useShape === "base"
+      && frame.sourceAgreementChanged === false
+      && frame.sourceReferenceChanged === false
+      && frame.sourceDerivationChanged === false
+      && frame.directSourceReentryAuthorized === false
+      && frame.grammarAuthority === false
+      && frame.callerSuppliedAuthorityAccepted === false
+      && frame.formulaStringAuthority === false
+      && frame.surfaceStringAuthority === false
+      && Object.isFrozen(frame)
+    );
+  }
+
   function prepareClassicalNahuatlPronominalNncParadigmPlan(
     sourceFrame = null,
     request = {},
@@ -4211,6 +4612,7 @@ export function createClassicalNahuatlNncApplicationModule(
     const sourceReceipt = issuedPronominalSourceReceipts.get(sourceFrame);
     const seenCoordinateIds = new Set();
     const coordinates = [];
+    let firstScalarBlockReason = "";
     if (!blockReason) {
       sourceReceipt.coreCoordinates.forEach((coordinate) => {
         if (!requestedSubjects.includes(coordinate.subject)) return;
@@ -4239,7 +4641,13 @@ export function createClassicalNahuatlNncApplicationModule(
           sourceFrame,
           operationFrame,
         );
-        if (!isClassicalNahuatlPronominalNncResult(scalarProbe)) return;
+        if (!isClassicalNahuatlPronominalNncResult(scalarProbe)) {
+          if (!firstScalarBlockReason) {
+            firstScalarBlockReason = scalarProbe?.blockReason
+              || "pronominal-nnc-paradigm-scalar-not-authorized";
+          }
+          return;
+        }
         const coordinateId = [
           operationFrame.subject,
           operationFrame.numberForm,
@@ -4267,6 +4675,10 @@ export function createClassicalNahuatlNncApplicationModule(
           operationFrame,
         }));
       });
+    }
+    if (!blockReason && !coordinates.length) {
+      blockReason = firstScalarBlockReason
+        || "pronominal-nnc-paradigm-no-authorized-coordinates";
     }
     const authorized = !blockReason && coordinates.length > 0;
     const frame = deepFreeze({
@@ -4449,6 +4861,10 @@ export function createClassicalNahuatlNncApplicationModule(
     evaluateClassicalNahuatlPronominalNnc,
     isClassicalNahuatlPronominalNncResult,
     getClassicalNahuatlNncContinuationSourceConstituents,
+    getClassicalNahuatlNncRestrictedUseCitationProjection,
+    isClassicalNahuatlNncRestrictedUseCitationProjection,
+    getClassicalNahuatlPronominalNncRestrictedUseCitationProjection,
+    isClassicalNahuatlPronominalNncRestrictedUseCitationProjection,
     prepareClassicalNahuatlPronominalNncParadigmPlan,
     isClassicalNahuatlPronominalNncParadigmPlan,
     projectClassicalNahuatlPronominalNncParadigmCoordinates,

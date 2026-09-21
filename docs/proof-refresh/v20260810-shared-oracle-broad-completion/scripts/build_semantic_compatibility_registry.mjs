@@ -13,6 +13,11 @@ const standardRegistry = JSON.parse(fs.readFileSync(
   "utf8",
 ));
 const sharedOraclePath = "validation/oracles/_lesson2-owner-oracle.mjs";
+// Scope the compatibility argument to the reviewed implementation, not merely
+// a file at the expected path or a descriptive fingerprint.
+const reviewedOracle = fs.readFileSync(path.join(workspace, "validation-inputs", sharedOraclePath));
+const candidateOracle = fs.readFileSync(path.join(validationRoot, sharedOraclePath));
+const oracleImplementationMatchesReviewedSource = candidateOracle.equals(reviewedOracle);
 const compatibilityOwnerIds = standardRegistry.owners
   .filter((owner) => owner.status === "blocked")
   .map((owner) => owner.ownerId)
@@ -51,7 +56,8 @@ for (const ownerId of compatibilityOwnerIds) {
     onlySharedOracleCurrencyErrors: JSON.stringify(actualErrors) === JSON.stringify(allowedErrors),
     noOtherMethodErrors: JSON.stringify(actualErrors) === JSON.stringify(allowedErrors),
     allStoredCasesPassed,
-    monotonicOracleExtensionCannotInvalidatePriorPass: allStoredCasesPassed,
+    oracleImplementationMatchesReviewedSource,
+    monotonicOracleExtensionCannotInvalidatePriorPass: oracleImplementationMatchesReviewedSource,
   };
   const passed = Object.values(checks).every(Boolean);
   if (!passed) failures.push(`${ownerId}:semantic-compatibility-check-failed`);
@@ -64,8 +70,10 @@ for (const ownerId of compatibilityOwnerIds) {
       sharedOraclePath,
       predicateChange: "old-match-or-exact-source-leaf-match",
       priorPassingVerdictRequired: true,
+      reviewedOracleDigest: `sha256:${createHash("sha256").update(reviewedOracle).digest("hex")}`,
     }),
     checks,
+    compatibilityScope: "reviewed-predicate-extension-with-stored-passes-not-current-owner-replay",
     waivedCurrencyErrors: passed ? allowedErrors : [],
   });
 }

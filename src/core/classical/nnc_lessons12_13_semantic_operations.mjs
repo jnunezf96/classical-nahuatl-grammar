@@ -87,6 +87,12 @@ function projectNncFrame(targetObject, frame, recipeId, expectedState) {
     contractSubjectInventory: contract?.leastCommonMultiple?.subjectPersonInventory || [],
     contractSubjectPronounShapeInventory:
       subjectShapes,
+    contractSubjectPronounShapesBySubject: Object.fromEntries(
+      requiredSubjectIdentities.map(identity => [
+        identity,
+        subjectShapes.filter(record => record.subjectIdentity === identity),
+      ]),
+    ),
     contractSubjectParadigmComplete: requiredSubjectIdentities.every(identity =>
       subjectShapes.some(record => record.subjectIdentity === identity)),
     contractSubjectEnglishEquivalents: {
@@ -98,6 +104,9 @@ function projectNncFrame(targetObject, frame, recipeId, expectedState) {
       "third-plural": ["they"],
     },
     contractNumberDyadInventory: contract?.leastCommonMultiple?.numberDyadInventory || [],
+    contractSingularCommonNumberDyadInventory:
+      (contract?.leastCommonMultiple?.numberDyadInventory || [])
+        .filter(record => record.subjectNumber === "singular-or-common"),
     contractPossessorStateShapeInventory:
       contract?.leastCommonMultiple?.possessorStateShapeInventory || [],
     contractPossessorShapeIdentitiesByPossessor: Object.fromEntries(

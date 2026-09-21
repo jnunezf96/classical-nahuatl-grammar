@@ -2,6 +2,12 @@
 
 export function createPreteritEngineContext(targetObject = globalThis, installationContext = null) {
     const grammarFrameOwnerCapability = installationContext?.grammarFrameOwnerCapability || null;
+    const authorizedVariantAssemblies = new WeakSet();
+    function issuePretVariantAssemblyFrame(input) {
+      const frame = buildPretVariantAssemblyFrame(input);
+      authorizedVariantAssemblies.add(frame);
+      return frame;
+    }
     // Preterit/perfective universal runtime (class builders + policy + assembly).
     // Depends on pret_universal_context.js.
     const PRET_STEM_SPEC_KIND = Object.freeze({
@@ -2444,7 +2450,7 @@ export function createPreteritEngineContext(targetObject = globalThis, installat
       }
     }
     function getPronounceableClassBFallback(context) {
-      if (!context) {
+      if (!context || !targetObject.getPretUniversalClassCandidates(context).has("B")) {
         return null;
       }
       const classBFrameResult = buildPretClassBBaseSpecsFromSourceFrame(context.classBSourceFrame, context);
@@ -2455,9 +2461,7 @@ export function createPreteritEngineContext(targetObject = globalThis, installat
       if (!allowUnpronounceableStems && !targetObject.isSyllableSequencePronounceable(classBFrameResult.sourceVerb)) {
         return null;
       }
-      return [buildPretVariant("", "k", {
-        baseSpec: classBFrameResult.baseSpecs[0]
-      })];
+      return buildPretUniversalClassB(context);
     }
     function getPretUniversalVariantsByClass(context) {
       const candidates = targetObject.getPretUniversalClassCandidates(context);
@@ -2486,12 +2490,7 @@ export function createPreteritEngineContext(targetObject = globalThis, installat
           variantsByClass.set("D", variants);
         }
       }
-      if (!variantsByClass.size) {
-        const fallback = getPronounceableClassBFallback(context);
-        if (fallback) {
-          variantsByClass.set("B", fallback);
-        }
-      }
+      // Each admitted owner has already run. An empty result is not a new B license.
       return variantsByClass;
     }
     function splitDirectionalPrefixFromBase(base, directionalPrefix) {
@@ -3088,6 +3087,9 @@ export function createPreteritEngineContext(targetObject = globalThis, installat
       });
     }
     function buildPretUniversalResultDetailedFromVariants(assemblyFrame) {
+      if (!assemblyFrame || !authorizedVariantAssemblies.has(assemblyFrame)) {
+        return blockPretVariantAssemblyFromFrame("preterit-variant-assembly-owner-policy-required");
+      }
       if (!assemblyFrame || typeof assemblyFrame !== "object" || assemblyFrame.kind !== PRET_VARIANT_ASSEMBLY_FRAME_KIND) {
         return blockPretVariantAssemblyFromFrame("preterit-variant-assembly-missing-frame");
       }
@@ -3765,7 +3767,7 @@ export function createPreteritEngineContext(targetObject = globalThis, installat
         }
         let classResult = null;
         if (isPreterit) {
-          const detailedClassResult = buildPretUniversalResultDetailedFromVariants(buildPretVariantAssemblyFrame({
+          const detailedClassResult = buildPretUniversalResultDetailedFromVariants(issuePretVariantAssemblyFrame({
             variants,
             subjectPrefix,
             objectPrefix,
@@ -3934,7 +3936,7 @@ export function createPreteritEngineContext(targetObject = globalThis, installat
             const {
               result: resultKWV,
               forms: formsKWV
-            } = buildPretUniversalResultDetailedFromVariants(buildPretVariantAssemblyFrame({
+            } = buildPretUniversalResultDetailedFromVariants(issuePretVariantAssemblyFrame({
               variants: classAVariants,
               subjectPrefix,
               objectPrefix,
@@ -3979,7 +3981,7 @@ export function createPreteritEngineContext(targetObject = globalThis, installat
             const {
               result: resultFallbackA,
               forms: formsFallbackA
-            } = buildPretUniversalResultDetailedFromVariants(buildPretVariantAssemblyFrame({
+            } = buildPretUniversalResultDetailedFromVariants(issuePretVariantAssemblyFrame({
               variants: classAVariants,
               subjectPrefix,
               objectPrefix,
@@ -4067,7 +4069,7 @@ export function createPreteritEngineContext(targetObject = globalThis, installat
       const {
         result,
         forms
-      } = buildPretUniversalResultDetailedFromVariants(buildPretVariantAssemblyFrame({
+      } = buildPretUniversalResultDetailedFromVariants(issuePretVariantAssemblyFrame({
         variants,
         subjectPrefix,
         objectPrefix,

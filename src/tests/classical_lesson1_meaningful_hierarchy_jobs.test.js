@@ -113,7 +113,10 @@ function run(ctx = {}) {
         ["ACI-P029-L020-380B4F2DEC-03", comparison, "the-two-hierarchies-are-juxtaposed-to-highlight-Nahuatl-rank-differences"],
         ["ACI-P029-L021-5DB865513A", hierarchyResult, "ascending-meaningful-ranks-are-grouped-into-stages"],
         ["ACI-P029-L023-57336AEF67", hierarchyResult, "no-higher-rank-exists-without-a-requisite-lower-stage"],
-        ["ACI-P029-L026-C658EB5AA0", comparison, "the-English-and-Spanish-scheme-ascends-morpheme-or-morph-root-stem-word-word-group-clause-clause-group-sentence"],
+        // ACI-P029-L026-C658EB5AA0 covers paired diagrams, including Nahuatl's
+        // lateral stock branch. This English/Spanish list is only a fixture,
+        // not execution proof of that complete diagram claim (F22aw).
+        ["FIXTURE-english-spanish-hierarchy-list", comparison, "the-English-and-Spanish-scheme-ascends-morpheme-or-morph-root-stem-word-word-group-clause-clause-group-sentence"],
         ["ACI-P030-L004-D47685394D", normalSource, "a-lower-rank-unit-normally-serves-as-source-for-the-next-higher-rank"],
         ["ACI-P030-L006-518758C8D7", generalDowngrade, "a-higher-rank-unit-can-be-downgraded-to-function-at-a-lower-rank"],
         ["ACI-P030-L006-518758C8D7-02", nuclearClauseDowngrade, "a-Nahuatl-nuclear-clause-can-be-downgraded-to-stem-rank-and-function"],
@@ -121,13 +124,13 @@ function run(ctx = {}) {
     ];
 
     s.eq(
-        "the 11 hierarchy atoms keep their exact Canvas order",
+        "the 10 hierarchy atom observations and one comparison fixture keep their order",
         exact.map(([atomId]) => atomId),
         [
             "ACI-P029-L019-9DA394C7C5", "ACI-P029-L020-380B4F2DEC",
             "ACI-P029-L020-380B4F2DEC-02", "ACI-P029-L020-380B4F2DEC-03",
             "ACI-P029-L021-5DB865513A", "ACI-P029-L023-57336AEF67",
-            "ACI-P029-L026-C658EB5AA0", "ACI-P030-L004-D47685394D",
+            "FIXTURE-english-spanish-hierarchy-list", "ACI-P030-L004-D47685394D",
             "ACI-P030-L006-518758C8D7", "ACI-P030-L006-518758C8D7-02",
             "ACI-P030-L009-7EF7DE26A3",
         ],

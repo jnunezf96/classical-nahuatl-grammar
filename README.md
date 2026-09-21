@@ -3,8 +3,8 @@
 `Classical_Nahuatl_Grammar_Web` is the live browser-based Classical Nahuatl
 grammar and conjugation application.
 
-Current release: **Grammar OS v1.2.5 — Construction Precision Update**
-(browser build `20260904-ehua-causative-alias-433`).
+Current release: **Grammar OS v1.2.6 — Source and Result Integrity Update**
+(browser build `20260920-preterit-provenance-548`).
 
 See [Version History](CHANGELOG.md) for user-facing “What’s New” notes.
 

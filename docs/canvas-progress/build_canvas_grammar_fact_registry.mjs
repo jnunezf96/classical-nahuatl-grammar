@@ -85,7 +85,11 @@ if (preservedSelection?.checkpoint === "009") {
     const coordinate = specText.match(/"(claim-[^"]+::[^"]+)": \{/)?.[1] || "";
     if (!prefix || !coordinate) throw new Error(`owner-spec-coordinate-missing:${ownerId}`);
     const [selection, requestedFacet] = coordinate.split("::");
-    owners.push({ ownerId, prefix, selection, requestedFacet });
+    owners.push({ ownerId, prefix, selection, requestedFacet,
+      observationScope: "owner-representative-coordinate-not-per-atom-proof",
+      perAtomFacetMatchVerified: false,
+      executionCredit: false,
+    });
   }
 }
 

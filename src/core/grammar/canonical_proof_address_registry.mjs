@@ -428,7 +428,7 @@ export function resolveCanonicalProofAddress({
     ) {
       throw new Error(`canonical-proof-address-id-collision:${generatedId}`);
     }
-    return existing;
+    return decorateRecord(existing);
   }
 
   const hasPathOverride = Object.prototype.hasOwnProperty.call(

@@ -129,26 +129,6 @@ const INTRANSITIVE_O_A_USE_STEMS = Object.freeze([
   "tla-pi-āz",
 ]);
 const INTRANSITIVE_O_A_PRODUCE_STEMS = Object.freeze(["tamal", "tla-xca-l"]);
-const APPLICATIVE_HUIA_USE_STEMS = Object.freeze([
-  "izta",
-  "xīcal",
-  "tla-chpān-hu-āz",
-  "mah-pil",
-  "icxi",
-  "oc",
-  "iztā-c-teō-cuitla",
-  "mētz",
-  "ā-tōy-a",
-  "tla-xapo-ch",
-  "cē-tō-ch",
-  "ih-ī-yō",
-  "yōl-lō",
-  "tēuc",
-  "oquich",
-  "tlahpal-i-uh-0-cā",
-  "tōl-tē-0-ca",
-  ...INSTRUMENTAL_AZ_NOUNSTEMS,
-]);
 const APPLICATIVE_HUIA_PRODUCE_STEMS = Object.freeze(["cē-hua-l", "tla-xca-l"]);
 const HYPOTHETICAL_I_L_HUIA_STEMS = Object.freeze(["tepon-āz"]);
 const TI_IA_APPLICATIVE_SOURCE_STEMS = Object.freeze(["cuica-ti", "nāhua-ti"]);
@@ -731,7 +711,10 @@ function isOperationApplicable(spec, sourceFrame) {
     case "intransitive-o-a-produce":
       return INTRANSITIVE_O_A_PRODUCE_STEMS.includes(nounStem);
     case "applicative-huia-use":
-      return APPLICATIVE_HUIA_USE_STEMS.includes(nounStem);
+      // §55.3.2a describes a general nounstem use/application formation.
+      // Its examples do not authorize stems; the separate produce-for and
+      // possessive double-object operations keep their own restrictions.
+      return Boolean(nounStem && sourceFrame.sourceKind === "nounstem" && !priorId);
     case "applicative-huia-produce":
       return APPLICATIVE_HUIA_PRODUCE_STEMS.includes(nounStem);
     case "applicative-huia-double-object":
@@ -761,7 +744,7 @@ function isOperationApplicable(spec, sourceFrame) {
   }
 }
 
-function buildTargetStem(spec, sourceFrame) {
+function buildTargetStem(spec, sourceFrame, huiBoundaryFrame = null) {
   const nounStem = sourceFrame.nounStem;
   const priorStem = sourceFrame.priorOperationFrame?.targetStem || sourceFrame.sourceStem;
   switch (spec.id) {
@@ -769,6 +752,9 @@ function buildTargetStem(spec, sourceFrame) {
     case "possession-ti":
       return join(nounStem, "ti");
     case "inceptive-hui":
+      if (huiBoundaryFrame) {
+        return join(huiBoundaryFrame.suffixBase, "hui");
+      }
       return compactStem(nounStem).endsWith("w") || /(?:uh|hui)$/u.test(nounStem)
         ? join(nounStem.replace(/(?:uh|hui)$/u, ""), "hui")
         : join(nounStem, "hui");
@@ -860,6 +846,8 @@ function buildObjectRequests(spec, source) {
   }
   const directPossessiveProjection =
     SOURCE_PROJECTED_DOUBLE_OBJECT_OPERATION_IDS.includes(spec.id);
+  const possessiveTiACausative = directPossessiveProjection
+    && spec.family.startsWith("ti-a-causative-double-");
   const priorObjectRequests = source.sourceOperationFrame?.objectRequests || [];
   const firstObjectPerson = directPossessiveProjection
     ? source.sourceSubject
@@ -871,13 +859,13 @@ function buildObjectRequests(spec, source) {
     objectId: "denominal-object-1",
     objectKind: "specific-projective",
     objectPerson: firstObjectPerson,
-    governor: "directive",
+    governor: possessiveTiACausative ? "causative" : "directive",
     derivationalLevel: 1,
   }, {
     objectId: "denominal-object-2",
     objectKind: "specific-projective",
     objectPerson: secondObjectPerson,
-    governor: spec.family.includes("applicative") || spec.family.includes("huia")
+    governor: possessiveTiACausative || spec.family.includes("applicative") || spec.family.includes("huia")
       ? "applicative"
       : "causative",
     derivationalLevel: 2,
@@ -913,6 +901,48 @@ function buildFiniteRequest(operationFrame, source) {
 }
 
 export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = globalThis) {
+  function resolveExactHuiBoundary(sourceFrame) {
+    const projection = sourceFrame.canonicalNncSourceProjection;
+    if (!projection) return null;
+    const nounStem = sourceFrame.nounStem;
+    const lexicalSource = projection.canonicalSourceFrame;
+    const sourceStemOperation = projection.stemOperation?.predicateFormation === "source-stem";
+    let useStemFrame = null;
+    // Only the source-stem operation preserves this lexical use-stem analysis.
+    // A changed matrix must not inherit the old Source's ephemeral vowel.
+    if (sourceStemOperation && /hui$/u.test(nounStem)) {
+      if (typeof targetObject.buildClassicalNahuatlNounstemSourceFrame !== "function") {
+        return { authorizationStatus: "blocked", blockReason: "denominal-hui-use-stem-capability-required" };
+      }
+      useStemFrame = targetObject.buildClassicalNahuatlNounstemSourceFrame(lexicalSource.stem, {
+        state: "absolutive", nounClass: lexicalSource.nounClass,
+        classSelectionAuthority: lexicalSource.lexicalSelectionAuthority,
+        classMembershipOptions: lexicalSource.classMembershipOptions,
+        generalUseShape: lexicalSource.useShape,
+        tlSubclass: lexicalSource.subclass.replace(/^tl-/u, ""),
+        ephemeralFinalVowel: lexicalSource.ephemeralFinalVowel,
+        truncationRepair: lexicalSource.truncationRepair,
+      });
+      if (useStemFrame.authorizationStatus !== "authorized") return useStemFrame;
+    }
+    const ephemeralIExposesW = Boolean(useStemFrame
+      && useStemFrame.generalUseShape === "truncated"
+      && useStemFrame.ephemeralFinalVowel === "i"
+      && /hu$/u.test(useStemFrame.underlyingGeneralUseStem));
+    const finalW = /(?:uh|w)$/u.test(nounStem);
+    const coalesces = finalW || ephemeralIExposesW;
+    const suffixBase = ephemeralIExposesW
+      ? nounStem.slice(0, -3)
+      : finalW ? nounStem.replace(/(?:uh|w)$/u, "") : nounStem;
+    return deepFreeze({
+      kind: "classical-denominal-hui-exact-source-boundary",
+      authorizationStatus: "authorized", blockReason: "",
+      useStemFrame, sourceStemOperation, ephemeralIExposesW,
+      sourceStem: nounStem, suffixBase, coalesces,
+      boundaryOperation: coalesces ? "w-plus-w-coalescence" : "retain-source-final-before-hui",
+      formulaStringAuthority: false, surfaceStringAuthority: false,
+    });
+  }
   const issuedSourceFrames = new WeakSet();
   const issuedInventories = new WeakSet();
   const issuedPathInventories = new WeakSet();
@@ -1260,7 +1290,13 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
         { sourceFrame: inventory.sourceFrame, inventory, selectedOperationId: operationId }
       );
     }
-    const targetStem = buildTargetStem(spec, inventory.sourceFrame);
+    const huiBoundaryFrame = spec.id === "inceptive-hui"
+      ? resolveExactHuiBoundary(inventory.sourceFrame) : null;
+    if (huiBoundaryFrame?.authorizationStatus === "blocked") {
+      return blocked("classical-nahuatl-denominal-vnc-operation-frame",
+        huiBoundaryFrame.blockReason, { sourceFrame: inventory.sourceFrame });
+    }
+    const targetStem = buildTargetStem(spec, inventory.sourceFrame, huiBoundaryFrame);
     if (!targetStem) {
       return blocked(
         "classical-nahuatl-denominal-vnc-operation-frame",
@@ -1280,6 +1316,7 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
       sourceStem: inventory.sourceFrame.sourceStem,
       targetStem,
       targetClass,
+      ...(huiBoundaryFrame ? { huiBoundaryFrame } : {}),
       objectCount: objectRequests.length,
       objectRequests,
       participantProjection: objectRequests.length === 2

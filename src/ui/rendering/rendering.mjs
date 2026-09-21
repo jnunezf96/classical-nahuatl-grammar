@@ -35,7 +35,7 @@ import {
 } from "../curriculum/lesson36_reader_guidance.mjs?v=20260824-lesson58-final-278";
 import {
   LESSON37_FORMULA_HOVER_AUTHORITIES,
-} from "../curriculum/lesson37_reader_guidance.mjs?v=20260824-lesson58-final-278";
+} from "../curriculum/lesson37_reader_guidance.mjs?v=20260912-patientive-guidance-439";
 import {
   LESSON38_FORMULA_HOVER_AUTHORITIES,
 } from "../curriculum/lesson38_reader_guidance.mjs?v=20260824-lesson58-final-278";
@@ -134,9 +134,12 @@ export function createUiRenderingApi(targetObject = globalThis) {
     const ClassicalTranscriptionOptionalControlRoots = new WeakSet();
     const ClassicalStandardResultOwnerProjectionBySurfaceFrame =
       new WeakMap();
+    const ClassicalVncMeaningInterpretationStateByApplicationFrame =
+      new WeakMap();
     const ClassicalTranscriptionOptionalChoices = new Map();
     var ActiveClassicalTranscriptionBaselineApplication = null;
     var ActiveClassicalTranscriptionParsedSource = null;
+    var ActiveClassicalVncMeaningInterpretationApplicationFrame = null;
     var LastClassicalResultAnnouncementSignature = "";
     const CLASSICAL_RESULT_HEADING_ID = "classical-result-content-heading";
     const CLASSICAL_WHOLE_CANVAS_PANEL_RULE_REFS = Object.freeze([Object.freeze({
@@ -710,6 +713,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       ActiveClassicalGrammarResultSourceCapture = null;
       ActiveClassicalGrammarCapabilityNavigator = null;
       ActiveClassicalGrammarResultBinding = null;
+      clearClassicalVncMeaningInterpretationState(reason);
       syncClassicalRelationalResultBindingChoiceVisibility(null);
       clearClassicalGrammarTypedSourceOperationBinding(reason);
       ActiveClassicalCapabilityApplicationResult = null;
@@ -5249,6 +5253,481 @@ export function createUiRenderingApi(targetObject = globalThis) {
         conditions,
         witnessRefs
       };
+    }
+    function formatClassicalVncMeaningPresentationLabel(value = "") {
+      const readable = String(value || "")
+        .trim()
+        .replace(/[-_]+/gu, " ")
+        .replace(/\s+/gu, " ");
+      return readable
+        ? `${readable.charAt(0).toUpperCase()}${readable.slice(1)}`
+        : "";
+    }
+    function formatClassicalVncReadingMeaningLabel(reading = null) {
+      const meaningLabel = formatClassicalVncMeaningPresentationLabel(
+        reading?.meaning || reading?.meaningId || ""
+      );
+      const requiredReferentKind = String(
+        reading?.contextCondition?.requiredReferentKind || ""
+      ).trim();
+      const trailingReferent = requiredReferentKind
+        .split("-or-")
+        .map(term => formatClassicalVncMeaningPresentationLabel(term)
+          .toLowerCase())
+        .filter(Boolean)
+        .find(term => meaningLabel.toLowerCase().endsWith(` ${term}`));
+      return trailingReferent
+        ? meaningLabel.slice(0, -(trailingReferent.length + 1)) || meaningLabel
+        : meaningLabel;
+    }
+    function clearClassicalVncMeaningInterpretationState(reason = "") {
+      if (ActiveClassicalVncMeaningInterpretationApplicationFrame) {
+        ClassicalVncMeaningInterpretationStateByApplicationFrame.delete(
+          ActiveClassicalVncMeaningInterpretationApplicationFrame
+        );
+      }
+      ActiveClassicalVncMeaningInterpretationApplicationFrame = null;
+      targetObject.document?.querySelectorAll?.(
+        '[data-classical-vnc-meaning-presentation="true"]'
+      ).forEach(presentation => {
+        presentation.hidden = true;
+        presentation.dataset.classicalVncMeaningPresentationStatus =
+          "cleared";
+        presentation.dataset.classicalVncMeaningPresentationClearReason =
+          String(reason || "result-not-current");
+      });
+    }
+    function requestClassicalVncMeaningPresentationFrame(
+      applicationFrame = null,
+      {
+        participantFrame = null,
+        referentKind = "",
+        requestedReading = "",
+      } = {}
+    ) {
+      if (
+        !applicationFrame
+        || typeof targetObject
+          .buildClassicalNahuatlVncMeaningPresentationFrame !== "function"
+        || typeof targetObject
+          .isClassicalNahuatlVncMeaningPresentationFrame !== "function"
+      ) {
+        return null;
+      }
+      const request = { applicationFrame };
+      const normalizedReferentKind = String(referentKind || "").trim();
+      const normalizedRequestedReading = String(
+        requestedReading || ""
+      ).trim();
+      if (normalizedReferentKind && participantFrame) {
+        request.context = {
+          participantFrame,
+          referentKind: normalizedReferentKind,
+        };
+      }
+      if (normalizedRequestedReading) {
+        request.requestedReading = normalizedRequestedReading;
+      }
+      const frame = targetObject
+        .buildClassicalNahuatlVncMeaningPresentationFrame(request);
+      return Boolean(
+        targetObject.isClassicalNahuatlVncMeaningPresentationFrame(frame)
+        && frame.authorizationStatus === "authorized"
+        && frame.applicationFrame === applicationFrame
+        && frame.resultFrame === applicationFrame.resultFrame
+        && frame.presentationRole
+          === "read-only-owner-issued-interpretation"
+        && frame.changesFiniteMorphology === false
+        && frame.sourceAdmissionAuthority === false
+        && frame.grammarGenerationAuthority === false
+        && frame.formulaStringAuthority === false
+        && frame.surfaceStringAuthority === false
+      ) ? frame : null;
+    }
+    function createClassicalVncMeaningPresentationSection(
+      surfaceFrame = null,
+      eligible = false
+    ) {
+      const applicationFrame = eligible
+        ? surfaceFrame?.state?.vncApplicationFrame || null
+        : null;
+      const baselineFrame = requestClassicalVncMeaningPresentationFrame(
+        applicationFrame
+      );
+      if (!baselineFrame) {
+        clearClassicalVncMeaningInterpretationState(
+          eligible ? "meaning-owner-not-applicable" : "result-not-single-vnc"
+        );
+        return null;
+      }
+      if (
+        ActiveClassicalVncMeaningInterpretationApplicationFrame
+          !== applicationFrame
+      ) {
+        if (ActiveClassicalVncMeaningInterpretationApplicationFrame) {
+          ClassicalVncMeaningInterpretationStateByApplicationFrame.delete(
+            ActiveClassicalVncMeaningInterpretationApplicationFrame
+          );
+        }
+        ActiveClassicalVncMeaningInterpretationApplicationFrame =
+          applicationFrame;
+        ClassicalVncMeaningInterpretationStateByApplicationFrame.set(
+          applicationFrame,
+          Object.freeze({ referentKind: "", requestedReading: "" })
+        );
+      }
+      const section = targetObject.document.createElement("section");
+      section.className =
+        "classical-rule-surface__format-section "
+        + "classical-rule-surface__vnc-meaning-presentation";
+      section.dataset.classicalVncMeaningPresentation = "true";
+      section.dataset.classicalVncMeaningPresentationAuthority =
+        "owner-issued-read-only";
+      section.dataset.classicalVncMeaningApplicationIdentity = "exact";
+      section.dataset.classicalPresentationOnly = "true";
+      section.dataset.classicalGrammarAuthority = "false";
+      section.dataset.classicalSourceAuthorizes = "none";
+      section.dataset.classicalResultAuthorizes = "none";
+      section.setAttribute(
+        "aria-label",
+        "Possible meanings for this Result"
+      );
+      const setInterpretationState = state => {
+        ClassicalVncMeaningInterpretationStateByApplicationFrame.set(
+          applicationFrame,
+          Object.freeze({
+            referentKind: String(state?.referentKind || "").trim(),
+            requestedReading: String(
+              state?.requestedReading || ""
+            ).trim(),
+          })
+        );
+      };
+      const interactionIsCurrent = () => Boolean(
+        ActiveClassicalVncMeaningInterpretationApplicationFrame
+          === applicationFrame
+        && ActiveClassicalRuleLogicSurfaceFrame?.state?.vncApplicationFrame
+          === applicationFrame
+      );
+      const resolvePresentation = () => {
+        const currentBaseline =
+          requestClassicalVncMeaningPresentationFrame(applicationFrame);
+        if (!currentBaseline) return null;
+        const requiredReferentKinds = Array.from(new Set(
+          (Array.isArray(currentBaseline.contextRequirements)
+            ? currentBaseline.contextRequirements
+            : [])
+            .map(requirement => String(
+              requirement?.requiredReferentKind || ""
+            ).trim())
+            .filter(Boolean)
+        ));
+        const storedState =
+          ClassicalVncMeaningInterpretationStateByApplicationFrame.get(
+            applicationFrame
+          ) || { referentKind: "", requestedReading: "" };
+        let referentKind = String(storedState.referentKind || "").trim();
+        let requestedReading = String(
+          storedState.requestedReading || ""
+        ).trim();
+        if (
+          referentKind
+          && !requiredReferentKinds.includes(referentKind)
+          && referentKind !== "different-referent"
+        ) {
+          referentKind = "";
+          requestedReading = "";
+        }
+        const participantFrame =
+          currentBaseline.participantBinding?.participantFrame || null;
+        let presentationFrame = currentBaseline;
+        if (referentKind && participantFrame) {
+          presentationFrame = requestClassicalVncMeaningPresentationFrame(
+            applicationFrame,
+            { participantFrame, referentKind }
+          ) || currentBaseline;
+        } else if (referentKind) {
+          referentKind = "";
+          requestedReading = "";
+        }
+        const supportedReadingIds = new Set(
+          (Array.isArray(presentationFrame.supportedReadings)
+            ? presentationFrame.supportedReadings
+            : [])
+            .map(reading => String(reading?.meaningId || "").trim())
+            .filter(Boolean)
+        );
+        if (
+          requestedReading
+          && !supportedReadingIds.has(requestedReading)
+        ) {
+          requestedReading = "";
+        }
+        if (requestedReading) {
+          const selectedFrame =
+            requestClassicalVncMeaningPresentationFrame(
+              applicationFrame,
+              {
+                participantFrame,
+                referentKind,
+                requestedReading,
+              }
+            );
+          if (selectedFrame) {
+            presentationFrame = selectedFrame;
+          } else {
+            requestedReading = "";
+          }
+        }
+        if (
+          referentKind !== storedState.referentKind
+          || requestedReading !== storedState.requestedReading
+        ) {
+          setInterpretationState({ referentKind, requestedReading });
+        }
+        const possibleMeanings = Array.isArray(
+          presentationFrame.possibleMeanings
+        )
+          ? presentationFrame.possibleMeanings
+          : Array.isArray(presentationFrame.availableReadings)
+            ? presentationFrame.availableReadings
+            : [];
+        return {
+          frame: presentationFrame,
+          possibleMeanings,
+          requiredReferentKinds,
+          state: { referentKind, requestedReading },
+        };
+      };
+      const renderPresentation = () => {
+        const resolved = resolvePresentation();
+        if (!resolved) {
+          section.hidden = true;
+          section.dataset.classicalVncMeaningPresentationStatus = "cleared";
+          return;
+        }
+        const {
+          frame,
+          possibleMeanings,
+          requiredReferentKinds,
+          state,
+        } = resolved;
+        section.replaceChildren();
+        section.hidden = false;
+        section.dataset.classicalVncMeaningPresentationStatus = "available";
+        section.dataset.classicalVncMeaningRelation = String(
+          frame.relationKind || ""
+        );
+        section.dataset.classicalVncMeaningAssertionStatus = String(
+          frame.meaningAssertionStatus || "available-not-asserted"
+        );
+        section.dataset.classicalVncMeaningSelectedReading = String(
+          frame.selectedReading || ""
+        );
+        section.dataset.classicalVncMeaningContextReferent = String(
+          frame.context?.referentKind || ""
+        );
+        section.dataset.classicalVncMeaningChangesFiniteMorphology = String(
+          frame.changesFiniteMorphology === true
+        );
+        const heading = targetObject.document.createElement("div");
+        heading.className = "classical-rule-surface__format-heading";
+        const title = targetObject.document.createElement("h4");
+        title.className = "classical-rule-surface__format-title";
+        title.textContent = "Possible meanings";
+        heading.appendChild(title);
+        const list = targetObject.document.createElement("div");
+        list.className = "classical-rule-surface__vnc-meaning-list";
+        list.dataset.classicalVncPossibleMeanings = "true";
+        const bindingRole = String(
+          frame.participantBinding?.bindingRole || ""
+        );
+        const participantRoleLabel = bindingRole === "transformed-causee"
+          ? "causative object / causee"
+          : bindingRole === "source-subject"
+            ? "Source subject"
+            : "bound participant";
+        const contextRequirements = Array.isArray(frame.contextRequirements)
+          ? frame.contextRequirements
+          : [];
+        possibleMeanings.forEach(reading => {
+          const meaningId = String(reading?.meaningId || "").trim();
+          if (!meaningId) return;
+          const requirement = contextRequirements.find(candidate => (
+            candidate?.reading === reading
+            || candidate?.meaningId === meaningId
+          )) || null;
+          const requiredReferentKind = String(
+            requirement?.requiredReferentKind
+              || reading?.contextCondition?.requiredReferentKind
+              || ""
+          ).trim();
+          const contextStatus = String(
+            requirement?.contextStatus
+              || (requiredReferentKind ? "unresolved" : "not-required")
+          );
+          const supported = Array.isArray(frame.supportedReadings)
+            && frame.supportedReadings.includes(reading);
+          const selected = frame.selectedResolution?.reading === reading
+            || frame.selectedReading === meaningId;
+          const row = targetObject.document.createElement("span");
+          row.className =
+            "classical-rule-surface__single-vnc-meaning "
+            + "classical-rule-surface__single-vnc-meaning--additional";
+          row.dataset.classicalVncPossibleMeaning = meaningId;
+          row.dataset.classicalVncPossibleMeaningRelation = String(
+            reading?.relation || ""
+          );
+          row.dataset.classicalVncPossibleMeaningContextStatus = contextStatus;
+          row.dataset.classicalVncPossibleMeaningSupported = String(supported);
+          row.dataset.classicalVncPossibleMeaningSelected = String(selected);
+          row.dataset.classicalVncPossibleMeaningAssertion =
+            selected ? "selected-not-truth-asserted" : "available-not-asserted";
+          const contextualMeaningLabel =
+            formatClassicalVncReadingMeaningLabel(reading);
+          let conditionLabel =
+            "No narrower referent context required.";
+          if (requiredReferentKind) {
+            const referentLabel =
+              formatClassicalVncMeaningPresentationLabel(
+                requiredReferentKind
+              ).toLowerCase();
+            conditionLabel = contextStatus === "matched"
+              ? `Matches the selected ${participantRoleLabel} referent context.`
+              : contextStatus === "not-matched"
+                ? `Requires ${participantRoleLabel} referent: ${referentLabel}; the selected context differs.`
+                : `Context unresolved; possible when the ${participantRoleLabel} referent is ${referentLabel}.`;
+          }
+          row.textContent = `${contextualMeaningLabel}. ${conditionLabel}${selected
+            ? " Selected to show; this does not assert the only meaning."
+            : ""}`;
+          list.appendChild(row);
+        });
+        section.append(heading, list);
+        const readingChoices = Array.isArray(frame.readingChoices)
+          ? frame.readingChoices
+          : possibleMeanings.length > 1 ? possibleMeanings : [];
+        if (requiredReferentKinds.length || readingChoices.length > 1) {
+          const controls = targetObject.document.createElement("div");
+          controls.className =
+            "classical-rule-surface__vnc-meaning-controls";
+          controls.dataset.classicalVncMeaningInterpretationControls = "true";
+          controls.dataset.classicalInterpretationOnly = "true";
+          controls.dataset.classicalGrammarAuthority = "false";
+          controls.dataset.classicalSourceAuthorizes = "none";
+          if (requiredReferentKinds.length) {
+            const contextField = targetObject.document.createElement("label");
+            contextField.className = "classical-rule-control";
+            const contextLabel = targetObject.document.createElement("span");
+            contextLabel.className = "classical-rule-control__label";
+            contextLabel.textContent = `${participantRoleLabel} referent in this context`;
+            const contextSelect = targetObject.document.createElement("select");
+            contextSelect.id = "classical-vnc-result-meaning-context";
+            contextSelect.dataset.classicalVncMeaningContextControl = "true";
+            contextSelect.dataset.classicalInterpretationOnly = "true";
+            const unspecified = targetObject.document.createElement("option");
+            unspecified.value = "";
+            unspecified.textContent = "Not specified";
+            contextSelect.appendChild(unspecified);
+            requiredReferentKinds.forEach(referentKind => {
+              const option = targetObject.document.createElement("option");
+              option.value = referentKind;
+              option.textContent =
+                formatClassicalVncMeaningPresentationLabel(referentKind);
+              option.dataset.classicalVncMeaningContextRequirement =
+                "owner-issued";
+              contextSelect.appendChild(option);
+            });
+            const different = targetObject.document.createElement("option");
+            different.value = "different-referent";
+            different.textContent = "A different referent";
+            different.dataset.classicalVncMeaningContextRequirement =
+              "explicit-nonmatching-context";
+            contextSelect.appendChild(different);
+            contextSelect.value = state.referentKind;
+            contextSelect.addEventListener("change", event => {
+              if (!interactionIsCurrent()) return;
+              setInterpretationState({
+                referentKind: event.target?.value || "",
+                requestedReading: "",
+              });
+              renderPresentation();
+            });
+            contextField.append(contextLabel, contextSelect);
+            controls.appendChild(contextField);
+          }
+          if (readingChoices.length > 1) {
+            const readingField = targetObject.document.createElement("label");
+            readingField.className = "classical-rule-control";
+            const readingLabel = targetObject.document.createElement("span");
+            readingLabel.className = "classical-rule-control__label";
+            readingLabel.textContent = "Reading to show";
+            const readingSelect = targetObject.document.createElement("select");
+            readingSelect.id = "classical-vnc-result-meaning-reading";
+            readingSelect.dataset.classicalVncMeaningReadingControl = "true";
+            readingSelect.dataset.classicalInterpretationOnly = "true";
+            const openReading = targetObject.document.createElement("option");
+            openReading.value = "";
+            openReading.textContent = "Leave the reading open";
+            readingSelect.appendChild(openReading);
+            const supportedReadingIds = new Set(
+              (Array.isArray(frame.supportedReadings)
+                ? frame.supportedReadings
+                : [])
+                .map(reading => String(reading?.meaningId || "").trim())
+                .filter(Boolean)
+            );
+            readingChoices.forEach(reading => {
+              const meaningId = String(reading?.meaningId || "").trim();
+              if (!meaningId) return;
+              const option = targetObject.document.createElement("option");
+              option.value = meaningId;
+              option.disabled = !supportedReadingIds.has(meaningId);
+              option.textContent =
+                formatClassicalVncReadingMeaningLabel(reading)
+                + (option.disabled ? " — add matching context" : "");
+              option.dataset.classicalVncMeaningReading = "owner-issued";
+              option.dataset.classicalVncMeaningReadingSupported = String(
+                !option.disabled
+              );
+              readingSelect.appendChild(option);
+            });
+            readingSelect.value = state.requestedReading;
+            readingSelect.addEventListener("change", event => {
+              if (!interactionIsCurrent()) return;
+              setInterpretationState({
+                referentKind: state.referentKind,
+                requestedReading: event.target?.value || "",
+              });
+              renderPresentation();
+            });
+            readingField.append(readingLabel, readingSelect);
+            controls.appendChild(readingField);
+          }
+          const explanation = targetObject.document.createElement("p");
+          explanation.className =
+            "classical-rule-surface__paradigm-description";
+          explanation.textContent =
+            "These optional choices interpret this exact Result only. "
+            + "They do not change its Source, Grammar, form, or formula.";
+          controls.appendChild(explanation);
+          const disclosure = createClassicalRuleSurfaceDisclosure(
+            "Interpret this Result",
+            "Optional context; form and formula stay the same",
+            [controls]
+          );
+          disclosure.dataset.classicalVncMeaningInterpretationDisclosure =
+            "true";
+          disclosure.dataset.classicalPresentationOnly = "true";
+          disclosure.dataset.classicalGrammarAuthority = "false";
+          disclosure.open = Boolean(
+            state.referentKind || state.requestedReading
+          );
+          section.appendChild(disclosure);
+        }
+      };
+      renderPresentation();
+      return section;
     }
     function buildClassicalVncSingleFormDisplayFrame(surfaceFrame = null) {
       const typedSlotFrame = getClassicalVncParadigmTypedSlotFrame(surfaceFrame?.machineryFrame || null);
@@ -15929,10 +16408,13 @@ export function createUiRenderingApi(targetObject = globalThis) {
             value: getClassicalRuleLogicControlDisplayValue("classical-rule-logic-valence", state.targetValence || state.valence)
           });
         }
+        if (state.valence && state.valence !== "intransitive") {
+          appendClassicalResultReceiptEntries(entries, "choice", {
+            label: "Specific object",
+            value: getClassicalRuleLogicControlDisplayValue("classical-rule-logic-object", `${state.objectKind || "specific-projective"}:${state.objectPerson || "3sg"}`)
+          });
+        }
         appendClassicalResultReceiptEntries(entries, "choice", {
-          label: "Specific object",
-          value: getClassicalRuleLogicControlDisplayValue("classical-rule-logic-object", `${state.objectKind || "specific-projective"}:${state.objectPerson || "3sg"}`)
-        }, {
           label: "Polarity",
           value: getClassicalRuleLogicControlDisplayValue("classical-rule-logic-polarity", state.polarityMode || state.sentenceNegativeMode)
         }, {
@@ -19525,7 +20007,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         const haystack = [ref?.tagId || "", ref?.id || "", ref?.rule || "", ref?.exactWitness || ""].join(" ").toLowerCase();
         return tokens.some(token => haystack.includes(token));
       });
-      return matched || refs[0] || null;
+      return matched || null;
     }
     function appendClassicalRuleTransformationObservationRow(rows, {
       kind = "",
@@ -21672,6 +22154,25 @@ export function createUiRenderingApi(targetObject = globalThis) {
       return section;
     }
     const ClassicalNominalConstructionRenderedFrameCache = new Map();
+    const ClassicalNominalConstructionRequestReferenceIds = new WeakMap();
+    let nextClassicalNominalConstructionRequestReferenceId = 1;
+    function getClassicalNominalConstructionRequestCacheKey(request) {
+      const references = [];
+      // Equal serialized frames are not interchangeable owner-issued Results.
+      // Preserve nested input identities while allowing fresh scalar requests.
+      const serialized = JSON.stringify(request, (key, value) => {
+        if (value && typeof value === "object" && value !== request) {
+          if (!ClassicalNominalConstructionRequestReferenceIds.has(value)) {
+            ClassicalNominalConstructionRequestReferenceIds.set(
+              value, nextClassicalNominalConstructionRequestReferenceId++
+            );
+          }
+          references.push(ClassicalNominalConstructionRequestReferenceIds.get(value));
+        }
+        return value;
+      });
+      return JSON.stringify([serialized, references]);
+    }
     const ClassicalNominalConstructionPendingFrameKeys = new Set();
     const CLASSICAL_SOURCE_OPERATION_APPLICATION_IDS = Object.freeze({
       "deverbal-nnc": "nnc:deverbal-construction",
@@ -23218,7 +23719,6 @@ export function createUiRenderingApi(targetObject = globalThis) {
         && (
           currentClassicalDeverbalLexicalAuthorizationFrame?.sourceStem
             === currentSourceStem
-          || frame?.sourceFrame?.sourceImperfectiveStem === currentSourceStem
         )
         ? currentClassicalDeverbalLexicalAuthorizationFrame
         : null;
@@ -28432,7 +28932,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         ? { ...baseRequest, outputScope }
         : null;
       if (!request) return null;
-      const requestKey = JSON.stringify(request);
+      const requestKey = getClassicalNominalConstructionRequestCacheKey(request);
       let frame = ClassicalNominalConstructionRenderedFrameCache.get(
         requestKey
       ) || null;
@@ -29141,7 +29641,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         && exactProjection.canonicalResult === exactCanonicalResult
       ) ? exactApplicationResult : null;
       if (exactReview && !ownerIssuedApplicationResult) return false;
-      const requestKey = JSON.stringify(request);
+      const requestKey = getClassicalNominalConstructionRequestCacheKey(request);
       let frame = ownerIssuedApplicationResult?.canonicalResult
         || ClassicalNominalConstructionRenderedFrameCache.get(requestKey)
         || null;
@@ -30738,6 +31238,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
       "iuhqui-modifier": "iuhquiModifier",
       "principal-nnc": "principalNnc",
       "continuation-family": "continuationFamily",
+      "reduplication-shape": "reduplicationShape",
+      "ti-class": "tiClass",
       "adjunctor-in": "adjunctorIn",
       "ic-relation": "icRelation",
       copula: "copula",
@@ -30809,6 +31311,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
       "iuhqui-modifier": "iuhqui modifier",
       "principal-nnc": "Principal comparison NNC",
       "continuation-family": "Similarity continuation",
+      "reduplication-shape": "Reduplication shape",
+      "ti-class": "Ti verbal class",
       "adjunctor-in": "Use adjunctor in",
       "ic-relation": "Use īc relation",
       copula: "Use copula ca",
@@ -30844,6 +31348,12 @@ export function createUiRenderingApi(targetObject = globalThis) {
         "lexical-conjunction": "Lexical conjunction",
         "parallel-structure": "Parallel structure",
         comparison: "Similarity / comparison",
+        "oyotl-nehnemi": "Compared-manner walking (neh-nemi)",
+        "cihuatl-tlahtoa": "Compared-manner speaking (tla-ht-o-ā)",
+        bare: "Bare stem (restricted-use citation)",
+        "short-cv": "Short-vowel prefix",
+        "long-cv": "Long-vowel prefix (intensive)",
+        "glottalized-cv": "Short vowel + glottal stop (distributive)",
         "contextual-first-person-realization":
           "Contextual first-person realization",
         "nonadverbialized": "Nonadverbialized clause",
@@ -36199,48 +36709,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
       source = null
     ) {
       if (!isClassicalGrammarExactTypedSource(source)) return "";
-      if (
-        typeof targetObject.isIssuedCanonicalNncSourceFrame === "function"
-        && targetObject.isIssuedCanonicalNncSourceFrame(source)
-      ) {
-        return JSON.stringify([
-          "nnc",
-          String(source.kind || ""),
-          String(source.stem || ""),
-          String(source.embedStem || ""),
-          String(source.matrixStem || ""),
-          String(source.sourceClass || ""),
-          String(source.lexicalEntryId || ""),
-        ]);
-      }
-      return JSON.stringify([
-        "vnc",
-        String(source.kind || ""),
-        String(
-          source.sourceVerbstem
-          || source.stem
-          || source.classTargetStem
-          || ""
-        ),
-        String(
-          source.classId
-          || source.selectedOutputLogicFrame?.outputFillers?.classId
-          || ""
-        ),
-        String(
-          source.classTargetValence
-          || source.sourceValence
-          || source.valence
-          || source.citationRuleFrame?.valence
-          || ""
-        ),
-        String(source.voice || "active"),
-        String(
-          source.nonactiveStemRecord?.selectedOptionId
-          || source.selectedNonactiveOptionId
-          || ""
-        ),
-      ]);
+      // Continuity may retain an exact Source only when its complete validated
+      // data is unchanged, including participant, environment and analysis facts.
+      // Value comparison preserves ordinary fresh-but-equivalent Source reuse.
+      return JSON.stringify(source);
     }
 
     function getClassicalCapabilityNavigatorFrame(surfaceFrame = null) {
@@ -39368,6 +39840,12 @@ export function createUiRenderingApi(targetObject = globalThis) {
           'select, textarea, input:not([type="button"]):not([type="submit"])'
         )).filter(control => {
           if (!isVisible(control)) return false;
+          if (
+            control.dataset?.classicalInterpretationOnly === "true"
+            || control.closest?.(
+              '[data-classical-vnc-meaning-interpretation-controls="true"]'
+            )
+          ) return false;
           const wrapper = control.closest?.(
             ".classical-rule-control, .classical-nnc-source-guide__field, label"
           ) || null;
@@ -40954,6 +41432,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const singleNncElegantActive = Boolean(surfaceFrame.basalUnit === "nnc" && !fullParadigmActive && singleNncDisplayFrame?.authorizationStatus === "authorized");
       const singleVncDisplayFrame = surfaceFrame.vncSingleFormDisplayFrame || null;
       const singleVncElegantActive = Boolean(surfaceFrame.basalUnit === "vnc" && !fullVncParadigmActive && singleVncDisplayFrame?.authorizationStatus === "authorized");
+      const vncMeaningPresentationSection =
+        createClassicalVncMeaningPresentationSection(
+          surfaceFrame,
+          singleVncElegantActive
+        );
       const ownerIssuedResultProjection =
         getClassicalOwnerIssuedResultProjection(surfaceFrame);
       const paradigmSection = targetObject.document.createElement("section");
@@ -41735,10 +42218,13 @@ export function createUiRenderingApi(targetObject = globalThis) {
       singleVncAnswer.dataset.classicalVncSingleFormSelectedOutput = "true";
       singleVncAnswer.dataset.classicalVncSingleFormDisplayAuthority = singleVncDisplayFrame?.authority || "";
       const singleVncTargetMeaning = String(
-        singleVncDisplayFrame?.targetMeaning || ""
+        vncMeaningPresentationSection
+          ? ""
+          : singleVncDisplayFrame?.targetMeaning || ""
       ).trim();
       const singleVncAdditionalTargetReadings = (
-        Array.isArray(singleVncDisplayFrame?.additionalTargetReadings)
+        !vncMeaningPresentationSection
+          && Array.isArray(singleVncDisplayFrame?.additionalTargetReadings)
           ? singleVncDisplayFrame.additionalTargetReadings
           : []
       ).filter(reading => Boolean(String(reading?.meaning || "").trim()));
@@ -41827,6 +42313,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
         singleVncSection.append(
           singleVncHeading,
           singleVncAnswer,
+          ...(vncMeaningPresentationSection
+            ? [vncMeaningPresentationSection]
+            : []),
           singleVncAnalysis
         );
       }
@@ -45078,8 +45567,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
         const shouldBypassPassiveMappedConstraints = isDirectGroup && !!subjectOverride && mappedSubjectInfo?.person === 3;
         const maskState = targetObject.getConjugationMaskState({
           result,
-          subjectPrefix: subjectOverride?.subjectPrefix || "",
-          subjectSuffix: subjectOverride?.subjectSuffix || "",
+          subjectPrefix: subjectPers1,
+          subjectSuffix: subjectPers2,
           objectPrefix: prefix,
           invalidComboSet: targetObject.INVALID_COMBINATION_KEYS,
           controllerObjectMarker: shouldBypassPassiveMappedConstraints ? "" : null,
@@ -45938,8 +46427,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
         const shouldBypassPassiveMappedConstraints = isDirectGroup && !!subjectOverride && mappedSubjectInfo?.person === 3;
         const maskState = targetObject.getConjugationMaskState({
           result,
-          subjectPrefix: subjectOverride?.subjectPrefix || "",
-          subjectSuffix: subjectOverride?.subjectSuffix || "",
+          subjectPrefix: subjectPers1,
+          subjectSuffix: subjectPers2,
           objectPrefix: objectPrefixCandidate,
           invalidComboSet: targetObject.INVALID_COMBINATION_KEYS,
           controllerObjectMarker: shouldBypassPassiveMappedConstraints ? "" : null,

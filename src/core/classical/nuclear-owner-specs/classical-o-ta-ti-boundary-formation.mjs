@@ -18,7 +18,7 @@ const spec = {
     },
     "claim-p2039::p2039-tla-itt-a-to-see-s-th": {
       "assertionId": "classical-o-ta-ti-boundary-formation:p2039-tla-itt-a-to-see-s-th",
-      "canonicalPath": "nonactive.oTi.options.0.nonactiveStem"
+      "canonicalPath": "nonactive.oNamedSources.itta"
     },
     "claim-p2040::p2040-tla-mati-to-knows-th": {
       "assertionId": "classical-o-ta-ti-boundary-formation:p2040-tla-mati-to-knows-th",

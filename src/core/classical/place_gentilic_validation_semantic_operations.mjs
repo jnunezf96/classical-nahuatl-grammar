@@ -6,6 +6,29 @@ import { createPlaceGentilicNncApi } from "../nnc/place_gentilic/place_gentilic.
 
 const ISSUED_VALIDATION_FRAMES = new WeakSet();
 
+const REQUIRED_NEGATIVE_REASONS = Object.freeze({
+  ambiguousAffective: "place-affective-structural-analysis-required",
+  contradictoryActive: "n-imperfect-active-requires-typed-active-source",
+  wrongFullPlace: "full-place-gentilic-requires-tlah-or-tzalan-source",
+  forgedProfession: "canvas-licensed-profession-or-title-record-required",
+  evidenceOnlyTitle: "canvas-title-has-no-typed-nnc-formula",
+  hostileStrings: "caller-supplied-formula-surface-result-or-lesson-authority-blocked",
+});
+
+function validationWitnessesPass(frame) {
+  const positives = Object.values(frame.cases || {});
+  return positives.length > 0
+    && positives.every(item => item.canonicalFrame === true
+      && item.authorizationStatus === "authorized")
+    && ["panCanGentilicPair", "manTlanGentilicPair", "tlanLanGentilicVariantPair"]
+      .every(key => frame.constraints?.[key]?.authorizationStatus === "authorized")
+    && Object.entries(REQUIRED_NEGATIVE_REASONS).every(([key, reason]) =>
+      frame.blockedCases?.[key]?.canonicalFrame === true
+      && frame.blockedCases[key].authorizationStatus === "blocked"
+      && frame.blockedCases[key].blockReason === reason)
+    && frame.blockedCases?.hiddenNounClass?.canonicalUnchanged === true;
+}
+
 function deepFreeze(value) {
   if (!value || typeof value !== "object" || Object.isFrozen(value)) return value;
   Object.values(value).forEach(deepFreeze);
@@ -388,11 +411,8 @@ export function createClassicalPlaceGentilicValidationSemanticOperationsApi(
 
     const lcm = catalogApi.PLACE_GENTILIC_NNC_LCM;
     const gcd = catalogApi.PLACE_GENTILIC_NNC_GCD;
-    const frame = deepFreeze({
+    const frameData = {
       kind: "classical-nahuatl-place-gentilic-validation-frame",
-      authorizationStatus: Object.values(cases).every(item => item.canonicalFrame)
-        ? "authorized"
-        : "blocked",
       catalog: {
         axisCount: lcm?.axisCount || 0,
         uniqueAxisCount: new Set((lcm?.axes || []).map(axis => axis.axisId)).size,
@@ -476,28 +496,34 @@ export function createClassicalPlaceGentilicValidationSemanticOperationsApi(
       },
       blockedCases: {
         ambiguousAffective: {
+          canonicalFrame: target.isPlaceGentilicNncFrame(ambiguousAffective) === true,
           authorizationStatus: ambiguousAffective.authorizationStatus,
           blockReason: ambiguousAffective.blockReason,
         },
         contradictoryActive: {
+          canonicalFrame: target.isPlaceGentilicNncFrame(contradictoryActive) === true,
           authorizationStatus: contradictoryActive.authorizationStatus,
           blockReason: contradictoryActive.blockReason,
         },
         wrongFullPlace: {
+          canonicalFrame: target.isPlaceGentilicNncFrame(wrongFullPlace) === true,
           authorizationStatus: wrongFullPlace.authorizationStatus,
           blockReason: wrongFullPlace.blockReason,
         },
         forgedProfession: {
+          canonicalFrame: target.isPlaceGentilicNncFrame(forgedProfession) === true,
           authorizationStatus: forgedProfession.authorizationStatus,
           blockReason: forgedProfession.blockReason,
         },
         evidenceOnlyTitle: {
+          canonicalFrame: target.isPlaceGentilicNncFrame(evidenceOnlyTitle) === true,
           authorizationStatus: evidenceOnlyTitle.authorizationStatus,
           blockReason: evidenceOnlyTitle.blockReason,
           evidenceSurface: evidenceOnlyTitle.formationFrame?.evidenceSurface || "",
           formula: evidenceOnlyTitle.formulaRealization || "",
         },
         hostileStrings: {
+          canonicalFrame: target.isPlaceGentilicNncFrame(hostileStrings) === true,
           authorizationStatus: hostileStrings.authorizationStatus,
           blockReason: hostileStrings.blockReason,
           formula: hostileStrings.formulaRealization || "",
@@ -506,7 +532,12 @@ export function createClassicalPlaceGentilicValidationSemanticOperationsApi(
         },
         hiddenNounClass: {
           canonicalUnchanged:
-            hiddenClassCanonical.formulaRealization === hiddenClassHostile.formulaRealization
+            hiddenClassCanonical.authorizationStatus === "authorized"
+            && hiddenClassHostile.authorizationStatus === "authorized"
+            && target.isPlaceGentilicNncFrame(hiddenClassCanonical) === true
+            && target.isPlaceGentilicNncFrame(hiddenClassHostile) === true
+            && Boolean(hiddenClassCanonical.formulaRealization && hiddenClassCanonical.wordSurface)
+            && hiddenClassCanonical.formulaRealization === hiddenClassHostile.formulaRealization
             && hiddenClassCanonical.wordSurface === hiddenClassHostile.wordSurface,
           canonicalFormula: hiddenClassCanonical.formulaRealization,
           hostileFormula: hiddenClassHostile.formulaRealization,
@@ -528,6 +559,10 @@ export function createClassicalPlaceGentilicValidationSemanticOperationsApi(
         lessonMetadataAuthority: false,
         groupingTransfersProof: false,
       },
+    };
+    const frame = deepFreeze({
+      ...frameData,
+      authorizationStatus: validationWitnessesPass(frameData) ? "authorized" : "blocked",
     });
     ISSUED_VALIDATION_FRAMES.add(frame);
     return frame;
@@ -538,6 +573,7 @@ export function createClassicalPlaceGentilicValidationSemanticOperationsApi(
       ISSUED_VALIDATION_FRAMES.has(frame)
       && frame?.kind === "classical-nahuatl-place-gentilic-validation-frame"
       && frame.authorizationStatus === "authorized"
+      && validationWitnessesPass(frame)
       && frame.contract?.sharedProjectionOwnsGrammar === false
       && frame.contract?.sharedProjectionOwnsAtoms === false
       && Object.isFrozen(frame)

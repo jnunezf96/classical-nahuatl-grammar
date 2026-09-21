@@ -48,15 +48,19 @@ const report = {
   failedCaseCount: run.cases.filter((testCase) => testCase.passed !== true).length,
   atoms: [...atomExpectations.entries()].map(([atomId, value]) => ({ atomId, ...value })),
   distinctionsPreserved: {
-    singularSubjectSeparate: true,
-    pluralSubjectSeparate: true,
-    pluralReflexiveReciprocalAlternativeSeparate: true,
+    singularSubjectSeparate: null,
+    pluralSubjectSeparate: null,
+    pluralReflexiveReciprocalAlternativeSeparate: null,
   },
+  observationScope: "registry-receipt-passed-case-linkage-only",
+  semanticDistinctionsStatus: "not-measured",
   failures,
 };
 fs.writeFileSync(path.join(stageRoot, "section-7.9-canary.json"), `${JSON.stringify(report, null, 2)}\n`, "utf8");
 process.stdout.write(`${JSON.stringify({
   valid: failures.length === 0,
+  observationScope: report.observationScope,
+  semanticDistinctionsStatus: report.semanticDistinctionsStatus,
   ownerId,
   caseCount: report.caseCount,
   routeCount: report.routeCount,

@@ -303,7 +303,19 @@ function modify(runtime, head, modifier, choices = {}) {
   });
 }
 
+export function buildAdjectivalTransitiveContactWitnesses(runtime) {
+  const head = issueNnc(runtime, "cueitl");
+  return deepFreeze({
+    subject: compactModification(runtime, modify(runtime, head,
+      issueVnc(runtime, { subject: "3sg", objectPerson: "1sg" }),
+      { linkRole: "vnc-subject" })),
+    object: compactModification(runtime, modify(runtime, head,
+      issueVnc(runtime), { linkRole: "vnc-object" })),
+  });
+}
+
 function buildProjection(runtime) {
+  const transitiveContactAlternatives = buildAdjectivalTransitiveContactWitnesses(runtime);
   const head = issueNnc(runtime, "cueitl");
   const modifier = issueNnc(runtime, "canahuac");
   const additional = issueNnc(runtime, "tlazohtli");
@@ -369,12 +381,8 @@ function buildProjection(runtime) {
       issueQuantitive(runtime),
       issueNnc(runtime, "tlācatl", "1pl", { pluralConnector: "0-h" }),
     )),
-    vncObjectContact: compactModification(runtime, modify(
-      runtime,
-      head,
-      issueVnc(runtime),
-      { linkRole: "vnc-object" },
-    )),
+    vncObjectContact: transitiveContactAlternatives.object,
+    vncSubjectContact: transitiveContactAlternatives.subject,
     customaryAgentive: compactModification(runtime, modify(
       runtime,
       head,
@@ -556,6 +564,7 @@ function buildProjection(runtime) {
     },
     sources,
     cases,
+    transitiveContactAlternatives,
     blockedCases,
   });
 }

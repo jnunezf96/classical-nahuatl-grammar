@@ -1043,7 +1043,7 @@ function run(ctx) {
                 perceptionPresent:
                     buildIncluded(perceptionPrincipal, present).authorizationStatus,
                 perceptionFuture:
-                    buildIncluded(perceptionPrincipal, future).blockReason,
+                    buildIncluded(perceptionPrincipal, future).authorizationStatus,
                 cognitionQuestion:
                     buildIncluded(cognitionPrincipal, question).authorizationStatus,
                 affectSubject:
@@ -1063,7 +1063,7 @@ function run(ctx) {
                 "unrecognized-supplementation-operation-option:speechAct",
             missingSpeechChoice: "included-complement-policy-failed",
             perceptionPresent: "authorized",
-            perceptionFuture: "perception-complement-normally-requires-present",
+            perceptionFuture: "authorized",
             cognitionQuestion: "authorized",
             affectSubject: "authorized",
             affectObjectBlocked: "affect-complement-requires-supplementary-subject",

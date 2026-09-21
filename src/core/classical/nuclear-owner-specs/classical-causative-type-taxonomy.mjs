@@ -42,7 +42,7 @@ const spec = {
     },
     "claim-p2288::p2288-the-causative-a-is-short-after-consonants-and-long": {
       "assertionId": "classical-causative-type-taxonomy:p2288-the-causative-a-is-short-after-consonants-and-long",
-      "canonicalPath": "derivations.tomi.options.1.derivationSubtype"
+      "canonicalPath": "causativeSuffixQuantityWitnesses"
     }
   },
   "executionFunctionName": "buildClassicalNahuatlVncDerivationValidationFrame",

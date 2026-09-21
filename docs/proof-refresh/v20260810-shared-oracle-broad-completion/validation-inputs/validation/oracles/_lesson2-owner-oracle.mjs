@@ -10,7 +10,7 @@ function deepEqual(left, right) {
   return JSON.stringify(left) === JSON.stringify(right);
 }
 
-function broadCompletionExpectationMatches(projection, expected) {
+export function broadCompletionExpectationMatches(projection, expected) {
   const payload = projection?.payload || {};
   const facetValue = payload.facetValue;
   if (deepEqual(facetValue, expected)) return true;
@@ -24,13 +24,15 @@ function broadCompletionExpectationMatches(projection, expected) {
     .replace(/[^a-z0-9]+/giu, "")
     .toLowerCase();
   const sourceLeaf = String(payload.sourceCanonicalPath || "").split(".").at(-1);
-  const eligibleLeaves = new Set([
-    normalized(payload.broadCompletionLeaf),
-    normalized(sourceLeaf),
-  ].filter(Boolean));
-  const matchedKey = Object.keys(facetValue).find((key) =>
-    eligibleLeaves.has(normalized(key)));
-  return Boolean(matchedKey) && deepEqual(facetValue[matchedKey], expected);
+  const matchesLeaf = leaf => {
+    const normalizedLeaf = normalized(leaf);
+    if (!normalizedLeaf) return false;
+    const key = Object.keys(facetValue).find(key => normalized(key) === normalizedLeaf);
+    return key !== undefined && deepEqual(facetValue[key], expected);
+  };
+  // Preserve the original first broad-leaf comparison before attempting the
+  // additional source leaf. Their object enumeration order cannot mask a pass.
+  return matchesLeaf(payload.broadCompletionLeaf) || matchesLeaf(sourceLeaf);
 }
 
 function routeToken(value, fallback = "unselected") {

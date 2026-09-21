@@ -102,6 +102,7 @@ const honestRollbackPointer = {
 };
 await writeFile(storedPriorPointerPath, stableJson(honestRollbackPointer));
 const temporaryPointerPath = `${pointerPath}.tmp`;
+try {
 for (const candidate of [activePointer, honestRollbackPointer, activePointer]) {
   await writeFile(temporaryPointerPath, stableJson(candidate));
   await rename(temporaryPointerPath, pointerPath);
@@ -137,3 +138,8 @@ const report = {
 };
 await writeFile(path.join(correctionRoot, "validation-report.json"), stableJson(report));
 console.log(stableJson(report));
+} catch (error) {
+  await writeFile(temporaryPointerPath, stableJson(honestRollbackPointer));
+  await rename(temporaryPointerPath, pointerPath);
+  throw error;
+}

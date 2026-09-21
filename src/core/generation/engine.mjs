@@ -6079,7 +6079,7 @@ export function createGenerationEngineGlobals(targetObject = globalThis, install
           parsedVerb,
           verb: optionVerb,
           analysisVerb: optionAnalysisVerb,
-          obj1Slot: obj1Slot,
+          objectPrefix: obj1Slot,
           tense,
           tenseMode: resolvedTenseMode,
           derivationMode: resolvedDerivationMode
@@ -6087,7 +6087,7 @@ export function createGenerationEngineGlobals(targetObject = globalThis, install
         return targetObject.buildNonactiveDerivationOptions({
           verb: optionVerb,
           analysisVerb: optionAnalysisVerb,
-          obj1Slot: obj1Slot,
+          objectPrefix: obj1Slot,
           parsedVerb,
           directionalPrefix,
           tense,

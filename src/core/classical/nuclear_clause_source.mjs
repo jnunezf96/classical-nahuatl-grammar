@@ -470,6 +470,14 @@ export function createClassicalNahuatlNuclearClauseRuntime(
     const requestedHumanness = String(options.humanness || "").trim().toLowerCase();
     const requestedNumber = String(options.number || "").trim().toLowerCase();
     const referenceContext = String(options.referenceContext || "").trim();
+    const inherentlyHuman = person === "first" || person === "second";
+    if (inherentlyHuman && (
+      (requestedAnimacy && requestedAnimacy !== "animate")
+      || (requestedHumanness && requestedHumanness !== "human")
+      || (requestedNumber && !["singular", "plural"].includes(requestedNumber))
+    )) {
+      throw new Error(OPERATION_INVALID);
+    }
     if (
       !["nominative", "objective", "possessive"].includes(pronounCase)
       || !clauseKind
@@ -515,14 +523,14 @@ export function createClassicalNahuatlNuclearClauseRuntime(
       animacySystem: freeze({
         features: freeze(["animate", "nonanimate"]),
         culturallyClassifiedByNahuatl: true,
-        selected: requestedAnimacy || (person === "first" || person === "second" ? "animate" : "contextual"),
+        selected: requestedAnimacy || (inherentlyHuman ? "animate" : "contextual"),
       }),
       humannessSystem: freeze({
         features: freeze(["human", "nonhuman"]),
         subcategoryOf: "animacy",
         humanImpliesAnimate: true,
         firstAndSecondInnatelyHuman: true,
-        selected: requestedHumanness || (person === "first" || person === "second" ? "human" : "contextual"),
+        selected: requestedHumanness || (inherentlyHuman ? "human" : "contextual"),
       }),
       numberSystem: freeze({
         animateFeatures: freeze(["singular", "plural"]),

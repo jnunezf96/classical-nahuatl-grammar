@@ -6835,17 +6835,21 @@ export function createNncApi(targetObject = globalThis, installationContext = nu
         connector: String(slots.num1Num2?.compactDisplay || slots.num1Num2?.connector || slots.num1Num2?.surface || "")
       });
     }
+    const monadicWorkbenchSources = new WeakSet();
+    const monadicWorkbenchOperations = new WeakMap();
     function buildPossessiveStateNncMonadicSourceFrame({
       formulaSlots = null
     } = {}) {
       const slots = formulaSlots && typeof formulaSlots === "object" ? formulaSlots : null;
       const stem = normalizeOrdinaryNncText(slots?.predicateStem?.stem || "").replace(/[()#]/g, "");
       const stateSlot = slots?.possessiveState || null;
-      const stateSurface = String(stateSlot?.compactDisplay || stateSlot?.surface || stateSlot?.classicalRealization || "").trim();
+      const stateSpec = Object.values(POSSESSIVE_STATE_NNC_MONADIC_POSSESSOR_SPECS)
+        .find(spec => spec.id === stateSlot?.possessorId);
+      const stateSurface = stateSpec?.classicalRealization || "";
       if (!slots || !stem || stateSlot?.statePosition !== "monadic" || !stateSurface) {
         return null;
       }
-      return Object.freeze({
+      const frame = Object.freeze({
         kind: "possessive-state-nnc-monadic-source-frame",
         version: 1,
         formulaSchemaId: "possessive-state-nnc",
@@ -6853,17 +6857,19 @@ export function createNncApi(targetObject = globalThis, installationContext = nu
         routeStage: "monadic-state-realization",
         formulaSlots: slots,
         predicateStem: stem,
-        stateSlot: stateSlot.stateSlot || "st",
+        stateSlot: "st",
         stateSurface,
-        sourceSignature: getPossessiveStateNncMonadicSourceSignature(slots),
+        sourceSignature: JSON.stringify({ stem, possessorId: stateSpec.id }),
         consumesRenderedInput: false,
         displayStringsAuthorizeGrammar: false,
         grammarAuthority: "ANDREWS_TRANSCRIPTION_CANVAS.md",
         orthographyAuthority: "Classical Andrews transcription"
       });
+      monadicWorkbenchSources.add(frame);
+      return frame;
     }
     function buildPossessiveStateNncMonadicOperationFrame(sourceFrame = null) {
-      if (!sourceFrame || sourceFrame.kind !== "possessive-state-nnc-monadic-source-frame") {
+      if (!sourceFrame || !monadicWorkbenchSources.has(sourceFrame)) {
         return null;
       }
       const stateSurface = String(sourceFrame.stateSurface || "");
@@ -6886,7 +6892,7 @@ export function createNncApi(targetObject = globalThis, installationContext = nu
           formulaValue: predicateStem
         })])
       });
-      return Object.freeze({
+      const frame = Object.freeze({
         kind: "andrews-typed-operation-frame",
         operationId: "possessive-state-nnc-monadic-realization",
         family: "possessive-state-nnc",
@@ -6899,13 +6905,18 @@ export function createNncApi(targetObject = globalThis, installationContext = nu
         consumesRenderedInput: false,
         displayStringsAuthorizeGrammar: false
       });
+      monadicWorkbenchOperations.set(frame, sourceFrame);
+      return frame;
     }
     function getPossessiveStateNncMonadicFrameMismatch({
       sourceFrame = null,
       operationFrame = null
     } = {}) {
-      if (!sourceFrame || sourceFrame.kind !== "possessive-state-nnc-monadic-source-frame") {
+      if (!sourceFrame || !monadicWorkbenchSources.has(sourceFrame)) {
         return "possessive-state-nnc-monadic-source-frame-required";
+      }
+      if (!operationFrame || monadicWorkbenchOperations.get(operationFrame) !== sourceFrame) {
+        return "possessive-state-nnc-monadic-operation-frame-required";
       }
       if (!operationFrame || operationFrame.kind !== "andrews-typed-operation-frame" || operationFrame.operationId !== "possessive-state-nnc-monadic-realization" || operationFrame.routeFamily !== "possessive-state-nnc" || operationFrame.operationApplied !== "realize-monadic-possessive-state-from-formula-frame" || operationFrame.consumesRenderedInput !== false || operationFrame.displayStringsAuthorizeGrammar !== false) {
         return "possessive-state-nnc-monadic-operation-frame-required";

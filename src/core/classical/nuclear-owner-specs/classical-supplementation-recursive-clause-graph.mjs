@@ -12,7 +12,7 @@ const spec = {
   "coordinates": {
     "claim-p1809::p1809-an-adjunctive-transformation-is-recursive-that-is-it-may": {
       "assertionId": "classical-supplementation-recursive-clause-graph:p1809-an-adjunctive-transformation-is-recursive-that-is-it-may",
-      "canonicalPath": "extractedFrames.recursiveGraph.completeClauseNodeCount"
+      "canonicalPath": "extractedFrames.recursiveGraph"
     }
   },
   "executionFunctionName": "buildClassicalNahuatlSupplementationValidationFrame",

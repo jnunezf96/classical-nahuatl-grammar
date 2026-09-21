@@ -33,7 +33,7 @@ export const CLASSICAL_SESSION_RECORDER_PRIVACY_CONTRACT = Object.freeze({
 });
 
 const RRWEB_RECORDER_MODULE_URL = new URL(
-  "../vendor/rrweb/record-2.1.1.mjs",
+  "../vendor/rrweb/record-2.1.1.mjs?v=20260920-recorder-teardown-539",
   import.meta.url,
 ).href;
 
@@ -418,7 +418,11 @@ export function createClassicalSessionRecorder({
       play: observationWitness?.snapshot?.() || null,
       events: events.slice(),
     };
-    const text = redactSensitiveText(`${JSON.stringify(payload, null, 2)}\n`);
+    // Mask data before serialization so input cannot replace JSON syntax,
+    // schema keys, or non-string primitive values in the exported document.
+    const text = `${JSON.stringify(payload, (_key, value) => (
+      typeof value === "string" ? redactSensitiveText(value) : value
+    ), 2)}\n`;
     const safeTimestamp = new Date(startedAt || now())
       .toISOString()
       .replace(/[:.]/gu, "-");

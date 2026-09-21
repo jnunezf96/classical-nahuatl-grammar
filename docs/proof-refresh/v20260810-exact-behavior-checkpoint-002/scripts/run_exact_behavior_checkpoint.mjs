@@ -58,8 +58,8 @@ const directOwners = [
     ["ACI-P066-L029-F5311302DA-02", "secondPluralMCondition", "am-before-vowel-m-p"],
   ]],
   ["classical-supportive-initial-i-formation", "buildClassicalNahuatlSupportiveInitialISystemFrame", [
-    ["ACI-P085-L003-6E0E0B43A7", "tlaDropsSupportiveI", true],
-    ["ACI-P085-L003-6E0E0B43A7-02", "tlaStemRealization", "tta"],
+    ["ACI-P085-L003-6E0E0B43A7", "reflexiveDropsSupportiveI", true],
+    ["ACI-P085-L003-6E0E0B43A7-02", "reflexiveStemRealization", "tta"],
   ]],
   ["classical-tla-fusion-formation", "buildClassicalNahuatlTlaFusionSystemFrame", [
     ["ACI-P086-L019-7E6A7560AB-03", "buildKind", "embed-matrix-plus-tla-fusion"],
@@ -248,6 +248,7 @@ const activePointer = {
   rollbackManifest: oldPointer.activeManifest, rollbackManifestDigest: oldPointer.activeManifestDigest, baseProofCorpusRetained: true,
 };
 const temporaryPointerPath = `${activePointerPath}.tmp`;
+try {
 for (const candidate of [activePointer, oldPointer, activePointer]) {
   await writeFile(temporaryPointerPath, stableJson(candidate));
   await rename(temporaryPointerPath, activePointerPath);
@@ -255,14 +256,7 @@ for (const candidate of [activePointer, oldPointer, activePointer]) {
   assert(activated.activeManifestDigest === candidate.activeManifestDigest, "atomic manifest switch/rollback failed");
 }
 
-let auditOutput;
-try {
-  ({ stdout: auditOutput } = await execFile(process.execPath, ["docs/canvas-progress/audit_canvas_true_progress.mjs"], { cwd: repositoryRoot }));
-} catch (error) {
-  await writeFile(temporaryPointerPath, stableJson(oldPointer));
-  await rename(temporaryPointerPath, activePointerPath);
-  throw error;
-}
+const { stdout: auditOutput } = await execFile(process.execPath, ["docs/canvas-progress/audit_canvas_true_progress.mjs"], { cwd: repositoryRoot });
 const progress = JSON.parse(await readFile(path.join(repositoryRoot, "docs/CANVAS_TRUE_GRAMMAR_PROGRESS.json"), "utf8"));
 assert(progress.lessonCorpus.exactProofs.exactBehaviorObserved === 8262 + observations.length,
   "true-progress ledger did not increase by the exact checkpoint yield");
@@ -276,3 +270,8 @@ const report = {
 };
 await writeFile(path.join(batchRoot, "validation-report.json"), stableJson(report));
 console.log(stableJson(report));
+} catch (error) {
+  await writeFile(temporaryPointerPath, stableJson(oldPointer));
+  await rename(temporaryPointerPath, activePointerPath);
+  throw error;
+}
