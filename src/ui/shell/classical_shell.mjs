@@ -1125,16 +1125,19 @@ ${renderPlaceGentilicNncOptions("classical-construction-operation")}
                             role="status"
                             aria-live="polite"
                           >Waiting for an owner-issued Source or Result.</p>
+                          <details id="classical-capability-navigator-unavailable" hidden>
+                            <summary>Why other operations are unavailable</summary>
                           <ul
                             class="classical-capability-navigator__pathways"
                             id="classical-capability-navigator-pathways"
                             data-classical-capability-navigator-pathways="type-compatible"
                             data-classical-presentation-only="true"
                             data-classical-grammar-authority="false"
-                            aria-label="Type-compatible next-pathway candidates"
+                            aria-label="Operation prerequisites and restrictions"
                             aria-hidden="true"
                             hidden
                           ></ul>
+                          </details>
                         </section>
                         <div
                           class="classical-construction-source-analysis-controls"

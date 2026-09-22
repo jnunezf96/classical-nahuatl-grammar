@@ -11656,6 +11656,9 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         : {};
     }
     function refreshClassicalRuleLogicSurfaceFromControl(control = null) {
+      if (targetObject.handleClassicalCapabilityStagedGrammarControlChange?.(
+        control
+      ) === true) return true;
       if (typeof targetObject.renderClassicalRuleLogicSurfaceBlock !== "function") {
         return;
       }
@@ -11955,6 +11958,15 @@ export function createUiComposerRuntime(targetObject = globalThis) {
               getClassicalBasalUnitFromRuntime()
             );
           }
+          if (
+            targetObject
+              .handleClassicalCapabilityStagedGrammarControlChange?.(
+                control
+              ) === true
+          ) {
+            renderClassicalParticleCombinationBuilder();
+            return;
+          }
           if ([
             "classical-rule-logic-class",
             "classical-rule-logic-valence",
@@ -11978,15 +11990,6 @@ export function createUiComposerRuntime(targetObject = globalThis) {
             && hasCommittableClassicalSourceParts()
           ) {
             setClassicalSourcePartsPendingState(true);
-            return;
-          }
-          if (
-            targetObject
-              .handleClassicalCapabilityStagedGrammarControlChange?.(
-                control
-              ) === true
-          ) {
-            renderClassicalParticleCombinationBuilder();
             return;
           }
           refreshClassicalRuleLogicSurfaceFromControl(control);
