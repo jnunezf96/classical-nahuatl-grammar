@@ -1,18 +1,18 @@
-import { installRuntimeBridge } from "./runtime_bridge.mjs?v=20260920-preterit-provenance-548";
+import { installRuntimeBridge } from "./runtime_bridge.mjs?v=20260922-grammar-interface-549";
 import { createRuntimeConfigSnapshot } from "./runtime_config.mjs?v=20260904-cehui-nominal-root-430";
 import {
     RUNTIME_INSTALLERS,
     attachRuntimeBindings,
     createRuntimeInstance,
-} from "../runtime/create_runtime.mjs?v=20260920-preterit-provenance-548";
+} from "../runtime/create_runtime.mjs?v=20260922-grammar-interface-549";
 import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260912-nonactive-label-440";
 import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260912-selection-repair-447";
-import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260920-preterit-provenance-548";
-import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260920-preterit-provenance-548";
+import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260922-grammar-interface-549";
+import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260922-grammar-interface-549";
 import { installUiStateGlobals } from "../ui/state.mjs?v=20260912-route-registry-441";
 import {
     installClassicalNestedControlLedger,
-} from "../ui/diagnostics/classical_nested_control_ledger.mjs?v=20260920-preterit-provenance-548";
+} from "../ui/diagnostics/classical_nested_control_ledger.mjs?v=20260922-grammar-interface-549";
 
 let browserBootstrapPromise = null;
 
@@ -163,7 +163,7 @@ export function installDeferredClassicalGrammaticalAtlas({
         url.searchParams.set("v", populationVersion.version);
         url.searchParams.set(
             "cache",
-            "20260920-preterit-provenance-548"
+            "20260922-grammar-interface-549"
         );
         if (attempt > 1) url.searchParams.set("retry", String(attempt));
         return import(url.href);

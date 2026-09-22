@@ -1,6 +1,6 @@
 import { cloneStaticRuntimePaths } from "./runtime_paths.mjs?v=20260904-cehui-nominal-root-430";
 import { createRuntimeConfigSnapshot } from "./runtime_config.mjs?v=20260904-cehui-nominal-root-430";
-import { RUNTIME_MODULE_PATHS } from "../runtime/create_runtime.mjs?v=20260920-preterit-provenance-548";
+import { RUNTIME_MODULE_PATHS } from "../runtime/create_runtime.mjs?v=20260922-grammar-interface-549";
 
 export function installRuntimeBridge(globalObject = globalThis, runtime = {}) {
     if (!globalObject || typeof globalObject !== "object") {

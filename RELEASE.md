@@ -1,17 +1,17 @@
-# Grammar OS v1.2.6 release
+# Grammar OS v1.2.7 release
 
-Release name: **Source and Result Integrity Update**
+Release name: **Grammar Interface Update**
 
-Browser build: **20260920-preterit-provenance-548**
+Browser build: **20260922-grammar-interface-549**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Ships the completed review's Source, operation, and Result integrity repairs.
-- Corrects grammatical admission, contextual explanations, formula rendering, and diagnostic provenance at the reviewed boundaries.
-- Separates observed proof outcomes from documentary declarations and unverified claims.
-- Review closure is not exhaustive grammar or release certification; separate unimplemented extensions remain outside this release's claims.
+- Groups available operations and explains unavailable operations using existing owner machinery.
+- Keeps genuine Grammar choices editable while leaving derived facts as explanations.
+- Preserves exact Results, forms, and formulas; stages continuation edits until explicit Apply.
+- Grammar owners are unchanged. Focused file-level proofs do not claim exhaustive grammar or visual usability verification.
 
 See [Version History](CHANGELOG.md) for notes from earlier releases.
 
@@ -25,7 +25,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.6/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.7/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.

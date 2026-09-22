@@ -1,4 +1,4 @@
-import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260920-preterit-provenance-548";
+import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260922-grammar-interface-549";
 
 const bootstrapPromise = bootstrapBrowserApp();
 

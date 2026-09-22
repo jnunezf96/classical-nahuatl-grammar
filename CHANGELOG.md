@@ -2,6 +2,15 @@
 
 User-facing release notes for Classical Nahuatl Grammar.
 
+## Version 1.2.7 — Grammar Interface Update
+
+Prepared September 22, 2026.
+
+- Groups available operations and explains unavailable operations using existing grammar machinery.
+- Keeps genuine choices editable and derived facts explanatory.
+- Preserves exact Results, forms, and formulas while staging changes until explicit Apply.
+- Leaves grammar owners unchanged; focused file-level proofs do not claim exhaustive grammar or browser usability verification.
+
 ## Version 1.2.6 — Source and Result Integrity Update
 
 Prepared September 21, 2026.
