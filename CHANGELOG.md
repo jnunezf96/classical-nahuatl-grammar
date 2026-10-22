@@ -2,6 +2,14 @@
 
 User-facing release notes for Classical Nahuatl Grammar.
 
+## Version 1.2.12 — Predicate Nominalization Sources
+
+Released October 22, 2026.
+
+- Connects licensed passive/impersonal formation choices to predicate nominalization previews and Make.
+- Restores secondary-reflexive Source meaning, ne and exact capture identity.
+- Preserves genuine grammatical restrictions and accepted Results while staging.
+
 ## Version 1.2.11 — Visible Choice Alternatives
 
 Released October 22, 2026.

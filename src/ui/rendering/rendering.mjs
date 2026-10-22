@@ -20431,6 +20431,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         && nonactiveFormationControl.dataset.classicalNonactiveFormationEventBound !== "true"
         && typeof targetObject.handleClassicalNonactiveFormationControlChange === "function") {
         nonactiveFormationControl.addEventListener("input", targetObject.handleClassicalNonactiveFormationControlChange);
+        nonactiveFormationControl.addEventListener("change", targetObject.handleClassicalNonactiveFormationControlChange);
         nonactiveFormationControl.dataset.classicalNonactiveFormationEventBound = "true";
       }
       if (nonactiveFormationControl && nonactiveInventory?.options?.length) {
@@ -26881,13 +26882,18 @@ export function createUiRenderingApi(targetObject = globalThis) {
           "label, [data-classical-rule-control]"
         );
         if (!control || !wrapper) return null;
+        const predicateNonactiveVoice = selectedFamily === "predicate-nominalization"
+          && !retainedNominalSource?.exactResult
+          ? ["preterit-patientive", "customary-patientive", "passive-action"].includes(nominalizationKind)
+            ? "passive" : ["instrumentive", "instrumentive-full"].includes(nominalizationKind)
+              ? "impersonal" : "" : "";
         const patientiveNonactiveVoice = ({
           "passive-core": "passive",
           "impersonal-core": "impersonal",
         })[patientiveFamily] || "";
+        const sourceNonactiveVoice = predicateNonactiveVoice || (patientiveRoute ? patientiveNonactiveVoice : "");
         const relevant = active
-          && patientiveRoute
-          && Boolean(patientiveNonactiveVoice)
+          && Boolean(sourceNonactiveVoice)
           && Boolean(currentSourceStem);
         if (!relevant) {
           wrapper.hidden = true;
@@ -26913,7 +26919,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           "specific-projective": "specific-projective",
           "mainline-reflexive": "reflexive",
         })[sourceValence] || "none";
-        const rawNonactiveCoreSource = (patientiveFamily === "passive-core"
+        const rawNonactiveCoreSource = patientiveRoute && (patientiveFamily === "passive-core"
             || patientiveFamily === "impersonal-core" && sourceValence === "projective-human")
           && !retainedNominalSource?.exactResult
           && ["projective-human", "projective-nonhuman"].includes(sourceValence)
@@ -26948,8 +26954,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
                 mood: "indicative",
                 tense: "present",
                 requestedDerivation: "direct",
-                requestedVoice: patientiveNonactiveVoice,
-                voice: patientiveNonactiveVoice,
+                requestedVoice: sourceNonactiveVoice,
+                voice: sourceNonactiveVoice,
                 ...(patientiveFamily === "impersonal-core"
                   && sourceValence === "projective-human"
                   ? {
@@ -26970,7 +26976,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
         } catch {
           preview = null;
         }
-        const inventory = coreInventory || preview?.controlFrame?.nonactiveOptionInventory;
+        // A formation choice cannot authorize an incompatible Source voice.
+        const previewOffersChoice = !predicateNonactiveVoice || preview?.authorizationStatus === "authorized"
+          || /nonactive.*option.*selection-required/u.test(preview?.blockReason || "");
+        const inventory = coreInventory || (previewOffersChoice ? preview?.controlFrame?.nonactiveOptionInventory : null);
         const options = Array.isArray(inventory?.options)
           ? inventory.options
           : [];
@@ -27013,6 +27022,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         control.dataset.classicalDeverbalPassiveSourceStem = currentSourceStem;
         wrapper.hidden = options.length < 2;
         wrapper.setAttribute("aria-hidden", String(wrapper.hidden));
+        wrapper.setAttribute("aria-disabled", String(control.disabled));
         return { inventory, selectionRequired, selectedOptionId: selected };
       };
       syncNonactiveSourceFormationChoice();
@@ -31455,7 +31465,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
                   }
                 : {}),
               verbClass: baseSource.verbClass,
-              sourceValence: canonicalVncSourceValence,
+              sourceValence: valence === "shuntline-reflexive"
+                ? "shuntline-reflexive" : canonicalVncSourceValence,
               sourceInitialISelection: baseSource.sourceInitialISelection,
               sourceObjectRequests: readClassicalSourceObjectRows(
                 targetObject.document, valence,
@@ -31468,6 +31479,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
               requestedDerivation: "direct",
               requestedVoice: voice,
               voice,
+              ...(["passive", "impersonal", "nonactive"].includes(voice) ? {
+                nonactiveOptionId: getClassicalNominalConstructionControlValue(
+                  "classical-rule-logic-nonactive-family", ""),
+              } : {}),
               ...(canonicalVncObjectKind === "none"
                 ? {}
                 : {
@@ -31493,8 +31508,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
             && exactBindingId.startsWith("predicate-nominalization:")
             ? exactBinding.exactResult
             : resultFrameOf(canonicalSourceVnc);
-          if (["preterit-patientive", "customary-patientive"].includes(nominalizationKind)
-            && !(exactBinding?.exactResult && exactBindingId.startsWith("predicate-nominalization:"))
+          if (!(exactBinding?.exactResult && exactBindingId.startsWith("predicate-nominalization:"))
             && (targetObject.isClassicalNahuatlVncApplicationFrame?.(canonicalSourceVnc) !== true
               || targetObject.isClassicalNahuatlVncApplicationResultFrame?.(canonicalVncResult) !== true)) {
             // A refused conversion cannot become a raw declaration of the

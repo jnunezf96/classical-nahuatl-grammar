@@ -12338,6 +12338,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       // into the application request, while the WeakSet prevents a duplicate
       // render when the direct listener is also present.
       documentObject.addEventListener("input", handleClassicalNonactiveFormationControlChange, true);
+      documentObject.addEventListener("change", handleClassicalNonactiveFormationControlChange, true);
       ClassicalNonactiveFormationControlEventsInitialized = true;
       return true;
     }
@@ -12460,6 +12461,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       classicalRuleLogicControls.forEach(control => {
         if (isClassicalNonactiveFormationControl(control)) {
           control.addEventListener("input", handleClassicalNonactiveFormationControlChange);
+          control.addEventListener("change", handleClassicalNonactiveFormationControlChange);
           return;
         }
         if (isClassicalCausativeParticipantControl(control)) {

@@ -1,17 +1,17 @@
-# Grammar OS v1.2.11 release
+# Grammar OS v1.2.12 release
 
-Release name: **Visible Choice Alternatives**
+Release name: **Predicate Nominalization Sources**
 
-Browser build: **20261022-fixed-choices-1**
+Browser build: **20261022-nominal-sources-1**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Gives a fixed selected value the same large-button presentation as editable choices.
-- Shows existing unavailable alternatives disabled beside the selected value.
-- Reveals owner-disabled singular/common/plural alternatives in fixed Number fields.
-- Preserves owner restrictions, hidden internal options, Source and explicit Make.
+- Exposes the existing nonactive formation chooser for predicate patientives, passive action and licensed instrumentives.
+- Sends the selected canonical formation to the actual passive/impersonal Source witnesses.
+- Preserves secondary-reflexive ne through VNC evaluation and authenticated nominal capture.
+- Keeps the existing Source voice restrictions and explicit Make acceptance boundary.
 
 ## Review scope and current limits
 
@@ -35,7 +35,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.11/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.12/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.

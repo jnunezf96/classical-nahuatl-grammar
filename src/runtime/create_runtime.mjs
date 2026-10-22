@@ -20,7 +20,7 @@ import { installClassicalParticleSemanticOwnersGlobals } from "../core/classical
 import { installClassicalNahuatlNuclearClauseGlobals } from "../core/classical/nuclear_clause_source.mjs?v=20260912-pronoun-features-458";
 import { installClassicalNahuatlNncLayerEvaluatorGlobals } from "../core/classical/nnc_layer_evaluator.mjs?v=20261011-reader-42-8-271";
 import { installClassicalNahuatlNominalConstructionGlobals } from "../core/classical/nominal_construction.mjs?v=20261011-reader-42-8-272&audit=20261013-source-facts-1&remaining=20261013-inventory-1&numeralVocative=20261021-1&numericTransport=20261022-1";
-import { installClassicalNahuatlDeverbalNncGlobals } from "../core/classical/nnc_lessons35_39_closure.mjs?v=20261011-reader-42-8-272&reader=41-3-214";
+import { installClassicalNahuatlDeverbalNncGlobals } from "../core/classical/nnc_lessons35_39_closure.mjs?v=20261011-reader-42-8-272&reader=41-3-214&nominalSource=20261022-1";
 import { installClassicalNahuatlClosureGlobals } from "../core/classical/adjectival_modification.mjs?v=20261011-reader-42-8-272";
 import { installClassicalNahuatlAdverbialNuclearGlobals } from "../core/classical/adverbial_nuclear_grammar.mjs?v=20261009-reader-42-6-224&exactMatrix=20261022-1";
 import { installClassicalNahuatlRelationalNncGlobals } from "../core/classical/nnc_lessons45_47_closure.mjs?v=20261009-reader-42-8-234";
@@ -69,12 +69,12 @@ import { installPreteritApiGlobals } from "../core/preterit/api.mjs?v=20260920-p
 import { installSearchRuntimeGlobals } from "../core/search/runtime.mjs?v=20260818-lesson29-groups10-12-357";
 import { installAllomorphyGlobals } from "../core/vnc/allomorphy.mjs?v=20260920-causative-policy-528";
 import { installVncFacadeGlobals } from "../core/vnc/vnc.mjs?v=20260912-inherited-vnc-metadata-457";
-import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20261010-reader-42-8-253&choices=20261013-build-constructions-2&audit=20261013-source-facts-1&sourceAdmission=20261014-3&writingSource=20261022-1";
+import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20261010-reader-42-8-253&choices=20261013-build-constructions-2&audit=20261013-source-facts-1&sourceAdmission=20261014-3&writingSource=20261022-1&nominalSource=20261022-1";
 import { installUiExportGlobals } from "../ui/export/export.mjs?v=20260818-lesson29-groups10-12-357";
 import { installUiI18nGlobals } from "../ui/i18n/i18n.mjs?v=20260818-lesson29-groups10-12-357";
 import { installUiEventsGlobals } from "../ui/events/events.mjs?v=20261009-reader-42-7-233";
 import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260912-selection-repair-447&cleanup=classical-only-20261009-1";
-import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20261011-reader-42-10-275&choices=20261013-build-constructions-2&design=lesson42-path-27&cleanup=classical-only-20261009-1&modifier=canonical-20261009-1&continuation=shared-preparation-20261009-1&repair=position-model-20261012-25&audit=20261013-source-facts-1&remaining=20261013-inventory-1&operationClear=20261014-1&makePreview=20261022-1&fixedChoices=20261022-1";
+import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20261011-reader-42-10-275&choices=20261013-build-constructions-2&design=lesson42-path-27&cleanup=classical-only-20261009-1&modifier=canonical-20261009-1&continuation=shared-preparation-20261009-1&repair=position-model-20261012-25&audit=20261013-source-facts-1&remaining=20261013-inventory-1&operationClear=20261014-1&makePreview=20261022-1&fixedChoices=20261022-1&nominalSource=20261022-1";
 import { installUiStateGlobals } from "../ui/state.mjs?v=20261001-reader-26-6-family-draft-2";
 import { installCurriculumGlobals } from "../ui/curriculum/curriculum.mjs?v=20260818-lesson29-groups10-12-357";
 import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20261011-reader-42-8-272&audit=20261013-source-facts-1&sourceAdmission=20261014-3&classDecision=20261022-1&writingSource=20261022-4";

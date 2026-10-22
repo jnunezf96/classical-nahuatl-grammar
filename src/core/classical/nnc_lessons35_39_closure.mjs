@@ -1986,6 +1986,14 @@ function lexicalAuthorizationMatchesSource(lexicalFrame = null, sourceFrame = nu
   );
 }
 
+// Translate only the authenticated VNC projection into nominal valence terms.
+// Its original voice, reflexive placement and exact object requests stay in it.
+function nominalValenceFromVncProjection(projection) {
+  return projection?.sourceValence === "multiple-object" ? "double-object"
+    : ["specific-projective", "mainline-reflexive", "shuntline-reflexive"].includes(projection?.sourceValence)
+      ? "single-object" : projection?.sourceValence;
+}
+
 function sourceObjectPatternFromVncProjection(projection = null) {
   const kinds = (projection?.sourceObjectRequests || [])
     .map(request => normalizeKey(request?.objectKind))
@@ -2427,13 +2435,7 @@ function capturePreteritVncResult(result = null, target = globalThis, sourceAnal
     });
   }
   const sourceObjectPattern = sourceObjectPatternFromVncProjection(projection);
-  const sourceValence = projection.sourceValence === "multiple-object"
-    ? "double-object"
-    : projection.sourceValence === "specific-projective"
-      ? "single-object"
-      : projection.sourceValence === "mainline-reflexive"
-        ? "single-object"
-      : projection.sourceValence;
+  const sourceValence = nominalValenceFromVncProjection(projection);
   const frame = deepFreeze({
     kind: "classical-nahuatl-preterit-vnc-nominalization-capture-frame",
     version: VERSION,
@@ -3043,10 +3045,7 @@ function buildPredicateNominalizationVncCaptureContext(result, target) {
   const predicateStem = normalizeStem(typedSlotFrame?.slots?.predicate?.stem);
   const tense = getVncResultTense(result, target);
   const sourceObjectPattern = sourceObjectPatternFromVncProjection(projection);
-  const sourceValence = projection?.sourceValence === "multiple-object"
-    ? "double-object"
-    : ["specific-projective", "mainline-reflexive"].includes(projection?.sourceValence)
-      ? "single-object" : projection?.sourceValence;
+  const sourceValence = nominalValenceFromVncProjection(projection);
   return {exactInputResult, result, projection, typedSlotFrame, predicateStem,
     tense, sourceObjectPattern, sourceValence, activationComputed: false,
     incorporatedComplementActivationFrame: null};
@@ -7889,7 +7888,9 @@ function buildPredicateNominalizationOperation(
       blockReason: "35.4-or-36.2-typed-projective-object-activation-license-required",
     };
   }
-  const reflexiveShuntline = [
+  const capturedSourceProjection = (sourceFrame.preteritVncCaptureFrame
+    || sourceFrame.predicateNominalizationVncCaptureFrame)?.continuationProjection;
+  const reflexiveShuntline = capturedSourceProjection?.sourceValence === "shuntline-reflexive" || [
     "customary-patientive",
     "instrumentive",
     "instrumentive-full",
