@@ -1,12 +1,13 @@
+import {previewConstructionPacket} from '../composition/construction_preview.mjs?v=20261022-1';
 import {isIntermediateBuildTaskReset} from '../composition/build_task_menu.mjs?v=20261021-ending-reference-2&writingSource=20261022-2';
 import { normalizeClassicalNahuatlIntroductoryModifier }
   from "../../core/classical/verbstem_classes.mjs?v=20261008-reader-40-9-190&modifier=canonical-20261009-1&quantityClass=20261022-1";
 import {createClassicalWorkspaceProvenanceProjector}
   from '../composer/result_provenance.mjs?v=20261012-position-provenance-7';
 import {resolvePathTargets, setPathHistoryPresentation} from '../composition/path_presentation.mjs?v=20261011-path-targets-7&routeShapes=20261021-1&writtenPreview=20261022-1&writingSource=20261022-1';
-import {setStructureDesignContext, setStructureComparison, projectCanonicalStructure, projectClauseStructure, projectOperationShape, compareCanonicalStructures} from '../composition/structure_design.mjs?v=20261011-structure-15&routeShapes=20261021-1&clauseCoordinate=20261021-1&resetEligibility=20261022-1&writingSource=20261022-1';
+import {setStructureDesignContext, setStructureComparison, projectCanonicalStructure, projectClauseStructure, projectOperationShape, compareCanonicalStructures} from '../composition/structure_design.mjs?v=20261011-structure-15&routeShapes=20261021-1&clauseCoordinate=20261021-1&resetEligibility=20261022-1&writingSource=20261022-1&makePreview=20261022-1';
 import {setSourceCandidatePresentation, projectSavedSourceCandidate, setRouteChoicePresentation, projectOfferedOperationShapes} from '../composition/candidate_design.mjs?v=20261021-route-shapes-1';
-import {notifyExplicitMakeResult,focusNativeChoice} from '../composition/flow_design.mjs?v=20261022-reset-eligibility-1&writingSource=20261022-1';
+import {notifyExplicitMakeResult,focusNativeChoice} from '../composition/flow_design.mjs?v=20261022-reset-eligibility-1&writingSource=20261022-1&makePreview=20261022-1';
 import {getBuildOperationGroup,getBuildOperationOrder,inventoryOptionReference,formatBuildOperationLabel} from '../composition/build_navigation_model.mjs?v=20261021-ending-reference-2';
 import {createConstructionSession} from '../composition/construction_session.mjs?v=20261012-position-12';
 import {projectConstructionValue} from '../composition/construction_position.mjs?v=20261012-position-12';
@@ -59593,6 +59594,14 @@ export function createUiRenderingApi(targetObject = globalThis) {
       renderClassicalTypedSourceCapabilityApplicationResult;
     api.applyClassicalCapabilityNavigatorSelection = applyClassicalConstructionPosition;
     api.getClassicalConstructionPosition = () => ClassicalConstructionSession.position;
+    api.previewClassicalConstructionPosition = (position = null) => {
+      if (position !== ClassicalConstructionSession.position || !position.ready
+        || position.applied || position.construction.sourcePending || !position.execution) return null;
+      const preview = previewConstructionPacket(targetObject, position.execution);
+      if (!preview?.isCurrent?.() || position !== ClassicalConstructionSession.position) return null;
+      return Object.freeze({surface: preview.surface.replace(/\p{L}/u, initial => initial.toUpperCase()),
+        isCurrent: () => position === ClassicalConstructionSession.position && preview.isCurrent()});
+    };
     api.getClassicalConstructionMoveLog = () => ClassicalConstructionSession.journal;
     api.dispatchClassicalConstructionChoice = dispatchClassicalConstructionChoice;
     api.continueClassicalCapabilityApplicationResultAsTypedSource =

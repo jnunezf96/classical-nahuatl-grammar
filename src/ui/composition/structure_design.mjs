@@ -1,4 +1,4 @@
-import {resolveDecisionFocus,resolveSourceSlotFocus,focusNativeChoice,highlightSourceDecision} from './flow_design.mjs?v=20261022-reset-eligibility-1&writingSource=20261022-1';
+import {resolveDecisionFocus,resolveSourceSlotFocus,focusNativeChoice,highlightSourceDecision} from './flow_design.mjs?v=20261022-reset-eligibility-1&writingSource=20261022-1&makePreview=20261022-1';
 import {getNativeGrammarControls} from './choice_design.mjs?v=20261022-reset-eligibility-1&writingSource=20261022-1';
 import {createCandidateDesign} from './candidate_design.mjs?v=20261021-route-shapes-1';
 // Owner-issued structures are read only. No diagram, label or DOM value is an input.

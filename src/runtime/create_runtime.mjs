@@ -1,10 +1,10 @@
 import { installClassicalNahuatlVncApplicationGlobals } from "../application/classical/vnc_application.mjs?v=20261011-reader-42-8-272&repair=position-model-20261012-24&audit=20261013-source-facts-1&caseMeta=20261013-1&admonitiveChoice=20261021-5";
 import { installClassicalNahuatlNncApplicationGlobals } from "../application/classical/nnc_application.mjs?v=20261011-reader-42-8-271&acceptedContext=20261022-1&dependentCompletion=20261022-1";
-import { installClassicalGrammarApplicationGlobals } from "../application/classical/grammar_application.mjs?v=20261012-position-raw-compound-2&audit=20261013-source-facts-1&subjectTransition=20261021-29";
+import { installClassicalGrammarApplicationGlobals } from "../application/classical/grammar_application.mjs?v=20261012-position-raw-compound-2&audit=20261013-source-facts-1&subjectTransition=20261021-29&makePreview=20261022-1";
 import { installClassicalNahuatlFormationResultBindingGlobals } from "../application/classical/formation_result_binding.mjs?v=20261011-reader-42-8-272&repair=position-model-20261011-9";
 import { installClassicalGrammarWorkspaceHistoryGlobals } from "../application/classical/grammar_workspace_history.mjs?v=20260826-interface-repairs-341&resultEditing=20261014-2";
 import { installClassicalCapabilityClosureAtlasGlobals } from "../ui/diagnostics/classical_capability_closure_atlas.mjs?v=20260920-atlas-input-count-533";
-import { installClassicalClauseRelationControllerGlobals } from "../application/classical/clause_relation_controller.mjs?v=20261011-reader-42-8-273&remaining=20261013-inventory-1&comparisonCapture=20261021-3&formalAxes=20261022-1&temporalProfiles=20261022-1";
+import { installClassicalClauseRelationControllerGlobals } from "../application/classical/clause_relation_controller.mjs?v=20261011-reader-42-8-273&remaining=20261013-inventory-1&comparisonCapture=20261021-3&formalAxes=20261022-1&temporalProfiles=20261022-1&makePreview=20261022-1";
 import { installScriptRuntimeGlobals } from "../bootstrap/script_runtime.mjs?v=20260904-ni-stock-ocr-corrections-414";
 import { installAgreementGlobals } from "../core/agreement/agreement.mjs?v=20260818-lesson29-groups10-12-357";
 import { installAgreementDisplayGlobals } from "../core/agreement/display.mjs?v=20260818-lesson29-groups10-12-357";
@@ -74,13 +74,13 @@ import { installUiExportGlobals } from "../ui/export/export.mjs?v=20260818-lesso
 import { installUiI18nGlobals } from "../ui/i18n/i18n.mjs?v=20260818-lesson29-groups10-12-357";
 import { installUiEventsGlobals } from "../ui/events/events.mjs?v=20261009-reader-42-7-233";
 import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260912-selection-repair-447&cleanup=classical-only-20261009-1";
-import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20261011-reader-42-10-275&choices=20261013-build-constructions-2&design=lesson42-path-27&cleanup=classical-only-20261009-1&modifier=canonical-20261009-1&continuation=shared-preparation-20261009-1&repair=position-model-20261012-25&audit=20261013-source-facts-1&remaining=20261013-inventory-1&operationClear=20261014-1";
+import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20261011-reader-42-10-275&choices=20261013-build-constructions-2&design=lesson42-path-27&cleanup=classical-only-20261009-1&modifier=canonical-20261009-1&continuation=shared-preparation-20261009-1&repair=position-model-20261012-25&audit=20261013-source-facts-1&remaining=20261013-inventory-1&operationClear=20261014-1&makePreview=20261022-1";
 import { installUiStateGlobals } from "../ui/state.mjs?v=20261001-reader-26-6-family-draft-2";
 import { installCurriculumGlobals } from "../ui/curriculum/curriculum.mjs?v=20260818-lesson29-groups10-12-357";
 import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20261011-reader-42-8-272&audit=20261013-source-facts-1&sourceAdmission=20261014-3&classDecision=20261022-1&writingSource=20261022-4";
 import { installLessonRegistryGlobals } from "../lessons/registry.mjs?v=20260811-lesson-route-read-only-025";
 import { installAppendixRegistryGlobals } from "../appendices/registry.mjs?v=20260818-lesson29-groups10-12-357";
-import { isRuntimeCrossModuleCapability } from "./runtime_capability_contract.mjs?v=20261011-reader-42-8-272&position=9&audit=20261013-source-facts-1&remaining=20261013-inventory-1&sourceAdmission=20261014-3&speakerReadiness=20261021-1&writingSource=20261022-1";
+import { isRuntimeCrossModuleCapability } from "./runtime_capability_contract.mjs?v=20261011-reader-42-8-272&position=9&audit=20261013-source-facts-1&remaining=20261013-inventory-1&sourceAdmission=20261014-3&speakerReadiness=20261021-1&writingSource=20261022-1&makePreview=20261022-1";
 
 export const RUNTIME_INSTALLERS = new Map([
     ["src/core/grammar/frame.mjs", installGrammarFrameGlobals],

@@ -2,6 +2,15 @@
 
 User-facing release notes for Classical Nahuatl Grammar.
 
+## Version 1.2.10 — Pending Result Preview
+
+Released October 22, 2026.
+
+- Adds a pending form beside Make Result, with the same waiting circle used at startup.
+- Keeps previews separate from accepted Results, History and continuation authority.
+- Leaves Make usable after repeated previews and discards stale generated previews.
+- Holds unsupported preview paths without preventing explicit Make.
+
 ## Version 1.2.9 — Action Intent Icons
 
 Released October 22, 2026.

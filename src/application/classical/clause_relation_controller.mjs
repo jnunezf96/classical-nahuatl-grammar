@@ -5669,7 +5669,7 @@ export function createClassicalClauseRelationControllerGlobals(
         ? source : null;
     }
 
-    function composeSupplementationRelation(contract = null) {
+    function composeSupplementationRelation(contract = null, previewOnly = false, previewLeases = []) {
       if (
         typeof targetObject.executeClassicalGrammarApplicationRequest
           !== "function"
@@ -5688,14 +5688,13 @@ export function createClassicalClauseRelationControllerGlobals(
         const exactCapturedResults = CAPTURE_ROLES
           .map(role => getValidatedCapture(role)?.canonicalResult || null)
           .filter(Boolean);
-        const applicationResult =
-          targetObject.executeClassicalGrammarApplicationRequest({
-            operationId: "sentence:supplementation",
-            args: [request, ...exactCapturedResults],
-          });
-        return targetObject.isClassicalGrammarApplicationResult(
-          applicationResult
-        )
+        const applicationRequest = {operationId: "sentence:supplementation", args: [request, ...exactCapturedResults]};
+        const applicationResult = previewOnly
+          ? targetObject.previewClassicalGrammarApplicationRequest?.(applicationRequest)
+          : targetObject.executeClassicalGrammarApplicationRequest(applicationRequest);
+        if (previewOnly && applicationResult) previewLeases.push(applicationResult);
+        return (previewOnly ? targetObject.isClassicalGrammarApplicationPreview?.(applicationResult)
+          : targetObject.isClassicalGrammarApplicationResult(applicationResult))
           ? applicationResult
           : null;
       };
@@ -6231,7 +6230,19 @@ export function createClassicalClauseRelationControllerGlobals(
       });
     }
 
-    function compose(selections = {}) {
+    function compose(selections = {}, previewOnly = false, previewLeases = []) {
+      const requestPreviewOwner = (operationId, request) => {
+        if (!previewOnly) {
+          const capability = {"clause:composition": "requestClassicalClauseCompositionResult",
+            "clause:comparison": "requestClassicalComparisonResult",
+            "nnc:adjectival-modification": "requestClassicalAdjectivalModificationResult",
+            "clause:adverbial-adjunction": "requestClassicalAdverbialAdjunctionResult"}[operationId];
+          return targetObject[capability](request);
+        }
+        const lease = targetObject.previewClassicalGrammarApplicationRequest?.({operationId, args: [request]});
+        if (targetObject.isClassicalGrammarApplicationPreview?.(lease) !== true) return null;
+        previewLeases.push(lease);return lease.canonicalResult;
+      };
       const contract = buildDecisionContract(selections);
       if (contract.authorizationStatus !== "authorized") {
         return Object.freeze({
@@ -6248,7 +6259,7 @@ export function createClassicalClauseRelationControllerGlobals(
         });
       }
       if (SUPPLEMENTATION_RELATIONS.includes(contract.relation)) {
-        return composeSupplementationRelation(contract);
+        return composeSupplementationRelation(contract, previewOnly, previewLeases);
       }
       if (COMPLEMENT_OPERATION_KINDS.includes(contract.relation)) {
         if (
@@ -6276,7 +6287,7 @@ export function createClassicalClauseRelationControllerGlobals(
           options,
         };
         const canonicalResult =
-          targetObject.requestClassicalClauseCompositionResult(request);
+          requestPreviewOwner("clause:composition", request);
         const authorized = Boolean(
           targetObject.isClassicalNahuatlClauseComplementationResultFrame(canonicalResult)
           && canonicalResult.authorizationStatus === "authorized",
@@ -6336,7 +6347,7 @@ export function createClassicalClauseRelationControllerGlobals(
           },
         };
         const canonicalResult =
-          targetObject.requestClassicalClauseCompositionResult(request);
+          requestPreviewOwner("clause:composition", request);
         const authorized = Boolean(
           targetObject.isClassicalNahuatlClauseConjunctionResultFrame(canonicalResult)
           && canonicalResult.authorizationStatus === "authorized",
@@ -6369,7 +6380,7 @@ export function createClassicalClauseRelationControllerGlobals(
         }
         const request = buildComparisonOperationRequest(contract);
         const canonicalResult =
-          targetObject.requestClassicalComparisonResult(request);
+          requestPreviewOwner("clause:comparison", request);
         const authorized = Boolean(
           targetObject.isClassicalComparisonResultFrame(canonicalResult)
           && canonicalResult.authorizationStatus === "authorized",
@@ -6456,7 +6467,7 @@ export function createClassicalClauseRelationControllerGlobals(
           request.interveningClauses = [dependentCapture.canonicalResult];
         }
         const canonicalResult =
-          targetObject.requestClassicalAdjectivalModificationResult(request);
+          requestPreviewOwner("nnc:adjectival-modification", request);
         const authorized = Boolean(
           targetObject.isClassicalNahuatlResultFrame(
             canonicalResult,
@@ -6548,9 +6559,7 @@ export function createClassicalClauseRelationControllerGlobals(
       ) {
         request.contrast = "adverbial-modification";
       }
-      const canonicalResult = targetObject.requestClassicalAdverbialAdjunctionResult(
-        request,
-      );
+      const canonicalResult = requestPreviewOwner("clause:adverbial-adjunction", request);
       const authorized = Boolean(
         canonicalResult
         && canonicalResult.ok !== false
@@ -6600,6 +6609,16 @@ export function createClassicalClauseRelationControllerGlobals(
       issueRelationAvailabilityContract,
       isRelationAvailabilityContract,
       buildDecisionContract,
+      preview(selections = {}) {
+        const parents = CAPTURE_ROLES.map(role => [role, getValidatedCapture(role)?.canonicalResult || null]);
+        const leases = [], result = compose(selections, true, leases);
+        if (result?.authorizationStatus !== "authorized" || !leases.length) return null;
+        const exact = result.canonicalResult;
+        const surface = result.presentation?.surface || exact?.sentenceSurfaceDisplay || exact?.surfaceRealization || exact?.surface || "";
+        return Object.freeze({surface, canonicalResult: exact, isCurrent: () =>
+          parents.every(([role, parent]) => (getValidatedCapture(role)?.canonicalResult || null) === parent)
+          && leases.every(lease => targetObject.isClassicalGrammarApplicationPreview?.(lease) === true)});
+      },
       compose,
     });
   }

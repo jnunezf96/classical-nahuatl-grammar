@@ -1,17 +1,17 @@
-# Grammar OS v1.2.9 release
+# Grammar OS v1.2.10 release
 
-Release name: **Action Intent Icons**
+Release name: **Pending Result Preview**
 
-Browser build: **20261022-action-intentions-1**
+Browser build: **20261022-make-preview-1**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Adds incoming-arrow icons to Use this Source, sliders to Operation, and linked arrows to Continue Result.
-- Shows a play icon for Make, a check for Applied, and the relevant Source/Build cue while prerequisites are pending.
-- Uses a pencil for Change and Edit Writing Source.
-- Retains text labels, native choices, keyboard interaction and explicit Source/Make actions.
+- Shows the pending form beside Make Result as choices change.
+- Reuses the initial loading circle while generating the preview.
+- Preserves the accepted Result and History until explicit Make Result.
+- Shows Preview unavailable for unsupported preview paths, including nested part rebuilding.
 
 ## Review scope and current limits
 
@@ -35,7 +35,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.9/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.10/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.

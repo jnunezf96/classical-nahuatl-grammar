@@ -1,4 +1,4 @@
-import {createFlowDesign} from './flow_design.mjs?v=20261022-reset-eligibility-1&writingSource=20261022-1';
+import {createFlowDesign} from './flow_design.mjs?v=20261022-reset-eligibility-1&writingSource=20261022-1&makePreview=20261022-1';
 import {createLiveDesign} from './live_design.mjs?v=20261008-apple-panel-navigation-7';
 import {createGrammarPresentation} from './grammar_presentation.mjs?v=20261014-construction-click-1&choicesLayout=20261014-4&ownerPresentation=20261021-2';
 import {createWorkspacePresentation} from './workspace_presentation.mjs?v=20261008-apple-workspace-4';
@@ -6,7 +6,7 @@ import {createWorkspacePresentation} from './workspace_presentation.mjs?v=202610
 import {createResultInformation} from './result_information.mjs?v=20261011-result-custody-4&reader=42-6-227&journeyOrganization=20261019-1&writingSource=20261022-1';
 import {createPathPresentation} from './path_presentation.mjs?v=20261011-path-targets-7&routeShapes=20261021-1&writtenPreview=20261022-1&writingSource=20261022-1';
 import {createRouteDesign} from './route_design.mjs?v=20261014-task-menu-1&routeShapes=20261021-1';
-import {createStructureDesign,readStructureDesignContext} from './structure_design.mjs?v=20261011-structure-14&routeShapes=20261021-1&clauseCoordinate=20261021-1&resetEligibility=20261022-1&writingSource=20261022-1';
+import {createStructureDesign,readStructureDesignContext} from './structure_design.mjs?v=20261011-structure-14&routeShapes=20261021-1&clauseCoordinate=20261021-1&resetEligibility=20261022-1&writingSource=20261022-1&makePreview=20261022-1';
 import {createChoiceDesign} from './choice_design.mjs?v=20261022-reset-eligibility-1&writingSource=20261022-1';
 import {createWorkspaceOrganization} from './workspace_organization.mjs?v=20261014-task-menu-1&choicesLayout=20261014-4&objectsPlacement=20261014-1&ownerOrganization=20261021-4';
 import {createBuildConstructionPresentation} from './build_constructions.mjs?v=20261014-construction-click-1&choicesLayout=20261014-4';

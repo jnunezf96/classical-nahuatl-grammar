@@ -3538,6 +3538,7 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
   ]));
   const issuedApplicationResults = new WeakSet();
   const preparedAttitudeResults = new WeakMap();
+  const applicationPreviews = new WeakMap();
   const issuedCanonicalResults = new WeakSet();
   const issuedApplicationResultByCanonicalResult = new WeakMap();
   const issuedContinuationResults = new WeakSet();
@@ -8155,6 +8156,39 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
       && frame.ownerBindingFrame.executionArgs.length === 0;
   }
 
+  function getTypedSourceExecutionRequest(frame) {
+    const context = typedSourceOperationBindingContextByFrame.get(frame);
+    if (!context) return null;
+    const mode = context.contract.bindingMode;
+    const nnc = canonicalNncTypedSourceOwnerBindingContextByFrame.get(frame.ownerBindingFrame);
+    const particle = canonicalParticleRootOwnerBindingContextByFrame.get(frame.ownerBindingFrame);
+    const argumentFamilies = ["attested-nnc-cell", "attested-place", "attested-principal-collocation",
+      "quantitative-predicate", "relational-nnc-source", "bound-nominal-denominal",
+      "place-nominal-source", "lexicalized-nnc-source", "transcription-source"];
+    return {operationId: frame.executionOperationId, args: mode === "canonical-particle-root"
+      ? [particle?.exactParticleSourceFrame] : mode === "canonical-nnc-operation"
+        ? [frame.exactSource, nnc?.exactOperationFrame] : argumentFamilies.includes(context.contract.family)
+          ? [...frame.ownerBindingFrame.executionArgs] : [frame.ownerBindingFrame]};
+  }
+
+  function previewClassicalGrammarTypedSourceOperationBindingFrame(frame = null) {
+    if (!isClassicalGrammarTypedSourceOperationBindingFrame(frame) || frame.bindingStatus !== "ready") return null;
+    // A few canonical owners consume their binding on evaluation. Reissue an
+    // isolated owner binding for inspection; the live Make binding stays unused.
+    const bindingContext = typedSourceOperationBindingContextByFrame.get(frame);
+    const inspection = bindingContext.contract.bindingMode === "canonical-owner-binding"
+      ? issueClassicalGrammarTypedSourceOperationBindingFrame(frame.navigator, frame.operationId, frame.callerSelections)
+      : frame;
+    if (!isClassicalGrammarTypedSourceOperationBindingFrame(inspection) || inspection.bindingStatus !== "ready"
+      || inspection.exactSource !== frame.exactSource
+      || (bindingContext.contract.bindingMode === "canonical-owner-binding"
+        && (inspection === frame || inspection.ownerBindingFrame === frame.ownerBindingFrame))) return null;
+    const preview = previewClassicalGrammarApplicationRequest(getTypedSourceExecutionRequest(inspection));
+    const context = applicationPreviews.get(preview);
+    if (context) context.binding = frame;
+    return preview;
+  }
+
   function executeClassicalGrammarTypedSourceOperationBindingFrame(
     frame = null,
   ) {
@@ -9366,6 +9400,52 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
 
   function discardClassicalGrammarPreparedApplicationRequest(prepared = null) {
     return preparedAttitudeResults.delete(prepared);
+  }
+
+  // Preview invokes the same canonical owner, but grants no application,
+  // continuation or acceptance authority. Opaque parent frames stay exact.
+  function previewClassicalGrammarApplicationRequest(request = {}, prepared = null) {
+    try {
+      const validated = validateClassicalGrammarApplicationRequest(request);
+      const {operationId, outputKind, outputContract, args} = validated;
+      const capability = resolveCanonicalCallableCapability(targetObject, outputContract.capabilityName, api);
+      if (!getCanonicalApplicationState(targetObject, api) || !capability
+        || !validated.typedApplicationRequest || !validated.semanticOperationIdentity
+        || !validated.authorityCarrierClear
+        || getApplicationOutputPrerequisiteBlockReason(operationId, outputKind, args)) return null;
+      const preparation = preparedAttitudeResults.get(prepared);
+      if (prepared && (!preparation || preparation.request !== request || preparation.capability !== capability.capability)) return null;
+      const exact = preparation?.canonicalResult || Reflect.apply(capability.capability, targetObject, args);
+      if (getClassicalVisibleSurfaceViolation(exact)
+        || !isRecognizedCanonicalResult(operationId, outputKind, outputContract, exact)
+        || getCanonicalResultAuthorizationStatus(exact) !== "authorized") return null;
+      const writing = buildClassicalLesson2WritingOutputs(exact, operationId, outputKind, targetObject, args);
+      const pass = buildClassicalLesson2WritingPass(writing);
+      if (pass.required && !pass.entered) return null;
+      const nested = exact.resultFrame || {};
+      const surface = [exact.sentenceSurfaceDisplay, exact.sentenceSurface, exact.surface, exact.surfaceRealization,
+        exact.wordSurface, exact.wordRealization, exact.canonicalNuclearSurface, exact.nuclearSurface,
+        nested.sentenceSurfaceDisplay, nested.sentenceSurface, nested.surface, nested.surfaceRealization,
+        nested.wordSurface, nested.wordRealization, writing.find(output => output.writtenResult)?.writtenResult?.surface]
+        .find(value => typeof value === "string" && value.trim()) || "";
+      const preview = Object.freeze({kind: "classical-grammar-application-preview", version: 1,
+        operationId, authorizationStatus: "authorized", canonicalResult: exact, surface,
+        grammarAuthority: false, acceptanceAuthority: false});
+      applicationPreviews.set(preview, {request, validated, capability: capability.capability, exact});
+      return preview;
+    } catch { return null; }
+  }
+
+  function isClassicalGrammarApplicationPreview(preview = null) {
+    const context = applicationPreviews.get(preview);
+    if (!context || preview.canonicalResult !== context.exact) return false;
+    const {operationId, outputKind, outputContract, args} = context.validated;
+    const capability = resolveCanonicalCallableCapability(targetObject, outputContract.capabilityName, api);
+    return Boolean(capability?.capability === context.capability
+      && (!context.binding || isClassicalGrammarTypedSourceOperationBindingFrame(context.binding))
+      && !getApplicationOutputPrerequisiteBlockReason(operationId, outputKind, args)
+      && isRecognizedCanonicalResult(operationId, outputKind, outputContract, context.exact)
+      && getCanonicalResultAuthorizationStatus(context.exact) === "authorized");
   }
 
   function executeClassicalGrammarApplicationRequest(request = {}, prepared = null) {
@@ -10773,6 +10853,9 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
     isClassicalGrammarApplicationAtlasObservation,
     subscribeClassicalGrammarApplicationAtlasObservations,
     executeClassicalGrammarApplicationRequest,
+    previewClassicalGrammarApplicationRequest,
+    previewClassicalGrammarTypedSourceOperationBindingFrame,
+    isClassicalGrammarApplicationPreview,
     prepareClassicalGrammarApplicationRequest,
     discardClassicalGrammarPreparedApplicationRequest,
     isClassicalGrammarApplicationResult,

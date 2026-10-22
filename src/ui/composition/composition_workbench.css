@@ -1148,3 +1148,16 @@ body.is-language-classical #classical-workbench #classical-capability-apply-oper
 body.is-language-classical #classical-workbench #classical-capability-apply-operation[data-classical-capability-apply-state="needs-choices"] {
   --recurring-action-icon:var(--intent-build-icon);
 }
+
+/* Pending writing is inspectable beside the one explicit Make action. */
+body.is-language-classical #classical-workbench .composition-make-preview {
+  display:inline-flex;align-items:center;justify-content:flex-end;gap:7px;
+  min-width:0;max-width:28ch;font-size:13px;line-height:1.4;
+}
+body.is-language-classical #classical-workbench .composition-make-preview__label {font-size:11px;color:#53665b;flex:none}
+body.is-language-classical #classical-workbench .composition-make-preview__form {overflow-wrap:anywhere}
+body.is-language-classical #classical-workbench .composition-make-preview[hidden],
+body.is-language-classical #classical-workbench .composition-make-preview [hidden] {display:none!important}
+@media(max-width:600px){
+  body.is-language-classical #classical-workbench .composition-make-preview {grid-column:1;grid-row:2;justify-content:flex-start;max-width:none}
+}

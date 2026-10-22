@@ -1,10 +1,10 @@
 import {createResultEditSelection} from './result_editing.mjs?v=20261014-result-edit-3';
 import {createResultActions} from './result_actions.mjs?v=20261014-result-edit-3&journeyOrganization=20261019-1&presentation=20261019-1';
-import {focusNativeChoice} from './flow_design.mjs?v=20261022-reset-eligibility-1&writingSource=20261022-1';
+import {focusNativeChoice} from './flow_design.mjs?v=20261022-reset-eligibility-1&writingSource=20261022-1&makePreview=20261022-1';
 import {installInterfaceTool} from '../interface/interface_runtime.mjs?v=20261012-interface-tool-3';
-import {createCompositionPresentation} from './composition_presentation.mjs?v=20261014-task-menu-1&choicesLayout=20261014-4&objectsPlacement=20261014-1&journeyOrganization=20261019-1&presentation=20261019-1&routeShapes=20261021-1&ownerPresentation=20261021-12';
+import {createCompositionPresentation} from './composition_presentation.mjs?v=20261014-task-menu-1&choicesLayout=20261014-4&objectsPlacement=20261014-1&journeyOrganization=20261019-1&presentation=20261019-1&routeShapes=20261021-1&ownerPresentation=20261021-12&makePreview=20261022-1';
 import {loadWorkspaceOrganization,DEFAULT_WORKSPACE_ORGANIZATION} from './workspace_organization_model.mjs?v=20261013-canvas-workspace-1&choicesLayout=20261014-4';
-import {bootstrapPromise} from '../../browser/main.mjs?v=20261022-action-intentions-1';
+import {bootstrapPromise} from '../../browser/main.mjs?v=20261022-make-preview-1';
 // Main workbench presentation. Native handlers and exact owner-issued identities
 // remain authoritative; this module never generates grammatical forms.
 async function initializeCompositionWorkbench() {

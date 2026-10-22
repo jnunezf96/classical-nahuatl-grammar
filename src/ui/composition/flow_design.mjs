@@ -1,3 +1,4 @@
+import {createMakePreview} from './make_preview.mjs?v=20261022-1';
 import {getNativeGrammarControls,getPendingChoiceControls} from './choice_design.mjs?v=20261022-reset-eligibility-1&writingSource=20261022-1';
 // Navigation and layout only. The one native Make element keeps its handler.
 const key=control=>control.id || (control.dataset.classicalCapabilityChoiceId?`owner-choice:${control.dataset.classicalCapabilityChoiceId}`:`clause-choice:${control.dataset.classicalClauseRelationDecision}`);
@@ -58,6 +59,7 @@ export function highlightSourceDecision(doc,target) {
   }
 }
 export function createFlowDesign(doc,read=()=>null) {
+  const refreshMakePreview=createMakePreview(doc);
   const write=(node,value)=>{if(node.textContent!==value)node.textContent=value;};
   const arrival=createResultArrivalTracker();let cueTimer=null;
   makeReceivers.set(doc.getElementById('classical-workbench'),(before,after)=>{
@@ -114,6 +116,7 @@ export function createFlowDesign(doc,read=()=>null) {
       }));
     }
     if(!count)closePending(false);
+    refreshMakePreview();
     const height=`${Math.ceil(nav.getBoundingClientRect().height)+12}px`;
     if(root.style.getPropertyValue('--composition-nav-offset')!==height)root.style.setProperty('--composition-nav-offset',height);
   };
