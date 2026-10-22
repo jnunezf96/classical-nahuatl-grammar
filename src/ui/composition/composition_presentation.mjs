@@ -8,7 +8,7 @@ import {createPathPresentation} from './path_presentation.mjs?v=20261011-path-ta
 import {createRouteDesign} from './route_design.mjs?v=20261014-task-menu-1&routeShapes=20261021-1';
 import {createStructureDesign,readStructureDesignContext} from './structure_design.mjs?v=20261011-structure-14&routeShapes=20261021-1&clauseCoordinate=20261021-1&resetEligibility=20261022-1&writingSource=20261022-1&makePreview=20261022-1&fixedChoices=20261022-1';
 import {createChoiceDesign} from './choice_design.mjs?v=20261022-reset-eligibility-1&writingSource=20261022-1&fixedChoices=20261022-1';
-import {createWorkspaceOrganization} from './workspace_organization.mjs?v=20261014-task-menu-1&choicesLayout=20261014-4&objectsPlacement=20261014-1&ownerOrganization=20261021-4';
+import {createWorkspaceOrganization} from './workspace_organization.mjs?v=20261014-task-menu-1&choicesLayout=20261014-4&objectsPlacement=20261014-1&ownerOrganization=20261021-4&startupDelivery=20261022-1';
 import {createBuildConstructionPresentation} from './build_constructions.mjs?v=20261014-construction-click-1&choicesLayout=20261014-4';
 import {createBuildNavigation} from './build_navigation.mjs?v=20261021-ending-reference-2&writingSource=20261022-2&fixedChoices=20261022-1';
 

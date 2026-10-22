@@ -5837,10 +5837,13 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
       return true;
     }
     function ClassicalFooter() {
+      const version=String(targetObject.document.getElementById("classical-workbench")
+        ?.dataset?.classicalGrammarOsVersion || "");
+      const release=/^\d+\.\d+\.\d+$/.test(version)?` v${version}`:"";
       return `      <footer>
             <p><span id="copyright-label">Copyright © 2026 Jaime Núñez</span></p>
             <p>Thanks to Sigfredo Olmedo</p>
-            <p><a href="privacy.html">Privacy</a> · <a href=".well-known/security.txt">Security</a> · Grammar OS v1.2.9</p>
+            <p><a href="privacy.html">Privacy</a> · <a href=".well-known/security.txt">Security</a> · Grammar OS${release}</p>
           </footer>
     `;
     }

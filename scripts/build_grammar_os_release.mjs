@@ -1,3 +1,4 @@
+import {checkStartupData} from "./sync_startup_data.mjs";
 import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
 import fs from "node:fs/promises";
@@ -92,6 +93,7 @@ export async function assertGrammarOsReleaseSourceReady() {
 
 export async function buildGrammarOsRelease({ outputRoot = "" } = {}) {
   await assertGrammarOsReleaseSourceReady();
+  await checkStartupData();
   const packageJson = JSON.parse(await fs.readFile(path.join(WEB_ROOT, "package.json"), "utf8"));
   const indexSource = await fs.readFile(path.join(WEB_ROOT, "index.html"), "utf8");
   const version = meta(indexSource, "classical-grammar-os-version");

@@ -1,3 +1,4 @@
+import {getEmbeddedStartupData} from "../../bootstrap/startup_data.mjs?v=20261022-startup-1";
 const GROUPS=['material','formation','participants','clause-settings','sentence-relationships','existing-choices'];
 const VOCABULARY=['material','materialHeading','build','sentence','history','diagnostics'];
 const SECTIONS={vnc:['verbstem','subject','valence','tense','sentence'],nnc:['state','nounstem','predicate','subject','sentence']};
@@ -29,7 +30,9 @@ export function validateWorkspaceOrganization(model){
   return {version:1,vocabulary,groups,choiceGroups:bindings(model.choiceGroups),clauseDecisionGroups:bindings(model.clauseDecisionGroups),nativeFields:bindings(model.nativeFields||{}),nativeSections};
 }
 
-export async function loadWorkspaceOrganization(doc){
+export async function loadWorkspaceOrganization(doc,{reload=false}={}){
+  const embedded=getEmbeddedStartupData(doc,"data/interface_organization.json");
+  if(!reload&&embedded!==undefined)return validateWorkspaceOrganization(embedded);
   const response=await doc.defaultView.fetch(new URL('../../../data/interface_organization.json',import.meta.url),{cache:'no-store'});
   if(!response.ok)throw new Error(`Organization model load failed: HTTP ${response.status}`);
   return validateWorkspaceOrganization(await response.json());

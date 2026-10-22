@@ -1,5 +1,7 @@
-import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20261008-apple-operation-gate-2&choices=20261013-build-constructions-2&design=lesson42-path-27&loading=1&panel=33&reader=42-10-275&cleanup=classical-only-20261009-1&modifier=canonical-20261009-1&continuation=shared-preparation-20261009-1&repair=position-model-20261012-25&audit=20261013-source-facts-1&remaining=20261013-inventory-1&caseMeta=20261013-1&navigation=20261014-1&placement=20261014-1&operationMenu=20261014-2&choicesLayout=20261014-4&exampleMirror=20261014-1&resultEditing=20261014-8&pickerTransport=20261014-1&sourceAdmission=20261014-3&operationClear=20261014-1&routeShapes=20261021-1&subjectTransition=20261021-29&makePreview=20261022-1&fixedChoices=20261022-1&nominalSource=20261022-1";
+import {activateDeferredFonts} from "./deferred_fonts.mjs?v=20261022-startup-1";
+import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20261008-apple-operation-gate-2&choices=20261013-build-constructions-2&design=lesson42-path-27&loading=1&panel=33&reader=42-10-275&cleanup=classical-only-20261009-1&modifier=canonical-20261009-1&continuation=shared-preparation-20261009-1&repair=position-model-20261012-25&audit=20261013-source-facts-1&remaining=20261013-inventory-1&caseMeta=20261013-1&navigation=20261014-1&placement=20261014-1&operationMenu=20261014-2&choicesLayout=20261014-4&exampleMirror=20261014-1&resultEditing=20261014-8&pickerTransport=20261014-1&sourceAdmission=20261014-3&operationClear=20261014-1&routeShapes=20261021-1&subjectTransition=20261021-29&makePreview=20261022-1&fixedChoices=20261022-1&nominalSource=20261022-1&startupDelivery=20261022-1";
 
+if (typeof document !== "undefined") activateDeferredFonts(document);
 const bootstrapPromise = bootstrapBrowserApp();
 
 export function getClassicalSgrMaterialDeliverySnapshot(
@@ -24,6 +26,7 @@ function publishBootstrapStatus(status, error = null) {
     document.documentElement.dataset.classicalBootstrapStatus = status;
     const presentationReady = document.documentElement.dataset.classicalPresentationStatus === "ready";
     const waitingForPresentation = status === "ready" && !presentationReady;
+    document.documentElement.dataset.classicalBootstrapPhase = waitingForPresentation ? "presentation" : status;
     const workbench = document.getElementById("classical-workbench");
     if (workbench) {
         if (status === "ready" && presentationReady) {

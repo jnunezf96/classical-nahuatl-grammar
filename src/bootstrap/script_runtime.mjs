@@ -1,6 +1,15 @@
+import {getEmbeddedStartupData} from "./startup_data.mjs?v=20261022-startup-1";
 // Canonical modern ESM module.
 
 export function createScriptRuntimeApi(targetObject = globalThis) {
+    async function loadStartupJson(path) {
+      const embedded=getEmbeddedStartupData(targetObject.document,path);
+      if(embedded!==undefined)return embedded;
+      const response=await targetObject.fetch(path,{cache:"no-store"});
+      if(!response.ok)throw new Error(`Failed to load ${path}: ${response.status}`);
+      return response.json();
+    }
+
     // === Configuration ===
     var SPECIFIC_VALENCE_PREFIXES = [];
     var NONSPECIFIC_VALENCE_PREFIXES = [];
@@ -161,13 +170,7 @@ export function createScriptRuntimeApi(targetObject = globalThis) {
         return false;
       }
       try {
-        const response = await targetObject.fetch(STATIC_LABELS_PATH, {
-          cache: "no-store"
-        });
-        if (!response.ok) {
-          throw new Error(`Failed to load ${STATIC_LABELS_PATH}: ${response.status}`);
-        }
-        const data = await response.json();
+        const data = await loadStartupJson(STATIC_LABELS_PATH);
         applyStaticLabels(data);
         return true;
       } catch (error) {
@@ -180,13 +183,7 @@ export function createScriptRuntimeApi(targetObject = globalThis) {
         return false;
       }
       try {
-        const response = await targetObject.fetch(STATIC_DERIVATIONAL_RULES_PATH, {
-          cache: "no-store"
-        });
-        if (!response.ok) {
-          throw new Error(`Failed to load ${STATIC_DERIVATIONAL_RULES_PATH}: ${response.status}`);
-        }
-        const data = await response.json();
+        const data = await loadStartupJson(STATIC_DERIVATIONAL_RULES_PATH);
         applyStaticDerivationalRules(data);
         return true;
       } catch (error) {
@@ -199,13 +196,7 @@ export function createScriptRuntimeApi(targetObject = globalThis) {
         return false;
       }
       try {
-        const response = await targetObject.fetch(STATIC_VALENCE_NEUTRAL_PATH, {
-          cache: "no-store"
-        });
-        if (!response.ok) {
-          throw new Error(`Failed to load ${STATIC_VALENCE_NEUTRAL_PATH}: ${response.status}`);
-        }
-        const data = await response.json();
+        const data = await loadStartupJson(STATIC_VALENCE_NEUTRAL_PATH);
         applyStaticValenceNeutral(data);
         return true;
       } catch (error) {
@@ -307,13 +298,7 @@ export function createScriptRuntimeApi(targetObject = globalThis) {
         return false;
       }
       try {
-        const response = await targetObject.fetch(STATIC_OPTIONS_PATH, {
-          cache: "no-store"
-        });
-        if (!response.ok) {
-          throw new Error(`Failed to load ${STATIC_OPTIONS_PATH}: ${response.status}`);
-        }
-        const data = await response.json();
+        const data = await loadStartupJson(STATIC_OPTIONS_PATH);
         applyStaticOptions(data);
         return true;
       } catch (error) {
@@ -348,13 +333,7 @@ export function createScriptRuntimeApi(targetObject = globalThis) {
         return false;
       }
       try {
-        const response = await targetObject.fetch(STATIC_GROUPS_PATH, {
-          cache: "no-store"
-        });
-        if (!response.ok) {
-          throw new Error(`Failed to load ${STATIC_GROUPS_PATH}: ${response.status}`);
-        }
-        const data = await response.json();
+        const data = await loadStartupJson(STATIC_GROUPS_PATH);
         applyStaticGroups(data);
         return true;
       } catch (error) {
@@ -384,13 +363,7 @@ export function createScriptRuntimeApi(targetObject = globalThis) {
         return false;
       }
       try {
-        const response = await targetObject.fetch(STATIC_ORDERS_PATH, {
-          cache: "no-store"
-        });
-        if (!response.ok) {
-          throw new Error(`Failed to load ${STATIC_ORDERS_PATH}: ${response.status}`);
-        }
-        const data = await response.json();
+        const data = await loadStartupJson(STATIC_ORDERS_PATH);
         applyStaticOrders(data);
         return true;
       } catch (error) {
@@ -424,13 +397,7 @@ export function createScriptRuntimeApi(targetObject = globalThis) {
         return false;
       }
       try {
-        const response = await targetObject.fetch(STATIC_RULES_PATH, {
-          cache: "no-store"
-        });
-        if (!response.ok) {
-          throw new Error(`Failed to load ${STATIC_RULES_PATH}: ${response.status}`);
-        }
-        const data = await response.json();
+        const data = await loadStartupJson(STATIC_RULES_PATH);
         applyStaticRules(data);
         return true;
       } catch (error) {
@@ -502,13 +469,7 @@ export function createScriptRuntimeApi(targetObject = globalThis) {
         return false;
       }
       try {
-        const response = await targetObject.fetch(STATIC_DIRECTIONAL_RULES_PATH, {
-          cache: "no-store"
-        });
-        if (!response.ok) {
-          throw new Error(`Failed to load ${STATIC_DIRECTIONAL_RULES_PATH}: ${response.status}`);
-        }
-        const data = await response.json();
+        const data = await loadStartupJson(STATIC_DIRECTIONAL_RULES_PATH);
         applyStaticDirectionalRules(data);
         return true;
       } catch (error) {
@@ -543,13 +504,7 @@ export function createScriptRuntimeApi(targetObject = globalThis) {
         return false;
       }
       try {
-        const response = await targetObject.fetch(STATIC_ALLOMORPHY_RULES_PATH, {
-          cache: "no-store"
-        });
-        if (!response.ok) {
-          throw new Error(`Failed to load ${STATIC_ALLOMORPHY_RULES_PATH}: ${response.status}`);
-        }
-        const data = await response.json();
+        const data = await loadStartupJson(STATIC_ALLOMORPHY_RULES_PATH);
         applyStaticAllomorphyRules(data);
         return true;
       } catch (error) {
@@ -591,13 +546,7 @@ export function createScriptRuntimeApi(targetObject = globalThis) {
         return false;
       }
       try {
-        const response = await targetObject.fetch(STATIC_PHONOLOGY_PATH, {
-          cache: "no-store"
-        });
-        if (!response.ok) {
-          throw new Error(`Failed to load ${STATIC_PHONOLOGY_PATH}: ${response.status}`);
-        }
-        const data = await response.json();
+        const data = await loadStartupJson(STATIC_PHONOLOGY_PATH);
         applyStaticPhonology(data);
         return true;
       } catch (error) {
@@ -676,13 +625,7 @@ export function createScriptRuntimeApi(targetObject = globalThis) {
         return false;
       }
       try {
-        const response = await targetObject.fetch(STATIC_MODES_PATH, {
-          cache: "no-store"
-        });
-        if (!response.ok) {
-          throw new Error(`Failed to load ${STATIC_MODES_PATH}: ${response.status}`);
-        }
-        const data = await response.json();
+        const data = await loadStartupJson(STATIC_MODES_PATH);
         applyStaticModes(data);
         return true;
       } catch (error) {
@@ -709,13 +652,7 @@ export function createScriptRuntimeApi(targetObject = globalThis) {
         return false;
       }
       try {
-        const response = await targetObject.fetch(STATIC_MISC_PATH, {
-          cache: "no-store"
-        });
-        if (!response.ok) {
-          throw new Error(`Failed to load ${STATIC_MISC_PATH}: ${response.status}`);
-        }
-        const data = await response.json();
+        const data = await loadStartupJson(STATIC_MISC_PATH);
         applyStaticMisc(data);
         return true;
       } catch (error) {
@@ -736,13 +673,7 @@ export function createScriptRuntimeApi(targetObject = globalThis) {
         return false;
       }
       try {
-        const response = await targetObject.fetch(STATIC_REDUP_PATH, {
-          cache: "no-store"
-        });
-        if (!response.ok) {
-          throw new Error(`Failed to load ${STATIC_REDUP_PATH}: ${response.status}`);
-        }
-        const data = await response.json();
+        const data = await loadStartupJson(STATIC_REDUP_PATH);
         applyStaticRedup(data);
         return true;
       } catch (error) {
@@ -812,13 +743,7 @@ export function createScriptRuntimeApi(targetObject = globalThis) {
         return false;
       }
       try {
-        const response = await targetObject.fetch(STATIC_CONSTANTS_PATH, {
-          cache: "no-store"
-        });
-        if (!response.ok) {
-          throw new Error(`Failed to load ${STATIC_CONSTANTS_PATH}: ${response.status}`);
-        }
-        const data = await response.json();
+        const data = await loadStartupJson(STATIC_CONSTANTS_PATH);
         applyStaticConstants(data);
         return true;
       } catch (error) {

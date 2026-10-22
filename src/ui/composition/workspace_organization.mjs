@@ -1,4 +1,4 @@
-import {validateWorkspaceOrganization,DEFAULT_WORKSPACE_ORGANIZATION,loadWorkspaceOrganization} from './workspace_organization_model.mjs?v=20261013-canvas-workspace-1&choicesLayout=20261014-4';
+import {validateWorkspaceOrganization,DEFAULT_WORKSPACE_ORGANIZATION,loadWorkspaceOrganization} from './workspace_organization_model.mjs?v=20261013-canvas-workspace-1&choicesLayout=20261014-4&startupDelivery=20261022-1';
 import {createParticleChoices} from './particle_choices.mjs?v=20261021-particle-clear-2';
 
 export function resolveWorkspaceChoiceGroup(model,choice='',explicitClause='',operation=''){
@@ -190,7 +190,7 @@ export function createWorkspaceOrganization(doc,initialModel=DEFAULT_WORKSPACE_O
   const tool={inspect:()=>({model:validateWorkspaceOrganization(model),grammarAuthority:false,nativePlacement:'same native host',root:'classical-workbench'}),
     preview:next=>({valid:Boolean(validateWorkspaceOrganization(next)),grammarAuthority:false}),
     applySession(next){model=validateWorkspaceOrganization(next);refresh();return tool.inspect();},
-    async reload(){model=await loadWorkspaceOrganization(doc);refresh();return tool.inspect();}};
+    async reload(){model=await loadWorkspaceOrganization(doc,{reload:true});refresh();return tool.inspect();}};
   doc.defaultView.classicalWorkspaceOrganization=tool;
   refresh.choicesLayout=organizeChoicesLayout;
   return refresh;

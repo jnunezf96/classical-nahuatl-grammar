@@ -2,6 +2,15 @@
 
 User-facing release notes for Classical Nahuatl Grammar.
 
+## Version 1.2.14 — Reliable Startup
+
+Released October 22, 2026.
+
+- Removes sixteen startup JSON request gates by delivering their unchanged data in the page.
+- Prevents a stalled optional font stylesheet from blocking the first workspace load.
+- Keeps the browser entry module identity consistent and the footer release version current.
+- Reconciles current interface inventory records with the delivered interface.
+
 ## Version 1.2.13 — Build Category Icons
 
 Released October 22, 2026.

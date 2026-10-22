@@ -1,3 +1,4 @@
+import {getEmbeddedStartupData} from "../../bootstrap/startup_data.mjs?v=20261022-startup-1";
 import {EMPTY_INTERFACE_MODEL,validateInterfaceModel} from './interface_model.mjs?v=20261012-interface-tool-3';
 
 const INTERACTIVE='button,input,select,textarea,a[href],summary,details,fieldset,section,nav,dialog,h1,h2,h3,h4,[role="button"],[role="checkbox"],[role="combobox"],[role="listbox"],[role="radio"],[role="slider"],[role="spinbutton"],[role="switch"],[role="textbox"],[tabindex]';
@@ -227,7 +228,7 @@ export function createInterfaceTool(doc,initialModel=EMPTY_INTERFACE_MODEL) {
 
 export async function installInterfaceTool(doc) {
   const tool=createInterfaceTool(doc);
-  try {await tool.reload();}catch { /* Invalid local settings cannot disable the grammar application. inspect() exposes the error. */ }
+  try {const embedded=getEmbeddedStartupData(doc,"data/interface_layout.json");if(embedded!==undefined)tool.applySession(embedded);else await tool.reload();}catch { /* Invalid local settings cannot disable the grammar application. inspect() exposes the error. */ }
   let scheduled=false;
   const observer=new doc.defaultView.MutationObserver(()=>{
     if(scheduled)return;scheduled=true;

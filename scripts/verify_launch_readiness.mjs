@@ -1,3 +1,4 @@
+import {checkStartupData} from "./sync_startup_data.mjs";
 import fs from "node:fs/promises";
 import { execFileSync } from "node:child_process";
 import path from "node:path";
@@ -20,6 +21,7 @@ function meta(source, name) {
 }
 
 await assertGrammarOsReleaseSourceReady();
+await checkStartupData();
 const packageJson = JSON.parse(await fs.readFile(path.join(ROOT, "package.json"), "utf8"));
 const packageLock = JSON.parse(await fs.readFile(path.join(ROOT, "package-lock.json"), "utf8"));
 const indexSource = await fs.readFile(path.join(ROOT, "index.html"), "utf8");

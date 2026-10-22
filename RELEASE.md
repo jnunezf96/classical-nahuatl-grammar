@@ -1,16 +1,17 @@
-# Grammar OS v1.2.13 release
+# Grammar OS v1.2.14 release
 
-Release name: **Build Category Icons**
+Release name: **Reliable Startup**
 
-Browser build: **20261022-build-icons-1**
+Browser build: **20261022-startup-1**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Adds matching line icons to Build category headings, expandable groups and field labels.
-- Covers native VNC/NNC choices, generated owner choices, particles and supporting sections.
-- Keeps text labels, grammatical options, disclosure arrows and native controls intact.
+- Delivers required startup data with the page so pending JSON requests cannot hold the workspace loading screen open.
+- Loads optional fonts without blocking workspace startup.
+- Uses one exact browser entry module identity and checks generated data against its original sources.
+- Derives the footer version from current release metadata and refreshes the current interface inventory.
 
 ## Review scope and current limits
 
@@ -34,7 +35,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.13/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.14/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.
