@@ -2,6 +2,13 @@
 
 User-facing release notes for Classical Nahuatl Grammar.
 
+## Version 1.2.13 — Build Category Icons
+
+Released October 22, 2026.
+
+- Adds decorative line icons beside Build categories and field labels, matching Operation.
+- Keeps grammar choices in words and preserves the existing controls and disclosure arrows.
+
 ## Version 1.2.12 — Predicate Nominalization Sources
 
 Released October 22, 2026.

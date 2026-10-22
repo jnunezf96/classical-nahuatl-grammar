@@ -1,17 +1,16 @@
-# Grammar OS v1.2.12 release
+# Grammar OS v1.2.13 release
 
-Release name: **Predicate Nominalization Sources**
+Release name: **Build Category Icons**
 
-Browser build: **20261022-nominal-sources-1**
+Browser build: **20261022-build-icons-1**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Exposes the existing nonactive formation chooser for predicate patientives, passive action and licensed instrumentives.
-- Sends the selected canonical formation to the actual passive/impersonal Source witnesses.
-- Preserves secondary-reflexive ne through VNC evaluation and authenticated nominal capture.
-- Keeps the existing Source voice restrictions and explicit Make acceptance boundary.
+- Adds matching line icons to Build category headings, expandable groups and field labels.
+- Covers native VNC/NNC choices, generated owner choices, particles and supporting sections.
+- Keeps text labels, grammatical options, disclosure arrows and native controls intact.
 
 ## Review scope and current limits
 
@@ -35,7 +34,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.12/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.13/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.
