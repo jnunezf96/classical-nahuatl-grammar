@@ -4,7 +4,7 @@ import {focusNativeChoice} from './flow_design.mjs?v=20261022-reset-eligibility-
 import {installInterfaceTool} from '../interface/interface_runtime.mjs?v=20261012-interface-tool-3';
 import {createCompositionPresentation} from './composition_presentation.mjs?v=20261014-task-menu-1&choicesLayout=20261014-4&objectsPlacement=20261014-1&journeyOrganization=20261019-1&presentation=20261019-1&routeShapes=20261021-1&ownerPresentation=20261021-12';
 import {loadWorkspaceOrganization,DEFAULT_WORKSPACE_ORGANIZATION} from './workspace_organization_model.mjs?v=20261013-canvas-workspace-1&choicesLayout=20261014-4';
-import {bootstrapPromise} from '../../browser/main.mjs?v=20261022-language-interface-1&choices=20261013-build-constructions-2&design=lesson42-path-27&loading=1&panel=33&reader=42-10-275&cleanup=classical-only-20261009-1&modifier=canonical-20261009-1&continuation=shared-preparation-20261009-1&repair=position-model-20261012-25&audit=20261013-source-facts-1&remaining=20261013-inventory-1&caseMeta=20261013-1&navigation=20261014-1&placement=20261014-1&operationMenu=20261014-2&choicesLayout=20261014-4&exampleMirror=20261014-1&resultEditing=20261014-8&pickerTransport=20261014-1&sourceAdmission=20261014-3&operationClear=20261014-1&routeShapes=20261021-1&subjectTransition=20261021-29';
+import {bootstrapPromise} from '../../browser/main.mjs?v=20261022-language-interface-1';
 // Main workbench presentation. Native handlers and exact owner-issued identities
 // remain authoritative; this module never generates grammatical forms.
 async function initializeCompositionWorkbench() {
