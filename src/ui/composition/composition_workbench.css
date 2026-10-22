@@ -1161,3 +1161,8 @@ body.is-language-classical #classical-workbench .composition-make-preview [hidde
 @media(max-width:600px){
   body.is-language-classical #classical-workbench .composition-make-preview {grid-column:1;grid-row:2;justify-content:flex-start;max-width:none}
 }
+
+/* A fixed choice keeps the same shape as its editable alternatives. */
+body.is-language-classical #classical-workbench[data-composition-design="path"] .composition-choice-buttons[data-composition-choice-fixed="true"] button[aria-pressed="true"] {
+  opacity:1;cursor:default;
+}

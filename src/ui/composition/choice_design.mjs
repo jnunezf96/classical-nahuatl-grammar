@@ -164,7 +164,13 @@ export function createChoiceDesign(doc) {
   }
   function projectChoice(control) {
     if(control.tagName!=='SELECT')return;
-    const options=[...control.options].map(option=>({value:option.value,label:option.textContent.trim(),disabled:option.disabled,hidden:option.hidden}));
+    const options=[...control.options].map(option=>({value:option.value,label:option.textContent.trim(),
+      disabled:option.disabled || Boolean(option.parentElement?.tagName==='OPTGROUP' && option.parentElement.disabled),
+      hidden:option.hidden || Boolean(option.parentElement?.tagName==='OPTGROUP' && option.parentElement.hidden),
+      // Number owners hide incompatible siblings for compactness. Keep their
+      // native restrictions while showing those declared alternatives as facts.
+      showWhenFixed:control.id==='classical-rule-logic-nnc-subject-number' && option.disabled
+        && option.dataset.classicalCanvasOptionAvailability==='disabled-by-current-mood'}));
     const ownerFixed=control.dataset.classicalCanvasSelectAvailability==='disabled-single-canvas-choice'
       || control.dataset.compositionPositionDerivedFixed==='true';
     const kind=control.dataset.classicalCompactChoiceDisplay==='true' ? 'menu' : classifyNativeChoice(options,control.value,control.disabled,ownerFixed);
@@ -184,16 +190,18 @@ export function createChoiceDesign(doc) {
     if(!mirror || mirror.dataset.signature!==signature || mirror.nativeControl!==control) {
       mirror?.remove();mirror=doc.createElement('div');mirror.dataset.compositionChoiceFor=controlKey(control);
       mirror.dataset.signature=signature;mirror.nativeControl=control;
-      mirror.className=kind==='fixed' ? 'composition-fixed-value' : 'composition-choice-buttons';
-      mirror.setAttribute('role',kind==='fixed' ? 'note' : 'group');mirror.setAttribute('aria-label',controlLabel(control));
+      mirror.className='composition-choice-buttons';mirror.dataset.compositionChoiceFixed=String(kind==='fixed');
+      mirror.setAttribute('role','group');mirror.setAttribute('aria-label',controlLabel(control));
       control.after(mirror);mirrors.set(controlKey(control),mirror);
-      if(kind==='buttons')for(const option of options.filter(option=>option.value && !option.hidden)) {
+      for(const option of options.filter(option=>option.value && (!option.hidden || kind==='fixed' && option.showWhenFixed))) {
         const button=doc.createElement('button');button.type='button';button.textContent=option.label;
         button.dataset.compositionChoiceValue=option.value;button.disabled=option.disabled;
-        button.addEventListener('click',()=>{
+        if(kind==='buttons')button.addEventListener('click',()=>{
           const native=findControl(doc,controlKey(control));
           const offered=[...native?.options || []].find(item=>item.value===option.value);
-          if(!native || native.disabled || !offered || offered.disabled || offered.hidden || native.value===option.value)return;
+          if(!native || native.disabled || !offered || offered.disabled || offered.hidden
+            || offered.parentElement?.tagName==='OPTGROUP' && (offered.parentElement.disabled || offered.parentElement.hidden)
+            || native.value===option.value)return;
           if(doc.defaultView.dispatchClassicalConstructionChoice) {
             if(!doc.defaultView.dispatchClassicalConstructionChoice(native,option.value))return;
           } else {
@@ -205,12 +213,12 @@ export function createChoiceDesign(doc) {
         });mirror.append(button);
       }
     }
-    if(kind==='fixed') {
-      const label=options.find(option=>option.value===control.value)?.label || '';
-      if(mirror.textContent!==label)mirror.textContent=label;
-    } else for(const button of mirror.children) {
-      button.disabled=control.disabled || Boolean(options.find(option=>option.value===button.dataset.compositionChoiceValue)?.disabled);
-      button.setAttribute('aria-pressed',String(button.dataset.compositionChoiceValue===control.value));
+    for(const button of mirror.children) {
+      button.disabled=kind==='fixed' || control.disabled || Boolean(options.find(option=>option.value===button.dataset.compositionChoiceValue)?.disabled);
+      const selected=button.dataset.compositionChoiceValue===control.value;
+      button.setAttribute('aria-pressed',String(selected));
+      button.title=kind==='fixed' && selected ? 'Selected by the current construction'
+        : button.disabled ? 'Unavailable for the current construction' : '';
     }
     control.dataset.compositionChoiceMirror=kind;
     if(control.dataset.compositionOriginalTabIndex===undefined)control.dataset.compositionOriginalTabIndex=control.getAttribute('tabindex') || '';

@@ -1,17 +1,17 @@
-# Grammar OS v1.2.10 release
+# Grammar OS v1.2.11 release
 
-Release name: **Pending Result Preview**
+Release name: **Visible Choice Alternatives**
 
-Browser build: **20261022-make-preview-1**
+Browser build: **20261022-fixed-choices-1**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Shows the pending form beside Make Result as choices change.
-- Reuses the initial loading circle while generating the preview.
-- Preserves the accepted Result and History until explicit Make Result.
-- Shows Preview unavailable for unsupported preview paths, including nested part rebuilding.
+- Gives a fixed selected value the same large-button presentation as editable choices.
+- Shows existing unavailable alternatives disabled beside the selected value.
+- Reveals owner-disabled singular/common/plural alternatives in fixed Number fields.
+- Preserves owner restrictions, hidden internal options, Source and explicit Make.
 
 ## Review scope and current limits
 
@@ -35,7 +35,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.10/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.11/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.

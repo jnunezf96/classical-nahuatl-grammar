@@ -2,6 +2,14 @@
 
 User-facing release notes for Classical Nahuatl Grammar.
 
+## Version 1.2.11 — Visible Choice Alternatives
+
+Released October 22, 2026.
+
+- Uses the large selected-button style when only one grammatical value applies.
+- Keeps existing nonapplicable alternatives visible and disabled, including owner-restricted Number alternatives.
+- Preserves native grammar restrictions and explicit Source/Make behavior.
+
 ## Version 1.2.10 — Pending Result Preview
 
 Released October 22, 2026.

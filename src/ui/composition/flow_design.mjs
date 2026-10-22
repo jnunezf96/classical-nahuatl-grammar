@@ -1,5 +1,5 @@
 import {createMakePreview} from './make_preview.mjs?v=20261022-1';
-import {getNativeGrammarControls,getPendingChoiceControls} from './choice_design.mjs?v=20261022-reset-eligibility-1&writingSource=20261022-1';
+import {getNativeGrammarControls,getPendingChoiceControls} from './choice_design.mjs?v=20261022-reset-eligibility-1&writingSource=20261022-1&fixedChoices=20261022-1';
 // Navigation and layout only. The one native Make element keeps its handler.
 const key=control=>control.id || (control.dataset.classicalCapabilityChoiceId?`owner-choice:${control.dataset.classicalCapabilityChoiceId}`:`clause-choice:${control.dataset.classicalClauseRelationDecision}`);
 const makeReceivers=new WeakMap();

@@ -1,5 +1,5 @@
 import {getBuildOperationReference,inventoryFieldReference,inventoryOptionReference} from './build_navigation_model.mjs?v=20261021-ending-reference-2';
-import {createBuildTaskMenu} from './build_task_menu.mjs?v=20261021-ending-reference-2&writingSource=20261022-2';
+import {createBuildTaskMenu} from './build_task_menu.mjs?v=20261021-ending-reference-2&writingSource=20261022-2&fixedChoices=20261022-1';
 
 // This adapter owns navigation only. The single native menu/editor, its exact
 // Source/Result binding, and explicit Make remain owned by the existing UI.

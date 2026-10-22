@@ -1,20 +1,20 @@
 import {previewConstructionPacket} from '../composition/construction_preview.mjs?v=20261022-1';
-import {isIntermediateBuildTaskReset} from '../composition/build_task_menu.mjs?v=20261021-ending-reference-2&writingSource=20261022-2';
+import {isIntermediateBuildTaskReset} from '../composition/build_task_menu.mjs?v=20261021-ending-reference-2&writingSource=20261022-2&fixedChoices=20261022-1';
 import { normalizeClassicalNahuatlIntroductoryModifier }
   from "../../core/classical/verbstem_classes.mjs?v=20261008-reader-40-9-190&modifier=canonical-20261009-1&quantityClass=20261022-1";
 import {createClassicalWorkspaceProvenanceProjector}
   from '../composer/result_provenance.mjs?v=20261012-position-provenance-7';
 import {resolvePathTargets, setPathHistoryPresentation} from '../composition/path_presentation.mjs?v=20261011-path-targets-7&routeShapes=20261021-1&writtenPreview=20261022-1&writingSource=20261022-1';
-import {setStructureDesignContext, setStructureComparison, projectCanonicalStructure, projectClauseStructure, projectOperationShape, compareCanonicalStructures} from '../composition/structure_design.mjs?v=20261011-structure-15&routeShapes=20261021-1&clauseCoordinate=20261021-1&resetEligibility=20261022-1&writingSource=20261022-1&makePreview=20261022-1';
+import {setStructureDesignContext, setStructureComparison, projectCanonicalStructure, projectClauseStructure, projectOperationShape, compareCanonicalStructures} from '../composition/structure_design.mjs?v=20261011-structure-15&routeShapes=20261021-1&clauseCoordinate=20261021-1&resetEligibility=20261022-1&writingSource=20261022-1&makePreview=20261022-1&fixedChoices=20261022-1';
 import {setSourceCandidatePresentation, projectSavedSourceCandidate, setRouteChoicePresentation, projectOfferedOperationShapes} from '../composition/candidate_design.mjs?v=20261021-route-shapes-1';
-import {notifyExplicitMakeResult,focusNativeChoice} from '../composition/flow_design.mjs?v=20261022-reset-eligibility-1&writingSource=20261022-1&makePreview=20261022-1';
+import {notifyExplicitMakeResult,focusNativeChoice} from '../composition/flow_design.mjs?v=20261022-reset-eligibility-1&writingSource=20261022-1&makePreview=20261022-1&fixedChoices=20261022-1';
 import {getBuildOperationGroup,getBuildOperationOrder,inventoryOptionReference,formatBuildOperationLabel} from '../composition/build_navigation_model.mjs?v=20261021-ending-reference-2';
 import {createConstructionSession} from '../composition/construction_session.mjs?v=20261012-position-12';
 import {projectConstructionValue} from '../composition/construction_position.mjs?v=20261012-position-12';
 import {executeConstructionPacket, freezeConstructionData, getConstructionPacketOrigin, captureConstructionParents, matchesConstructionWitness, orderConstructionSlots, getConstructionFixedChoices, getConstructionLayerReadiness, getConstructionParticleHostInput} from '../composition/construction_packet.mjs?v=20261021-packet-envelopes-3';
 import {resolveResultEditTarget} from '../composition/result_editing.mjs?v=20261014-result-edit-2';
 import {canRebuildResultEdit,getResultEditReorder} from '../composition/result_edit_rebuild.mjs?v=20261014-result-edit-2';
-import {getNativeGrammarControls, getWritingSourcePresentation, setChoiceDesignContext, setAppliedRoutePresentation} from '../composition/choice_design.mjs?v=20261022-reset-eligibility-1&writingSource=20261022-1';
+import {getNativeGrammarControls, getWritingSourcePresentation, setChoiceDesignContext, setAppliedRoutePresentation} from '../composition/choice_design.mjs?v=20261022-reset-eligibility-1&writingSource=20261022-1&fixedChoices=20261022-1';
 import { readClassicalSourceObjectRows, getClassicalSourceObjectControls,
   restoreClassicalSourceObjectRows, syncClassicalSourceObjectRows }
   from "../composer/source_objects.mjs?v=20261007-panel-source-objects-1";
