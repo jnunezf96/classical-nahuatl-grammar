@@ -434,6 +434,7 @@ export function createClassicalNahuatlFiniteVncRuntime(
     tense = "",
     stem = "",
     verbClass = "",
+    admonitivePluralEnding = "",
   } = {}) {
     const normalizedSubject = normalizeSubject(subject);
     const normalizedMood = normalizeMood(mood);
@@ -449,6 +450,14 @@ export function createClassicalNahuatlFiniteVncRuntime(
       throw new Error(SOURCE_INVALID);
     }
     const isPlural = normalizedSubject.endsWith("pl");
+    const selectedAdmonitivePluralEnding = normalizeToken(admonitivePluralEnding);
+    if (selectedAdmonitivePluralEnding && (
+      normalizedMood !== "admonitive"
+      || !isPlural
+      || !["in", "ih"].includes(selectedAdmonitivePluralEnding)
+    )) {
+      throw new Error(SOURCE_INVALID);
+    }
     const lastSound = finalSound(normalizedStem);
     const stemFinalSoundKind = isVowel(lastSound) ? "vowel" : "consonant";
     let num1 = "0";
@@ -513,13 +522,13 @@ export function createClassicalNahuatlFiniteVncRuntime(
     } else if (normalizedMood === "admonitive") {
       condition = "nonpast-admonitive";
       num1 = isPlural ? "t" : SQUARE_ZERO;
-      num2 = isPlural ? "in" : "0";
+      num2 = isPlural ? selectedAdmonitivePluralEnding || "in" : "0";
       num1Variants = isPlural ? ["t"] : [SQUARE_ZERO];
       num2Variants = isPlural ? ["in", "ih"] : ["0"];
       realizationCondition = isPlural
-        ? "nonpast-admonitive-t-in"
+        ? `nonpast-admonitive-t-${num2}`
         : "nonpast-admonitive-square-zero";
-      alternateNumberDyads = isPlural ? ["t-ih"] : [];
+      alternateNumberDyads = isPlural ? [`t-${num2 === "in" ? "ih" : "in"}`] : [];
     } else if (
       normalizedMood === "optative"
       && normalizedTense === "past"
@@ -633,6 +642,7 @@ export function createClassicalNahuatlFiniteVncRuntime(
       tense,
       verbClass,
       transitivity: "intransitive",
+      admonitivePluralEnding: normalizeToken(options.admonitivePluralEnding),
     });
     issuedSources.add(source);
     return source;
@@ -701,6 +711,7 @@ export function createClassicalNahuatlFiniteVncRuntime(
       tense: source.tense,
       stem: source.stem,
       verbClass: source.verbClass,
+      admonitivePluralEnding: source.admonitivePluralEnding,
     });
     const result = {
       kind: RESULT_KIND,

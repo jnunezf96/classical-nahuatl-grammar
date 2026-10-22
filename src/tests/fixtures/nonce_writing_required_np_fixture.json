@@ -1,0 +1,132 @@
+{
+  "seed": 1744540116,
+  "generatedAt": "2026-10-22T03:32:41.774Z",
+  "beforeGrammarOutcomes": true,
+  "onePairOnly": true,
+  "constraint": "Five randomized CV syllables each; embed final/n/ and matrix initial/p/ fixed before outcomes; explicit hypothetical TL1A analysis, no semantic lexical sense claimed.",
+  "words": [
+    {
+      "segments": [
+        "/λ/",
+        "o",
+        "/n/",
+        "ī",
+        "/l/",
+        "ō",
+        "/y/",
+        "ā",
+        "/š/",
+        "ā",
+        "/n/"
+      ],
+      "stem": "tlonīlōyāxān"
+    },
+    {
+      "segments": [
+        "/p/",
+        "ā",
+        "/k/",
+        "i",
+        "/p/",
+        "o",
+        "/š/",
+        "o",
+        "/n/",
+        "ē"
+      ],
+      "stem": "pāquipoxonē"
+    }
+  ],
+  "request": {
+    "constructionKind": "compound-nnc",
+    "source": {
+      "embedStem": "tlonīlōyāxān",
+      "matrixStem": "pāquipoxonē",
+      "embedClass": "tl-1-a",
+      "embedSourceClass": "tl-1-a",
+      "matrixSourceClass": "tl-1-a",
+      "initialIAnalysis": "real",
+      "matrixInitialIAnalysis": "real",
+      "structure": "integrated",
+      "bracketing": "unambiguous",
+      "embedRole": "association"
+    },
+    "structure": "integrated",
+    "bracketing": "unambiguous",
+    "embedRole": "association",
+    "subject": "3sg",
+    "state": "possessive",
+    "animacy": "animate",
+    "possessor": "1sg",
+    "possessorOrientation": "matrix",
+    "reduplication": "none",
+    "reduplicationTarget": "embed",
+    "embedIntensification": "none",
+    "matrixExpansion": "none",
+    "matrixInitialIVariant": "retain",
+    "pluralConnector": "t-in"
+  },
+  "morphParts": [
+    {
+      "role": "subject-person-1",
+      "segments": []
+    },
+    {
+      "role": "subject-person-2",
+      "segments": []
+    },
+    {
+      "role": "st1",
+      "segments": [
+        "/n/"
+      ]
+    },
+    {
+      "role": "st2",
+      "segments": [
+        "o"
+      ]
+    },
+    {
+      "role": "embed",
+      "segments": [
+        "/λ/",
+        "o",
+        "/n/",
+        "ī",
+        "/l/",
+        "ō",
+        "/y/",
+        "ā",
+        "/š/",
+        "ā",
+        "/n/"
+      ]
+    },
+    {
+      "role": "matrix",
+      "segments": [
+        "/p/",
+        "ā",
+        "/k/",
+        "i",
+        "/p/",
+        "o",
+        "/š/",
+        "o",
+        "/n/",
+        "ē"
+      ]
+    },
+    {
+      "role": "subject-number-1",
+      "segments": [
+        "/w/"
+      ]
+    },
+    {
+      "role": "subject-number-2",
+      "segments": []
+    }
+  ]
+}

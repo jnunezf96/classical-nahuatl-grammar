@@ -2,25 +2,236 @@
 
 export function createClassicalNahuatlSourceStemInventoryApi() {
     const SOURCE_DOCUMENT = "ANDREWS_TRANSCRIPTION_CANVAS.md";
+    // Lexical genealogy identifies an entered derived stem; only the Lesson20
+    // owner may authenticate the rule result or authorize a later finite use.
+    const NONACTIVE_SOURCE_ANALYSES = Object.freeze({
+      "nec-ō":Object.freeze({sourceStem:"nequi",sourceValence:"specific-projective",optionId:"ō:nec-ō"}),
+    });
+    // Attested preformed morphology is lexical Source analysis, not an
+    // invitation to parse arbitrary repeated spelling as a derivation.
+    const PREFORMED_SOURCE_ANALYSES = Object.freeze({
+      "cah-ca-h": Object.freeze({baseStem:"ca-h",operation:"frequentative",variant:"ordinary-short-glottal",
+        target:"lexical-stem",repetitions:1,sourceSections:Object.freeze(["22.6","11.5.1","27.2.1"]) }),
+    });
+    // These are attested analytical operands, not independently predicated
+    // bases. The derivation owner must authenticate their licensed morphology.
+    const ANALYTICAL_SOURCE_ANALYSES = Object.freeze(Object.fromEntries([
+      ["chich-ī-ni", "B", "destockal-ni", "cn-l24-2431a-final-i-replacement", "24.5.7"],
+      ["ciy-ā-hua", "", "destockal-long-vowel-hua", "cn-l24-2465-destockal-hua-hu-a", "24.6.5"],
+      ["top-ē-hua", "", "destockal-long-vowel-hua", "cn-l24-2465-destockal-hua-hu-a", "24.6.5"],
+      ["itz-ti", "A", "denominal-ti-internal-lo", "cn-l25-254-itzti-itzti-l-tia", "25.4.7"],
+    ].map(([stem,sourceClass,formation,ruleId,sourceSection])=>[stem,Object.freeze({
+      sourceRank:"restricted-analytical-verbstem-operand",sourceClass,formation,
+      licensedOperationRuleIds:Object.freeze([ruleId]),sourceSection,
+      independentFiniteUseLicensed:false,
+    })])));
+    // Restricted containing uses are separate from causative analytical Sources.
+    // The containing owner must consume the actual lexical/structural operands.
+    const RESTRICTED_CONTAINING_SOURCE_ANALYSES = Object.freeze({
+      "cuā": Object.freeze({sourceRank:"restricted-intransitive-compound-matrix",sourceClass:"D",
+        containingFamily:"adverbial-matrix",sourceSection:"57.2",independentFiniteUseLicensed:false,
+        requiredAdverbialEntryId:"44.7-ichtaca",requiredAdverbialStem:"ichtacā",requiredAdverbialDegree:"second-degree"}),
+      "it-hui": Object.freeze({sourceRank:"restricted-tla-impersonal-operand",sourceClass:"",
+        containingFamily:"tla-impersonal",sourceSection:"22.6",independentFiniteUseLicensed:false,
+        requiredSourceAttestation:"reconstructed-source",classIndependentTargetTenses:Object.freeze(["present"])}),
+      "itz": Object.freeze({sourceRank:"defective-perfective-compound-matrix",sourceClass:"B",
+        containingFamily:"archaic-motion-matrix",sourceSection:"11.4.5",independentFiniteUseLicensed:false,
+        requiredSourceLexemeId:"cn-vnc-itz-motion-matrix",attestedEmbedStems:Object.freeze(["hui","itqui","huīca"])}),
+    });
+    const NOMINAL_SOURCE_RANK_CORRECTIONS = Object.freeze({
+      "yaca":Object.freeze({actualBasalUnit:"nnc",sourceRank:"nounstem",coarseNounClass:"tl",
+        sourceSection:"44.6",independentVncUseLicensed:false,licensedOperationId:"inceptive-ti",
+        independentlyLicensedTargetClass:"B",perfectiveEvidence:"yaca-t",alternativeAStatus:"unestablished"}),
+    });
+    const IMPERFECTIVE_SOURCE_ANALYSES = Object.freeze(Object.fromEntries([
+      ["āhui-ya","root-plus-ya"],["ahhuiā-ya","root-plus-ya"],
+      ["ce-ce-ya","root-plus-ya"],["cuīca-ti","possession-ti"],
+      ["aqui","lexical-intransitive"],["ciya-hui","lexical-intransitive"],
+      ["huī-tequi","lexical-intransitive"],
+      ["ihyā-ya","root-plus-ya"],["xoco-ya","root-plus-ya"],
+      ["mazā-ti","inceptive-ti"],
+      ["nāhua-ti","lexical-intransitive"],["nene-hc-i-hui","lexical-intransitive"],
+      ["teci","lexical-intransitive"],["teo-hc-i-hui","lexical-intransitive"],
+    ].map(([stem,formation])=>[stem,Object.freeze({sourceForm:"full-imperfective",formation,perfectiveClassStatus:"unresolved",
+      ...(stem==="xoco-ya"?{licensedOperationRuleIds:Object.freeze(["cn-l25-2552-root-plus-ya-lia"]),sourceSection:"25.5.2"}:{})})])));
+    // §50.6 attested full compounded future; perfective membership is unclaimed.
+    const ADDITIONAL_IMPERFECTIVE_SOURCE_ANALYSES = Object.freeze({
+      "quiy-a-hui":Object.freeze({sourceForm:"full-imperfective",formation:"lexical-inherent-impersonal",perfectiveClassStatus:"established",
+        sourceVoice:"inherent-impersonal",sourceSection:"22.1/30.11/50.9",sourceClass:"B",
+        perfectiveClassEvidence:Object.freeze({
+          ruleId:"cn-l55-556-quiy-a-hui-family-class-b",evidenceKind:"explicit-formation-class-rule",
+          sourceDocument:SOURCE_DOCUMENT,sourceSection:"55.6",lineStart:23961,lineEnd:24003,
+          sourceAuthority:"Andrews24.7;55.6;22.1",
+          exactWitness:"The i-hui/a-hui family belongs to Class B; quiy-a-hui is discussed as probably root-formed, without an attested nominal ancestor.",
+          classDefinitionSection:"7.3.1",nominalAncestryEstablished:false,attestedPerfectiveTokenEstablished:false
+        })}),
+      "xocohcihui":Object.freeze({sourceForm:"full-imperfective",formation:"attested-whole-imperfective",perfectiveClassStatus:"unresolved",sourceSection:"57.6",classIndependentTenses:Object.freeze(["present"])}),
+      "ōn-xiuh-ti":Object.freeze({sourceForm:"full-imperfective",formation:"possessive-duration-ti",perfectiveClassStatus:"unresolved",classIndependentTenses:Object.freeze(["future"])}),
+      "cal-aqui":Object.freeze({sourceForm:"full-imperfective",formation:"noun-verb-compound",perfectiveClassStatus:"established",
+        sourceSection:"46.15",sourceClass:"B",perfectiveStem:"cal-ac",
+        perfectiveClassEvidence:Object.freeze({
+          ruleId:"cn-l28-28614-cal-aqui-perfective-class-b",sourceDocument:SOURCE_DOCUMENT,
+          sourceSection:"28.6.14",lineStart:9648,lineEnd:9652,
+          sourceAuthority:"Andrews28.6.14;47.3.2.a;7.3.1;7.4.1",
+          exactWitness:"cal-aqui → cal-ac; Ōtitotlalohticalacqueh; Ōintlan nicalac",
+          classDefinitionSection:"7.3.1/7.4.1",standaloneMatrixClassEstablished:false
+        }),
+        sourceConstituents:Object.freeze([Object.freeze({stem:"cal",rank:"nounstem"}),Object.freeze({stem:"aqui",rank:"verbstem"})])})
+    });
+    const TRANSITIVE_IMPERFECTIVE_SOURCE_ANALYSES = Object.freeze(Object.fromEntries([
+      ...[["ināya","7.8 Note1"],["ztlac-mēya","57.6"]].map(([stem,sourceSection])=>[stem,Object.freeze({
+        sourceForm:"full-imperfective",formation:"attested-whole-reflexive-imperfective",sourceValence:"mainline-reflexive",
+        containedObjectKind:"reflexive",perfectiveClassStatus:"unresolved",sourceSection,classIndependentTenses:Object.freeze(["present"]),
+        ...(stem==="ztlac-mēya"?{sourceRank:"selected-reflexive-nonpast-allomorph",allowedSubjects:Object.freeze(["1sg"])}:{})})]),
+      ...["ciya-hui", "huī-tequi", "īmacaci", "ih-tlani", "tēmiqui", "teci"].map(stem => [stem, Object.freeze({
+        sourceForm:"full-imperfective", formation:"lexical-transitive", perfectiveClassStatus:"unresolved"
+      })]),
+      ["tla-tzatzanatza",Object.freeze({sourceForm:"full-imperfective",formation:"attested-analyzed-object-prefix",perfectiveClassStatus:"unresolved",
+        sourceRank:"analyzed-object-prefixed-imperfective-verbstem",lexicalVerbstem:"tzatzanatza",containedObjectKind:"nonspecific-nonhuman",
+        containedObjectPrefix:"tla",sourceValence:"projective-nonhuman",classIndependentTenses:Object.freeze(["present"]),
+        sourcePrefixAnalysis:Object.freeze({prefix:"tla",role:"nonspecific-nonhuman-object",lexicalVerbstem:"tzatzanatza",independentLexicalEvidence:"Molina1571:142v+Andrews1.13"})})],
+      ["ihtzoma", Object.freeze({
+        sourceForm:"full-imperfective", formation:"lexical-transitive", perfectiveClassStatus:"unresolved",
+        classIndependentTenses:Object.freeze(["present", "future"])
+      })],
+      // §§26.16/26.21 attest direct presents; §2.2 explains final reduced-long
+      // spelling. External lexical perfectives establish A; retain the full
+      // citation and permanent earlier written-present witness ID.
+      ["nāmoyā", Object.freeze({
+        sourceForm:"full-imperfective", formation:"lexical-transitive", perfectiveClassStatus:"established",
+        sourceClass:"A",perfectiveStem:"nāmoyā",perfectiveSubclassStatus:"unclaimed",
+        perfectiveClassEvidence:Object.freeze({
+          ruleId:"cn-lexical-namoya-perfective-class-a",
+          url:"https://nahuatl.wired-humanities.org/content/namoya",
+          sourceAuthority:"Karttunen1992:159;Molina1571:062v.2;Lockhart2001:226",
+          exactWitness:"NĀMOYĀ → NĀMOYĀC; Lockhart Class 1, ōnicnāmoyāc",
+          classDefinitionSection:"Andrews7.3",alternativeShortPerfectiveLicensed:false
+        }),
+        classIndependentObjectKinds:Object.freeze(["specific-projective","nonspecific-human","nonspecific-nonhuman"]),
+        finalImperfectiveVowelRealization:"ordinary-long-vowel",
+        attestedFiniteCells:Object.freeze([Object.freeze({
+          id:"cn-l26-2621-namoya-human-present-cell",sourceSection:"26.21",stem:"nāmoya",
+          stemRole:"written-boundary-witness-not-lexical-allomorph",underlyingStem:"nāmoyā",
+          selections:Object.freeze({subject:"1sg",subjectAnimacy:"animate",subjectHumanness:"human",
+            mood:"indicative",tense:"present",requestedVoice:"active",requestedDerivation:"direct",
+            objectSelection:"nonspecific-human:"})
+        })])
+      })]
+    ]));
     const issuedCanonicalSourceStemRecords = new WeakSet();
     const issuedCanonicalSourceSelectionFrames = new WeakSet();
     const issuedValenceSourceAnalysisFrames = new WeakSet();
     const INITIAL_I_SOURCE_ANALYSES = Object.freeze({
+      "vnc|transitive|ih-zō-tla": Object.freeze({
+        kind:"real",
+        nonactiveBoundaryProfile:Object.freeze({context:"impersonal-shuntline-ne",sourceValence:"mainline-reflexive",
+          targetValence:"shuntline-reflexive",sourceInitialVowelKind:"real",targetInitialVowelKind:"supportive",
+          tenses:Object.freeze(["future"]),sourceSections:Object.freeze(["2.6 Note1","55.2","57.3"])}),
+        ruleId:"cn-l2-26-ihzotla-lexical-context-initial-i",
+        sourceAuthority:"Andrews 55.2 original601 m-Ø-(ih-zō-tla);57.3 original625 ne-hzō-tla-lō-z;2.6 Note1",
+        exactWitness:"The cited mainline reflexive retains real i; the attested impersonal future rejects i after shuntline ne. Other lexical contexts are unclaimed."
+      }),
+      "vnc|transitive|ihtzoma": Object.freeze({
+        kind: "supportive",
+        ruleId: "cn-l26-262-ihtzoma-image-imaginary-initial-i",
+        sourceAuthority: "Andrews 26.2 printed page 212, initial italic i",
+        exactWitness: "The original ihtzoma and ihtzom-iā have italic initial i, contrasting upright suffix iā."
+      }),
+      "vnc|transitive|il-pītza": Object.freeze({
+        kind: "supportive",
+        ruleId: "cn-l26-267-ilpitza-supportive-initial-i",
+        sourceAuthority: "Andrews 26.7 printed page 216; explicit supportive-i nounstem analysis",
+        exactWitness: "The compound il-pītza has nounstem *(il)-li as embed; its initial i is explicitly supportive."
+      }),
+      "vnc|transitive|ixca": Object.freeze({
+        kind: "supportive",
+        ruleId: "cn-l26-262-ixca-image-imaginary-initial-i",
+        sourceAuthority: "Andrews 26.2 printed page 212, initial italic i",
+        exactWitness: "The printed ixca and ixqu-iā mark their initial i as imaginary/supportive."
+      }),
+      "vnc|intransitive|ilpi": Object.freeze({
+        kind: "supportive",
+        ruleId: "cn-l24-2431b-ilpi-image-imaginary-initial-i",
+        sourceAuthority: "Andrews 24.3.1.b printed page 184, initial italic i",
+        exactWitness: "The printed ilpi, ilpi-ā and ilpi-h mark the initial i as imaginary/supportive."
+      }),
+      "vnc|intransitive|ix-tlā-hui": Object.freeze({
+        kind: "supportive",
+        ruleId: "cn-l24-2431a-ixtlahui-image-imaginary-initial-i",
+        sourceAuthority: "Andrews 24.3.1.a printed page 184, initial italic i",
+        exactWitness: "The printed ix-tlā-hui and ix-tlā-hu-a mark the initial i as imaginary/supportive."
+      }),
+      "vnc|transitive|ix-tlā-hu-a": Object.freeze({
+        kind: "supportive",
+        ruleId: "cn-l24-2431a-ixtlahua-image-imaginary-initial-i",
+        sourceAuthority: "Andrews 24.3.1.a printed page 184, initial italic i",
+        exactWitness: "The printed ix-tlā-hu-a retains the source's imaginary/supportive initial i."
+      }),
+      "vnc|transitive|ihcali": Object.freeze({
+        kind: "supportive",
+        ruleId: "cn-l20-206-ihcali-image-imaginary-initial-i",
+        sourceAuthority: "Andrews 20.6 printed page 164, initial italic i",
+        exactWitness: "The printed ihcali shows italic initial i, marking imaginary/supportive i."
+      }),
+      "vnc|transitive|ihcuani-ā": Object.freeze({
+        kind: "supportive",
+        ruleId: "cn-l20-206-ihcuani-ā-image-imaginary-initial-i",
+        sourceAuthority: "Andrews 20.6 printed page 164, initial italic i",
+        exactWitness: "The printed ihcuani-ā shows italic initial i, marking imaginary/supportive i."
+      }),
+      "vnc|intransitive|ihza": Object.freeze({
+        kind: "real",
+        // Keep this historical fact identity resolvable; its old name is not an analysis.
+        ruleId: "cn-l20-205-ihza-image-imaginary-initial-i",
+        sourceAuthority: "Andrews 20.5 printed page 163 and 25.2.2 printed page 196, roman initial i",
+        exactWitness: "The original ihza, ihx-o-hua and ihxi-hua have upright initial i, contrasted with the italic imaginary i of itqui. The prior supportive reading was incorrect."
+      }),
+      "vnc|transitive|itqui": Object.freeze({
+        kind: "supportive",
+        ruleId: "cn-l20-204-itqui-image-imaginary-initial-i",
+        sourceAuthority: "Andrews 20.4 printed page 162, initial italic i",
+        exactWitness: "The printed itqui and itc-ō show italic initial i, marking imaginary/supportive i."
+      }),
+      "vnc|transitive|itt-a": Object.freeze({
+        kind: "supportive",
+        ruleId: "cn-l7-79-itta-supportive-initial-i-source",
+        sourceAuthority: "Andrews 7.9",
+        exactWitness: "(itt-a) has supportive initial i: niquitta and nitēitta contrast with ninotta, timotta, titottah and nitlatta."
+      }),
+      "vnc|intransitive|ihc-i-hui": Object.freeze({
+        kind: "supportive",
+        ruleId: "cn-l25-2524-ihcihui-image-imaginary-initial-i",
+        sourceAuthority: "Andrews 25.2.4 printed page 197, initial italic i",
+        exactWitness: "The printed ihc-i-hui and ihc-i-huī-tiā mark initial i as imaginary/supportive; internal stock i is roman."
+      }),
       "vnc|intransitive|iuc-ci": Object.freeze({
         kind: "supportive",
         ruleId: "cn-l25-2522-iucci-iucxitia-source-supportive-i",
         sourceAuthority: "Andrews 25.2.2",
         exactWitness: "(iuc-ci) > (iuc-xi-hua) > (iuc-xi-tiā): the initial i is supportive in the canonical source route."
       }),
+      "vnc|transitive|ih-tlani": Object.freeze({
+        kind: "contextual",
+        defaultResolvedKind: "real",
+        allowedResolvedKindsByValence: Object.freeze({
+          "projective-nonhuman": Object.freeze(["real", "supportive"])
+        }),
+        ruleId: "cn-l26-262-incorporated-ih-optional-supportive-i-after-tla",
+        sourceAuthority: "Andrews 26.2",
+        exactWitness: "At times the i of incorporated ih is treated like a supportive i after tla; retained i remains permitted."
+      }),
       "vnc|transitive|iht-o-ā": Object.freeze({
         kind: "contextual",
         resolvedKindsByValence: Object.freeze({
           "projective-nonhuman": "supportive"
         }),
+        allowedResolvedKindsByValence: Object.freeze({
+          "mainline-reflexive": Object.freeze(["real", "supportive"])
+        }),
         defaultResolvedKind: "real",
         ruleId: "cn-l2-26-ihtoa-contextual-initial-i-source",
         sourceAuthority: "Andrews 2.6 Note 1",
-        exactWitness: "tla-(iht-o-a) > tlahtoa: after tla- the initial i is supportive and is rejected; the same source can retain i in another licensed boundary."
+        exactWitness: "tla-(iht-o-a) > tlahtoa: after tla- the initial i is supportive and is rejected; §37.9.2 ne-ht-ō-l retains its reflexive source's supportive-i analysis. Other licensed boundaries retain real i."
       })
     });
     const VNC_LEXICAL_ALTERNATIVE_FACTS = Object.freeze({
@@ -42,6 +253,13 @@ export function createClassicalNahuatlSourceStemInventoryApi() {
       }),
     });
     const VNC_SOURCE_LEXEME_FACTS = Object.freeze({
+      "itz": Object.freeze({relation:"lexical-source-sense-distinction",sourceLexemeSelectionRequired:true,
+        sourceLexemeIds:Object.freeze(["cn-vnc-itz-motion-matrix","cn-vnc-itz-alert-observant"]),
+        sourceSections:Object.freeze(["11.4.5"]),
+        sourceLexemeOptions:Object.freeze([
+          Object.freeze({id:"cn-vnc-itz-motion-matrix",label:"come / go, in the archaic compound",reading:"motion"}),
+          Object.freeze({id:"cn-vnc-itz-alert-observant",label:"be alert / observant",reading:"alert-observant"})])}),
+
       "pach-i-hui": Object.freeze({
         relation: "lexical-source-sense-distinction",
         sourceLexemeSelectionRequired: true,
@@ -52,7 +270,30 @@ export function createClassicalNahuatlSourceStemInventoryApi() {
         sourceSections: Object.freeze(["24.7", "25.2.4"]),
       }),
     });
+    // This is an attested lexical anomaly, not a productive valence rule.
+    // §20 gives the ordinary zero-object Source; §42.8.5 explicitly calls
+    // its observed applicative object formally unjustified.
+    const VNC_ATTESTED_OBJECT_FACTS = Object.freeze({
+      chihcha: Object.freeze({
+        kind: "classical-nahuatl-source-attested-object-fact",
+        ruleId: "cn-l42-4285-chihcha-formally-unjustified-object",
+        sourceDocument: SOURCE_DOCUMENT,
+        sourceSection: "42.8.5",
+        ordinarySourceSection: "20.2.1",
+        ordinarySourceClass: "A",
+        ordinarySourceValence: "intransitive",
+        ordinarySourceObjectCount: 0,
+        observedObjectKind: "specific-projective",
+        observedObjectPerson: "3sg",
+        formallyLicensed: false,
+        applicativeSuffixPresent: false,
+        explanation: "Andrews attests an applicative object here and explicitly calls it formally unjustified. The ordinary Source remains intransitive; no applicative suffix is present.",
+        targetScope: Object.freeze({subject: "3sg", mood: "indicative", tense: "present", voice: "active", directionalPrefix: "on"}),
+        otherParadigmCellsClaimed: false,
+      }),
+    });
     const VNC_SOURCE_ROWS = Object.freeze([
+      ["chihcha", "intransitive", "20.2.1"],
       ["ā-miqui", "intransitive", "26.1"], ["ahci", "intransitive", "24.2"], ["ahci", "transitive", "24.2"], ["ahhuiā-ya", "intransitive", "25.5.2"],
       ["āhui-ya", "intransitive", "25.4.8"], ["āna", "transitive", "26.7"], ["aqui", "intransitive", "24.3.1.b"], ["āyacach-o-ā", "intransitive", "26.9"],
       ["āyi", "transitive", "26.4"], ["caqui", "transitive", "25.2.1"], ["ce-ce-ya", "intransitive", "25.5.2"], ["ce-li-liā", "transitive", "26.6"],
@@ -61,7 +302,7 @@ export function createClassicalNahuatlSourceStemInventoryApi() {
       ["chōca", "intransitive", "25.2.1"], ["chol-o-ā", "intransitive", "25.4"], ["ciy-ā-hua", "intransitive", "24.6.5"], ["ciya-hui", "intransitive", "24.2"],
       ["ciya-hui", "transitive", "24.2"], ["cochi", "intransitive", "25.2"], ["coco-a", "transitive", "26.9"], ["coco-ya", "intransitive", "24.3.2.b"],
       ["cōhua", "transitive", "26.2"], ["cot-ō-ni", "intransitive", "24.5.7"], ["cuā", "transitive", "25.4"], ["cual-ā-ni", "intransitive", "25.3"],
-      ["cuepi", "intransitive", "24.3.1.a"], ["cui", "transitive", "26.2"], ["cuīca", "intransitive", "1.13"], ["cuica-ti", "intransitive", "26.2"],
+      ["cuepi", "intransitive", "24.3.1.a"], ["cui", "transitive", "26.2"], ["cuīca", "intransitive", "1.13"], ["cuīca-ti", "intransitive", "26.2"],
       ["ē-hua", "intransitive", "24.3.2.a"],
       ["huā-qui", "intransitive", "24.3.1.a"], ["huāl-la-uh", "intransitive", "25.1"], ["hue-tz-ca", "intransitive", "25.2.4"], ["hue-tz-ca", "transitive", "25.2.4"],
       ["cel-i-ya", "intransitive", "22.6"], ["ihyā-ya", "intransitive", "22.6"], ["cah-ca-h", "intransitive", "22.6"], ["chic-ā-hua", "intransitive", "22.6"],
@@ -71,7 +312,7 @@ export function createClassicalNahuatlSourceStemInventoryApi() {
       ["ih-tlani", "transitive", "26.2"], ["ihc-i-hui", "intransitive", "25.2.4"], ["ihcuil-o-ā", "transitive", "26.9"], ["ih-ca", "intransitive", "11.4.1"], ["iht-o-ā", "transitive", "26.9"],
       ["ihtzoma", "transitive", "26.2"], ["ihza", "intransitive", "25.2.2"], ["il-pītza", "transitive", "26.7"], ["ilama-ti", "intransitive", "11.3.2"], ["ilpi", "intransitive", "24.3.1.b"],
       ["itz", "intransitive", "11.4.5 note 2"], ["itz-ti", "intransitive", "25.4.7"], ["i-ā", "intransitive", "11.4.7"],
-      ["īmacaci", "transitive", "25.4.4"], ["ināya", "transitive", "26.7"], ["itqui", "transitive", "25.2"], ["itt-a", "transitive", "25.2.3"],
+      ["īmacaci", "transitive", "25.4.4"], ["īnāya", "transitive", "26.7"], ["itqui", "transitive", "25.2"], ["itt-a", "transitive", "25.2.3"],
       ["iuc-ci", "intransitive", "25.2.2"], ["ix-tlā-hu-a", "transitive", "25.4.5"], ["ix-tlā-hu-iā", "transitive", "26.6"], ["ix-tlā-hui", "intransitive", "24.3.1.a"],
       ["ixca", "transitive", "26.2"], ["maca", "transitive", "25.4.1"], ["mahui", "intransitive", "25.3"], ["māmā", "transitive", "26.8"],
       ["mani", "intransitive", "24.3.1.a"], ["mati", "intransitive", "24.2"], ["mati", "transitive", "24.2"], ["mayāna", "intransitive", "24.2"],
@@ -113,6 +354,8 @@ export function createClassicalNahuatlSourceStemInventoryApi() {
     // Their source histories and boundary facts remain read-only lexical data
     // in the ordinary-NNC owner.
     const NNC_LATE_SOURCE_ROWS = Object.freeze([
+      ["nel", "44.5.1"], ["hueli", "44.5.2"], ["nēn", "44.5.3"],
+      ["mō", "44.5.4"], ["cuēl", "44.5.5"], ["mach", "44.5.6"],
       ["te-l", "57.7"], ["ca-l", "57.7"], ["tle-l", "57.7"],
       ["cē-l", "57.7"], ["icpa-l", "57.7"], ["cā-cā-l", "57.7"],
       ["ah-co-l", "57.7"], ["xā-l", "57.7"], ["xi-l", "57.7"],
@@ -191,6 +434,19 @@ export function createClassicalNahuatlSourceStemInventoryApi() {
         sourceLexemeSections:
           sourceLexemeFact?.sourceSections || Object.freeze([]),
         sourceLexemeFactsReadOnly: Boolean(sourceLexemeFact),
+        canonicalImperfectiveAnalysis: basalUnit !== "vnc" ? null
+          : valence === "intransitive" ? IMPERFECTIVE_SOURCE_ANALYSES[stem] || ADDITIONAL_IMPERFECTIVE_SOURCE_ANALYSES[stem] || null
+            : valence === "transitive" ? TRANSITIVE_IMPERFECTIVE_SOURCE_ANALYSES[stem] || null : null,
+        ...(basalUnit === "vnc" && valence === "intransitive" && ANALYTICAL_SOURCE_ANALYSES[stem]
+          ? {canonicalAnalyticalSourceAnalysis:ANALYTICAL_SOURCE_ANALYSES[stem]} : {}),
+        ...(basalUnit === "vnc" && valence === "intransitive" && RESTRICTED_CONTAINING_SOURCE_ANALYSES[stem]
+          ? {canonicalRestrictedContainingSourceAnalysis:RESTRICTED_CONTAINING_SOURCE_ANALYSES[stem]} : {}),
+        ...(basalUnit === "vnc" && valence === "intransitive" && NOMINAL_SOURCE_RANK_CORRECTIONS[stem]
+          ? {canonicalNominalSourceRankCorrection:NOMINAL_SOURCE_RANK_CORRECTIONS[stem]} : {}),
+        ...(sourceLexemeFact?.sourceLexemeOptions ? {sourceLexemeOptions:sourceLexemeFact.sourceLexemeOptions} : {}),
+        canonicalPreformedDerivation: basalUnit === "vnc" ? PREFORMED_SOURCE_ANALYSES[stem] || null : null,
+        canonicalNonactiveDerivation: basalUnit === "vnc" ? NONACTIVE_SOURCE_ANALYSES[stem] || null : null,
+        sourceAttestedObjectFact: basalUnit === "vnc" ? VNC_ATTESTED_OBJECT_FACTS[stem] || null : null,
         translationAuthority: false,
         userSelectableOperation: false,
         grammarAuthority: false,
@@ -207,6 +463,15 @@ export function createClassicalNahuatlSourceStemInventoryApi() {
       ...NNC_LATE_SOURCE_ROWS.map(([stem, section]) => (
         makeRecord(stem, "nnc", "not-applicable", section)
       ))
+    ]);
+    // Attested full Sources used as containing-clause inputs need canonical
+    // analysis without creating a second example-picker address.
+    const CONTAINING_CONTEXT_SOURCE_RECORDS=Object.freeze([
+      ...Object.keys(ADDITIONAL_IMPERFECTIVE_SOURCE_ANALYSES).filter(stem=>!VNC_SOURCE_ROWS.some(row=>row[0]===stem && row[1]==="intransitive"))
+        .map(stem=>makeRecord(stem,"vnc","intransitive",ADDITIONAL_IMPERFECTIVE_SOURCE_ANALYSES[stem].sourceSection||"50.6")),
+      ...Object.keys(TRANSITIVE_IMPERFECTIVE_SOURCE_ANALYSES).filter(stem=>!VNC_SOURCE_ROWS.some(row=>row[0]===stem && row[1]==="transitive"))
+        .map(stem=>makeRecord(stem,"vnc","transitive",TRANSITIVE_IMPERFECTIVE_SOURCE_ANALYSES[stem].sourceSection || "7.8")),
+      makeRecord("ih-zō-tla","vnc","transitive","55.2")
     ]);
     function normalizeValenceSourceStem(value = "") {
       return String(value || "")
@@ -319,6 +584,11 @@ export function createClassicalNahuatlSourceStemInventoryApi() {
         .normalize("NFD")
         .replace(/\p{M}/gu, "");
     }
+    // Only immutable lexical records (or an unresolved lookup) are reused.
+    // Source frames, Participants and grammatical authorizations are not keys
+    // or values here; each owner instance keeps a bounded lookup of its facts.
+    const canonicalSourceStemRecordLookupCache = new Map();
+    const canonicalSourceStemRecordLookupCacheLimit = 256;
     function resolveClassicalNahuatlCanonicalSourceStemRecord(request = {}) {
       const allowedKeys = new Set([
         "enteredStem",
@@ -345,7 +615,23 @@ export function createClassicalNahuatlSourceStemInventoryApi() {
         ? ["intransitive", "transitive"].includes(valence)
         : basalUnit === "nnc" && valence === "not-applicable";
       if (!enteredStem || !validValence) return null;
-      const candidates = INVENTORY.filter(record => (
+      const lookupKey = JSON.stringify([
+        enteredStem, basalUnit, valence, sourceLexemeId,
+      ]);
+      if (canonicalSourceStemRecordLookupCache.has(lookupKey)) {
+        return canonicalSourceStemRecordLookupCache.get(lookupKey);
+      }
+      const rememberRecord = record => {
+        if (canonicalSourceStemRecordLookupCache.size
+          >= canonicalSourceStemRecordLookupCacheLimit) {
+          canonicalSourceStemRecordLookupCache.delete(
+            canonicalSourceStemRecordLookupCache.keys().next().value,
+          );
+        }
+        canonicalSourceStemRecordLookupCache.set(lookupKey, record);
+        return record;
+      };
+      const candidates = [...INVENTORY,...CONTAINING_CONTEXT_SOURCE_RECORDS].filter(record => (
         record.basalUnit === basalUnit
         && record.valenceDisplay === valence
       ));
@@ -358,8 +644,8 @@ export function createClassicalNahuatlSourceStemInventoryApi() {
           !sourceLexemeId
           || exactMatches[0].sourceLexemeIds.includes(sourceLexemeId)
         )
-      ) return exactMatches[0];
-      if (exactMatches.length > 1) return null;
+      ) return rememberRecord(exactMatches[0]);
+      if (exactMatches.length > 1) return rememberRecord(null);
       const quantityNeutralKey = getQuantityNeutralSourceStemKey(enteredStem);
       const quantityNeutralMatches = candidates.filter(record => (
         getQuantityNeutralSourceStemKey(record.stem) === quantityNeutralKey
@@ -369,9 +655,9 @@ export function createClassicalNahuatlSourceStemInventoryApi() {
           record.sourceLexemeIds.includes(sourceLexemeId)
         )
         : quantityNeutralMatches;
-      return sourceLexemeMatches.length === 1
+      return rememberRecord(sourceLexemeMatches.length === 1
         ? sourceLexemeMatches[0]
-        : null;
+        : null);
     }
     function buildClassicalNahuatlCanonicalSourceSelectionFrame(request = {}) {
       const allowedKeys = new Set([
@@ -561,6 +847,8 @@ export function createClassicalNahuatlSourceStemInventoryApi() {
       const sourceLexemeFact = record.basalUnit === "vnc"
         ? VNC_SOURCE_LEXEME_FACTS[record.stem] || null
         : null;
+      if (record.sourceAttestedObjectFact !== (record.basalUnit === "vnc"
+        ? VNC_ATTESTED_OBJECT_FACTS[record.stem] || null : null)) return false;
       if (record.lexicalAlternativeGroupId !== (lexicalAlternativeFact?.groupId || "")
         || record.lexicalAlternativeRelation !== (lexicalAlternativeFact?.relation || "")
         || record.lexicalFactsReadOnly !== Boolean(lexicalAlternativeFact)

@@ -30,13 +30,15 @@ export function createClassicalNahuatlParticlesApi(
       "l3-mah": "mah",
       "l3-ahzo": "ahzo",
       "l3-in-tla": "in-tla",
+      "l3-in-tla-zan": "in-tla",
+      "l3-in-tla-za": "in-tla",
+      "l3-in-tla-no-zo": "in-tla",
       "l50-in-tla-nel": "in-tla-nel",
       "l50-in-ma-nel": "in-ma-nel",
       "l50-ma-nel": "ma-nel",
       "l3-in-tla-ca": "in-tla",
       "l3-ma-zo": "ma-zo",
       "l3-ma-zo-tel": "ma-zo-tel",
-      "l58-ahmo": "ahmo",
       "l58-mah-ca": "mah-ca",
       "l58-quemah": "frozen-quemah",
       "l58-quemahca": "frozen-quemahca",
@@ -53,6 +55,55 @@ export function createClassicalNahuatlParticlesApi(
       "l58-ma-ye-cuel-eh": "haste-collocation",
       "l58-tia-ye-cuel": "haste-collocation",
       "l58-tia-ye-cuel-eh": "haste-collocation"
+    });
+    // Andrews §3.4/§50.7–8 supply these dependent-clause uses. These are lexical
+    // Source facts, not a permission inferred from a gloss or written prefix.
+    const CLASSICAL_NAHUATL_PARTICLE_RELATIONAL_USES_BY_ID = Object.freeze({
+      "l3-in-tla-zan": Object.freeze({
+        relation: "condition", relationProfile: "",
+        hostRole: "adjoined", markerRole: "marker", degree: "nonadverbialized",
+        selectedExternalUse: "dependent-clause-introduction", sourceSection: "3.4;50.7",
+      }),
+      "l3-in-tla-za": Object.freeze({
+        relation: "condition", relationProfile: "",
+        hostRole: "adjoined", markerRole: "marker", degree: "nonadverbialized",
+        selectedExternalUse: "dependent-clause-introduction", sourceSection: "3.4;50.7",
+      }),
+      "l3-in-tla-no-zo": Object.freeze({
+        relation: "condition", relationProfile: "",
+        hostRole: "adjoined", markerRole: "marker", degree: "nonadverbialized",
+        selectedExternalUse: "dependent-clause-introduction", sourceSection: "3.4;50.7",
+      }),
+      "l3-auh-in-tla": Object.freeze({
+        relation: "condition", relationProfile: "",
+        hostRole: "adjoined", markerRole: "marker", degree: "nonadverbialized",
+        selectedExternalUse: "dependent-clause-introduction", sourceSection: "3.4;50.7;52.3",
+        compositeRoles: Object.freeze({
+          innerMarker: Object.freeze({memberStart: 1, memberCount: 2, semanticMarker: "in-tla"}),
+          outerConjunctor: Object.freeze({memberStart: 0, memberCount: 1, semanticMarker: "auh",
+            relation: "conjunction", coordinationRelation: "marked", clauseLevel: "principal"}),
+        }),
+      }),
+      "l3-auh-in-tla-ca": Object.freeze({
+        relation: "condition", relationProfile: "",
+        hostRole: "adjoined", markerRole: "marker", degree: "nonadverbialized",
+        selectedExternalUse: "dependent-clause-introduction", sourceSection: "3.4;50.7;52.3",
+        compositeRoles: Object.freeze({
+          innerMarker: Object.freeze({memberStart: 1, memberCount: 3, semanticMarker: "in-tla"}),
+          outerConjunctor: Object.freeze({memberStart: 0, memberCount: 1, semanticMarker: "auh",
+            relation: "conjunction", coordinationRelation: "marked", clauseLevel: "principal"}),
+        }),
+      }),
+      "l3-ma-zo": Object.freeze({
+        relation: "concession", relationProfile: "ma-zo",
+        hostRole: "adjoined", markerRole: "marker", degree: "nonadverbialized",
+        selectedExternalUse: "dependent-clause-introduction", sourceSection: "50.8",
+      }),
+      "l3-ma-zo-tel": Object.freeze({
+        relation: "concession", relationProfile: "ma-zo-tel",
+        hostRole: "adjoined", markerRole: "marker", degree: "nonadverbialized",
+        selectedExternalUse: "dependent-clause-introduction", sourceSection: "50.8",
+      }),
     });
     const CLASSICAL_NAHUATL_PARTICLE_SEGMENTS_BY_ID = Object.freeze({
       "l3-ax": Object.freeze(["ax", "ax"]),
@@ -91,7 +142,6 @@ export function createClassicalNahuatlParticlesApi(
       "l3-otzin": Object.freeze(["ō", "tzin"]),
       "l3-auhtzin": Object.freeze(["auh", "tzin"]),
       "l3-ca-no-zotzin": Object.freeze(["ca", "no", "zo", "tzin"]),
-      "l58-ahmo": Object.freeze(["ahmō"]),
       "l58-mah-ca": Object.freeze(["mah", "ca#"]),
       "l58-quemah": Object.freeze(["quē", "mah"]),
       "l58-quemahca": Object.freeze(["quē", "mah", "ca#"]),
@@ -130,8 +180,6 @@ export function createClassicalNahuatlParticlesApi(
       "l3-ihyo-iyahua": "ihyo iyahua",
       "l58-mah-ca": "mah ca"
     });
-    const CLASSICAL_NAHUATL_PARTICLE_SENTENCE_ADJUNCTION_UNPROVED_IDS =
-      Object.freeze(new Set(["cn-achi"]));
     const CLASSICAL_NAHUATL_PARTICLE_EXTERNAL_AUTHORITY_KEYS =
       Object.freeze(new Set([
         "answer",
@@ -497,7 +545,7 @@ l3-anca|anca|adjunctor|clause-initial|3.2.2
 l3-mah|mah|adjunctor|clause-initial|3.2.2
 l3-auh-conjunctor|auh|conjunctor|clause-initial|3.2.3
 l3-mec|mec|adverbial-modifier|floating|3.2.4
-l3-nee|nee|adverbial-modifier|floating|3.2.4
+l3-nee|nec|adverbial-modifier|floating|3.2.4
 l3-tel|tēl|adverbial-modifier|floating|3.2.4
 l3-oc|oc|adverbial-modifier|floating|3.2.4
 l3-zan|zan|adverbial-modifier|floating|3.2.4
@@ -508,7 +556,6 @@ l3-no-adverbial|nō|adverbial-modifier|floating|3.2.4
 l3-zo|zo|adverbial-modifier|floating|3.2.4
 l3-quin|quin|adverbial-modifier|floating|3.2.4
 l3-ach|ach|adverbial-modifier|floating|3.2.4
-cn-achi|achi|adverbial-modifier|floating|1.13
 l3-at|at|adverbial-modifier|floating|3.2.4
 l3-ac|ac|adverbial-modifier|floating|3.2.4
 l3-o-interjection|o|interjection|independent-utterance|3.2.5
@@ -583,13 +630,9 @@ l3-ca-no-zo|ca no zo|collocation|collocation-sequence|3.5
 l3-otzin|ōtzin|honorificized|floating|3.5
 l3-auhtzin|āuhtzin|honorificized|floating|3.5
 l3-ca-no-zotzin|ca no zotzin|honorificized|collocation-sequence|3.5
-l16-quen-mach-huel|quēn mach huel|collocation|collocation-sequence|16.3.2.c
-l16-huel|huel|adverbial-modifier|floating|16.9.3
-l16-achi-adverbial|achi|adverbial-modifier|floating|16.9.7
 l50-in-tla-nel|in tlā nel|collocation|clause-initial|50.8
 l50-in-ma-nel|in mā nel|collocation|clause-initial|50.8
 l50-ma-nel|mā nel|collocation|clause-initial|50.8
-l58-ahmo|ahmō|clause-introducer|clause-initial|58.5
 l58-mah-ca|mah ca#|adjunctor|bound-to-following|58.4
 l58-quemah|quēmah|collocation|independent-utterance|58.4
 l58-quemahca|quemahca|collocation|independent-utterance|58.4
@@ -629,7 +672,6 @@ l3-no-adverbial|also|adverbial modifier
 l3-zo|surely|meaning uncertain; follows mā or tlacah in nonnegative use
 l3-quin|just now; presently|just now with past tense; presently with future tense
 l3-ach|possibly; indeterminably; I do not know|adverbial modifier
-cn-achi|somewhat; a little|distinct from ach; ach before iuh or iuhqui is its liaison form; y for i is documentary spelling only
 l3-at|perhaps; maybe|variant of ac; distinct from interrogative pronoun āc
 l3-ac|perhaps; maybe|variant of at; distinct from interrogative pronoun āc
 l3-o-interjection|huh; really; is that a fact; oh; ouch; hey|surprise, pain, or vocative initiation
@@ -704,9 +746,6 @@ l3-ca-no-zo|thus it is|base collocation licensed for particle honorificization
 l3-otzin|behold|honorificized single particle
 l3-auhtzin|good; good|honorificized single particle
 l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its final member
-l16-quen-mach-huel|how fortunate; how favorable|evaluative exclamation used with a personal-pronominal NNC
-l16-huel|exactly; completely|adverbial modifier of a quantitive NNC
-l16-achi-adverbial|almost|adverbial modifier of mochi; distinct here from the quantitive NNC it modifies
 l50-in-tla-nel|if in truth; even if|concessive introductory collocation
 l50-in-ma-nel|although; although in fact|concessive collocation with usual adjunctor in
 l50-ma-nel|although; although in fact|concessive collocation without optional adjunctor in
@@ -825,13 +864,17 @@ l50-ma-nel|although; although in fact|concessive collocation without optional ad
         const lexicalFacts =
           CLASSICAL_NAHUATL_PARTICLE_LEXICAL_FACTS_BY_ID[id] || null;
         const aliases = [sourceForm];
-        const formulaSegments = CLASSICAL_NAHUATL_PARTICLE_SEGMENTS_BY_ID[id]
+        const sourceFormulaSegments = CLASSICAL_NAHUATL_PARTICLE_SEGMENTS_BY_ID[id]
           || Object.freeze(
             sourceForm
               .replace(/[!?]+$/gu, "")
               .split(/\s+/gu)
               .filter(Boolean)
           );
+        // Andrews §3.4 shortens nō only as a nonfinal collocation member.
+        // Preserve the transcription as evidence while deriving final length.
+        const formulaSegments = Object.freeze(sourceFormulaSegments.map((segment, index) =>
+          functionScope === "collocation" && segment === "no" && index === sourceFormulaSegments.length - 1 ? "nō" : segment));
         return {
           kind: "classical-nahuatl-particle-entry",
           version: CLASSICAL_NAHUATL_LESSON3_PARTICLES_VERSION,
@@ -855,6 +898,7 @@ l50-ma-nel|although; although in fact|concessive collocation without optional ad
           gloss: lexicalFacts?.meanings?.join("; ") || "",
           meanings: lexicalFacts?.meanings || Object.freeze([]),
           usageFacts: lexicalFacts?.usageFacts || Object.freeze([]),
+          relationalUse: CLASSICAL_NAHUATL_PARTICLE_RELATIONAL_USES_BY_ID[id] || null,
           lexicalFactsDerivedByOwner: true,
           lexicalFactsUserSelectable: false,
           clauseComposable: Boolean(
@@ -865,8 +909,6 @@ l50-ma-nel|although; although in fact|concessive collocation without optional ad
           sentenceAdverbialComposable: Boolean(
             functionScope === "adverbial-modifier"
             && placementScope === "floating"
-            && !CLASSICAL_NAHUATL_PARTICLE_SENTENCE_ADJUNCTION_UNPROVED_IDS
-              .has(id)
           ),
           curriculumCoordinate: section,
           curriculumCoordinateAuthority: false,
@@ -1162,6 +1204,23 @@ l50-ma-nel|although; although in fact|concessive collocation without optional ad
       });
       return Object.freeze(value);
     }
+    // Only the freshly constructed standalone particle grammar graph passes
+    // here. Its generic frame containers are shallow-frozen, but all mutable
+    // descendants were created for this particle; the retained Source is issued.
+    function freezeOwnedParticleGrammarGraph(value, seen = new Set()) {
+      if (!value || typeof value !== "object" || seen.has(value)) return value;
+      seen.add(value);
+      Object.values(value).forEach(child => freezeOwnedParticleGrammarGraph(child, seen));
+      return Object.freeze(value);
+    }
+    function freezeOwnedParticleEntrySnapshot(entry) {
+      if (!entry) return entry;
+      // Contextual variants can reference an inventory array: detach it before
+      // freezing the otherwise fresh presentation metadata.
+      return freezeClassicalNahuatlLesson3ParticleResult({
+        ...entry, contextualVariants: Array.from(entry.contextualVariants || []),
+      });
+    }
     function findClassicalNahuatlLesson3ExternalAuthorityPath(
       value,
       path = "request",
@@ -1315,7 +1374,10 @@ l50-ma-nel|although; although in fact|concessive collocation without optional ad
       }
       return String(entry.sourceForm || "")
         .split(/\s+/gu)
-        .map(segment => segment.replace(/^#|#$/gu, ""))
+        .map((segment, index, segments) => {
+          const written = segment.replace(/^#|#$/gu, "");
+          return entry.functionScope === "collocation" && written === "no" && index === segments.length - 1 ? "nō" : written;
+        })
         .join(" ");
     }
     function formatClassicalNahuatlParticleFormulaSegments(segments = []) {
@@ -1388,6 +1450,16 @@ l50-ma-nel|although; although in fact|concessive collocation without optional ad
               restrictionEnforcedByApplication: true,
             })
           : null;
+      // These are lexical operator uses, not proof of the temporal reading of
+      // an arbitrary clause. The actual owning attachment supplies that use.
+      const temporalUse = ["l3-mec", "l3-nee", "l3-niman", "l3-oc", "l3-ye", "l3-aya"].includes(entry.id)
+        ? Object.freeze({domain: "time", contextualReadingRequired: true,
+            // §50.2.1 retains ye iuh/iuhqui under implicit temporal reading;
+            // §50.2.2 explicitly identifies oc/aya inside the adjunct.
+            adjoinedExplicitIndicator: ["l3-oc", "l3-aya"].includes(entry.id),
+            principalCorroboratingElement: true,
+            sourceAuthority: "lexical-operator", generationAuthority: false})
+        : null;
       const frame = freezeClassicalNahuatlLesson3ParticleResult({
         kind: "classical-nahuatl-particle-lexical-fact-frame",
         version: CLASSICAL_NAHUATL_LESSON3_PARTICLES_VERSION,
@@ -1408,10 +1480,12 @@ l50-ma-nel|although; although in fact|concessive collocation without optional ad
         usageFacts: lexicalFacts?.usageFacts || Object.freeze([]),
         functionScope: entry.functionScope,
         placementScope: entry.placement?.scope || "",
+        relationalUse: CLASSICAL_NAHUATL_PARTICLE_RELATIONAL_USES_BY_ID[entry.id] || null,
         adjunctorProfile,
         vocativeProfile,
         antecessiveProfile,
         speakerProfile,
+        temporalUse,
         readOnly: true,
         userSelectable: false,
         generationAuthority: false,
@@ -1427,9 +1501,11 @@ l50-ma-nel|although; although in fact|concessive collocation without optional ad
           formulaSegments: frame.formulaSegments,
           meanings: frame.meanings,
           usageFacts: frame.usageFacts,
+          relationalUse: frame.relationalUse,
           adjunctorProfile: frame.adjunctorProfile,
           vocativeProfile: frame.vocativeProfile,
           speakerProfile: frame.speakerProfile,
+          temporalUse: frame.temporalUse,
         })
       );
       return frame;
@@ -1448,9 +1524,11 @@ l50-ma-nel|although; although in fact|concessive collocation without optional ad
         && frame.formulaSegments === receipt.formulaSegments
         && frame.meanings === receipt.meanings
         && frame.usageFacts === receipt.usageFacts
+        && frame.relationalUse === receipt.relationalUse
         && frame.adjunctorProfile === receipt.adjunctorProfile
         && frame.vocativeProfile === receipt.vocativeProfile
         && frame.speakerProfile === receipt.speakerProfile
+        && frame.temporalUse === receipt.temporalUse
         && frame.invariant === true
         && frame.paradigmatic === false
         && frame.readOnly === true
@@ -1462,6 +1540,32 @@ l50-ma-nel|although; although in fact|concessive collocation without optional ad
         && frame.documentaryEvidenceAuthority === false
         && Object.isFrozen(frame)
       );
+    }
+    // Project only the lexical speaker requirement. This neither evaluates a
+    // host nor grants sentence composition, honorific, or wish-carrier grammar.
+    function getClassicalNahuatlSentenceParticleSpeakerAvailability(particleId = "", speakerGender = "unspecified") {
+      const entry = getClassicalNahuatlParticleSourceEntries()
+        .find(candidate => candidate.id === particleId) || null;
+      const facts = buildClassicalNahuatlParticleLexicalFactFrame(entry);
+      const registered = isClassicalNahuatlParticleLexicalFactFrame(facts);
+      const requiredSpeakerGender = registered
+        ? facts.speakerProfile?.requiredSpeakerGender || "" : "";
+      const ready = registered && (!requiredSpeakerGender
+        || String(speakerGender || "unspecified").trim() === requiredSpeakerGender);
+      return Object.freeze({
+        ready,
+        blockReason: ready ? "" : !registered
+          ? "sentence-particle-registered-source-required"
+          : `sentence-particle-speaker-context-required:${requiredSpeakerGender}`,
+        requiredSpeakerGender,
+        recoveryKind: !ready && registered ? "speaker-context" : "",
+        generationAuthority: false,
+      });
+    }
+    function getClassicalNahuatlParticleRelationalUse(result = null) {
+      return isClassicalNahuatlParticleResultFrame(result)
+        && isClassicalNahuatlParticleLexicalFactFrame(result.lexicalFactFrame)
+        ? result.lexicalFactFrame.relationalUse || null : null;
     }
     function getClassicalNahuatlClauseRelationMarkerOptions() {
       const entryById = new Map(
@@ -1791,6 +1895,7 @@ l50-ma-nel|although; although in fact|concessive collocation without optional ad
         },
         resultFrame
       }, grammarFrameOwnerCapability);
+      freezeOwnedParticleGrammarGraph(grammarFrame);
       const issued = freezeClassicalNahuatlLesson3ParticleResult({
         kind: "classical-nahuatl-particle-result-frame",
         version: CLASSICAL_NAHUATL_LESSON3_PARTICLES_VERSION,
@@ -2178,7 +2283,8 @@ l50-ma-nel|although; although in fact|concessive collocation without optional ad
     }
     const CLASSICAL_NAHUATL_PARTICLE_SHORTCUT_ADVERBIAL_IDS = Object.freeze({
       mec: "l3-mec",
-      nee: "l3-nee",
+      nec: "l3-nee",
+      nee: "l3-nee", // Historical OCR shortcut; permanent identity is retained.
       "tēl": "l3-tel",
       oc: "l3-oc",
       zan: "l3-zan",
@@ -2385,6 +2491,73 @@ l50-ma-nel|although; although in fact|concessive collocation without optional ad
       }));
       return issued;
     }
+    function isClassicalParticleExternalAdverbialHost(frame = null) {
+      const runtimeTarget = getClassicalNahuatlParticleRuntimeTarget();
+      return runtimeTarget.isClassicalNahuatlAdverbialNuclearResult?.(frame) === true
+        && frame.authorizationStatus === "authorized"
+        && frame.scope === "external-clause";
+    }
+    function isClassicalParticleNominalConstructionHost(frame = null) {
+      const runtimeTarget = getClassicalNahuatlParticleRuntimeTarget();
+      return runtimeTarget.isClassicalNahuatlNominalConstructionResult?.(frame) === true
+        && frame.authorizationStatus === "authorized"
+        && runtimeTarget.isClassicalNahuatlNncSlotFrame?.(
+          frame.canonicalResult?.nncSlotFrame
+        ) === true
+        && !frame.operationFrame?.vocativeFrame;
+    }
+    function isClassicalParticleAdverbialCompositionHost(frame = null) {
+      const runtimeTarget = getClassicalNahuatlParticleRuntimeTarget();
+      return runtimeTarget.isAdverbialAdjunctionResult?.(frame) === true
+        && resolveClassicalNahuatlParticleCanonicalSentenceInput({
+          nuclearResultFrame: frame.sourceContract.principal.issuedResult
+        }).authorizationStatus === "authorized";
+    }
+    function getClassicalParticleAttestedAdjectivalNncHostProjection(frame = null) {
+      const runtimeTarget = getClassicalNahuatlParticleRuntimeTarget();
+      const projection = runtimeTarget
+        .getClassicalNahuatlAttestedNncCellExternalProjection?.(frame);
+      return projection?.canonicalResultFrame === frame
+        && projection.canonicalSourceFrame === frame?.sourceFrame
+        && projection.adjectivalFunction === "predicative-quality"
+        && projection.subjectParticipantFrame === frame.subjectParticipantFrame
+        && projection.subjectParticipantFrame?.hasReferent === true
+        ? projection : null;
+    }
+    function isClassicalParticleRelationalHost(frame = null) {
+      const runtimeTarget = getClassicalNahuatlParticleRuntimeTarget();
+      return runtimeTarget.isClassicalNahuatlRelationalResult?.(frame) === true
+        && frame.sourceFrame?.subjectMode === "adverbialized";
+    }
+    function isClassicalParticleGentilicNncHost(frame = null) {
+      const runtimeTarget = getClassicalNahuatlParticleRuntimeTarget();
+      return runtimeTarget.isPlaceGentilicNncFrame?.(frame) === true
+        && runtimeTarget.isClassicalNahuatlNncSlotFrame?.(
+          frame.agreementFrame?.typedSlotFrame) === true;
+    }
+    function isClassicalParticleSupplementedHost(frame = null) {
+      const runtimeTarget = getClassicalNahuatlParticleRuntimeTarget();
+      return (runtimeTarget?.isClassicalNahuatlSupplementationFrame?.(frame) === true
+        || runtimeTarget?.isClassicalNahuatlRumoredReportFrame?.(frame) === true)
+        && frame.authorizationStatus === "authorized"
+        && ["nnc", "vnc"].includes(frame.principalClause?.unitKind);
+    }
+    function getClassicalParticleAdjectivalNncHostProjection(frame = null) {
+      const runtimeTarget = getClassicalNahuatlParticleRuntimeTarget();
+      const head = frame?.selectedClauses?.[0];
+      if (runtimeTarget.isClassicalNahuatlResultFrame?.(frame) !== true
+        || frame.operationKind !== "adjectival-modification"
+        || frame.authorizationStatus !== "authorized"
+        || head?.unitKind !== "nnc"
+        || runtimeTarget.isClassicalNahuatlNncSlotFrame?.(head.typedSlotFrame) !== true) return null;
+      const projection = runtimeTarget.buildClassicalNahuatlSupplementationClauseEnvelope?.(
+        frame, {referenceId: "particle-adjectival-nnc-host"}
+      );
+      return runtimeTarget.isClassicalNahuatlSupplementationClauseEnvelope?.(projection) === true
+        && projection.unitKind === "nnc"
+        && runtimeTarget.getClassicalNahuatlSupplementationClauseSourceFrame?.(projection) === frame
+        ? projection : null;
+    }
     function resolveClassicalNahuatlParticleCanonicalSentenceInput(options = {}) {
       const priorSentenceFrame =
         options.consumedSentenceFrame
@@ -2411,6 +2584,129 @@ l50-ma-nel|although; although in fact|concessive collocation without optional ad
         || options.nuclearResult
         || null;
       const runtimeTarget = getClassicalNahuatlParticleRuntimeTarget();
+      const attestedAdjectivalHost = getClassicalParticleAttestedAdjectivalNncHostProjection(suppliedNuclearResult);
+      if (attestedAdjectivalHost) {
+        return {
+          authorizationStatus: "authorized", blockReason: "",
+          nuclearClauseKind: "nnc",
+          nuclearFormula: attestedAdjectivalHost.formulaRealization,
+          nuclearSurface: attestedAdjectivalHost.wordSurface,
+          sentenceFormula: attestedAdjectivalHost.formulaRealization,
+          sentenceSurface: suppliedNuclearResult.sentenceSurface,
+          sentenceFormulaInitialCapitalization: "preserve",
+          sentenceSurfaceInitialCapitalization: "syntactic-sentence-initial",
+          canonicalInputKind: "issued-attested-adjectival-nnc-cell-result",
+          canonicalInputFrame: suppliedNuclearResult,
+          tense: ""
+        };
+      }
+      const adjectivalNncHost = getClassicalParticleAdjectivalNncHostProjection(suppliedNuclearResult);
+      if (adjectivalNncHost) {
+        return {
+          authorizationStatus: "authorized", blockReason: "",
+          nuclearClauseKind: "nnc",
+          nuclearFormula: adjectivalNncHost.nuclearFormulaRealization,
+          nuclearSurface: adjectivalNncHost.nuclearSurface,
+          sentenceFormula: adjectivalNncHost.formulaRealization,
+          sentenceSurface: suppliedNuclearResult.surfaceRealization,
+          sentenceFormulaInitialCapitalization: "syntactic-sentence-initial",
+          sentenceSurfaceInitialCapitalization: "syntactic-sentence-initial",
+          canonicalInputKind: "issued-adjectival-nnc-composition-result",
+          canonicalInputFrame: suppliedNuclearResult,
+          tense: ""
+        };
+      }
+      if (isClassicalParticleGentilicNncHost(suppliedNuclearResult)) {
+        return {
+          authorizationStatus: "authorized", blockReason: "",
+          nuclearClauseKind: "nnc",
+          nuclearFormula: suppliedNuclearResult.formulaRealization,
+          nuclearSurface: suppliedNuclearResult.wordSurface,
+          sentenceFormula: suppliedNuclearResult.formulaRealization,
+          sentenceSurface: suppliedNuclearResult.sentenceSurface,
+          sentenceFormulaInitialCapitalization: "preserve",
+          sentenceSurfaceInitialCapitalization: "preserve",
+          canonicalInputKind: "issued-place-gentilic-nnc-result",
+          canonicalInputFrame: suppliedNuclearResult,
+          tense: ""
+        };
+      }
+      if (isClassicalParticleAdverbialCompositionHost(suppliedNuclearResult)) {
+        const nucleus = resolveClassicalNahuatlParticleCanonicalSentenceInput({
+          nuclearResultFrame: suppliedNuclearResult.sourceContract.principal.issuedResult
+        });
+        return {
+          ...nucleus,
+          sentenceFormula: suppliedNuclearResult.formulaRecord.formula,
+          sentenceSurface: suppliedNuclearResult.surface,
+          sentenceFormulaInitialCapitalization: "preserve",
+          sentenceSurfaceInitialCapitalization: "syntactic-sentence-initial",
+          canonicalInputKind: "issued-adverbial-adjunction-result",
+          canonicalInputFrame: suppliedNuclearResult
+        };
+      }
+      if (isClassicalParticleRelationalHost(suppliedNuclearResult)) {
+        return {
+          authorizationStatus: "authorized", blockReason: "",
+          nuclearClauseKind: "nnc",
+          nuclearFormula: suppliedNuclearResult.formula,
+          nuclearSurface: suppliedNuclearResult.surface,
+          sentenceFormula: suppliedNuclearResult.formula,
+          sentenceSurface: suppliedNuclearResult.surface,
+          sentenceFormulaInitialCapitalization: "preserve",
+          sentenceSurfaceInitialCapitalization: "syntactic-sentence-initial",
+          canonicalInputKind: "issued-adverbialized-relational-result",
+          canonicalInputFrame: suppliedNuclearResult,
+          tense: ""
+        };
+      }
+      if (isClassicalParticleSupplementedHost(suppliedNuclearResult)) {
+        return {
+          authorizationStatus: "authorized", blockReason: "",
+          nuclearClauseKind: suppliedNuclearResult.principalClause.unitKind,
+          nuclearFormula: suppliedNuclearResult.principalClause.formulaRealization,
+          nuclearSurface: suppliedNuclearResult.principalClause.surface,
+          sentenceFormula: suppliedNuclearResult.formulaRealization,
+          sentenceSurface: suppliedNuclearResult.surfaceRealization,
+          sentenceFormulaInitialCapitalization: "syntactic-sentence-initial",
+          sentenceSurfaceInitialCapitalization: "syntactic-sentence-initial",
+          canonicalInputKind: suppliedNuclearResult.kind === "classical-nahuatl-rumored-report-frame"
+            ? "issued-rumored-report-result"
+            : "issued-supplementation-result",
+          canonicalInputFrame: suppliedNuclearResult,
+          tense: suppliedNuclearResult.principalClause.tense || ""
+        };
+      }
+      if (isClassicalParticleNominalConstructionHost(suppliedNuclearResult)) {
+        return {
+          authorizationStatus: "authorized", blockReason: "",
+          nuclearClauseKind: "nnc",
+          nuclearFormula: suppliedNuclearResult.formulaRealization,
+          nuclearSurface: suppliedNuclearResult.wordSurface,
+          sentenceFormula: suppliedNuclearResult.formulaRealization,
+          sentenceSurface: suppliedNuclearResult.sentenceSurface,
+          sentenceFormulaInitialCapitalization: "preserve",
+          sentenceSurfaceInitialCapitalization: "syntactic-sentence-initial",
+          canonicalInputKind: "issued-nominal-construction-result",
+          canonicalInputFrame: suppliedNuclearResult,
+          tense: ""
+        };
+      }
+      if (isClassicalParticleExternalAdverbialHost(suppliedNuclearResult)) {
+        return {
+          authorizationStatus: "authorized", blockReason: "",
+          nuclearClauseKind: suppliedNuclearResult.sourceFrame.clauseKind === "vnc" ? "vnc" : "nnc",
+          nuclearFormula: suppliedNuclearResult.formulaRealization,
+          nuclearSurface: suppliedNuclearResult.wordSurface,
+          sentenceFormula: suppliedNuclearResult.formulaRealization,
+          sentenceSurface: suppliedNuclearResult.sentenceSurface,
+          sentenceFormulaInitialCapitalization: "preserve",
+          sentenceSurfaceInitialCapitalization: "syntactic-sentence-initial",
+          canonicalInputKind: "issued-external-adverbial-nuclear-result",
+          canonicalInputFrame: suppliedNuclearResult,
+          tense: ""
+        };
+      }
       if (
         typeof runtimeTarget?.isClassicalNahuatlVncSentenceResultFrame === "function"
         && runtimeTarget.isClassicalNahuatlVncSentenceResultFrame(suppliedNuclearResult)
@@ -2423,6 +2719,7 @@ l50-ma-nel|although; although in fact|concessive collocation without optional ad
           nuclearSurface: suppliedNuclearResult.consumedNuclearSurface,
           sentenceFormula: suppliedNuclearResult.sentenceFormulaDisplay,
           sentenceSurface: suppliedNuclearResult.sentenceSurfaceDisplay,
+          embeddedSentenceSurface: suppliedNuclearResult.embeddedSurface,
           sentenceFormulaInitialCapitalization:
             suppliedNuclearResult.sentenceFormulaInitialCapitalization,
           sentenceSurfaceInitialCapitalization:
@@ -2510,10 +2807,17 @@ l50-ma-nel|although; although in fact|concessive collocation without optional ad
           currentResult
         )
       ) ? currentResult : null;
-      const exactHostClause = exactSentenceLayer
+      const exactHostClause = (isClassicalParticleAdverbialCompositionHost(currentResult) ? currentResult : null)
+        || (getClassicalParticleAttestedAdjectivalNncHostProjection(currentResult) ? currentResult : null)
+        || (getClassicalParticleAdjectivalNncHostProjection(currentResult) ? currentResult : null)
+        || exactSentenceLayer
         || exactVncSentence
         || exactNncSentence
-        || null;
+        || (isClassicalParticleRelationalHost(currentResult) ? currentResult : null)
+        || (isClassicalParticleGentilicNncHost(currentResult) ? currentResult : null)
+        || (isClassicalParticleNominalConstructionHost(currentResult) ? currentResult : null)
+        || (isClassicalParticleExternalAdverbialHost(currentResult) ? currentResult : null)
+        || (isClassicalParticleSupplementedHost(currentResult) ? currentResult : null);
       const particleEntry = exactParticleResult
         ? getClassicalNahuatlParticleSourceEntries().find(
           entry => entry.id === exactParticleResult.particleId
@@ -2679,6 +2983,19 @@ l50-ma-nel|although; although in fact|concessive collocation without optional ad
         translationAuthority: false
       });
     }
+    function getClassicalNahuatlSentenceAdverbialAvailability(particleId = "", tense = "") {
+      const entry = findClassicalNahuatlSentenceAdverbialEntry(particleId);
+      const context = entry
+        ? buildClassicalNahuatlAdverbialContextualMeaningFrame(entry, tense)
+        : null;
+      return Object.freeze({
+        ready: Boolean(context?.licensed),
+        blockReason: !entry ? "classical-sentence-adverbial-entry-required"
+          : context.licensed ? "" : "classical-adverbial-tense-context-not-licensed",
+        contextualMeaningFrame: context,
+        grammarAuthority: false,
+      });
+    }
     function buildClassicalNahuatlSentenceAdverbialLayerFrame(options = {}) {
       if (!options || typeof options !== "object") {
         options = {};
@@ -2784,12 +3101,25 @@ l50-ma-nel|although; although in fact|concessive collocation without optional ad
         ? particleResultFrame.formula
         : "";
       const embeddedSentenceFormula = removeSyntacticInitialCapitalization(consumedSentenceFormula, sentenceFormulaInitialCapitalization);
-      const embeddedSentenceSurface = removeSyntacticInitialCapitalization(consumedSentenceSurface, sentenceSurfaceInitialCapitalization);
+      const embeddedSentenceSurface = canonicalInput.embeddedSentenceSurface !== undefined
+        ? `${canonicalInput.embeddedSentenceSurface}${String(consumedSentenceSurface).match(/[.?!]$/u)?.[0] || ""}`
+        : removeSyntacticInitialCapitalization(consumedSentenceSurface, sentenceSurfaceInitialCapitalization);
+      // An adverb of the optative nucleus follows its wish introducer (§9.5).
+      // Consume the issued sentence's typed constituents, not its printed text.
+      const sentenceFrame = canonicalInput.canonicalInputKind === "classical-nahuatl-vnc-sentence-result-frame"
+        ? canonicalInput.canonicalInputFrame.sentenceSurfaceFrame : null;
+      const withinWish = authorized && sentenceFrame?.mood === "optative"
+        && sentenceFrame.sentenceParticles?.some(particle => ["mā", "tlā"].includes(particle));
+      const runtimeTarget = getClassicalNahuatlParticleRuntimeTarget();
       const sentenceFormulaDisplay = authorized
-        ? `${formulaParticle} ${embeddedSentenceFormula}`
+        ? withinWish
+          ? runtimeTarget.buildClassicalNahuatlVncSentenceFormulaRealization(sentenceFrame, nuclearFormula, particleResultFrame)
+          : `${formulaParticle} ${embeddedSentenceFormula}`
         : "";
       const sentenceSurfaceDisplay = authorized
-        ? `${sourceForm.charAt(0).toUpperCase()}${sourceForm.slice(1)} ${embeddedSentenceSurface}`
+        ? withinWish
+          ? runtimeTarget.buildClassicalNahuatlVncSentenceSurfaceRealization(sentenceFrame, nuclearSurface, particleResultFrame)
+          : `${sourceForm.charAt(0).toUpperCase()}${sourceForm.slice(1)} ${embeddedSentenceSurface}`
         : "";
       const formulaProjection = authorized ? Object.freeze({
         kind: "classical-nahuatl-sentence-adverbial-formula-projection",
@@ -2851,12 +3181,12 @@ l50-ma-nel|although; although in fact|concessive collocation without optional ad
             : null,
         particleResultFrame:
           authorized ? particleResultFrame : null,
-        selectedEntry,
+        selectedEntry: freezeOwnedParticleEntrySnapshot(selectedEntry),
         sourceForm,
         functionScope: selectedEntry?.functionScope || "",
-        placement: selectedEntry?.placement || null,
+        placement: freezeClassicalNahuatlLesson3ParticleResult(selectedEntry?.placement) || null,
         sequenceRole: "adverbial-modifier",
-        sequenceOrder: "before-consumed-sentence",
+        sequenceOrder: withinWish ? "after-wish-introduction-before-nucleus" : "before-consumed-sentence",
         sequenceOrderAuthority: "typed-placement-fact",
         tense,
         contextualMeaningFrame,
@@ -2884,6 +3214,48 @@ l50-ma-nel|although; although in fact|concessive collocation without optional ad
         displayStringsAreAuthority: false,
         lessonMetadataAuthority: false
       });
+    }
+    function getClassicalNahuatlParticleWishCarrierProfile(entry = null) {
+      const segments = entry?.formulaSegments || [];
+      // These are roles of genuine attested Source constituents, not an
+      // example/option-identity permit or a caller-supplied analysis.
+      if (entry?.functionScope === "negation" && segments.length === 3
+        && segments[0] === "mā" && segments[1] === "ca#"
+        && ["ye", "oc"].includes(segments[2])) {
+        return Object.freeze({ kind: "negative-temporal-wish-carrier",
+          introductoryParticle: "mā", negativePrefix: "ca#",
+          negativeScope: "temporal-adverbial", temporalParticle: segments[2] });
+      }
+      if (entry?.functionScope === "negation" && segments.length === 3
+        && segments[0] === "mā" && segments[1] === "ca#"
+        && ["zo", "nō"].includes(segments[2])) {
+        return Object.freeze({
+          kind: segments[2] === "zo" ? "negative-modal-wish-carrier" : "negative-additive-wish-carrier",
+          introductoryParticle: "mā", negativePrefix: "ca#",
+          negativeScope: segments[2] === "zo" ? "modal-adverbial" : "additive-adverbial",
+          negatedParticle: segments[2]
+        });
+      }
+      if (entry?.functionScope === "collocation" && segments.length === 4
+        && segments[0] === "mā" && segments[1] === "ca#"
+        && segments[2] === "no" && segments[3] === "zo") {
+        return Object.freeze({ kind: "negative-additive-wish-carrier",
+          introductoryParticle: "mā", negativePrefix: "ca#",
+          negativeScope: "additive-adverbial", negatedParticle: "no", followingParticle: "zo" });
+      }
+      if (entry?.functionScope === "collocation" && segments.length === 2
+        && segments[0] === "mā" && segments[1] === "tēl") {
+        return Object.freeze({ kind: "encouraged-wish-carrier",
+          introductoryParticle: "mā", encouragementParticle: "tēl" });
+      }
+      if (entry?.functionScope === "collocation" && segments.length === 2
+        && segments[1] === "mā"
+        && findClassicalNahuatlLesson3ParticleEntry(segments[0])
+          ?.functionScope === "interjection") {
+        return Object.freeze({ kind: "fervent-wish-carrier",
+          introductoryParticle: "mā", intensifier: segments[0] });
+      }
+      return null;
     }
     function buildClassicalNahuatlSentenceParticleLayerFrame(options = {}) {
       if (!options || typeof options !== "object") {
@@ -2952,8 +3324,13 @@ l50-ma-nel|although; although in fact|concessive collocation without optional ad
       const removeInnerSentenceInitialCapitalization = (value, provenance) => provenance === "syntactic-sentence-initial" && value
         ? `${value.charAt(0).toLowerCase()}${value.slice(1)}`
         : value;
-      const embeddedSentenceFormula = removeInnerSentenceInitialCapitalization(consumedSentenceFormula, sentenceFormulaInitialCapitalization);
-      const embeddedSentenceSurface = removeInnerSentenceInitialCapitalization(consumedSentenceSurface, sentenceSurfaceInitialCapitalization);
+      let embeddedSentenceFormula = removeInnerSentenceInitialCapitalization(consumedSentenceFormula, sentenceFormulaInitialCapitalization);
+      // An issued VNC owns its embedded spelling; sentence-case provenance
+      // alone cannot distinguish a lexical capital from a syntactic one.
+      let embeddedSentenceSurface = canonicalInput.canonicalInputKind === "classical-nahuatl-vnc-sentence-result-frame"
+        && canonicalInput.embeddedSentenceSurface !== undefined
+        ? `${canonicalInput.embeddedSentenceSurface}${String(consumedSentenceSurface).match(/[.?!]$/u)?.[0] || ""}`
+        : removeInnerSentenceInitialCapitalization(consumedSentenceSurface, sentenceSurfaceInitialCapitalization);
       const clauseKindAllowed = canonicalInput.authorizationStatus === "authorized"
         && (nuclearClauseKind === "vnc" || nuclearClauseKind === "nnc");
       const inventoryEntry = particleOmitted
@@ -3007,14 +3384,33 @@ l50-ma-nel|although; although in fact|concessive collocation without optional ad
       const syntacticEntry = honorificSourceFrame
         ? baseSelectedEntry
         : selectedEntry;
-      const requiredSpeakerGender = syntacticEntry?.id === "l3-no-interjection"
-        ? "female"
-        : "";
+      const requiredSpeakerGender = getClassicalNahuatlSentenceParticleSpeakerAvailability(
+        syntacticEntry?.id || "", speakerGender
+      ).requiredSpeakerGender;
       const speakerContextLicensed = !requiredSpeakerGender
         || speakerGender === requiredSpeakerGender;
       const standaloneCapable = syntacticEntry?.placement?.scope
         === "independent-utterance";
+      // A conjunctor needs the clause owner's signed relation and conjuncts.
+      // Its lexical particle Result alone cannot authorize a prefix layer.
+      const conjunctionRouteRequired = syntacticEntry?.functionScope === "conjunctor";
       const independentUtterance = false;
+      const sentenceFrame = canonicalInput.canonicalInputKind
+          === "classical-nahuatl-vnc-sentence-result-frame"
+        ? canonicalInput.canonicalInputFrame.sentenceSurfaceFrame : null;
+      const wishCarrierProfile = getClassicalNahuatlParticleWishCarrierProfile(syntacticEntry);
+      const wishParticles = sentenceFrame?.sentenceParticles || [];
+      const wishCarrierLicensed = !wishCarrierProfile || Boolean(
+        canonicalInput.authorizationStatus === "authorized"
+        && sentenceFrame?.mood === "optative"
+        && sentenceFrame.lesson9SentenceType === "wish-sentence"
+        && sentenceFrame.introductoryParticle === "mā"
+        && wishParticles.filter(particle => particle === "mā").length === 1
+        && wishParticles.every(particle => ["mā", "ō#"].includes(particle))
+        && sentenceFrame.lesson9NegativeRequested === false
+        && sentenceFrame.negativePrefixOutsideVnc === false
+        && !honorificizedRequested
+      );
       const authorized = !particleOmitted
         && !unexpectedOptionKey
         && !authorityPath
@@ -3027,7 +3423,9 @@ l50-ma-nel|although; although in fact|concessive collocation without optional ad
         && Boolean(particleResultFrame)
         && placementAuthorized
         && speakerContextLicensed
-        && honorificizedAuthorized;
+        && !conjunctionRouteRequired
+        && honorificizedAuthorized
+        && wishCarrierLicensed;
       const blocked = !particleOmitted && !authorized;
       const sourceForm = authorized ? particleResultFrame.surface : "";
       const formulaParticle = authorized ? particleResultFrame.formula : "";
@@ -3037,15 +3435,93 @@ l50-ma-nel|although; although in fact|concessive collocation without optional ad
         && embeddedSentenceFormula.startsWith("#")
         ? embeddedSentenceFormula.slice(1)
         : embeddedSentenceFormula;
+      const withinWish = authorized && sentenceFrame?.mood === "optative"
+        && sentenceFrame.sentenceParticles?.some(particle => ["mā", "tlā"].includes(particle))
+        && syntacticEntry?.functionScope === "collocation"
+        && syntacticEntry.formulaSegments?.length
+        && syntacticEntry.formulaSegments.every(segment => findClassicalNahuatlSentenceAdverbialEntry(segment));
+      const runtimeTarget = getClassicalNahuatlParticleRuntimeTarget();
+      // Consume the typed introduction, never trim a rendered Sentence. The
+      // original issued Sentence/finite parent remains the only host authority.
+      const residualSentenceSurfaceFrame = authorized && wishCarrierProfile
+        ? Object.freeze({ ...sentenceFrame,
+            sentenceParticles: Object.freeze(wishParticles.filter(particle => particle !== "mā")),
+          }) : null;
+      const wishCarrierCompositionFrame = residualSentenceSurfaceFrame
+        ? Object.freeze({
+            kind: "classical-nahuatl-wish-introduction-consumption-frame",
+            canonicalSentenceInput: canonicalInput.canonicalInputFrame,
+            canonicalParticleResult: particleResultFrame,
+            profile: wishCarrierProfile,
+            consumedIntroductoryParticle: "mā",
+            residualSentenceSurfaceFrame,
+            residualSentenceIsIndependentlyIssued: false,
+            callerSuppliedAuthorityAccepted: false,
+          }) : null;
+      // §15.3: the NNC sentence owner selects ca# for a negative wish.
+      // §16.4: negation carried by an adverbial still scopes the following
+      // interrogative NNC. Its prefix is already realized by this particle.
+      const sourceNncSentence = canonicalInput.canonicalInputKind
+        === "issued-classical-nahuatl-nnc-sentence-surface-frame"
+        ? canonicalInput.canonicalInputFrame : null;
+      const negativeAdverbialScope = authorized
+        && ["ah#", "ca#"].includes(syntacticEntry?.formulaSegments?.[0])
+        && syntacticEntry.formulaSegments.length > 1
+        && syntacticEntry.formulaSegments.slice(1).every(segment =>
+          Boolean(findClassicalNahuatlSentenceAdverbialEntry(segment)));
+      const contextualNncSentenceFrame = negativeAdverbialScope
+        && sourceNncSentence?.discourseFrame?.inherentInterrogative
+        ? runtimeTarget.buildClassicalNahuatlNncSentenceSurfaceFrame(
+            sourceNncSentence.sourceNncSlotFrame,
+            {
+              sentenceType: sourceNncSentence.requestedSentenceType,
+              polarity: sourceNncSentence.polarity,
+              predicateKind: sourceNncSentence.predicateKind,
+              discourseFrame: Object.freeze({
+                ...sourceNncSentence.discourseFrame,
+                polarity: "negative",
+                interrogativeReadingActive: false,
+                noninterrogativeReason: "negative-pronominal-nnc-loses-interrogative-quality",
+              }),
+            }) : null;
+      if (contextualNncSentenceFrame?.authorizationStatus === "authorized") {
+        embeddedSentenceFormula = removeInnerSentenceInitialCapitalization(
+          contextualNncSentenceFrame.sentenceFormulaDisplay, sentenceFormulaInitialCapitalization);
+        embeddedSentenceSurface = removeInnerSentenceInitialCapitalization(
+          contextualNncSentenceFrame.sentenceSurface, sentenceSurfaceInitialCapitalization);
+      }
+      const nncWishFrame = authorized && syntacticEntry?.id === "l3-ma"
+        && canonicalInput.canonicalInputKind === "issued-classical-nahuatl-nnc-sentence-surface-frame"
+        ? runtimeTarget.buildClassicalNahuatlNncSentenceSurfaceFrame(
+            canonicalInput.canonicalInputFrame.sourceNncSlotFrame,
+            {
+              sentenceType: "wish",
+              polarity: canonicalInput.canonicalInputFrame.polarity,
+              predicateKind: canonicalInput.canonicalInputFrame.predicateKind,
+              discourseFrame: canonicalInput.canonicalInputFrame.discourseFrame,
+            })
+        : null;
       const sentenceFormulaDisplay = authorized
-        ? independentUtterance
+        ? wishCarrierCompositionFrame
+          ? `${formulaParticle} ${runtimeTarget.buildClassicalNahuatlVncSentenceFormulaRealization(residualSentenceSurfaceFrame, nuclearFormula)}`
+        : nncWishFrame?.authorizationStatus === "authorized"
+          ? nncWishFrame.sentenceFormulaDisplay
+        : withinWish
+          ? runtimeTarget.buildClassicalNahuatlVncSentenceFormulaRealization(sentenceFrame, nuclearFormula, particleResultFrame)
+        : independentUtterance
           ? formulaParticle
           : rightAttachedToNucleus
             ? `${formulaParticle}${rightAttachedEmbeddedFormula}`
             : `${formulaParticle} ${embeddedSentenceFormula}`
         : "";
       const sentenceSurfaceDisplay = authorized
-        ? independentUtterance
+        ? wishCarrierCompositionFrame
+          ? `${sourceForm.charAt(0).toUpperCase()}${sourceForm.slice(1)} ${runtimeTarget.buildClassicalNahuatlVncSentenceSurfaceRealization(residualSentenceSurfaceFrame, nuclearSurface, null, {embedded: true})}${sentenceFrame.finalPunctuation || ""}`
+        : nncWishFrame?.authorizationStatus === "authorized"
+          ? nncWishFrame.sentenceSurface
+        : withinWish
+          ? runtimeTarget.buildClassicalNahuatlVncSentenceSurfaceRealization(sentenceFrame, nuclearSurface, particleResultFrame)
+        : independentUtterance
           ? `${sourceForm.charAt(0).toUpperCase()}${sourceForm.slice(1)}`
           : rightAttachedToNucleus
             ? `${sourceForm.charAt(0).toUpperCase()}${sourceForm.slice(1)}${embeddedSentenceSurface}`
@@ -3071,6 +3547,8 @@ l50-ma-nel|although; although in fact|concessive collocation without optional ad
         kind: "classical-nahuatl-sentence-particle-layer-frame",
         version: CLASSICAL_NAHUATL_LESSON3_PARTICLES_VERSION,
         requestedParticleId,
+        contextualNncSentenceFrame,
+        wishCarrierCompositionFrame,
         particleOmitted,
         active: !particleOmitted,
         authorizationStatus: authorized ? "authorized" : blocked ? "blocked" : "inactive",
@@ -3099,8 +3577,12 @@ l50-ma-nel|although; although in fact|concessive collocation without optional ad
               ? "sentence-particle-requires-authorized-nuclear-formula"
               : inventoryEntry && !placementAuthorized
                 ? "sentence-particle-placement-not-realizable-by-sentence-initial-control"
+                : !wishCarrierLicensed
+                  ? "sentence-wish-carrier-compatible-positive-optative-ma-source-required"
                 : !speakerContextLicensed
                   ? `sentence-particle-speaker-context-required:${requiredSpeakerGender}`
+                : conjunctionRouteRequired
+                  ? "sentence-conjunctor-requires-clause-composition"
                 : specializedSentenceControlOwnsEntry
                   ? "sentence-particle-has-specialized-sentence-control"
                   : honorificizedRequested && !honorificizedAuthorized
@@ -3122,16 +3604,16 @@ l50-ma-nel|although; although in fact|concessive collocation without optional ad
           authorized ? particleResultFrame : null,
         honorificSourceFrame:
           honorificizedAuthorized ? honorificSourceFrame : null,
-        selectedEntry,
-        baseSelectedEntry,
+        selectedEntry: freezeOwnedParticleEntrySnapshot(selectedEntry),
+        baseSelectedEntry: freezeOwnedParticleEntrySnapshot(baseSelectedEntry),
         specializedSentenceControlOwnsEntry,
         honorificizedRequested,
         honorificizedAuthorized,
         honorificizedEntryId,
         sourceForm,
         functionScope: syntacticEntry?.functionScope || "",
-        functionClass: syntacticEntry?.functionClass || null,
-        placement: syntacticEntry?.placement || null,
+        functionClass: freezeClassicalNahuatlLesson3ParticleResult(syntacticEntry?.functionClass) || null,
+        placement: freezeClassicalNahuatlLesson3ParticleResult(syntacticEntry?.placement) || null,
         placementAuthorized,
         speakerGender,
         requiredSpeakerGender,
@@ -3200,6 +3682,7 @@ l50-ma-nel|although; although in fact|concessive collocation without optional ad
         evaluateClassicalNahuatlParticleHonorificFormation,
         isClassicalNahuatlParticleHonorificResultFrame,
         getClassicalNahuatlSentenceParticleEntries,
+        getClassicalNahuatlSentenceParticleSpeakerAvailability,
         findClassicalNahuatlSentenceParticleEntry,
         getClassicalNahuatlParticleCombinationShortcutEntries,
         findClassicalNahuatlParticleCombinationShortcutEntry,
@@ -3292,6 +3775,7 @@ l50-ma-nel|although; although in fact|concessive collocation without optional ad
     api.classifyClassicalNahuatlLesson3ParticleCandidate = classifyClassicalNahuatlLesson3ParticleCandidate;
     api.buildClassicalNahuatlParticleSourceFrame = buildClassicalNahuatlParticleSourceFrame;
     api.isClassicalNahuatlParticleSourceFrame = isClassicalNahuatlParticleSourceFrame;
+    api.getClassicalNahuatlParticleRelationalUse = getClassicalNahuatlParticleRelationalUse;
     api.getClassicalNahuatlClauseRelationMarkerOptions = getClassicalNahuatlClauseRelationMarkerOptions;
     api.getClassicalNahuatlParticleClauseRelationMarkerOptions = getClassicalNahuatlParticleClauseRelationMarkerOptions;
     api.buildClassicalNahuatlParticleResultFrame = buildClassicalNahuatlParticleResultFrame;
@@ -3304,6 +3788,7 @@ l50-ma-nel|although; although in fact|concessive collocation without optional ad
     api.evaluateClassicalNahuatlParticleHonorificFormation = evaluateClassicalNahuatlParticleHonorificFormation;
     api.isClassicalNahuatlParticleHonorificResultFrame = isClassicalNahuatlParticleHonorificResultFrame;
     api.getClassicalNahuatlSentenceParticleEntries = getClassicalNahuatlSentenceParticleEntries;
+    api.getClassicalNahuatlSentenceParticleSpeakerAvailability = getClassicalNahuatlSentenceParticleSpeakerAvailability;
     api.findClassicalNahuatlSentenceParticleEntry = findClassicalNahuatlSentenceParticleEntry;
     api.getClassicalNahuatlParticleCombinationShortcutEntries = getClassicalNahuatlParticleCombinationShortcutEntries;
     api.findClassicalNahuatlParticleCombinationShortcutEntry = findClassicalNahuatlParticleCombinationShortcutEntry;
@@ -3311,6 +3796,7 @@ l50-ma-nel|although; although in fact|concessive collocation without optional ad
     api.isClassicalNahuatlIssuedParticleSentenceLayerFrame = isClassicalNahuatlIssuedParticleSentenceLayerFrame;
     api.issueClassicalNahuatlParticleSentenceBindingFrame = issueClassicalNahuatlParticleSentenceBindingFrame;
     api.isClassicalNahuatlParticleSentenceBindingFrame = isClassicalNahuatlParticleSentenceBindingFrame;
+    api.getClassicalNahuatlSentenceAdverbialAvailability = getClassicalNahuatlSentenceAdverbialAvailability;
     api.getClassicalNahuatlSentenceAdverbialEntries = getClassicalNahuatlSentenceAdverbialEntries;
     api.findClassicalNahuatlSentenceAdverbialEntry = findClassicalNahuatlSentenceAdverbialEntry;
     api.buildClassicalNahuatlSentenceAdverbialLayerFrame = buildClassicalNahuatlSentenceAdverbialLayerFrame;

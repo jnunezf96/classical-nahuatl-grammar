@@ -63,8 +63,40 @@ export function createClassicalNahuatlLaterLayersRuntime(targetObject = globalTh
       }
       return `v1:${(hash >>> 0).toString(16).padStart(8, "0")}`;
     }
-    function areClassicalNahuatlLesson25ValuesEqual(left, right) {
-      return stableSerializeClassicalNahuatlLesson25Value(left) === stableSerializeClassicalNahuatlLesson25Value(right);
+    function areClassicalNahuatlLesson25ValuesEqual(left, right, seen = new WeakMap(), visiting = new WeakMap()) {
+      if (left === right && (!left || typeof left !== "object")) return true;
+      if (!left || !right || typeof left !== "object" || typeof right !== "object") {
+        return stableSerializeClassicalNahuatlLesson25Value(left)
+          === stableSerializeClassicalNahuatlLesson25Value(right);
+      }
+      if (Array.isArray(left) !== Array.isArray(right)) return false;
+      const pairs = seen.get(left) || new WeakSet();
+      if (pairs.has(right)) return true;
+      const activePairs = visiting.get(left) || new WeakSet();
+      if (activePairs.has(right)) throw new TypeError("Cyclic grammatical value");
+      activePairs.add(right);
+      visiting.set(left, activePairs);
+      const finish = equal => {
+        activePairs.delete(right);
+        if (equal) { pairs.add(right); seen.set(left, pairs); }
+        return equal;
+      };
+      if (Array.isArray(left)) {
+        if (left.length !== right.length) {
+          const empty = value => value.length === 0 || (value.length === 1
+            && stableSerializeClassicalNahuatlLesson25Value(value[0]) === undefined);
+          return finish(empty(left) && empty(right));
+        }
+        return finish(Array.from({ length: left.length }, (_, index) => index).every(index => (
+          areClassicalNahuatlLesson25ValuesEqual(left[index], right[index], seen, visiting)
+        )));
+      }
+      const keys = Object.keys(left).filter(key => left[key] !== undefined).sort();
+      const otherKeys = Object.keys(right).filter(key => right[key] !== undefined).sort();
+      return finish(keys.length === otherKeys.length && keys.every((key, index) => (
+        key === otherKeys[index]
+        && areClassicalNahuatlLesson25ValuesEqual(left[key], right[key], seen, visiting)
+      )));
     }
     function haveSameClassicalNahuatlLesson25OwnPropertyNames(left = null, right = null) {
       if (!left || !right || typeof left !== "object" || typeof right !== "object") {
@@ -82,6 +114,7 @@ export function createClassicalNahuatlLaterLayersRuntime(targetObject = globalTh
       return Object.freeze(value);
     }
     function getClassicalNahuatlFinalTypedVncSlotFrame(machineryFrame = null) {
+      if (machineryFrame?.kind === "classical-nahuatl-finite-vnc-slot-result") return machineryFrame.vncSlotFrame;
       return machineryFrame?.finalTypedVncSlotFrame
         || machineryFrame?.proofFrame?.conclusion?.finalTypedVncSlotFrame
         || machineryFrame?.proofFrame?.conclusion?.finalBoundaryRealizationFrame?.typedSlotFrame
@@ -247,11 +280,33 @@ export function createClassicalNahuatlLaterLayersRuntime(targetObject = globalTh
       if (!machineryFrame || machineryFrame.authorizationStatus !== "authorized") {
         return false;
       }
+      if (machineryFrame.kind === "classical-nahuatl-finite-vnc-slot-result") {
+        return runtimeTarget?.isClassicalNahuatlImperfectiveVncFiniteResult?.(machineryFrame) === true
+          || runtimeTarget?.isClassicalNahuatlRestrictedContainingVncFiniteResult?.(machineryFrame) === true;
+      }
+      if (machineryFrame.kind === "classical-nahuatl-imperfective-transitive-vnc-machinery-frame") {
+        return runtimeTarget?.isClassicalNahuatlImperfectiveTransitiveVncMachineryFrame?.(machineryFrame) === true;
+      }
+      if (machineryFrame.kind === "classical-nahuatl-nonactive-carrier-finite-frame") {
+        return runtimeTarget?.isClassicalNahuatlNonactiveCarrierFiniteFrame?.(machineryFrame) === true;
+      }
       if (machineryFrame.kind === "classical-nahuatl-late-vnc-derivation-operation-machinery-frame") {
         return typeof runtimeTarget?.isClassicalNahuatlMachineryFrame === "function"
           && runtimeTarget.isClassicalNahuatlMachineryFrame(machineryFrame) === true;
       }
       if (machineryFrame.kind === "classical-nahuatl-nonactive-vnc-derived-vnc-machinery-frame") {
+        const patientProjection = runtimeTarget
+          ?.getClassicalNahuatlVncPassivePatientMachineryProjection?.(machineryFrame);
+        if (patientProjection) {
+          return patientProjection.canonicalVoiceMachineryFrame !== machineryFrame
+            && isCanonicalClassicalNahuatlCanvasMachineryFrame(
+              patientProjection.canonicalVoiceMachineryFrame,
+            )
+            && patientProjection.targetTypedSlotFrame
+              === getClassicalNahuatlFinalTypedVncSlotFrame(machineryFrame)
+            && patientProjection.targetTypedSlotFrame.slots.subject.participantFrame
+              === patientProjection.targetSubjectParticipantFrame;
+        }
         const activeMachineryFrame = machineryFrame.activeMachineryFrame || null;
         const finalTypedFrame = getClassicalNahuatlFinalTypedVncSlotFrame(machineryFrame);
         const activeCanonical = isCanonicalClassicalNahuatlDirectVncFiniteSourceFrame(activeMachineryFrame)
@@ -291,6 +346,9 @@ export function createClassicalNahuatlLaterLayersRuntime(targetObject = globalTh
           incorporatedAdverb: canonicalActiveConclusion.incorporatedAdverb || "",
           adverbPosition: canonicalActiveConclusion.adverbPosition || "",
           sentenceType: canonicalActiveSentenceFrame.sentenceType || "",
+          punctuationMode: canonicalActiveSentenceFrame.punctuationMode || "",
+          admonitivePluralEnding: canonicalActiveSentenceFrame.admonitivePluralEnding || "",
+          defectiveANegativeVariant: canonicalActiveSentenceFrame.defectiveANegativeVariant || "",
           negative: canonicalSentenceNegative,
           questionMode: canonicalActiveSentenceFrame.questionMode || "",
           introductoryParticle: canonicalActiveSentenceFrame.introductoryParticle || "",
@@ -517,6 +575,13 @@ export function createClassicalNahuatlLaterLayersRuntime(targetObject = globalTh
         return "";
       }
       const objectKind = normalizeClassicalNahuatlCanvasObjectKind(position?.objectKind || "");
+      // This signed monadic shunt allomorph is n, not the mainline n-o
+      // dyad. The cluster owner licenses its optional §33.7 boundary.
+      if (objectKind === "reflexive" && raw === "n"
+        && position?.valenceArity === "monadic"
+        && position?.prominence === "shuntline"
+        && position?.shuntlineReflexiveBoundaryVariant === "ihyana-contracted"
+        && /^ihyān/u.test(getClassicalNahuatlTypedCarrierSurface(followingCarrier))) return "n";
       if (isClassicalNahuatlCanvasIttaReflexiveORetention(raw, position, followingCarrier)) return "mo";
       if (objectKind === "reflexive" && /^(?:m|mo)$/u.test(compact)) return "mo";
       if (objectKind === "reflexive" && /^(?:n|no)$/u.test(compact)) return "no";
@@ -525,10 +590,14 @@ export function createClassicalNahuatlLaterLayersRuntime(targetObject = globalTh
       if (compact === "tech") return "tēch";
       if (compact === "mech") return "mēch";
       if (compact === "te") return "tē";
-      if (compact === "quim") return /^[mpb]/u.test(getClassicalNahuatlCanvasFirstSound(followingCarrier)) ? "quim" : "quin";
-      if (compact === "0im" || compact === "im") return /^[mpb]/u.test(getClassicalNahuatlCanvasFirstSound(followingCarrier)) ? "im" : "in";
+      if (compact === "quim") return /^[aāeēiīoōumpb]/u.test(getClassicalNahuatlCanvasFirstSound(followingCarrier)) ? "quim" : "quin";
+      if (compact === "0im" || compact === "im") return /^[aāeēiīoōumpb]/u.test(getClassicalNahuatlCanvasFirstSound(followingCarrier)) ? "im" : "in";
       if (compact === "c0") return "c";
-      if (compact === "qui0") return "qui";
+      if (compact === "qui0") {
+        const followingSound = getClassicalNahuatlCanvasFirstSound(followingCarrier);
+        return /^[eēiī]/u.test(followingSound) ? "qu"
+          : /^[aāoō]/u.test(followingSound) ? "c" : "qui";
+      }
       return getClassicalNahuatlTypedCarrierSurface(raw);
     }
     function getClassicalNahuatlCanvasBoundaryPhoneme(entry = null) {
@@ -536,7 +605,12 @@ export function createClassicalNahuatlLaterLayersRuntime(targetObject = globalTh
         .replace(/[+\s-]/gu, "")
         .toLowerCase();
       const objectKind = normalizeClassicalNahuatlCanvasObjectKind(entry?.position?.objectKind || "");
-      const objectPerson = normalizeClassicalNahuatlKey(entry?.position?.objectPerson || "");
+      const objectPerson = normalizeClassicalNahuatlKey(
+        entry?.position?.objectPerson || entry?.slot?.morphIdentityFrame?.objectPerson || "",
+      );
+      // The supportive i in qui is a vowel, not the consonant to replace.
+      // Its /k/ allomorph has already been selected against the next carrier.
+      if (compact === "qui0") return "";
       if (objectKind === "specific-projective"
         && ["3sg", "third-singular", "third-person-singular"].includes(objectPerson)
         && /^(?:c0|qu0|qui0)$/u.test(compact)) {
@@ -545,7 +619,8 @@ export function createClassicalNahuatlLaterLayersRuntime(targetObject = globalTh
       // qu-in is the plural specific-object carrier itself.  Its final n is
       // already present in the realized carrier, so a generic /k/ identity
       // must not replace it before an n-initial predicate (quin+nōtza).
-      if (objectKind === "specific-projective"
+      if ((objectKind === "specific-projective"
+          || entry?.slot?.morphIdentityFrame?.morphIdentity === "/k/")
         && ["3pl", "third-plural", "third-person-plural"].includes(objectPerson)) {
         return "";
       }
@@ -639,6 +714,25 @@ export function createClassicalNahuatlLaterLayersRuntime(targetObject = globalTh
             }));
           }
         }
+        // These are adjacent sounded grammatical morphs, not a displayed
+        // formula. Reuse the §2.10 owner for the written contact while the
+        // independent typed formula carriers above retain their original y.
+        const progressiveContact = runtimeTarget?.buildClassicalNahuatlProgressiveAssimilationFrame?.(
+          `${left.surface}-${right.surface}`,
+        );
+        if (runtimeTarget?.isClassicalNahuatlTranscriptionAnalysisFrame?.(progressiveContact) === true
+          && progressiveContact.authorizationStatus === "authorized"
+          && progressiveContact.transformationApplied === true
+          && progressiveContact.realizedMorphs?.length === 2) {
+          left.surface = progressiveContact.realizedMorphs[0];
+          right.surface = progressiveContact.realizedMorphs[1];
+          applicableRuleFrames.push(Object.freeze({
+            ruleId: progressiveContact.selectedRuleId,
+            semanticOwner: progressiveContact.canonicalAnalysisKind,
+            operation: "realize-progressive-assimilation-at-sounded-grammatical-boundary",
+            proofFrame: progressiveContact,
+          }));
+        }
         boundaries.push(Object.freeze({
           boundaryOrder: boundaries.length,
           leftMorphemeOrder: left.order,
@@ -730,6 +824,29 @@ export function createClassicalNahuatlLaterLayersRuntime(targetObject = globalTh
       let segmented = normalizeClassicalNahuatlDerivedVncToken(rawPredicate);
       let formulaSegmented = segmented;
       const ruleFrames = [];
+      const runtimeTarget = getClassicalNahuatlDerivedVncRuntimeTarget();
+      const nominalOperation = machineryFrame?.operationFrame;
+      const nominalCoordinate = nominalOperation?.operationFacts?.nominalMatrixCoordinateFrame;
+      const nominalContact = nominalCoordinate?.operationFrame?.boundaryAssimilationFrame;
+      if (nominalOperation?.operation === "nominal-prefix"
+        && runtimeTarget?.isClassicalNahuatlMachineryFrame?.(machineryFrame) === true
+        && runtimeTarget?.isClassicalNahuatlNominalVncMatrixCoordinateFrame?.(nominalCoordinate) === true
+        && nominalOperation.operationFacts.nominalSourceAuthorizationFrame === nominalCoordinate.sourceAuthorizationFrame
+        && nominalCoordinate.canonicalVncSourceStem === nominalOperation.targetStem
+        && nominalOperation.targetTypedVncSlotFrame?.slots?.predicate?.stem === segmented
+        && nominalContact?.authorizationStatus === "authorized"
+        && nominalContact.sourceFinal === "l" && nominalContact.matrixInitial === "tl") {
+        const contact = runtimeTarget.buildClassicalNahuatlProgressiveAssimilationFrame?.(segmented);
+        if (runtimeTarget.isClassicalNahuatlTranscriptionAnalysisFrame?.(contact) === true
+          && contact.authorizationStatus === "authorized" && contact.transformationApplied === true) {
+          segmented = contact.realizedAnalyzedStem;
+          ruleFrames.push(Object.freeze({
+            ruleId: contact.selectedRuleId, section: "2.10",
+            operation: "realize-authenticated-nominal-prefix-contact",
+            proofFrame: contact,
+          }));
+        }
+      }
       const writtenActiveTargetStem = normalizeClassicalNahuatlDerivedVncToken(
         operationFrame?.targetStem || "",
       );
@@ -785,16 +902,6 @@ export function createClassicalNahuatlLaterLayersRuntime(targetObject = globalTh
       }
       const activeCausativeTargetStem = normalizeClassicalNahuatlDerivedVncToken(machineryFrame?.activeMachineryFrame?.targetStem);
       const selectedNonactiveStem = normalizeClassicalNahuatlDerivedVncToken(machineryFrame?.nonactiveStemRecord?.nonactiveStem);
-      if (activeCausativeTargetStem === "cui-tiā"
-        && selectedNonactiveStem === "cui-tī-lō"
-        && /^cui-tī-l(?:o|ō)(?:-|$)/u.test(segmented)) {
-        segmented = segmented.replace(/^cui(?=-tī-l(?:o|ō)(?:-|$))/u, "cuī");
-        ruleFrames.push(Object.freeze({
-          ruleId: "cn-l25-2515-cui-passive-root-quantity-finalizer",
-          section: "25.15",
-          operation: "lengthen-cui-root-only-after-the-provisional-causative-enters-the-nonactive-voice-environment"
-        }));
-      }
       if (/-l-tiā$/u.test(activeCausativeTargetStem)
         && /-ti-lō$/u.test(selectedNonactiveStem)
         && /-ti-l(?:o|ō)/u.test(segmented)) {
@@ -803,24 +910,6 @@ export function createClassicalNahuatlLaterLayersRuntime(targetObject = globalTh
           ruleId: "cn-l25-2515-derived-causative-nonactive-ti-quantity",
           section: "25.15",
           operation: "preserve-causative-long-i-before-nonactive-lo"
-        }));
-      }
-      const activeCausativeSourceVoice = normalizeClassicalNahuatlDerivedVncToken(
-        machineryFrame?.activeMachineryFrame?.derivationOperationFrame?.sourceVoice
-          || "",
-      );
-      if (
-        machineryFrame?.voice === "impersonal"
-        && activeCausativeSourceVoice === "impersonal"
-        && activeCausativeTargetStem === "chīhua-l-tiā"
-        && selectedNonactiveStem === "chīhua-l-tī-lō"
-        && /-tī-l(?=(?:o|ō)(?:-|$))/u.test(segmented)
-      ) {
-        segmented = segmented.replace(/-tī-l(?=(?:o|ō)(?:-|$))/u, "-tī-");
-        ruleFrames.push(Object.freeze({
-          ruleId: "cn-l25-2515-double-impersonal-chihua-lo-l-suppression",
-          section: "25.15",
-          operation: "suppress-the-nonactive-l-at-the-written-boundary-of-the-impersonal-of-an-impersonal-chihua-causative"
         }));
       }
       let solid = getClassicalNahuatlTypedCarrierSurface(segmented);

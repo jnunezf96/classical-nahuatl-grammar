@@ -1937,6 +1937,15 @@ export function createUiStateModule(targetObject = globalThis) {
       if (!Object.values(targetObject.DERIVATION_TYPE).includes(type)) {
         return;
       }
+      if (targetObject.DerivationTypeState.type !== type) {
+        // A formation belongs to its derivation family. Clear it before an
+        // exact continuation collects the draft, even before owner controls
+        // exist; the new owner supplies automatic or explicit choices.
+        const formation = targetObject.document?.getElementById?.(
+          "classical-rule-logic-derivation-option"
+        );
+        if (formation) formation.value = "";
+      }
       targetObject.DerivationTypeState.type = type;
     }
     function getActiveCausativeSubtype() {
@@ -2104,7 +2113,9 @@ export function createUiStateModule(targetObject = globalThis) {
         && targetObject.window.matchMedia("(max-width: 720px)").matches;
     }
     function showsAllPanelStackPanes() {
-      return isThreeColumnPanelLayout() || isStackedPanelLayout();
+      const fourPanelClassicalLayout = targetObject.document?.body?.classList?.contains("is-language-classical")
+        && Boolean(targetObject.document?.getElementById?.("classical-path-panel"));
+      return fourPanelClassicalLayout || isThreeColumnPanelLayout() || isStackedPanelLayout();
     }
     function captureViewportAnchor(element) {
       if (!element || typeof element.getBoundingClientRect !== "function") {
@@ -3164,10 +3175,13 @@ export function createUiStateModule(targetObject = globalThis) {
         return;
       }
       if (select) {
-        select.addEventListener("change", () => {
+        select.addEventListener("change", event => {
           setActiveDerivationType(select.value);
           preserveViewportAnchorPosition(select, () => {
             updateDerivationTypeControl();
+            if (targetObject.handleClassicalCapabilityStagedGrammarControlChange?.(
+              select, event
+            ) === true) return;
             targetObject.renderTenseTabs();
             const verbMeta = targetObject.getVerbInputMeta();
             targetObject.renderActiveConjugations({
@@ -3179,7 +3193,7 @@ export function createUiStateModule(targetObject = globalThis) {
       }
       if (buttons.length) {
         buttons.forEach(button => {
-          button.addEventListener("click", () => {
+          button.addEventListener("click", event => {
             const type = button.getAttribute("data-derivation-type");
             if (!type) {
               return;
@@ -3190,6 +3204,11 @@ export function createUiStateModule(targetObject = globalThis) {
             }
             preserveViewportAnchorPosition(button, () => {
               updateDerivationTypeControl();
+              // An exact continuation stages this edit against its owner.
+              // The basal renderer must not replace the accepted Result.
+              if (targetObject.handleClassicalCapabilityStagedGrammarControlChange?.(
+                button, event
+              ) === true) return;
               targetObject.renderTenseTabs();
               const verbMeta = targetObject.getVerbInputMeta();
               targetObject.renderActiveConjugations({

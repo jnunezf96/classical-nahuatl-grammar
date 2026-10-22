@@ -1,3 +1,6 @@
+import { exportClassicalResultReloadRecipe, replayClassicalResultReloadRecipe }
+  from "./result_reload.mjs";
+
 const CLASSICAL_GRAMMAR_WORKSPACE_HISTORY_KIND =
   "classical-grammar-workspace-history";
 const CLASSICAL_GRAMMAR_WORKSPACE_COMPARISON_KIND =
@@ -123,6 +126,70 @@ export function createClassicalGrammarWorkspaceHistory({
     currentBranchId = branchId;
     revision += 1;
     return getNode(nodeId);
+  }
+
+  // Metadata cannot grant grammar authority. All Results are authenticated
+  // before replacing any privately held history record.
+  function restore(entries, branchRows, selection) {
+    if (!Array.isArray(entries) || entries.length > 128
+      || !Array.isArray(branchRows) || branchRows.length > 128
+      || !selection || typeof selection.currentNodeId !== "string"
+      || typeof selection.currentBranchId !== "string") return false;
+    const nextRecords = new Map();
+    const nextBranches = new Map();
+    const boundedLabel = value => typeof value === "string" && value.length <= 200;
+    let previousSequence = 0;
+    for (const row of entries) {
+      if (!row || Object.keys(row).some(key => ![
+        "nodeId", "parentNodeId", "branchId", "sequence", "label", "result",
+      ].includes(key)) || !Number.isSafeInteger(row.sequence)
+        || row.sequence <= previousSequence || row.sequence > 1000000
+        || row.nodeId !== `history-${row.sequence}`
+        || !/^branch-[1-9]\d{0,5}$/.test(row.branchId || "")
+        || typeof row.parentNodeId !== "string" || !boundedLabel(row.label)
+        || row.parentNodeId && !nextRecords.has(row.parentNodeId)) return false;
+      const capture = getCapture(row.result, row.nodeId);
+      if (!capture || !isClassicalGrammarApplicationResult(capture.applicationResult)
+        || capture.applicationResult.authorizationStatus !== "authorized"
+        || capture.operationId === "particle:result" && row.parentNodeId) return false;
+      const parent = nextRecords.get(row.parentNodeId);
+      const record = { ...row, capture, depth: parent ? parent.depth + 1 : 1,
+        childrenIds: [] };
+      delete record.result;
+      nextRecords.set(row.nodeId, record);
+      if (parent) parent.childrenIds.push(row.nodeId);
+      previousSequence = row.sequence;
+    }
+    for (const branch of branchRows) {
+      if (!branch || Object.keys(branch).some(key => ![
+        "branchId", "anchorNodeId", "label", "nodeIds",
+      ].includes(key)) || !/^branch-[1-9]\d{0,5}$/.test(branch.branchId || "")
+        || nextBranches.has(branch.branchId) || !boundedLabel(branch.label)
+        || typeof branch.anchorNodeId !== "string"
+        || branch.anchorNodeId && !nextRecords.has(branch.anchorNodeId)
+        || !Array.isArray(branch.nodeIds) || branch.nodeIds.length > 128) return false;
+      const members = [...nextRecords.values()].filter(row => row.branchId === branch.branchId);
+      if (JSON.stringify(members.map(row => row.nodeId)) !== JSON.stringify(branch.nodeIds)
+        || members.length && members[0].parentNodeId !== branch.anchorNodeId) return false;
+      nextBranches.set(branch.branchId, { ...branch, nodeIds: [...branch.nodeIds] });
+    }
+    if ([...nextRecords.values()].some(row => !nextBranches.has(row.branchId))) return false;
+    if (selection.currentNodeId && !nextRecords.has(selection.currentNodeId)
+      || selection.currentBranchId && !nextBranches.has(selection.currentBranchId)) return false;
+    const selectedBranch = nextBranches.get(selection.currentBranchId);
+    if (nextRecords.size && (!selectedBranch || !selection.currentNodeId)
+      || !nextRecords.size && (nextBranches.size || selection.currentNodeId || selection.currentBranchId)
+      || selectedBranch && !selectedBranch.nodeIds.includes(selection.currentNodeId)
+        && selectedBranch.anchorNodeId !== selection.currentNodeId) return false;
+    records.clear(); branches.clear();
+    for (const [id, row] of nextRecords) records.set(id, row);
+    for (const [id, row] of nextBranches) branches.set(id, row);
+    nodeSequence = previousSequence;
+    branchSequence = Math.max(0, ...[...branches.keys()].map(id => Number(id.slice(7))));
+    currentNodeId = selection.currentNodeId;
+    currentBranchId = selection.currentBranchId;
+    revision += 1;
+    return true;
   }
 
   function getNode(nodeId = "") {
@@ -339,6 +406,7 @@ export function createClassicalGrammarWorkspaceHistory({
 
   return Object.freeze({
     record,
+    restore,
     recover,
     continueFrom,
     canUndo,
@@ -416,14 +484,14 @@ export function installClassicalGrammarWorkspaceHistoryGlobals(
   const finishUserAction = (
     token = null,
     exactResult = null,
-    { record = true } = {},
+    { record = true, recordExistingResult = false } = {},
   ) => {
     if (!token || !issuedUserActionTokens.delete(token)) return null;
     if (!record) return null;
     const applicationResult = getAuthorizedApplicationResult(exactResult);
     if (
       !applicationResult
-      || observedApplicationResults.has(applicationResult)
+      || observedApplicationResults.has(applicationResult) && !recordExistingResult
     ) return null;
     const node = history.record(applicationResult, {
       label: token.operationId || applicationResult.operationId,
@@ -446,6 +514,14 @@ export function installClassicalGrammarWorkspaceHistoryGlobals(
     recordClassicalGrammarWorkspaceResult: (value, options) => (
       history.record(value, options)
     ),
+    restoreClassicalGrammarWorkspaceHistory: (entries, branches, selection) => {
+      if (!history.restore(entries, branches, selection)) return false;
+      for (const node of history.snapshot().nodes) {
+        observedApplicationResults.add(history.recover(node.nodeId).applicationResult);
+      }
+      dispatchHistoryUpdate();
+      return true;
+    },
     recoverClassicalGrammarWorkspaceResult: nodeId => (
       history.recover(nodeId)
     ),
@@ -465,7 +541,8 @@ export function installClassicalGrammarWorkspaceHistoryGlobals(
     completeClassicalGrammarWorkspaceUserAction: (
       token,
       exactResult,
-    ) => finishUserAction(token, exactResult, { record: true }),
+      {recordExistingResult = false} = {},
+    ) => finishUserAction(token, exactResult, { record: true, recordExistingResult }),
     cancelClassicalGrammarWorkspaceUserAction: token => {
       if (!token || !issuedUserActionTokens.has(token)) return false;
       finishUserAction(token, null, { record: false });
@@ -490,3 +567,46 @@ export {
   CLASSICAL_GRAMMAR_WORKSPACE_COMPARISON_KIND,
   CLASSICAL_GRAMMAR_WORKSPACE_HISTORY_KIND,
 };
+
+const HISTORY_RELOAD_KIND = "classical-grammar-workspace-history-reload";
+
+export function exportClassicalGrammarWorkspaceHistoryReloadState(runtime) {
+  const snapshot = runtime.getClassicalGrammarWorkspaceHistorySnapshot?.();
+  if (!runtime.isClassicalGrammarWorkspaceHistorySnapshot?.(snapshot)) return null;
+  const unsupported = () => ({ kind: HISTORY_RELOAD_KIND, version: 1,
+    status: "unsupported", nodeCount: snapshot.nodeCount });
+  if (snapshot.nodes.length > 128 || snapshot.branches.length > 128
+    || snapshot.nodes.some(node => node.label.length > 200
+      || node.sequence > 1000000 || node.nodeId !== `history-${node.sequence}`
+      || !/^branch-[1-9]\d{0,5}$/.test(node.branchId))
+    || snapshot.branches.some(branch => branch.label.length > 200
+      || !/^branch-[1-9]\d{0,5}$/.test(branch.branchId))) return unsupported();
+  const nodes = snapshot.nodes.map(node => ({ nodeId: node.nodeId,
+    parentNodeId: node.parentNodeId, branchId: node.branchId,
+    sequence: node.sequence, label: node.label }));
+  const roots = Object.fromEntries(snapshot.nodes.map(node => [node.nodeId,
+    runtime.recoverClassicalGrammarWorkspaceResult(node.nodeId)?.canonicalResult]));
+  const recipe = nodes.length ? exportClassicalResultReloadRecipe(runtime, roots) : null;
+  if (nodes.length && !recipe) return unsupported();
+  return { kind: HISTORY_RELOAD_KIND, version: 1, status: "supported",
+    nodes, branches: snapshot.branches, currentNodeId: snapshot.currentNodeId,
+    currentBranchId: snapshot.currentBranchId, recipe };
+}
+
+export function restoreClassicalGrammarWorkspaceHistoryReloadState(runtime, saved) {
+  if (!saved || saved.kind !== HISTORY_RELOAD_KIND || saved.version !== 1
+    || saved.status !== "supported" || Object.keys(saved).some(key => ![
+      "kind", "version", "status", "nodes", "branches", "currentNodeId", "currentBranchId", "recipe",
+    ].includes(key)) || !Array.isArray(saved.nodes) || saved.nodes.length > 128
+    || !Array.isArray(saved.branches) || saved.branches.length > 128
+    || typeof runtime.restoreClassicalGrammarWorkspaceHistory !== "function"
+    || saved.nodes.some(row => !row || Object.keys(row).some(key => ![
+      "nodeId", "parentNodeId", "branchId", "sequence", "label",
+    ].includes(key)))) return false;
+  const roots = saved.nodes.length ? replayClassicalResultReloadRecipe(runtime, saved.recipe) : {};
+  if (!roots || !saved.nodes.length && saved.recipe !== null
+    || JSON.stringify(Object.keys(roots).sort()) !== JSON.stringify(saved.nodes.map(row => row?.nodeId).sort())) return false;
+  const entries = saved.nodes.map(row => ({ ...row, result: roots[row.nodeId] }));
+  return runtime.restoreClassicalGrammarWorkspaceHistory(entries, saved.branches,
+    { currentNodeId: saved.currentNodeId, currentBranchId: saved.currentBranchId });
+}

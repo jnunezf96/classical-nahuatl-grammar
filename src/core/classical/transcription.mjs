@@ -20,6 +20,9 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
     const issuedClassicalNahuatlTranscriptionCarrierFrames = new WeakMap();
     const issuedClassicalNahuatlTranscriptionAnalysisSources = new WeakMap();
     const issuedClassicalNahuatlTranscriptionAnalysisFrames = new WeakMap();
+    const issuedWritingContexts = new WeakSet();
+    const issuedTranscriptionBindings = new WeakMap();
+    const issuedTranscriptionOperations = new WeakMap();
     const CLASSICAL_NAHUATL_PROFILE_ID = "classical-nahuatl";
     const CLASSICAL_NAHUATL_TRANSCRIPTION_SOURCE_DOCUMENT = "ANDREWS_TRANSCRIPTION_CANVAS.md";
     const CLASSICAL_NAHUATL_LESSON2_LETTERS = Object.freeze("acehilmnopqtuxyzāēīō".split(""));
@@ -2511,7 +2514,9 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
       if (leftConsonant === "m" && ["t", "tl", "tz", "ch", "k", "kw"].includes(rightConsonant)) {
         return CLASSICAL_NAHUATL_LESSON2_ASSIMILATION_RULES.find(rule => rule.id === "cn-l2-211-regressive-m-partial") || null;
       }
-      if (isClassicalNahuatlNasal(leftConsonant) && isClassicalNahuatlSibilant(rightConsonant)) {
+      // §2.11.1 concerns the fricatives s/x. The affricates tz/ch belong
+      // to §2.11.2's wider group; §2.11.5 preserves a nasal before them.
+      if (isClassicalNahuatlNasal(leftConsonant) && ["s", "x"].includes(rightConsonant)) {
         return CLASSICAL_NAHUATL_LESSON2_ASSIMILATION_RULES.find(rule => rule.id === "cn-l2-211-regressive-nasal-sibilant") || null;
       }
       if (isClassicalNahuatlSibilant(leftConsonant) && isClassicalNahuatlSibilant(rightConsonant) && leftConsonant !== rightConsonant) {
@@ -2569,6 +2574,14 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
           : spellingStyle === "unreleased-t-plus-right"
             ? `${leftBase}t`
             : leftBase;
+      }
+      if (morphsComplete && spellingStyle === "fully-assimilated"
+        && selectedRule?.direction === "progressive") {
+        const [leftOutput, rightOutput] = splitClassicalNahuatlLesson210AssimilationSpelling(outcome.outputSpelling);
+        if (leftOutput && rightOutput) {
+          realizedLeftMorpheme = sourceLeftMorpheme.slice(0, -leftSurfaceConsonant.length) + leftOutput;
+          realizedRightMorpheme = rightOutput + sourceRightMorpheme.slice(rightSurfaceConsonant.length);
+        }
       }
       if (options.omitIntervocalicY === true) {
         realizedRightMorpheme = realizedRightMorpheme.replace(/iya$/u, "ia");
@@ -5161,6 +5174,8 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
         && frame.authorizationStatus === "authorized"
         && frame.blockReason === ""
         && frame.constituents === receipt.constituents
+        && (frame.writingContext || null) === (receipt.writingContext || null)
+        && (!receipt.writingContext || isCurrentWritingContext(receipt.writingContext))
         && frame.sourceConstituentsOnly === true
         && frame.callerSuppliedAuthorityAccepted === false
         && frame.externalProjectionAuthorityAccepted === false
@@ -5275,7 +5290,7 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
         .map(constituent => constituent.segments.join(""))
         .join("-")})#`;
     }
-    function projectClassicalNahuatlTranscriptionWritten(
+    function projectClassicalNahuatlTranscriptionWrittenSegments(
       sourceFrame = null,
       carrierFrame = null
     ) {
@@ -5290,7 +5305,7 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
           canonicalCarrierFrame
         )
         || canonicalCarrierFrame.sourceFrame !== sourceFrame
-      ) return "";
+      ) return [];
       const contextByCoordinate = new Map(
         receipt.contextualRealizations.map(context => [
           `${context.constituentIndex}:${context.segmentIndex}`,
@@ -5366,8 +5381,204 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
             }
             return "";
           }
-        ).join("")
-      ).join("");
+        )
+      );
+    }
+    function projectClassicalNahuatlTranscriptionWritten(sourceFrame = null, carrierFrame = null) {
+      return projectClassicalNahuatlTranscriptionWrittenSegments(sourceFrame, carrierFrame)
+        .map(row => row.join("")).join("");
+    }
+    function getOriginalCompoundWritingParts(application) {
+      const result = application?.canonicalResult;
+      const word = application?.lesson2WritingOutputs?.find(row => row.role === "word")?.writtenResult;
+      const operation = result?.operationFrame;
+      const slots = result?.canonicalResult?.nncSlotFrame;
+      if (targetObject.isClassicalGrammarApplicationResult?.(application) !== true
+        || application.authorizationStatus !== "authorized"
+        || application.operationId !== "grammar:nominal-construction"
+        || targetObject.isClassicalNahuatlNominalConstructionResult?.(result) !== true
+        || result.constructionKind !== "compound-nnc"
+        || targetObject.isClassicalNahuatlNncSlotFrame?.(slots) !== true
+        || targetObject.isClassicalNahuatlLesson2WrittenResult?.(word) !== true
+        || !["typed-nnc-slots", "ordinary-nnc-slots"].includes(word.source.boundaryKind)
+        || slots.slots.participant?.arity !== "vacant"
+        || operation.reduplication !== "none" || operation.recursiveEmbed || operation.recursiveMatrix
+        || operation.embedIntensification !== "none" || operation.matrixExpansion !== "none"
+        || operation.embedShape?.authorizationStatus !== "authorized"
+        || !operation.embedShape.realizedStem || !operation.matrixStem) return null;
+      const unchangedPredicate=slots.slots.predicate.stem === `${operation.embedShape.realizedStem}-${operation.matrixStem}`;
+      const requiredFormationCandidate=result.sourceFrame.structure === "integrated"
+        && operation.compoundStem === operation.stateRealizedCompoundStem
+        && slots.slots.predicate.stem === operation.compoundStem;
+      if(!unchangedPredicate && !requiredFormationCandidate)return null;
+      const typed = slots.slots;
+      const parts = [
+        {role:"subject-person-1",sourceValue:typed.subject.pers1},
+        {role:"subject-person-2",sourceValue:typed.subject.pers2},
+        ...(typed.state.slots || []).map(part=>({role:part.role,sourceValue:part.carrier})),
+        {role:"embed",sourceValue:operation.embedShape.realizedStem},
+        {role:"matrix",sourceValue:operation.matrixStem},
+        {role:"subject-number-1",sourceValue:typed.number.num1},
+        {role:"subject-number-2",sourceValue:typed.number.num2},
+      ];
+      return {parts:Object.freeze(parts.map(part=>Object.freeze(part))), exactInputResult:result, exactSourceFrame:result.sourceFrame,
+        exactOperationFrame:operation, exactTypedSlotFrame:slots, exactWrittenResult:word,
+        predicateRequiresRequiredBoundary:!unchangedPredicate};
+    }
+    function getRequiredCompoundWritingBoundary(original,parts) {
+      if(!original.predicateRequiresRequiredBoundary)return null;
+      const owner=targetObject.window || targetObject;
+      if(owner.buildClassicalNahuatlAssimilationFrame!==buildClassicalNahuatlAssimilationFrame
+        || owner.isClassicalNahuatlTranscriptionAnalysisFrame!==isClassicalNahuatlTranscriptionAnalysisFrame)return null;
+      const embed=parts.find(part=>part.role==="embed"),matrix=parts.find(part=>part.role==="matrix");
+      if(embed?.segments.at(-1)!=="/n/" || matrix?.segments[0]!=="/p/")return null;
+      const request=Object.freeze({leftConsonant:"n",rightConsonant:"p",
+        sourceLeftMorpheme:embed.sourceValue,sourceRightMorpheme:matrix.sourceValue,grammaticalConstruction:true});
+      const mechanics=buildClassicalNahuatlAssimilationMechanicsFrame(request);
+      if(mechanics.authorizationStatus!=="authorized" || mechanics.selectedRuleId!=="cn-l2-211-regressive-n-p-mp"
+        || mechanics.optional!==false || mechanics.lowFrequency!==false
+        || `${mechanics.realizedLeftMorpheme}-${mechanics.realizedRightMorpheme}`!==original.exactOperationFrame.compoundStem)return null;
+      return Object.freeze({ruleId:mechanics.selectedRuleId,request,
+        segmentIndex:embed.segmentEnd-1,canonicalPredicateStem:original.exactTypedSlotFrame.slots.predicate.stem});
+    }
+    function isCurrentWritingContext(context) {
+      if (!issuedWritingContexts.has(context)) return false;
+      if (context.kind === "compound-writing-context") {
+        const current = getOriginalCompoundWritingParts(context.exactApplicationResult);
+        return Boolean(current && current.exactInputResult === context.exactInputResult
+          && current.exactSourceFrame === context.exactSourceFrame
+          && current.exactOperationFrame === context.exactOperationFrame
+          && current.exactTypedSlotFrame === context.exactTypedSlotFrame
+          && current.exactWrittenResult === context.exactWrittenResult
+          && (!context.requiredBoundary || (()=>{
+            const required=getRequiredCompoundWritingBoundary(current,context.morphParts);
+            return required && required.ruleId===context.requiredBoundary.ruleId
+              && required.canonicalPredicateStem===context.requiredBoundary.canonicalPredicateStem
+              && required.segmentIndex===context.requiredBoundary.segmentIndex;
+          })()));
+      }
+      return context.kind === "set-stress-group-writing-context"
+        && context.parentSources.length === 2
+        && context.parentSources.every((source,index) =>
+          targetObject.isClassicalNahuatlParticleSourceFrame?.(source) === true
+          && source.particleId === ["l3-za","l3-oc"][index]);
+    }
+    function attachWritingContext(source, context) {
+      if (!isClassicalNahuatlTranscriptionSourceFrame(source)) return source;
+      const frame = Object.freeze({...source, writingContext:context});
+      issuedClassicalNahuatlTranscriptionSources.set(frame,Object.freeze({
+        ...issuedClassicalNahuatlTranscriptionSources.get(source),writingContext:context}));
+      return frame;
+    }
+    function issueClassicalNahuatlWritingSourceFromApplication(application, phonologicalParts = []) {
+      const original = getOriginalCompoundWritingParts(application);
+      if(!original) {
+        const genuine=targetObject.isClassicalGrammarApplicationResult?.(application)===true
+          && targetObject.isClassicalNahuatlNominalConstructionResult?.(application.canonicalResult)===true
+          && application.canonicalResult.constructionKind==="compound-nnc";
+        return buildBlockedClassicalNahuatlTranscriptionSource(genuine
+          ? "writing-simple-compound-context-not-supported":"writing-genuine-accepted-compound-required");
+      }
+      if (!Array.isArray(phonologicalParts)
+        || phonologicalParts.length !== original.parts.length) return buildBlockedClassicalNahuatlTranscriptionSource("writing-original-compound-morph-parts-required");
+      let offset=0;
+      const parts=[];
+      for (let index=0;index<original.parts.length;index++) {
+        const input=phonologicalParts[index], actual=original.parts[index];
+        if (!input || Reflect.ownKeys(input).some(key=>!["role","segments"].includes(String(key)))
+          || input.role!==actual.role || !Array.isArray(input.segments)
+          || input.segments.some(segment=>!normalizeClassicalNahuatlTranscriptionSegment(segment)))
+          return buildBlockedClassicalNahuatlTranscriptionSource("writing-original-morph-analysis-mismatch");
+        parts.push(Object.freeze({...actual,segments:Object.freeze(Array.from(input.segments)),
+          segmentStart:offset,segmentEnd:offset+input.segments.length}));
+        offset+=input.segments.length;
+      }
+      const source=buildClassicalNahuatlTranscriptionSourceFrame({constituents:[{segments:parts.flatMap(part=>part.segments)}]});
+      if (!isClassicalNahuatlTranscriptionSourceFrame(source)) return source;
+      const pieces=projectClassicalNahuatlTranscriptionWrittenSegments(source)[0];
+      const zero=value=>["0","Ø","⎕",""].includes(value);
+      if (parts.some(part=>pieces.slice(part.segmentStart,part.segmentEnd).join("")
+        !== (zero(part.sourceValue)?"":part.sourceValue))) return buildBlockedClassicalNahuatlTranscriptionSource("writing-source-morph-alignment-required");
+      const requiredBoundary=getRequiredCompoundWritingBoundary(original,parts);
+      if(original.predicateRequiresRequiredBoundary && !requiredBoundary)
+        return buildBlockedClassicalNahuatlTranscriptionSource("writing-compound-required-boundary-not-supported");
+      const context=Object.freeze({kind:"compound-writing-context",...original,requiredBoundary,
+        exactApplicationResult:application,morphParts:Object.freeze(parts),
+        sourceAuthority:"original-grammar-morph-parts",generationAuthority:false});
+      issuedWritingContexts.add(context);
+      return attachWritingContext(source,context);
+    }
+    function issueClassicalNahuatlWritingSourceFromParticleGroup(parents = []) {
+      if (!Array.isArray(parents) || parents.length!==2 || !parents.every((source,index)=>
+        targetObject.isClassicalNahuatlParticleSourceFrame?.(source)===true
+        && source.particleId===["l3-za","l3-oc"][index])) return buildBlockedClassicalNahuatlTranscriptionSource("writing-licensed-set-stress-group-required");
+      const source=buildClassicalNahuatlTranscriptionSourceFrame({constituents:[
+        {segments:["/s/","ā"]},{segments:["o","/k/"]}]});
+      const context=Object.freeze({kind:"set-stress-group-writing-context",
+        parentSources:Object.freeze(Array.from(parents)),sourceSection:"2.14",
+        sourceAuthority:"actual-fixed-lexical-group",generationAuthority:false});
+      issuedWritingContexts.add(context);
+      return attachWritingContext(source,context);
+    }
+    function getTranscriptionWritingChoices(source) {
+      const choices=[Object.freeze({value:"ordinary",label:"Ordinary writing",ruleId:"",dependencies:Object.freeze([])})];
+      const context=source.writingContext;
+      if (!context || !isCurrentWritingContext(context)) return choices;
+      if (context.kind==="set-stress-group-writing-context") {
+        const ruleId="cn-l2-214-short-vowel-stress-group-elision";
+        choices.push(Object.freeze({value:`${ruleId}@vocable:1:0`,ruleId,
+          label:"Elide vowel",elision:true,dependencies:Object.freeze([])}));
+      } else {
+        // Optional coordinate projection is valid only against this exact
+        // ordinary whole writer baseline. Required changes are never choices.
+        if(projectClassicalNahuatlTranscriptionWritten(source)!==context.exactWrittenResult.surface)return choices;
+        const sounded=context.morphParts.filter(part=>part.segments.length);
+        for(let index=1;index<sounded.length;index++) {
+          const left=sounded[index-1],right=sounded[index];
+          const leftSegment=left.segments.at(-1),segmentIndex=left.segmentEnd-1;
+          if(!["/k/","/kʷ/"].includes(leftSegment) || right.segments[0]!=="/k/") continue;
+          const ruleId="cn-l2-211-regressive-dissimilation-kk-hk";
+          const shiftRuleId="cn-l2-213-kw-exposed-k",delabialization=leftSegment==="/kʷ/";
+          if(delabialization)choices.push(Object.freeze({
+            value:`${shiftRuleId}@segment:${segmentIndex}`,ruleId:shiftRuleId,
+            label:"Use c before c / qu",segmentIndex,delabialization:true,
+            dependencies:Object.freeze([])}));
+          choices.push(Object.freeze({
+            value:`${delabialization?shiftRuleId+">":""}${ruleId}@segment:${segmentIndex}`,ruleId,
+            label:delabialization?"Use h after delabialization":"Use h before c / qu",segmentIndex,
+            delabialization,dependencies:Object.freeze(delabialization?[shiftRuleId]:[])}));
+        }
+      }
+      return choices;
+    }
+    function issueClassicalNahuatlTranscriptionBindingFrame(source, selections = {}) {
+      const validSource=isClassicalNahuatlTranscriptionSourceFrame(source);
+      const validSelections=selections && typeof selections==="object"
+        && Reflect.ownKeys(selections).every(key=>key==="writingVariant");
+      const choices=validSource?getTranscriptionWritingChoices(source):[];
+      const variant=String(selections?.writingVariant || "ordinary");
+      const selected=choices.find(choice=>choice.value===variant);
+      const ready=validSource && validSelections && Boolean(selected);
+      let operation=null;
+      if(ready) {
+        operation=Object.freeze({kind:"classical-nahuatl-transcription-operation-frame",exactSourceFrame:source,
+          writingVariant:variant});
+        issuedTranscriptionOperations.set(operation,Object.freeze({source,context:source.writingContext || null,selected}));
+      }
+      const frame=Object.freeze({kind:"classical-nahuatl-transcription-binding-frame",exactSourceFrame:source,
+        authorizationStatus:ready?"authorized":"blocked",bindingStatus:ready?"ready":"rejected",
+        blockReason:ready?"":!validSource?"writing-current-canonical-source-required":"writing-owner-choice-required",
+        callerSelections:Object.freeze({writingVariant:variant}),effectiveSelections:Object.freeze({writingVariant:variant}),
+        requiredChoiceIds:Object.freeze([]),choiceOptionProjection:Object.freeze({writingVariant:Object.freeze(choices)}),
+        executionArgs:Object.freeze(ready?[source,operation]:[]),generationAuthority:false});
+      issuedTranscriptionBindings.set(frame,Object.freeze({source,operation,ready}));
+      return frame;
+    }
+    function isClassicalNahuatlTranscriptionBindingFrame(frame) {
+      const receipt=issuedTranscriptionBindings.get(frame);
+      return Boolean(receipt && frame.exactSourceFrame===receipt.source && Object.isFrozen(frame)
+        && (!receipt.ready || isClassicalNahuatlTranscriptionSourceFrame(receipt.source)
+          && frame.executionArgs[0]===receipt.source && frame.executionArgs[1]===receipt.operation));
     }
     function buildBlockedClassicalNahuatlTranscriptionFrame(
       sourceFrame,
@@ -5418,15 +5629,18 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
       sourceFrame = null,
       options = {}
     ) {
+      const operationReceipt=issuedTranscriptionOperations.get(options);
+      if (operationReceipt && (operationReceipt.source!==sourceFrame
+        || !isClassicalNahuatlTranscriptionSourceFrame(sourceFrame))) return buildBlockedClassicalNahuatlTranscriptionFrame(sourceFrame,"writing-current-exact-operation-source-required");
       const authorityPath =
-        findClassicalNahuatlExternalAuthorityPath(options);
+        operationReceipt ? "" : findClassicalNahuatlExternalAuthorityPath(options);
       if (authorityPath) {
         return buildBlockedClassicalNahuatlTranscriptionFrame(
           sourceFrame,
           `classical-transcription-external-authority-forbidden:${authorityPath}`
         );
       }
-      if (Reflect.ownKeys(options).length) {
+      if (!operationReceipt && Reflect.ownKeys(options).length) {
         return buildBlockedClassicalNahuatlTranscriptionFrame(
           sourceFrame,
           "classical-transcription-options-not-supported"
@@ -5444,10 +5658,47 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
       );
       const carrierFrame =
         buildClassicalNahuatlTranscriptionCarrierFrame(sourceFrame);
-      const surface = projectClassicalNahuatlTranscriptionWritten(
+      let surface = projectClassicalNahuatlTranscriptionWritten(
         sourceFrame,
         carrierFrame
       );
+      const writingContext=sourceFrame.writingContext || null;
+      const selected=operationReceipt?.selected;
+      const baselineWrittenResult=writingContext?.kind==="compound-writing-context"?writingContext.exactWrittenResult:null;
+      if(baselineWrittenResult)surface=baselineWrittenResult.surface;
+      const dependencies=[];
+      if(writingContext?.requiredBoundary) {
+        const owner=targetObject.window || targetObject;
+        const required=owner.buildClassicalNahuatlAssimilationFrame(writingContext.requiredBoundary.request);
+        if(!owner.isClassicalNahuatlTranscriptionAnalysisFrame(required) || required.optional!==false || required.lowFrequency!==false
+          || `${required.realizedLeftMorpheme}-${required.realizedRightMorpheme}`!==writingContext.requiredBoundary.canonicalPredicateStem)
+          return buildBlockedClassicalNahuatlTranscriptionFrame(sourceFrame,"writing-required-formation-owner-refused");
+        dependencies.push(required);
+      }
+      if(selected && selected.value!=="ordinary") {
+        if(selected.elision)dependencies.push(buildClassicalNahuatlVowelElisionFrame({sourceMorpheme:"oc",elisionSide:"initial",stressGroupCombination:true}));
+        else {
+          if(selected.delabialization)dependencies.push(buildClassicalNahuatlConsonantPhoneShiftFrame({sourceConsonant:"kw",position:"exposed",grammaticalConstruction:true}));
+          if(selected.ruleId==="cn-l2-211-regressive-dissimilation-kk-hk")dependencies.push(buildClassicalNahuatlAssimilationFrame({
+            leftConsonant:selected.delabialization?dependencies[0].outputSound:"k",rightConsonant:"k",grammaticalConstruction:true}));
+        }
+      }
+      const dependencyResults=Object.freeze(dependencies);
+      const expectedRules=[...(writingContext?.requiredBoundary?[writingContext.requiredBoundary.ruleId]:[]),
+        ...(selected && selected.value!=="ordinary"?[...selected.dependencies,selected.ruleId]:[])];
+      if(dependencyResults.length!==expectedRules.length || dependencyResults.some((frame,index)=>!isClassicalNahuatlTranscriptionAnalysisFrame(frame)
+        || frame.authorizationStatus!=="authorized" || frame.selectedRuleId!==expectedRules[index]))
+        return buildBlockedClassicalNahuatlTranscriptionFrame(sourceFrame,"writing-phonological-prerequisite-refused");
+      if (writingContext?.kind==="set-stress-group-writing-context") {
+        if (selected?.elision) {
+          const realized=buildClassicalNahuatlTranscriptionSourceFrame({constituents:[{segments:["/s/","ā","/k/"]}]});
+          surface=projectClassicalNahuatlTranscriptionWritten(realized);
+        } else surface=projectClassicalNahuatlTranscriptionWrittenSegments(sourceFrame,carrierFrame).map(row=>row.join("")).join(" ");
+      } else if (selected && selected.value!=="ordinary") {
+        const pieces=projectClassicalNahuatlTranscriptionWrittenSegments(sourceFrame,carrierFrame).map(row=>Array.from(row));
+        pieces[0][selected.segmentIndex]=selected.ruleId==="cn-l2-213-kw-exposed-k"?dependencyResults[0].outputSpelling:"h";
+        surface=pieces.map(row=>row.join("")).join("");
+      }
       if (
         !formula
         || !surface
@@ -5488,6 +5739,8 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
           authorizationStatus: "authorized",
           blockReason: "",
           sourceFrame,
+          ...(operationReceipt ? {operationFrame:options} : {}),
+          ...(writingContext || operationReceipt ? {writingContext,dependencyResults,baselineWrittenResult} : {}),
           formula,
           surface,
           normalized: surface,
@@ -5532,7 +5785,8 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
           writtenProjection,
           carrierFrame,
           formula,
-          surface
+          surface,
+          operationFrame:operationReceipt ? options : null,writingContext,dependencyResults,baselineWrittenResult
         })
       );
       return transcriptionFrame;
@@ -5597,6 +5851,13 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
         && frame.carrierFrame === receipt.carrierFrame
         && frame.formula === receipt.formula
         && frame.surface === receipt.surface
+        && (frame.operationFrame || null) === (receipt.operationFrame || null)
+        && (!receipt.operationFrame || issuedTranscriptionOperations.get(receipt.operationFrame)?.source === frame.sourceFrame)
+        && (frame.baselineWrittenResult || null)===(receipt.baselineWrittenResult || null)
+        && (!receipt.operationFrame && !receipt.writingContext || frame.dependencyResults === receipt.dependencyResults
+          && frame.dependencyResults.every(dependency=>isClassicalNahuatlTranscriptionAnalysisFrame(dependency)
+            && dependency.authorizationStatus==="authorized"))
+        && (!frame.writingContext || frame.writingContext === receipt.writingContext && isCurrentWritingContext(frame.writingContext))
         && (
           authorized
             ? Boolean(
@@ -5912,6 +6173,10 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
     api.splitClassicalNahuatlLesson2Graphemes = splitClassicalNahuatlLesson2Graphemes;
     api.getInvalidClassicalNahuatlGraphemes = getInvalidClassicalNahuatlGraphemes;
     api.buildClassicalNahuatlTranscriptionSourceFrame = buildClassicalNahuatlTranscriptionSourceFrame;
+    api.issueClassicalNahuatlWritingSourceFromApplication = issueClassicalNahuatlWritingSourceFromApplication;
+    api.issueClassicalNahuatlWritingSourceFromParticleGroup = issueClassicalNahuatlWritingSourceFromParticleGroup;
+    api.issueClassicalNahuatlTranscriptionBindingFrame = issueClassicalNahuatlTranscriptionBindingFrame;
+    api.isClassicalNahuatlTranscriptionBindingFrame = isClassicalNahuatlTranscriptionBindingFrame;
     api.isClassicalNahuatlTranscriptionSourceFrame = isClassicalNahuatlTranscriptionSourceFrame;
     api.isClassicalNahuatlTranscriptionCarrierFrame = isClassicalNahuatlTranscriptionCarrierFrame;
     api.projectClassicalNahuatlTranscriptionFormula = projectClassicalNahuatlTranscriptionFormula;

@@ -938,7 +938,8 @@ export function createComparisonApi(targetObject = globalThis, installationConte
       const nncSlotFrame = getComparisonNncSlotFrame(canonicalResult);
       const vncSlotFrame = getComparisonVncSlotFrame(canonicalResult);
       const compositionResultAuthorized = Boolean(
-        (
+        targetObject.isClassicalNahuatlSupplementationFrame?.(canonicalResult) === true
+        || (
           typeof targetObject
             .isClassicalNahuatlClauseComplementationResultFrame === "function"
           && targetObject.isClassicalNahuatlClauseComplementationResultFrame(
@@ -1044,9 +1045,16 @@ export function createComparisonApi(targetObject = globalThis, installationConte
       issuedSourceFrames.add(frame);
       if (baseUnitKind === "nnc" || baseUnitKind === "vnc") {
         sourceTypedSlots.set(frame, baseUnitKind === "nnc" ? nncSlotFrame : vncSlotFrame);
-        sourceCanonicalResults.set(frame, canonicalResult);
       }
+      sourceCanonicalResults.set(frame, canonicalResult);
       return frame;
+    }
+    // Read only the opaque parent retained by this exact owner-issued wrapper.
+    // This observation cannot create or authorize a comparison Source.
+    function getClassicalComparisonCanonicalSourceResult(frame = null) {
+      return isClassicalComparisonSourceUnit(frame)
+        && frame.authorizationStatus === "authorized"
+        ? sourceCanonicalResults.get(frame) || null : null;
     }
     function isClassicalComparisonSourceUnit(frame = null) {
       return Boolean(
@@ -2720,6 +2728,7 @@ export function createComparisonApi(targetObject = globalThis, installationConte
       buildClassicalComparisonGcdFrame,
       buildClassicalComparisonSourceUnit,
       isClassicalComparisonSourceUnit,
+      getClassicalComparisonCanonicalSourceResult,
       buildClassicalComparisonOperationFrame,
       isClassicalComparisonOperationFrame,
       buildClassicalComparisonAst,

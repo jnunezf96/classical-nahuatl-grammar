@@ -1465,7 +1465,7 @@ import { createClassicalHigherPronominalNncValidationSemanticOperationsApi } fro
 import { createClassicalSupplementationValidationSemanticOperationsApi } from "../sentence/supplementation_validation_semantic_operations.mjs?v=20260816-lesson29-groups1-3-012";
 import { createClassicalNonactiveVoiceObjectValidationSemanticOperationsApi } from "./nonactive_voice_object_validation_semantic_operations.mjs?v=20260904-ni-stock-ocr-corrections-414";
 import { createClassicalObjectRelationshipValidationSemanticOperationsApi } from "./object_relationship_validation_semantic_operations.mjs?v=20260902-result-partition-375";
-import { createClassicalVncDerivationValidationSemanticOperationsApi } from "./vnc_derivation_validation_semantic_operations.mjs?v=20260904-fused-hua-source-432";
+import { createClassicalVncDerivationValidationSemanticOperationsApi } from "./vnc_derivation_validation_semantic_operations.mjs?v=20261001-reader-24-8-subject-1";
 import { createClassicalApplicativeValidationSemanticOperationsApi } from "./vnc_applicative_validation_semantic_operations.mjs";
 import { createClassicalFrequentativeValidationSemanticOperationsApi } from "./vnc_frequentative_validation_semantic_operations.mjs?v=20260904-frequentative-lexical-421";
 import { createClassicalCompoundValidationSemanticOperationsApi } from "./vnc_compound_validation_semantic_operations.mjs?v=20260902-result-partition-375";

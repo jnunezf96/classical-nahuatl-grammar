@@ -1,0 +1,104 @@
+{
+  "seed": 2005024160,
+  "beforeGrammarOutcomes": true,
+  "cohort": "corpus-extension-f031-kwk-regression.json",
+  "sourceAssumptions": "Seeded canonical sound-token transcription; five random CV syllables. Final /kʷ/ embed and initial /k/ matrix constraints selected before grammar outcomes to exercise a genuine optional boundary. Canvas and prior saved cohorts excluded. Classes remain hypothetical; fixed zā/oc are operators, not generated vocabulary.",
+  "request": {
+    "constructionKind": "compound-nnc",
+    "source": {
+      "embedStem": "xōcuēcōquipauc",
+      "matrixStem": "quehuīcēmoyā",
+      "embedClass": "tl-1-a",
+      "embedSourceClass": "tl-1-a",
+      "matrixSourceClass": "tl-1-a",
+      "initialIAnalysis": "real",
+      "matrixInitialIAnalysis": "real",
+      "structure": "integrated",
+      "bracketing": "unambiguous",
+      "embedRole": "association"
+    },
+    "structure": "integrated",
+    "bracketing": "unambiguous",
+    "embedRole": "association",
+    "subject": "3sg",
+    "state": "possessive",
+    "animacy": "animate",
+    "possessor": "1sg",
+    "possessorOrientation": "matrix",
+    "reduplication": "none",
+    "reduplicationTarget": "embed",
+    "embedIntensification": "none",
+    "matrixExpansion": "none",
+    "matrixInitialIVariant": "retain",
+    "pluralConnector": "t-in"
+  },
+  "morphParts": [
+    {
+      "role": "subject-person-1",
+      "segments": []
+    },
+    {
+      "role": "subject-person-2",
+      "segments": []
+    },
+    {
+      "role": "st1",
+      "segments": [
+        "/n/"
+      ]
+    },
+    {
+      "role": "st2",
+      "segments": [
+        "o"
+      ]
+    },
+    {
+      "role": "embed",
+      "segments": [
+        "/š/",
+        "ō",
+        "/kʷ/",
+        "ē",
+        "/k/",
+        "ō",
+        "/k/",
+        "i",
+        "/p/",
+        "a",
+        "/kʷ/"
+      ]
+    },
+    {
+      "role": "matrix",
+      "segments": [
+        "/k/",
+        "e",
+        "/w/",
+        "ī",
+        "/s/",
+        "ē",
+        "/m/",
+        "o",
+        "/y/",
+        "ā"
+      ]
+    },
+    {
+      "role": "subject-number-1",
+      "segments": [
+        "/w/"
+      ]
+    },
+    {
+      "role": "subject-number-2",
+      "segments": []
+    }
+  ],
+  "fixedGroup": [
+    "l3-za",
+    "l3-oc"
+  ],
+  "publicReserve": "corpus-extension-f031-kwk-public.json",
+  "rejectedAssumption": "The possessed TL1A compound includes actual n/o/uh outer parts; three no/embed/matrix rows would lose uh. Keep a full genuine vocable and separate complete owner MorphPart spans."
+}

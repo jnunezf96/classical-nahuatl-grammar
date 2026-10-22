@@ -1,3 +1,6 @@
+import {createAttestedNncCellApi, createAttestedPlaceApi, createAttestedPrincipalCollocationApi} from './attested_source_cells.mjs';
+import { analyzeQuantitiveInternalReduplication, deriveQuantitiveInternalReduplication } from '../../core/classical/quantitive_internal_reduplication.mjs';
+import {createClassicalQuantitativePredicateApi} from './quantitative_predicate.mjs?v=20261009-reader-42-6-224';
 import {
   buildClassicalNahuatlParticipantFrame,
 } from "../../core/classical/participant_frame.mjs?v=20260823-passive-formation-continuity-238";
@@ -10,6 +13,21 @@ import {
 
 const ORDINARY_NNC_SOURCE_KIND =
   "classical-nahuatl-ordinary-nnc-source-frame";
+// §30.3 attests the restricted nominal assertion and its general-use embed,
+// independently of an unprovided possessive/plural subclass.
+const ORDINARY_NNC_ATTESTED_STEM_USES = Object.freeze({
+  "xōchi": Object.freeze({nounClass: "tl", generalUseStem: "xōchi"}),
+  // §30.15.2 supplies this citation/use pair before mati. It does not
+  // supply a possessed subclass or an ordinary general-use paradigm.
+  "tētz-ā-hui": Object.freeze({nounClass: "tl", generalUseStem: "tētz-ā-uh",
+    predicateEmbedUse: Object.freeze({
+      kind: "classical-nahuatl-attested-nominal-predicate-embed-use",
+      sourceStem: "tētz-ā-hui", useStem: "tētz-ā-uh",
+      constructionKind: "nominal-embed-vnc", relation: "complement",
+      orientation: "object", complementKind: "considering", matrixStem: "mati",
+      sourceSection: "30.15.2", fullGeneralUseParadigmClaimed: false,
+    })}),
+});
 const ORDINARY_NNC_OPERATION_KIND =
   "classical-nahuatl-ordinary-nnc-operation-frame";
 const ORDINARY_NNC_RESULT_KIND =
@@ -49,6 +67,7 @@ const ORDINARY_NNC_POSSESSORS = Object.freeze([
   "1sg",
   "2sg",
   "3sg",
+  "3common",
   "1pl",
   "2pl",
   "3pl",
@@ -58,6 +77,7 @@ const ORDINARY_NNC_POSSESSORS = Object.freeze([
 ]);
 const ORDINARY_NNC_SENTENCE_TYPES = Object.freeze([
   "statement",
+  "exclamation",
   "yes-no-intonation",
   "yes-no-cuix",
   "emphatic",
@@ -72,13 +92,14 @@ const ORDINARY_NNC_STEM_FORMATIONS = Object.freeze([
 const ORDINARY_NNC_USE_SHAPES = Object.freeze(["base", "truncated"]);
 const ORDINARY_NNC_SUBCLASSES_BY_CLASS = Object.freeze({
   tl: Object.freeze([
+    "",
     "tl-1-a",
     "tl-1-b",
     "tl-2-a",
     "tl-2-b",
     "tl-2-c",
   ]),
-  tli: Object.freeze(["tli-1", "tli-2"]),
+  tli: Object.freeze(["", "tli-1", "tli-2"]),
   in: Object.freeze([""]),
   zero: Object.freeze([""]),
 });
@@ -112,6 +133,18 @@ const TL_ABSOLUTIVE_PLURAL_PATTERN =
 const OTHER_ABSOLUTIVE_PLURAL_PATTERN =
   "restricted-use stem + lexical t-in or m-eh";
 const ORDINARY_NNC_OPEN_SOURCE_CLASS_ANALYSES = Object.freeze({
+  // Andrews14.2/14.4: restricted-use singular needs the broad class only.
+  // §14.5 also licenses plain absolute plural on the restricted-use base;
+  // selecting its learned connector does not select a §14.7 possessive subtype.
+  // This partial analysis supplies no general-use shape or possessive subtype.
+  tl: Object.freeze({
+    nounClass: "tl", useShape: "base", subclass: "",
+    ephemeralFinalVowel: "", truncationRepair: "none", restrictedUseOnly: true,
+  }),
+  tli: Object.freeze({
+    nounClass: "tli", useShape: "base", subclass: "",
+    ephemeralFinalVowel: "", truncationRepair: "none", restrictedUseOnly: true,
+  }),
   "tl-1-a": Object.freeze({
     nounClass: "tl", useShape: "base", subclass: "tl-1-a",
     ephemeralFinalVowel: "", truncationRepair: "none",
@@ -207,6 +240,31 @@ const ORDINARY_NNC_OPEN_SOURCE_CLASS_ANALYSES = Object.freeze({
       possessiveSingularCommon: "general-use stem + 0",
     }),
   }),
+  "borrowed-name": Object.freeze({
+    nounClass: "zero", useShape: "base", subclass: "",
+    ephemeralFinalVowel: "", truncationRepair: "none",
+    referentialAnimacy: "animate",
+    boundaryFacts: Object.freeze({ borrowedOrthographyRetained: true }),
+    classPattern: defineOpenNncSourceClassPattern({
+      absolutiveSingularCommon: "retained borrowed name + 0",
+      absolutivePlural: OTHER_ABSOLUTIVE_PLURAL_PATTERN,
+      possessiveSingularCommon: "general-use stem + 0",
+    }),
+  }),
+  "borrowed-human-plural": Object.freeze({
+    nounClass: "zero", useShape: "base", subclass: "",
+    ephemeralFinalVowel: "", truncationRepair: "none",
+    referentialAnimacy: "animate",
+    boundaryFacts: Object.freeze({
+      borrowedOrthographyRetained: true,
+      borrowedPluralSilentNumberAuthorized: true,
+    }),
+    classPattern: defineOpenNncSourceClassPattern({
+      absolutiveSingularCommon: "retained borrowed stem + 0",
+      absolutivePlural: "retained borrowed plural stem + irregular silent number or native m-eh",
+      possessiveSingularCommon: "general-use stem + 0",
+    }),
+  }),
   zero: Object.freeze({
     nounClass: "zero", useShape: "base", subclass: "",
     ephemeralFinalVowel: "", truncationRepair: "none",
@@ -240,6 +298,7 @@ const ORDINARY_NNC_PLURAL_CONNECTORS = Object.freeze([
   "t-in",
   "m-eh",
   "0-h",
+  "silent",
 ]);
 function getClassGuidedAbsolutivePluralConnectors(sourceClass = "") {
   return Object.freeze(
@@ -271,7 +330,7 @@ function defineOrdinaryNncLexeme({
   naturalPossessionPolicy = "ordinary",
   naturalPossessionSemantics = "ordinary",
   possessorCompatibility = "ordinary",
-  stemFormationOptions = ["plain"],
+  stemFormationOptions = ["plain", "affinity", "distributive-varietal"],
   pluralConnectorOptions = [],
   useShape = "base",
   subclass = "",
@@ -301,6 +360,24 @@ function defineOrdinaryNncLexeme({
     boundaryFacts: Object.freeze({ ...boundaryFacts }),
   });
 }
+
+// Andrews 40.2 names these exceptional lexical profiles. The profiles select
+// productive pronoun, number and downgrading operations, never target words.
+const ADJECTIVAL_SOURCE_PROFILES = Object.freeze({
+  "huē-i": Object.freeze({kind: "pronominal-like", includesPossessor: false,
+    internalPluralMorph: "n", silentPluralAuthorized: true, sourceSection: "40.2.1"}),
+  "cē-l": Object.freeze({kind: "possessor-included", includesPossessor: true,
+    includedPossessorOptions: Object.freeze(["1sg", "2sg", "3common", "1pl", "2pl", "3pl"]),
+    fixedOuterState: "absolutive", outerSubjectOptions: Object.freeze(["3sg", "3common", "3pl"]),
+    silentPluralAuthorized: false, sourceSection: "40.2.3"}),
+  el: Object.freeze({kind: "possessor-included", includesPossessor: true,
+    includedPossessorOptions: Object.freeze(["1sg", "2sg", "3common", "1pl", "2pl", "3pl"]),
+    fixedOuterState: "absolutive", outerSubjectOptions: Object.freeze(["3sg", "3common", "3pl"]),
+    silentPluralAuthorized: true, sourceSection: "40.2.3"}),
+});
+const INCLUDED_ADJECTIVAL_LEXEME = defineOrdinaryNncLexeme({nounClass: "zero",
+  stemFormationOptions: ["plain"], pluralConnectorOptions: ["t-in"],
+  lexicalFormation: "possessor-included-adjectival-nounstem"});
 
 const LESSON57_NOUNSTEM_L_SOURCES = Object.freeze({
   "te-l": "te",
@@ -393,6 +470,16 @@ const LESSON58_ASSOCIATED_AZ_LEXICON = Object.freeze({
 // the application issues that analysis as a typed open-stem Source and keeps
 // use shape, subclass, plural behavior, and possession policy derived here.
 const ORDINARY_NNC_LEXICON = Object.freeze({
+  // Andrews §47, PDF p.501: inherited Spanish plural, optionally Españolesmeh.
+  // The irregular silent number and writing are source facts, not a stored Result.
+  "Españoles": defineOrdinaryNncLexeme({
+    nounClass: "zero", referentialAnimacy: "animate",
+    pluralConnectorOptions: ["silent", "m-eh"],
+    boundaryFacts: {
+      borrowedOrthographyRetained: true,
+      borrowedPluralSilentNumberAuthorized: true,
+    },
+  }),
   exō: defineOrdinaryNncLexeme({
     nounClass: "tl",
     referentialAnimacy: "nonanimate",
@@ -449,12 +536,30 @@ const ORDINARY_NNC_LEXICON = Object.freeze({
   }),
   pil: defineOrdinaryNncLexeme({
     nounClass: "tli",
-    referentialAnimacy: "animate",
-    naturalPossessionPolicy: "naturally-possessed",
-    naturalPossessionSemantics: "kinship-or-human-relation",
+    // §31.4 dependent entity/appendage; the child sense remains animate.
+    referentialAnimacy: "any",
+    // Andrews 32.6 explicitly permits absolutive affinity pīpiltin.
+    naturalPossessionPolicy: "ordinary",
+    naturalPossessionSemantics: "ordinary",
     stemFormationOptions: ["plain", "affinity", "distributive-varietal"],
     pluralConnectorOptions: ["t-in"],
     subclass: "tli-1",
+  }),
+  "tōtō": defineOrdinaryNncLexeme({
+    nounClass: "tl",
+    referentialAnimacy: "animate",
+    subclass: "tl-1-a",
+    pluralConnectorOptions: ["m-eh"],
+    boundaryFacts: {
+      absolutivePluralStemFormationOptions: ["plain"],
+    },
+  }),
+  huez: defineOrdinaryNncLexeme({
+    nounClass: "tli",
+    referentialAnimacy: "animate",
+    naturalPossessionPolicy: "naturally-possessed",
+    naturalPossessionSemantics: "kinship-or-human-relation",
+    subclass: "tli-2",
   }),
   tah: defineOrdinaryNncLexeme({
     nounClass: "tli",
@@ -471,8 +576,8 @@ const ORDINARY_NNC_LEXICON = Object.freeze({
     referentialAnimacy: "animate",
     subclass: "tli-1",
     boundaryFacts: {
-      nonspecificHumanPossessorCarrier: "ti",
-      lesson15PossessorCarrierReduction: "tē-to-ti",
+      nonspecificHumanPossessorCarrier: "tē",
+      nonspecificHumanForms: Object.freeze(["tē", "ti", "t"]),
     },
   }),
   chān: defineOrdinaryNncLexeme({
@@ -601,7 +706,7 @@ const ORDINARY_NNC_LEXICON = Object.freeze({
   ...LESSON58_ASSOCIATED_AZ_LEXICON,
 });
 const ORDINARY_NNC_SOURCE_INPUT_KEYS = Object.freeze(
-  new Set(["stem", "embedStem", "matrixStem", "nounClass", "sourceClass"]),
+  new Set(["stem", "embedStem", "matrixStem", "nounClass", "sourceClass", "supportiveInitialI", "sourceUse"]),
 );
 const ORDINARY_NNC_OPERATION_SELECTION_KEYS = Object.freeze(new Set([
   "state",
@@ -609,10 +714,13 @@ const ORDINARY_NNC_OPERATION_SELECTION_KEYS = Object.freeze(new Set([
   "humanness",
   "metaphoricalUse",
   "possessor",
+  "includedPossessor",
   "stemFormation",
   "predicateFormation",
   "possessorReduplication",
   "pluralConnector",
+  "singularConnector",
+  "nonspecificHumanForm",
   "sentenceType",
   "polarity",
 ]));
@@ -625,6 +733,7 @@ const ORDINARY_NNC_PARADIGM_REQUEST_KEYS = Object.freeze(new Set([
   "states",
   "subjects",
   "possessors",
+  "humanness",
   "metaphoricalUse",
   "predicateFormation",
   "possessorReduplication",
@@ -654,16 +763,22 @@ const NNC_OPERATION_SELECTION_INPUT_KEYS = Object.freeze(new Set([
   "humanness",
   "metaphoricalUse",
   "possessor",
+  "includedPossessor",
   "stemFormation",
+  "compoundMatrix",
   "predicateFormation",
   "possessorReduplication",
   "pluralConnector",
+  "singularConnector",
+  "nonspecificHumanForm",
   "clausePosition",
   "adjunctorInMode",
   "numberForm",
   "predicatePluralization",
   "doubledFirstPlural",
   "specialHumanUse",
+  "sentenceType",
+  "polarity",
 ]));
 function definePronominalNncLexeme(
   familyId,
@@ -673,6 +788,7 @@ function definePronominalNncLexeme(
     matrixFamily = "",
     matrixForm = "",
     sourceStructure = "whole-stem",
+    quantitiveReferenceScope = "",
   } = {},
 ) {
   return Object.freeze({
@@ -682,6 +798,7 @@ function definePronominalNncLexeme(
     matrixFamily,
     matrixForm,
     sourceStructure,
+    quantitiveReferenceScope,
   });
 }
 
@@ -788,41 +905,17 @@ const PRONOMINAL_NNC_LEXICON = Object.freeze({
     matrixForm: "qui-ch",
     sourceStructure: "embed-matrix",
   }),
-  "quē-x-ix-qui-ch": definePronominalNncLexeme("quantitive", {
-    embedStem: "quē-x-ix",
-    matrixStem: "qui-ch",
-    matrixFamily: "quich",
-    matrixForm: "qui-ch",
-    sourceStructure: "embed-matrix",
-  }),
-  "miya-qui": definePronominalNncLexeme("quantitive", {
-    embedStem: "miya",
-    matrixStem: "qui",
-    matrixFamily: "qui",
-    matrixForm: "qui",
-    sourceStructure: "embed-matrix",
-  }),
-  "miya-c": definePronominalNncLexeme("quantitive", {
-    embedStem: "miya",
-    matrixStem: "c",
-    matrixFamily: "qui",
-    matrixForm: "c",
-    sourceStructure: "embed-matrix",
-  }),
-  "miye-qui": definePronominalNncLexeme("quantitive", {
-    embedStem: "miye",
-    matrixStem: "qui",
-    matrixFamily: "qui",
-    matrixForm: "qui",
-    sourceStructure: "embed-matrix",
-  }),
-  "miye-c": definePronominalNncLexeme("quantitive", {
-    embedStem: "miye",
-    matrixStem: "c",
-    matrixFamily: "qui",
-    matrixForm: "c",
-    sourceStructure: "embed-matrix",
-  }),
+  // §16.7 and §16.9 explicitly permit mia/mie spelling without the y.
+  // Each entered spelling remains a typed Source; the number and matrix
+  // allomorph still come from the existing quantity owner.
+  ...Object.fromEntries(["miya", "mia", "miye", "mie"].flatMap(embedStem =>
+    ["qui", "c"].map(matrixStem => [
+      `${embedStem}-${matrixStem}`,
+      definePronominalNncLexeme("quantitive", {
+        embedStem, matrixStem, matrixFamily: "qui", matrixForm: matrixStem,
+        sourceStructure: "embed-matrix",
+      }),
+    ]))),
   "ce-qui": definePronominalNncLexeme("quantitive", {
     embedStem: "ce",
     matrixStem: "qui",
@@ -839,13 +932,6 @@ const PRONOMINAL_NNC_LEXICON = Object.freeze({
   }),
   "quē-z-qui": definePronominalNncLexeme("quantitive", {
     embedStem: "quē-z",
-    matrixStem: "qui",
-    matrixFamily: "qui",
-    matrixForm: "qui",
-    sourceStructure: "embed-matrix",
-  }),
-  "quē-c-iz-qui": definePronominalNncLexeme("quantitive", {
-    embedStem: "quē-c-iz",
     matrixStem: "qui",
     matrixFamily: "qui",
     matrixForm: "qui",
@@ -871,6 +957,7 @@ const PRONOMINAL_NNC_LEXICON = Object.freeze({
     matrixFamily: "chi",
     matrixForm: "chi",
     sourceStructure: "embed-matrix",
+    quantitiveReferenceScope: "all",
   }),
   "mo-ch": definePronominalNncLexeme("quantitive", {
     embedStem: "mo",
@@ -878,6 +965,7 @@ const PRONOMINAL_NNC_LEXICON = Object.freeze({
     matrixFamily: "chi",
     matrixForm: "ch",
     sourceStructure: "embed-matrix",
+    quantitiveReferenceScope: "all",
   }),
   "mo-ch-eh-huā": definePronominalNncLexeme(
     "quantitive-personal-compound",
@@ -899,6 +987,8 @@ const PRONOMINAL_NNC_SOURCE_INPUT_KEYS = Object.freeze(
   new Set(["stem", "embedStem", "matrixStem"]),
 );
 const PRONOMINAL_NNC_OPERATION_SELECTION_KEYS = Object.freeze(new Set([
+  "stemFormation",
+  "compoundMatrix",
   "subject",
   "humanness",
   "clausePosition",
@@ -1074,9 +1164,12 @@ export function createClassicalNahuatlNncApplicationModule(
   const issuedSourceReceipts = new WeakMap();
   const issuedOperationReceipts = new WeakMap();
   const issuedResultReceipts = new WeakMap();
+  const issuedResultByTypedSlotFrame = new WeakMap();
   const issuedParadigmPlanReceipts = new WeakMap();
   const issuedCoordinateReceipts = new WeakMap();
   const issuedPronominalSourceReceipts = new WeakMap();
+  const pronominalCompoundSources = new WeakMap();
+  const pronominalCompoundProvenance = new WeakMap();
   const issuedPronominalOperationReceipts = new WeakMap();
   const ownedPronominalOperationReceipts = new WeakMap();
   const issuedPronominalResultReceipts = new WeakMap();
@@ -1109,12 +1202,22 @@ export function createClassicalNahuatlNncApplicationModule(
   function getSourceSignature(frame = null) {
     return JSON.stringify({
       stem: frame?.stem || "",
+      sourceUse: frame?.sourceUse || "nounstem",
+      generalUseOnly: frame?.generalUseOnly === true,
+      restrictedCitationClaimed: frame?.restrictedCitationClaimed !== false,
+      classClaimed: frame?.classClaimed !== false,
+      selectedUseScope: frame?.selectedUseScope || "",
+      supportiveInitialI: frame?.supportiveInitialI === true,
       embedStem: frame?.embedStem || "",
       matrixStem: frame?.matrixStem || "",
       lexicalEntryId: frame?.lexicalEntryId || "",
       lexicalSelectionAuthority: frame?.lexicalSelectionAuthority || "",
       openStemSource: frame?.openStemSource === true,
       sourceClass: frame?.sourceClass || "",
+      restrictedUseOnly: frame?.restrictedUseOnly === true,
+      attestedGeneralUseStem: frame?.attestedGeneralUseStem || "",
+      generalUseShapeClaimed: frame?.generalUseShapeClaimed !== false,
+      possessiveSubclassClaimed: frame?.possessiveSubclassClaimed !== false,
       nounClass: frame?.nounClass || "",
       referentialAnimacy: frame?.referentialAnimacy || "",
       naturalPossessionPolicy: frame?.naturalPossessionPolicy || "",
@@ -1135,7 +1238,58 @@ export function createClassicalNahuatlNncApplicationModule(
       lexicalFormation: frame?.lexicalFormation || "",
       sourceConstituents: frame?.sourceConstituents || [],
       boundaryFacts: frame?.boundaryFacts || {},
+      adjectivalProfile: frame?.adjectivalProfile || null,
     });
+  }
+
+  function buildClassFreeSelectedUseSource(source = {}) {
+    const stem = normalizeStem(ownDataValue(source, "stem", ""));
+    const extraKey = Reflect.ownKeys(source).find(key => typeof key !== "string"
+      || !ORDINARY_NNC_SOURCE_INPUT_KEYS.has(key));
+    if (!stem || /[()#>+=□]/u.test(stem) || extraKey
+      || normalizeChoice(ownDataValue(source, "sourceUse", "")) !== "general-use"
+      || normalizeText(ownDataValue(source, "sourceClass", ""))
+      || normalizeText(ownDataValue(source, "nounClass", ""))
+      || normalizeText(ownDataValue(source, "embedStem", ""))
+      || normalizeText(ownDataValue(source, "matrixStem", ""))
+      || ownDataValue(source, "supportiveInitialI", false) !== false) {
+      return buildBlockedFrame(ORDINARY_NNC_SOURCE_KIND,
+        "ordinary-nnc-class-free-selected-general-use-operand-required");
+    }
+    // This privately recorded operand declares no nominal citation class.
+    // The explicit common/silent possessive cell is supplied by Build.
+    const frame = deepFreeze({
+      kind: ORDINARY_NNC_SOURCE_KIND, version: 1,
+      authorizationStatus: "authorized", blockReason: "", stem,
+      sourceUse: "general-use", generalUseOnly: true, classClaimed: false,
+      selectedUseScope: "possessive-common-silent", restrictedCitationClaimed: false,
+      supportiveInitialI: false, embedStem: "", matrixStem: "",
+      lexicalEntryId: "", lexicalSelectionAuthority: "declared-general-use-operand",
+      lexicalSelectionAuthorized: false, openStemSource: false,
+      sourceClass: "", nounClass: "", subclass: "", sourceClassAnalysis: null,
+      restrictedUseOnly: false, generalUseShapeClaimed: true,
+      possessiveSubclassClaimed: false, sourceClassShapeFrame: null,
+      referentialAnimacy: "nonanimate", naturalPossessionPolicy: "ordinary",
+      naturalPossessionSemantics: "ordinary", stateAvailability: "both",
+      adjectivalProfile: null, allowedStateValues: ["possessive"],
+      allowedSubjects: ["3common"], possessorCompatibility: "ordinary",
+      classMembershipOptions: [], stemFormationOptions: ["plain"],
+      pluralConnectorOptions: [], possessorReduplicationOptions: [false],
+      useShape: "base", ephemeralFinalVowel: "", truncationRepair: "none",
+      compoundSource: false, lexicalFormation: "declared-general-use-operand",
+      sourceConstituents: [], sourceConstituentKinds: ["general-use-nounstem"],
+      boundaryFacts: {}, lexicalFactsReadOnly: true, lexicalFormationIsUserChoice: false,
+      boundaryFactsReadOnly: true, typedSourceAuthority: true,
+      callerSuppliedAuthorityAccepted: false, curriculumOrderAuthority: false,
+      lessonMetadataAuthority: false, formulaStringAuthority: false,
+      surfaceStringAuthority: false, documentaryExampleAuthority: false,
+    });
+    issuedSourceReceipts.set(frame, Object.freeze({
+      sourceSignature: getSourceSignature(frame),
+      selectedUseReceipt: Object.freeze({kind: "class-free-selected-general-use-receipt",
+        stem, sourceUse: "general-use", scope: frame.selectedUseScope}),
+    }));
+    return frame;
   }
 
   function buildClassicalNahuatlOrdinaryNncSourceFrame(source = {}) {
@@ -1154,10 +1308,22 @@ export function createClassicalNahuatlNncApplicationModule(
     const forbiddenSourceKey = sourceKeys.find(
       (key) => !ORDINARY_NNC_SOURCE_INPUT_KEYS.has(key),
     ) || "";
-    const lexicalEntry = ORDINARY_NNC_LEXICON[stem] || null;
+    const sourceUse = normalizeChoice(ownDataValue(source, "sourceUse", "nounstem"));
+    if (sourceUse === "general-use" && !normalizeText(ownDataValue(source, "sourceClass", ""))) {
+      return buildClassFreeSelectedUseSource(source);
+    }
+    const generalUseOnly = sourceUse === "general-use";
+    // An entered general-use operand supplies no restricted citation or fine
+    // possessive subclass. Its selected cell remains owned by this service.
+    let lexicalEntry = generalUseOnly ? null : ORDINARY_NNC_LEXICON[stem] || null;
+    const requestedSupportiveInitialI = ownDataValue(source, "supportiveInitialI", false);
+    const supportiveInitialI = requestedSupportiveInitialI === true;
     const requestedSourceClass = normalizeChoice(
       ownDataValue(source, "sourceClass", ""),
     ).toLowerCase();
+    const adjectivalProfile = requestedSourceClass === "zero"
+      ? ADJECTIVAL_SOURCE_PROFILES[stem] || null : null;
+    if (adjectivalProfile?.includesPossessor) lexicalEntry = INCLUDED_ADJECTIVAL_LEXEME;
     const openSourceClassAnalysis = getOpenNncSourceClassAnalysis(
       requestedSourceClass,
     );
@@ -1179,6 +1345,7 @@ export function createClassicalNahuatlNncApplicationModule(
         : canonicalSourceClass
       : requestedSourceClass;
     const sourceClassAnalysis = getOpenNncSourceClassAnalysis(sourceClass);
+    const restrictedUseOnly = !generalUseOnly && openStemSource && sourceClassAnalysis?.restrictedUseOnly === true;
     const lexicalEntryId = lexicalEntry
       ? `ordinary-nounstem:${stem}`
       : openStemSource
@@ -1186,7 +1353,8 @@ export function createClassicalNahuatlNncApplicationModule(
         : "";
     const nounClass = lexicalEntry?.nounClass || requestedOpenNounClass;
     const referentialAnimacy =
-      lexicalEntry?.referentialAnimacy || (openStemSource ? "any" : "");
+      lexicalEntry?.referentialAnimacy || (openStemSource
+        ? openSourceClassAnalysis?.referentialAnimacy || "any" : "");
     const naturalPossessionPolicy =
       lexicalEntry?.naturalPossessionPolicy || (openStemSource ? "ordinary" : "");
     const naturalPossessionSemantics =
@@ -1201,12 +1369,21 @@ export function createClassicalNahuatlNncApplicationModule(
     const classMembershipOptions =
       lexicalEntry?.classMembershipOptions
       || Object.freeze(openStemSource ? [nounClass] : []);
-    const stemFormationOptions =
+    const stemFormationOptions = generalUseOnly ? Object.freeze(["plain"]) :
       lexicalEntry?.stemFormationOptions
-      || Object.freeze(openStemSource ? ["plain"] : []);
+      // Andrews 14.5.2a/18.11 licenses affinity in the coarse TL absolute
+      // cell too. The restricted operation guard still excludes possession
+      // and any unestablished general-use or distributive paradigm.
+      || Object.freeze(openStemSource ? restrictedUseOnly ? (["tl", "tli"].includes(sourceClass) ? ["plain", "affinity"] : ["plain"]) : ["plain", "affinity", "distributive-varietal"] : []);
     const lexicalPluralConnectorOptions =
-      lexicalEntry?.pluralConnectorOptions || Object.freeze([]);
-    const pluralConnectorOptions = lexicalPluralConnectorOptions.length
+      lexicalEntry?.pluralConnectorOptions || Object.freeze(
+        openSourceClassAnalysis?.boundaryFacts?.borrowedPluralSilentNumberAuthorized
+          ? ["silent", "m-eh"] : []);
+    const pluralConnectorOptions = generalUseOnly ? Object.freeze([]) : restrictedUseOnly
+      ? Object.freeze(sourceClass === "tl" ? ["m-eh", "0-h"]
+        : sourceClass === "tli" ? ["t-in", "m-eh"] : []) : adjectivalProfile
+      ? Object.freeze(adjectivalProfile.silentPluralAuthorized ? ["t-in", "silent"] : ["t-in"])
+      : lexicalPluralConnectorOptions.length
       ? lexicalPluralConnectorOptions
       : getClassGuidedAbsolutivePluralConnectors(sourceClass);
     const useShape = lexicalEntry?.useShape || (openStemSource
@@ -1235,7 +1412,7 @@ export function createClassicalNahuatlNncApplicationModule(
       && typeof targetObject.validateClassicalNahuatlSubclassSourceShape
         !== "function"
     );
-    const openSourceShapeFrame = openSourceClassAnalysis
+    const openSourceShapeFrame = !generalUseOnly && openSourceClassAnalysis
       && typeof targetObject.validateClassicalNahuatlSubclassSourceShape
         === "function"
       ? targetObject.validateClassicalNahuatlSubclassSourceShape(stem, {
@@ -1257,8 +1434,12 @@ export function createClassicalNahuatlNncApplicationModule(
       lexicalEntry?.sourceConstituents || Object.freeze(
         compoundSource ? [embedStem, matrixStem] : [],
       );
-    const boundaryFacts =
-      lexicalEntry?.boundaryFacts || Object.freeze({});
+    const boundaryFacts = Object.freeze({
+      ...(lexicalEntry?.boundaryFacts || openSourceClassAnalysis?.boundaryFacts || {}),
+      // Andrews 14.7.1.b.ii: a lexical alternative, not a productive rule.
+      tliSubclass2SilentNum1Authorized: ["ich", "ītz", "oquich"].includes(stem)
+        && sourceClass === "tli-2",
+    });
     const lexicalSelectionAuthority = lexicalEntry
       ? "canonical-lexical-inventory"
       : openStemSource
@@ -1292,9 +1473,19 @@ export function createClassicalNahuatlNncApplicationModule(
     let blockReason = "";
     if (!stem || /[()#>+=□]/u.test(stem)) {
       blockReason = "ordinary-nnc-source-stem-required";
+    } else if (!["nounstem", "general-use"].includes(sourceUse)) {
+      blockReason = "ordinary-nnc-source-use-not-recognized";
+    } else if (generalUseOnly && (requestedSourceClass !== "tl"
+      || embedStem || matrixStem || supportiveInitialI)) {
+      blockReason = "ordinary-nnc-selected-general-use-coarse-tl-operand-required";
+    } else if (stem === "cē-l" && !requestedSourceClass) {
+      blockReason = "lexical-noun-class-selection-required";
     } else if (forbiddenSourceKey) {
       blockReason =
         `ordinary-nnc-source-lexical-facts-are-engine-owned:${forbiddenSourceKey}`;
+    } else if (typeof requestedSupportiveInitialI !== "boolean"
+      || (supportiveInitialI && (!/^[iī]/u.test(stem) || stem.length < 2))) {
+      blockReason = "ordinary-nnc-supportive-initial-i-requires-initial-i";
     } else if (requestedSourceClass && !openSourceClassAnalysis) {
       blockReason = "open-nounstem-source-class-analysis-not-recognized";
     } else if (
@@ -1387,28 +1578,47 @@ export function createClassicalNahuatlNncApplicationModule(
       authorizationStatus: blockReason ? "blocked" : "authorized",
       blockReason,
       stem,
+      supportiveInitialI,
       embedStem,
       matrixStem,
       lexicalEntryId,
       lexicalSelectionAuthority,
       openStemSource,
       sourceClass,
-      sourceClassAnalysis,
+      sourceClassAnalysis: generalUseOnly ? Object.freeze({
+        nounClass, subclass: "", sourceUse: "general-use",
+        restrictedCitationClaimed: false, selectedCellOnly: true,
+      }) : sourceClassAnalysis,
+      restrictedUseOnly,
+      ...(generalUseOnly ? {sourceUse, generalUseOnly: true, restrictedCitationClaimed: false} : {}),
+      ...(ORDINARY_NNC_ATTESTED_STEM_USES[stem]?.nounClass === nounClass
+        ? {attestedGeneralUseStem: ORDINARY_NNC_ATTESTED_STEM_USES[stem].generalUseStem,
+          ...(ORDINARY_NNC_ATTESTED_STEM_USES[stem].predicateEmbedUse
+            ? {attestedPredicateEmbedUse: ORDINARY_NNC_ATTESTED_STEM_USES[stem].predicateEmbedUse} : {})} : {}),
+      generalUseShapeClaimed: !restrictedUseOnly,
+      possessiveSubclassClaimed: !restrictedUseOnly && !generalUseOnly,
       sourceClassShapeFrame: openSourceShapeFrame,
       nounClass,
       referentialAnimacy,
       naturalPossessionPolicy,
       naturalPossessionSemantics,
       stateAvailability,
-      allowedStateValues: getAllowedStateValues(naturalPossessionPolicy),
+      adjectivalProfile,
+      allowedStateValues: generalUseOnly ? Object.freeze(["possessive"])
+        : restrictedUseOnly ? Object.freeze(["absolutive"]) : adjectivalProfile?.fixedOuterState
+        ? Object.freeze([adjectivalProfile.fixedOuterState])
+        : getAllowedStateValues(naturalPossessionPolicy),
       allowedSubjects: Object.freeze(
-        referentialAnimacy === "nonanimate"
+        adjectivalProfile?.outerSubjectOptions || (referentialAnimacy === "nonanimate"
           ? ["3common"]
           : referentialAnimacy === "animate"
             ? ORDINARY_NNC_SUBJECTS.filter(
               (subject) => subject !== "3common",
             )
-            : [...ORDINARY_NNC_SUBJECTS],
+            : [...ORDINARY_NNC_SUBJECTS]).filter(
+          (subject) => !(restrictedUseOnly && !pluralConnectorOptions.length
+            && subject.endsWith("pl")),
+        ),
       ),
       possessorCompatibility,
       classMembershipOptions,
@@ -1454,6 +1664,22 @@ export function createClassicalNahuatlNncApplicationModule(
     const receipt = frame && typeof frame === "object"
       ? issuedSourceReceipts.get(frame)
       : null;
+    if (receipt?.selectedUseReceipt) return Boolean(
+      frame.kind === ORDINARY_NNC_SOURCE_KIND && frame.version === 1
+      && frame.authorizationStatus === "authorized" && frame.typedSourceAuthority === true
+      && frame.generalUseOnly === true && frame.sourceUse === "general-use"
+      && frame.classClaimed === false && frame.restrictedCitationClaimed === false
+      && frame.nounClass === "" && frame.sourceClass === "" && frame.subclass === ""
+      && frame.lexicalSelectionAuthorized === false && frame.possessiveSubclassClaimed === false
+      && frame.selectedUseScope === "possessive-common-silent"
+      && receipt.selectedUseReceipt.stem === frame.stem
+      && receipt.selectedUseReceipt.sourceUse === frame.sourceUse
+      && receipt.selectedUseReceipt.scope === frame.selectedUseScope
+      && receipt.sourceSignature === getSourceSignature(frame)
+      && frame.lexicalFactsReadOnly === true && frame.boundaryFactsReadOnly === true
+      && frame.callerSuppliedAuthorityAccepted === false && frame.lessonMetadataAuthority === false
+      && frame.formulaStringAuthority === false && frame.surfaceStringAuthority === false
+      && Object.isFrozen(frame));
     return Boolean(
       receipt
       && frame.kind === ORDINARY_NNC_SOURCE_KIND
@@ -1471,7 +1697,8 @@ export function createClassicalNahuatlNncApplicationModule(
               === "user-supplied-lexical-analysis"
             && receipt.lexicalSelectionRecord?.selectionAuthority
               === "user-supplied-lexical-analysis"
-          : receipt.lexicalEntry === ORDINARY_NNC_LEXICON[frame.stem]
+          : receipt.lexicalEntry === (frame.adjectivalProfile?.includesPossessor
+              ? INCLUDED_ADJECTIVAL_LEXEME : ORDINARY_NNC_LEXICON[frame.stem])
             && frame.lexicalSelectionAuthority
               === "canonical-lexical-inventory"
       )
@@ -1496,8 +1723,11 @@ export function createClassicalNahuatlNncApplicationModule(
       referentialAnimacy: frame?.referentialAnimacy || "",
       metaphoricalUse: frame?.metaphoricalUse === true,
       possessor: frame?.possessor || "",
+      includedPossessor: frame?.includedPossessor || "",
       stemFormation: frame?.stemFormation || "",
       pluralConnector: frame?.pluralConnector || "",
+      singularConnector: frame?.singularConnector || "",
+      nonspecificHumanForm: frame?.nonspecificHumanForm || "",
       predicateFormation: frame?.predicateFormation || "",
       predicateOperation: frame?.predicateOperation || "",
       useShape: frame?.useShape || "",
@@ -1515,6 +1745,7 @@ export function createClassicalNahuatlNncApplicationModule(
       subject = "3sg",
       possessor = "",
       stemFormation = "plain",
+      nonspecificHumanForm = "",
     } = {},
   ) {
     if (!isClassicalNahuatlOrdinaryNncSourceFrame(sourceFrame)) {
@@ -1529,7 +1760,7 @@ export function createClassicalNahuatlNncApplicationModule(
       /-(\d)-([a-z])$/u,
       "-$1$2",
     );
-    return (
+    const contract = (
       typeof targetObject.getClassicalNahuatlPredicateOptionContract
         === "function"
     )
@@ -1544,11 +1775,14 @@ export function createClassicalNahuatlNncApplicationModule(
           subclass: predicateContractSubclass,
           stemFormation,
           secondaryPossessorCarrier:
-            sourceFrame.boundaryFacts?.nonspecificHumanPossessorCarrier
+            nonspecificHumanForm || sourceFrame.boundaryFacts?.nonspecificHumanPossessorCarrier
             || "tē",
         },
       )
       : null;
+    if (!contract || !(sourceFrame.restrictedUseOnly || sourceFrame.generalUseOnly)) return contract;
+    const options = Object.freeze(contract.options.filter(option => option.optionId === "source-stem"));
+    return Object.freeze({...contract, options, optionIds: Object.freeze(options.map(option => option.optionId))});
   }
 
   function getNncSubjectAnimacy(subject = "") {
@@ -1646,6 +1880,7 @@ export function createClassicalNahuatlNncApplicationModule(
         : ""
     );
     const selectableSubjects = ordinary
+      && !sourceFrame.adjectivalProfile?.includesPossessor
       && sourceFrame.referentialAnimacy !== "any"
       ? ORDINARY_NNC_SUBJECTS
       : sourceFrame.allowedSubjects;
@@ -1722,7 +1957,9 @@ export function createClassicalNahuatlNncApplicationModule(
           sourceFrame.sourceClassAnalysis?.automaticPredicateOptionId
         );
       const stateValues = Object.freeze(
-        sourceFrame.naturalPossessionPolicy === "never-possessive"
+        sourceFrame.adjectivalProfile?.fixedOuterState
+          ? [sourceFrame.adjectivalProfile.fixedOuterState]
+          : sourceFrame.naturalPossessionPolicy === "never-possessive"
         && selectedMetaphoricalUse
           ? ["absolutive", "possessive"]
           : sourceFrame.naturalPossessionPolicy === "naturally-possessed"
@@ -1743,7 +1980,7 @@ export function createClassicalNahuatlNncApplicationModule(
       const stemRelationValues = Object.freeze(
         sourceFrame.stemFormationOptions.filter(
           (value) =>
-            value === "plain"
+            (value === "plain"
             || (
               stemRelationEnvironmentAvailable
               && (
@@ -1753,7 +1990,10 @@ export function createClassicalNahuatlNncApplicationModule(
                   value,
                 ).length > 0
               )
-            ),
+            ))
+            && (!absolutivePlural
+              || !sourceFrame.boundaryFacts?.absolutivePluralStemFormationOptions
+              || sourceFrame.boundaryFacts.absolutivePluralStemFormationOptions.includes(value)),
         ),
       );
       const requestedStemFormation = normalizeChoice(
@@ -1771,14 +2011,14 @@ export function createClassicalNahuatlNncApplicationModule(
             possessor === "reciprocal"
             && !["3sg", "3common", "3pl"].includes(selectedSubject)
           )
-          && !(
-            possessor === "nonspecific-nonhuman"
-            && sourceFrame.possessorCompatibility === "ordinary"
-          )
         )));
       const requestedPossessor = normalizePossessor(
         ownDataValue(selections, "possessor", ""),
       );
+      const includedPossessorValues = sourceFrame.adjectivalProfile?.includedPossessorOptions || Object.freeze([]);
+      const requestedIncludedPossessor = normalizeChoice(ownDataValue(selections, "includedPossessor", ""));
+      const selectedIncludedPossessor = includedPossessorValues.includes(requestedIncludedPossessor)
+        ? requestedIncludedPossessor : "";
       const selectedPossessor = possessorValues.includes(requestedPossessor)
         ? requestedPossessor
         : possessorValues.includes("3sg")
@@ -1804,12 +2044,35 @@ export function createClassicalNahuatlNncApplicationModule(
         : predicateOptionValues.includes("source-stem")
           ? "source-stem"
           : predicateOptionValues[0] || "";
+      const nonspecificHumanFormValues = Object.freeze(
+        selectedState === "possessive"
+          && (selectedPredicateFormation === "secondary-general-use"
+            || (selectedPredicateFormation === "source-stem" && selectedPossessor === "nonspecific-human"))
+          ? sourceFrame.boundaryFacts?.nonspecificHumanForms || ["tē"] : []
+      );
+      const requestedNonspecificHumanForm = normalizeChoice(ownDataValue(selections, "nonspecificHumanForm", ""));
+      const selectedNonspecificHumanForm = nonspecificHumanFormValues.includes(requestedNonspecificHumanForm)
+        ? requestedNonspecificHumanForm : nonspecificHumanFormValues[0] || "";
       const possessorReduplicationAvailable = Boolean(
         selectedState === "possessive"
         && selectedSubject.endsWith("pl")
         && ["1sg", "2sg", "3sg", "1pl", "2pl", "3pl"]
           .includes(selectedPossessor),
       );
+      const singularConnectorValues = Object.freeze(
+        selectedState === "possessive" && !selectedSubject.endsWith("pl")
+          && sourceFrame.generalUseOnly ? ["silent"]
+          : selectedState === "possessive" && !selectedSubject.endsWith("pl")
+          && sourceFrame.subclass === "tli-2"
+          ? sourceFrame.boundaryFacts?.tliSubclass2SilentNum1Authorized
+            ? ["hui", "silent"] : ["hui"]
+          : [],
+      );
+      const requestedSingularConnector = normalizeChoice(
+        ownDataValue(selections, "singularConnector", ""),
+      );
+      const selectedSingularConnector = singularConnectorValues.includes(requestedSingularConnector)
+        ? requestedSingularConnector : sourceFrame.generalUseOnly ? "" : singularConnectorValues[0] || "";
       const pluralConnectorValues = absolutivePlural
           ? getPluralConnectorsForStemRelation(
             sourceFrame,
@@ -1857,6 +2120,9 @@ export function createClassicalNahuatlNncApplicationModule(
         selectedPredicateOptionId: selectedPredicateFormation,
         possessorValues,
         selectedPossessor,
+        includedPossessorValues,
+        selectedIncludedPossessor,
+        includedPossessorSelectionRequired: includedPossessorValues.length > 0,
         possessorReduplicationLexicallyAuthorized: false,
         possessorReduplicationAvailable,
         selectedPossessorReduplication:
@@ -1868,6 +2134,10 @@ export function createClassicalNahuatlNncApplicationModule(
           ) === true,
         pluralConnectorValues,
         selectedPluralConnector,
+        singularConnectorValues,
+        selectedSingularConnector,
+        nonspecificHumanFormValues,
+        selectedNonspecificHumanForm,
         possessivePluralConnector:
           selectedState === "possessive" && selectedSubject.endsWith("pl")
             ? "hu-ān"
@@ -1894,8 +2164,20 @@ export function createClassicalNahuatlNncApplicationModule(
       });
     }
 
-    const receipt = issuedPronominalSourceReceipts.get(sourceFrame);
-    const clausePositionValues = sourceFrame.allowedClausePositions;
+    const compoundMatrixValues = getPronominalCompoundMatrixValues(sourceFrame);
+    const requestedCompoundMatrix = normalizeChoice(selections.compoundMatrix || "none");
+    if (requestedCompoundMatrix !== "none"
+      && !compoundMatrixValues.includes(requestedCompoundMatrix)) {
+      return buildBlockedFrame(NNC_OPERATION_SELECTION_FRAME_KIND,
+        "pronominal-compound-matrix-not-licensed-for-source");
+    }
+    const effectiveSourceFrame = requestedCompoundMatrix !== "none"
+      ? getPronominalCompoundSource(sourceFrame, requestedCompoundMatrix)
+      : sourceFrame;
+    const receipt = issuedPronominalSourceReceipts.get(effectiveSourceFrame);
+    if (!receipt) return buildBlockedFrame(NNC_OPERATION_SELECTION_FRAME_KIND,
+      "pronominal-compound-source-preflight-blocked");
+    const clausePositionValues = effectiveSourceFrame.allowedClausePositions;
     const requestedClausePosition = normalizeChoice(
       ownDataValue(selections, "clausePosition", "initial"),
     );
@@ -1904,7 +2186,7 @@ export function createClassicalNahuatlNncApplicationModule(
     )
       ? requestedClausePosition
       : clausePositionValues[0] || "";
-    const adjunctorInValues = sourceFrame.allowedAdjunctorModes;
+    const adjunctorInValues = effectiveSourceFrame.allowedAdjunctorModes;
     const requestedAdjunctorInMode = normalizeChoice(
       ownDataValue(selections, "adjunctorInMode", "none"),
     );
@@ -2016,9 +2298,12 @@ export function createClassicalNahuatlNncApplicationModule(
       selectedAnimacy,
       metaphoricalUseAvailable: false,
       selectedMetaphoricalUse: false,
-      stemRelationValues: Object.freeze(["plain"]),
-      selectedStemRelation: "plain",
-      stemRelationEnvironmentAvailable: false,
+      stemRelationValues: sourceFrame.allowedStemFormations,
+      selectedStemRelation: sourceFrame.allowedStemFormations.includes(selections.stemFormation)
+        ? selections.stemFormation : "plain",
+      stemRelationEnvironmentAvailable: sourceFrame.allowedStemFormations.length > 1,
+      compoundMatrixValues,
+      selectedCompoundMatrix: requestedCompoundMatrix,
       predicateOptionContract: null,
       predicateOptionValues: Object.freeze([]),
       selectedPredicateOptionId: "",
@@ -2124,6 +2409,7 @@ export function createClassicalNahuatlNncApplicationModule(
       ownDataValue(selections, "metaphoricalUse", false) === true;
     const animacyMismatch = sourceFrame.referentialAnimacy !== "any"
       && sourceFrame.referentialAnimacy !== referentialAnimacy;
+    const includedPossessor = normalizeChoice(ownDataValue(selections, "includedPossessor", ""));
     const requestedPossessor = ownDataValue(selections, "possessor", "");
     const possessor = state === "possessive"
       ? normalizePossessor(requestedPossessor)
@@ -2134,6 +2420,10 @@ export function createClassicalNahuatlNncApplicationModule(
         "stemFormation",
         sourceFrame.stemFormationOptions[0] || "plain",
       ),
+    );
+    const nonspecificHumanForm = normalizeChoice(ownDataValue(selections, "nonspecificHumanForm", ""));
+    const singularConnector = normalizeChoice(
+      ownDataValue(selections, "singularConnector", ""),
     );
     const requestedPluralConnector = normalizeChoice(
       ownDataValue(selections, "pluralConnector", ""),
@@ -2176,6 +2466,7 @@ export function createClassicalNahuatlNncApplicationModule(
         subject,
         possessor,
         stemFormation,
+        nonspecificHumanForm,
       },
     );
     const selectedPredicateOption = predicateOptionContract?.options?.find(
@@ -2198,7 +2489,34 @@ export function createClassicalNahuatlNncApplicationModule(
       )
       || metaphoricalPossessionOverride;
     let blockReason = "";
-    if (!ORDINARY_NNC_STATES.includes(state)) {
+    const selectedGeneralUseContext = sourceFrame.generalUseOnly
+      && state === "possessive" && sourceFrame.allowedSubjects.includes(subject)
+      && possessor && stemFormation === "plain" && effectivePredicateFormation === "source-stem"
+      && !possessorReduplication && !requestedPluralConnector && !nonspecificHumanForm && !metaphoricalUse;
+    if (selectedGeneralUseContext && !subject.endsWith("pl") && !singularConnector) {
+      blockReason = "ordinary-nnc-selected-general-use-singular-connector-required";
+    } else if (sourceFrame.generalUseOnly && (
+      !selectedGeneralUseContext
+      || (subject.endsWith("pl") ? Boolean(singularConnector) : singularConnector !== "silent")
+    )) {
+      blockReason = "ordinary-nnc-selected-general-use-cell-not-licensed";
+    } else if (sourceFrame.restrictedUseOnly && (
+      state !== "absolutive" || (subject.endsWith("pl") && !sourceFrame.pluralConnectorOptions.length)
+      || !(stemFormation === "plain" || (["tl", "tli"].includes(sourceFrame.sourceClass) && stemFormation === "affinity")) || effectivePredicateFormation !== "source-stem"
+      || possessorReduplication || normalizeText(requestedPossessor)
+    )) {
+      blockReason = "ordinary-nnc-restricted-use-analysis-needs-additional-source-facts";
+    } else if (sourceFrame.adjectivalProfile?.includesPossessor && !includedPossessor) {
+      blockReason = "included-adjectival-person-selection-required";
+    } else if (sourceFrame.adjectivalProfile?.includesPossessor && (
+      state !== "absolutive" || !sourceFrame.adjectivalProfile.outerSubjectOptions.includes(subject)
+      || !sourceFrame.adjectivalProfile.includedPossessorOptions.includes(includedPossessor)
+      || predicateFormation !== "source-stem" || stemFormation !== "plain"
+    )) {
+      blockReason = "included-adjectival-source-requires-included-person-and-third-absolute-outer-shell";
+    } else if (includedPossessor && !sourceFrame.adjectivalProfile?.includesPossessor) {
+      blockReason = "included-person-requires-possessor-included-source";
+    } else if (!ORDINARY_NNC_STATES.includes(state)) {
       blockReason = "ordinary-nnc-state-not-recognized";
     } else if (!stateLexicallyAuthorized) {
       blockReason = "ordinary-nnc-state-not-lexically-authorized";
@@ -2225,12 +2543,24 @@ export function createClassicalNahuatlNncApplicationModule(
       && !["3sg", "3common", "3pl"].includes(subject)
     ) {
       blockReason = "reciprocal-possessor-requires-third-person-subject";
-    } else if (
-      possessor === "nonspecific-nonhuman"
-      && sourceFrame.possessorCompatibility === "ordinary"
-    ) {
-      blockReason = "nonspecific-nonhuman-possessor-requires-relational-source";
-    } else if (!sourceFrame.stemFormationOptions.includes(stemFormation)) {
+    } else if (nonspecificHumanForm && (
+      state !== "possessive"
+      || !(predicateFormation === "secondary-general-use" || (predicateFormation === "source-stem" && possessor === "nonspecific-human"))
+      || !(sourceFrame.boundaryFacts?.nonspecificHumanForms || ["tē"]).includes(nonspecificHumanForm)
+    )) {
+      blockReason = "ordinary-nnc-nonspecific-human-form-not-licensed";
+    } else if (singularConnector && !sourceFrame.generalUseOnly && (
+      state !== "possessive" || subject.endsWith("pl")
+      || sourceFrame.subclass !== "tli-2"
+      || !["hui", "silent"].includes(singularConnector)
+      || (singularConnector === "silent"
+        && !sourceFrame.boundaryFacts.tliSubclass2SilentNum1Authorized)
+    )) {
+      blockReason = "ordinary-nnc-singular-connector-not-licensed";
+    } else if (!sourceFrame.stemFormationOptions.includes(stemFormation)
+      || (state === "absolutive" && subject.endsWith("pl")
+        && sourceFrame.boundaryFacts?.absolutivePluralStemFormationOptions
+        && !sourceFrame.boundaryFacts.absolutivePluralStemFormationOptions.includes(stemFormation))) {
       blockReason = "ordinary-nnc-stem-formation-not-lexically-authorized";
     } else if (
       stemFormation !== "plain"
@@ -2282,8 +2612,11 @@ export function createClassicalNahuatlNncApplicationModule(
       subjectParticipantFrame,
       metaphoricalUse,
       possessor,
+      includedPossessor,
       stemFormation,
       pluralConnector,
+      singularConnector,
+      nonspecificHumanForm,
       predicateFormation,
       predicateOperation,
       sourceClassPredicateOptionId,
@@ -2363,6 +2696,17 @@ export function createClassicalNahuatlNncApplicationModule(
       sourceFrame.stem,
       {
         selectionAuthority: sourceFrame.lexicalSelectionAuthority,
+        tliSubclass2SilentNum1Authorized: sourceFrame.boundaryFacts?.tliSubclass2SilentNum1Authorized === true,
+        supportiveInitialI: sourceFrame.supportiveInitialI === true,
+        // The citation keeps its vowel. Select the licensed variant only at
+        // the possessive boundary; reduplicative stems treat initial i as real.
+        selectedInitialVariant: sourceFrame.supportiveInitialI === true
+          && operationFrame.state === "possessive"
+          && operationFrame.stemFormation === "plain"
+          && ["1sg", "2sg", "1pl", "2pl", "3sg", "nonspecific-nonhuman"]
+            .includes(operationFrame.possessor)
+            ? "omitted"
+            : "retained",
         nounClass: sourceFrame.nounClass,
         classMembershipOptions: sourceFrame.classMembershipOptions,
         stemFormation: operationFrame.stemFormation,
@@ -2424,6 +2768,7 @@ export function createClassicalNahuatlNncApplicationModule(
       "buildClassicalNahuatlNncSentenceSurfaceFrame",
       "isClassicalNahuatlIssuedNncSentenceSurfaceFrame",
     ];
+    if (sourceFrame.generalUseOnly) requiredCapabilityNames.push("buildClassicalNahuatlPossessiveNncFrame");
     const missingCapability = requiredCapabilityNames.find(
       (name) => typeof targetObject[name] !== "function",
     );
@@ -2441,12 +2786,14 @@ export function createClassicalNahuatlNncApplicationModule(
         },
       );
     }
-    const lexicalSelectionRecord = buildLexicalSelectionRecord(
+    const classFreeSelectedUse = sourceFrame.generalUseOnly && sourceFrame.classClaimed === false;
+    const lexicalSelectionRecord = classFreeSelectedUse ? null : buildLexicalSelectionRecord(
       sourceFrame,
       operationFrame,
     );
-    const lexicalSelectionAuthorized =
-      targetObject.isClassicalNahuatlLexicalSelectionRecord(
+    const lexicalSelectionAuthorized = classFreeSelectedUse
+      ? isClassicalNahuatlOrdinaryNncSourceFrame(sourceFrame)
+      : targetObject.isClassicalNahuatlLexicalSelectionRecord(
         lexicalSelectionRecord,
       );
     const operationReceipt = issuedOperationReceipts.get(operationFrame);
@@ -2478,7 +2825,7 @@ export function createClassicalNahuatlNncApplicationModule(
                     ? "user-supplied-lexical-analysis"
                     : "external-lexical-record",
           targetStem:
-            operationFrame.predicateFormation === "tec-title"
+            selectedPredicateOption?.operation === "suppletive"
               ? selectedPredicateOption?.targetStem || ""
               : "",
           selectedState: operationFrame.state,
@@ -2536,7 +2883,7 @@ export function createClassicalNahuatlNncApplicationModule(
           nonspecificHumanPossessorCarrier:
             operationFrame.predicateOperation === "secondary-general-use"
               ? "tē"
-              : sourceFrame.boundaryFacts?.nonspecificHumanPossessorCarrier
+              : operationFrame.nonspecificHumanForm || sourceFrame.boundaryFacts?.nonspecificHumanPossessorCarrier
                 || "tē",
           policySelectionAuthority: sourceFrame.openStemSource
             ? "default-ordinary-source-analysis"
@@ -2546,8 +2893,14 @@ export function createClassicalNahuatlNncApplicationModule(
             possessorReduplicationSelection,
         },
       );
-    const classGovernedFrame =
-      targetObject.buildClassicalNahuatlClassGovernedNncFrame(
+    const classGovernedFrame = sourceFrame.generalUseOnly
+      ? targetObject.buildClassicalNahuatlPossessiveNncFrame(sourceFrame.stem, {
+          subject: operationFrame.subject, possessor: operationFrame.possessor,
+          animacy: operationFrame.referentialAnimacy, humanness: operationFrame.referentialHumanness,
+          singularConnector: operationFrame.singularConnector === "silent" ? "0" : "",
+          nncSourceAuthorityFrame: sourceAuthorityFrame,
+        })
+      : targetObject.buildClassicalNahuatlClassGovernedNncFrame(
         sourceFrame.stem,
         {
           state: operationFrame.state,
@@ -2556,9 +2909,11 @@ export function createClassicalNahuatlNncApplicationModule(
           nounClass: sourceFrame.nounClass,
           classSelectionAuthority: sourceFrame.lexicalSelectionAuthority,
           lesson14LexicalSelectionRecord: lexicalSelectionRecord,
+          borrowedNncSourceFrame: sourceFrame,
           nncSourceAuthorityFrame: sourceAuthorityFrame,
           stemFormation: operationFrame.stemFormation,
           pluralConnector: operationFrame.pluralConnector,
+          singularConnector: operationFrame.singularConnector,
           pluralSelectionAuthority: operationFrame.pluralConnector
             ? sourceFrame.pluralConnectorOptions.length > 1
               ? "user-selection"
@@ -2568,6 +2923,7 @@ export function createClassicalNahuatlNncApplicationModule(
           ephemeralFinalVowel: sourceFrame.ephemeralFinalVowel,
           truncationRepair: sourceFrame.truncationRepair,
           sourceStructure: sourceFrame.compoundSource ? "compound" : "",
+          compoundSourceConstituents: sourceFrame.sourceConstituents,
           tlSubclass: sourceFrame.nounClass === "tl"
             ? operationFrame.subclass.replace(/^tl-/u, "")
             : "",
@@ -2585,10 +2941,14 @@ export function createClassicalNahuatlNncApplicationModule(
           possessorCompatibility: sourceFrame.possessorCompatibility,
         },
       );
-    const higherFrame =
-      targetObject.buildClassicalNahuatlHigherNncFrame(
+    // A selected already-general-use cell goes directly to the existing
+    // possession owner. Reclassifying it as a citation would invent a paradigm.
+    const higherFrame = sourceFrame.generalUseOnly ? classGovernedFrame
+      : targetObject.buildClassicalNahuatlHigherNncFrame(
         classGovernedFrame,
         {
+          adjectivalSourceFrame: sourceFrame.adjectivalProfile ? sourceFrame : null,
+          adjectivalOperationFrame: sourceFrame.adjectivalProfile ? operationFrame : null,
           animacy: operationFrame.referentialAnimacy,
           humanness: operationFrame.referentialHumanness,
           metaphoricalOverride: operationFrame.metaphoricalUse === true,
@@ -2613,6 +2973,7 @@ export function createClassicalNahuatlNncApplicationModule(
             sentenceType: operationFrame.sentenceType,
             polarity: operationFrame.polarity,
             predicateKind: "equative",
+            borrowedNncSourceFrame: sourceFrame,
           },
         )
         : null;
@@ -2718,6 +3079,7 @@ export function createClassicalNahuatlNncApplicationModule(
         callerSuppliedTargetStemAuthority: false,
         documentaryOptionAuthority: false,
       }),
+      adjectivalPredicateFrame: authorized ? higherFrame.adjectivalPredicateFrame || null : null,
       typedSlotFrame: authorized ? slotFrame : null,
       sentenceFrame: authorized ? sentenceFrame : null,
       formulaAndWrittenDerivedIndependently: true,
@@ -2737,9 +3099,9 @@ export function createClassicalNahuatlNncApplicationModule(
       // Keep the canonical pre-number use-stem analysis privately. A final
       // predicate may already have possessive truncation or plural quantity
       // changes; its written/formula stem cannot reconstruct this analysis.
-      nounstemUseFrame: authorized
-        ? deepFreeze(classGovernedFrame.sourceFrame) : null,
-      nounstemDerivedFrame: authorized
+      nounstemUseFrame: authorized && !sourceFrame.generalUseOnly ? deepFreeze(classGovernedFrame.sourceFrame) : null,
+      adjectivalPredicateFrame: frame.adjectivalPredicateFrame,
+      nounstemDerivedFrame: authorized && !sourceFrame.generalUseOnly
         ? deepFreeze(classGovernedFrame.derivedStemFrame) : null,
       stemOperationRecord: authorized ? deepFreeze(stemOperationRecord) : null,
       contextualRealizations: frame.contextualRealizations,
@@ -2751,7 +3113,15 @@ export function createClassicalNahuatlNncApplicationModule(
       sentenceSurface: frame.sentenceSurface,
       authorizationStatus: frame.authorizationStatus,
     }));
+    if (authorized) issuedResultByTypedSlotFrame.set(slotFrame, frame);
     return frame;
+  }
+
+  function getClassicalNahuatlOrdinaryNncResultForTypedSlotFrame(slotFrame = null) {
+    const result = slotFrame && typeof slotFrame === "object"
+      ? issuedResultByTypedSlotFrame.get(slotFrame) : null;
+    return isClassicalNahuatlOrdinaryNncResult(result)
+      && result.typedSlotFrame === slotFrame ? result : null;
   }
 
   function isClassicalNahuatlOrdinaryNncResult(frame = null) {
@@ -2778,6 +3148,7 @@ export function createClassicalNahuatlNncApplicationModule(
       && frame.sentenceSurface === receipt.sentenceSurface
       && frame.typedSlotFrame === receipt.typedSlotFrame
       && frame.sentenceFrame === receipt.sentenceFrame
+      && frame.adjectivalPredicateFrame === receipt.adjectivalPredicateFrame
       && frame.stemOperation === receipt.stemOperation
       && frame.formulaAndWrittenDerivedIndependently === true
       && frame.scalarEvaluatorIdentity
@@ -2808,10 +3179,7 @@ export function createClassicalNahuatlNncApplicationModule(
   }
 
   function normalizeRequestedPossessors(value, sourceFrame) {
-    const fallback = ORDINARY_NNC_POSSESSORS.filter((possessor) => (
-      possessor !== "nonspecific-nonhuman"
-      || sourceFrame.possessorCompatibility !== "ordinary"
-    ));
+    const fallback = ORDINARY_NNC_POSSESSORS;
     return normalizeUniqueList(value, normalizePossessor, fallback);
   }
 
@@ -2927,6 +3295,9 @@ export function createClassicalNahuatlNncApplicationModule(
       blockReason = "ordinary-nnc-paradigm-possessor-inventory-invalid";
     }
     const fixedSelections = {
+      humanness: normalizeChoice(
+        ownDataValue(request, "humanness", "unspecified"),
+      ) || "unspecified",
       metaphoricalUse:
         ownDataValue(request, "metaphoricalUse", false) === true,
       predicateFormation: requestedPredicateFormation,
@@ -2979,6 +3350,15 @@ export function createClassicalNahuatlNncApplicationModule(
                 },
                 pluralConnector,
               );
+            // The participant owner may normalize an incompatible coordinate
+            // (human/common or nonhuman/first person). A fixed context cannot
+            // silently change its requested subject or referential fact.
+            if (fixedSelections.humanness !== "unspecified"
+              && (operationFrame.referentialHumanness !== fixedSelections.humanness
+                || operationFrame.subjectParticipantFrame?.category !== subject)) {
+              firstCandidateBlockReason ||= "ordinary-nnc-paradigm-fixed-humanness-coordinate-mismatch";
+              return;
+            }
             const scalarProbe = evaluateClassicalNahuatlOrdinaryNnc(
               sourceFrame,
               operationFrame,
@@ -3300,6 +3680,7 @@ export function createClassicalNahuatlNncApplicationModule(
       sourceStructure: frame?.sourceStructure || "",
       matrixFamily: frame?.matrixFamily || "",
       matrixForm: frame?.matrixForm || "",
+      quantitiveReferenceScope: frame?.quantitiveReferenceScope || "",
       allowedSubjects: frame?.allowedSubjects || [],
       allowedNumberForms: frame?.allowedNumberForms || [],
       allowedMatrixForms: frame?.allowedMatrixForms || [],
@@ -3318,19 +3699,36 @@ export function createClassicalNahuatlNncApplicationModule(
         `pronominal-nnc-source-forbidden-authority:${forbiddenCarrier}`,
       );
     }
-    const stem = normalizeStem(ownDataValue(source, "stem", ""));
+    const enteredStem = normalizeStem(ownDataValue(source, "stem", ""));
     const enteredEmbedStem = normalizeStem(
       ownDataValue(source, "embedStem", ""),
     );
     const enteredMatrixStem = normalizeStem(
       ownDataValue(source, "matrixStem", ""),
     );
+    // A flat display mirror may accompany the explicitly entered analysis.
+    // Preserve its boundaries only when every segment (including quantity) agrees.
+    const structuredStem = enteredEmbedStem && enteredMatrixStem
+      ? `${enteredEmbedStem}-${enteredMatrixStem}` : "";
+    const stem = structuredStem
+      && enteredStem.replace(/-/gu, "") === structuredStem.replace(/-/gu, "")
+      ? structuredStem : enteredStem;
     const sourceKeys = Reflect.ownKeys(source)
       .filter((key) => typeof key === "string");
     const forbiddenSourceKey = sourceKeys.find(
       (key) => !PRONOMINAL_NNC_SOURCE_INPUT_KEYS.has(key),
     ) || "";
-    const lexicalEntry = PRONOMINAL_NNC_LEXICON[stem] || null;
+    const internalReduplication = analyzeQuantitiveInternalReduplication(stem, targetObject);
+    const baseLexicalEntry = internalReduplication
+      ? PRONOMINAL_NNC_LEXICON[internalReduplication.baseStem]
+      : null;
+    const lexicalEntry = PRONOMINAL_NNC_LEXICON[stem]
+      || (baseLexicalEntry?.familyId === "quantitive"
+        && internalReduplication.derivedStem === stem
+        ? Object.freeze({ ...baseLexicalEntry,
+            embedStem: internalReduplication.derivedEmbed,
+          })
+        : null);
     const lexicalEntryId = lexicalEntry ? `pronominal-nounstem:${stem}` : "";
     const familyId = lexicalEntry?.familyId || "";
     const embedStem = lexicalEntry?.embedStem || "";
@@ -3420,7 +3818,14 @@ export function createClassicalNahuatlNncApplicationModule(
       embedStem,
       matrixStem,
       lexicalEntryId,
+      ...(lexicalEntry?.quantitiveReferenceScope
+        ? {quantitiveReferenceScope: lexicalEntry.quantitiveReferenceScope} : {}),
+      internalReduplicationFrame: baseLexicalEntry ? internalReduplication : null,
+      allowedStemFormations: Object.freeze(familyId === "quantitive"
+        && deriveQuantitiveInternalReduplication(stem, targetObject)
+        ? ["plain", "distributive-varietal"] : ["plain"]),
       sourceStructure,
+      nounClass: authorizedCoreCoordinates[0]?.sourceFrame?.nounClass || "",
       matrixFamily,
       matrixForm,
       allowedSubjects: uniqueCoordinateValues("subject"),
@@ -3451,6 +3856,8 @@ export function createClassicalNahuatlNncApplicationModule(
       issuedPronominalSourceReceipts.set(frame, Object.freeze({
         sourceSignature: getPronominalSourceSignature(frame),
         lexicalEntry,
+        baseLexicalEntry,
+        internalReduplication,
         coreSourceOptions: Object.freeze({ ...coreSourceOptions }),
         corePlan,
         coreCoordinates: Object.freeze([...authorizedCoreCoordinates]),
@@ -3471,7 +3878,11 @@ export function createClassicalNahuatlNncApplicationModule(
       && frame.typedSourceAuthority === true
       && frame.lexicalAuthorizationStatus === "authorized"
       && frame.lexicalFactsReadOnly === true
-      && receipt.lexicalEntry === PRONOMINAL_NNC_LEXICON[frame.stem]
+      && (receipt.lexicalEntry === PRONOMINAL_NNC_LEXICON[frame.stem]
+        || (receipt.internalReduplication
+          && receipt.baseLexicalEntry === PRONOMINAL_NNC_LEXICON[receipt.internalReduplication.baseStem]
+          && receipt.internalReduplication === frame.internalReduplicationFrame
+          && receipt.internalReduplication.derivedStem === frame.stem))
       && frame.callerSuppliedAuthorityAccepted === false
       && frame.lessonMetadataAuthority === false
       && frame.formulaStringAuthority === false
@@ -3487,6 +3898,10 @@ export function createClassicalNahuatlNncApplicationModule(
     return JSON.stringify({
       sourceSignature: frame?.sourceSignature || "",
       subject: frame?.subject || "",
+      stemFormation: frame?.stemFormation || "plain",
+      compoundMatrix: frame?.compoundMatrix || "",
+      derivedSourceSignature: frame?.derivedSourceFrame
+        ? getPronominalSourceSignature(frame.derivedSourceFrame) : "",
       numberForm: frame?.numberForm || "",
       matrixForm: frame?.matrixForm || "",
       predicatePluralization: frame?.predicatePluralization || "",
@@ -3497,6 +3912,51 @@ export function createClassicalNahuatlNncApplicationModule(
       sentenceType: frame?.sentenceType || "",
       polarity: frame?.polarity || "",
     });
+  }
+
+  function getPronominalCompoundMatrixValues(sourceFrame) {
+    if (!isClassicalNahuatlPronominalNncSourceFrame(sourceFrame)
+      || sourceFrame.familyId !== "interrogative-which") return Object.freeze([]);
+    return Object.freeze(["none", ...Object.values(PRONOMINAL_NNC_LEXICON)
+      .filter(entry => entry.familyId === "interrogative-which-compound"
+        && entry.sourceStructure === "embed-matrix"
+        && entry.embedStem === sourceFrame.stem)
+      .map(entry => entry.matrixStem)]);
+  }
+
+  function getPronominalCompoundSource(sourceFrame, matrix) {
+    if (matrix === "none" || !getPronominalCompoundMatrixValues(sourceFrame).includes(matrix))
+      return null;
+    let byMatrix = pronominalCompoundSources.get(sourceFrame);
+    if (!byMatrix) {
+      byMatrix = new Map();
+      pronominalCompoundSources.set(sourceFrame, byMatrix);
+    }
+    if (byMatrix.has(matrix)) return byMatrix.get(matrix);
+    const derived = buildClassicalNahuatlPronominalNncSourceFrame({
+      stem: `${sourceFrame.stem}-${matrix}`, embedStem: sourceFrame.stem,
+      matrixStem: matrix,
+    });
+    if (!isClassicalNahuatlPronominalNncSourceFrame(derived)) return null;
+    pronominalCompoundProvenance.set(derived, Object.freeze({
+      sourceFrame, matrix, sourceSignature: getPronominalSourceSignature(sourceFrame),
+      derivedSignature: getPronominalSourceSignature(derived),
+    }));
+    byMatrix.set(matrix, derived);
+    return derived;
+  }
+
+  function hasPronominalCompoundProvenance(operationFrame) {
+    if (!operationFrame.compoundMatrix) return true;
+    const derived = operationFrame.derivedSourceFrame;
+    const provenance = pronominalCompoundProvenance.get(derived);
+    return Boolean(provenance
+      && provenance.sourceFrame === operationFrame.sourceFrame
+      && provenance.matrix === operationFrame.compoundMatrix
+      && provenance.sourceSignature === getPronominalSourceSignature(operationFrame.sourceFrame)
+      && provenance.derivedSignature === getPronominalSourceSignature(derived)
+      && isClassicalNahuatlPronominalNncSourceFrame(derived)
+      && pronominalCompoundSources.get(operationFrame.sourceFrame)?.get(provenance.matrix) === derived);
   }
 
   function buildPronominalNncOperationFrame(
@@ -3518,7 +3978,34 @@ export function createClassicalNahuatlNncApplicationModule(
         { sourceFrame },
       );
     }
-    const receipt = issuedPronominalSourceReceipts.get(sourceFrame);
+    const stemFormation = normalizeChoice(selections.stemFormation || "plain");
+    const formation = stemFormation === "distributive-varietal"
+      && sourceFrame.allowedStemFormations.includes(stemFormation)
+      ? deriveQuantitiveInternalReduplication(sourceFrame.stem, targetObject) : null;
+    const requestedCompoundMatrix = normalizeChoice(selections.compoundMatrix || "none");
+    const compoundMatrix = requestedCompoundMatrix === "none" ? "" : requestedCompoundMatrix;
+    if (compoundMatrix && (stemFormation !== "plain"
+      || !getPronominalCompoundMatrixValues(sourceFrame).includes(compoundMatrix))) {
+      return buildBlockedFrame(PRONOMINAL_NNC_OPERATION_KIND,
+        "pronominal-compound-matrix-not-licensed-for-source", {sourceFrame});
+    }
+    const derivedSourceFrame = compoundMatrix
+      ? getPronominalCompoundSource(sourceFrame, compoundMatrix) : formation
+      ? buildClassicalNahuatlPronominalNncSourceFrame({
+          stem: formation.derivedStem,
+          embedStem: formation.derivedEmbed,
+          matrixStem: formation.matrixStem,
+        }) : null;
+    const effectiveSourceFrame = derivedSourceFrame || sourceFrame;
+    const receipt = issuedPronominalSourceReceipts.get(effectiveSourceFrame);
+    if (compoundMatrix && !derivedSourceFrame) {
+      return buildBlockedFrame(PRONOMINAL_NNC_OPERATION_KIND,
+        "pronominal-compound-source-preflight-blocked", {sourceFrame});
+    }
+    if (!receipt || !sourceFrame.allowedStemFormations.includes(stemFormation)) {
+      return buildBlockedFrame(PRONOMINAL_NNC_OPERATION_KIND,
+        "pronominal-stem-formation-unavailable", {sourceFrame});
+    }
     const selectionKeys = Reflect.ownKeys(selections)
       .filter((key) => typeof key === "string");
     const derivedSelectionKey = selectionKeys.find(
@@ -3701,6 +4188,10 @@ export function createClassicalNahuatlNncApplicationModule(
       authorizationStatus: blockReason ? "blocked" : "authorized",
       blockReason,
       operationId: "pronominal-nnc:inflect-and-realize",
+      stemFormation,
+      compoundMatrix,
+      internalReduplicationFrame: formation,
+      derivedSourceFrame,
       sourceFrame,
       sourceSignature,
       subject,
@@ -3713,6 +4204,13 @@ export function createClassicalNahuatlNncApplicationModule(
         || "",
       clausePosition,
       adjunctorInMode,
+      completionRequirement: adjunctorInMode === "dependent-clause"
+        ? Object.freeze({kind: "dependent-clause",
+          blockReason: "pronominal-nnc-dependent-clause-requires-supplementation",
+          operationId: "sentence:supplementation", bindingId: "supplementation:principal",
+          principalSelections: Object.freeze({adjunctorInMode: "none"}),
+          scalarSentenceComplete: false, generationAuthority: false})
+        : null,
       doubledFirstPlural,
       specialHumanUse:
         pronominalSubjectParticipantFrame.humanness !== "nonhuman"
@@ -3740,6 +4238,7 @@ export function createClassicalNahuatlNncApplicationModule(
     if (frame.authorizationStatus === "authorized") {
       issuedPronominalOperationReceipts.set(frame, Object.freeze({
         sourceFrame,
+        derivedSourceFrame,
         selectedCoordinate,
         operationSignature: getPronominalOperationSignature(frame),
       }));
@@ -3767,6 +4266,8 @@ export function createClassicalNahuatlNncApplicationModule(
       && frame.typedOperationAuthority === true
       && frame.derivedCoordinateFactsReadOnly === true
       && frame.sourceFrame === receipt.sourceFrame
+      && frame.derivedSourceFrame === receipt.derivedSourceFrame
+      && hasPronominalCompoundProvenance(frame)
       && isClassicalNahuatlPronominalNncSourceFrame(frame.sourceFrame)
       && frame.sourceSignature
         === getPronominalSourceSignature(frame.sourceFrame)
@@ -3838,6 +4339,14 @@ export function createClassicalNahuatlNncApplicationModule(
         },
       );
     }
+    // Separate in belongs to an actual supplementary clause. This scalar
+    // coordinate retains its grammar but cannot publish a placeholder sentence.
+    if (operationFrame.completionRequirement) {
+      return buildBlockedFrame(PRONOMINAL_NNC_RESULT_KIND,
+        operationFrame.completionRequirement.blockReason,
+        {sourceFrame, operationFrame, completionRequirement: operationFrame.completionRequirement,
+          formulaRealization: "", surfaceRealization: "", wordSurface: "", sentenceSurface: ""});
+    }
     const requiredCapabilityNames = [
       "buildClassicalNahuatlQuantitiveAuthorityRecord",
       "buildClassicalNahuatlContextSelectionRecord",
@@ -3863,7 +4372,8 @@ export function createClassicalNahuatlNncApplicationModule(
         },
       );
     }
-    const sourceReceipt = issuedPronominalSourceReceipts.get(sourceFrame);
+    const effectiveSourceFrame = operationFrame.derivedSourceFrame || sourceFrame;
+    const sourceReceipt = issuedPronominalSourceReceipts.get(effectiveSourceFrame);
     const coreTypeOptions = { ...sourceReceipt.coreSourceOptions };
     [
       "embedStem",
@@ -3871,18 +4381,18 @@ export function createClassicalNahuatlNncApplicationModule(
       "matrixForm",
       "sourceStem",
     ].forEach((key) => {
-      if (sourceFrame.familyId === "quantitive") delete coreTypeOptions[key];
+      if (effectiveSourceFrame.familyId === "quantitive") delete coreTypeOptions[key];
     });
     let quantitiveAuthorityRecord = null;
-    if (sourceFrame.familyId === "quantitive") {
+    if (effectiveSourceFrame.familyId === "quantitive") {
       quantitiveAuthorityRecord =
         targetObject.buildClassicalNahuatlQuantitiveAuthorityRecord({
           subject: operationFrame.subject,
-          sourceStem: sourceFrame.stem,
-          embedStem: sourceFrame.embedStem,
-          matrixFamily: sourceFrame.matrixFamily,
+          sourceStem: effectiveSourceFrame.stem,
+          embedStem: effectiveSourceFrame.embedStem,
+          matrixFamily: effectiveSourceFrame.matrixFamily,
           matrixForm: operationFrame.matrixForm === "not-applicable"
-            ? sourceFrame.matrixForm
+            ? effectiveSourceFrame.matrixForm
             : operationFrame.matrixForm,
           predicatePluralization:
             operationFrame.predicatePluralization,
@@ -3893,9 +4403,10 @@ export function createClassicalNahuatlNncApplicationModule(
     const coordinateOptions = {
       ...coreTypeOptions,
       subject: operationFrame.subject,
+      animacy: operationFrame.subjectParticipantFrame.animacy,
       humanness: operationFrame.referentialHumanness,
       subjectReferentCategory: operationFrame.referentialHumanness,
-      enteredStem: sourceFrame.stem,
+      enteredStem: effectiveSourceFrame.stem,
       requireEnteredStem: true,
       pluralConnector: operationFrame.numberForm,
       numberVariant: operationFrame.numberForm === "silent-silent"
@@ -3926,10 +4437,9 @@ export function createClassicalNahuatlNncApplicationModule(
           typedSlotFrame,
         )
         : "";
-    const sentenceType =
-      coreFrame?.discourseFrame?.interrogativeReadingActive === true
-        ? "information-question"
-        : operationFrame.sentenceType;
+    // The sentence owner derives information-question force from discourse.
+    // Retain the caller's sentence choice for subsequent scope operations.
+    const sentenceType = operationFrame.sentenceType;
     const sentenceFrame = coreFrame?.authorizationStatus === "authorized"
       ? targetObject.buildClassicalNahuatlNncSentenceSurfaceFrame(
         typedSlotFrame,
@@ -4084,7 +4594,9 @@ export function createClassicalNahuatlNncApplicationModule(
       && context?.authorizationStatus === "authorized"
       && source.contextSelectionRecord === context
       && source.state === "absolutive"
-      && source.enteredStem === resultFrame.sourceFrame.stem
+      && hasPronominalCompoundProvenance(resultFrame.operationFrame)
+      && source.enteredStem === (resultFrame.operationFrame.derivedSourceFrame
+        || resultFrame.sourceFrame).stem
       && source.subject === resultFrame.operationFrame.subject
       && number.subject === source.subject
       && context.subject === source.subject
@@ -4274,6 +4786,8 @@ export function createClassicalNahuatlNncApplicationModule(
     if (existing) return existing;
     const sourceFrame = resultFrame.sourceFrame;
     const operationFrame = resultFrame.operationFrame;
+    const constituentSourceFrame = pronominal && operationFrame.derivedSourceFrame
+      ? operationFrame.derivedSourceFrame : sourceFrame;
     const typedSlotFrame = resultFrame.typedSlotFrame;
     const predicateStem = normalizeStem(
       typedSlotFrame?.slots?.predicate?.stem || "",
@@ -4284,12 +4798,12 @@ export function createClassicalNahuatlNncApplicationModule(
     ) {
       return null;
     }
-    const sourceConstituents = sourceFrame.sourceConstituents?.length
-      ? sourceFrame.sourceConstituents
-      : [sourceFrame.embedStem, sourceFrame.matrixStem].some(Boolean)
+    const sourceConstituents = constituentSourceFrame.sourceConstituents?.length
+      ? constituentSourceFrame.sourceConstituents
+      : [constituentSourceFrame.embedStem, constituentSourceFrame.matrixStem].some(Boolean)
         ? Object.freeze([
-          sourceFrame.embedStem || "",
-          sourceFrame.matrixStem || "",
+          constituentSourceFrame.embedStem || "",
+          constituentSourceFrame.matrixStem || "",
         ].filter(Boolean))
         : Object.freeze([sourceFrame.stem]);
     const projection = deepFreeze({
@@ -4300,12 +4814,13 @@ export function createClassicalNahuatlNncApplicationModule(
       nncType: ordinary ? "ordinary" : "pronominal",
       canonicalResultFrame: resultFrame,
       canonicalSourceFrame: sourceFrame,
+      canonicalDerivedSourceFrame: constituentSourceFrame !== sourceFrame ? constituentSourceFrame : null,
       canonicalOperationFrame: operationFrame,
       typedSlotFrame,
       sourceIdentityStem: sourceFrame.stem,
       predicateStem,
       sourceNounClass:
-        sourceFrame.nounClass || typedSlotFrame.nounClass || "",
+        constituentSourceFrame.nounClass || typedSlotFrame.nounClass || "",
       sourceUseShape: ordinary ? sourceFrame.useShape || "" : "",
       sourceSubclass: ordinary ? sourceFrame.subclass || "" : "",
       sourceReferentialAnimacy:
@@ -4328,10 +4843,10 @@ export function createClassicalNahuatlNncApplicationModule(
       possessor: ordinary ? operationFrame.possessor || "" : "",
       stemOperation: ordinary ? resultFrame.stemOperation : null,
       pronominalFamily:
-        pronominal ? sourceFrame.familyId || "" : "",
+        pronominal ? constituentSourceFrame.familyId || "" : "",
       sourceConstituentKinds:
-        sourceFrame.sourceConstituentKinds?.length
-          ? sourceFrame.sourceConstituentKinds
+        constituentSourceFrame.sourceConstituentKinds?.length
+          ? constituentSourceFrame.sourceConstituentKinds
           : Object.freeze(
             sourceConstituents.length > 1
               ? ["nounstem-embed", "nounstem-matrix"]
@@ -4384,7 +4899,17 @@ export function createClassicalNahuatlNncApplicationModule(
     let stem = "";
     let citationDerivedStemFrame = null;
     let citationStemOperationRecord = sourceStemOperationRecord;
-    if (sourceStemOperationRecord.operation === "regular") {
+    const includedPredicateFrame = receipt.adjectivalPredicateFrame;
+    if (includedPredicateFrame?.kind === "classical-nahuatl-included-possessive-predicate-frame") {
+      if (includedPredicateFrame.sourceFrame !== sourceFrame
+        || includedPredicateFrame.operationFrame !== operationFrame
+        || includedPredicateFrame.targetStem !== resultFrame.typedSlotFrame.slots.predicate.stem) {
+        return blocked("issued-included-predicate-source-operation-required");
+      }
+      // §40.2.3 downgrades the actual inner predicate. Its state carriers
+      // remain inside the use stem, independently of the outer dyad.
+      stem = includedPredicateFrame.targetStem;
+    } else if (sourceStemOperationRecord.operation === "regular") {
       if (typeof targetObject.buildClassicalNahuatlDerivedStemFrame !== "function") {
         return blocked("ordinary-nnc-citation-derived-stem-capability-required");
       }
@@ -4476,6 +5001,7 @@ export function createClassicalNahuatlNncApplicationModule(
       nounClass,
       useKind: "restricted-use",
       useShape: "base",
+      includedPredicateFrame: includedPredicateFrame || null,
       sourcePredicateStem: resultFrame.typedSlotFrame.slots.predicate.stem,
       sourceUseKind: sourceUseFrame.selectedUseKind,
       sourceUseFrame,
@@ -4843,6 +5369,10 @@ export function createClassicalNahuatlNncApplicationModule(
 
   return Object.freeze({
     getClassicalNahuatlOpenNncSourceClassInventory,
+    ...createClassicalQuantitativePredicateApi(),
+    ...createAttestedNncCellApi(targetObject),
+    ...createAttestedPlaceApi(),
+    ...createAttestedPrincipalCollocationApi(),
     buildClassicalNahuatlOrdinaryNncSourceFrame,
     isClassicalNahuatlOrdinaryNncSourceFrame,
     buildClassicalNahuatlNncOperationSelectionFrame,
@@ -4850,6 +5380,7 @@ export function createClassicalNahuatlNncApplicationModule(
     isClassicalNahuatlOrdinaryNncOperationFrame,
     evaluateClassicalNahuatlOrdinaryNnc,
     isClassicalNahuatlOrdinaryNncResult,
+    getClassicalNahuatlOrdinaryNncResultForTypedSlotFrame,
     prepareClassicalNahuatlOrdinaryNncParadigmPlan,
     isClassicalNahuatlOrdinaryNncParadigmPlan,
     projectClassicalNahuatlOrdinaryNncParadigmCoordinates,

@@ -1,9 +1,11 @@
 {
   "name": "classical-nahuatl-grammar-web",
-  "version": "1.2.7",
+  "version": "1.2.8",
   "private": true,
   "scripts": {
     "build:release": "node scripts/build_grammar_os_release.mjs",
-    "verify:launch": "node scripts/verify_launch_readiness.mjs"
+    "verify:launch": "node scripts/verify_launch_readiness.mjs",
+    "interface:check": "node ../Classical_Nahuatl_Grammar/scripts/interface_tool.mjs inventory-check",
+    "interface:sync": "node ../Classical_Nahuatl_Grammar/scripts/interface_tool.mjs inventory-sync"
   }
 }

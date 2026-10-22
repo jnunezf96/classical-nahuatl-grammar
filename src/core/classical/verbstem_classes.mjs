@@ -4,6 +4,39 @@ import {
   getClassicalNahuatlPhoneRepertoryRelation,
 } from "../concepts/phone_repertory_facts.mjs?v=20260810-atom099-001";
 
+export function normalizeClassicalNahuatlIntroductoryModifier(value = "") {
+  const normalized = String(value || "").trim().normalize("NFD").replace(/[\u0300-\u036f]/gu, "").toLowerCase().replace(/[#\s_]/gu, "-").replace(/^-+|-+$/gu, "");
+  if (normalized === "cuel") {
+    return "cuēl";
+  }
+  if (normalized === "ye-cuel") {
+    return "ye-cuēl";
+  }
+  if (normalized === "cuel-eh") {
+    return "cuēl-eh";
+  }
+  if (normalized === "ye-cuel-eh") {
+    return "ye-cuēl-eh";
+  }
+  // Andrews §§9.5, 16.3.1 and 44.5.5 license eh ~ yeh.
+  if (normalized === "cuel-yeh") {
+    return "cuēl-yeh";
+  }
+  if (normalized === "ye-cuel-yeh") {
+    return "ye-cuēl-yeh";
+  }
+  if (normalized === "tel") {
+    return "tēl";
+  }
+  if (normalized === "quin") {
+    return "quin";
+  }
+  if (normalized === "nen") {
+    return "nēn";
+  }
+  return "";
+}
+
 export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = globalThis) {
     const CLASSICAL_NAHUATL_LESSON7_VERBSTEM_CLASSES_VERSION = 1;
     const CLASSICAL_NAHUATL_LESSON7_PROFILE_ID = "classical-nahuatl";
@@ -2107,6 +2140,39 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
           === "classical-nahuatl-verbstem-fuente-source-selection-frame"
       );
     }
+    function getClassicalNahuatlDenominalCausativeFormation(stem = "", operation = null) {
+      const owner = getClassicalNahuatlVerbstemRuntimeTarget();
+      const formation = operation?.causativeFormationFrame;
+      const prior = operation?.sourceFrame?.priorOperationFrame;
+      return owner?.isClassicalNahuatlDenominalVncOperationFrame?.(operation) === true
+        && owner.isClassicalNahuatlDenominalVncOperationFrame(prior) === true
+        && operation.operationId === "ti-a-causative-single" && operation.targetClass === "B"
+        && prior.operationId === "inceptive-hui" && prior.targetClass === "B" && prior.objectCount === 0
+        && formation?.kind === "classical-denominal-type-one-causative-formation"
+        && formation.procedure === "replace-final-i-with-short-causative-a"
+        && formation.sourceOperationFrame === prior && formation.sourceStem === prior.targetStem
+        && formation.sourceClass === "B" && formation.targetClass === "B"
+        && formation.targetStem === operation.targetStem
+        && normalizeClassicalNahuatlVerbstem(stem) === operation.targetStem
+        && formation.causativeMorpheme === "a" && formation.perfectiveCausativeCarrier === CLASSICAL_NAHUATL_LESSON7_SQUARE_ZERO
+        && formation.finiteSourceParticipantAsserted === false
+        ? formation : null;
+    }
+    // A homophonous source /a/ and causative /a/ are different morphemes.
+    // Only the current issuing owner can establish that derivational history.
+    function getClassicalNahuatlVncCausativeFormation(stem = "", operation = null) {
+      const owner = getClassicalNahuatlVerbstemRuntimeTarget();
+      const option = operation?.selectedOption;
+      return owner?.isClassicalNahuatlVncDerivationOperationFrame?.(operation) === true
+        && operation.derivationType === "causative" && operation.targetClass === "B"
+        && option?.derivationRoute === "type-one-final-a-morphological-replacement"
+        && option.procedure === "replace-final-source-a-with-homophonous-causative-a"
+        && option.ruleId === "cn-l24-2432a-final-a-morphological-replacement"
+        && option.suffix === "a" && option.targetClass === "B"
+        && option.sourceStem === operation.sourceStem && option.targetStem === operation.targetStem
+        && normalizeClassicalNahuatlVerbstem(stem) === operation.targetStem
+        ? {sourceStem:operation.sourceStem,targetStem:operation.targetStem} : null;
+    }
     function getClassicalNahuatlClassBSilentCausativeCarrierRecord(stem = "") {
       const normalizedStem = normalizeClassicalNahuatlVerbstem(stem);
       const key = getClassicalNahuatlStructureLookupKey(stem);
@@ -2198,8 +2264,42 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
       const normalized = normalizeClassicalNahuatlVerbstem(stem);
       const key = getClassicalNahuatlStructureLookupKey(stem);
       const compactKey = key.replace(/-/gu, "");
-      const shapeStem = getClassicalNahuatlStemForShape(normalized);
+      const shapeStem = normalized.normalize("NFC").toLowerCase().replace(/-/gu, "");
       const valence = normalizeClassicalNahuatlValence(options.valence || options.transitivity || "");
+
+      // An independently established lexical perfective outranks a shape
+      // guideline. Consume an issued Source fact, never a caller's class claim.
+      const runtime=getClassicalNahuatlVerbstemRuntimeTarget();
+      const lexicalRecord=runtime.resolveClassicalNahuatlCanonicalSourceStemRecord?.({
+        enteredStem:normalized,basalUnit:"vnc",valence:valence==="intransitive"?"intransitive":"transitive"
+      });
+      const lexicalAnalysis=runtime.isClassicalNahuatlCanonicalSourceStemRecord?.(lexicalRecord)===true
+        ? lexicalRecord.canonicalImperfectiveAnalysis : null;
+      const evidence=lexicalAnalysis?.perfectiveClassEvidence;
+      const canvasEvidence=evidence?.sourceDocument===CLASSICAL_NAHUATL_LESSON7_SOURCE_DOCUMENT
+        && typeof evidence.sourceSection==="string" && Boolean(evidence.sourceSection.trim())
+        && Number.isInteger(evidence.lineStart) && evidence.lineStart>0
+        && Number.isInteger(evidence.lineEnd) && evidence.lineEnd>=evidence.lineStart;
+      if(lexicalAnalysis?.perfectiveClassStatus==="established"
+        && ["A","B","C","D"].includes(lexicalAnalysis.sourceClass)
+        && (evidence?.url || canvasEvidence)) {
+        return Object.freeze({
+          sourceStem:lexicalRecord.stem,sourceAuthority:evidence.sourceAuthority,
+          sourceDocument:evidence.url || evidence.sourceDocument,
+          section:evidence.url?"external-lexical-perfective":evidence.sourceSection,
+          lineStart:evidence.url?null:evidence.lineStart,lineEnd:evidence.url?null:evidence.lineEnd,
+          exactWitness:evidence.exactWitness,relationRuleId:evidence.ruleId,
+          defaultClassId:lexicalAnalysis.sourceClass,
+          allowedClassIds:Object.freeze([lexicalAnalysis.sourceClass]),
+          classOptions:Object.freeze([lexicalAnalysis.sourceClass]),alternativeClassIds:Object.freeze([]),
+          perfectiveStemsByClass:Object.freeze({}),conditionKind:"issued-lexical-perfective-class",
+          subclassStatus:lexicalAnalysis.perfectiveSubclassStatus || "",
+          canonicalSourceStemRecord:lexicalRecord,
+          notes:evidence.url
+            ? "External lexical perfective establishes membership; Andrews supplies the class definition and formation rules."
+            : "An issued Canvas Source establishes membership under Andrews's class definitions and formation rules."
+        });
+      }
 
       // These are the lexical exceptions or enumerated memberships stated by Canvas.
       if (valence === "intransitive" && (normalized === "tomi" || normalized === "tēmi")) {
@@ -2209,22 +2309,25 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
           ]
         );
       }
-      if (compactKey === "paca") {
+      // Plain spellings may omit quantity marks, but an explicitly long final
+      // vowel cannot inherit a short-final lexical exception.
+      if (compactKey === "paca" && shapeStem.endsWith("a")) {
         return cloneClassicalNahuatlLesson7Record(CLASSICAL_NAHUATL_LESSON7_GUIDELINE_AUTHORITY_STEMS.paca);
       }
       if (compactKey === "a") {
+        // Canvas explicitly licenses long ā here; plain a is its spelling alias.
         return cloneClassicalNahuatlLesson7Record(CLASSICAL_NAHUATL_LESSON7_GUIDELINE_AUTHORITY_STEMS.a);
       }
       if (["ē-hua", "ēhua"].includes(normalized)) {
         return cloneClassicalNahuatlLesson7Record(CLASSICAL_NAHUATL_LESSON7_GUIDELINE_AUTHORITY_STEMS.ehua);
       }
-      if (compactKey === "yohua" && valence === "intransitive") {
+      if (compactKey === "yohua" && shapeStem.endsWith("a") && valence === "intransitive") {
         return cloneClassicalNahuatlLesson7Record(CLASSICAL_NAHUATL_LESSON7_GUIDELINE_AUTHORITY_STEMS.yohua);
       }
-      if (compactKey === "mani") {
+      if (compactKey === "mani" && shapeStem.endsWith("i")) {
         return cloneClassicalNahuatlLesson7Record(CLASSICAL_NAHUATL_LESSON7_GUIDELINE_AUTHORITY_STEMS.mani);
       }
-      if (CLASSICAL_NAHUATL_LESSON7_CLASS_D_HEAD_STEMS.includes(shapeStem)) {
+      if (CLASSICAL_NAHUATL_LESSON7_CLASS_D_HEAD_STEMS.includes(getClassicalNahuatlStructureLookupKey(normalized))) {
         return makeClassicalNahuatlLesson7GeneralClassAuthorityRecord({
           stem: normalized,
           section: "7.6.8",
@@ -2308,7 +2411,7 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
           conditionKind: "analyzed-final-causative-a-morph"
         });
       }
-      if (/ka$/u.test(shapeStem) || /ca$/u.test(shapeStem)) {
+      if (/(?:ka|ca)$/u.test(shapeStem)) {
         return makeClassicalNahuatlLesson7GeneralClassAuthorityRecord({
           stem: normalized,
           section: "7.6.3",
@@ -2347,7 +2450,7 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
           conditionKind: "intransitive-final-wa-signifies-change"
         });
       }
-      if (/o$/u.test(shapeStem)) {
+      if (/[oō]$/u.test(shapeStem)) {
         return makeClassicalNahuatlLesson7GeneralClassAuthorityRecord({
           stem: normalized,
           section: "7.6.7",
@@ -2668,13 +2771,28 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
     }
     function inferClassicalNahuatlLesson7ClassProfile(stem = "", options = {}) {
       const normalizedStem = normalizeClassicalNahuatlVerbstem(stem);
+      const denominalCausativeFormation = getClassicalNahuatlDenominalCausativeFormation(
+        normalizedStem, options.denominalCausativeOperationFrame);
+      const rejectedDenominalCausativeFormation = Boolean(options.denominalCausativeOperationFrame
+        && !denominalCausativeFormation);
+      const vncCausativeFormation = getClassicalNahuatlVncCausativeFormation(
+        normalizedStem, options.vncCausativeOperationFrame);
+      const rejectedVncCausativeFormation = Object.hasOwn(options, "vncCausativeOperationFrame")
+        && !vncCausativeFormation;
       const shapeStem = getClassicalNahuatlStemForShape(normalizedStem);
       const stemRelationship = getClassicalNahuatlStemRelationship(normalizedStem);
       const optionalIrregularRecord = getClassicalNahuatlOptionalIrregularPerfectiveRecord(normalizedStem);
       const traditionalSpellingWarningRecord = getClassicalNahuatlTraditionalSpellingWarningRecord(normalizedStem);
       const valence = normalizeClassicalNahuatlValence(options.valence || options.transitivity || "");
-      const guidelineAuthorityRecord = getClassicalNahuatlGuidelineAuthorityRecord(normalizedStem, {
+      const guidelineAuthorityRecord = vncCausativeFormation
+        ? makeClassicalNahuatlLesson7GeneralClassAuthorityRecord({
+          stem:normalizedStem,section:"24.3.2.a",lineStart:7744,lineEnd:7746,
+          exactWitness:"final source a replaced morphologically by causative a; Class B",
+          relationRuleId:"cn-l24-2432a-final-a-morphological-replacement",
+          defaultClassId:"B",allowedClassIds:["B"],conditionKind:"owner-issued-causative-a",
+        }) : getClassicalNahuatlGuidelineAuthorityRecord(normalizedStem, {
         ...options,
+        ...(denominalCausativeFormation ? {finalMorphRole:"causative"} : {}),
         valence
       });
       const explicit = normalizeClassicalNahuatlClassId(options.verbClass || options.stemClass || options.classId || options.perfectiveClass || "");
@@ -2693,13 +2811,22 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
         || normalizeClassicalNahuatlClassId(optionalIrregularRecord?.classId || "") === "D"
         || higherLayerClassOverride === "D"
       );
+      // Short-final guidelines do not classify their long-ā counterparts.
+      // A final CV after a vowel can support an explicit B analysis, but
+      // without its own witness that compatibility never infers membership.
+      const unresolvedLongFinalA = !guidelineAuthorityRecord
+        && /ā$/iu.test(normalizedStem.normalize("NFC"))
+        && getClassicalNahuatlShapeConsonantUnits(normalizedStem).length === 1;
       const classClaimAllowedClassIds = guidelineAllowedClassIds.length
         ? [...guidelineAllowedClassIds]
-        : ["A", "B", ...(classDSourceLicensed ? ["D"] : [])];
+        : ["A", "B", ...(classDSourceLicensed ? ["D"] : [])]
+          .filter(classId => !unresolvedLongFinalA || classId !== "A");
       const classClaimExcludedClassIds = ["A", "B", "C", "D"].filter(candidateClassId => !classClaimAllowedClassIds.includes(candidateClassId));
       const guidelineClassContradictionBlocked = Boolean(explicit && guidelineAllowedClassIds.length && !guidelineAllowedClassIds.includes(explicit) && !higherLayerClassOverrideApplies);
       const classDClaimContradictionBlocked = Boolean(explicit === "D" && !classDSourceLicensed && !higherLayerClassOverrideApplies);
-      const guidelineContradictionBlocked = guidelineClassContradictionBlocked || classDClaimContradictionBlocked;
+      const longFinalAClaimContradictionBlocked = Boolean(unresolvedLongFinalA && explicit
+        && !classClaimAllowedClassIds.includes(explicit) && !higherLayerClassOverrideApplies);
+      const guidelineContradictionBlocked = guidelineClassContradictionBlocked || classDClaimContradictionBlocked || longFinalAClaimContradictionBlocked || rejectedDenominalCausativeFormation || rejectedVncCausativeFormation;
       const guidelineSelectedClassAllowed = Boolean(!explicit || !guidelineContradictionBlocked);
       if (guidelineAuthorityRecord?.relationRuleId) {
         guidelineId = guidelineAuthorityRecord.relationRuleId;
@@ -2709,7 +2836,7 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
           guidelineId = stemRelationship.relationRuleId;
         } else if (guidelineAuthorityRecord?.relationRuleId) {
           guidelineId = guidelineAuthorityRecord.relationRuleId;
-        } else if (CLASSICAL_NAHUATL_LESSON7_CLASS_D_HEAD_STEMS.includes(shapeStem)) {
+        } else if (CLASSICAL_NAHUATL_LESSON7_CLASS_D_HEAD_STEMS.includes(getClassicalNahuatlStructureLookupKey(normalizedStem))) {
           guidelineId = "cn-l7-768-eight-class-d-stems";
         }
       }
@@ -2733,7 +2860,8 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
         subclass = classId;
         classId = "A";
       } else if (classId === "A") {
-        subclass = finalInfo.long && /[īō]/iu.test(finalInfo.finalVowel) ? "A-2" : "A-1";
+        subclass = guidelineAuthorityRecord?.subclassStatus==="unclaimed" ? ""
+          : finalInfo.long && /[īō]/iu.test(finalInfo.finalVowel) ? "A-2" : "A-1";
       }
       const classShape = classId
         ? CLASSICAL_NAHUATL_LESSON7_CLASS_SHAPES[classId] || null
@@ -2742,6 +2870,8 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
         kind: "classical-nahuatl-verbstem-stem-class-profile",
         stem: normalizedStem,
         classId,
+        ...(denominalCausativeFormation ? {denominalCausativeOperationFrame:options.denominalCausativeOperationFrame} : {}),
+        ...(vncCausativeFormation ? {vncCausativeOperationFrame:options.vncCausativeOperationFrame} : {}),
         subclass,
         classOptions: Array.from(new Set([classId, ...classOptions].filter(Boolean))),
         guidelineId,
@@ -2780,12 +2910,17 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
           : ["cn-l7-73-class-c", "cn-l7-768-eight-class-d-stems"],
         classClaimEligibilityReason: guidelineAllowedClassIds.length
           ? "canvas-guideline-determines-source-class-options"
-          : "classes-c-and-d-require-canonical-shape-or-lexical-license",
+          : unresolvedLongFinalA
+            ? "long-final-a-requires-explicit-compatible-class-analysis"
+            : "classes-c-and-d-require-canonical-shape-or-lexical-license",
         classGuidelineSemanticCondition: guidelineAuthorityRecord?.conditionKind || "",
         classGuidelineExceptionKind: guidelineAuthorityRecord?.exceptionKind || "",
         classGuidelineSelectedClassAllowed: guidelineSelectedClassAllowed,
         classGuidelineContradictionBlocked: guidelineContradictionBlocked,
-        classGuidelineContradictionReason: guidelineContradictionBlocked ? "explicit-class-not-authorized-by-canvas-guideline-witness" : "",
+        classGuidelineContradictionReason: rejectedDenominalCausativeFormation
+          ? "exact-issued-denominal-causative-formation-required"
+          : longFinalAClaimContradictionBlocked ? "explicit-class-incompatible-with-long-final-a-source-shape"
+          : guidelineContradictionBlocked ? "explicit-class-not-authorized-by-canvas-guideline-witness" : "",
         higherLayerClassOverride,
         higherLayerClassOverrideApplies,
         classDeterminedByGeneralFormRule: Boolean(guidelineAuthorityRecord && !String(guidelineAuthorityRecord.conditionKind || "").startsWith("canvas-enumerated-") && !guidelineAuthorityRecord.exceptionKind),
@@ -2867,11 +3002,41 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
       let silentCarrier = "";
       let silentCarrierPreserved = false;
       let vowelLengthOperation = "preserve-source-vowel-length";
+      let finalVowelRealizationFrame = null;
       let vowelLengthEnvironment = `${normalizedMood}:${normalizedTense}:${singularSubject ? "singular" : "plural"}`;
       const shapeActions = [CLASSICAL_NAHUATL_LESSON7_CLASS_ACTIONS.BLOCK_FREE_IMPERFECTIVE_SHAPE_SWITCH];
       const hostileRejectedStemVariants = [];
       const authorizedStemVariants = [selectedStemVariant];
-      if (profile.classId === "C" && aspect === "imperfective") {
+      if (["A","B"].includes(profile.classId) && aspect === "imperfective"
+        && isPresentIndicative && /ā$/u.test(normalizedStem)) {
+        // The present has only silent followers in the singular; its final
+        // long phoneme has a reduced-long phone, written without a macron
+        // (§2.3.2). Plural h instead supplies the glottal-stop environment.
+        // Keep the underlying Source vowel; this is written realization.
+        finalVowelRealizationFrame = targetObject.buildClassicalNahuatlSegmentRealizationFrame?.({
+          segment: "ā",
+          phone: pluralSubject ? "a" : "a·",
+          position: pluralSubject ? "vocable-medial" : "vocable-final",
+          environment: pluralSubject ? "before-glottal-stop" : "vocable-final",
+          realizationClass: pluralSubject ? "regular" : "reduced-long",
+        }) || null;
+        if (finalVowelRealizationFrame?.authorizationStatus === "authorized"
+          && targetObject.isClassicalNahuatlTranscriptionAnalysisFrame?.(finalVowelRealizationFrame)) {
+          selectedStemVariant = normalizedStem.slice(0, -1)
+            + finalVowelRealizationFrame.outputSpelling;
+          analyzedStemVariant = normalizedStem;
+          underlyingStemVariant = normalizedStem;
+          selectedShape = pluralSubject
+            ? `class-${profile.classId.toLowerCase()}-present-short-vowel-before-plural-glottal`
+            : `class-${profile.classId.toLowerCase()}-present-reduced-long-final-vowel-writing`;
+          selectedShapeReason = "lesson2-terminal-vowel-realization";
+          vowelLengthOperation = pluralSubject
+            ? "shorten-long-a-before-present-plural-glottal"
+            : "write-reduced-long-final-a-without-macron";
+          shapeActions.push(CLASSICAL_NAHUATL_LESSON7_CLASS_ACTIONS.SELECT_TENSE_CONDITIONED_IMPERFECTIVE_SHAPE);
+          hostileRejectedStemVariants.push(normalizedStem);
+        }
+      } else if (profile.classId === "C" && aspect === "imperfective") {
         const truncatedShort = getClassicalNahuatlClassCTruncatedStem(normalizedStem);
         const truncatedLong = lengthenClassicalNahuatlLesson7FinalVowel(truncatedShort);
         const fullShort = shortenClassicalNahuatlLesson7FinalLongVowel(normalizedStem);
@@ -2885,37 +3050,26 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
           shapeActions.push(CLASSICAL_NAHUATL_LESSON7_CLASS_ACTIONS.SELECT_TENSE_CONDITIONED_IMPERFECTIVE_SHAPE);
           hostileRejectedStemVariants.push(normalizedStem);
         } else if (truncatedShort && (isFutureIndicative || isNonpastOptative)) {
-          const shortFutureDrinkCausative =
-            isFutureIndicative && normalizedStem === "ī-tiā";
           const useShortTruncated =
-            isNonpastOptative && singularSubject
-            || shortFutureDrinkCausative;
-          selectedStemVariant = shortFutureDrinkCausative
-            ? "i-ti"
-            : useShortTruncated
-              ? truncatedShort
-              : truncatedLong;
+            isNonpastOptative && singularSubject;
+          selectedStemVariant = useShortTruncated
+            ? truncatedShort
+            : truncatedLong;
           analyzedStemVariant = selectedStemVariant;
           underlyingStemVariant = `${selectedStemVariant}-${CLASSICAL_NAHUATL_LESSON7_SQUARE_ZERO}`;
           silentCarrier = CLASSICAL_NAHUATL_LESSON7_SQUARE_ZERO;
           silentCarrierPreserved = true;
-          selectedShape = shortFutureDrinkCausative
-            ? "class-c-drink-causative-short-imperfective-before-future-z"
-            : isFutureIndicative
+          selectedShape = isFutureIndicative
               ? "class-c-truncated-long-imperfective-before-future-z"
               : useShortTruncated
                 ? "class-c-truncated-short-imperfective-vocable-final"
                 : "class-c-truncated-long-imperfective-before-plural-0-h";
-          selectedShapeReason = shortFutureDrinkCausative
-            ? "lexically-conditioned-drink-causative-short-vowels-before-future-z"
-            : isFutureIndicative
+          selectedShapeReason = isFutureIndicative
               ? "class-c-future-truncated-long-stem-from-7.7-paradigm"
               : useShortTruncated
                 ? "class-c-singular-nonpast-optative-short-vocable-final"
                 : "class-c-plural-nonpast-optative-long-before-0-h";
-          vowelLengthOperation = shortFutureDrinkCausative
-            ? "select-short-drink-causative-vowels-before-future-z"
-            : useShortTruncated
+          vowelLengthOperation = useShortTruncated
               ? "select-truncated-short-vowel-at-vocable-boundary"
               : "select-truncated-long-vowel-before-following-morph";
           shapeActions.push(CLASSICAL_NAHUATL_LESSON7_CLASS_ACTIONS.SELECT_TENSE_CONDITIONED_IMPERFECTIVE_SHAPE, CLASSICAL_NAHUATL_LESSON7_CLASS_ACTIONS.PRESERVE_SILENT_TRUNCATED_CARRIER);
@@ -2976,6 +3130,7 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
         silentCarrierPreserved,
         silentCarrierPrintedInLessonAnalysis: false,
         vowelLengthOperation,
+        finalVowelRealizationFrame,
         vowelLengthEnvironment,
         sourceFinalVowel: getClassicalNahuatlFinalVowelInfo(normalizedStem).finalVowel,
         selectedFinalVowel: getClassicalNahuatlFinalVowelInfo(selectedStemVariant).finalVowel,
@@ -3063,7 +3218,25 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
         };
       }
       classActions.push(CLASSICAL_NAHUATL_LESSON7_CLASS_ACTIONS.DISTINGUISH_CLASS_B_KINDS);
-      const silentCarrierRecord = getClassicalNahuatlClassBSilentCausativeCarrierRecord(normalizedStem);
+      const denominalFormation = getClassicalNahuatlDenominalCausativeFormation(
+        normalizedStem, profile.denominalCausativeOperationFrame);
+      const vncFormation = getClassicalNahuatlVncCausativeFormation(
+        normalizedStem, profile.vncCausativeOperationFrame);
+      const silentCarrierRecord = vncFormation ? {
+        sourceStem:vncFormation.sourceStem,causativeStem:vncFormation.targetStem,
+        derivationKind:"type-one-causative-a",derivationProcedure:"replacement",
+        formationAuthority:"owner-issued-vnc-causative-operation",
+        sourceSection:"24.3.2.a",formationSection:"24.3.2.a",section:"7.3.1",
+        lineStart:2921,lineEnd:2928,
+        analyzedOmissionWitness:"the silently-present causative morph will not be indicated",
+      } : denominalFormation ? {
+        sourceStem:denominalFormation.sourceStem,causativeStem:denominalFormation.targetStem,
+        derivationKind:"type-one-causative-a",derivationProcedure:"replacement",
+        formationAuthority:"owner-issued-denominal-causative-operation",
+        sourceSection:"54.2.2",formationSection:"24.3.1.a",section:"7.3.1",
+        lineStart:2921,lineEnd:2928,
+        analyzedOmissionWitness:"the silently-present causative morph will not be indicated",
+      } : getClassicalNahuatlClassBSilentCausativeCarrierRecord(normalizedStem);
       const classBSilentCausativeCarrierPresent = Boolean(silentCarrierRecord);
       if (classBSilentCausativeCarrierPresent) {
         classActions.push(CLASSICAL_NAHUATL_LESSON7_CLASS_ACTIONS.REQUIRE_TYPE_ONE_CAUSATIVE_A_WITNESS, CLASSICAL_NAHUATL_LESSON7_CLASS_ACTIONS.PRESERVE_SILENT_CAUSATIVE_CARRIER, CLASSICAL_NAHUATL_LESSON7_CLASS_ACTIONS.BLOCK_PHONOLOGICAL_COLLAPSE);
@@ -3135,7 +3308,8 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
       return {
         imperfectiveStem: normalizedStem,
         perfectiveStem: normalizedStem,
-        changeRule: profile.subclass === "A-2" ? "class-a2-same-or-short-vowel-alternant" : "class-a1-same-shape"
+        changeRule: profile.subclass === "A-2" ? "class-a2-same-or-short-vowel-alternant"
+          : profile.subclass === "A-1" ? "class-a1-same-shape" : "class-a-lexical-retained-perfective"
       };
     }
     function buildClassicalNahuatlOptionalIrregularPerfectiveFrame({
@@ -5231,6 +5405,7 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
       if (normalized === "ma" || normalized === "mah") {
         return "mā";
       }
+      if (normalized === "intla") return "in-tlā";
       if (normalized === "tla") {
         return "tlā";
       }
@@ -5249,31 +5424,6 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
       }
       return "";
     }
-    function normalizeClassicalNahuatlIntroductoryModifier(value = "") {
-      const normalized = String(value || "").trim().normalize("NFD").replace(/[\u0300-\u036f]/gu, "").toLowerCase().replace(/[#\s_]/gu, "-").replace(/^-+|-+$/gu, "");
-      if (normalized === "cuel") {
-        return "cuēl";
-      }
-      if (normalized === "ye-cuel") {
-        return "ye-cuēl";
-      }
-      if (normalized === "cuel-eh") {
-        return "cuēl-eh";
-      }
-      if (normalized === "ye-cuel-eh") {
-        return "ye-cuēl-eh";
-      }
-      if (normalized === "tel") {
-        return "tēl";
-      }
-      if (normalized === "quin") {
-        return "quin";
-      }
-      if (normalized === "nen") {
-        return "nēn";
-      }
-      return "";
-    }
     function getClassicalNahuatlPrefaceParticle(options = {}) {
       return normalizeClassicalNahuatlPrefaceParticle(options.prefaceParticle || options.lesson9PrefaceParticle || options.beforeIntroductoryParticle || "");
     }
@@ -5288,7 +5438,7 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
         return true;
       }
       if (particle === "ihyo") {
-        return introductoryParticle === "mā" || introductoryParticle === "tlā";
+        return ["mā", "tlā", "in-tlā"].includes(introductoryParticle);
       }
       if (particle === "ye") {
         return introductoryParticle === "tlā";
@@ -5303,8 +5453,8 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
       if (!modifier) {
         return true;
       }
-      if (["cuēl", "ye-cuēl", "cuēl-eh", "ye-cuēl-eh"].includes(modifier)) {
-        return introductoryParticle === "mā" || introductoryParticle === "tlā";
+      if (["cuēl", "ye-cuēl", "cuēl-eh", "ye-cuēl-eh", "cuēl-yeh", "ye-cuēl-yeh"].includes(modifier)) {
+        return ["mā", "tlā", "in-tlā"].includes(introductoryParticle);
       }
       if (modifier === "tēl") {
         return introductoryParticle === "mā";
@@ -5989,6 +6139,7 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
         && /^3/u.test(String(options.subject || options.subjectPerson || ""))
         && subjectNumberClass === "singular";
       const sentenceNegativePrefix = defectiveAThirdSingular && ordinarySentenceNegativePrefix === "ah#"
+        && options.defectiveANegativeVariant !== "ah"
         ? "ay#"
         : ordinarySentenceNegativePrefix;
       const negativePrefixAlternatives = defectiveAThirdSingular
@@ -6003,13 +6154,13 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
       const lesson10PositiveVetativeTermAuthority = lesson10NegativeRequested ? "not-authority-unfortunate-traditional-term" : "";
       const lesson10CaNegativeFromLesson9Blocked = Boolean(lesson10NegativeRequested || lesson10CaNegativeRequested);
       const emphaticRequested = lesson8SentenceType === "emphatic-assertion";
-      const sentenceParticles = [...lesson11ConstructionParticles, ...(lesson9PrefaceParticle ? [lesson9PrefaceParticle] : []), ...(lesson10Applies ? ["mā"] : lesson9IntroductoryParticle ? [lesson9IntroductoryParticle] : []), ...(lesson10Nen ? [lesson10Nen] : lesson9IntroductoryModifier ? [lesson9IntroductoryModifier] : []), ...(questionMode === "cuix" ? ["cuix"] : []), ...(emphaticRequested ? ["ca"] : []), ...(["ah#", "ay#", "ca#"].includes(sentenceNegativePrefix) ? [sentenceNegativePrefix] : [])];
+      const sentenceParticles = [...lesson11ConstructionParticles, ...(lesson9PrefaceParticle ? [lesson9PrefaceParticle] : []), ...(lesson10Applies ? ["mā"] : lesson9IntroductoryParticle === "in-tlā" ? ["in", "tlā"] : lesson9IntroductoryParticle ? [lesson9IntroductoryParticle] : []), ...(lesson10Nen ? [lesson10Nen] : lesson9IntroductoryModifier ? [lesson9IntroductoryModifier] : []), ...(questionMode === "cuix" ? ["cuix"] : []), ...(emphaticRequested ? ["ca"] : []), ...(["ah#", "ay#", "ca#"].includes(sentenceNegativePrefix) ? [sentenceNegativePrefix] : [])];
       const sentencePrefixalStack = buildClassicalNahuatlSentencePrefixalStack({
-        sentenceParticles,
+        sentenceParticles: [...sentenceParticles, ...(antecessiveSentenceRequested ? ["ō#"] : [])],
         expandedVncBoundaryFrame
       });
       const hostileSlots = getClassicalNahuatlSentenceHostileFormulaSlots(options);
-      const sentenceParticleSet = new Set(["ca", "cuix", "cuix?", "ah#", "ay#", "ca#", "mā", "ma", "tlā", "tla", "ihyo", "ye", "cuēl", "cuel", "ye-cuēl", "ye-cuel", "cuēl-eh", "cuel-eh", "ye-cuēl-eh", "ye-cuel-eh", "tēl", "tel", "quin", "nēn", "nen", "quēn", "quen", "mach"]);
+      const sentenceParticleSet = new Set(["ca", "cuix", "cuix?", "ah#", "ay#", "ca#", "mā", "ma", "tlā", "tla", "ihyo", "ye", "cuēl", "cuel", "ye-cuēl", "ye-cuel", "cuēl-eh", "cuel-eh", "ye-cuēl-eh", "ye-cuel-eh", "cuēl-yeh", "cuel-yeh", "ye-cuēl-yeh", "ye-cuel-yeh", "tēl", "tel", "quin", "nēn", "nen", "quēn", "quen", "mach"]);
       const hostileRejectedFormulaSlots = hostileSlots.filter(slot => sentenceParticleSet.has(slot));
       const lesson8IndicativeVncPresent = Boolean(!lesson8Applies || normalizedMood === "indicative");
       const actions = !applies ? [] : [...(lesson8SentenceType === "affirmative-assertion" ? [CLASSICAL_NAHUATL_LESSON8_SENTENCE_SURFACE_ACTIONS.REWRITE_INDICATIVE_VNC_AS_AFFIRMATIVE_ASSERTION] : []), ...(lesson8Applies && negativeRequested ? [CLASSICAL_NAHUATL_LESSON8_SENTENCE_SURFACE_ACTIONS.ADD_NEGATIVE_OUTSIDE_VNC] : []), ...(lesson8Applies && emphaticRequested ? [CLASSICAL_NAHUATL_LESSON8_SENTENCE_SURFACE_ACTIONS.ADD_EMPHATIC_CA_TO_SENTENCE_LEFT_EDGE] : []), ...(lesson8SentenceType === "yes-no-question" && questionMode === "intonation" ? [CLASSICAL_NAHUATL_LESSON8_SENTENCE_SURFACE_ACTIONS.MARK_YES_NO_BY_INTONATION] : []), ...(lesson8SentenceType === "yes-no-question" && questionMode === "cuix" ? [CLASSICAL_NAHUATL_LESSON8_SENTENCE_SURFACE_ACTIONS.ADD_CUIX_TO_SENTENCE_LEFT_EDGE] : []), ...(lesson9Applies ? [CLASSICAL_NAHUATL_LESSON9_SENTENCE_ACTIONS.MARK_LOWER_VNC_PROVISIONAL, ...(lesson9FutureIndicativeAsOptative ? [CLASSICAL_NAHUATL_LESSON9_SENTENCE_ACTIONS.ACCEPT_FUTURE_INDICATIVE_AS_OPTATIVE] : [CLASSICAL_NAHUATL_LESSON9_SENTENCE_ACTIONS.SUBSTITUTE_OPTATIVE_VNC_FOR_INDICATIVE]), ...(lesson9IntroductoryParticle ? [CLASSICAL_NAHUATL_LESSON9_SENTENCE_ACTIONS.ADD_INTRODUCTORY_PARTICLE_OUTSIDE_VNC] : []), ...(lesson9PrefaceParticle ? [CLASSICAL_NAHUATL_LESSON9_SENTENCE_ACTIONS.ADD_PREFACE_PARTICLE_OUTSIDE_VNC] : []), ...(lesson9IntroductoryModifier ? [CLASSICAL_NAHUATL_LESSON9_SENTENCE_ACTIONS.ADD_INTRODUCTORY_MODIFIER_OUTSIDE_VNC] : []), ...(lesson9IntroductoryParticleRequired && lesson9SentenceType === "wish-sentence" ? [CLASSICAL_NAHUATL_LESSON9_SENTENCE_ACTIONS.REQUIRE_INTRODUCTORY_PARTICLE_FOR_WISH] : []), ...(lesson9IntroductoryParticleRequired && ["command-sentence", "exhortation-sentence"].includes(lesson9SentenceType) && !lesson9FutureIndicativeAsOptative ? [CLASSICAL_NAHUATL_LESSON9_SENTENCE_ACTIONS.REQUIRE_INTRODUCTORY_PARTICLE_FOR_FIRST_THIRD] : []), ...(lesson9FutureIndicativeAsOptative ? [CLASSICAL_NAHUATL_LESSON9_SENTENCE_ACTIONS.REQUIRE_INTRODUCTORY_PARTICLE_FOR_FUTURE_COMMAND] : []), ...(lesson9IntroductoryParticleOmissionAllowed ? [CLASSICAL_NAHUATL_LESSON9_SENTENCE_ACTIONS.ALLOW_SECOND_PERSON_COMMAND_OMISSION] : []), ...(lesson9RoleDerivedFromSubject ? [CLASSICAL_NAHUATL_LESSON9_SENTENCE_ACTIONS.DERIVE_COMMAND_EXHORTATION_ROLE_FROM_SUBJECT] : []), ...(lesson9NegativeRequested && !lesson9BrusqueNegativeCommand ? [CLASSICAL_NAHUATL_LESSON9_SENTENCE_ACTIONS.CHANGE_NEGATIVE_AH_TO_CA_WITH_INTRODUCTORY_PARTICLE] : []), ...(lesson9BrusqueNegativeCommand ? [CLASSICAL_NAHUATL_LESSON9_SENTENCE_ACTIONS.KEEP_AH_FOR_BRUSQUE_NEGATIVE_COMMAND_WITHOUT_MA] : []), CLASSICAL_NAHUATL_LESSON9_SENTENCE_ACTIONS.KEEP_INTRODUCTORY_PARTICLE_OUT_OF_VNC_FORMULA] : []), ...(lesson10Applies ? [CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.MARK_LOWER_VNC_PROVISIONAL, CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.CLASSIFY_ADMONITIVE_AS_POSITIVE_WARNING, CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.REJECT_VETITIVE_PROHIBITION_READING, CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.BLOCK_DONT_TRANSLATION_AUTHORITY, CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.REQUIRE_ADMONITIVE_VNC, CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.ENFORCE_NONPAST_ONLY, CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.USE_PERFECTIVE_STEM, CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.RECORD_CLASS_A_H_CONTRAST, CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.RECORD_ADMONITIVE_NUMBER_DYADS, CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.MARK_NO_TRANSLATION_OUTSIDE_SENTENCE, CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.REQUIRE_NONPAST_PERFECTIVE_STEM, CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.SUBSTITUTE_ADMONITIVE_FOR_PRESENT_INDICATIVE, CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.ADD_MA_OUTSIDE_VNC, CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.REQUIRE_MA_SENTENCE_BEGINNING, ...(lesson10Nen ? [CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.ADD_NEN_OUTSIDE_VNC] : []), ...(lesson10Nen ? [CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.RECORD_NEN_ADVERBIALIZED_NNC, CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.RECORD_MANEN_TRADITIONAL_SOLID_SPELLING] : []), CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.DERIVE_ADMONITION_ROLE_FROM_SUBJECT, CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.AUTHORIZE_WARNING_RENDERINGS, ...(lesson10NegativeRequested ? [CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.REQUIRE_MA_NEN_FOR_NEGATIVE_ADMONITION, CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.TRANSFORM_NEGATIVE_ASSERTION_TO_NEGATIVE_ADMONITION, CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.AFFIX_AH_TO_ADMONITIVE_VNC, CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.RECORD_NEGATIVE_ADMONITION_CANCELS_WARNING, CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.REJECT_POSITIVE_VETATIVE_TERM_AUTHORITY, CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.KEEP_NEGATIVE_AH_IN_ADMONITION, CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.BLOCK_CA_FOR_ADMONITION] : []), ...(lesson10CaNegativeRequested && !lesson10NegativeRequested ? [CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.BLOCK_CA_FOR_ADMONITION] : []), CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.RECORD_ADMONITIVE_OPTATIVE_PRESENT_PRETERIT_CONTRASTS, CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.RECORD_SECOND_PERSON_X_XI_OPTATIVE_DISTINCTION, CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.RECORD_PLURAL_SUBJECTS_ALWAYS_DISTINCTIVE, CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.RECORD_MA_AS_ADMONITIVE_SENTENCE_DISTINGUISHER, ...(lesson10ClassContrastProfile.glottalStopAmbiguityWarning ? [CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.RECORD_GLOTTAL_STOP_AMBIGUITY_WARNING] : []), ...(lesson10ClassContrastProfile.hMorphRoleContrast ? [CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.RECORD_H_TENSE_VS_NUM1_ROLE_CONTRAST] : []), ...(lesson10AntecessiveRequested ? [CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.BLOCK_ANTECESSIVE_WITH_ADMONITIVE] : []), ...(!lesson10ContrastReadingAuthorized ? [CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.BLOCK_CONTRAST_READING_AS_ADMONITIVE_AUTHORITY] : []), CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.KEEP_ADMONITIVE_PARTICLES_OUT_OF_VNC_FORMULA] : []), CLASSICAL_NAHUATL_LESSON8_SENTENCE_SURFACE_ACTIONS.KEEP_SENTENCE_PARTICLES_OUT_OF_VNC_FORMULA, ...(hostileRejectedFormulaSlots.length ? [...(lesson9Applies ? [CLASSICAL_NAHUATL_LESSON9_SENTENCE_ACTIONS.BLOCK_INTRODUCTORY_PARTICLE_FORMULA_SLOT] : []), ...(lesson10Applies ? [CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.KEEP_ADMONITIVE_PARTICLES_OUT_OF_VNC_FORMULA] : []), CLASSICAL_NAHUATL_LESSON8_SENTENCE_SURFACE_ACTIONS.BLOCK_SENTENCE_PARTICLE_FORMULA_SLOT] : []), ...(lesson9Applies ? [CLASSICAL_NAHUATL_LESSON9_SENTENCE_ACTIONS.CARRY_SENTENCE_FINALIZER_TO_SELECTED_OUTPUT] : []), ...(lesson10Applies ? [CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.CARRY_SENTENCE_FINALIZER_TO_SELECTED_OUTPUT] : []), CLASSICAL_NAHUATL_LESSON8_SENTENCE_SURFACE_ACTIONS.CARRY_SENTENCE_SURFACE_TO_SELECTED_OUTPUT];
@@ -6062,6 +6213,7 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
         ruleRefs: lesson10Applies ? getClassicalNahuatlAdmonitionSentenceRules() : lesson9Applies ? [...getClassicalNahuatlOptativeVncRules(), ...getClassicalNahuatlWishCommandSentenceRules()] : getClassicalNahuatlSentenceSurfaceRules(),
         sentenceSurfaceApplies: applies,
         sentenceType,
+        punctuationMode: ["statement", "question", "exclamation"].includes(options.punctuationMode) ? options.punctuationMode : "statement",
         lesson8SentenceType,
         lesson9SentenceType,
         lesson10SentenceType,
@@ -6128,6 +6280,7 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
         admonitiveRequestedContrastReading: requestedAdmonitiveContrastReading,
         admonitiveRequestedContrastReadingAuthorized: lesson10ContrastReadingAuthorized,
         admonitiveNumberDyad: lesson10CurrentNumberDyad,
+        admonitivePluralEnding: lesson10Applies && lesson10NumberDyad.num1 === "t" ? lesson10NumberDyad.num2 : "",
         admonitiveNumberDyadKind: lesson10NumberDyad.condition || "",
         admonitiveNum1Morpheme: lesson10Applies ? "/ti" : "",
         admonitiveNum1RegularMorphCondition: lesson10Applies ? "only-with-plural-num2" : "",
@@ -6206,7 +6359,7 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
         })),
         sentenceParticlesBecomeFormulaSlots: false,
         formulaSlotMaterialFromSentenceParticles: [],
-        finalPunctuation: lesson11Construction === "quēn" ? "?" : lesson11Construction === "quēn-mach" ? "!" : sentenceType === "yes-no-question" ? "?" : applies ? "." : "",
+        finalPunctuation: lesson11Construction === "quēn" ? "?" : lesson11Construction === "quēn-mach" ? "!" : sentenceType === "yes-no-question" ? "?" : applies ? options.punctuationMode === "exclamation" ? "!" : options.punctuationMode === "question" ? "?" : "." : "",
         lesson11Construction,
         lesson11ConstructionParticles,
         lesson11ConstructionPosition: lesson11ConstructionParticles.length ? "sentence-left-before-vnc" : "",
@@ -6216,6 +6369,7 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
         negativePrefixAlternatives,
         defectiveANegativeInterpretation: defectiveANegative,
         defectiveANegativeAllomorph: defectiveANegative ? sentenceNegativePrefix : "",
+        defectiveANegativeVariant: defectiveAThirdSingular && options.defectiveANegativeVariant === "ah" ? "ah" : "",
         negativePrefixOutsideVnc: Boolean(negativeRequested),
         sentenceActions: actions,
         hostileFormulaSlots: hostileSlots,
@@ -6237,6 +6391,7 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
             mood: options.mood || options.sentenceMood || "",
             tense: options.tense || options.tenseKey || "",
             verbClass: options.verbClass || options.perfectiveClass || "",
+            admonitivePluralEnding: options.admonitivePluralEnding || "",
           }) : null;
         }
         const builder = runtimeTarget?.buildClassicalNahuatlTransitiveVncObjectFrame;
@@ -7622,7 +7777,19 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
     function buildClassicalNahuatlLesson11LowerInput(stem = "", options = {}) {
       return buildClassicalNahuatlVerbstemClassFrameInternal(stem, options, true);
     }
-    function buildClassicalNahuatlVerbstemClassFrameInternal(stem = "", options = {}, lowerInputOnly = false) {
+    function buildClassicalNahuatlObsoleteRootVerbstemFrame(source = null) {
+      if (!isClassicalNahuatlVerbstemClassFrame(source)
+        || source.authorizationStatus !== "authorized"
+        || !/-ya$/u.test(source.stem)
+        || source.classTargetValence !== "intransitive") return null;
+      const root = source.stem.replace(/-ya$/u, "");
+      return buildClassicalNahuatlVerbstemClassFrameInternal(root, {
+        verbClass: "A", valence: "intransitive", subject: source.priorVncFrame?.personDyad?.subject || source.priorVncFrame?.subject || "3sg",
+        mood: "indicative", tense: "preterit",
+        initialVowelKind: source.citationRuleFrame?.initialVowelKind || "",
+      }, false, source);
+    }
+    function buildClassicalNahuatlVerbstemClassFrameInternal(stem = "", options = {}, lowerInputOnly = false, obsoleteRootSource = null) {
       const normalizedStem = normalizeClassicalNahuatlVerbstem(stem);
       const canonicalSourceSelectionCandidate =
         options.canonicalSourceSelectionFrame || null;
@@ -7686,11 +7853,26 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
       const classTargetStem = progressiveAssimilationFrame?.authorizationStatus === "authorized" ? progressiveAssimilationFrame.realizedAnalyzedStem || preAssimilationClassTargetStem : preAssimilationClassTargetStem;
       const classTargetRole = tlaFusionRuleFrame.fused ? "derived-fused-verbstem" : "source-verbstem";
       const classTargetValence = tlaFusionRuleFrame.fused ? "intransitive" : citationRuleFrame.valence;
+      // A typed compound retains the class of its independently authorized
+      // matrix. A hyphenated spelling alone cannot supply Class D authority.
+      const compoundMatrixClassFrame = sourceSelectionFrame.authorizationStatus === "authorized"
+        && sourceSelectionFrame.selectedSourceKind === "embed-matrix"
+        && sourceSelectionFrame.typedSourceSelectsEmbedMatrix === true
+        && sourceSelectionFrame.typedPartsMatchStem === true
+        && normalizeClassicalNahuatlClassId(options.verbClass || options.stemClass) === "D"
+        ? buildClassicalNahuatlVerbstemClassRuleFrame(sourceSelectionFrame.selectedMatrixStem, {
+            verbClass: "D", valence: classTargetValence,
+          })
+        : null;
+      const compoundMatrixClass = compoundMatrixClassFrame?.authorizationStatus === "authorized"
+        ? compoundMatrixClassFrame.classId : "";
       const classRuleFrame = buildClassicalNahuatlVerbstemClassRuleFrame(classTargetStem, {
         ...options,
         valence: classTargetValence,
-        canvasHigherLayerClassOverride: lesson11ParadigmPlan?.selectedClassOverride || ""
+        canvasHigherLayerClassOverride: obsoleteRootSource ? "A" : lesson11ParadigmPlan?.selectedClassOverride || compoundMatrixClass || ""
       });
+      classRuleFrame.compoundMatrixClassFrame = compoundMatrixClassFrame;
+      classRuleFrame.compoundMatrixClassInherited = Boolean(compoundMatrixClass);
       classRuleFrame.classTargetStem = classTargetStem;
       classRuleFrame.classTargetRole = classTargetRole;
       classRuleFrame.classTargetValence = classTargetValence;
@@ -7782,7 +7964,10 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
         directionalPrefix: options.directionalPrefix || options.directional || options.directionalLocativePrefix || "",
         directionalIttaContraction: options.directionalIttaContraction ?? options.onIttaContraction ?? options.rareDirectionalContraction ?? "",
         outsidePrefixes,
-        caNegativeTrigger: options.caNegativeTrigger || options.negativeTrigger || options.triggerParticle || "",
+        caNegativeTrigger: options.caNegativeTrigger || options.negativeTrigger
+          || options.triggerParticle || (outsidePrefixes.some(prefix =>
+            normalizeClassicalNahuatlOutsidePrefix(prefix) === "ca#")
+              ? options.introductoryParticle : "") || "",
         hostileFormulaSlots: getClassicalNahuatlHostileFormulaSlots(options)
       });
       const activeExpandedVncBoundaryFrame = expandedVncBoundaryFrame.boundaryApplies ? expandedVncBoundaryFrame : null;
@@ -7804,6 +7989,7 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
         structureRuleFrame,
         sourceSelectionFrame,
         zeroRootLowerLessonBridgeFrame,
+        obsoleteRootSourceMachineryFrame: obsoleteRootSource,
         progressiveAssimilationFrame: activeProgressiveAssimilationFrame,
         lesson11ParadigmPlan: activeLesson11ParadigmPlan,
         lesson11VncApplicationFrame,
@@ -7878,8 +8064,13 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
         orthographyPolicy: "transcription-direct",
         stem: normalizedStem,
         canonicalSourceSelectionFrame,
+        ...(classRuleFrame.classProfile.denominalCausativeOperationFrame
+          ? {denominalCausativeOperationFrame:classRuleFrame.classProfile.denominalCausativeOperationFrame} : {}),
+        ...(classRuleFrame.classProfile.vncCausativeOperationFrame
+          ? {vncCausativeOperationFrame:classRuleFrame.classProfile.vncCausativeOperationFrame} : {}),
         sourceSelectionFrame,
         zeroRootLowerLessonBridgeFrame,
+        obsoleteRootSourceMachineryFrame: obsoleteRootSource,
         progressiveAssimilationFrame: activeProgressiveAssimilationFrame,
         lesson11ParadigmPlan: activeLesson11ParadigmPlan,
         lesson11VncApplicationFrame,
@@ -8404,6 +8595,7 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
     api.isClassicalNahuatlNenAuthorized = isClassicalNahuatlNenAuthorized;
     api.getClassicalNahuatlSubjectPersonClass = getClassicalNahuatlSubjectPersonClass;
     api.deriveClassicalNahuatlSentenceTypeFromMood = deriveClassicalNahuatlSentenceTypeFromMood;
+    api.buildClassicalNahuatlVncSentenceSurfaceFrame = buildClassicalNahuatlVncSentenceSurfaceFrame;
     api.getClassicalNahuatlIntroductoryParticleCanvasSentenceRole = getClassicalNahuatlIntroductoryParticleCanvasSentenceRole;
     api.getClassicalNahuatlIntroductoryParticleCanvasSentenceRoleNotice = getClassicalNahuatlIntroductoryParticleCanvasSentenceRoleNotice;
     api.getClassicalNahuatlContrastCanvasSentenceRole = getClassicalNahuatlContrastCanvasSentenceRole;
@@ -8424,6 +8616,7 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
     api.buildClassicalNahuatlVerbstemDisplayReceiptFrame = buildClassicalNahuatlVerbstemDisplayReceiptFrame;
     api.buildClassicalNahuatlVerbstemReceiptAuthorityFrame = buildClassicalNahuatlVerbstemReceiptAuthorityFrame;
     api.buildClassicalNahuatlVerbstemClassFrame = buildClassicalNahuatlVerbstemClassFrame;
+    api.buildClassicalNahuatlObsoleteRootVerbstemFrame = buildClassicalNahuatlObsoleteRootVerbstemFrame;
     api.buildClassicalNahuatlLesson11LowerInput = buildClassicalNahuatlLesson11LowerInput;
     api.isClassicalNahuatlVerbstemClassFrame = isClassicalNahuatlVerbstemClassFrame;
     api.installClassicalNahuatlVerbstemClassesClassicGlobals = installClassicalNahuatlVerbstemClassesClassicGlobals;

@@ -230,6 +230,9 @@ export const CLASSICAL_NAHUATL_LESSON22_INHERENT_IMPERSONAL_SOURCES =
   Object.freeze({
     "tōna": Object.freeze({ semanticClass: "meteorological-heat-or-sun" }),
     "quiy-a-hui": Object.freeze({ semanticClass: "meteorological-rain" }),
+    // §30.11 derives this weather predicate from ice + fall; §26.4
+    // retains its nonreferential subject in the applicative continuation.
+    "ce-huetzi": Object.freeze({ semanticClass: "meteorological-freezing" }),
     "te-c-i-hui": Object.freeze({ semanticClass: "meteorological-hail" }),
     "āy-a-hui": Object.freeze({ semanticClass: "meteorological-fog" }),
     "yohua": Object.freeze({ semanticClass: "meteorological-nightfall" }),

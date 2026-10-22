@@ -516,6 +516,15 @@ export const CLASSICAL_NAHUATL_VNC_LATE_OPERATION_UI_CONTROL_CONTRACTS =
         outputBehavior: "selects the structurally available reduplication target; copied sounds and participant structure remain automatic",
       })),
     ],
+    "classical-rule-logic-frequentative-initial-i-treatment": [
+      ...[["ordinary", "Ordinary copying"], ["copy-as-real", "Copy supportive i as real"]].map(([value, label], index) => option({
+        controlId: "classical-rule-logic-frequentative-initial-i-treatment",
+        value, label, tagSuffix: `frequentative-initial-i-${value}`,
+        lineStart: 9086, lineEnd: 9098, selected: index === 0,
+        applicability: "ordinary frequentative of a Source with supportive initial i",
+        outputBehavior: "selects copied-vowel treatment without changing the Source initial-i fact",
+      })),
+    ],
     "classical-rule-logic-frequentative-scope": [
       ...[
         ["open", "leave the reading open"],

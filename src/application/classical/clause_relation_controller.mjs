@@ -12,6 +12,14 @@ const BINDING_APPLICATION_KIND =
   "classical-clause-relation-binding-application";
 const BINDING_FRAME_VERSION = 1;
 
+// Eligibility observes source shape/counts, never these bookkeeping IDs. Use
+// one probe identity across roles; actual role custody and execution references
+// are still issued independently by their existing owners.
+const BINDING_SOURCE_PROBE_REFERENCE = Object.freeze({referenceId: "binding-source"});
+const AVAILABILITY_SOURCE_PROBE_REFERENCES = Object.freeze({
+  referenceId: "availability-source", subjectReferenceId: "availability-subject",
+  objectReferenceId: "availability-object", possessorReferenceId: "availability-possessor",
+});
 const CAPTURE_ROLES = Object.freeze([
   "principal",
   "adjoined",
@@ -133,6 +141,7 @@ const PROFILE_VALUES_BY_RELATION = Object.freeze({
   ]),
 });
 const MARKING_VALUES_BY_RELATION = Object.freeze({
+  place: Object.freeze(["in"]),
   condition: Object.freeze(["tla", "in-tla"]),
   purpose: Object.freeze(["unmarked", "ma", "in-ma"]),
   concession: Object.freeze([
@@ -143,7 +152,10 @@ const MARKING_VALUES_BY_RELATION = Object.freeze({
     "ma-zo-tel",
   ]),
   reason: Object.freeze(["ca"]),
+  consequence: Object.freeze(["in"]),
+  proviso: Object.freeze(["ahzo"]),
   supplementation: Object.freeze(["in", "ca"]),
+  "deleted-principal": Object.freeze(["in"]),
   "such-that-adjunction": Object.freeze([
     "cuix",
     "ahzo",
@@ -296,6 +308,7 @@ const PARALLEL_TYPES = Object.freeze([
   "combined",
 ]);
 const REPHRASE_AXES = Object.freeze([
+  "none",
   "nonspecific-specific-object",
   "active-passive",
   "tense-shift",
@@ -522,6 +535,8 @@ const ALLOWED_SELECTION_KEYS = Object.freeze([
   "clauseLevel",
   "polarity",
   "rightwardModifier",
+  "identicalAdjoinedClauseEllipsis",
+  "boundaryPunctuation",
   "modifierAdjunctor",
   "compoundHeadTarget",
   "sharedModifierScope",
@@ -557,9 +572,13 @@ const ALLOWED_SELECTION_KEYS = Object.freeze([
   "copula",
   "position",
   "supplementationReferenceMode",
+  "specificityDomainRestriction",
   "supplementationHeadRole",
   "supplementationContactRole",
+  "additionalPossessorContact",
   "supplementationOrder",
+  "principalIntervenerUse",
+  "discontinuousHeadPosition",
   "supplementationAntecessivePlacement",
   "contextualSilentFirstPerson",
   "supplementObjectId",
@@ -567,8 +586,12 @@ const ALLOWED_SELECTION_KEYS = Object.freeze([
   "exclamatoryPersonalPronounVariant",
   "glottalVariant",
   "silentPluralIn",
+  "finalIRealization",
+  "vocativeCompanion",
+  "vocativeCompanionOrder",
   "mach",
   "fuseQuilMach",
+  "reportAdjunctor",
   "deletionKind",
   "speechDirectness",
 ]);
@@ -608,7 +631,8 @@ function normalizeToken(value = "") {
 
 export function getClassicalClauseRelationMarkerProfiles(relation = "") {
   const normalizedRelation = normalizeToken(relation);
-  return freezeArray(MARKING_VALUES_BY_RELATION[normalizedRelation] || []);
+  return freezeArray(["time", "manner"].includes(normalizedRelation)
+    ? ["in"] : MARKING_VALUES_BY_RELATION[normalizedRelation] || []);
 }
 
 function buildDecision({
@@ -618,6 +642,8 @@ function buildDecision({
   required = true,
   reason = "",
   optionAvailability = [],
+  inventoryFieldRef = "",
+  determinesCaptureRoles = false,
 }) {
   const normalizedValues = freezeArray(values);
   const selected = normalizedValues.includes(selectedValue) ? selectedValue : "";
@@ -666,6 +692,8 @@ function buildDecision({
   if (normalizedOptionAvailability.length) {
     decision.optionAvailability = normalizedOptionAvailability;
   }
+  if (inventoryFieldRef) decision.inventoryFieldRef = String(inventoryFieldRef);
+  if (determinesCaptureRoles) decision.determinesCaptureRoles = true;
   return Object.freeze(decision);
 }
 
@@ -708,7 +736,21 @@ function getTypedMarkerProfile(value = null) {
   return "";
 }
 
-function getAdjectivalModifierClauseType(sourceUnit = null, capture = null) {
+function getAdjectivalModifierClauseType(sourceUnit = null, capture = null, target = null) {
+  // Reuse the modifier owner's analysis, including the nucleus inside an
+  // issued composition, so its contact requirements reach the chooser.
+  const ownerType = target?.getClassicalNahuatlAdjectivalModifierClauseType?.(
+    capture?.canonicalResult,
+  );
+  if (ownerType) return ownerType;
+  const sentenceNucleus = capture?.canonicalResult?.vncApplicationFrame
+    || capture?.canonicalResult?.lateOperationClosureFrame;
+  if (sentenceNucleus) {
+    const slots = sentenceNucleus.resultFrame?.finalTypedVncSlotFrame
+      || sentenceNucleus.finalTypedVncSlotFrame;
+    if (slots) return slots.valenceArity === "vacant"
+      ? "intransitive-vnc" : "transitive-vnc";
+  }
   const unitKind = normalizeToken(sourceUnit?.features?.unitKind);
   if (unitKind === "vnc") {
     const canonicalResult = capture?.canonicalResult || {};
@@ -728,8 +770,14 @@ function getAdjectivalModifierClauseType(sourceUnit = null, capture = null) {
   return "adjectival-nnc";
 }
 
-function isAdjectivalCompoundHead(capture = null) {
-  const canonicalResult = capture?.canonicalResult || {};
+function isAdjectivalCompoundHead(capture = null, target = {}) {
+  let canonicalResult = capture?.canonicalResult || {};
+  // The marker belongs to the retained head; its authenticated nuclear host
+  // supplies the existing compound-target decision. A copied wrapper cannot
+  // turn its caller-supplied host into a compound fact.
+  while (target.isClassicalNahuatlIssuedParticleSentenceLayerFrame?.(canonicalResult) === true) {
+    canonicalResult = canonicalResult.canonicalInputFrame;
+  }
   const slotFrame = canonicalResult.typedSlotFrame
     || canonicalResult.sourceNncSlotFrame
     || canonicalResult.canonicalResult?.nncSlotFrame
@@ -824,6 +872,8 @@ export function createClassicalClauseRelationControllerGlobals(
   targetObject = globalThis,
 ) {
   const issuedBindingFrames = new WeakSet();
+  const issuedMarkerEntryProjections = new WeakMap();
+  const bindingRoleAvailabilityByExactResult = new WeakMap();
 
   function getBindingOperationRelationIds(operationId = "") {
     const normalizedOperationId = String(operationId || "").trim();
@@ -869,10 +919,8 @@ export function createClassicalClauseRelationControllerGlobals(
     }
     if (CONJUNCTION_OPERATION_KINDS.includes(normalizedRelation)) {
       return Object.freeze([
-        "principal",
-        "adjoined",
-        "dependent",
-        "supplement",
+        "principal", "adjoined", "dependent", "supplement",
+        ...(normalizedRelation === "conjunction" ? ["marker"] : []),
       ]);
     }
     if (normalizedRelation === COMPARISON_RELATION) {
@@ -887,13 +935,13 @@ export function createClassicalClauseRelationControllerGlobals(
       return Object.freeze(["principal", "adjoined", "marker"]);
     }
     if (normalizedRelation === "vocative") {
-      return Object.freeze(["principal"]);
+      return Object.freeze(["principal", "adjoined"]);
     }
     if (normalizedRelation === "rumored-report") {
       return Object.freeze(["principal", "adjoined"]);
     }
     if (normalizedRelation === "deleted-principal") {
-      return Object.freeze(["principal", "adjoined", "dependent"]);
+      return Object.freeze(["principal", "adjoined", "dependent", "marker"]);
     }
     if ([
       "negative-ac-plural",
@@ -945,8 +993,8 @@ export function createClassicalClauseRelationControllerGlobals(
         : typeof targetObject
           .buildClassicalNahuatlSupplementationClauseEnvelope === "function"
           ? targetObject.buildClassicalNahuatlSupplementationClauseEnvelope(
-            ownerSourceResult,
-            { referenceId: `binding-${role}` },
+            exactResult,
+            BINDING_SOURCE_PROBE_REFERENCE,
           )
           : null;
       accepted = unitType === "particle" || Boolean(
@@ -978,12 +1026,7 @@ export function createClassicalClauseRelationControllerGlobals(
         .buildClassicalNahuatlClauseCompositionSourceFrame === "function"
         ? targetObject.buildClassicalNahuatlClauseCompositionSourceFrame(
           ownerSourceResult,
-          {
-            referenceId: `binding-${role}`,
-            subjectReferenceId: `binding-${role}-subject`,
-            objectReferenceId: `binding-${role}-object`,
-            possessorReferenceId: `binding-${role}-possessor`,
-          },
+          AVAILABILITY_SOURCE_PROBE_REFERENCES,
         )
         : null;
       accepted = Boolean(
@@ -996,7 +1039,13 @@ export function createClassicalClauseRelationControllerGlobals(
           )
         ),
       );
-      ownerEvidenceKind = "clause-composition-source-frame";
+      if (role === "marker" && unitType === "particle"
+        && targetObject.getClassicalNahuatlParticleRelationalUse?.(exactResult)?.compositeRoles?.outerConjunctor) {
+        accepted = true;
+        ownerEvidenceKind = "composite-conjunctor-source-role";
+      } else {
+        ownerEvidenceKind = "clause-composition-source-frame";
+      }
     } else if (operationId === "clause:comparison") {
       const sourceFrame = typeof targetObject.buildClassicalComparisonSourceUnit
         === "function"
@@ -1011,12 +1060,22 @@ export function createClassicalClauseRelationControllerGlobals(
       );
       ownerEvidenceKind = "comparison-source-unit";
     } else if (operationId === "nnc:adjectival-modification") {
+      // A retained composition can supply a modifier through the adjectival
+      // owner's authenticated nuclear analysis. Its coarse transport kind is
+      // not a noun class and cannot itself grant this role.
+      const ownedCompositionModifier = ["adjoined", "dependent"].includes(role)
+        && (
+          targetObject.isAdverbialAdjunctionResult?.(exactResult) === true
+          || targetObject.isClassicalNahuatlSupplementationFrame?.(exactResult) === true
+        )
+        && Boolean(targetObject.getClassicalNahuatlAdjectivalModifierClauseType?.(exactResult));
       accepted = Boolean(
         sourceUnit?.ok
         && (
           role === "principal"
             ? unitType === "nnc"
             : ["nnc", "vnc", "clause", "sentence"].includes(unitType)
+              || ownedCompositionModifier
         )
       );
       ownerEvidenceKind = "adjectival-modification-clause-source";
@@ -1063,6 +1122,26 @@ export function createClassicalClauseRelationControllerGlobals(
     });
   }
 
+  function getOwnerTypedMarkerProfile(exactResult = null) {
+    const sourceUse = targetObject.getClassicalNahuatlParticleRelationalUse?.(exactResult);
+    return sourceUse?.compositeRoles?.innerMarker?.semanticMarker || getTypedMarkerProfile(exactResult);
+  }
+
+  function getCompositeOuterEntryUse(exactHost = null, exactMarker = null) {
+    const sourceUse = targetObject.getClassicalNahuatlParticleRelationalUse?.(exactMarker);
+    const outerRole = sourceUse?.compositeRoles?.outerConjunctor;
+    const marker = exactHost?.sourceContract?.marker;
+    const innerRole = marker?.compositeMarkerRole;
+    if (!outerRole || targetObject.isAdverbialAdjunctionResult?.(exactHost) !== true
+      || exactHost.ruleProfile?.relation !== sourceUse.relation
+      || exactHost.ruleProfile?.degree !== sourceUse.degree
+      || marker.issuedResult !== exactMarker || innerRole?.exactParticleResult !== exactMarker
+      || innerRole.sourceUse !== sourceUse || innerRole.sourceRole !== sourceUse.compositeRoles.innerMarker
+      || !Object.isFrozen(innerRole)) return null;
+    return Object.freeze({...sourceUse, relation: outerRole.relation, hostRole: "adjoined",
+      markerRole: "marker", relationProfile: "", compositeStage: "outer", sourceUse, outerRole});
+  }
+
   function bindingMarkerSupportsRelation(
     relation = "",
     exactResult = null,
@@ -1070,8 +1149,13 @@ export function createClassicalClauseRelationControllerGlobals(
   ) {
     const normalizedRelation = normalizeToken(relation);
     if (normalizedRelation === "exclamatory-utterance") return true;
+    if (normalizedRelation === "conjunction") {
+      return targetObject.getClassicalNahuatlParticleRelationalUse?.(exactResult)
+        ?.compositeRoles?.outerConjunctor?.relation === "conjunction";
+    }
     const markerSemantic = normalizeToken(
-      exactResult?.semanticMarker
+      targetObject.getClassicalNahuatlParticleRelationalUse?.(exactResult)?.compositeRoles?.innerMarker?.semanticMarker
+      || exactResult?.semanticMarker
       || getTypedMarkerProfile(exactResult)
       || sourceUnit?.features?.negativizedParticle
       || "",
@@ -1079,7 +1163,7 @@ export function createClassicalClauseRelationControllerGlobals(
     return Boolean(
       markerSemantic
       && (
-        (MARKING_VALUES_BY_RELATION[normalizedRelation] || []).includes(
+        getClassicalClauseRelationMarkerProfiles(normalizedRelation).includes(
           markerSemantic,
         )
         || (
@@ -1098,20 +1182,33 @@ export function createClassicalClauseRelationControllerGlobals(
     sourceEvidence = null,
   } = {}) {
     if (!sourceEvidence?.accepted) return false;
-    const sourceUnit = typeof targetObject
-      .getCanonicalAdverbialAdjunctionSourceUnit === "function"
-      ? targetObject.getCanonicalAdverbialAdjunctionSourceUnit(
-        exactResult,
-        role,
-      )
-      : null;
     if (role === "marker") {
+      const sourceUnit = typeof targetObject
+        .getCanonicalAdverbialAdjunctionSourceUnit === "function"
+        ? targetObject.getCanonicalAdverbialAdjunctionSourceUnit(
+          exactResult,
+          role,
+        )
+        : null;
+      if (operationId === "sentence:supplementation"
+        && relation === "such-that-adjunction") {
+        return sourceEvidence.unitType === "particle"
+          && ["l3-mah", "l58-mah-ca"].includes(
+            normalizeToken(exactResult?.particleId),
+          );
+      }
       return sourceEvidence.unitType === "particle"
         && bindingMarkerSupportsRelation(
           relation,
           exactResult,
           sourceUnit,
         );
+    }
+    if (operationId === "clause:adverbial-adjunction"
+      && relation === "intensification") {
+      // Staging uses the same canonical role eligibility as full-pair
+      // authorization, including nominal heads and nonreferential primitives.
+      return targetObject.isAdverbialAdjunctionIntensityRoleSource?.(exactResult, role) === true;
     }
     if (
       operationId === "clause:adverbial-adjunction"
@@ -1127,7 +1224,7 @@ export function createClassicalClauseRelationControllerGlobals(
     ) {
       const particleId = normalizeToken(exactResult?.particleId);
       if (role === "principal" && sourceEvidence.unitType === "particle") {
-        return ["l58-quemah", "l58-quemahca"].includes(particleId);
+        return ["l3-cuix", "l3-ahzo", "l58-ahmo", "l58-quemah", "l58-quemahca"].includes(particleId);
       }
       if (role === "dependent") {
         return particleId === "l3-in";
@@ -1146,16 +1243,41 @@ export function createClassicalClauseRelationControllerGlobals(
     return true;
   }
 
+  // Restrict discovery to the requested roles, using the same owner evidence.
+  // Omission retains the complete public inventory. Caller accessors cannot
+  // turn a malformed projection into an unrestricted query.
+  function normalizeBindingCaptureRoles(requested = null) {
+    if (requested == null) return CAPTURE_ROLES;
+    try {
+      if (!Array.isArray(requested) || Object.getPrototypeOf(requested) !== Array.prototype) return null;
+      const descriptors = Object.getOwnPropertyDescriptors(requested);
+      const length = descriptors.length?.value;
+      if (!Number.isInteger(length) || length < 1 || length > CAPTURE_ROLES.length
+        || Reflect.ownKeys(descriptors).length !== length + 1) return null;
+      const roles = [];
+      for (let index = 0; index < length; index += 1) {
+        if (!Object.hasOwn(descriptors, String(index))) return null;
+        const descriptor = descriptors[index];
+        if (!descriptor || !Object.hasOwn(descriptor, "value")
+          || !CAPTURE_ROLES.includes(descriptor.value) || roles.includes(descriptor.value)) return null;
+        roles.push(descriptor.value);
+      }
+      return Object.freeze(roles);
+    } catch { return null; }
+  }
+
   function issueClassicalClauseRelationBindingFrame(
     operationId = "",
     currentResult = null,
+    requestedCaptureRoles = null,
   ) {
+    const captureRoles = normalizeBindingCaptureRoles(requestedCaptureRoles);
     const normalizedOperationId = String(operationId || "").trim();
     const operationRecognized = BINDING_OPERATION_IDS.includes(
       normalizedOperationId,
     );
     const captureSlotId = "clause-relation-binding-source";
-    const resultCapture = operationRecognized
+    const resultCapture = operationRecognized && captureRoles
       && typeof targetObject.captureClassicalGrammarApplicationResult
         === "function"
       ? targetObject.captureClassicalGrammarApplicationResult(
@@ -1177,9 +1299,11 @@ export function createClassicalClauseRelationControllerGlobals(
       ? getBindingOperationRelationIds(normalizedOperationId)
       : Object.freeze([]);
     const roleEvidence = new Map();
-    const roleAvailability = new Map();
+    const cachedRoleAvailability = captureValid
+      ? bindingRoleAvailabilityByExactResult.get(exactResult) : null;
+    const roleAvailability = cachedRoleAvailability || new Map();
     if (captureValid) {
-      CAPTURE_ROLES.forEach(role => {
+      captureRoles.forEach(role => {
         roleEvidence.set(
           role,
           getBindingOwnerSourceEvidence(
@@ -1188,19 +1312,27 @@ export function createClassicalClauseRelationControllerGlobals(
             role,
           ),
         );
-        const probe = createClassicalClauseRelationController();
-        const probeCapture = probe.captureCurrentResult(role, exactResult);
-        roleAvailability.set(
-          role,
-          probeCapture.authorizationStatus === "authorized"
-            ? probe.issueRelationAvailabilityContract()
-            : null,
-        );
+        // A fresh controller with only this exact Result in this role has the
+        // same availability for every binding operation. Keep operation-specific
+        // source evidence above, and validate the capture before using this cache.
+        if (!roleAvailability.has(role)) {
+          const probe = createClassicalClauseRelationController();
+          const probeCapture = probe.captureCurrentResult(role, exactResult);
+          roleAvailability.set(
+            role,
+            probeCapture.authorizationStatus === "authorized"
+              ? probe.issueRelationAvailabilityContract()
+              : null,
+          );
+        }
       });
+      if (!cachedRoleAvailability && Object.isFrozen(exactResult)) {
+        bindingRoleAvailabilityByExactResult.set(exactResult, roleAvailability);
+      }
     }
     const bindingChoices = freezeArray(
       relationIds.flatMap(relation => (
-        getBindingRolesForRelation(relation).flatMap(role => {
+        getBindingRolesForRelation(relation).filter(role => captureRoles?.includes(role)).flatMap(role => {
           const sourceEvidence = roleEvidence.get(role) || null;
           const availability = roleAvailability.get(role) || null;
           const relationOption = availability?.relations?.find(
@@ -1278,6 +1410,63 @@ export function createClassicalClauseRelationControllerGlobals(
     });
     issuedBindingFrames.add(frame);
     return frame;
+  }
+
+  function issueClassicalClauseMarkerEntryProjection(exactHost = null, exactMarker = null) {
+    const sourceRelationalUse = targetObject.getClassicalNahuatlParticleRelationalUse?.(exactMarker);
+    const relationalUse = getCompositeOuterEntryUse(exactHost, exactMarker) || sourceRelationalUse;
+    const blocked = reason => Object.freeze({
+      kind: "classical-clause-marker-entry-projection", authorizationStatus: "blocked",
+      blockReason: reason, executionAllowed: false,
+    });
+    if (!relationalUse || relationalUse.selectedExternalUse !== "dependent-clause-introduction") {
+      return blocked("classical-clause-marker-relational-source-use-required");
+    }
+    const candidates = BINDING_OPERATION_IDS.flatMap(operationId => {
+      if (!getBindingOperationRelationIds(operationId).includes(relationalUse.relation)) return [];
+      const hostBindingFrame = issueClassicalClauseRelationBindingFrame(operationId, exactHost);
+      const markerBindingFrame = issueClassicalClauseRelationBindingFrame(operationId, exactMarker);
+      const hostBindingId = `${relationalUse.relation}:${relationalUse.hostRole}`;
+      const markerBindingId = `${relationalUse.relation}:${relationalUse.markerRole}`;
+      return isClassicalClauseRelationBindingFrame(hostBindingFrame)
+        && isClassicalClauseRelationBindingFrame(markerBindingFrame)
+        && hostBindingFrame.authorizationStatus === "authorized"
+        && markerBindingFrame.authorizationStatus === "authorized"
+        && hostBindingFrame.bindingIds.includes(hostBindingId)
+        && markerBindingFrame.bindingIds.includes(markerBindingId)
+        ? [{operationId, hostBindingFrame, markerBindingFrame, hostBindingId, markerBindingId}] : [];
+    });
+    if (candidates.length !== 1) {
+      return blocked("classical-clause-marker-unique-owner-binding-required");
+    }
+    const frame = Object.freeze({
+      kind: "classical-clause-marker-entry-projection", authorizationStatus: "authorized", blockReason: "",
+      exactHost, exactMarker, relationalUse, sourceRelationalUse, relation: relationalUse.relation,
+      relationProfile: relationalUse.relationProfile, degree: relationalUse.degree,
+      ...candidates[0], executionAllowed: false,
+    });
+    issuedMarkerEntryProjections.set(frame, Object.freeze({exactHost, exactMarker, relationalUse, sourceRelationalUse, ...candidates[0]}));
+    return frame;
+  }
+
+  function isClassicalClauseMarkerEntryProjection(frame = null) {
+    const receipt = frame && issuedMarkerEntryProjections.get(frame);
+    return Boolean(receipt && Object.isFrozen(frame)
+      && frame.kind === "classical-clause-marker-entry-projection"
+      && frame.authorizationStatus === "authorized" && frame.blockReason === "" && frame.executionAllowed === false
+      && ["exactHost", "exactMarker", "relationalUse", "sourceRelationalUse", "operationId", "hostBindingFrame", "markerBindingFrame", "hostBindingId", "markerBindingId"]
+        .every(key => frame[key] === receipt[key])
+      && targetObject.getClassicalNahuatlParticleRelationalUse?.(frame.exactMarker) === receipt.sourceRelationalUse
+      && (receipt.relationalUse.compositeStage !== "outer"
+        || Boolean(getCompositeOuterEntryUse(frame.exactHost, frame.exactMarker)))
+      && frame.relation === receipt.relationalUse.relation
+      && frame.relationProfile === receipt.relationalUse.relationProfile && frame.degree === receipt.relationalUse.degree
+      && isClassicalClauseRelationBindingFrame(frame.hostBindingFrame)
+      && isClassicalClauseRelationBindingFrame(frame.markerBindingFrame)
+      && frame.hostBindingFrame.exactResult === frame.exactHost
+      && frame.markerBindingFrame.exactResult === frame.exactMarker
+      && frame.hostBindingFrame.bindingIds.includes(frame.hostBindingId)
+      && frame.markerBindingFrame.bindingIds.includes(frame.markerBindingId));
   }
 
   function isClassicalClauseRelationBindingFrame(frame = null) {
@@ -1362,6 +1551,7 @@ export function createClassicalClauseRelationControllerGlobals(
   function createClassicalClauseRelationController() {
     const captures = new Map();
     const discourseSourceContextFrames = new Map();
+    let conjunctionEllipsisPreview = null;
     const issuedRelationAvailabilityContracts = new WeakSet();
     let captureRevision = 0;
 
@@ -1557,6 +1747,33 @@ export function createClassicalClauseRelationControllerGlobals(
       ) ? frame : null;
     }
 
+    function continueCapturedIntervener(role = "adjoined") {
+      const result = getValidatedCapture(role)?.canonicalResult;
+      const intervener = targetObject.getClassicalSupplementationIntervenerSource?.(result);
+      if (!intervener) return false;
+      const supplement = captureCurrentResult("adjoined", result);
+      if (supplement.authorizationStatus !== "authorized") return false;
+      return captureCurrentResult("principal", intervener).authorizationStatus === "authorized";
+    }
+
+    function getNestedPossessorContacts() {
+      const root = getCapturedSupplementationContinuation("principal");
+      const clauses = [];
+      const seen = new Set();
+      const visit = frame => {
+        if (!frame || seen.has(frame)
+          || targetObject.isClassicalNahuatlSupplementationFrame?.(frame) !== true) return;
+        seen.add(frame);
+        for (const clause of [frame.principalClause, frame.supplementClause]) {
+          if (clause?.possessor && !clauses.includes(clause)) clauses.push(clause);
+        }
+        for (const child of [...(frame.principalContinuationFrames || []),
+          ...(frame.supplementContinuationFrames || [])]) visit(child);
+      };
+      visit(root);
+      return clauses;
+    }
+
     function getState() {
       const captureState = {};
       CAPTURE_ROLES.forEach(role => {
@@ -1568,6 +1785,7 @@ export function createClassicalClauseRelationControllerGlobals(
           sourceKind: sourceUnit?.sourceKind || "",
           unitType: sourceUnit?.features?.unitKind || "",
           ownerIssuedResultSourcePresent: Boolean(capture?.canonicalResult),
+          canContinueIntervener: Boolean(targetObject.getClassicalSupplementationIntervenerSource?.(capture?.canonicalResult)),
           discourseSourceContextFramePresent: Boolean(
             getDiscourseSourceContextFrame(role)
           ),
@@ -1613,7 +1831,8 @@ export function createClassicalClauseRelationControllerGlobals(
           choice => choice.id === normalizedBindingId,
         ) || null
         : null;
-      const blocked = blockReason => Object.freeze({
+      const blocked = (blockReason, recoveryCaptureRoles = []) => Object.freeze({
+        recoveryCaptureRoles: Object.freeze(recoveryCaptureRoles),
         kind: BINDING_APPLICATION_KIND,
         version: BINDING_FRAME_VERSION,
         authorizationStatus: "blocked",
@@ -1686,9 +1905,26 @@ export function createClassicalClauseRelationControllerGlobals(
         !prospectiveOption
         || prospectiveOption.status === RELATION_AVAILABILITY.INCOMPATIBLE
       ) {
+        // Identify a recoverable occupied slot without changing live captures.
+        const recoveryCaptureRoles = CAPTURE_ROLES.filter(role => {
+          if (role === bindingChoice.captureRole || !getValidatedCapture(role)) return false;
+          const recoveryProbe = createClassicalClauseRelationController();
+          for (const peer of CAPTURE_ROLES) {
+            const capture = probe.getState().captures[peer];
+            if (peer === role || !capture?.captured) continue;
+            const exact = peer === bindingChoice.captureRole
+              ? bindingFrame.exactResult : getValidatedCapture(peer)?.canonicalResult;
+            if (exact) recoveryProbe.captureCurrentResult(peer, exact,
+              peer === bindingChoice.captureRole ? discourseSourceContextFrame : getDiscourseSourceContextFrame(peer));
+          }
+          const option = recoveryProbe.issueRelationAvailabilityContract().relations
+            .find(item => item.value === bindingChoice.relation);
+          return option && option.status !== RELATION_AVAILABILITY.INCOMPATIBLE;
+        });
         return blocked(
           prospectiveOption?.reasonCode
           || "classical-clause-relation-binding-incompatible-with-current-captures",
+          recoveryCaptureRoles,
         );
       }
 
@@ -1912,11 +2148,21 @@ export function createClassicalClauseRelationControllerGlobals(
       const complementOrder = COMPLEMENT_ORDERS.includes(requestedOrder)
         ? requestedOrder
         : "";
+      const complementOrderDecisionIndex = decisions.length;
       decisions.push(buildDecision({
         id: "complement-order",
         values: COMPLEMENT_ORDERS,
         selectedValue: complementOrder,
         reason: "the captured principal and complement permit these orders",
+        optionAvailability: COMPLEMENT_ORDERS.map(value => ({
+          value,
+          status: value === "discontinuous"
+            ? RELATION_AVAILABILITY.INCOMPATIBLE : RELATION_AVAILABILITY.AVAILABLE,
+          reasonCode: value === "discontinuous"
+            ? "discontinuous-complement-topology-not-supported" : "",
+          recovery: value === "discontinuous"
+            ? "This complement interruption topology is not implemented." : "",
+        })),
       }));
       if (requestedOrder && !complementOrder) {
         diagnostics.push("classical-complement-order-not-licensed");
@@ -2073,6 +2319,49 @@ export function createClassicalClauseRelationControllerGlobals(
           diagnostics.push("classical-complement-relational-pair-not-licensed");
         }
         operationSelections.relationalPairId = relationalPairId;
+      }
+      const principalResult = getValidatedCapture("principal")?.canonicalResult;
+      const complementResult = getValidatedCapture("adjoined")?.canonicalResult;
+      const sharedIntervener = principalResult
+        && targetObject.isClassicalNahuatlResultFrame?.(complementResult) === true
+        && complementResult.operationKind === "adjectival-modification"
+        && complementResult.topology === "discontinuous"
+        && targetObject.getClassicalSupplementationIntervenerSource?.(complementResult) === principalResult;
+      const discontinuousPreview = sharedIntervener
+        ? targetObject.evaluateClassicalNahuatlClauseComplementation?.({
+            operationKind: relation,
+            ...buildComplementSourceFrames({derived: {operationKind: relation}, operationSelections}),
+            options: {...operationSelections, order: "discontinuous"},
+          }) : null;
+      const discontinuousAvailable = discontinuousPreview?.authorizationStatus === "authorized"
+        && targetObject.isClassicalNahuatlClauseComplementationResultFrame?.(discontinuousPreview) === true;
+      const discontinuousReason = discontinuousPreview?.blockReason || "discontinuous-complement-topology-not-supported";
+      decisions[complementOrderDecisionIndex] = buildDecision({
+        id: "complement-order", values: COMPLEMENT_ORDERS, selectedValue: complementOrder,
+        reason: "the captured principal and complement permit these orders",
+        optionAvailability: COMPLEMENT_ORDERS.map(value => ({
+          value,
+          status: value === "discontinuous" && !discontinuousAvailable
+            ? RELATION_AVAILABILITY.INCOMPATIBLE : RELATION_AVAILABILITY.AVAILABLE,
+          reasonCode: value === "discontinuous" && !discontinuousAvailable ? discontinuousReason : "",
+          recovery: value === "discontinuous" && !discontinuousAvailable
+            ? "Use an authentic complementary whole with this same principal as its single intervener and a licensed complement contact." : "",
+        })),
+      });
+      if (complementOrder === "discontinuous" && !discontinuousAvailable) diagnostics.push(discontinuousReason);
+      if (relation === "subject-complement"
+        && ["embedded-possessor-cel", "embedded-possessor-el"].includes(operationSelections.contactKind)
+        && !diagnostics.length
+        && decisions.every(decision => !decision.required || decision.resolved)) {
+        const sourceFrames = buildComplementSourceFrames({
+          derived: { operationKind: relation }, operationSelections,
+        });
+        const preview = targetObject.evaluateClassicalNahuatlClauseComplementation?.({
+          operationKind: relation, ...sourceFrames, options: operationSelections,
+        });
+        if (preview?.authorizationStatus !== "authorized") {
+          diagnostics.push(preview?.blockReason || "classical-complement-included-contact-owner-required");
+        }
       }
       return buildNewRelationContract({
         selectionObject,
@@ -2288,20 +2577,6 @@ export function createClassicalClauseRelationControllerGlobals(
           selectedValue: adjoinedFunction,
           reason: "adjoined conjunctions retain a typed clause function",
         }));
-        let markedAdjoinedUse = "no";
-        if (coordinationRelation === "marked" && level === "adjoined") {
-          markedAdjoinedUse = ["yes", "no"].includes(
-            normalizeToken(selectionObject.markedAdjoinedUse),
-          )
-            ? normalizeToken(selectionObject.markedAdjoinedUse)
-            : "";
-          decisions.push(buildDecision({
-            id: "marked-adjoined-use",
-            values: ["yes", "no"],
-            selectedValue: markedAdjoinedUse,
-            reason: "marked adjoined coordination is an explicit unusual use",
-          }));
-        }
         Object.assign(operationSelections, {
           relation: coordinationRelation,
           coordinationType,
@@ -2314,9 +2589,56 @@ export function createClassicalClauseRelationControllerGlobals(
           sharedModifierScope,
           sharedModifier,
           leftContextAbsent: leftContext === "absent",
-          markedAdjoinedException: markedAdjoinedUse === "yes",
+          // §52.3 permits this uncommon structure. Markedness and clause rank
+          // already express the user's choice; no second license is needed.
+          markedAdjoinedException:
+            coordinationRelation === "marked" && level === "adjoined",
           adjoinedFunction,
         });
+        const ellipsis = normalizeToken(
+          selectionObject.identicalAdjoinedClauseEllipsis || "none",
+        );
+        // Availability is a projection of the existing owner's full exact-parent
+        // test. The controller must not create a second set of ellipsis rules.
+        let ellipsisPreview = null;
+        if (!diagnostics.length && decisions.every(decision => decision.resolved)) {
+          const previewKey = `${captureRevision}:${JSON.stringify(operationSelections)}`;
+          if (conjunctionEllipsisPreview?.key !== previewKey) {
+            const conjuncts = ["principal", "adjoined", "dependent"]
+              .filter(role => getValidatedCapture(role))
+              .map((role, index) => getCapturedCompositionNode(role, `conjunct-${index + 1}`));
+            conjunctionEllipsisPreview = {
+              key: previewKey,
+              result: targetObject.evaluateClassicalNahuatlClauseConjunction?.({
+                operationKind: "conjunction", conjuncts,
+                sharedSupplement: getValidatedCapture("supplement")
+                  ? getCapturedCompositionNode("supplement", "shared-supplement") : null,
+                options: {...operationSelections, identicalAdjoinedClauseEllipsis: "first"},
+              }),
+            };
+          }
+          ellipsisPreview = conjunctionEllipsisPreview.result;
+        }
+        const canSilenceFirst = ellipsisPreview?.authorizationStatus === "authorized";
+        decisions.push(buildDecision({
+          id: "identical-adjoined-clause-ellipsis",
+          values: ["none", "first"],
+          selectedValue: ellipsis,
+          reason: "a shared clause can be silent at its first occurrence when the canonical owner licenses the exact parents",
+          optionAvailability: [
+            {value: "none", status: RELATION_AVAILABILITY.AVAILABLE},
+            {value: "first", status: canSilenceFirst
+              ? RELATION_AVAILABILITY.AVAILABLE : RELATION_AVAILABILITY.INCOMPATIBLE,
+            reasonCode: canSilenceFirst ? "" : ellipsisPreview?.blockReason
+              || "ellipsis-requires-compatible-captured-parents"},
+          ],
+        }));
+        if (!["none", "first"].includes(ellipsis)
+          || (ellipsis === "first" && !canSilenceFirst)) {
+          diagnostics.push(ellipsisPreview?.blockReason
+            || "recognized-identical-adjoined-clause-ellipsis-required");
+        }
+        operationSelections.identicalAdjoinedClauseEllipsis = ellipsis;
       } else if (relation === "correlative-conjunction") {
         requireCapturedSource("principal", diagnostics, {
           diagnosticPrefix: "classical-conjunction",
@@ -2411,7 +2733,8 @@ export function createClassicalClauseRelationControllerGlobals(
         )
           ? normalizeToken(selectionObject.parallelType)
           : "";
-        const rephraseAxis = REPHRASE_AXES.includes(
+        const rephraseAxis = ["rephrasive", "combined"].includes(parallelType)
+          && REPHRASE_AXES.includes(
           normalizeToken(selectionObject.rephraseAxis),
         )
           ? normalizeToken(selectionObject.rephraseAxis)
@@ -2421,18 +2744,41 @@ export function createClassicalClauseRelationControllerGlobals(
         )
           ? normalizeToken(selectionObject.appositiveType)
           : "";
+        let axisContract = null;
+        if (!diagnostics.length && ["rephrasive", "combined"].includes(parallelType)) {
+          const decideAxis = targetObject.getClassicalNahuatlParallelRephraseAxisContract;
+          if (typeof decideAxis !== "function") {
+            diagnostics.push("parallel-rephrasing-current-owner-capability-required");
+          } else {
+            axisContract = decideAxis({
+              conjuncts: ["principal", "adjoined", "dependent"].filter(role => getValidatedCapture(role))
+                .map((role, index) => getCapturedCompositionNode(role, `conjunct-${index + 1}`)),
+              parallelType, rephraseAxis,
+            });
+            if (axisContract?.authorizationStatus !== "authorized") {
+              diagnostics.push(axisContract?.blockReason || "rephrasive-parallelism-owned-contrast-required");
+            }
+          }
+        }
         decisions.push(buildDecision({
           id: "parallel-type",
           values: PARALLEL_TYPES,
           selectedValue: parallelType,
           reason: "parallel structures rephrase, progress, or combine both",
         }));
-        if (["rephrasive", "combined"].includes(parallelType)) {
+        if (["rephrasive", "combined"].includes(parallelType)
+          && !( ["clarifying", "summarizing"].includes(appositiveType)
+            && !normalizeToken(selectionObject.rephraseAxis) )) {
           decisions.push(buildDecision({
             id: "rephrase-axis",
             values: REPHRASE_AXES,
             selectedValue: rephraseAxis,
-            reason: "rephrasive parallelism selects its typed contrast axis",
+            reason: "rephrasive parallelism may specify an owned grammatical contrast",
+            optionAvailability: axisContract ? REPHRASE_AXES.map(value => ({value,
+              status: axisContract.availableAxes.includes(value)
+                ? RELATION_AVAILABILITY.AVAILABLE : RELATION_AVAILABILITY.INCOMPATIBLE,
+              reasonCode: axisContract.availableAxes.includes(value) ? "" : "rephrasive-parallelism-owned-contrast-required",
+            })) : [],
           }));
         }
         decisions.push(buildDecision({
@@ -2446,6 +2792,35 @@ export function createClassicalClauseRelationControllerGlobals(
           rephraseAxis,
           appositiveType,
         });
+      }
+      if (["conjunction", "parallel-structure"].includes(relation)) {
+        const punctuationValues = relation === "parallel-structure"
+          ? ["none", "comma", "semicolon", "dash"] : ["none", "comma", "semicolon"];
+        const boundaryPunctuation = normalizeToken(
+          selectionObject.boundaryPunctuation || "none",
+        );
+        decisions.push(buildDecision({
+          id: "boundary-punctuation",
+          values: punctuationValues,
+          selectedValue: boundaryPunctuation,
+          reason: "writing punctuation between the captured clauses",
+        }));
+        if (!punctuationValues.includes(boundaryPunctuation)) {
+          diagnostics.push("recognized-boundary-punctuation-required");
+        }
+        operationSelections.boundaryPunctuation = boundaryPunctuation;
+      }
+      if (relation === "parallel-structure"
+        && operationSelections.appositiveType === "summarizing"
+        && !diagnostics.length && decisions.every(decision => decision.resolved)) {
+        const preview = targetObject.evaluateClassicalNahuatlClauseConjunction?.({
+          operationKind: "parallel-structure",
+          conjuncts: ["principal", "adjoined", "dependent"].filter(role => getValidatedCapture(role))
+            .map((role, index) => getCapturedCompositionNode(role, `conjunct-${index + 1}`)),
+          options: operationSelections,
+        });
+        if (preview?.authorizationStatus !== "authorized")
+          diagnostics.push(preview?.blockReason || "parallel-structure-exact-parent-contact-required");
       }
       return buildNewRelationContract({
         selectionObject,
@@ -2468,6 +2843,11 @@ export function createClassicalClauseRelationControllerGlobals(
             "adjoined",
             "dependent",
           ].some(role => getSourceUnit(role)?.sourceKind === "composition-ast"),
+          principalSourceKind: getSourceUnit("principal")?.sourceKind || "",
+          adjoinedSourceKind: getSourceUnit("adjoined")?.sourceKind || "",
+          dependentSourceKind: getSourceUnit("dependent")?.sourceKind || "",
+          supplementSourceKind: getSourceUnit("supplement")?.sourceKind || "",
+          markerSourceKind: getSourceUnit("marker")?.sourceKind || "",
         },
         operationSelections,
         derivedFieldIds: [
@@ -2476,6 +2856,11 @@ export function createClassicalClauseRelationControllerGlobals(
           "conjunct-count",
           "shared-supplement-present",
           "nested-composition",
+          "principal-source-kind",
+          "adjoined-source-kind",
+          "dependent-source-kind",
+          "supplement-source-kind",
+          "marker-source-kind",
         ],
       });
     }
@@ -2496,6 +2881,7 @@ export function createClassicalClauseRelationControllerGlobals(
         values: routeIds,
         selectedValue: routeSpec?.id || "",
         reason: "one semantic comparison route is a genuine grammar choice",
+        determinesCaptureRoles: true,
       }));
       if (requestedRoute && !routeSpec) {
         diagnostics.push("classical-comparison-route-not-licensed");
@@ -2507,6 +2893,19 @@ export function createClassicalClauseRelationControllerGlobals(
           requireCapturedSource(role, diagnostics, {
             diagnosticPrefix: "classical-comparison",
           });
+        }
+        const capture = getValidatedCapture(role);
+        if (!capture) return;
+        // Generic clause capture does not establish comparison eligibility.
+        // Validate the exact whole through the same Source owner used by Make.
+        const source = targetObject.buildClassicalComparisonSourceUnit?.({
+          sourceResult: capture.canonicalResult,
+        });
+        if (targetObject.isClassicalComparisonSourceUnit?.(source) !== true
+          || source.authorizationStatus !== "authorized") {
+          diagnostics.push(`classical-comparison-${role}-capture-required:${
+            source?.blockReason || "comparison-owner-issued-source-required"
+          }`);
         }
       });
       const operationSelections = {
@@ -2668,7 +3067,7 @@ export function createClassicalClauseRelationControllerGlobals(
         const markerCapture = getValidatedCapture("marker");
         const markerSemantic = normalizeToken(
           markerCapture?.canonicalResult?.semanticMarker
-          || getTypedMarkerProfile(markerCapture?.canonicalResult)
+          || getOwnerTypedMarkerProfile(markerCapture?.canonicalResult)
           || "",
         );
         if (markerCapture && !["in", "ca"].includes(markerSemantic)) {
@@ -2683,11 +3082,16 @@ export function createClassicalClauseRelationControllerGlobals(
           fallback = "",
           reason,
           expose = values.length > 1,
+          inventoryFieldRef = "",
         }) => {
           const requested = normalizeToken(selectionObject[key]);
           const explicitChoiceRequired = expose && values.length > 1;
           const selectedValue = values.includes(requested)
             ? requested
+            // A hidden singleton is determined by the new typed context.
+            // An obsolete choice must not make that context unreachable.
+            : !expose && values.length === 1
+              ? values[0]
             : requested
               ? ""
               : explicitChoiceRequired
@@ -2701,6 +3105,7 @@ export function createClassicalClauseRelationControllerGlobals(
               values,
               selectedValue,
               reason,
+              inventoryFieldRef,
             }));
           }
           if (requested && !selectedValue) {
@@ -2710,7 +3115,10 @@ export function createClassicalClauseRelationControllerGlobals(
           return selectedValue;
         };
         const typedInterrogativeSupplement = Boolean(
-          supplementPreview?.interrogativeKind,
+          supplementPreview?.interrogativeKind
+          // A whole composed utterance is not its interrogative principal.
+          // It can fill a saying object's included direct-speech contact.
+          && !getCapturedSupplementationContinuation("adjoined"),
         );
         const referenceMode = resolveChoice({
           id: "supplementation-reference-mode",
@@ -2736,7 +3144,7 @@ export function createClassicalClauseRelationControllerGlobals(
           "causing",
           "requesting",
         ].includes(includedSemanticGroup);
-        const headRoleValues = referenceMode === "absolute-topic"
+        const headRoleValues = (referenceMode === "absolute-topic"
           ? ["subject"]
           : referenceMode === "included" && includedObjectContent
             ? principalPreview?.objects?.length ? ["object"] : []
@@ -2745,6 +3153,7 @@ export function createClassicalClauseRelationControllerGlobals(
           : principalPreview?.unitKind === "nnc"
           ? [
               "subject",
+              ...(principalPreview.objects?.length ? ["object"] : []),
               ...(principalPreview.possessor ? ["possessor"] : []),
             ]
           : principalPreview?.unitKind === "vnc"
@@ -2752,25 +3161,88 @@ export function createClassicalClauseRelationControllerGlobals(
                 "subject",
                 ...(principalPreview.objects?.length ? ["object"] : []),
               ]
-            : [];
-        const headRole = resolveChoice({
-          id: "supplementation-head-role",
-          key: "supplementationHeadRole",
-          values: headRoleValues,
-          fallback: "subject",
-          reason:
-            "the typed principal leaves these personal-pronominal heads available",
-        });
-        const contactRoleValues = [
-          "included",
-          "absolute-topic",
-        ].includes(referenceMode)
+            : []).filter(role => role !== "subject"
+              || principalPreview?.subject?.participantFrame?.hasReferent !== false
+              || referenceMode === "absolute-topic"
+              || referenceMode === "shared" && principalPreview?.transformedImpersonalSubjectDomainEligible === true);
+        // The canonical owner distinguishes the designating object's locative
+        // harmony from referential agreement and from ordinary adverbial use.
+        // A preview grants a contact option only; composing still validates it.
+        const previewObjects = Array.from(principalPreview?.objects || []);
+        const previewObjectId = normalizeToken(selectionObject.principalObjectId)
+          || (previewObjects.length === 1 ? previewObjects[0].id : "");
+        let designatingLocativeContactAvailable = false;
+        if (referenceMode === "shared"
+          && normalizeToken(selectionObject.supplementationHeadRole) === "object"
+          && previewObjectId
+          && supplementPreview?.subject?.participantFrame?.hasReferent === false
+          && typeof targetObject.evaluateClassicalNahuatlSupplementationOperation === "function") {
+          const continuation = getCapturedSupplementationContinuation("principal");
+          const object = previewObjects.find(item => item.id === previewObjectId);
+          const contactPreview = object?.referenceId
+            ? buildCapturedSupplementationEnvelope("adjoined", {
+                referenceId: "supplementation-locative-contact-preview",
+                subjectReferenceId: object.referenceId,
+              }) : null;
+          const preview = targetObject.evaluateClassicalNahuatlSupplementationOperation({
+            operationKind: "relation", principalClause: principalPreview, supplementClause: contactPreview,
+            options: {referenceMode: "shared", headRole: "object", principalObjectId: previewObjectId,
+              supplementContactRole: "subject", order: "supplement-first", adjunctor: "none",
+              principalContinuationFrames: continuation ? [continuation] : []},
+          });
+          const license = preview?.referenceFrame?.designatingLocativeSupplementFrame;
+          designatingLocativeContactAvailable = preview?.authorizationStatus === "authorized"
+            && license?.originalNamingObjectId === previewObjectId
+            && license?.canonicalLocativeResult === getValidatedCapture("adjoined")?.canonicalResult;
+        }
+        const contactRoleValues = referenceMode === "included"
           ? ["subject"]
+          : referenceMode === "absolute-topic"
+            ? supplementPreview?.subject?.participantFrame?.hasReferent === false
+              ? [] : ["subject"]
           : [
-              ...(supplementPreview?.subject ? ["subject"] : []),
+              ...(supplementPreview?.subject
+                && (supplementPreview.subject.participantFrame?.hasReferent !== false
+                  || designatingLocativeContactAvailable)
+                ? ["subject"] : []),
               ...(supplementPreview?.objects?.length ? ["object"] : []),
               ...(supplementPreview?.possessor ? ["possessor"] : []),
             ];
+        const sharedSubjectFunction = Boolean(
+          referenceMode === "shared"
+          && headRoleValues.length === 1 && headRoleValues[0] === "subject"
+          && contactRoleValues.length === 1 && contactRoleValues[0] === "subject"
+          && principalPreview?.subject?.participantFrame?.hasReferent === true
+          && supplementPreview?.subject?.participantFrame?.hasReferent === true
+          && principalPreview.subject.features?.person === supplementPreview.subject.features?.person
+          && principalPreview.subject.features?.number === supplementPreview.subject.features?.number
+        );
+        let headRole;
+        if (sharedSubjectFunction) {
+          const adjoinedFunction = resolveChoice({
+            id: "adjoined-function", key: "adjoinedFunction",
+            values: ["supplementary-subject"], fallback: "supplementary-subject", expose: true,
+            reason: "the captured shared-reference subject contact determines the supplementary-subject function",
+            inventoryFieldRef: "clause-choice:clause:composition:adjoined-function",
+          });
+          headRole = adjoinedFunction === "supplementary-subject" ? "subject" : "";
+          operationSelections.supplementationHeadRole = headRole;
+          // Unlike obsolete hidden singleton drafts, explicit incompatible
+          // contacts cannot be rewritten as this authenticated subject contact.
+          for (const key of ["supplementationHeadRole", "supplementationContactRole"]) {
+            if (normalizeToken(selectionObject[key]) && normalizeToken(selectionObject[key]) !== "subject")
+              diagnostics.push(`classical-supplementation-${key}-not-licensed`);
+          }
+        } else {
+          headRole = resolveChoice({
+            id: "supplementation-head-role", key: "supplementationHeadRole",
+            values: headRoleValues, fallback: "subject",
+            reason: "the typed principal leaves these personal-pronominal heads available",
+          });
+          if (normalizeToken(selectionObject.adjoinedFunction)
+            && normalizeToken(selectionObject.adjoinedFunction) !== "none")
+            diagnostics.push("classical-supplementation-adjoined-function-not-licensed");
+        }
         const contactRole = resolveChoice({
           id: "supplementation-contact-role",
           key: "supplementationContactRole",
@@ -2780,12 +3252,25 @@ export function createClassicalClauseRelationControllerGlobals(
             "the typed supplement leaves these personal-pronominal contacts available",
           expose: referenceMode !== "included" && contactRoleValues.length > 1,
         });
+        const nestedPossessors = referenceMode === "shared"
+          ? getNestedPossessorContacts() : [];
+        resolveChoice({
+          id: "additional-possessor-contact",
+          key: "additionalPossessorContact",
+          values: ["none", ...nestedPossessors.map((_, index) => `possessor-${index + 1}`)],
+          fallback: "none",
+          expose: nestedPossessors.length > 0,
+          reason: "Optionally identify the same supplement with a nested possessor: "
+            + nestedPossessors.map((clause, index) => `${index + 1}: ${clause.surface}`).join("; "),
+        });
         const interrogativeSupplement = Boolean(
           referenceMode === "shared" && typedInterrogativeSupplement,
         );
-        const orderValues = markerSemantic === "ca" || interrogativeSupplement
+        const orderValues = markerSemantic === "ca"
           ? ["supplement-first"]
-          : ["principal-first", "supplement-first", "discontinuous"];
+          : interrogativeSupplement
+            ? ["supplement-first", "discontinuous"]
+            : ["principal-first", "supplement-first", "discontinuous"];
         const order = resolveChoice({
           id: "supplementation-order",
           key: "supplementationOrder",
@@ -2797,7 +3282,32 @@ export function createClassicalClauseRelationControllerGlobals(
         if (order === "discontinuous") {
           requireRole("dependent");
           requiredCaptureRoles.push("dependent");
+          resolveChoice({
+            id: "discontinuous-head-position",
+            key: "discontinuousHeadPosition",
+            values: interrogativeSupplement ? ["last"] : ["first", "last"],
+            reason: "Choose which side of the intervening clause contains the possessor or other head.",
+          });
         }
+        const reuseCandidate = getCapturedSupplementationContinuation("adjoined")
+          || getValidatedCapture("adjoined")?.canonicalResult;
+        const canReuseIntervener = referenceMode === "shared"
+          && headRole === "subject" && contactRole === "subject"
+          && order === (reuseCandidate?.linearizationFrame?.discontinuousHeadPosition === "first"
+            || reuseCandidate?.order === "discontinuous-head-first"
+            ? "supplement-first" : "principal-first")
+          && !getCapturedSupplementationContinuation("principal")
+          && targetObject.canReuseClassicalSupplementationIntervener?.(
+            principalPreview, reuseCandidate
+          ) === true;
+        resolveChoice({
+          id: "principal-intervener-use",
+          key: "principalIntervenerUse",
+          values: canReuseIntervener ? ["separate", "reuse"] : ["separate"],
+          fallback: "separate",
+          reason: "Choose whether the principal is the same occurrence already inside the discontinuous supplement.",
+          expose: canReuseIntervener,
+        });
         const principalObjects = Array.from(principalPreview?.objects || []);
         const principalObjectId = headRole === "object"
           ? resolveChoice({
@@ -2810,6 +3320,11 @@ export function createClassicalClauseRelationControllerGlobals(
             })
           : "";
         operationSelections.principalObjectId = principalObjectId;
+        if (headRole === "object" && principalObjects.some(object => object.nestedObjectContactFrame)
+          && selectionObject.principalObjectId
+          && !principalObjects.some(object => object.id === selectionObject.principalObjectId)) {
+          diagnostics.push("classical-supplementation-principal-object-id-not-licensed");
+        }
         const supplementObjects = Array.from(supplementPreview?.objects || []);
         const supplementObjectId = contactRole === "object"
           ? resolveChoice({
@@ -2822,6 +3337,11 @@ export function createClassicalClauseRelationControllerGlobals(
             })
           : "";
         operationSelections.supplementObjectId = supplementObjectId;
+        if (contactRole === "object" && supplementObjects.some(object => object.nestedObjectContactFrame)
+          && selectionObject.supplementObjectId
+          && !supplementObjects.some(object => object.id === selectionObject.supplementObjectId)) {
+          diagnostics.push("classical-supplementation-supplement-object-id-not-licensed");
+        }
         const integratedAntecessiveAvailable = Boolean(
           referenceMode === "shared"
           && order === "supplement-first"
@@ -2866,6 +3386,20 @@ export function createClassicalClauseRelationControllerGlobals(
           reason:
             "the later coreferential first-person VNC may use its licensed silent contextual realization",
         });
+        const specificityDomainEligible = referenceMode === "shared"
+          && headRole === "subject"
+          && operationSelections.supplementationContactRole === "subject"
+          && principalPreview?.transformedImpersonalSubjectDomainEligible === true
+          && supplementPreview?.subject?.participantFrame?.hasReferent === true;
+        if (specificityDomainEligible) {
+          const selectedScope = normalizeToken(selectionObject.specificityDomainRestriction);
+          decisions.push(buildDecision({id: "specificity-domain-restriction", values: ["same-entire-group"], selectedValue: selectedScope,
+            inventoryFieldRef: "clause-choice:sentence:supplementation:specificity-domain-restriction",
+            reason: "all pertinent pronouns concern the same entire group at different specificity (§57.4)"}));
+          operationSelections.specificityDomainRestriction = selectedScope === "same-entire-group" ? selectedScope : "";
+        } else if (normalizeToken(selectionObject.specificityDomainRestriction)) {
+          diagnostics.push("specificity-domain-restriction-not-licensed-for-captured-sources");
+        }
         const semanticGroup = normalizeToken(principalPreview?.semanticGroup);
         if (
           referenceMode === "included"
@@ -2952,6 +3486,17 @@ export function createClassicalClauseRelationControllerGlobals(
           && principalPreview?.silentSpecificObjectAuthorized !== true
           && principalPreview?.subject?.features?.person === "3"
           && supplementParticipant?.features?.person === "3"
+          && principalPreview.subject.features.number
+            === supplementParticipant.features.number
+          // A continued composition already owns its contact identities.
+          // Preserve ambiguity only among contacts it still identifies together.
+          && (!getCapturedSupplementationContinuation("principal")
+            || [principalPreview.subject, ...(principalPreview.objects || [])]
+              .filter(participant => (
+                participant.referenceId === principalParticipant?.referenceId
+                && participant.features?.person === "3"
+                && participant.features?.number === supplementParticipant.features?.number
+              )).length >= 2)
           && principalPreview.objects?.some(object => (
             object.features?.person === "3"
             && object.features?.number
@@ -3000,6 +3545,20 @@ export function createClassicalClauseRelationControllerGlobals(
       } else if (relation === "vocative") {
         requiredCaptureRoles = ["principal"];
         requireRole("principal");
+        const companionMode = normalizeToken(selectionObject.vocativeCompanion) || "standalone";
+        decisions.push(buildDecision({id: "vocative-companion",
+          values: ["standalone", "with-clause"], selectedValue: companionMode,
+          reason: "§18.11 permits a vocative with an accompanying clause"}));
+        operationSelections.vocativeCompanion = companionMode;
+        if (companionMode === "with-clause") {
+          requiredCaptureRoles.push("adjoined");
+          requireRole("adjoined");
+          const order = normalizeToken(selectionObject.vocativeCompanionOrder) || "clause-first";
+          decisions.push(buildDecision({id: "vocative-companion-order",
+            values: ["clause-first", "vocative-first"], selectedValue: order,
+            reason: "the vocative can precede or follow its accompanying clause"}));
+          operationSelections.vocativeCompanionOrder = order;
+        }
         const vocativeSourceContext =
           getDiscourseSourceContextFrame("principal");
         const vocativePreview = buildCapturedSupplementationEnvelope(
@@ -3013,6 +3572,30 @@ export function createClassicalClauseRelationControllerGlobals(
           );
         }
         operationSelections.derivedSpeakerGender = speakerGender;
+        const exactVocativeParent = getValidatedCapture("principal")?.canonicalResult;
+        const finalIFacts = speakerGender === "male" && exactVocativeParent
+          ? targetObject.getClassicalNahuatlCustomaryAgentiveFinalIBoundaryFacts?.(
+            exactVocativeParent, { useKind: "vocative" },
+          ) : null;
+        const requestedFinalI = normalizeToken(selectionObject.finalIRealization);
+        if (finalIFacts?.authorizationStatus === "authorized"
+          && finalIFacts.canonicalParentResult === exactVocativeParent) {
+          const values = finalIFacts.availableRealizations;
+          const selectedValue = requestedFinalI
+            || finalIFacts.selectedRealization || finalIFacts.defaultRealization;
+          if (values.length > 1) decisions.push(buildDecision({
+            id: "vocative-final-i", values,
+            selectedValue: values.includes(selectedValue) ? selectedValue : "",
+            reason: "§36.3 permits final i to remain or drop before vocative é",
+          }));
+          if (!values.includes(selectedValue)) {
+            diagnostics.push("classical-vocative-final-i-not-licensed");
+          }
+          operationSelections.finalIRealization = values.includes(selectedValue)
+            ? selectedValue : "";
+        } else if (requestedFinalI && requestedFinalI !== "preserve") {
+          diagnostics.push("classical-vocative-final-i-not-licensed");
+        }
         // The vocative owner has the exact captured Source, including nested
         // supplementation sources. The controller must not infer its choices
         // from the spelling of a formula or surface projection.
@@ -3071,6 +3654,14 @@ export function createClassicalClauseRelationControllerGlobals(
       } else if (relation === "rumored-report") {
         requiredCaptureRoles = ["principal", "adjoined"];
         requiredCaptureRoles.forEach(requireRole);
+        const reportAdjunctor = normalizeToken(selectionObject.reportAdjunctor) || "in";
+        decisions.push(buildDecision({
+          id: "report-adjunctor", values: ["in", "none"],
+          selectedValue: ["in", "none"].includes(reportAdjunctor) ? reportAdjunctor : "",
+          reason: "the reported clause may have an in adjunctor or no adjunctor",
+        }));
+        if (!["in", "none"].includes(reportAdjunctor)) diagnostics.push("classical-rumored-report-adjunctor-not-licensed");
+        operationSelections.reportAdjunctor = reportAdjunctor;
         const requestedMach = normalizeToken(selectionObject.mach);
         const selectedMach = ["present", "absent"].includes(requestedMach)
           ? requestedMach
@@ -3113,6 +3704,17 @@ export function createClassicalClauseRelationControllerGlobals(
       } else if (relation === "deleted-principal") {
         requiredCaptureRoles = ["principal", "dependent", "adjoined"];
         requiredCaptureRoles.forEach(requireRole);
+        optionalCaptureRoles = ["marker"];
+        const markerCapture = getValidatedCapture("marker");
+        const markerSemantic = normalizeToken(
+          markerCapture?.canonicalResult?.semanticMarker
+          || getOwnerTypedMarkerProfile(markerCapture?.canonicalResult)
+          || "",
+        );
+        if (markerCapture && markerSemantic !== "in") {
+          diagnostics.push("classical-deleted-principal-marker-must-be-owner-issued-in");
+        }
+        operationSelections.markerSemantic = markerSemantic;
         const visiblePreview = buildCapturedSupplementationEnvelope(
           "principal",
           { referenceId: "deleted-visible" },
@@ -3141,14 +3743,15 @@ export function createClassicalClauseRelationControllerGlobals(
           && supplementPreview?.unitKind === "nnc"
         );
         const visibleSpeechAction = visiblePreview?.unitKind === "vnc"
-          && visiblePreview?.semanticGroup === "speech-action";
+          && ["speech-action", "requesting"].includes(visiblePreview?.semanticGroup);
         const deletedSaying = deletedPreview?.unitKind === "vnc"
           && ["speech", "saying"].includes(deletedPreview?.semanticGroup);
         const deletionKind = cahProxy
           ? "cah-proxy"
           : visibleSpeechAction && deletedSaying
             ? "saying"
-            : visiblePreview?.isAdverbialNnc === true && deletedSaying
+            : (visiblePreview?.isAdverbialNnc === true
+                || visiblePreview?.isAdverbialVnc === true) && deletedSaying
               ? "saying-adverb-only"
               : "";
         if (!deletionKind && requiredCaptureRoles.every(role => (
@@ -3157,7 +3760,8 @@ export function createClassicalClauseRelationControllerGlobals(
           diagnostics.push("classical-deleted-principal-route-not-licensed");
         }
         operationSelections.deletionKind = deletionKind;
-        operationSelections.adverbialRole = cahProxy ? adverbialRole : "";
+        operationSelections.adverbialRole = cahProxy
+          || deletionKind === "saying-adverb-only" ? adverbialRole : "";
         if (deletionKind.startsWith("saying")) {
           const requested = normalizeToken(selectionObject.speechDirectness);
           const selectedValue = ["direct", "indirect"].includes(requested)
@@ -3339,26 +3943,58 @@ export function createClassicalClauseRelationControllerGlobals(
       )) || null;
     }
 
+    function capturedNegativeAcPluralSourceAuthorized(role = "principal") {
+      const envelope = buildCapturedSupplementationEnvelope(role, {
+        referenceId: `${role}-negative-ac-availability`,
+      });
+      return Boolean(envelope
+        && typeof targetObject.evaluateClassicalNahuatlSupplementationOperation === "function"
+        && targetObject.evaluateClassicalNahuatlSupplementationOperation({
+          operationKind: "negative-ac-plural",
+          principalClause: envelope,
+        })?.authorizationStatus === "authorized");
+    }
+
+    function capturedContextualFirstPersonSourceAuthorized(role = "principal") {
+      const exactResult = getValidatedCapture(role)?.canonicalResult || null;
+      if (!exactResult) return false;
+      const envelope = buildCapturedSupplementationEnvelope(role, {
+        referenceId: `${role}-contextual-first-person-availability`,
+        subjectReferenceId: `${role}-contextual-first-person-subject`,
+      });
+      const preview = targetObject.evaluateClassicalNahuatlSupplementationOperation?.({
+        operationKind: "contextual-first-person-realization",
+        principalClause: envelope,
+        options: {contextualSilentFirstPerson: true},
+      });
+      const operation = preview?.operationFrames?.find(frame =>
+        frame.kind === "classical-nahuatl-contextual-silent-first-person-frame");
+      const exactTypedSlot = exactResult.finalTypedVncSlotFrame
+        || exactResult.resultFrame?.finalTypedVncSlotFrame
+        || exactResult.targetTypedVncSlotFrame
+        || exactResult.proofFrame?.conclusion?.finalTypedVncSlotFrame
+        || exactResult.proofFrame?.conclusion?.finalBoundaryRealizationFrame?.typedSlotFrame;
+      return Boolean(targetObject.isClassicalNahuatlSupplementationFrame?.(preview) === true
+        && preview.authorizationStatus === "authorized"
+        && preview.operationKind === "contextual-first-person-realization"
+        && preview.principalClause === envelope
+        && targetObject.getClassicalNahuatlSupplementationClauseSourceFrame?.(envelope) === exactResult
+        && exactTypedSlot
+        && operation?.contextualProjection?.sourceTypedSlotFrame === exactTypedSlot
+        && operation.sameExtralinguisticReferent === true
+        && operation.thirdPersonFallbackAllowed === false);
+    }
+
     function getCapturedRelationSourceFacts(role = "") {
       const capture = getValidatedCapture(role);
       const sourceUnit = getSourceUnit(role);
       const compositionFrame = buildCapturedClauseCompositionSourceFrame(
         role,
-        {
-          referenceId: `${role}-availability`,
-          subjectReferenceId: `${role}-availability-subject`,
-          objectReferenceId: `${role}-availability-object`,
-          possessorReferenceId: `${role}-availability-possessor`,
-        },
+        AVAILABILITY_SOURCE_PROBE_REFERENCES,
       );
       const supplementationEnvelope = buildCapturedSupplementationEnvelope(
         role,
-        {
-          referenceId: `${role}-availability`,
-          subjectReferenceId: `${role}-availability-subject`,
-          objectReferenceId: `${role}-availability-object`,
-          possessorReferenceId: `${role}-availability-possessor`,
-        },
+        AVAILABILITY_SOURCE_PROBE_REFERENCES,
       );
       const request = getCapturedCanonicalRequest(role);
       return Object.freeze({
@@ -3410,6 +4046,13 @@ export function createClassicalClauseRelationControllerGlobals(
         ).length,
         possessorPresent: Boolean(
           compositionFrame?.possessor
+          || supplementationEnvelope?.possessor,
+        ),
+        supplementableHeadPresent: Boolean(
+          supplementationEnvelope?.subject
+            && supplementationEnvelope.subject.participantFrame?.hasReferent !== false
+          || supplementationEnvelope?.transformedImpersonalSubjectDomainEligible === true
+          || supplementationEnvelope?.objects?.length
           || supplementationEnvelope?.possessor,
         ),
         adverbialCenter: normalizeToken(
@@ -3501,6 +4144,9 @@ export function createClassicalClauseRelationControllerGlobals(
         if (principal.captured && !clauseKinds.includes(principal.unitKind)) {
           return impossible("Supplementation requires an NNC or VNC principal Result.");
         }
+        if (principal.captured && !principal.supplementableHeadPresent) {
+          return impossible("An impersonal subject has no referent to supplement.");
+        }
       } else if (relation === "deleted-principal") {
         if (
           (principal.captured && !["nnc", "vnc"].includes(principal.unitKind))
@@ -3525,37 +4171,17 @@ export function createClassicalClauseRelationControllerGlobals(
         }
         if (
           principal.captured
-          && (
-            (principal.subjectNumber && principal.subjectNumber !== "plural")
-            || (principal.tense && principal.tense !== "preterit")
-            || (principal.sourceStem && principal.sourceStem !== "ā")
-          )
+          && !capturedNegativeAcPluralSourceAuthorized("principal")
         ) {
           return impossible(
             "Negative ac plural requires the exact plural ā preterit Result.",
           );
         }
       } else if (relation === "contextual-first-person-realization") {
-        if (principal.captured && principal.unitKind !== "vnc") {
-          return impossible("Contextual first-person realization requires a VNC Result.");
-        }
-        if (
-          principal.captured
-          && principal.subjectPerson
-          && principal.subjectPerson !== "1"
-        ) {
-          return impossible(
-            "Contextual first-person realization requires a first-person VNC Result.",
-          );
-        }
-        if (
-          principal.captured
-          && principal.objectKind
-          && !principal.objectKind.includes("reflexive")
-        ) {
-          return impossible(
-            "Contextual first-person realization requires a reflexive VNC Result.",
-          );
+        // The existing owner reads the actual target slot. A derived reflexive
+        // can retain an intransitive analytical Source as retired provenance.
+        if (principal.captured && !capturedContextualFirstPersonSourceAuthorized("principal")) {
+          return impossible("Contextual first-person realization requires an owner-licensed first-person reflexive VNC Result.");
         }
       } else if (relation === "rumored-report") {
         if (
@@ -3616,7 +4242,12 @@ export function createClassicalClauseRelationControllerGlobals(
         });
       }
       if (relation === "such-that-adjunction") {
-        return Object.freeze({ all: freezeArray(["principal"]) });
+        const principalParticleId = getValidatedCapture("principal")
+          ?.canonicalResult?.particleId || "";
+        return Object.freeze({ all: freezeArray(
+          ["l58-quemah", "l58-quemahca"].includes(principalParticleId)
+            ? ["principal"] : ["principal", "adjoined", "marker"],
+        ) });
       }
       return Object.freeze({ all: freezeArray(["principal", "adjoined"]) });
     }
@@ -3771,7 +4402,7 @@ export function createClassicalClauseRelationControllerGlobals(
         if (
           adverbial
           && relation === "reason"
-          && adjoined.unitKind !== "sentence"
+          && getSourceUnit("adjoined")?.unitType !== "sentence"
         ) {
           return buildRelationAvailabilityOption({
             value: relation,
@@ -3821,12 +4452,7 @@ export function createClassicalClauseRelationControllerGlobals(
         }
         if (
           relation === "negative-ac-plural"
-          && !(
-            principal.unitKind === "vnc"
-            && principal.subjectNumber === "plural"
-            && principal.tense === "preterit"
-            && principal.sourceStem === "ā"
-          )
+          && !capturedNegativeAcPluralSourceAuthorized("principal")
         ) {
           return buildRelationAvailabilityOption({
             value: relation,
@@ -3838,11 +4464,7 @@ export function createClassicalClauseRelationControllerGlobals(
         }
         if (
           relation === "contextual-first-person-realization"
-          && !(
-            principal.unitKind === "vnc"
-            && principal.subjectPerson === "1"
-            && principal.objectKind.includes("reflexive")
-          )
+          && !capturedContextualFirstPersonSourceAuthorized("principal")
         ) {
           return buildRelationAvailabilityOption({
             value: relation,
@@ -3898,6 +4520,14 @@ export function createClassicalClauseRelationControllerGlobals(
         && Array.isArray(contract.relations)
         && Array.isArray(contract.availableRelations),
       );
+    }
+
+    function getActiveMarkerProfilesForRelation(relation = "") {
+      const profiles = getClassicalClauseRelationMarkerProfiles(relation);
+      if (normalizeToken(relation) !== "proviso") return profiles;
+      const adjoined = getSourceUnit("adjoined");
+      return adjoined?.ok && adjoined.features?.negativizedParticle === "ahzo"
+        ? freezeArray([...profiles, "in"]) : profiles;
     }
 
     function buildDecisionContractUnprojected(selections = {}) {
@@ -4130,18 +4760,44 @@ export function createClassicalClauseRelationControllerGlobals(
         const modifierClauseType = getAdjectivalModifierClauseType(
           adjoinedSource,
           adjoinedCapture,
+          targetObject,
         );
         const transitiveContactRequired =
           modifierClauseType === "transitive-vnc";
         const requestedLinkRole = normalizeToken(selectionObject.linkKind);
+        const modifierContacts = targetObject.getClassicalNahuatlAdjectivalModifierReferenceContacts?.(
+          adjoinedCapture?.canonicalResult,
+          {order, topology},
+        ) || [];
+        const preposedSupplementation = modifierClauseType === "supplementation-structure"
+          && (order === "modifier-head-preposed" || topology === "cooperating-preposed-nonpreposed");
+        const followingPossessorChoice = !preposedSupplementation
+          && modifierContacts.includes("supplement-possessor");
+        const supplementationPossessorContact = (preposedSupplementation
+            || followingPossessorChoice && requestedLinkRole === "supplement-possessor")
+          && modifierContacts.includes("supplement-possessor")
+          ? targetObject.getClassicalNahuatlAdjectivalSupplementationPossessorContactFrame?.(
+              principalCapture?.canonicalResult, adjoinedCapture?.canonicalResult
+            ) : null;
+        if (preposedSupplementation && !supplementationPossessorContact) {
+          diagnostics.push("classical-adjectival-modification-preposed-supplementation-contact-unavailable");
+        } else if (supplementationPossessorContact?.headSubjectMatchesPossessor !== undefined
+          && supplementationPossessorContact.headSubjectMatchesPossessor !== true) {
+          diagnostics.push("classical-adjectival-modification-supplement-possessor-reference-mismatch");
+        }
         const transitiveContactValues = ownerAxisValues(
           "transitive-reference-contact",
-        ).filter(value => value !== "not-applicable");
+        ).filter(value => value !== "not-applicable" && modifierContacts.includes(value));
         const linkRole = transitiveContactRequired
           ? transitiveContactValues.includes(requestedLinkRole)
             ? requestedLinkRole
             : ""
-          : "shared-subject";
+          : supplementationPossessorContact ? "supplement-possessor"
+          : followingPossessorChoice ? requestedLinkRole === "shared-subject" ? "shared-subject" : "" : "shared-subject";
+        if (followingPossessorChoice) {
+          decisions.push(buildDecision({id: "link-kind", values: ["shared-subject", "supplement-possessor"], selectedValue: linkRole,
+            reason: "the following whole description contacts the head through its subject or its authenticated inner possessor"}));
+        }
         if (transitiveContactRequired) {
           decisions.push(buildDecision({
             id: "link-kind",
@@ -4152,17 +4808,31 @@ export function createClassicalClauseRelationControllerGlobals(
           }));
         } else if (
           requestedLinkRole
-          && requestedLinkRole !== "shared-subject"
+          && requestedLinkRole !== linkRole
         ) {
           diagnostics.push(
             "classical-adjectival-modification-link-role-not-applicable",
           );
+        }
+        const adjoinedFunction = principalSource?.features?.unitKind === "nnc"
+          && modifierContacts.includes(linkRole) ? "adjectival-modifier" : "";
+        if (adjoinedFunction) {
+          const requestedFunction = normalizeToken(selectionObject.adjoinedFunction);
+          decisions.push(buildDecision({id:"adjoined-function", values:[adjoinedFunction],
+            selectedValue:requestedFunction || adjoinedFunction,
+            inventoryFieldRef:"clause-choice:clause:composition:adjoined-function",
+            reason:"the canonical nominal head and modifier contact determine the adjectival-modifier function"}));
+          if (requestedFunction && requestedFunction !== adjoinedFunction)
+            diagnostics.push("classical-adjectival-modification-adjoined-function-not-licensed");
+        } else if (normalizeToken(selectionObject.adjoinedFunction)) {
+          diagnostics.push("classical-adjectival-modification-adjoined-function-contact-required");
         }
         const dependentModifierClauseType =
           topology === "cooperating-preposed-nonpreposed"
             ? getAdjectivalModifierClauseType(
                 dependentSource,
                 dependentCapture,
+                targetObject,
               )
             : "";
         const dependentTransitiveContactRequired =
@@ -4170,8 +4840,14 @@ export function createClassicalClauseRelationControllerGlobals(
         const requestedDependentLinkRole = normalizeToken(
           selectionObject.dependentLinkKind,
         );
+        const dependentContacts = targetObject.getClassicalNahuatlAdjectivalModifierReferenceContacts?.(
+          dependentCapture?.canonicalResult,
+        ) || [];
+        const dependentTransitiveContactValues = ownerAxisValues(
+          "transitive-reference-contact",
+        ).filter(value => value !== "not-applicable" && dependentContacts.includes(value));
         const dependentLinkRole = dependentTransitiveContactRequired
-          ? transitiveContactValues.includes(
+          ? dependentTransitiveContactValues.includes(
               requestedDependentLinkRole,
             )
             ? requestedDependentLinkRole
@@ -4180,7 +4856,7 @@ export function createClassicalClauseRelationControllerGlobals(
         if (dependentTransitiveContactRequired) {
           decisions.push(buildDecision({
             id: "dependent-link-kind",
-            values: transitiveContactValues,
+            values: dependentTransitiveContactValues,
             selectedValue: dependentLinkRole,
             reason:
               "a cooperating transitive modifier independently contacts the head through its subject or its specific object",
@@ -4194,7 +4870,7 @@ export function createClassicalClauseRelationControllerGlobals(
           );
         }
 
-        const compoundHead = isAdjectivalCompoundHead(principalCapture);
+        const compoundHead = isAdjectivalCompoundHead(principalCapture, targetObject);
         const requestedCompoundHeadTarget = normalizeToken(
           selectionObject.compoundHeadTarget,
         );
@@ -4245,18 +4921,24 @@ export function createClassicalClauseRelationControllerGlobals(
           || (dependentRequired && dependentIsComposition)
           ? "one-or-more"
           : "zero";
+        const headLayer = principalCapture?.canonicalResult || null;
+        const retainedHeadIn = topology === "ordinary"
+          && order === "modifier-head-preposed"
+          && targetObject.isClassicalNahuatlIssuedParticleSentenceLayerFrame?.(headLayer) === true
+          && targetObject.isClassicalNahuatlParticleResultFrame?.(headLayer.particleResultFrame) === true
+          && headLayer.particleResultFrame.semanticMarker === "in";
         const scope = (
           order === "modifier-head-preposed"
           && adjunctor === "in"
         ) || (
           topology === "cooperating-preposed-nonpreposed"
           && ["preposed-in", "both-in"].includes(adjunctor)
-        )
+        ) || retainedHeadIn
           ? "adjoined-unit"
           : "complete-sentence";
         const ambiguityType = (
-          transitiveContactRequired
-          || dependentTransitiveContactRequired
+          transitiveContactRequired && transitiveContactValues.length > 1
+          || dependentTransitiveContactRequired && dependentTransitiveContactValues.length > 1
         )
           ? "transitive-subject-or-object-contact"
           : "structural-apposition";
@@ -4272,7 +4954,11 @@ export function createClassicalClauseRelationControllerGlobals(
           marking: adjunctor === "none" ? "unmarked" : "marked",
           topology,
           modifierClauseType,
+          adjoinedFunction,
+          supplementationPossessorContact,
           scope,
+          retainedHeadMarker: retainedHeadIn ? "in" : "",
+          retainedHeadMarkerOrigin: retainedHeadIn ? "owner-issued-head-layer" : "",
           linkRole,
           dependentModifierClauseType,
           dependentLinkRole,
@@ -4335,6 +5021,7 @@ export function createClassicalClauseRelationControllerGlobals(
           ? targetObject.issueAdverbialAdjunctionAvailabilityContract({
             principalClause: principalCapture?.canonicalResult || null,
             adjoinedUnit: adjoinedCapture?.canonicalResult || null,
+            markerUnit: markerCapture?.canonicalResult || null,
           })
           : null;
       const adjunctionAvailabilityVerified = Boolean(
@@ -4355,6 +5042,11 @@ export function createClassicalClauseRelationControllerGlobals(
         && adjunctionAvailability.relationalNumeralCoCContract
           .authorizationStatus === "authorized"
       );
+      const intensityUse = adjunctionAvailabilityVerified
+        && relation === "intensification"
+        && adjunctionAvailability.intensityUse?.referenceHead === principalCapture?.canonicalResult
+        && adjunctionAvailability.intensityUse?.exactAdverbResult === adjoinedCapture?.canonicalResult
+          ? adjunctionAvailability.intensityUse : null;
       const unitType = String(adjoinedSource?.features?.unitKind || "");
       const degreeValues = (
         adjunctionAvailabilityVerified
@@ -4393,9 +5085,14 @@ export function createClassicalClauseRelationControllerGlobals(
         && ["place", "time"].includes(relation)
         && unitType === "nnc"
       );
+      const relationAllowsAdverbialPrincipal = !relationalNumeralCoCFixedProfile
+        && degree === "second" && unitType === "nnc"
+        && ["place", "time", "manner"].includes(relation);
       const structureProfileValues = relationAllowsApposition
-        ? ["modification", "apposition"]
-        : [];
+        ? ["modification", "apposition", "adverbial-principal"]
+        : relationAllowsAdverbialPrincipal
+          ? ["modification", "adverbial-principal"]
+          : [];
       const requestedStructureProfile = normalizeToken(
         selectionObject.structureProfile,
       );
@@ -4409,7 +5106,7 @@ export function createClassicalClauseRelationControllerGlobals(
           id: "structure-profile",
           values: structureProfileValues,
           selectedValue: structureProfile,
-          reason: "place or time sequence remains ambiguous between modification and apposition",
+          reason: "choose whether the adverbial modifies, stands in apposition, or functions as principal",
         }));
       }
       if (
@@ -4435,19 +5132,29 @@ export function createClassicalClauseRelationControllerGlobals(
       }
       const structureKind = structureProfile === "apposition"
         ? "apposition"
+        : structureProfile === "adverbial-principal"
+          ? "adverbial-principal"
         : degree === "nonadverbialized" || recursion !== "none"
           ? "complex"
           : "simple";
 
       const orderValues = !relation
         ? []
-        : relationalNumeralCoCFixedProfile
+        : relationalNumeralCoCFixedProfile || intensityUse
           ? ["modifier-head"]
+        : structureProfile === "adverbial-principal"
+          ? ["principal-adverbial-head"]
         : structureProfile === "apposition"
           ? ["appositive-head-modifier"]
           : relation === "reason"
             ? ["head-modifier"]
             : ["modifier-head", "head-modifier"];
+      if (relation === "place" && degree === "first"
+        && adjoinedCapture?.canonicalResult?.operationKind === "adjectival-modification"
+        && targetObject.getClassicalSupplementationIntervenerSource?.(adjoinedCapture.canonicalResult)
+          === principalCapture?.canonicalResult) {
+        orderValues.push("discontinuous");
+      }
       const requestedOrder = normalizeToken(selectionObject.order);
       const order = orderValues.length === 1
         ? orderValues[0]
@@ -4464,9 +5171,18 @@ export function createClassicalClauseRelationControllerGlobals(
         diagnostics.push("classical-clause-relation-order-not-licensed");
       }
 
-      const relationProfileValues = degree === "nonadverbialized"
-        ? PROFILE_VALUES_BY_RELATION[relation] || []
-        : [];
+      const markerRelationalUse = markerCapture
+        ? targetObject.getClassicalNahuatlParticleRelationalUse?.(markerCapture.canonicalResult) : null;
+      const sourceRelationProfile = markerRelationalUse?.relation === relation
+        && (!degree || markerRelationalUse.degree === degree) ? markerRelationalUse.relationProfile : "";
+      const temporalEligibility = relation === "time"
+        && (degree === "nonadverbialized" || requestedDegree === "nonadverbialized")
+        && targetObject.isAdverbialAdjunctionAvailabilityContract?.(adjunctionAvailability) === true
+        && adjunctionAvailability.temporalProfileEligibility?.principalClause === (principalCapture?.canonicalResult || null)
+        && adjunctionAvailability.temporalProfileEligibility?.adjoinedUnit === (adjoinedCapture?.canonicalResult || null)
+          ? adjunctionAvailability.temporalProfileEligibility : null;
+      const relationProfileValues = sourceRelationProfile ? [sourceRelationProfile]
+        : degree === "nonadverbialized" || temporalEligibility ? PROFILE_VALUES_BY_RELATION[relation] || [] : [];
       const requestedRelationProfile = normalizeToken(
         selectionObject.relationProfile,
       );
@@ -4481,6 +5197,15 @@ export function createClassicalClauseRelationControllerGlobals(
           values: relationProfileValues,
           selectedValue: relationProfile,
           reason: `the captured ${relation || "clause"} relation leaves a genuine profile choice`,
+          optionAvailability: temporalEligibility ? temporalEligibility.profiles.map(entry => ({
+            value: entry.profile, status: entry.status === "needs-capture" ? "missing-prerequisite" : entry.status,
+            reasonCode: entry.blockReason,
+            recovery: entry.status === "needs-capture" ? "Add the required Result."
+              : entry.status === "incompatible" ? "Choose a compatible temporal construction." : "",
+            requiredCaptureRoles: entry.requiredCaptureRoles,
+            missingCaptureRoles: entry.missingCaptureRoles,
+            ownerEvidenceKind: "temporal-profile-eligibility",
+          })) : [],
         }));
       }
       if (
@@ -4489,12 +5214,19 @@ export function createClassicalClauseRelationControllerGlobals(
       ) {
         diagnostics.push("classical-clause-relation-profile-not-licensed");
       }
+      if (temporalEligibility && relationProfile) {
+        const eligibility = temporalEligibility.profiles.find(entry => entry.profile === relationProfile);
+        if (eligibility?.status !== "available") diagnostics.push(eligibility?.blockReason
+          || "adverbial-adjunction-time-profile-required");
+      }
 
       const derivedMarkerProfile = markerCapture
-        ? getTypedMarkerProfile(markerCapture.canonicalResult)
+        ? getOwnerTypedMarkerProfile(markerCapture.canonicalResult)
         : "unmarked";
       const markerProfileValues = markerCapture
-        ? MARKING_VALUES_BY_RELATION[relation] || ["particle"]
+        ? structureProfile === "adverbial-principal"
+          ? ["in"]
+          : getActiveMarkerProfilesForRelation(relation)
         : ["unmarked"];
       const requestedMarkerProfile = normalizeToken(selectionObject.markerProfile);
       const markerProfile = derivedMarkerProfile
@@ -4572,6 +5304,7 @@ export function createClassicalClauseRelationControllerGlobals(
         order,
         marking: markerProfile || "unmarked",
         relationalNumeralCoCFixedProfile,
+        ...(intensityUse ? {intensifier: true, selectedUse: "intensifier"} : {}),
         principalSourceKind: principalSource?.sourceKind || "",
         adjoinedSourceKind: adjoinedSource?.sourceKind || "",
       });
@@ -4590,6 +5323,8 @@ export function createClassicalClauseRelationControllerGlobals(
         structureProfile,
         markerProfile: markerProfile || "unmarked",
         derived,
+        intensityUse,
+        temporalProfileEligibility: temporalEligibility,
         userSelectableFieldIds: freezeArray(decisions.map(decision => decision.id)),
         derivedFieldIds: Object.freeze([
           "unit-type",
@@ -4600,6 +5335,7 @@ export function createClassicalClauseRelationControllerGlobals(
           "structure",
           "recursion",
           ...(orderValues.length === 1 ? ["order"] : []),
+          ...(sourceRelationProfile ? ["relation-profile"] : []),
           ...(markerProfileValues.length === 1 || derivedMarkerProfile
             ? ["marker-profile"]
             : []),
@@ -4612,7 +5348,37 @@ export function createClassicalClauseRelationControllerGlobals(
     }
 
     function buildDecisionContract(selections = {}) {
-      const contract = buildDecisionContractUnprojected(selections);
+      let contract = buildDecisionContractUnprojected(selections);
+      if (contract.relation === COMPARISON_RELATION
+        && contract.authorizationStatus === "authorized") {
+        let operation = null;
+        let operationValidated = false;
+        let failure = "classical-comparison-operation-preflight-capability-required";
+        try {
+          if (typeof targetObject.buildClassicalComparisonOperationFrame === "function"
+            && typeof targetObject.isClassicalComparisonOperationFrame === "function") {
+            operation = targetObject.buildClassicalComparisonOperationFrame(
+              buildComparisonOperationRequest(contract)
+            );
+            operationValidated = targetObject.isClassicalComparisonOperationFrame(operation) === true;
+            failure = operationValidated
+              ? operation.blockReason || "classical-comparison-operation-preflight-blocked"
+              : "classical-comparison-operation-preflight-validation-required";
+          }
+        } catch {
+          failure = "classical-comparison-operation-preflight-threw";
+        }
+        if (!operationValidated || operation.authorizationStatus !== "authorized") {
+          contract = Object.freeze({
+            ...contract, authorizationStatus: "blocked", blockReason: failure,
+            diagnostics: freezeArray(unique([
+              ...contract.diagnostics,
+              ...(operationValidated ? operation.diagnostics || [] : []),
+              failure,
+            ])),
+          });
+        }
+      }
       const diagnostics = Array.isArray(contract?.diagnostics)
         ? contract.diagnostics
         : [];
@@ -4786,6 +5552,23 @@ export function createClassicalClauseRelationControllerGlobals(
       ));
     }
 
+    function buildComparisonOperationRequest(contract = null) {
+      const choices = Object.fromEntries(
+        Object.entries(contract?.operationSelections || {})
+          .filter(([field]) => field !== "comparisonRoute")
+          .map(([field, value]) => [field,
+            ["adjunctorIn", "icRelation", "copula"].includes(field)
+              ? value === "yes" : value,
+          ])
+      );
+      return {
+        routeId: contract?.derived?.comparisonRoute || "",
+        relation: contract?.derived?.comparisonRelation || "",
+        slots: buildComparisonSourceSlots(contract),
+        choices,
+      };
+    }
+
     function buildControllerResult({
       contract,
       canonicalRequest = {},
@@ -4820,6 +5603,7 @@ export function createClassicalClauseRelationControllerGlobals(
     function buildCapturedSupplementationEnvelope(
       role = "",
       referenceOptions = {},
+      preserveComposition = false,
     ) {
       if (
         typeof targetObject.buildClassicalNahuatlSupplementationClauseEnvelope
@@ -4833,8 +5617,12 @@ export function createClassicalClauseRelationControllerGlobals(
         typeof targetObject.isClassicalNahuatlSupplementationFrame
           === "function"
         && targetObject.isClassicalNahuatlSupplementationFrame(canonicalResult)
+        && !preserveComposition
       ) {
-        return canonicalResult.principalClause;
+        const whole = targetObject.buildClassicalNahuatlSupplementationClauseEnvelope(canonicalResult, referenceOptions);
+        return targetObject.isClassicalNahuatlSupplementationClauseEnvelope?.(whole)
+          && whole.objects?.some(object => object.nestedObjectContactFrame)
+          ? whole : canonicalResult.principalClause;
       }
       const envelope =
         targetObject.buildClassicalNahuatlSupplementationClauseEnvelope(
@@ -4867,6 +5655,18 @@ export function createClassicalClauseRelationControllerGlobals(
       )
         ? canonicalResult
         : null;
+    }
+
+    function getCapturedSupplementationContactContinuation(role = "") {
+      let source = getValidatedCapture(role)?.canonicalResult || null;
+      const visited = new Set();
+      while (source && !visited.has(source)
+        && targetObject.isClassicalNahuatlIssuedParticleSentenceLayerFrame?.(source) === true) {
+        visited.add(source);
+        source = source.contextualNncSentenceFrame || source.canonicalInputFrame;
+      }
+      return targetObject.isClassicalNahuatlSupplementationFrame?.(source) === true
+        ? source : null;
     }
 
     function composeSupplementationRelation(contract = null) {
@@ -4905,6 +5705,10 @@ export function createClassicalClauseRelationControllerGlobals(
         getCapturedSupplementationContinuation("principal");
       const supplementContinuation =
         getCapturedSupplementationContinuation("adjoined");
+      const principalContactContinuation =
+        getCapturedSupplementationContactContinuation("principal");
+      const supplementContactContinuation =
+        getCapturedSupplementationContactContinuation("adjoined");
       const buildEnvelope = (
         role,
         referenceId,
@@ -4912,32 +5716,73 @@ export function createClassicalClauseRelationControllerGlobals(
         objectReferenceId = referenceId,
         possessorReferenceId = referenceId,
         extraOptions = {},
+        preserveComposition = false,
       ) => buildCapturedSupplementationEnvelope(role, {
         referenceId,
         subjectReferenceId,
         objectReferenceId,
         possessorReferenceId,
         ...extraOptions,
-      });
+      }, preserveComposition);
       let request = { operationKind: relation };
       if (relation === "supplementation") {
         const shared = selected.supplementationReferenceMode === "shared";
         const absoluteTopic =
           selected.supplementationReferenceMode === "absolute-topic";
-        const principalReference = "supplementation-principal";
+        // A new outer clause is a new occurrence, even when its wording repeats.
+        // Preserve the signed inner graph and its shared participant contacts.
+        const retainedReferences = new Set();
+        const visited = new Set();
+        const collectReferences = frame => {
+          if (!frame || visited.has(frame)) return;
+          visited.add(frame);
+          if (frame.referenceId) retainedReferences.add(frame.referenceId);
+          for (const key of ["principalClause", "supplementClause"]) collectReferences(frame[key]);
+          for (const key of ["principalContinuationFrames", "supplementContinuationFrames"])
+            for (const inner of frame[key] || []) collectReferences(inner);
+        };
+        collectReferences(principalContactContinuation);
+        collectReferences(supplementContactContinuation);
+        let principalReference = "supplementation-principal";
+        for (let occurrence = 2; retainedReferences.has(principalReference); occurrence++)
+          principalReference = `supplementation-principal-${occurrence}`;
         const sourceContext =
           getDiscourseSourceContextFrame("adjoined");
         const agreementException = selected.agreementException || "";
         const namedPartner = agreementException === "named-partner";
+        // A captured continuation owns its referent identities. Bind a fresh
+        // partner to the selected existing contact instead of relabeling the
+        // signed inner graph or discarding its continuation.
+        const continuationContact = (frame, role, objectId) => {
+          const clause = frame?.principalClause;
+          if (role === "object" && frame) {
+            const whole = targetObject.buildClassicalNahuatlSupplementationClauseEnvelope(frame);
+            const nested = whole?.objects?.find(object => object.nestedObjectContactFrame
+              && (!objectId || object.id === objectId));
+            if (nested) return nested;
+          }
+          return role === "possessor" ? clause?.possessor
+            : role === "object" ? clause?.objects?.find(object => (
+                !objectId || object.id === objectId
+              ))
+            : clause?.subject;
+        };
+        const retainedContactReference = shared && !namedPartner
+          ? continuationContact(principalContactContinuation,
+              selected.supplementationHeadRole, selected.principalObjectId)?.referenceId
+            || continuationContact(supplementContactContinuation,
+              selected.supplementationContactRole, selected.supplementObjectId)?.referenceId
+            || "supplementation-shared-referent"
+          : "supplementation-shared-referent";
         const principalContactReference = namedPartner
           ? "supplementation-named-partner-group"
           : shared
-          ? "supplementation-shared-referent"
+          ? retainedContactReference
           : "supplementation-principal";
         const supplementContactReference = namedPartner
           ? "supplementation-named-third-party"
           : shared
-          ? "supplementation-shared-referent"
+          ? retainedContactReference
           : "supplementation-whole-supplement";
         const supplementReference = supplementContactReference;
         const principalPreview = buildEnvelope(
@@ -5107,15 +5952,13 @@ export function createClassicalClauseRelationControllerGlobals(
           supplementClause,
           options: {
             referenceMode: selected.supplementationReferenceMode,
+            specificityDomainRestriction: selected.specificityDomainRestriction || "",
             headRole: selected.supplementationHeadRole,
             supplementContactRole:
               selected.supplementationContactRole,
             order: selected.supplementationOrder,
             adjunctor: selected.markerSemantic === "in" ? "in" : "none",
             commentEmphaticCa: selected.markerSemantic === "ca",
-            fuseDemonstrativeAdjunctor:
-              selected.markerSemantic === "in"
-              && ["in", "on"].includes(supplementClause?.demonstrativeKind),
             informationQuestion: selected.informationQuestion === true,
             integratedAntecessive: selected.integratedAntecessive === true,
             includedAntecessiveJump:
@@ -5125,6 +5968,9 @@ export function createClassicalClauseRelationControllerGlobals(
             supplementObjectId: selected.supplementObjectId || "",
             retainContactAlternatives:
               selected.retainContactAlternatives === true,
+            additionalSharedContacts: getNestedPossessorContacts()
+              .filter((_, index) => selected.additionalPossessorContact === `possessor-${index + 1}`)
+              .map(clause => ({ clause, role: "possessor" })),
             interveningClauses: interveningClause
               ? [interveningClause]
               : [],
@@ -5138,11 +5984,18 @@ export function createClassicalClauseRelationControllerGlobals(
             supplementContinuationFrames: supplementContinuation
               ? [supplementContinuation]
               : [],
+            reusePrincipalIntervener: selected.principalIntervenerUse === "reuse",
+            discontinuousHeadPosition: selected.discontinuousHeadPosition || "last",
             principalActsAsStandaloneUtterance: false,
             supplementActsAsStandaloneUtterance: false,
           },
         };
       } else if (relation === "vocative") {
+        const companionClause = selected.vocativeCompanion === "with-clause"
+          ? targetObject.buildClassicalNahuatlSupplementationClauseEnvelope(
+            getValidatedCapture("adjoined")?.canonicalResult,
+            { referenceId: "vocative-companion" },
+          ) : null;
         request = {
           operationKind: "vocative",
           nncClause: buildEnvelope("principal", "vocative-referent"),
@@ -5153,6 +6006,10 @@ export function createClassicalClauseRelationControllerGlobals(
               ? "y"
               : "retain",
             silentPluralIn: selected.silentPluralIn === "present",
+            ...(selected.finalIRealization
+              ? { finalIRealization: selected.finalIRealization } : {}),
+            companionClause,
+            companionOrder: selected.vocativeCompanionOrder || "clause-first",
           },
         };
       } else if (relation === "rumored-report") {
@@ -5164,13 +6021,15 @@ export function createClassicalClauseRelationControllerGlobals(
             "rumored-report-speaker",
             "reported-whole-supplement",
           ),
-          supplementClause: buildEnvelope(
+          supplementClause: buildCapturedSupplementationEnvelope(
             "adjoined",
-            "reported-whole-supplement",
+            { referenceId: "reported-whole-supplement" },
+            true,
           ),
           options: {
             mach: selected.mach === "present",
             fuseQuilMach: selected.fuseQuilMach === "fused",
+            adjunctor: selected.reportAdjunctor,
           },
         };
       } else if (relation === "deleted-principal") {
@@ -5178,6 +6037,7 @@ export function createClassicalClauseRelationControllerGlobals(
         const visiblePreview = buildEnvelope(
           "principal",
           "deleted-visible-preview",
+          undefined, undefined, undefined, {}, true,
         );
         const deletedPreview = buildEnvelope(
           "dependent",
@@ -5188,12 +6048,17 @@ export function createClassicalClauseRelationControllerGlobals(
               object.sounded === false
             )) || Array.from(deletedPreview?.objects || []).find(object => (
               /report|content|supplement/u.test(object.id)
+            )) || Array.from(deletedPreview?.objects || []).find(object => (
+              object.id === "source-object-1"
             )) || null
           : null;
+        const retainedVisible = Boolean(principalContinuation);
+        const sharedSpeaker = retainedVisible
+          ? visiblePreview?.subject?.referenceId : "shared-speaker";
         const visibleObjectReferenceIds = Object.fromEntries(
           Array.from(visiblePreview?.objects || []).map(object => [
             object.id,
-            "shared-addressee",
+            retainedVisible ? object.referenceId : "shared-addressee",
           ]),
         );
         const deletedObjectReferenceIds = Object.fromEntries(
@@ -5201,23 +6066,26 @@ export function createClassicalClauseRelationControllerGlobals(
             object.id,
             object.id === deletedContentObject?.id
               ? "deleted-whole-supplement"
-              : "shared-addressee",
+              : retainedVisible
+                ? visiblePreview?.objects?.find(visible => visible.category === object.category)?.referenceId || "shared-addressee"
+                : "shared-addressee",
           ]),
         );
         const visibleEnvelope = buildEnvelope(
           "principal",
           "deleted-visible",
-          sayingDeletion ? "shared-speaker" : "deleted-visible",
+          sayingDeletion ? sharedSpeaker : "deleted-visible",
           "shared-addressee",
           "deleted-visible-possessor",
           { objectReferenceIds: visibleObjectReferenceIds },
+          true,
         );
         const deletedPrincipalClause = buildEnvelope(
           "dependent",
           "deleted-principal",
           selected.deletionKind === "cah-proxy"
             ? "deleted-shared-subject"
-            : "shared-speaker",
+            : sharedSpeaker,
           "shared-addressee",
           "deleted-principal-possessor",
           { objectReferenceIds: deletedObjectReferenceIds },
@@ -5227,9 +6095,14 @@ export function createClassicalClauseRelationControllerGlobals(
           "deleted-whole-supplement",
           selected.deletionKind === "cah-proxy"
             ? "deleted-shared-subject"
+            : sayingDeletion && selected.speechDirectness === "direct"
+              && buildEnvelope("adjoined", "direct-quote-preview", undefined,
+                undefined, undefined, {}, true)?.subject?.category === "1sg"
+              ? sharedSpeaker
             : "deleted-whole-supplement",
+          undefined, undefined, {}, true,
         );
-        const visiblePrincipalClause = selected.deletionKind === "cah-proxy"
+        const visiblePrincipalClause = ["cah-proxy", "saying-adverb-only"].includes(selected.deletionKind)
           && typeof targetObject
             .buildClassicalNahuatlSupplementationAdverbialModifierFrame
             === "function"
@@ -5252,6 +6125,7 @@ export function createClassicalClauseRelationControllerGlobals(
                 supplementContactRole: "subject",
                 order: "principal-first",
                 speechDirectness: selected.speechDirectness,
+                adjunctor: selected.markerSemantic === "in" ? "in" : "none",
               },
             })
           : null;
@@ -5454,6 +6328,8 @@ export function createClassicalClauseRelationControllerGlobals(
         const request = {
           operationKind: contract.relation,
           conjuncts,
+          ...(contract.relation === "conjunction" && getValidatedCapture("marker")
+            ? {conjunctorResult: getValidatedCapture("marker").canonicalResult} : {}),
           sharedSupplement,
           options: {
             ...contract.operationSelections,
@@ -5470,6 +6346,7 @@ export function createClassicalClauseRelationControllerGlobals(
           canonicalRequest: {
             operationKind: request.operationKind,
             options: request.options,
+            ...(request.conjunctorResult ? {conjunctorResult: request.conjunctorResult} : {}),
             conjunctCount: conjuncts.length,
             sharedSupplementPresent: Boolean(sharedSupplement),
           },
@@ -5490,24 +6367,7 @@ export function createClassicalClauseRelationControllerGlobals(
               "classical-comparison-application-capability-required",
           });
         }
-        const slots = buildComparisonSourceSlots(contract);
-        const choices = {};
-        Object.entries(contract.operationSelections || {}).forEach(
-          ([field, value]) => {
-            if (field === "comparisonRoute") return;
-            choices[field] = ["adjunctorIn", "icRelation", "copula"].includes(
-              field,
-            )
-              ? value === "yes"
-              : value;
-          },
-        );
-        const request = {
-          routeId: contract.derived.comparisonRoute,
-          relation: contract.derived.comparisonRelation,
-          slots,
-          choices,
-        };
+        const request = buildComparisonOperationRequest(contract);
         const canonicalResult =
           targetObject.requestClassicalComparisonResult(request);
         const authorized = Boolean(
@@ -5519,8 +6379,8 @@ export function createClassicalClauseRelationControllerGlobals(
           canonicalRequest: {
             routeId: request.routeId,
             relation: request.relation,
-            slotIds: Object.keys(slots),
-            choices,
+            slotIds: Object.keys(request.slots),
+            choices: request.choices,
           },
           canonicalResult,
           authorized,
@@ -5560,7 +6420,8 @@ export function createClassicalClauseRelationControllerGlobals(
           order: contract.derived.order,
           adjunctor: contract.derived.adjunctor,
         };
-        if (contract.derived.modifierClauseType === "transitive-vnc") {
+        if (contract.derived.modifierClauseType === "transitive-vnc"
+          || contract.derived.linkRole === "supplement-possessor") {
           request.linkRole = contract.derived.linkRole;
         }
         if (contract.derived.compoundHeadTarget !== "simple-head") {
@@ -5671,8 +6532,6 @@ export function createClassicalClauseRelationControllerGlobals(
       }
       if (contract.relation === "time") {
         request.timeProfile = contract.relationProfile;
-        request.explicitAdverbialIndicator = contract.relationProfile === "explicit";
-        request.principalCorroboratingAdverbial = contract.relationProfile === "corroborating";
       } else if (contract.relation === "condition") {
         request.conditionType = contract.relationProfile;
         request.conditionalCuePresent = !markerCapture
@@ -5731,11 +6590,13 @@ export function createClassicalClauseRelationControllerGlobals(
       version: CONTROLLER_VERSION,
       issueDiscourseSourceContextFrame,
       captureCurrentResult,
+      getCapturedCanonicalResult: role => getValidatedCapture(role)?.canonicalResult || null,
+      continueCapturedIntervener,
       clearCapture,
       getState,
       applyBindingFrame,
       getMarkerProfilesForRelation:
-        getClassicalClauseRelationMarkerProfiles,
+        getActiveMarkerProfilesForRelation,
       issueRelationAvailabilityContract,
       isRelationAvailabilityContract,
       buildDecisionContract,
@@ -5772,6 +6633,8 @@ export function createClassicalClauseRelationControllerGlobals(
     getClassicalClauseRelationMarkerProfiles,
     issueClassicalClauseRelationBindingFrame,
     isClassicalClauseRelationBindingFrame,
+    issueClassicalClauseMarkerEntryProjection,
+    isClassicalClauseMarkerEntryProjection,
     createClassicalClauseRelationControllerGlobals,
     createClassicalClauseRelationController,
   };
@@ -5780,8 +6643,13 @@ export function createClassicalClauseRelationControllerGlobals(
 
 export function installClassicalClauseRelationControllerGlobals(
   targetObject = globalThis,
+  installationContext = {},
 ) {
-  const api = createClassicalClauseRelationControllerGlobals(targetObject);
+  const controllerTarget = Object.create(targetObject);
+  Object.defineProperties(controllerTarget, Object.getOwnPropertyDescriptors(
+    installationContext?.moduleDependencyCapabilities || {},
+  ));
+  const api = createClassicalClauseRelationControllerGlobals(controllerTarget);
   Object.defineProperties(targetObject, Object.getOwnPropertyDescriptors(api));
   installClassicalLateValidationOwnersGlobals(targetObject);
   return api;

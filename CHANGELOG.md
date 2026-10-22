@@ -2,6 +2,17 @@
 
 User-facing release notes for Classical Nahuatl Grammar.
 
+## Version 1.2.8 — Language and Interface Update
+
+Released October 22, 2026.
+
+- Organizes the composing interface by language structure, formation, participants, sentence form, and linking.
+- Repairs reviewed Source, grammatical-choice, Result, and continuation boundaries across VNC, NNC, and particles.
+- Adds explicit Writing Source and licensed whole-writing Results, with direct editing and session History/Undo restoration.
+- Preserves accepted Results while staging changes until explicit Make Result.
+- Adds action/navigation icons while retaining text labels.
+- Makes unsupported reload and Writing-context limits explicit. Long-session speed and comprehensive conditional coverage remain qualified.
+
 ## Version 1.2.7 — Grammar Interface Update
 
 Prepared September 22, 2026.

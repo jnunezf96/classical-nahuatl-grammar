@@ -1,4 +1,5 @@
 // Canonical modern ESM module.
+import { getFrequentativeDestockalConstitution } from "./frequentative_destockal_structure.mjs";
 
 import {
   getClassicalNahuatlKarttunen1992DerivationEvidenceMatches,
@@ -15,9 +16,11 @@ import {
   evaluateClassicalNahuatlGrammarSelection,
   getClassicalNahuatlInherentImpersonalSourceAnalysis,
   getClassicalNahuatlTlaImpersonalSourceAnalysis,
-} from "./vnc_lessons20_22_grammar.mjs?v=20260904-ni-stock-ocr-corrections-414";
+} from "./vnc_lessons20_22_grammar.mjs?v=20261001-reader-26-4-optional-weather-2";
 import {
   buildClassicalNahuatlParticipantRoleTransitionFrame,
+  buildClassicalNahuatlParticipantFrame,
+  isClassicalNahuatlParticipantFrame,
 } from "./participant_frame.mjs?v=20260823-passive-formation-continuity-238";
 
 export const CLASSICAL_NAHUATL_VNC_TARGET_VOICES = Object.freeze([
@@ -314,21 +317,37 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
     const CLASSICAL_NAHUATL_VNC_SLOT_SOURCE_DOCUMENT = "ANDREWS_TRANSCRIPTION_CANVAS.md";
     const CLASSICAL_NAHUATL_VNC_SLOT_SQUARE_ZERO = "\u2395";
     const CLASSICAL_NAHUATL_LESSON20_ISSUED_NONACTIVE_RECORDS = new WeakSet();
+    const classicalNahuatlNonactiveCoreVoiceChainReceipts = new WeakMap();
     const CLASSICAL_NAHUATL_ISSUED_NONACTIVE_SOURCE_IDENTITIES = new WeakSet();
     const CLASSICAL_NAHUATL_ISSUED_NONACTIVE_LEXICAL_LICENSES = new WeakSet();
     const CLASSICAL_NAHUATL_ISSUED_CONTEXTUAL_FORMULA_CARRIER_PROJECTIONS = new WeakSet();
     const CLASSICAL_NAHUATL_LESSON23_ISSUED_OBJECT_CLUSTER_FRAMES = new WeakSet();
+    const classicalNahuatlObjectClusterParticipantReceipts = new WeakMap();
+    const classicalNahuatlRetainedObjectParticipants = new WeakSet();
     const CLASSICAL_NAHUATL_LESSON23_ISSUED_OBJECT_ROLE_AMBIGUITY_FRAMES = new WeakSet();
     const CLASSICAL_NAHUATL_LESSON23_ISSUED_MULTIPLE_OBJECT_VNC_FRAMES = new WeakSet();
+    const classicalNahuatlMultipleObjectFormulaSources = new WeakMap();
     const classicalNahuatlIssuedVncDiagrammaticFrames = new WeakSet();
-    function cloneClassicalNahuatlVncSlotValue(value) {
-      if (Array.isArray(value)) {
-        return value.map(entry => cloneClassicalNahuatlVncSlotValue(entry));
-      }
-      if (!value || typeof value !== "object") {
-        return value;
-      }
-      return Object.fromEntries(Object.entries(value).map(([key, entry]) => [key, cloneClassicalNahuatlVncSlotValue(entry)]));
+    function cloneClassicalNahuatlVncSlotValue(value, seen = new WeakMap()) {
+      if (!value || typeof value !== "object") return value;
+      // Accepted canonical Participants are immutable semantic operands. Slot
+      // realization copies morphology, while retaining those exact referents.
+      if (classicalNahuatlRetainedObjectParticipants.has(value)) return value;
+      if (seen.has(value)) return seen.get(value);
+      const cloned = Array.isArray(value) ? [] : {};
+      seen.set(value, cloned);
+      const entries = Array.isArray(value)
+        ? Array.from({ length: value.length }, (_, index) => index)
+          .filter(index => index in value).map(index => [String(index), value[index]])
+        : Object.entries(value);
+      entries.forEach(([key, entry]) => {
+        Object.defineProperty(cloned, key, {
+          value: cloneClassicalNahuatlVncSlotValue(entry, seen),
+          enumerable: true, writable: true, configurable: true,
+        });
+      });
+      if (Array.isArray(value)) cloned.length = value.length;
+      return cloned;
     }
     function normalizeClassicalNahuatlVncSlotCarrier(value = "") {
       return String(value == null ? "" : value).trim();
@@ -543,7 +562,7 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         if (normalizedSurfaceCarrier === "0-im") {
           return `${CLASSICAL_NAHUATL_VNC_SLOT_SQUARE_ZERO}-in`;
         }
-        return position?.objectPerson === "3sg"
+        return (position?.morphologicalObjectPerson || position?.objectPerson) === "3sg"
           ? `${CLASSICAL_NAHUATL_VNC_SLOT_SQUARE_ZERO}-0`
           : `${CLASSICAL_NAHUATL_VNC_SLOT_SQUARE_ZERO}-${CLASSICAL_NAHUATL_VNC_SLOT_SQUARE_ZERO}`;
       }
@@ -1157,7 +1176,12 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
     }
     function applyClassicalNahuatlDirectionalProgressiveAssimilation(frame = null, directional = {}) {
       const predicate = frame?.slots?.predicate || null;
-      const sourceStem = normalizeClassicalNahuatlVncSlotStem(predicate?.stem || "");
+      const prePredicate = frame?.slots?.prePredicate || [];
+      const directionalIndex = prePredicate.findIndex(slot => slot.kind === "vnc-internal-directional");
+      const adjacentSlot = directionalIndex >= 0
+        ? prePredicate.slice(directionalIndex + 1).find(slot => !isClassicalNahuatlVncSilentCarrier(slot.carrier)) || predicate
+        : null;
+      const sourceStem = normalizeClassicalNahuatlVncSlotStem(adjacentSlot === predicate ? predicate?.stem || "" : adjacentSlot?.carrier || "");
       const directionalPrefix = normalizeClassicalNahuatlVncSlotCarrier(directional?.directionalPrefix || "");
       const lesson210BoundaryRequired = directionalPrefix === "huāl" && /^(?:tl|y)/u.test(sourceStem);
       if (!lesson210BoundaryRequired) {
@@ -1185,8 +1209,13 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
       const operationFrame = runtimeTarget.buildClassicalNahuatlProgressiveAssimilationFrame(`${directionalPrefix}-${sourceStem}`);
       const realizedPredicateStem = Array.isArray(operationFrame.realizedMorphs) ? operationFrame.realizedMorphs.slice(1).join("-") : "";
       const authorized = operationFrame.authorizationStatus === "authorized" && operationFrame.transformationApplied === true && Boolean(realizedPredicateStem);
-      if (authorized && predicate) {
-        predicate.stem = realizedPredicateStem;
+      if (authorized && adjacentSlot) {
+        if (adjacentSlot === predicate) {
+          predicate.stem = realizedPredicateStem;
+        } else {
+          adjacentSlot.carrier = realizedPredicateStem;
+          if (adjacentSlot.kind === "monadic-valence") adjacentSlot.va = realizedPredicateStem;
+        }
       }
       return {
         required: true,
@@ -1202,7 +1231,9 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
     function realizeClassicalNahuatlVncSlotFrameAtFinalBoundary({
       vncSlotFrame = null,
       expandedVncBoundaryFrame = null,
-      objectRelationshipRuleFrame = null
+      objectRelationshipRuleFrame = null,
+      initialVowelKind = "",
+      imperfectiveSourceFrame = null
     } = {}) {
       if (!isClassicalNahuatlVncSlotFrame(vncSlotFrame)) {
         return {
@@ -1216,6 +1247,14 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         };
       }
       const realizedFrame = cloneClassicalNahuatlVncSlotValue(vncSlotFrame);
+      const runtimeTarget = getClassicalNahuatlVncLayerRuntimeTarget();
+      if (imperfectiveSourceFrame && (!runtimeTarget.isClassicalNahuatlImperfectiveVncSourceFrame?.(imperfectiveSourceFrame)
+        || imperfectiveSourceFrame.sourceAnalysis?.finalImperfectiveVowelRealization!=="ordinary-long-vowel"
+        || imperfectiveSourceFrame.sourceAnalysis?.sourceForm!=="full-imperfective"
+        || imperfectiveSourceFrame.sourceStem!==vncSlotFrame.slots.predicate.stem)) {
+        return {kind:"classical-nahuatl-vnc-sentence-final-boundary-realization-frame",authorizationStatus:"blocked",
+          blockReason:"issued-full-imperfective-quantity-source-required",typedSlotAuthority:true,formulaStringAuthority:false,formulaRealization:"",actions:[]};
+      }
       realizedFrame.phase = "final-boundary-realization";
       realizedFrame.sourceSemanticIdentity = vncSlotFrame.semanticIdentity;
       const actions = ["assemble-slot-order-before-final-boundary-realization", "realize-final-formula-boundaries-after-slot-order"];
@@ -1283,8 +1322,32 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
       const nextSound = getClassicalNahuatlVncSlotFirstSound(nextCarrier);
       const nextNeedsSupport = Boolean(nextSound && !isClassicalNahuatlVncSlotVowelSound(nextSound));
       const secondPluralSubject = ["am", "an", "az", "ax"].includes(subject.pers1);
+      let subjectNasalAssimilation = null;
       if (secondPluralSubject) {
-        subject.pers1 = nextSound === "z" || nextSound === "x" ? `a${nextSound}` : isClassicalNahuatlVncSlotVowelSound(nextSound) || nextSound === "m" || nextSound === "p" ? "am" : "an";
+        // Andrews §2.11.1 permits the nasal source spelling even when its
+        // pronunciation assimilates. Keep the typed subject morph; the sound
+        // owner still supplies the sibilant pronunciation (§30.12 an+xōchi).
+        if (["z", "x"].includes(nextSound)) {
+          subjectNasalAssimilation = getClassicalNahuatlVncLayerRuntimeTarget()
+            ?.buildClassicalNahuatlAssimilationFrame?.({
+              leftConsonant: "n", rightConsonant: nextSound,
+              sourceLeftMorpheme: "an", sourceRightMorpheme: nextCarrier,
+              grammaticalConstruction: true, spellingStyle: "source-preserving",
+            });
+          if (subjectNasalAssimilation?.authorizationStatus !== "authorized") {
+            return {
+              kind: "classical-nahuatl-vnc-sentence-final-boundary-realization-frame",
+              authorizationStatus: "blocked",
+              blockReason: "lesson2-11-subject-nasal-boundary-not-realized",
+              subjectNasalAssimilation,
+            };
+          }
+          subject.pers1 = subjectNasalAssimilation.realizedLeftMorpheme;
+          actions.push("preserve-second-plural-subject-source-spelling-with-issued-sibilant-pronunciation");
+        } else {
+          subject.pers1 = isClassicalNahuatlVncSlotVowelSound(nextSound)
+            || nextSound === "m" || nextSound === "p" ? "am" : "an";
+        }
         if (subject.pers1 !== subjectBefore) {
           actions.push("realize-second-plural-subject-nasal-after-slot-order");
         }
@@ -1295,6 +1358,59 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         }
       }
       const prePredicate = realizedFrame.slots.prePredicate;
+      // The final multiple-object order can place a mainline reflexive
+      // immediately before a real stem vowel (Andrews 2.6, 7.8 note 1).
+      // Keep the issued participant position; realize only its vowel morph.
+      const finalObject = prePredicate.at(-1);
+      const finalObjectKind = finalObject?.objectPositionFrame?.objectKind
+        || (prePredicate.filter(slot => /^valence(?:-|$)/u.test(slot?.id || "")).length === 1
+          ? realizedFrame.objectProfile?.objectKind : "");
+      if (initialVowelKind === "supportive"
+        && ["monadic-valence", "dyadic-valence"].includes(finalObject?.kind)) {
+        const initialBoundary = targetObject.buildClassicalNahuatlVerbstemInitialSupportiveIFrame?.(
+          realizedFrame.slots.predicate.stem,
+          { valence: finalObjectKind === "nonspecific-nonhuman"
+              ? "projective-nonhuman" : finalObjectKind,
+            initialVowelKind }
+        );
+        if (initialBoundary?.initialSupportiveIDropped) {
+          realizedFrame.slots.predicate.stem = initialBoundary.stemRealization;
+          actions.push("drop-imaginary-initial-i-after-restored-object-boundary");
+        }
+      }
+      if (initialVowelKind === "real"
+        && isClassicalNahuatlVncSlotVowelSound(
+          getClassicalNahuatlVncSlotFirstSound(realizedFrame.slots.predicate.stem),
+        )
+        && finalObject?.kind === "dyadic-valence"
+        && ["reflexive", "mainline-reflexive"].includes(finalObjectKind)
+        && finalObject.va2 === "o") {
+        finalObject.va2 = CLASSICAL_NAHUATL_VNC_SLOT_SQUARE_ZERO;
+        finalObject.carrier = `${finalObject.va1}-${finalObject.va2}`;
+        finalObject.formulaCarrier = finalObject.carrier;
+        actions.push("dismiss-mainline-reflexive-o-before-real-initial-vowel");
+      }
+      // Restored object clusters can follow a newly completed subject carrier.
+      // Realize /k/ against its actual neighbors, including a following
+      // reflexive, rather than retaining the earlier stem-only spelling.
+      prePredicate.forEach((slot, index) => {
+        const position = slot.objectPositionFrame;
+        if (slot.kind !== "dyadic-valence"
+          || position?.objectKind !== "specific-projective"
+          || position.objectPerson !== "3sg"
+          || !["c", "qu", "qui"].includes(slot.va1)) return;
+        const dyad = getClassicalNahuatlSpecificDyad("3sg", {
+          sounded: true,
+          leftCarrier: getClassicalNahuatlVncCarrierBeforeSlot(realizedFrame, index),
+          rightCarrier: getClassicalNahuatlVncCarrierAfterSlot(realizedFrame, index),
+        });
+        if (slot.va1 !== dyad.va1) {
+          actions.push("realize-cluster-third-singular-k-object-after-slot-order");
+          slot.va1 = dyad.va1;
+          slot.carrier = `${slot.va1}-${slot.va2}`;
+          slot.formulaCarrier = slot.carrier;
+        }
+      });
       const valenceIndex = prePredicate.findIndex(slot => slot.id === "valence");
       const valenceSlot = valenceIndex >= 0 ? prePredicate[valenceIndex] : null;
       const objectMorphIdentityFrame = cloneClassicalNahuatlVncSlotValue(valenceSlot?.morphIdentityFrame || realizedFrame.objectMorphIdentityFrame || null);
@@ -1346,6 +1462,31 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
           actions.push("replace-pers1-supportive-i-with-o-before-c-on");
         }
       }
+      const directionalSlotIndex = prePredicate.findIndex(slot => slot.kind === "vnc-internal-directional");
+      const directionalSlot = prePredicate[directionalSlotIndex];
+      const followingSlot = directionalSlotIndex >= 0
+        ? prePredicate.slice(directionalSlotIndex + 1).find(slot => !isClassicalNahuatlVncSilentCarrier(slot.carrier))
+        : null;
+      const followingCarrier = followingSlot?.carrier || realizedFrame.slots.predicate.stem;
+      let directionalNasalAssimilation = null;
+      if (directionalSlot?.carrier === "on" && /^[mp]/u.test(followingCarrier)) {
+        directionalNasalAssimilation = getClassicalNahuatlVncLayerRuntimeTarget()?.buildClassicalNahuatlAssimilationFrame?.({
+          leftConsonant: "n",
+          rightConsonant: followingCarrier[0],
+          sourceLeftMorpheme: directionalSlot.carrier,
+          sourceRightMorpheme: followingCarrier,
+        });
+        if (directionalNasalAssimilation?.authorizationStatus !== "authorized") {
+          return {
+            kind: "classical-nahuatl-vnc-sentence-final-boundary-realization-frame",
+            authorizationStatus: "blocked",
+            blockReason: "lesson2-11-directional-nasal-boundary-not-realized",
+            directionalNasalAssimilation,
+          };
+        }
+        directionalSlot.carrier = directionalNasalAssimilation.realizedLeftMorpheme;
+        actions.push("realize-lesson2-11-directional-nasal-before-adjacent-bilabial");
+      }
       const number = realizedFrame.slots.number;
       const num1Before = number.num1;
       const num1LeftCarrierSource = !isClassicalNahuatlVncSilentCarrier(realizedFrame.slots.predicate.tns) ? "tns" : "stem";
@@ -1377,6 +1518,25 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         }
         actions.push("realize-num1-k-connector-after-final-predicate");
       }
+      // A long full-imperfective citation remains the Source. Only its written
+      // terminal phone changes (§2.2); a following tense consonant preserves it.
+      let imperfectiveFinalVowelRealizationFrame = null;
+      const finalLongVowel = imperfectiveSourceFrame && /[āēīō]$/u.exec(realizedFrame.slots.predicate.stem)?.[0];
+      const followers = [realizedFrame.slots.predicate.tns,number.num1,number.num2].filter(c=>!isClassicalNahuatlVncSilentCarrier(c)).join("");
+      if (finalLongVowel && (!followers || followers==="h")) {
+        const shortVowel = {ā:"a",ē:"e",ī:"i",ō:"o"}[finalLongVowel];
+        imperfectiveFinalVowelRealizationFrame = runtimeTarget.buildClassicalNahuatlSegmentRealizationFrame({
+          segment:finalLongVowel,phone:followers?shortVowel:shortVowel+"·",
+          position:followers?"vocable-medial":"vocable-final",environment:followers?"before-glottal-stop":"vocable-final",
+          realizationClass:followers?"regular":"reduced-long"});
+        if (imperfectiveFinalVowelRealizationFrame.authorizationStatus!=="authorized"
+          || !runtimeTarget.isClassicalNahuatlTranscriptionAnalysisFrame(imperfectiveFinalVowelRealizationFrame)) {
+          return {kind:"classical-nahuatl-vnc-sentence-final-boundary-realization-frame",authorizationStatus:"blocked",
+            blockReason:"full-imperfective-final-vowel-realization-required",formulaRealization:"",actions};
+        }
+        realizedFrame.slots.predicate.stem=realizedFrame.slots.predicate.stem.slice(0,-1)+imperfectiveFinalVowelRealizationFrame.outputSpelling;
+        actions.push(followers?"shorten-imperfective-final-long-vowel-before-grammatical-h":"write-reduced-long-imperfective-final-vowel-without-macron");
+      }
       realizedFrame.semanticIdentity = [subject.pers1, subject.pers2, ...prePredicate.map(slot => slot.carrier), realizedFrame.slots.predicate.stem, realizedFrame.slots.predicate.tns, number.num1, number.num2].join("|");
       const formulaRealization = renderClassicalNahuatlVncSlotFrameFormula(realizedFrame);
       return {
@@ -1393,6 +1553,8 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         inputFormulaRole: "display-artifact-not-authority",
         formulaRealization,
         typedSlotFrame: realizedFrame,
+        imperfectiveSourceFrame,
+        imperfectiveFinalVowelRealizationFrame,
         sourceTypedSlotFrame: cloneClassicalNahuatlVncSlotValue(vncSlotFrame),
         sourceSemanticIdentity: vncSlotFrame.semanticIdentity,
         finalSemanticIdentity: realizedFrame.semanticIdentity,
@@ -1411,6 +1573,8 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         predicateStemAfterDirectionalStemOperation:
           directionalStemOperationEvaluationFrame.selectedStem,
         directionalProgressiveAssimilation,
+        directionalNasalAssimilation,
+        subjectNasalAssimilation,
         directionalProgressiveAssimilationApplied: directionalProgressiveAssimilation.applied === true,
         directionalProgressiveAssimilationRuleIds: directionalProgressiveAssimilation.selectedRuleIds || [],
         predicateStemBeforeDirectionalAssimilation: directionalProgressiveAssimilation.sourcePredicateStem || "",
@@ -1447,9 +1611,14 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         surfaceGenerationAllowed: false
       };
     }
-    const CLASSICAL_NAHUATL_NONACTIVE_SUFFIX_FAMILIES = Object.freeze(["lō", "ō", "hua", "o-hua", "lo-hua", "hua-lō"]);
+    const CLASSICAL_NAHUATL_NONACTIVE_SUFFIX_FAMILIES = Object.freeze(["lō", "ō", "o", "hua", "o-hua", "lo-hua", "hua-lō"]);
     const CLASSICAL_NAHUATL_NONACTIVE_FORMATION_CORES = Object.freeze(["o", "lo", "hua"]);
     const CLASSICAL_NAHUATL_NONACTIVE_FORMATION_STRUCTURES = Object.freeze({
+      "o": Object.freeze({
+        formationCore: "o",
+        continuation: "terminal",
+        sequence: Object.freeze(["o"])
+      }),
       "ō": Object.freeze({
         formationCore: "o",
         continuation: "terminal",
@@ -1489,15 +1658,17 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
     // explicitly unresolved; it must not fall through to an invented generic rule.
     const CLASSICAL_NAHUATL_LESSON20_ACTIVE_STEM_IDENTITIES = Object.freeze([Object.freeze({
       identityId: "chihua-chihua-quantity-allomorphy",
-      canonicalImperfectiveStem: "chihua",
+      canonicalImperfectiveStem: "chīhua",
       allowedAllomorphs: Object.freeze(["chīhua", "chihua"]),
-      verbClasses: Object.freeze(["A"]),
+      // §20.2 identifies the active source as B; §20.8 assigns A
+      // to the derived nonactive, independently of its active source.
+      verbClasses: Object.freeze(["B"]),
       sourceValenceModes: Object.freeze(["transitive"]),
-      allomorphy: "imperfective-short-i-perfective-long-i",
+      allomorphy: "source-long-i-preserved",
       identityRuleId: "cn-l20-2-chihua-quantity-allomorphy",
       andrewsSections: Object.freeze(["20.2"]),
       nonactiveBasePolicy:
-        "use-short-i-imperfective-and-long-i-perfective-nonactive-bases",
+        "preserve-long-i-in-both-nonactive-aspects",
     }), Object.freeze({
       identityId: "chiya-chiye-wait",
       canonicalImperfectiveStem: "chiya",
@@ -1536,6 +1707,42 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
     // This is an override/alternative inventory, never a whitelist. Any well-shaped
     // stem absent here continues through the productive Lesson 20 ending rules.
     const CLASSICAL_NAHUATL_LESSON20_FIXED_FORMATIONS = Object.freeze({
+      // §38.1 documents optional nonactive operands outside the ordinary
+      // ending rules. These license the verb operation, never a noun output.
+      "cochi": Object.freeze([Object.freeze({
+        finalShapeReplacement: Object.freeze({ ending: "i", replacement: "-ō" }),
+        suffixFamily: "ō", ruleId: "cn-l38-1-cochi-o-variant",
+        formationAuthority: "optional-variant", sourceValenceMode: "intransitive"
+      })]),
+      "ī": Object.freeze([Object.freeze({
+        nonactiveStem: "ī-lō", suffixFamily: "lō",
+        ruleId: "cn-l38-1-drink-lo-variant",
+        formationAuthority: "optional-variant", sourceValenceMode: "transitive"
+      })]),
+      "pix-ca": Object.freeze([Object.freeze({
+        finalShapeReplacement: Object.freeze({ ending: "ca", replacement: "quī-hua" }),
+        suffixFamily: "hua", ruleId: "cn-l38-1-pixca-replacive-hua",
+        formationAuthority: "optional-variant", sourceValenceMode: "intransitive"
+      })]),
+      "chihcha": Object.freeze([Object.freeze({
+        finalShapeReplacement: Object.freeze({ ending: "a", replacement: "ī-hua" }),
+        suffixFamily: "hua", ruleId: "cn-l38-1-chihcha-replacive-hua",
+        formationAuthority: "optional-variant", sourceValenceMode: "intransitive"
+      })]),
+      "xō-tla": Object.freeze([Object.freeze({
+        finalShapeReplacement: Object.freeze({ ending: "tla", replacement: "chī-hua" }),
+        suffixFamily: "hua", ruleId: "cn-l38-1-xotla-replacive-hua",
+        formationAuthority: "optional-variant", sourceValenceMode: "intransitive"
+      })]),
+      "nemi": Object.freeze([Object.freeze({
+        finalShapeReplacement: Object.freeze({ ending: "i", replacement: "-o" }),
+        suffixFamily: "o",
+        ruleId: "cn-l28-7-6-nemi-o-variant",
+        andrewsSection: "28.7.6",
+        formationAuthority: "optional-variant",
+        allowedSourceValences: Object.freeze(["intransitive"]),
+        allowedVerbClasses: Object.freeze(["B"])
+      })]),
       "ahci": Object.freeze([Object.freeze({
         nonactiveStem: "ahxī-hua",
         suffixFamily: "hua",
@@ -1543,7 +1750,7 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         formationAuthority: "obligatory-exception"
       })]),
       "cuīca": Object.freeze([Object.freeze({
-        nonactiveStem: "cuic-ō",
+        nonactiveStem: "cuīc-ō",
         suffixFamily: "ō",
         ruleId: "cn-l20-5-cuica-exception",
         formationAuthority: "obligatory-exception"
@@ -1556,7 +1763,7 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         allowedSourceValences: Object.freeze(["projective-human"])
       })]),
       "ilpi-ā": Object.freeze([Object.freeze({
-        nonactiveStem: "ilpi-lō",
+        nonactiveStem: "ilpī-lō",
         suffixFamily: "lō",
         ruleId: "cn-l38-1-4-ilpia-lo-human-source",
         formationAuthority: "optional-variant",
@@ -1569,7 +1776,7 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         formationAuthority: "suppletive-lexical-rule"
       })]),
       "chihua": Object.freeze([Object.freeze({
-        nonactiveStem: "chihua-lō",
+        nonactiveStem: "chīhua-lō",
         perfectiveNonactiveStem: "chīhua-lō",
         suffixFamily: "lō",
         ruleId: "cn-l20-2-chihua",
@@ -1601,7 +1808,7 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         ruleId: "cn-l20-6-cui",
         formationAuthority: "productive-rule"
       }), Object.freeze({
-        nonactiveStem: "cui-hua-lō",
+        nonactiveStem: "cuī-hua-lō",
         suffixFamily: "hua-lō",
         ruleId: "cn-l20-7-cui-hua-lo-variant",
         formationAuthority: "optional-variant"
@@ -1633,8 +1840,8 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         ruleId: "cn-l20-3-huallauh",
         formationAuthority: "suppletive-lexical-rule"
       })]),
-      "huica-tz": Object.freeze([Object.freeze({
-        nonactiveStem: "huica-lo-hua-tz",
+      "huīca-tz": Object.freeze([Object.freeze({
+        nonactiveStem: "huīca-lo-hua-tz",
         suffixFamily: "lo-hua",
         ruleId: "cn-l20-3-huicatz",
         formationAuthority: "suppletive-lexical-rule",
@@ -1719,7 +1926,7 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         ruleId: "cn-l20-5-mani",
         formationAuthority: "productive-rule"
       }), Object.freeze({
-        nonactiveStem: "mani-hua",
+        nonactiveStem: "manī-hua",
         suffixFamily: "hua",
         ruleId: "cn-l20-5-mani-variant",
         formationAuthority: "optional-variant"
@@ -1728,7 +1935,8 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         nonactiveStem: "mamali-o-hua",
         suffixFamily: "o-hua",
         ruleId: "cn-l20-5-mamali-transitive",
-        formationAuthority: "productive-lexical-class-rule"
+        formationAuthority: "productive-lexical-class-rule",
+        preserveProductiveDecisionCategories: Object.freeze(["general-final-i-o"])
       }), Object.freeze({
         nonactiveStem: "mamalī-hua-lō",
         suffixFamily: "hua-lō",
@@ -1740,15 +1948,6 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         suffixFamily: "ō",
         ruleId: "cn-l20-4-mati",
         formationAuthority: "obligatory-exception"
-      })]),
-      "nēci": Object.freeze([Object.freeze({
-        nonactiveStem: "nex-o-hua",
-        suffixFamily: "o-hua",
-        ruleId: "cn-l20-5-neci-short-e",
-        vowelLengthRuleId: "cn-l20-5-neci-preserve-short-root-e",
-        formationAuthority: "obligatory-exception",
-        andrewsSection: "20.5",
-        sourceValenceMode: "intransitive"
       })]),
       "panō": Object.freeze([Object.freeze({
         nonactiveStem: "panō-lō",
@@ -1764,12 +1963,13 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
       })]),
       "pā-tz-ca": Object.freeze([Object.freeze({
         nonactiveStem: "pā-tz-ca-lō",
+        preserveProductiveDecisionCategories: Object.freeze(["projective-final-a-hua"]),
         suffixFamily: "lō",
         ruleId: "cn-l20-2-class-a-patzca",
         formationAuthority: "productive-lexical-class-rule"
       })]),
       "piya": Object.freeze([Object.freeze({
-        nonactiveStem: "piya-lō",
+        imperfectiveBaseSuffix: "lō",
         suffixFamily: "lō",
         ruleId: "cn-l20-2-class-b-piya-full-stem",
         formationAuthority: "productive-lexical-class-rule"
@@ -1785,6 +1985,43 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         suffixFamily: "lō",
         ruleId: "cn-l20-2-class-b-quetza",
         formationAuthority: "productive-lexical-class-rule"
+      }), Object.freeze({
+        nonactiveStem: "quech-ō",
+        suffixFamily: "ō",
+        ruleId: "cn-l37-9-quetza-quecho-passive-allomorph",
+        andrewsSection: "37.9.1.b",
+        formationAuthority: "optional-variant",
+        sourceValenceMode: "transitive",
+        allowedVerbClasses: Object.freeze(["B"])
+      })]),
+      // §37.9.1.c explicitly identifies these unexpected nonactive stems.
+      // They license the nonactive operand, never the finished patientive.
+      "ic-za": Object.freeze([Object.freeze({
+        finalShapeReplacement: Object.freeze({ ending: "za", replacement: "xī-hua" }),
+        suffixFamily: "hua",
+        ruleId: "cn-l37-9-icza-icxihua-passive-allomorph",
+        andrewsSection: "37.9.1.c",
+        formationAuthority: "optional-variant",
+        sourceValenceMode: "transitive",
+        allowedVerbClasses: Object.freeze(["A"])
+      })]),
+      "ohza": Object.freeze([Object.freeze({
+        finalShapeReplacement: Object.freeze({ ending: "za", replacement: "xī-hua" }),
+        suffixFamily: "hua",
+        ruleId: "cn-l37-9-ohza-ohxihua-passive-allomorph",
+        andrewsSection: "37.9.1.c",
+        formationAuthority: "optional-variant",
+        sourceValenceMode: "transitive",
+        allowedVerbClasses: Object.freeze(["A"])
+      })]),
+      "mōtla": Object.freeze([Object.freeze({
+        finalShapeReplacement: Object.freeze({ ending: "tla", replacement: "chī-hua" }),
+        suffixFamily: "hua",
+        ruleId: "cn-l37-9-motla-mochihua-passive-allomorph",
+        andrewsSection: "37.9.1.c",
+        formationAuthority: "optional-variant",
+        sourceValenceMode: "transitive",
+        allowedVerbClasses: Object.freeze(["A"])
       })]),
       "teci": Object.freeze([Object.freeze({
         nonactiveStem: "tecī-hua",
@@ -1836,18 +2073,12 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         sourceValenceMode: "intransitive"
       })]),
       "tēmi": Object.freeze([Object.freeze({
-        nonactiveStem: "tēmi-hua",
+        nonactiveStem: "tēmī-hua",
         suffixFamily: "hua",
         ruleId: "cn-l20-5-temi",
-        vowelLengthRuleId: "cn-l20-5-temi-preserve-short-final-i",
+        vowelLengthRuleId: "cn-l20-5-temi-final-i-lengthening",
         formationAuthority: "obligatory-exception",
         andrewsSection: "20.5"
-      })]),
-      "tla-chiya": Object.freeze([Object.freeze({
-        nonactiveStem: "tla-chiya-lō",
-        suffixFamily: "lō",
-        ruleId: "cn-l20-2-class-b-tlachiya-full-stem",
-        formationAuthority: "productive-lexical-class-rule"
       })]),
       "tiāmiqui": Object.freeze([Object.freeze({
         nonactiveStem: "tiāmic-ō",
@@ -1863,15 +2094,8 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         vowelLengthRuleId: "cn-l20-5-tzahtzi-lexical-final-i-lengthening",
         formationAuthority: "obligatory-exception"
       })]),
-      "yōli": Object.freeze([Object.freeze({
-        nonactiveStem: "yōli-hua",
-        suffixFamily: "hua",
-        ruleId: "cn-l20-6-yoli",
-        formationAuthority: "obligatory-exception"
-      })]),
       "ya-uh": Object.freeze([Object.freeze({
-        nonactiveStem: "hui-lo-hua",
-        imperfectiveNonactiveStem: "hui-lō-hua",
+        nonactiveStem: "huī-lo-hua",
         suffixFamily: "lo-hua",
         ruleId: "cn-l20-3-yauh",
         formationAuthority: "suppletive-lexical-rule"
@@ -1923,8 +2147,18 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         )
         ? filterClassicalNahuatlLesson20FormationsForContext(
           resolution.formations,
-          { sourceValence: sourceIdentityFrame.sourceValence }
-        )
+          { sourceValence: sourceIdentityFrame.sourceValence,
+            verbClass: sourceIdentityFrame.verbClass }
+        ).map(formation => formation.imperfectiveBaseSuffix
+          && sourceIdentityFrame.nonactiveBasePolicy === "licensed-active-allomorph-is-imperfective-base"
+          ? { ...formation, nonactiveStem: `${sourceIdentityFrame.enteredStem}-${formation.imperfectiveBaseSuffix}` }
+          : formation.finalShapeReplacement
+          ? { ...formation, nonactiveStem: replaceClassicalNahuatlLesson20FinalShape(
+              sourceIdentityFrame.sourceFinalShapeFrame,
+              formation.finalShapeReplacement.ending,
+              formation.finalShapeReplacement.replacement
+            ) }
+          : formation)
         : [];
       const authorized = Boolean(formations.length);
       const frame = Object.freeze({
@@ -1975,6 +2209,17 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         && Array.isArray(frame.formations)
         && frame.formations.length > 0
       );
+    }
+    // Short terminal o is a licensed lexical variant, never a productive
+    // shortening of the ordinary terminal ō formation.
+    function hasClassicalNahuatlLicensedShortTerminalO(option = null, sourceStem = "") {
+      return Boolean(option?.suffixFamily === "o"
+        && isClassicalNahuatlLexicalFormationLicenseFrame(option.lexicalFormationLicenseFrame, sourceStem)
+        && option.lexicalFormationLicenseFrame.formations.some(formation =>
+          formation.suffixFamily === "o"
+          && formation.nonactiveStem === option.nonactiveStem
+          && formation.ruleId === option.ruleId
+          && formation.formationAuthority === "optional-variant"));
     }
     function getClassicalNahuatlNonactiveFormationAuthorityLabel(formationAuthority = "") {
       return {
@@ -2478,7 +2723,7 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         return finalMorpheme === "lō" || shapeFrame.letterTail.two === "lō";
       }
       if (formationCore === "o" && continuation === "terminal") {
-        return shapeFrame.finalLetter === "ō";
+        return shapeFrame.finalLetter === (suffixFamily === "o" ? "o" : "ō");
       }
       if (formationCore === "hua" && continuation === "terminal") {
         return shapeFrame.letterTail.three === "hua";
@@ -2499,9 +2744,9 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
     }
 
     // These are Canvas observations, not an authorization inventory. Andrews
-    // §20.2 states a productive Class C operation over final i + ā and then
-    // supplies a phonological exception environment. The rule frame below
-    // therefore reads Source shape; it never asks whether a stem occurs here.
+    // §20.2 lengthens Class C base-final i productively. Its exceptional
+    // short-vowel examples do not make a long antepenult a sufficient condition:
+    // §43.3 nequēntīlo explicitly contrasts with that generalization.
     const CLASSICAL_NAHUATL_LESSON20_CLASS_C_FINAL_I_LENGTH_CLASSES = Object.freeze({
       "ce-liā": "lengthen-final-i",
       "ihcuani-ā": "lengthen-final-i",
@@ -2510,19 +2755,38 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
       "chihua-l-tiā": "lengthen-final-i",
       "chīhua-l-tiā": "lengthen-final-i",
       "tequi-ti-ā": "lengthen-final-i",
-      "tla-ti-ā": "preserve-short-final-i",
+      "tla-ti-ā": "lengthen-final-i",
       "icn-ēl-iā": "preserve-short-final-i",
       "tlā-ti-ā": "preserve-short-final-i"
     });
-    // Andrews §§54.5.1.a and 55.2 explicitly analyze tla-ti-ā as the causative
-    // of the fire-denominal tla-tla, whose stem-forming tla changes to ti before
-    // causative ā. That lexical internal structure, rather than its presence in
-    // the §20.2 example list, licenses its short final i.
+    // §20.2's printed image gives burn tla-ti-ā → tla-tī-lō.
+    // Its internal causative structure does not license a short-i exception.
     const CLASSICAL_NAHUATL_LESSON20_CLASS_C_FINAL_I_LEXICAL_ANALYSES =
       Object.freeze({
-        "tla-ti-ā": Object.freeze({
-          analysisId: "fire-denominal-tla-to-ti-before-causative-a",
-          baseFinalIStatus: "stem-forming-tla-allomorph-not-ordinary-base-final-i",
+        "icn-ēl-iā": Object.freeze({
+          analysisId: "lesson20-explicit-short-i-nonactive-exception",
+          lengthClass: "preserve-short-final-i"
+        }),
+        "tlā-ti-ā": Object.freeze({
+          analysisId: "lesson20-explicit-short-i-nonactive-exception",
+          lengthClass: "preserve-short-final-i"
+        }),
+        "tlāuh-ti-ā": Object.freeze({
+          analysisId: "lesson38-explicit-short-i-nonactive-variant",
+          lengthClass: "preserve-short-final-i"
+        }),
+        // §54.5.2 supplies this lexical causative Source; §40.7 prints its
+        // short-i nonactive under §20.2's exceptional environment. This does
+        // not license shortening every Source with a long antepenultimate.
+        "teō-ti-ā": Object.freeze({
+          analysisId: "lesson40-documented-deific-short-i-nonactive-exception",
+          lengthClass: "preserve-short-final-i"
+        }),
+        // §40.8/Original414 supplies this long-ē lexical causative and its
+        // short-i nonactive. Historical cehuiā is a distinct Source; this
+        // does not make antepenultimate length a productive shortening rule.
+        "cē-hui-ā": Object.freeze({
+          analysisId: "lesson40-documented-chilled-short-i-nonactive-exception",
           lengthClass: "preserve-short-final-i"
         })
       });
@@ -2595,11 +2859,10 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
       const lexicalAnalysis =
         CLASSICAL_NAHUATL_LESSON20_CLASS_C_FINAL_I_LEXICAL_ANALYSES[
           normalizedSourceStem
-        ] || null;
-      const lengthClass = lexicalAnalysis?.lengthClass
-        || (antepenultimateVowelIsLong
-          ? "preserve-short-final-i"
-          : "lengthen-final-i");
+        ] || Object.entries(CLASSICAL_NAHUATL_LESSON20_CLASS_C_FINAL_I_LEXICAL_ANALYSES)
+          .find(([stem]) => getClassicalNahuatlBoundaryFreeLexicalKey(stem)
+            === getClassicalNahuatlBoundaryFreeLexicalKey(normalizedSourceStem))?.[1] || null;
+      const lengthClass = lexicalAnalysis?.lengthClass || "lengthen-final-i";
       const realizedBaseFinalVowel = lengthClass === "lengthen-final-i" ? "ī" : "i";
       const authorized = Boolean(normalizedSourceStem && sourceEnding);
       return Object.freeze({
@@ -2616,9 +2879,7 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         lexicalAnalysis,
         sourceLengthBasis: lexicalAnalysis
           ? "typed-lexical-internal-structure"
-          : antepenultimateVowelIsLong
-            ? "long-antepenultimate-environment"
-            : "productive-final-i-lengthening",
+          : "productive-final-i-lengthening",
         sourceLengthClass: lengthClass,
         operation: lengthClass === "lengthen-final-i" ? "replace-final-i-plus-a-with-long-i-plus-lo" : "replace-final-i-plus-a-with-short-i-plus-lo",
         realizedBaseFinalVowel,
@@ -2777,7 +3038,9 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         formationAuthority: "productive-lexical-class-rule",
         lexicalSourceIdentityFrame: sourceIdentityFrame
       }]);
-      const classBRootPlusYaAnalysis = Boolean(normalizedSourceStem && normalizedClass === "B" && finalLetters.two === "ya");
+      // Letter-tail ya alone does not establish a detachable formative:
+      // §20.2 contrasts whole tla-chīya with segmented coco-ya/yōco-ya.
+      const classBRootPlusYaAnalysis = Boolean(normalizedSourceStem && normalizedClass === "B" && finalOrthography.three === "-ya");
       const rootPlusYaSourceEnding = finalOrthography.three === "-ya" ? "-ya" : "ya";
       addRoute(classBRootPlusYaAnalysis, "class-b-root-plus-ya", 600, [{
         nonactiveStem: `${replaceClassicalNahuatlLesson20FinalShape(sourceFinalShapeFrame, rootPlusYaSourceEnding, "")}-lō`,
@@ -2891,6 +3154,11 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         formationAuthority: "productive-rule"
       }]);
       if (normalizedSourceStem && !transitiveSource) {
+        addRoute(normalizedClass === "A" && Boolean(getFrequentativeDestockalConstitution(normalizedSourceStem)), "frequentative-destockal-ca", 410, [{
+          nonactiveStem: replaceClassicalNahuatlLesson20FinalShape(sourceFinalShapeFrame, "a", "-ō"),
+          suffixFamily: "ō", ruleId: "cn-l27-4-frequentative-destockal-ca-co",
+          formationAuthority: "productive-rule", andrewsSection: "27.4.1",
+        }]);
         addRoute(["ca", "ka"].includes(finalLetters.two), "intransitive-final-ka", 400, [{
           nonactiveStem: replaceClassicalNahuatlLesson20FinalShape(sourceFinalShapeFrame, "a", "-o-hua"),
           suffixFamily: "o-hua",
@@ -2947,7 +3215,6 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         const finalTiLexicalAnalysis =
           sourceIdentityFrame.internalMorphology.finalTiLexicalAnalysis;
         const intransitivePostvocalicTi = /^[aeioāēīō]ti$/u.test(finalLetters.three)
-          && morphemicSourceProfile.edgeStructure.initialMorpheme !== "tla"
           && finalTiLexicalAnalysis?.postvocalicTiChoRouteStatus !== "blocked";
         addRoute(intransitivePostvocalicTi, "intransitive-postvocalic-ti", 420, [{
           nonactiveStem: replaceClassicalNahuatlLesson20FinalShape(sourceFinalShapeFrame, "i", "ī-hua"),
@@ -2976,15 +3243,15 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
       }
       addRoute(
         normalizedSourceStem
-          && normalizedValence === "projective-nonhuman"
+          && ["projective-nonhuman", "specific-projective"].includes(normalizedValence)
           && sourceFinalShapeFrame.finalLetter === "a",
         "projective-final-a-hua",
         200,
         [{
           nonactiveStem: replaceClassicalNahuatlLesson20FinalShape(
             sourceFinalShapeFrame,
-            "a",
-            "ī-hua"
+            finalLetters.two === "ca" ? "ca" : "a",
+            finalLetters.two === "ca" ? "quī-hua" : "ī-hua"
           ),
           suffixFamily: "hua",
           ruleId: "cn-l38-1-3c-projective-final-a-hua",
@@ -2995,7 +3262,7 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
             version: 1,
             authorizationStatus: "authorized",
             sourceAuthority:
-              "Andrews §38.1.3.c typed projective Source and final-a environment",
+              "Andrews §§38.1.3.c and 38.2.1 typed projective Source and final-a environment",
             sourceFinalVowel: "a",
             operation: "replace-active-final-a-with-long-i-before-hua",
             patientiveOperation:
@@ -3005,11 +3272,32 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
           })
         }]
       );
+      // §20.2's final-a preference is not exclusive. §20.6 contrasts
+      // ihcali-lō with hua, and §38.2 retains cui-l in a compound patientive.
+      // Keep this compatible transitive short-i choice beside ordinary hua.
+      addRoute(normalizedSourceStem && normalizedClass === "A"
+        && transitiveSource && sourceFinalShapeFrame.finalLetter === "i",
+        "compatible-transitive-short-i-lo", 50, [{
+          nonactiveStem: `${normalizedSourceStem}-lō`,
+          suffixFamily: "lō",
+          ruleId: "cn-l20-2-compatible-transitive-class-a-short-i-lo",
+          formationAuthority: "shape-licensed-possibility",
+          userSelectable: true,
+        }]);
       addRoute(normalizedSourceStem && ["a", "ā"].includes(sourceFinalShapeFrame.finalLetter), "general-final-a", 100, [{
         nonactiveStem: `${sourceFinalShapeFrame.finalLetter === "ā" ? replaceClassicalNahuatlLesson20FinalShape(sourceFinalShapeFrame, "ā", "a") : normalizedSourceStem}-lō`,
         suffixFamily: "lō",
         ruleId: "cn-l20-2-final-a",
         formationAuthority: "productive-rule"
+      }]);
+      // §20.2's "mainly" and "among" describe frequency, not an exclusive
+      // class/valence gate. A competing ending route does not delete this
+      // compatible lō alternative. Named independent restrictions still apply.
+      addRoute(normalizedSourceStem && ["A", "B"].includes(normalizedClass)
+        && sourceFinalShapeFrame.finalLetter === "a", "final-a-lo-alternative", 50, [{
+        nonactiveStem: `${normalizedSourceStem}-lō`, suffixFamily: "lō",
+        ruleId: "cn-l20-2-compatible-final-a-lo-alternative",
+        formationAuthority: "shape-licensed-possibility", userSelectable: true
       }]);
       const finalIOHuaVowelLengthRuleFrame = buildClassicalNahuatlFinalIOHuaVowelLengthRuleFrame(normalizedSourceStem);
       addRoute(normalizedSourceStem && finalIOHuaVowelLengthRuleFrame.authorizationStatus === "authorized", "general-final-i-o", 100, [{
@@ -3089,11 +3377,11 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
       return buildClassicalNahuatlProductiveCandidateSet(sourceStem, options).resolvedOptions;
     }
     function filterClassicalNahuatlLesson20FormationsForContext(formations = [], {
-      sourceValence = ""
+      sourceValence = "", verbClass = ""
     } = {}) {
       const normalizedValence = normalizeClassicalNahuatlVncSlotCarrier(sourceValence);
       const transitiveSource = isClassicalNahuatlTransitiveValence(normalizedValence);
-      return formations.filter(option => !normalizedValence || option.sourceValenceMode !== "intransitive" || !transitiveSource).filter(option => !normalizedValence || option.sourceValenceMode !== "transitive" || transitiveSource).filter(option => !option.allowedSourceValences?.length || option.allowedSourceValences.includes(normalizedValence));
+      return formations.filter(option => !normalizedValence || option.sourceValenceMode !== "intransitive" || !transitiveSource).filter(option => !normalizedValence || option.sourceValenceMode !== "transitive" || transitiveSource).filter(option => !option.allowedSourceValences?.length || option.allowedSourceValences.includes(normalizedValence)).filter(option => !option.allowedVerbClasses?.length || option.allowedVerbClasses.includes(String(verbClass).toUpperCase()));
     }
     function getClassicalNahuatlNonactiveUnresolvedReason(identityFrame = null) {
       if (identityFrame?.exactNonactiveLicenseStatus === "documented-unresolved") {
@@ -3171,9 +3459,15 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
           return currentCandidates;
         }
         const preservedDecisionCategories = new Set(sourceCandidates.flatMap(candidate => candidate.preserveProductiveDecisionCategories || []));
+        const compatibleShortILo = sourceCandidates.every(candidate =>
+          !["obligatory-exception", "suppletive-lexical-rule"].includes(candidate.formationAuthority))
+          ? currentCandidates.filter(candidate =>
+            candidate.decisionCategory === "compatible-transitive-short-i-lo"
+            && !preservedDecisionCategories.has(candidate.decisionCategory)) : [];
         return [
           ...currentCandidates.filter(candidate => preservedDecisionCategories.has(candidate.decisionCategory) || candidate.ruleRelationship === "compose"),
-          ...sourceCandidates
+          ...sourceCandidates,
+          ...compatibleShortILo,
         ];
       };
       if (fixedCandidates.length) {
@@ -3462,7 +3756,7 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
             === "licensed-active-allomorph-is-imperfective-base"
         )
       );
-      const ruleOptionAuthorized = Boolean(selectedOption && selectedOption.kind === "classical-nahuatl-nonactive-vnc-nonactive-option" && selectedOption.optionId === `${normalizedSuffixFamily}:${normalizedNonactiveStem}` && selectedOption.ruleId && selectedOption.formationAuthority && finalShapeRelation.authorizationStatus === "authorized" && selectedOption.finalShapeRelation?.authorizationStatus === "authorized" && selectedOption.finalShapeRelation.sourceFinalShapeFrame?.stem === normalizedSourceStem && selectedOption.finalShapeRelation.nonactiveFinalShapeFrame?.stem === normalizedNonactiveStem && selectedOption.finalShapeRelation.suffixFamily === normalizedSuffixFamily && selectedOption.finalShapeRelation.ruleId === selectedOption.ruleId && selectedOption.formationStructure?.authorizationStatus === "authorized" && selectedOption.formationCore === formationStructure.formationCore && selectedOption.formationContinuation === formationStructure.continuation && selectedOption.formationSequence?.length === formationStructure.sequence.length && selectedOption.formationSequence.every((core, index) => core === formationStructure.sequence[index]) && isClassicalNahuatlActiveStemIdentityFrame(selectedOption.sourceIdentityFrame, normalizedSourceStem) && selectedOption.sourceInternalMorphology === selectedOption.sourceIdentityFrame.internalMorphology && lexicalFormationAuthorized && lexicalAllomorphAuthorized);
+      const ruleOptionAuthorized = Boolean((normalizedSuffixFamily !== "o" || hasClassicalNahuatlLicensedShortTerminalO(selectedOption, normalizedSourceStem)) && selectedOption && selectedOption.kind === "classical-nahuatl-nonactive-vnc-nonactive-option" && selectedOption.optionId === `${normalizedSuffixFamily}:${normalizedNonactiveStem}` && selectedOption.ruleId && selectedOption.formationAuthority && finalShapeRelation.authorizationStatus === "authorized" && selectedOption.finalShapeRelation?.authorizationStatus === "authorized" && selectedOption.finalShapeRelation.sourceFinalShapeFrame?.stem === normalizedSourceStem && selectedOption.finalShapeRelation.nonactiveFinalShapeFrame?.stem === normalizedNonactiveStem && selectedOption.finalShapeRelation.suffixFamily === normalizedSuffixFamily && selectedOption.finalShapeRelation.ruleId === selectedOption.ruleId && selectedOption.formationStructure?.authorizationStatus === "authorized" && selectedOption.formationCore === formationStructure.formationCore && selectedOption.formationContinuation === formationStructure.continuation && selectedOption.formationSequence?.length === formationStructure.sequence.length && selectedOption.formationSequence.every((core, index) => core === formationStructure.sequence[index]) && isClassicalNahuatlActiveStemIdentityFrame(selectedOption.sourceIdentityFrame, normalizedSourceStem) && selectedOption.sourceInternalMorphology === selectedOption.sourceIdentityFrame.internalMorphology && lexicalFormationAuthorized && lexicalAllomorphAuthorized);
       // Lesson 20.5 names the family o-hua, while final -hua/-hui sources
       // realize its first member as long ō. Compounds may add final -tz.
       // The typed morpheme tail retains both the macron and those boundaries.
@@ -3544,7 +3838,7 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         || typeof sourceStem !== "string") {
         return false;
       }
-      const normalizedSourceStem = normalizeClassicalNahuatlVncSlotStem(sourceStem);
+      const normalizedSourceStem = normalizeClassicalNahuatlVncSlotStem(sourceStem || record.sourceStem);
       const generatedOption = normalizedSourceStem && record?.selectedOptionId
         ? getClassicalNahuatlNonactiveStemOptions(normalizedSourceStem, {
           verbClass: record.sourceIdentityFrame?.verbClass || "",
@@ -3563,7 +3857,7 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         && isClassicalNahuatlKarttunen1992EvidenceMatchSet(record.lexicalEvidenceMatches, evidenceQuery)
         && record.lexicalEvidenceSignature === getClassicalNahuatlKarttunen1992EvidenceSignature(expectedEvidenceMatches)
       );
-      return Boolean(record.kind === "classical-nahuatl-nonactive-vnc-nonactive-stem-record" && record.authorizationStatus === "authorized" && record.selectionAuthority === "andrews-lesson20-rule-derivation" && generatedOption && record.selectedOptionId === generatedOption.optionId && record.selectedRuleId === generatedOption.ruleId && record.sourceStem === normalizedSourceStem && isClassicalNahuatlActiveStemIdentityFrame(record.sourceIdentityFrame, normalizedSourceStem) && record.sourceInternalMorphology === record.sourceIdentityFrame.internalMorphology && record.nonactiveStem === generatedOption.nonactiveStem && record.imperfectiveNonactiveStem === generatedOption.imperfectiveNonactiveStem && record.perfectiveNonactiveStem === generatedOption.perfectiveNonactiveStem && record.finalShapeAuthority === "computed-generated-option-relation" && record.finalShapeRelation?.authorizationStatus === "authorized" && record.finalShapeRelation.sourceFinalShapeFrame?.stem === normalizedSourceStem && record.finalShapeRelation.nonactiveFinalShapeFrame?.stem === record.nonactiveStem && record.formationStructure?.authorizationStatus === "authorized" && record.formationCore === recomputedFormationStructure.formationCore && record.formationContinuation === recomputedFormationStructure.continuation && record.formationSequence?.length === recomputedFormationStructure.sequence.length && record.formationSequence.every((core, index) => core === recomputedFormationStructure.sequence[index]) && doesClassicalNahuatlLesson20FinalShapeMatchSuffixFamily(record.nonactiveFinalShapeFrame, record.suffixFamily) && lexicalEvidenceCanonical && record.formulaArtifactAuthority === false && record.surfaceArtifactAuthority === false);
+      return Boolean(record.kind === "classical-nahuatl-nonactive-vnc-nonactive-stem-record" && record.authorizationStatus === "authorized" && record.selectionAuthority === "andrews-lesson20-rule-derivation" && generatedOption && (record.suffixFamily !== "o" || hasClassicalNahuatlLicensedShortTerminalO(generatedOption, normalizedSourceStem)) && record.selectedOptionId === generatedOption.optionId && record.selectedRuleId === generatedOption.ruleId && record.sourceStem === normalizedSourceStem && isClassicalNahuatlActiveStemIdentityFrame(record.sourceIdentityFrame, normalizedSourceStem) && record.sourceInternalMorphology === record.sourceIdentityFrame.internalMorphology && record.nonactiveStem === generatedOption.nonactiveStem && record.imperfectiveNonactiveStem === generatedOption.imperfectiveNonactiveStem && record.perfectiveNonactiveStem === generatedOption.perfectiveNonactiveStem && record.finalShapeAuthority === "computed-generated-option-relation" && record.finalShapeRelation?.authorizationStatus === "authorized" && record.finalShapeRelation.sourceFinalShapeFrame?.stem === normalizedSourceStem && record.finalShapeRelation.nonactiveFinalShapeFrame?.stem === record.nonactiveStem && record.formationStructure?.authorizationStatus === "authorized" && record.formationCore === recomputedFormationStructure.formationCore && record.formationContinuation === recomputedFormationStructure.continuation && record.formationSequence?.length === recomputedFormationStructure.sequence.length && record.formationSequence.every((core, index) => core === recomputedFormationStructure.sequence[index]) && doesClassicalNahuatlLesson20FinalShapeMatchSuffixFamily(record.nonactiveFinalShapeFrame, record.suffixFamily) && lexicalEvidenceCanonical && record.formulaArtifactAuthority === false && record.surfaceArtifactAuthority === false);
     }
     function buildClassicalNahuatlInherentImpersonalRecord(sourceStem = "", {
       selectionAuthority = "",
@@ -3625,6 +3919,75 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         && record.surfaceArtifactAuthority === false
         && record.callerSuppliedLexicalClassAuthority === false
       );
+    }
+    const restrictedContainingSources = new WeakMap();
+    const restrictedContainingSourceContexts = new WeakMap();
+    const restrictedContainingTargets = new WeakMap();
+    function resolveClassicalNahuatlRestrictedContainingVncSourceFrame(request = {}) {
+      if (!request || typeof request !== "object" || Array.isArray(request)
+        || Object.keys(request).some(k => !["enteredStem", "valence", "sourceLexemeId"].includes(k))) return null;
+      const record = targetObject.resolveClassicalNahuatlCanonicalSourceStemRecord?.({enteredStem:request.enteredStem,
+        basalUnit:"vnc",valence:request.valence,sourceLexemeId:request.sourceLexemeId || ""});
+      const analysis = record?.canonicalRestrictedContainingSourceAnalysis;
+      if (targetObject.isClassicalNahuatlCanonicalSourceStemRecord?.(record) !== true || !analysis
+        || analysis.requiredSourceLexemeId && request.sourceLexemeId !== analysis.requiredSourceLexemeId) return null;
+      if (restrictedContainingSources.has(record)) return restrictedContainingSources.get(record);
+      const source = Object.freeze({kind:"classical-nahuatl-restricted-containing-vnc-source-frame",version:1,
+        sourceStem:record.stem,sourceValence:record.defaultSourceValence,sourceRank:analysis.sourceRank,sourceClass:analysis.sourceClass,
+        canonicalSourceStemRecord:record,sourceAnalysis:analysis,sourceLexemeId:request.sourceLexemeId || "",
+        independentFiniteUseLicensed:false,grammarAuthority:false,formulaStringAuthority:false,surfaceStringAuthority:false});
+      restrictedContainingSources.set(record,source);restrictedContainingSourceContexts.set(source,Object.freeze({record,analysis}));return source;
+    }
+    function isClassicalNahuatlRestrictedContainingVncSourceFrame(source = null) {
+      const c=source && restrictedContainingSourceContexts.get(source);
+      return Boolean(c && Object.isFrozen(source) && targetObject.isClassicalNahuatlCanonicalSourceStemRecord?.(c.record) === true
+        && source.canonicalSourceStemRecord===c.record && c.record.canonicalRestrictedContainingSourceAnalysis===c.analysis
+        && source.sourceAnalysis===c.analysis && source.sourceStem===c.record.stem && source.sourceClass===c.analysis.sourceClass
+        && source.independentFiniteUseLicensed===false);
+    }
+    // A containing formation authenticates morphological operands; it never
+    // asserts a finite event for the unattested/defective matrix alone.
+    function buildClassicalNahuatlRestrictedContainingTargetFrame(source = null, selection = {}) {
+      const analysis=source?.sourceAnalysis;
+      const blocked = reason => Object.freeze({kind:"classical-nahuatl-restricted-containing-target-frame",authorizationStatus:"blocked",blockReason:reason});
+      if (!isClassicalNahuatlRestrictedContainingVncSourceFrame(source)) return blocked("exact-restricted-containing-source-required");
+      if (!selection || typeof selection!=="object" || Object.keys(selection).some(k=>!["reading","embedStem"].includes(k))) return blocked("restricted-containing-selection-not-supported");
+      let record=null,targetStem="",targetClass=source.sourceClass;
+      if(analysis.containingFamily==="tla-impersonal") {
+        if(selection.embedStem || !selection.reading)return blocked("tla-impersonal-reading-required");
+        record=buildClassicalNahuatlTlaImpersonalStemRecord(source.sourceStem,{selectionAuthority:"andrews-lesson22-rule-derivation"});
+        if(!isClassicalNahuatlTlaImpersonalStemRecord(record,source.sourceStem)
+          || record.sourceAnalysis?.sourceAttestation!==analysis.requiredSourceAttestation
+          || !record.sourceAnalysis?.availableReadings?.includes(selection.reading))return blocked("tla-impersonal-owned-reading-required");
+        targetStem=record.impersonalStem;
+      } else if(analysis.containingFamily==="archaic-motion-matrix") {
+        if(selection.reading || !analysis.attestedEmbedStems.includes(selection.embedStem))return blocked("attested-archaic-motion-embed-required");
+        // §11.4.5 prints hui + itz as the lexical compound allomorph huī-tz.
+        // Its quantity belongs to the irregular owner, not a general deletion
+        // or coalescence rule inferred from the constituent spellings.
+        const compoundAlias=[selection.embedStem,source.sourceStem.replace(/^i/u,"")].join("-");
+        const plan=targetObject.buildClassicalNahuatlIrregularVncParadigmPlan?.(compoundAlias,{subject:"1sg",mood:"indicative",tense:"present",requestedSemanticTense:"present"});
+        if(plan?.authorizationStatus!=="authorized" || !plan.applies || plan.selectedClassOverride!==targetClass)return blocked("existing-archaic-compound-plan-required");
+        targetStem=plan.canonicalSourceStem || compoundAlias;
+        record=Object.freeze({kind:"classical-nahuatl-archaic-motion-compound-formation",embedStem:selection.embedStem,
+          matrixSourceFrame:source,matrixStem:source.sourceStem,matrixRank:source.sourceRank,
+          ...(plan.identity?.canonicalStemRuleId
+            ? {attestedCompoundAllomorph:targetStem,compoundAllomorphRuleId:plan.identity.canonicalStemRuleId,
+              simpleMatrixInitialIDeletionClaimed:false}
+            : {matrixInitialIDeletion:true}),
+          compoundStem:targetStem,connective:"none",sourceFiniteEventAsserted:false});
+      } else return blocked("containing-family-requires-its-constituent-owner");
+      freezeClassicalNahuatlNonactiveCarrierFiniteValue(record);
+      const frame=Object.freeze({kind:"classical-nahuatl-restricted-containing-target-frame",authorizationStatus:"authorized",blockReason:"",
+        canonicalRestrictedContainingSourceFrame:source,containingFamily:analysis.containingFamily,formationRecord:record,
+        targetStem,targetClass,reading:selection.reading || "",embedStem:selection.embedStem || "",sourceFiniteEventAsserted:false});
+      restrictedContainingTargets.set(frame,Object.freeze({source,record,targetStem,targetClass}));return frame;
+    }
+    function isClassicalNahuatlRestrictedContainingTargetFrame(frame=null) {
+      const c=frame && restrictedContainingTargets.get(frame);
+      return Boolean(c && Object.isFrozen(frame) && isClassicalNahuatlRestrictedContainingVncSourceFrame(c.source)
+        && frame.canonicalRestrictedContainingSourceFrame===c.source && frame.formationRecord===c.record
+        && frame.targetStem===c.targetStem && frame.targetClass===c.targetClass && frame.sourceFiniteEventAsserted===false);
     }
     function buildClassicalNahuatlTlaImpersonalStemRecord(sourceStem = "", {
       impersonalStem = "",
@@ -3768,7 +4131,7 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         impersonalDepth: 1
       }), Object.freeze({
         operationId: "nonactive-lō",
-        targetStem: "tla-hye-lō",
+        targetStem: "tla-hyā-lō",
         targetVoice: "impersonal",
         impersonalDepth: 2,
         suffixFamily: "lō",
@@ -3805,7 +4168,7 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         impersonalDepth: 1
       }), Object.freeze({
         operationId: "nonactive-ō",
-        targetStem: "tla-nex-ō",
+        targetStem: "tla-nēx-ō",
         targetVoice: "impersonal",
         impersonalDepth: 2,
         suffixFamily: "ō",
@@ -3909,10 +4272,42 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         callerSuppliedTargetAllowed: false
       });
     }
-    function getClassicalNahuatlOrderedVoiceLayerCascadeOptions(sourceStem = "", appliedOperations = []) {
+    function getClassicalNahuatlOrderedVoiceLayerCascadeOptions(sourceStem = "", appliedOperations = [], canonicalPassiveApplicationFrame = undefined) {
       const normalizedSourceStem = normalizeClassicalNahuatlVncSlotStem(sourceStem);
       const normalizedOperations = Array.isArray(appliedOperations) ? appliedOperations.map(operation => normalizeClassicalNahuatlVncSlotCarrier(operation)).filter(Boolean) : [];
       const matchingRoutes = CLASSICAL_NAHUATL_ORDERED_VOICE_LAYER_ROUTE_SPECS.filter(route => route.sourceStem === normalizedSourceStem && normalizedOperations.every((operation, index) => route.steps[index]?.operationId === operation));
+      if (canonicalPassiveApplicationFrame !== undefined) {
+        const record = canonicalPassiveApplicationFrame?.resultFrame?.selectedMachineryFrame?.nonactiveStemRecord;
+        const operations = [`passive-${record?.suffixFamily || ""}`, "impersonalize-passive"];
+        const chain = deriveClassicalNahuatlOrderedVoiceLayerChain(normalizedSourceStem, {
+          operations, canonicalPassiveApplicationFrame,
+        });
+        const prefixValid = Array.isArray(appliedOperations)
+          && appliedOperations.length === normalizedOperations.length
+          && normalizedOperations.length > 0 && normalizedOperations.length <= operations.length
+          && normalizedOperations.every((operation, index) => operation === operations[index]);
+        if (!isClassicalNahuatlOrderedVoiceLayerChain(chain, normalizedSourceStem) || !prefixValid) {
+          return Object.freeze({kind: "classical-nahuatl-ordered-voice-layer-cascade-inventory", version: 1,
+            sourceStem: normalizedSourceStem, appliedOperations: Object.freeze(normalizedOperations),
+            authorizationStatus: "blocked", blockReason: "exact-passive-application-and-compatible-operation-prefix-required",
+            options: Object.freeze([]), completeRouteIds: Object.freeze([]), mayStopAtCurrentLayer: false,
+            callerSuppliedTargetAllowed: false});
+        }
+        if (!matchingRoutes.length) {
+          const next = chain.layers[normalizedOperations.length];
+          const options = next ? [Object.freeze({kind: "classical-nahuatl-ordered-voice-layer-cascade-option",
+            operationId: next.operationId, sourceStem: next.sourceStem, targetStem: next.targetStem,
+            targetVoice: next.targetVoice, impersonalDepth: next.impersonalDepth,
+            suffixFamily: next.suffixFamily, selectionAuthority: "owner-issued-passive-continuation",
+            callerSuppliedTargetAllowed: false})] : [];
+          return Object.freeze({kind: "classical-nahuatl-ordered-voice-layer-cascade-inventory", version: 1,
+            sourceStem: normalizedSourceStem, appliedOperations: Object.freeze(normalizedOperations),
+            authorizationStatus: "authorized", blockReason: "", canonicalVncResult: canonicalPassiveApplicationFrame,
+            currentStem: chain.layers[normalizedOperations.length - 1].targetStem,
+            options: Object.freeze(options), completeRouteIds: Object.freeze(next ? [] : [chain.routeId]),
+            mayStopAtCurrentLayer: true, callerSuppliedTargetAllowed: false});
+        }
+      }
       const currentStepIndex = normalizedOperations.length - 1;
       const currentStems = Array.from(new Set(matchingRoutes.map(route => currentStepIndex >= 0 ? route.steps[currentStepIndex]?.targetStem : route.sourceStem).filter(Boolean)));
       const nextOptionsByKey = new Map();
@@ -3973,17 +4368,127 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         }))
       });
     }
+    function deriveClassicalNahuatlNonactiveCoreVoiceLayerChain(sourceStem, record, operations, artifactsRequested, passiveApplication = null) {
+      const expectedOperations = [`passive-${record?.suffixFamily || ""}`, "impersonalize-passive"];
+      const authorized = isClassicalNahuatlNonactiveStemRecord(record, sourceStem)
+        && (passiveApplication || record.sourceIdentityFrame.sourceValence === "projective-human")
+        && operations.length === expectedOperations.length
+        && operations.every((operation, index) => operation === expectedOperations[index])
+        && !artifactsRequested;
+      if (!authorized) return Object.freeze({
+        kind: "classical-nahuatl-ordered-voice-layer-chain-frame",
+        version: 1, authorizationStatus: "blocked",
+        blockReason: "issued-human-nonactive-core-and-complete-passive-chain-required",
+        sourceStem, targetStem: "", sourceCapability: "nonactive-core",
+        finiteVncSourceEligible: false, completeRoute: false,
+        operations: Object.freeze(operations), layers: Object.freeze([]),
+        callerSuppliedTargetAllowed: false, callerSuppliedLayersAllowed: false,
+        formulaArtifactAuthority: false, surfaceArtifactAuthority: false
+      });
+      // §38.1.4 distinguishes the ultimate tē pattern from the specific
+      // human object of the abstract active core feeding the passive. No
+      // finite person/reference is asserted; Lesson 20 owns the morphology.
+      const seed = Object.freeze({
+        kind: "classical-nahuatl-ordered-voice-layer-seed-frame",
+        authorizationStatus: "authorized", sourceStem, targetStem: sourceStem,
+        voice: "active", sourceValence: "specific-projective", impersonalDepth: 0,
+        sourceObjectKind: "specific-projective", sourceObjectHumanness: passiveApplication ? "unclaimed" : "human",
+        sourceObjectPerson: "", sourceObjectReferent: "",
+        ultimateSourceValence: passiveApplication ? record.sourceIdentityFrame.sourceValence : "projective-human",
+        canonicalNonactiveStemRecord: record, specificObjectPassivePrerequisite: true,
+        finiteSubjectAsserted: false, participantReferenceAsserted: false,
+        sourceAuthority: "Andrews 38.1.4 typed core relation"
+      });
+      const passive = Object.freeze({
+        kind: "classical-nahuatl-ordered-voice-layer-frame", version: 1,
+        authorizationStatus: "authorized", layerIndex: 1,
+        operationId: expectedOperations[0], sourceFrame: seed, sourceFrameKind: seed.kind,
+        sourceStem, targetStem: record.nonactiveStem, targetVoice: "passive",
+        suffixFamily: record.suffixFamily, ruleId: record.selectedRuleId,
+        canonicalNonactiveStemRecord: record, impersonalDepth: 0,
+        consumesPreviousTypedOutput: true,
+        sourceAuthority: "Andrews 20 and 38.1.4 owner-issued nonactive core",
+        callerSuppliedTargetAllowed: false, formulaArtifactAuthority: false,
+        surfaceArtifactAuthority: false
+      });
+      const impersonal = Object.freeze({
+        kind: "classical-nahuatl-ordered-voice-layer-frame", version: 1,
+        authorizationStatus: "authorized", layerIndex: 2,
+        operationId: expectedOperations[1], sourceFrame: passive, sourceFrameKind: passive.kind,
+        sourceStem: passive.targetStem, targetStem: `tla-${passive.targetStem}`,
+        targetVoice: "impersonalized-passive", suffixFamily: "", ruleId: "cn-l38-1-4-impersonalize-passive-core",
+        impersonalDepth: 1, consumesPreviousTypedOutput: true,
+        sourceAuthority: "Andrews 38.1.4 human impersonalized passive core",
+        callerSuppliedTargetAllowed: false, formulaArtifactAuthority: false,
+        surfaceArtifactAuthority: false
+      });
+      const chain = {
+        kind: "classical-nahuatl-ordered-voice-layer-chain-frame", version: 1,
+        authorizationStatus: "authorized", blockReason: "",
+        routeId: "cn-l38-productive-human-impersonalized-passive-core",
+        routeFamilyIds: Object.freeze([]), andrewsSection: "38.1.4",
+        sourceAuthority: "Andrews typed nonactive core and ordered voice derivation",
+        sourceDocument: CLASSICAL_NAHUATL_VNC_SLOT_SOURCE_DOCUMENT,
+        sourceStem, targetStem: impersonal.targetStem, sourceVoice: "active",
+        targetVoice: "impersonalized-passive", sourceValence: "specific-projective",
+        sourceObjectKind: "specific-projective", sourceObjectHumanness: passiveApplication ? "unclaimed" : "human",
+        sourceObjectPerson: "", sourceObjectReferent: "",
+        ultimateSourceValence: passiveApplication ? record.sourceIdentityFrame.sourceValence : "projective-human",
+        sourceCapability: passiveApplication ? "passive-application" : "nonactive-core", finiteVncSourceEligible: Boolean(passiveApplication),
+        canonicalNonactiveStemRecord: record, canonicalVncResult: passiveApplication,
+        specificObjectPassivePrerequisite: true,
+        finiteSubjectAsserted: false, participantReferenceAsserted: false,
+        label: expectedOperations.join(" → "), operations: Object.freeze(expectedOperations),
+        layerCount: 2, impersonalDepth: 1, completeRoute: true,
+        layers: Object.freeze([passive, impersonal]), finalLayerFrame: impersonal,
+        sourceTargetContinuity: true, requestedArtifactsDiscarded: false,
+        callerSuppliedTargetAllowed: false, callerSuppliedLayersAllowed: false,
+        formulaArtifactAuthority: false, surfaceArtifactAuthority: false
+      };
+      chain.canonicalSignature = getClassicalNahuatlOrderedVoiceLayerSignature(chain);
+      Object.freeze(chain);
+      classicalNahuatlNonactiveCoreVoiceChainReceipts.set(chain, Object.freeze({
+        record, seed, passive, impersonal, passiveApplication, signature: chain.canonicalSignature
+      }));
+      return chain;
+    }
     function deriveClassicalNahuatlOrderedVoiceLayerChain(sourceStem = "", {
       routeId = "",
       operations = null,
       targetStem = "",
       layers = null,
       formulaArtifact = "",
-      surfaceArtifact = ""
+      surfaceArtifact = "",
+      canonicalNonactiveStemRecord = undefined,
+      canonicalPassiveApplicationFrame = undefined
     } = {}) {
       const normalizedSourceStem = normalizeClassicalNahuatlVncSlotStem(sourceStem);
       const normalizedRouteId = normalizeClassicalNahuatlVncSlotCarrier(routeId);
       const normalizedOperations = Array.isArray(operations) ? operations.map(operation => normalizeClassicalNahuatlVncSlotCarrier(operation)).filter(Boolean) : [];
+      if (canonicalPassiveApplicationFrame !== undefined) {
+        const parent = canonicalPassiveApplicationFrame;
+        const runtime = getClassicalNahuatlVncLayerRuntimeTarget();
+        const record = parent?.resultFrame?.selectedMachineryFrame?.nonactiveStemRecord;
+        const exactPassive = runtime?.isClassicalNahuatlVncApplicationFrame?.(parent) === true
+          && parent.authorizationStatus === "authorized"
+          && parent.normalizedRequest?.sourceStem === normalizedSourceStem
+          && parent.resultFrame?.selectedVoiceOperation === "passive"
+          && isClassicalNahuatlNonactiveStemRecord(record, normalizedSourceStem)
+          && (canonicalNonactiveStemRecord === undefined || canonicalNonactiveStemRecord === record);
+        return deriveClassicalNahuatlNonactiveCoreVoiceLayerChain(
+          normalizedSourceStem, exactPassive ? record : null, normalizedOperations,
+          !exactPassive || Boolean(routeId || targetStem || layers !== null || formulaArtifact || surfaceArtifact)
+            || !Array.isArray(operations) || operations.length !== normalizedOperations.length,
+          exactPassive ? parent : null,
+        );
+      }
+      if (canonicalNonactiveStemRecord !== undefined) {
+        return deriveClassicalNahuatlNonactiveCoreVoiceLayerChain(
+          normalizedSourceStem, canonicalNonactiveStemRecord, normalizedOperations,
+          Boolean(routeId || targetStem || layers !== null || formulaArtifact || surfaceArtifact)
+            || !Array.isArray(operations) || operations.length !== normalizedOperations.length
+        );
+      }
       const route = normalizedRouteId ? CLASSICAL_NAHUATL_ORDERED_VOICE_LAYER_ROUTE_SPECS.find(candidate => candidate.sourceStem === normalizedSourceStem && candidate.routeId === normalizedRouteId) || null : CLASSICAL_NAHUATL_ORDERED_VOICE_LAYER_ROUTE_SPECS.find(candidate => candidate.sourceStem === normalizedSourceStem && normalizedOperations.length > 0 && normalizedOperations.every((operation, index) => candidate.steps[index]?.operationId === operation)) || null;
       const selectedSteps = route ? normalizedRouteId ? route.steps : route.steps.slice(0, normalizedOperations.length) : [];
       if (!route || !selectedSteps.length) {
@@ -4077,6 +4582,42 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
       if (!frame || frame.authorizationStatus !== "authorized" || frame.sourceStem !== normalizedSourceStem) {
         return false;
       }
+      if (frame.sourceCapability === "nonactive-core" || frame.canonicalNonactiveStemRecord) {
+        const receipt = classicalNahuatlNonactiveCoreVoiceChainReceipts.get(frame);
+        return Boolean(receipt && Object.isFrozen(frame)
+          && isClassicalNahuatlNonactiveStemRecord(receipt.record, normalizedSourceStem)
+          && (receipt.passiveApplication
+            ? getClassicalNahuatlVncLayerRuntimeTarget()?.isClassicalNahuatlVncApplicationFrame?.(receipt.passiveApplication) === true
+              && receipt.passiveApplication.authorizationStatus === "authorized"
+              && receipt.passiveApplication.normalizedRequest?.sourceStem === normalizedSourceStem
+              && receipt.passiveApplication.resultFrame?.selectedVoiceOperation === "passive"
+              && receipt.passiveApplication.resultFrame.selectedMachineryFrame.nonactiveStemRecord === receipt.record
+            : receipt.record.sourceIdentityFrame.sourceValence === "projective-human")
+          && frame.canonicalNonactiveStemRecord === receipt.record
+          && frame.layers[0] === receipt.passive && frame.layers[1] === receipt.impersonal
+          && frame.layers.length === 2 && frame.finalLayerFrame === receipt.impersonal
+          && receipt.passive.sourceFrame === receipt.seed
+          && receipt.seed.canonicalNonactiveStemRecord === receipt.record
+          && [receipt.seed, frame].every(source =>
+            source.sourceValence === "specific-projective"
+            && source.sourceObjectKind === "specific-projective"
+            && source.sourceObjectHumanness === (receipt.passiveApplication ? "unclaimed" : "human")
+            && source.sourceObjectPerson === "" && source.sourceObjectReferent === ""
+            && source.ultimateSourceValence === (receipt.passiveApplication ? receipt.record.sourceIdentityFrame.sourceValence : "projective-human"))
+          && receipt.passive.canonicalNonactiveStemRecord === receipt.record
+          && receipt.passive.targetStem === receipt.record.nonactiveStem
+          && receipt.passive.suffixFamily === receipt.record.suffixFamily
+          && receipt.impersonal.sourceFrame === receipt.passive
+          && receipt.impersonal.targetStem === `tla-${receipt.record.nonactiveStem}`
+          && frame.canonicalSignature === receipt.signature
+          && getClassicalNahuatlOrderedVoiceLayerSignature(frame) === receipt.signature
+          && frame.completeRoute === true && frame.sourceTargetContinuity === true
+          && frame.sourceCapability === (receipt.passiveApplication ? "passive-application" : "nonactive-core")
+          && frame.finiteVncSourceEligible === Boolean(receipt.passiveApplication)
+          && frame.canonicalVncResult === receipt.passiveApplication && frame.finiteSubjectAsserted === false
+          && frame.participantReferenceAsserted === false
+          && frame.formulaArtifactAuthority === false && frame.surfaceArtifactAuthority === false);
+      }
       const rebuilt = deriveClassicalNahuatlOrderedVoiceLayerChain(normalizedSourceStem, frame.completeRoute === true ? {
         routeId: frame.routeId
       } : {
@@ -4090,7 +4631,7 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
       "nonspecific-human": 3,
       "nonspecific-nonhuman": 4
     });
-    const CLASSICAL_NAHUATL_LESSON23_OBJECT_GOVERNORS = Object.freeze(["directive", "causative", "applicative"]);
+    const CLASSICAL_NAHUATL_LESSON23_OBJECT_GOVERNORS = Object.freeze(["directive", "causative", "applicative", "lexical"]);
     const CLASSICAL_NAHUATL_LESSON23_MULTIPLE_OBJECT_VNC_FRAME_KINDS = Object.freeze([
       "classical-nahuatl-multiple-object-vnc-multiple-object-vnc-machinery-frame",
       "classical-nahuatl-voice-object-vnc-derived-multiple-object-vnc-machinery-frame",
@@ -4167,10 +4708,11 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
       if (position.objectKind === "nonspecific-nonhuman") {
         return "tla";
       }
-      if (position.objectPerson === "3sg") {
+      const morphologicalPerson = position.morphologicalObjectPerson || position.objectPerson;
+      if (morphologicalPerson === "3sg") {
         return "c-0";
       }
-      return getClassicalNahuatlSpecificDyad(position.objectPerson).carrier;
+      return getClassicalNahuatlSpecificDyad(morphologicalPerson).carrier;
     }
     function buildClassicalNahuatlObjectGovernorUnitFrame(request = {}, {
       prominence = ""
@@ -4198,12 +4740,14 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         objectKind,
         objectFunction: governor === "directive" ? "direct" : governor,
         governor,
-        requiredStemOperation: governor === "directive"
+        requiredStemOperation: governor === "lexical"
+          ? "lexical-source-object-binding"
+          : governor === "directive"
           ? "lexical-directive-stem"
           : `${governor}-derivational-suffix`,
         derivationalLevel,
         prominence: normalizedProminence,
-        discontinuousUnit: governor !== "directive",
+        discontinuousUnit: governor !== "directive" && governor !== "lexical",
         objectCarrierAuthority: false,
         formulaArtifactAuthority: false,
         surfaceArtifactAuthority: false,
@@ -4234,6 +4778,44 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
       });
       return JSON.stringify(rebuilt) === JSON.stringify(frame);
     }
+    function normalizeClassicalNahuatlObjectClusterParticipant(request = {}) {
+      request = request && typeof request === "object" ? request : {};
+      const objectPerson = normalizeClassicalNahuatlVncSlotCarrier(request.objectPerson);
+      const hasParticipantInput = request.participantFrame != null
+        || objectPerson === "3common"
+        || ["person", "number", "animacy", "humanness", "referenceId"].some(key =>
+          normalizeClassicalNahuatlVncSlotCarrier(request[key]));
+      if (!hasParticipantInput) return { authorized: true, fields: {} };
+      const suppliedParticipant = request.participantFrame;
+      const participant = suppliedParticipant || buildClassicalNahuatlParticipantFrame({
+        role: request.governor === "causative" ? "causee" : "object",
+        agreement: objectPerson,
+        person: request.person,
+        number: request.number,
+        animacy: request.animacy,
+        humanness: request.humanness,
+        referenceId: request.referenceId,
+      });
+      const authorized = isClassicalNahuatlParticipantFrame(participant)
+        && Object.isFrozen(participant)
+        && ["object", "causee"].includes(participant.role)
+        && (!objectPerson || [participant.category, participant.requestedAgreement].includes(objectPerson))
+        && (!normalizeClassicalNahuatlVncSlotCarrier(request.morphologicalObjectPerson)
+          || request.morphologicalObjectPerson === participant.morphologicalAgreement)
+        && ["person", "number", "animacy", "humanness", "referenceId"].every(key =>
+          !normalizeClassicalNahuatlVncSlotCarrier(request[key])
+          || normalizeClassicalNahuatlVncSlotCarrier(request[key]) === participant[key]);
+      if (!authorized) return { authorized: false, fields: {} };
+      return { authorized: true, fields: {
+        participantFrame: participant,
+        referenceId: participant.referenceId,
+        person: participant.person,
+        number: participant.number,
+        animacy: participant.animacy,
+        humanness: participant.humanness,
+        morphologicalObjectPerson: participant.morphologicalAgreement,
+      } };
+    }
     function buildClassicalNahuatlObjectClusterFrame(sourceStem = "", {
       subject = "",
       subjectCarrier = "",
@@ -4252,13 +4834,20 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
       const normalizedSubject = normalizeClassicalNahuatlVncSlotCarrier(subject);
       const normalizedPredicateStem = normalizeClassicalNahuatlVncSlotStem(predicateStem || sourceStem);
       const normalizedTense = normalizeClassicalNahuatlVncSlotCarrier(tense);
-      const normalizedRequests = (Array.isArray(objectRequests) ? objectRequests : []).map((request, index) => ({
+      const sourceRequests = Array.isArray(objectRequests) ? objectRequests : [];
+      const participantInputs = sourceRequests.map(normalizeClassicalNahuatlObjectClusterParticipant);
+      const normalizedRequests = sourceRequests.map((request, index) => ({
         objectId: normalizeClassicalNahuatlVncSlotCarrier(request?.objectId || `object-${index + 1}`),
         objectKind: normalizeClassicalNahuatlVncSlotCarrier(request?.objectKind),
         objectPerson: normalizeClassicalNahuatlVncSlotCarrier(request?.objectPerson),
+        ...participantInputs[index].fields,
         ...(request?.silentSpecificObject === true
           ? { silentSpecificObject: true }
           : {}),
+        ...(request?.objectKind === "reflexive" && request?.shuntlineReflexivePosition === "late"
+          ? { shuntlineReflexivePosition: "late" } : {}),
+        ...(request?.objectKind === "reflexive" && request?.shuntlineReflexiveBoundaryVariant === "ihyana-contracted"
+          ? { shuntlineReflexiveBoundaryVariant: "ihyana-contracted" } : {}),
         ...(request?.mainlineLinearPriority === true
           ? { mainlineLinearPriority: true }
           : {}),
@@ -4277,7 +4866,7 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         left.derivationalLevel - right.derivationalLevel
       ));
       const suffixHistory = orderedHistory.filter(request => (
-        request.governor !== "directive"
+        request.governor !== "directive" && request.governor !== "lexical"
       )).map(request => request.governor);
       const firstApplicativeIndex = suffixHistory.indexOf("applicative");
       const causativeAfterApplicative = firstApplicativeIndex >= 0
@@ -4290,11 +4879,24 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         && newestHistoryPosition?.governor === "causative";
       const rareThirdCausativeAuthorized = !rareThirdCausativeHistory
         || rareThirdCausativeMeaningSupported === true;
-      const requestShapeAuthorized = normalizedRequests.length >= minimumPositionCount && normalizedRequests.length <= maximumPositionCount && normalizedRequests.every(request => request.objectId && Object.prototype.hasOwnProperty.call(CLASSICAL_NAHUATL_LESSON23_OBJECT_SEQUENCE_PRIORITY, request.objectKind) && CLASSICAL_NAHUATL_LESSON23_OBJECT_GOVERNORS.includes(request.governor) && Number.isInteger(request.derivationalLevel) && request.derivationalLevel >= 1 && request.derivationalLevel <= 3 && (request.objectKind !== "specific-projective" || ["1sg", "2sg", "3sg", "1pl", "2pl", "3pl"].includes(request.objectPerson)) && (request.silentSpecificObject !== true || request.objectKind === "specific-projective" && request.objectPerson === "3sg") && (request.objectKind !== "reflexive" || !request.objectPerson || request.objectPerson === normalizedSubject || request.objectPerson === "nonfirst-common")) && new Set(objectIds).size === objectIds.length && new Set(levels).size === levels.length && levelsAreContiguous && directiveHistoryAuthorized;
+      const requestShapeAuthorized = participantInputs.every(input => input.authorized) && normalizedRequests.length >= minimumPositionCount && normalizedRequests.length <= maximumPositionCount && normalizedRequests.every(request => request.objectId && Object.prototype.hasOwnProperty.call(CLASSICAL_NAHUATL_LESSON23_OBJECT_SEQUENCE_PRIORITY, request.objectKind) && CLASSICAL_NAHUATL_LESSON23_OBJECT_GOVERNORS.includes(request.governor) && Number.isInteger(request.derivationalLevel) && request.derivationalLevel >= 1 && request.derivationalLevel <= 3 && (request.objectKind !== "specific-projective" || ["1sg", "2sg", "3sg", "3common", "1pl", "2pl", "3pl"].includes(request.objectPerson)) && (request.silentSpecificObject !== true || request.objectKind === "specific-projective" && (request.morphologicalObjectPerson || request.objectPerson) === "3sg") && (request.objectKind !== "reflexive" || !request.objectPerson || request.objectPerson === normalizedSubject || request.objectPerson === "nonfirst-common")) && new Set(objectIds).size === objectIds.length && new Set(levels).size === levels.length && levelsAreContiguous && directiveHistoryAuthorized;
+      const contractedNeAuthorized = normalizedRequests.every(request =>
+        request.shuntlineReflexiveBoundaryVariant !== "ihyana-contracted"
+        || request.objectKind === "reflexive"
+          && request.derivationalLevel !== maximumLevel
+          && request.shuntlineReflexivePosition === "late"
+          && ["ihyāna", "ihyāniliā"].includes(normalizedSourceStem.replaceAll("-", ""))
+          && /^i/u.test(normalizedPredicateStem)
+      );
       const rankedPositions = normalizedRequests.map(request => ({
         ...request,
         prominence: request.derivationalLevel === maximumLevel ? "mainline" : "shuntline",
-        sequencePriority: CLASSICAL_NAHUATL_LESSON23_OBJECT_SEQUENCE_PRIORITY[request.objectKind] || 99
+        sequencePriority: request.objectKind === "reflexive"
+          && request.derivationalLevel !== maximumLevel
+          && request.shuntlineReflexivePosition === "late"
+          ? (CLASSICAL_NAHUATL_LESSON23_OBJECT_SEQUENCE_PRIORITY["nonspecific-human"]
+            + CLASSICAL_NAHUATL_LESSON23_OBJECT_SEQUENCE_PRIORITY["nonspecific-nonhuman"]) / 2
+          : CLASSICAL_NAHUATL_LESSON23_OBJECT_SEQUENCE_PRIORITY[request.objectKind] || 99
       })).sort((left, right) => {
         const leftHasMainlinePriority = left.prominence === "mainline"
           && left.mainlineLinearPriority === true;
@@ -4347,9 +4949,9 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
               carrier: "⎕-0",
               silencingRule: "lesson18.8-ayi-silent-specific-object-retained",
             }
-            : getClassicalNahuatlSpecificDyad(position.objectPerson, {
+            : getClassicalNahuatlSpecificDyad(position.morphologicalObjectPerson || position.objectPerson, {
               sounded: position.objectId === soundedSpecific?.objectId,
-              soundedSpecificPerson: soundedSpecific?.objectPerson || "",
+              soundedSpecificPerson: soundedSpecific?.morphologicalObjectPerson || soundedSpecific?.objectPerson || "",
               leftCarrier: previousCarrier,
               rightCarrier: nextCarrier
             });
@@ -4393,11 +4995,14 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
             va2: "o",
             carrier: `${va1}-o`,
             sounded: true,
-            carrierAuthority: position.prominence === "mainline" ? "Andrews Lesson 23.3.2" : "Andrews Lesson 25.11 passive-subject coreference exception",
+            carrierAuthority: position.prominence === "mainline" ? "Andrews Lesson 23.3.2" : "Andrews Lessons 25.11 and 26.16 retained-source subject coreference exceptions",
             governorUnitFrame
           };
         }
-        const va = position.objectKind === "reflexive" ? "ne" : position.objectKind === "nonspecific-human" ? "tē" : "tla";
+        const contractedNe = position.objectKind === "reflexive"
+          && position.shuntlineReflexiveBoundaryVariant === "ihyana-contracted"
+          && contractedNeAuthorized;
+        const va = position.objectKind === "reflexive" ? (contractedNe ? "n" : "ne") : position.objectKind === "nonspecific-human" ? "tē" : "tla";
         const governorUnitFrame = buildClassicalNahuatlObjectGovernorUnitFrame(position, {
           prominence: position.prominence
         });
@@ -4408,14 +5013,14 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
           va,
           carrier: va,
           sounded: true,
-          carrierAuthority: position.objectKind === "reflexive" ? "Andrews Lesson 23.4 shuntline reflexive" : "Andrews Lesson 23.5 ordering priorities",
+          carrierAuthority: contractedNe ? "Andrews §33.7 attested contracted shunt ne before real i" : position.objectKind === "reflexive" ? "Andrews Lesson 23.4 shuntline reflexive" : "Andrews Lesson 23.5 ordering priorities",
           governorUnitFrame
         };
       });
       const mainlineCount = positions.filter(position => position.prominence === "mainline").length;
       const futureSpecificCooccurrenceUsesZeroNumber = normalizedTense === "future" && normalizedSubject === "3sg" && positions.filter(position => position.objectKind === "specific-projective").length > 1;
-      const authorized = Boolean(normalizedSourceStem && normalizedSubject && normalizedPredicateStem && requestShapeAuthorized && suffixHistoryAuthorized && rareThirdCausativeAuthorized && specificShuntlineChoiceRecognized && specificShuntlineChoiceApplies && mainlineCount === 1 && positions.every(position => position.carrier && isClassicalNahuatlObjectGovernorUnitFrame(position.governorUnitFrame)));
-      const blockReason = authorized ? "" : !normalizedSourceStem ? "lesson23-source-stem-required" : !normalizedSubject ? "lesson23-source-subject-required" : !requestShapeAuthorized ? "lesson23-typed-object-request-inventory-invalid" : !suffixHistoryAuthorized ? "lesson23-exceptional-suffix-order-support-required" : !rareThirdCausativeAuthorized ? "lesson23-rare-third-causative-meaning-support-required" : !specificShuntlineChoiceRecognized ? "lesson23-causative-specific-shuntline-realization-not-recognized" : !specificShuntlineChoiceApplies ? "lesson23-causative-specific-shuntline-realization-not-applicable" : "lesson23-object-position-realization-incomplete";
+      const authorized = Boolean(normalizedSourceStem && normalizedSubject && normalizedPredicateStem && requestShapeAuthorized && contractedNeAuthorized && suffixHistoryAuthorized && rareThirdCausativeAuthorized && specificShuntlineChoiceRecognized && specificShuntlineChoiceApplies && mainlineCount === 1 && positions.every(position => position.carrier && isClassicalNahuatlObjectGovernorUnitFrame(position.governorUnitFrame)));
+      const blockReason = authorized ? "" : !normalizedSourceStem ? "lesson23-source-stem-required" : !normalizedSubject ? "lesson23-source-subject-required" : !requestShapeAuthorized ? "lesson23-typed-object-request-inventory-invalid" : !contractedNeAuthorized ? "attested-shunt-ne-boundary-required" : !suffixHistoryAuthorized ? "lesson23-exceptional-suffix-order-support-required" : !rareThirdCausativeAuthorized ? "lesson23-rare-third-causative-meaning-support-required" : !specificShuntlineChoiceRecognized ? "lesson23-causative-specific-shuntline-realization-not-recognized" : !specificShuntlineChoiceApplies ? "lesson23-causative-specific-shuntline-realization-not-applicable" : "lesson23-object-position-realization-incomplete";
       const frame = {
         kind: "classical-nahuatl-multiple-object-vnc-object-cluster-frame",
         version: 1,
@@ -4480,6 +5085,15 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
       };
       if (frame.authorizationStatus === "authorized" && !frame.blockReason) {
         CLASSICAL_NAHUATL_LESSON23_ISSUED_OBJECT_CLUSTER_FRAMES.add(frame);
+        normalizedRequests.forEach(request => {
+          if (request.participantFrame) classicalNahuatlRetainedObjectParticipants.add(request.participantFrame);
+        });
+        classicalNahuatlObjectClusterParticipantReceipts.set(frame, Object.freeze(
+          normalizedRequests.map(request => Object.freeze({
+            objectId: request.objectId,
+            participantFrame: request.participantFrame,
+          }))
+        ));
       }
       return frame;
     }
@@ -4494,6 +5108,16 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         || frame.surfaceArtifactAuthority !== false) {
         return false;
       }
+      const participantReceipt = classicalNahuatlObjectClusterParticipantReceipts.get(frame);
+      if (!participantReceipt
+        || !Array.isArray(frame.objectRequests) || !Array.isArray(frame.positions)
+        || frame.objectRequests.length !== participantReceipt.length
+        || frame.positions.length !== participantReceipt.length
+        || participantReceipt.some((receipt, index) =>
+          frame.objectRequests[index]?.objectId !== receipt.objectId
+          || frame.objectRequests[index]?.participantFrame !== receipt.participantFrame
+          || frame.positions.find(position => position.objectId === receipt.objectId)?.participantFrame !== receipt.participantFrame
+        )) return false;
       const rebuilt = buildClassicalNahuatlObjectClusterFrame(frame.sourceStem, {
         subject: frame.subject,
         subjectCarrier: frame.subjectCarrier,
@@ -4658,6 +5282,21 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
       const normalizedSourceStem = normalizeClassicalNahuatlVncSlotStem(sourceMachineryFrame?.sourceVerbstem || sourceMachineryFrame?.stem);
       const sourcePositions = Array.isArray(sourceTypedFrame?.slots?.prePredicate) ? sourceTypedFrame.slots.prePredicate.map(slot => slot?.objectPositionFrame).filter(Boolean) : [];
       const renderedFormula = isClassicalNahuatlVncSlotFrame(sourceTypedFrame) ? renderClassicalNahuatlVncSlotFrameFormula(sourceTypedFrame) : "";
+      // These issued late operations preserve the object's roles at their
+      // new stem, with a late-owner proof rather than the lower proof shape.
+      if (targetObject?.isClassicalNahuatlMachineryFrame?.(sourceMachineryFrame) === true
+        && ["frequentative", "nominal-prefix"].includes(sourceMachineryFrame.operationFrame.operation)) {
+        return Boolean(sourceMachineryFrame.targetObjectClusterFrame === sourceObjectClusterFrame
+          && isClassicalNahuatlObjectClusterFrame(sourceObjectClusterFrame, normalizedSourceStem)
+          && isClassicalNahuatlVncSlotFrame(sourceTypedFrame)
+          && JSON.stringify(sourcePositions.map(position => ({...position, objectNumber: position.objectNumber || ""})))
+            === JSON.stringify(sourceObjectClusterFrame.positions.map(position => ({...position, objectNumber: position.objectNumber || ""})))
+          && normalizeClassicalNahuatlVncSlotStem(sourceObjectClusterFrame.predicateStem)
+            === normalizeClassicalNahuatlVncSlotStem(sourceTypedFrame.slots.predicate.stem)
+          && normalizeClassicalNahuatlVncSlotCarrier(sourceObjectClusterFrame.subjectCarrier)
+            === normalizeClassicalNahuatlVncSlotCarrier(sourceTypedFrame.slots.subject.pers1)
+          && renderedFormula && sourceMachineryFrame.formulaRealization === renderedFormula);
+      }
       const derivedSource = sourceMachineryFrame?.kind === "classical-nahuatl-vnc-derived-machinery-frame";
       const sourceKindAuthorized = isClassicalNahuatlMultipleObjectVncFrame(sourceMachineryFrame)
         || derivedSource && typeof targetObject?.isClassicalNahuatlDerivedVncMachineryFrame === "function" && targetObject.isClassicalNahuatlDerivedVncMachineryFrame(sourceMachineryFrame);
@@ -4883,8 +5522,28 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
       }
       return applyClassicalNahuatlLesson23ObjectClusterToQualifiedMachineryFrame(lowerMachineryFrame, objectClusterFrame, options);
     }
+    function doesClassicalNahuatlDerivedFormulaSourceMatch(source, lower, requests) {
+      const runtime=getClassicalNahuatlVncLayerRuntimeTarget();
+      if(runtime?.isClassicalNahuatlDerivedVncMachineryFrame?.(source)!==true)return false;
+      const operation=source.derivationOperationFrame;
+      const expected=operation?.targetObjectRequests;
+      if(normalizeClassicalNahuatlVncSlotStem(operation?.targetStem)!==normalizeClassicalNahuatlVncSlotStem(lower?.sourceVerbstem || lower?.stem)
+        ||operation.targetClass!==lower?.classId||!Array.isArray(expected)||!Array.isArray(requests)||expected.length!==requests.length)return false;
+      const keys=["objectId","objectKind","objectPerson","governor","derivationalLevel"];
+      return expected.every(old=>{
+        const current=requests.find(q=>q.objectId===old.objectId);
+        if(!current||keys.some(key=>current[key]!==old[key]))return false;
+        // A recapture can reissue the same Participant, but cannot replace its
+        // reference or facts. Some old operations supply the added PF later.
+        const participant=old.participantFrame;
+        return !participant || (isClassicalNahuatlParticipantFrame(current.participantFrame)
+          &&["referenceId","category","role","case","animacy","humanness","number","specificity"]
+            .every(key=>current.participantFrame[key]===participant[key]));
+      });
+    }
     function applyClassicalNahuatlLesson23ObjectClusterToQualifiedMachineryFrame(lowerMachineryFrame = null, objectClusterFrame = null, {
-      sourceFrameKind = "classical-nahuatl-multiple-object-vnc-multiple-object-vnc-machinery-frame"
+      sourceFrameKind = "classical-nahuatl-multiple-object-vnc-multiple-object-vnc-machinery-frame",
+      formulaProjectionSourceFrame = null
     } = {}) {
       const normalizedSourceFrameKind = normalizeClassicalNahuatlVncSlotCarrier(sourceFrameKind);
       const sourceFrameKindAuthorized = CLASSICAL_NAHUATL_LESSON23_MULTIPLE_OBJECT_VNC_FRAME_KINDS.includes(normalizedSourceFrameKind);
@@ -4902,7 +5561,10 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
       const voiceClusterAuthorized = isClassicalNahuatlVoiceObjectClusterFrame(objectClusterFrame)
         && doesClassicalNahuatlLesson23VoiceClusterMatchNonactiveTargetFrame(objectClusterFrame, lowerMachineryFrame);
       const clusterAuthorized = directClusterAuthorized || voiceClusterAuthorized;
-      if (!sourceFrameKindAuthorized || !isClassicalNahuatlVncSlotFrame(lowerTypedFrame) || !clusterAuthorized) {
+      const retainedDerivedFormulaSource=formulaProjectionSourceFrame
+        &&doesClassicalNahuatlDerivedFormulaSourceMatch(formulaProjectionSourceFrame,lowerMachineryFrame,objectClusterFrame?.objectRequests);
+      if (!sourceFrameKindAuthorized || !isClassicalNahuatlVncSlotFrame(lowerTypedFrame) || !clusterAuthorized
+        ||(formulaProjectionSourceFrame&&!retainedDerivedFormulaSource)) {
         return null;
       }
       const objectRoleAmbiguityFrame = directClusterAuthorized
@@ -4935,7 +5597,7 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
           positions: objectClusterFrame.positions,
           formulaCarrierProjectionFrames: objectClusterFrame.formulaCarrierProjectionFrames,
           formulaProjectionEnvironment:
-            normalizedSourceFrameKind
+            retainedDerivedFormulaSource ? "later-derived-vnc" : normalizedSourceFrameKind
               === "classical-nahuatl-vnc-derived-machinery-frame"
               ? "later-derived-vnc"
               : objectClusterFrame?.formulaProjectionEnvironment
@@ -4967,7 +5629,8 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
       const finalBoundaryRealizationFrame = realizeClassicalNahuatlVncSlotFrameAtFinalBoundary({
         vncSlotFrame: assembledTypedSlotFrame,
         expandedVncBoundaryFrame: lesson23ExpandedVncBoundaryFrame,
-        objectRelationshipRuleFrame: lowerMachineryFrame.objectRelationshipRuleFrame || null
+        objectRelationshipRuleFrame: lowerMachineryFrame.objectRelationshipRuleFrame || null,
+        initialVowelKind: lowerMachineryFrame.citationRuleFrame?.initialVowelKind || ""
       });
       const typedSlotFrame = finalBoundaryRealizationFrame.authorizationStatus === "authorized"
         ? finalBoundaryRealizationFrame.typedSlotFrame
@@ -5066,6 +5729,7 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         // reject.
         canonicalSourceSelectionFrame:
           lowerMachineryFrame.canonicalSourceSelectionFrame || null,
+        formulaProjectionSourceFrame,
         multipleObjectClusterFrame: objectClusterFrame,
         objectRoleAmbiguityFrame,
         expandedVncBoundaryFrame: lesson23ExpandedVncBoundaryFrame,
@@ -5080,6 +5744,7 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
       };
       if (frame.authorizationStatus === "authorized" && !frame.blockReason) {
         CLASSICAL_NAHUATL_LESSON23_ISSUED_MULTIPLE_OBJECT_VNC_FRAMES.add(frame);
+        classicalNahuatlMultipleObjectFormulaSources.set(frame,formulaProjectionSourceFrame);
       }
       return frame;
     }
@@ -5096,6 +5761,8 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         return false;
       }
       const objectClusterFrame = frame.multipleObjectClusterFrame;
+      const retainedFormulaSource=classicalNahuatlMultipleObjectFormulaSources.get(frame);
+      if((frame.formulaProjectionSourceFrame || null)!==(retainedFormulaSource || null))return false;
       const objectClusterAuthorized = isClassicalNahuatlObjectClusterFrame(objectClusterFrame)
         || isClassicalNahuatlVoiceObjectClusterFrame(objectClusterFrame);
       const typedSlotFrame = frame.proofFrame?.conclusion?.finalTypedVncSlotFrame;
@@ -5118,7 +5785,8 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
       rareThirdCausativeMeaningSupported = false,
       exceptionalSuffixOrderAuthorized = false,
       formulaArtifact = "",
-      surfaceArtifact = ""
+      surfaceArtifact = "",
+      formulaProjectionSourceFrame = null
     } = {}) {
       const lowerTypedFrame = lowerActiveMachineryFrame?.proofFrame?.conclusion?.finalTypedVncSlotFrame || lowerActiveMachineryFrame?.proofFrame?.conclusion?.finalBoundaryRealizationFrame?.typedSlotFrame;
       const sourceStem = normalizeClassicalNahuatlVncSlotStem(lowerActiveMachineryFrame?.sourceVerbstem || lowerActiveMachineryFrame?.stem);
@@ -5152,7 +5820,7 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
           sourceValence: "multiple-object"
         });
       }
-      return applyClassicalNahuatlLesson23ObjectClusterToQualifiedMachineryFrame(lowerActiveMachineryFrame, objectClusterFrame) || buildClassicalNahuatlBlockedFrame({
+      return applyClassicalNahuatlLesson23ObjectClusterToQualifiedMachineryFrame(lowerActiveMachineryFrame, objectClusterFrame,{formulaProjectionSourceFrame}) || buildClassicalNahuatlBlockedFrame({
         voice: "active",
         blockReason: "lesson23-multiple-object-slot-application-failed",
         activeMachineryFrame: lowerActiveMachineryFrame,
@@ -5271,8 +5939,79 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         return typeof runtimeTarget?.isClassicalNahuatlDerivedVncMachineryFrame === "function"
           && runtimeTarget.isClassicalNahuatlDerivedVncMachineryFrame(frame) === true;
       }
+      // An issued late operation (e.g. frequentative) is an active operand
+      // with its own canonical slots. Authenticate it through that owner.
+      if (typeof runtimeTarget?.isClassicalNahuatlMachineryFrame === "function"
+        && runtimeTarget.isClassicalNahuatlMachineryFrame(frame) === true
+        && (frame.operationFrame.operationFacts.sourceVoice
+          || frame.operationFrame.sourceMachineryFrame?.voice || "active") === "active") return true;
       return typeof runtimeTarget?.isClassicalNahuatlVncDerivationBaseSourceMachineryFrame === "function"
         && runtimeTarget.isClassicalNahuatlVncDerivationBaseSourceMachineryFrame(frame) === true;
+    }
+    const nonactiveCarrierFiniteFrames = new WeakMap();
+    function freezeClassicalNahuatlNonactiveCarrierFiniteValue(value, seen = new WeakSet()) {
+      if (!value || typeof value !== "object" || seen.has(value)) return value;
+      seen.add(value);
+      Object.values(value).forEach(entry => freezeClassicalNahuatlNonactiveCarrierFiniteValue(entry, seen));
+      return Object.freeze(value);
+    }
+    function isClassicalNahuatlNonactiveCarrierSourceFrame(record = null) {
+      return Boolean(record && isClassicalNahuatlNonactiveStemRecord(record, record.sourceStem)
+        && record.sourceIdentityFrame.sourceValence === "specific-projective"
+        && record.sourceIsImperfectiveActiveStem === true);
+    }
+    function buildClassicalNahuatlNonactiveTargetMachinery(stem, options) {
+      const builder = getClassicalNahuatlVncLayerRuntimeTarget()?.buildClassicalNahuatlVerbstemClassFrame;
+      return typeof builder === "function" ? builder(stem, options) : null;
+    }
+    function buildClassicalNahuatlNonactiveCarrierFiniteFrame(record = null, options = {}) {
+      const block = blockReason => Object.freeze({kind:"classical-nahuatl-nonactive-carrier-finite-frame",authorizationStatus:"blocked",blockReason});
+      const allowed = new Set(["subject","subjectAnimacy","subjectHumanness","patientReferenceId","mood","tense","requestedVoice","requestedDerivation","sentenceOptions"]);
+      if (!isClassicalNahuatlNonactiveCarrierSourceFrame(record)) return block("issued-specific-projective-nonactive-source-required");
+      if (!options || typeof options !== "object" || Object.keys(options).some(key=>!allowed.has(key))) return block("nonactive-carrier-finite-selection-not-recognized");
+      if (options.requestedVoice !== "passive" || (options.requestedDerivation && options.requestedDerivation !== "direct")) return block("nonactive-carrier-personal-passive-required");
+      if (!["1sg","2sg","3sg","1pl","2pl","3pl","3common"].includes(options.subject)
+        || !["animate","nonanimate"].includes(options.subjectAnimacy)
+        || !["human","nonhuman"].includes(options.subjectHumanness)
+        || typeof options.patientReferenceId !== "string" || !options.patientReferenceId.trim()) return block("explicit-specific-passive-patient-required");
+      const patient = buildClassicalNahuatlParticipantFrame({role:"subject",case:"nominative",agreement:options.subject,
+        animacy:options.subjectAnimacy,humanness:options.subjectHumanness,specificity:"specific",referenceId:options.patientReferenceId});
+      if (!isClassicalNahuatlParticipantFrame(patient) || patient.category !== options.subject
+        || patient.animacy !== options.subjectAnimacy || patient.humanness !== options.subjectHumanness) return block("passive-patient-context-mismatch");
+      const sourceObject = buildClassicalNahuatlParticipantFrame({role:"object",case:"accusative",agreement:options.subject,
+        animacy:patient.animacy,humanness:patient.humanness,specificity:"specific",referenceId:patient.referenceId});
+      const perfective = isClassicalNahuatlPerfectiveEnvironment({mood:options.mood,tense:options.tense});
+      const stem = perfective ? record.perfectiveNonactiveStem : record.imperfectiveNonactiveStem;
+      const target = buildClassicalNahuatlNonactiveTargetMachinery(stem, {...options.sentenceOptions,
+        subject:patient.morphologicalAgreement,mood:options.mood,tense:options.tense,
+        verbClass:"A",perfectiveClass:"A",valence:"intransitive",transitivity:"intransitive",objectKind:"none",objectPerson:"",tlaFusion:false});
+      const lower = target?.proofFrame?.conclusion?.finalTypedVncSlotFrame;
+      if (target?.proofFrame?.authorizationStatus !== "authorized" || !isClassicalNahuatlVncSlotFrame(lower)) return block(target?.blockReason || "nonactive-carrier-target-finite-not-authorized");
+      const typed = cloneClassicalNahuatlVncSlotValue(lower);
+      typed.slots.subject.participantFrame = patient;
+      typed.slots.subject.subjectCategory = patient.category;
+      const promotion = Object.freeze({kind:"classical-nahuatl-passive-patient-promotion-frame",authorizationStatus:"authorized",
+        canonicalNonactiveStemRecord:record,sourceObjectParticipantFrame:sourceObject,targetSubjectParticipantFrame:patient,
+        sourceSubjectFrame:null,sourceSubjectDeleted:true,promotedObjectBecomesSubject:true,agentExpressible:false,
+        sourceValence:"specific-projective",targetValence:"intransitive",voice:"passive"});
+      // This exact issued finite owns its cloned slots and target machinery.
+      // Freeze their full graph before attaching the private receipt: no later
+      // caller can change a predicate or patient while retaining that receipt.
+      const frame = freezeClassicalNahuatlNonactiveCarrierFiniteValue({...target,kind:"classical-nahuatl-nonactive-carrier-finite-frame",authorizationStatus:"authorized",blockReason:"",
+        canonicalNonactiveStemRecord:record,derivedMachineryFrame:target,subject:patient.morphologicalAgreement,
+        subjectParticipantFrame:patient,voice:"passive",voiceTransformationFrame:promotion,
+        targetClass:record.targetClass,sourceMachineryFrame:record,sourceSubjectFrame:null,
+        proofFrame:Object.freeze({...target.proofFrame,conclusion:Object.freeze({...target.proofFrame.conclusion,finalTypedVncSlotFrame:typed})})});
+      nonactiveCarrierFiniteFrames.set(frame,Object.freeze({record,target,typed,patient,promotion}));
+      return frame;
+    }
+    function isClassicalNahuatlNonactiveCarrierFiniteFrame(frame = null) {
+      const c = frame && nonactiveCarrierFiniteFrames.get(frame);
+      return Boolean(c && frame.authorizationStatus === "authorized" && isClassicalNahuatlNonactiveCarrierSourceFrame(c.record)
+        && frame.canonicalNonactiveStemRecord === c.record && frame.derivedMachineryFrame === c.target
+        && frame.voiceTransformationFrame === c.promotion && frame.subjectParticipantFrame === c.patient
+        && frame.proofFrame.conclusion.finalTypedVncSlotFrame === c.typed && c.typed.slots.subject.participantFrame === c.patient
+        && c.promotion.sourceObjectParticipantFrame.referenceId === c.patient.referenceId && Object.isFrozen(frame));
     }
     function buildClassicalNahuatlDerivedVncFrame(activeMachineryFrame = null, {
       voice = "active",
@@ -5553,19 +6292,9 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         mood,
         tense: targetTense
       }) ? "perfective" : "imperfective";
-      const targetStem = passive || impersonal ? selectedNonactiveAspect === "perfective" ? nonactiveStemRecord.perfectiveNonactiveStem || nonactiveStemRecord.nonactiveStem : nonactiveStemRecord.imperfectiveNonactiveStem || nonactiveStemRecord.nonactiveStem : inherentImpersonal ? inherentImpersonalRecord.inherentImpersonalStem : tlaImpersonalStemRecord.impersonalStem;
-      const retainsThirdPluralSpecificObject = retainedObjectPositions.some(position => (
-        position.objectKind === "specific-projective"
-        && position.objectPerson === "3pl"
-      ));
-      const nonactiveFormulaTargetStem = multipleObjectSource
-        && passive
-        && nonactiveStemRecord?.suffixFamily === "ō"
-        && retainedObjectPositions.length > 0
-        && !retainsThirdPluralSpecificObject
-        ? targetStem.replace(/ō$/u, "o")
-        : targetStem;
-      const formulaTargetStem = humanProjectiveImpersonalizedPassive
+      let targetStem = passive || impersonal ? selectedNonactiveAspect === "perfective" ? nonactiveStemRecord.perfectiveNonactiveStem || nonactiveStemRecord.nonactiveStem : nonactiveStemRecord.imperfectiveNonactiveStem || nonactiveStemRecord.nonactiveStem : inherentImpersonal ? inherentImpersonalRecord.inherentImpersonalStem : tlaImpersonalStemRecord.impersonalStem;
+      const nonactiveFormulaTargetStem = targetStem;
+      let formulaTargetStem = humanProjectiveImpersonalizedPassive
         ? `tla-${nonactiveFormulaTargetStem}`
         : nonactiveFormulaTargetStem;
       const targetClass = passive || impersonal ? "A" : verbClass;
@@ -5592,9 +6321,85 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
           sourceValence: normalizedSourceValence
         });
       }
-      let derivedMachineryFrame = derivedBuilder(formulaTargetStem, {
+      // Internal tla deletes the source subject before selecting the finite
+      // irregular cell. Prefix the canonical 3sg member (ye / ca-h, etc.),
+      // rather than treating the entered member as an invariant regular stem.
+      const inheritedTlaCoordinateEnvironment = tlaImpersonal
+        && inheritedIrregularEnvironment;
+      const tlaCoordinateSourceMachineryFrame = inheritedTlaCoordinateEnvironment
+        ? derivedBuilder(normalizedSourceStem, {
+          ...cloneClassicalNahuatlVncSlotValue(sentenceOptions),
+          subject: targetSubject,
+          mood: sourceLesson11Plan.requestedMood || mood,
+          tense: sourceLesson11Plan.requestedParadigmTense || tense,
+          irregularStemChoice: sourceLesson11Plan.selectedAlternativeStem
+            || sourceLesson11Plan.requestedAlternativeStem || "",
+          lexicalReading: sourceLesson11Plan.identity?.lexicalReading
+            || sentenceOptions.lexicalReading || "",
+          verbClass,
+          perfectiveClass: verbClass, valence: "intransitive",
+          transitivity: "intransitive", tlaFusion: false,
+        })
+        : null;
+      const tlaCoordinateSourceTypedFrame = tlaCoordinateSourceMachineryFrame
+        ?.proofFrame?.conclusion?.finalTypedVncSlotFrame;
+      const coordinateTlaImpersonalStemRecord = inheritedTlaCoordinateEnvironment
+        && tlaCoordinateSourceMachineryFrame?.proofFrame?.authorizationStatus === "authorized"
+        && isClassicalNahuatlVncSlotFrame(tlaCoordinateSourceTypedFrame)
+        ? buildClassicalNahuatlTlaImpersonalStemRecord(
+          tlaCoordinateSourceTypedFrame.slots.predicate.stem,
+          {selectionAuthority: "andrews-lesson22-rule-derivation"},
+        )
+        : null;
+      if (inheritedTlaCoordinateEnvironment) {
+        if (coordinateTlaImpersonalStemRecord?.authorizationStatus !== "authorized") {
+          return buildClassicalNahuatlBlockedFrame({
+            voice: normalizedVoice,
+            blockReason: "lesson22-tla-impersonal-irregular-coordinate-required",
+            activeMachineryFrame, tlaImpersonalStemRecord,
+            sourceValence: normalizedSourceValence,
+          });
+        }
+        targetStem = coordinateTlaImpersonalStemRecord.impersonalStem;
+        formulaTargetStem = targetStem;
+      }
+      const sourceInitialVowelKind = activeMachineryFrame
+        ?.citationRuleFrame?.initialVowelKind || "";
+      const retainedInitialBase = normalizedSourceStem.split("-")[0];
+      const endingRelation = nonactiveStemRecord?.finalShapeRelation;
+      const initialEdgeRetainedByEndingOperation = Boolean(
+        endingRelation?.authorizationStatus === "authorized"
+        && nonactiveStemRecord.selectedFormationAuthority !== "suppletive-lexical-rule"
+        && endingRelation.sourceFinalShapeFrame?.stem === normalizedSourceStem
+        && endingRelation.nonactiveFinalShapeFrame?.stem === nonactiveStemRecord.nonactiveStem
+        && endingRelation.ruleId === nonactiveStemRecord.selectedRuleId
+        && Array.from(endingRelation.retainedStem || "").length > 1
+        && normalizedSourceStem.startsWith(endingRelation.retainedStem)
+        && formulaTargetStem.startsWith(endingRelation.retainedStem)
+      );
+      const inheritedInitialVowelKind = (passive || impersonal)
+        && /^[iī]/u.test(retainedInitialBase)
+        && (retainedInitialBase === formulaTargetStem.split("-")[0]
+          || initialEdgeRetainedByEndingOperation)
+        && ["real", "supportive"].includes(sourceInitialVowelKind)
+        ? sourceInitialVowelKind
+        : "";
+      let derivedMachineryFrame = buildClassicalNahuatlNonactiveTargetMachinery(formulaTargetStem, {
         ...cloneClassicalNahuatlVncSlotValue(sentenceOptions),
-        subject: targetSubject,
+        // Source number is retired by voice. Its plural admonitive ending
+        // remains a choice only when the promoted target is also plural.
+        ...(mood === "admonitive" && !targetSubject.endsWith("pl")
+          ? {admonitivePluralEnding: ""} : {}),
+        // Transfer the validated Source analysis only when suffixation
+        // preserves its initial base, including licensed final truncation;
+        // a suppletive target's matching letters do not establish continuity.
+        initialVowelKind: inheritedInitialVowelKind,
+        // A common-number patient has third-singular finite morphology. Keep
+        // its semantic category in the voice transformation, not in the
+        // lower finite carrier menu.
+        subject: buildClassicalNahuatlParticipantFrame({
+          role: "subject", agreement: targetSubject,
+        }).morphologicalAgreement,
         mood,
         tense: targetTense,
         verbClass: targetClass,
@@ -5614,17 +6419,69 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         derivedMachineryFrame?.proofFrame?.conclusion?.finalTypedVncSlotFrame
         || derivedMachineryFrame?.proofFrame?.conclusion?.finalBoundaryRealizationFrame?.typedSlotFrame
         || null;
+      // A lexical boundary fact is read from its genuine canonical Source. It
+      // is neither the generic contextual-i chooser nor an arbitrary ih rule.
+      const initialContextSourceRecord = runtimeTarget?.resolveClassicalNahuatlCanonicalSourceStemRecord?.({
+        enteredStem:normalizedSourceStem,basalUnit:"vnc",valence:"transitive"});
+      const initialContextProfile = runtimeTarget?.isClassicalNahuatlCanonicalSourceStemRecord?.(initialContextSourceRecord)
+        && initialContextSourceRecord.stem === normalizedSourceStem
+        ? initialContextSourceRecord.initialIAnalysis?.nonactiveBoundaryProfile : null;
+      const contextualInitialBoundaryApplies = Boolean(impersonal
+        && initialContextProfile?.context === "impersonal-shuntline-ne"
+        && initialContextProfile.sourceValence === normalizedSourceValence
+        && initialContextProfile.targetValence === targetBuilderValence
+        && initialContextProfile.tenses.includes(tense)
+        && initialContextProfile.sourceInitialVowelKind === sourceInitialVowelKind
+        && initialContextProfile.targetInitialVowelKind === "supportive"
+        && isClassicalNahuatlNonactiveStemRecord(nonactiveStemRecord,normalizedSourceStem)
+        && initialEdgeRetainedByEndingOperation
+        && isClassicalNahuatlVncSlotFrame(lowerDerivedTypedVncSlotFrame)
+        && lowerDerivedTypedVncSlotFrame.slots.prePredicate.at(-1)?.carrier === "ne"
+        && lowerDerivedTypedVncSlotFrame.slots.predicate.stem === formulaTargetStem
+        && /^i[^iī]/u.test(formulaTargetStem));
+      const initialIContextBoundaryFrame = contextualInitialBoundaryApplies ? (() => {
+        const typed = cloneClassicalNahuatlVncSlotValue(lowerDerivedTypedVncSlotFrame);
+        // This is the owned supportive-vowel boundary operation on the typed
+        // predicate, before formula generation or Lesson2 writing.
+        typed.slots.predicate.stem = typed.slots.predicate.stem.slice(1);
+        const {subject,prePredicate,predicate,number}=typed.slots;
+        typed.semanticIdentity=[subject.pers1,subject.pers2,...prePredicate.map(x=>x.carrier),
+          predicate.stem,predicate.tns,number.num1,number.num2].join("|");
+        const boundary=runtimeTarget.realizeClassicalNahuatlVncSlotFrameAtFinalBoundary({vncSlotFrame:typed});
+        return {kind:"classical-nahuatl-lexical-initial-i-context-boundary-frame",
+          authorizationStatus:boundary.authorizationStatus,context:initialContextProfile.context,
+          canonicalSourceStemRecord:initialContextSourceRecord,canonicalNonactiveStemRecord:nonactiveStemRecord,
+          sourceStem:normalizedSourceStem,sourceInitialVowelKind,targetInitialVowelKind:"supportive",
+          sourceTypedVncSlotFrame:lowerDerivedTypedVncSlotFrame,typedVncSlotFrame:typed,
+          finalBoundaryRealizationFrame:boundary,callerSuppliedProfileAccepted:false};
+      })() : null;
       // The validated voice operation owns this transfer to its freshly built
       // target. It is not a license to apply a source irregular plan to any
       // unrelated slot through the public Lesson 11 application API.
-      const inheritedLesson11ApplicationFrame = inheritedTenseOnlyEnvironment
+      const inheritedCoordinateEnvironment = inheritedTenseOnlyEnvironment
+        || inheritedTlaCoordinateEnvironment;
+      const inheritedLesson11ApplicationFrame = inheritedCoordinateEnvironment
         && derivedMachineryFrame?.proofFrame?.authorizationStatus === "authorized"
         && lowerDerivedTypedVncSlotFrame?.slots?.predicate
         ? (() => {
           const frame = cloneClassicalNahuatlVncSlotValue(lowerDerivedTypedVncSlotFrame);
-          frame.slots.predicate.tns = sourceLesson11Plan.tnsOverride;
-          frame.lesson11Plan = cloneClassicalNahuatlVncSlotValue(sourceLesson11Plan);
-          frame.phase = "lesson11-irregular-tense-inherited-by-nonactive";
+          frame.slots.predicate.tns = inheritedTlaCoordinateEnvironment
+            ? tlaCoordinateSourceTypedFrame.slots.predicate.tns
+            : sourceLesson11Plan.tnsOverride;
+          if (inheritedTlaCoordinateEnvironment) {
+            frame.slots.predicate.stem = targetStem;
+            frame.slots.number = cloneClassicalNahuatlVncSlotValue(
+              tlaCoordinateSourceTypedFrame.slots.number,
+            );
+          }
+          frame.lesson11Plan = cloneClassicalNahuatlVncSlotValue(
+            inheritedTlaCoordinateEnvironment
+              ? tlaCoordinateSourceMachineryFrame.lesson11ParadigmPlan
+              : sourceLesson11Plan,
+          );
+          frame.phase = inheritedTlaCoordinateEnvironment
+            ? "lesson11-irregular-coordinate-inherited-by-tla-impersonal"
+            : "lesson11-irregular-tense-inherited-by-nonactive";
           const { subject, prePredicate, predicate, number } = frame.slots;
           frame.semanticIdentity = [subject?.pers1 || "", subject?.pers2 || "",
             ...(prePredicate || []).map(slot => slot.carrier), predicate.stem,
@@ -5632,8 +6489,13 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
           return {
             kind: "classical-nahuatl-irregular-vnc-vnc-application-frame",
             authorizationStatus: "authorized",
-            operation: "nonactive-conditioned-tense-inheritance",
+            operation: inheritedTlaCoordinateEnvironment
+              ? "tla-impersonal-conditioned-coordinate-inheritance"
+              : "nonactive-conditioned-tense-inheritance",
             plan: sourceLesson11Plan,
+            coordinatePlan: tlaCoordinateSourceMachineryFrame?.lesson11ParadigmPlan || null,
+            coordinateSourceMachineryFrame: tlaCoordinateSourceMachineryFrame,
+            coordinateTlaImpersonalStemRecord,
             sourceTypedVncSlotFrame: cloneClassicalNahuatlVncSlotValue(lowerDerivedTypedVncSlotFrame),
             typedVncSlotFrame: frame
           };
@@ -5645,7 +6507,7 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
           vncSlotFrame: inheritedLesson11ApplicationFrame.typedVncSlotFrame
         })
         : null;
-      const inheritedTenseAuthorized = !inheritedTenseOnlyEnvironment
+      const inheritedTenseAuthorized = !inheritedCoordinateEnvironment
         || Boolean(
           inheritedLesson11ApplicationFrame?.authorizationStatus === "authorized"
           && inheritedLesson11BoundaryFrame?.authorizationStatus === "authorized"
@@ -5659,7 +6521,7 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
       if (!derivedAuthorized) {
         return buildClassicalNahuatlBlockedFrame({
           voice: normalizedVoice,
-          blockReason: inheritedTenseOnlyEnvironment && !inheritedTenseAuthorized
+          blockReason: inheritedCoordinateEnvironment && !inheritedTenseAuthorized
             ? inheritedLesson11BoundaryFrame?.blockReason
               || inheritedLesson11ApplicationFrame?.blockReason
               || "lessons20-22-inherited-irregular-tense-operation-not-authorized"
@@ -5675,7 +6537,7 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         });
       }
       let derivedProofConclusion = cloneClassicalNahuatlVncSlotValue(derivedMachineryFrame.proofFrame.conclusion);
-      if (inheritedTenseOnlyEnvironment) {
+      if (inheritedCoordinateEnvironment) {
         const inheritedFormula = inheritedLesson11BoundaryFrame.formulaRealization;
         derivedProofConclusion = {
           ...derivedProofConclusion,
@@ -5694,6 +6556,14 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
             inheritedLesson11ApplicationFrame
           )
         };
+      }
+      if (initialIContextBoundaryFrame?.authorizationStatus === "authorized") {
+        const boundary=initialIContextBoundaryFrame.finalBoundaryRealizationFrame;
+        derivedProofConclusion={...derivedProofConclusion,selectedFormula:boundary.formulaRealization,
+          authorizedFormula:boundary.formulaRealization,formulaRealization:boundary.formulaRealization,
+          finalTypedVncSlotFrame:cloneClassicalNahuatlVncSlotValue(boundary.typedSlotFrame),
+          finalTypedVncSemanticIdentity:boundary.typedSlotFrame.semanticIdentity,
+          finalBoundaryRealizationFrame:boundary,initialIContextBoundaryFrame};
       }
       const formula = derivedProofConclusion.selectedFormula || derivedProofConclusion.authorizedFormula || "";
       const participantRoleTransitionFrame =
@@ -5729,6 +6599,7 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         voice: normalizedVoice,
         sourceStem: normalizedSourceStem,
         targetStem,
+        ...(initialIContextBoundaryFrame ? {initialIContextBoundaryFrame} : {}),
         realizedTargetStem: formulaTargetStem,
         sourceSubject: normalizedSourceSubject,
         sourceSubjectDeleted: true,
@@ -5801,10 +6672,12 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         }, {
           lesson: "Andrews Lesson 11",
           passed: inheritedTenseAuthorized,
-          rule: inheritedTenseOnlyEnvironment
-            ? "The issued irregular paradigm operation carries its conditioned tense morph into the derived voice result before final boundary realization."
-            : "No inherited tense-only irregular operation applies to this derived voice result.",
-          operationApplies: inheritedTenseOnlyEnvironment,
+          rule: inheritedTlaCoordinateEnvironment
+            ? "Internal tla prefixes the issued irregular third-singular predicate and retains its conditioned tense and number."
+            : inheritedTenseOnlyEnvironment
+              ? "The issued irregular paradigm operation carries its conditioned tense morph into the derived voice result before final boundary realization."
+              : "No inherited irregular operation applies to this derived voice result.",
+          operationApplies: inheritedCoordinateEnvironment,
           sourceTns: inheritedLesson11ApplicationFrame?.sourceTns || "",
           selectedTns: inheritedLesson11ApplicationFrame?.selectedTns || ""
         }],
@@ -5888,9 +6761,9 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
     }
     const CLASSICAL_NAHUATL_LESSON242_NONACTIVE_PRINTED_SURFACES = Object.freeze({
       "tecī-hua": Object.freeze({
-        printedSurfaceWord: "tecihua",
-        surfaceOperation: "remove-analysis-boundary-and-realize-printed-short-i",
-        quantityChange: "ī-to-i"
+        printedSurfaceWord: "tecīhua",
+        surfaceOperation: "remove-analysis-boundaries",
+        quantityChange: "none"
       }),
       "tex-ō": Object.freeze({
         printedSurfaceWord: "texo",
@@ -6338,6 +7211,9 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         isClassicalNahuatlMultipleObjectVncFrame,
         getClassicalNahuatlVoiceRuleRefs,
         buildClassicalNahuatlDerivedVncFrame,
+        isClassicalNahuatlNonactiveCarrierSourceFrame,
+        buildClassicalNahuatlNonactiveCarrierFiniteFrame,
+        isClassicalNahuatlNonactiveCarrierFiniteFrame,
         buildClassicalNahuatlNonactiveSurfaceFrame,
         isClassicalNahuatlNonactiveSurfaceFrame,
         getClassicalNahuatlVncOperationContracts,
@@ -6394,6 +7270,9 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         isClassicalNahuatlMultipleObjectVncFrame,
         getClassicalNahuatlVoiceRuleRefs,
         buildClassicalNahuatlDerivedVncFrame,
+        isClassicalNahuatlNonactiveCarrierSourceFrame,
+        buildClassicalNahuatlNonactiveCarrierFiniteFrame,
+        isClassicalNahuatlNonactiveCarrierFiniteFrame,
         buildClassicalNahuatlNonactiveSurfaceFrame,
         isClassicalNahuatlNonactiveSurfaceFrame,
         getClassicalNahuatlVncOperationContracts,
@@ -6542,6 +7421,13 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
     api.isClassicalNahuatlMultipleObjectVncFrame = isClassicalNahuatlMultipleObjectVncFrame;
     api.getClassicalNahuatlVoiceRuleRefs = getClassicalNahuatlVoiceRuleRefs;
     api.buildClassicalNahuatlBlockedFrame = buildClassicalNahuatlBlockedFrame;
+    api.resolveClassicalNahuatlRestrictedContainingVncSourceFrame = resolveClassicalNahuatlRestrictedContainingVncSourceFrame;
+    api.isClassicalNahuatlRestrictedContainingVncSourceFrame = isClassicalNahuatlRestrictedContainingVncSourceFrame;
+    api.buildClassicalNahuatlRestrictedContainingTargetFrame = buildClassicalNahuatlRestrictedContainingTargetFrame;
+    api.isClassicalNahuatlRestrictedContainingTargetFrame = isClassicalNahuatlRestrictedContainingTargetFrame;
+    api.isClassicalNahuatlNonactiveCarrierSourceFrame = isClassicalNahuatlNonactiveCarrierSourceFrame;
+    api.buildClassicalNahuatlNonactiveCarrierFiniteFrame = buildClassicalNahuatlNonactiveCarrierFiniteFrame;
+    api.isClassicalNahuatlNonactiveCarrierFiniteFrame = isClassicalNahuatlNonactiveCarrierFiniteFrame;
     api.buildClassicalNahuatlDerivedVncFrame = buildClassicalNahuatlDerivedVncFrame;
     api.buildClassicalNahuatlNonactiveSurfaceFrame = buildClassicalNahuatlNonactiveSurfaceFrame;
     api.isClassicalNahuatlNonactiveSurfaceFrame = isClassicalNahuatlNonactiveSurfaceFrame;

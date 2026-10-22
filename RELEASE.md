@@ -1,19 +1,31 @@
-# Grammar OS v1.2.7 release
+# Grammar OS v1.2.8 release
 
-Release name: **Grammar Interface Update**
+Release name: **Language and Interface Update**
 
-Browser build: **20260922-grammar-interface-549**
+Browser build: **20261022-language-interface-1**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Groups available operations and explains unavailable operations using existing owner machinery.
-- Keeps genuine Grammar choices editable while leaving derived facts as explanations.
-- Preserves exact Results, forms, and formulas; stages continuation edits until explicit Apply.
-- Grammar owners are unchanged. Focused file-level proofs do not claim exhaustive grammar or visual usability verification.
+- Organizes VNC, NNC and particle choices by language structure, formation, participants, sentence form, and linking.
+- Preserves explicit Source and Make Result actions, with accepted Results retained while edits are staged.
+- Repairs reviewed grammatical handoffs, number/possession choices, contextual readiness, writing, and continuation boundaries.
+- Adds an explicit Writing Source with original sound/morph parts and owner-licensed spelling choices, including obligatory n+p assimilation.
+- Restores the exact Writing Source and spelling choice through direct editing and session History/Undo.
+- Keeps action icons beside text labels and grammatical choices in words.
 
-See [Version History](CHANGELOG.md) for notes from earlier releases.
+## Review scope and current limits
+
+This build is available for independent review against Andrews. Automated and browser verification cover the recorded supported paths; they do not certify every lexical Source or grammatical combination.
+
+- Conditional lexical readings and irregular formations require the corresponding genuine Source analysis.
+- Writing editing and History work within the open session; durable Writing reload is not supported.
+- Reload of the complete quin sentence-adverbial outer layer is deliberately unsupported and shows a recovery notice.
+- Optional writing coverage and the simple-compound Writing adapter have explicit supported-context limits.
+- Accumulated-session performance and some historical inventory provenance remain open qualifications.
+
+See [Version History](CHANGELOG.md) for earlier releases.
 
 ## Build the public site
 
@@ -25,7 +37,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.7/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.8/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.

@@ -103,31 +103,6 @@
   --calc-step-bg: #e1f1ec;
   --calc-step-text: #0f665c;
   --calc-status-bg: rgba(18, 107, 97, 0.1);
-  --controller-silent-toggle-border: rgba(47, 122, 92, 0.46);
-  --controller-silent-toggle-border-hover: rgba(47, 122, 92, 0.62);
-  --controller-silent-toggle-border-active: rgba(47, 122, 92, 0.76);
-  --controller-silent-toggle-bg: linear-gradient(145deg, rgba(47, 122, 92, 0.16), rgba(255, 255, 255, 0.9));
-  --controller-silent-toggle-bg-active: linear-gradient(145deg, rgba(47, 122, 92, 0.34), rgba(216, 106, 58, 0.14));
-  --controller-silent-toggle-text: #1f5a40;
-  --shuntline-overt-toggle-border: rgba(183, 92, 34, 0.52);
-  --shuntline-overt-toggle-border-hover: rgba(183, 92, 34, 0.7);
-  --shuntline-overt-toggle-border-active: rgba(183, 92, 34, 0.82);
-  --shuntline-overt-toggle-bg: linear-gradient(145deg, rgba(229, 138, 64, 0.2), rgba(255, 255, 255, 0.92));
-  --shuntline-overt-toggle-bg-active: linear-gradient(145deg, rgba(229, 138, 64, 0.36), rgba(199, 90, 53, 0.18));
-  --shuntline-overt-toggle-text: #9a3812;
-  --silent-zero-toggle-border: rgba(33, 124, 113, 0.44);
-  --silent-zero-toggle-bg: linear-gradient(145deg, rgba(44, 139, 126, 0.14), rgba(255, 255, 255, 0.9));
-  --silent-zero-toggle-text: #1f5d55;
-  --viable-toggle-border: rgba(42, 132, 80, 0.56);
-  --viable-toggle-bg: linear-gradient(145deg, rgba(66, 171, 110, 0.18), rgba(255, 255, 255, 0.92));
-  --masked-toggle-border: rgba(191, 121, 36, 0.62);
-  --masked-toggle-bg: linear-gradient(145deg, rgba(221, 156, 69, 0.2), rgba(255, 255, 255, 0.9));
-  --impossible-toggle-border: rgba(138, 74, 84, 0.46);
-  --impossible-toggle-bg: linear-gradient(145deg, rgba(173, 98, 111, 0.16), rgba(255, 255, 255, 0.88));
-  --impossible-toggle-text: #7d4b57;
-  --selected-viable-ring: rgba(42, 132, 80, 0.4);
-  --selected-masked-ring: rgba(191, 121, 36, 0.44);
-  --selected-impossible-ring: rgba(138, 74, 84, 0.4);
   --z-block-layer: 1;
   --z-popup-host: 100;
   --z-popup-layer: 110;
@@ -463,7 +438,6 @@ p {
 .verb-chip,
 .nonactive-tab,
 .tense-tab,
-.object-toggle-button,
 .legend-button,
 .download-csv {
   border: 1px solid var(--glass-btn-border);
@@ -489,7 +463,6 @@ p {
 .verb-chip:hover:not(:disabled),
 .nonactive-tab:hover:not(:disabled),
 .tense-tab:hover:not(:disabled),
-.object-toggle-button:hover:not(:disabled),
 .legend-button:hover:not(:disabled),
 .download-csv:hover:not(:disabled) {
   transform: translateY(-1px);
@@ -506,7 +479,6 @@ p {
 .verb-chip:focus-visible,
 .nonactive-tab:focus-visible,
 .tense-tab:focus-visible,
-.object-toggle-button:focus-visible,
 .legend-button:focus-visible,
 .download-csv:focus-visible {
   outline: 2px solid rgba(44, 139, 126, 0.45);
@@ -521,7 +493,6 @@ p {
 .verb-chip.is-active,
 .nonactive-tab.is-active,
 .tense-tab.is-active,
-.object-toggle-button.is-active,
 .legend-button.is-active,
 .legend-button[aria-pressed="true"] {
   background: var(--glass-btn-bg-active);
@@ -531,86 +502,18 @@ p {
   transform: none;
 }
 
-.object-toggle-button.object-toggle-button--controller-silent {
-  border-color: var(--controller-silent-toggle-border);
-  background: var(--controller-silent-toggle-bg);
-  color: var(--controller-silent-toggle-text);
-}
 
-.object-toggle-button.object-toggle-button--controller-silent:hover:not(:disabled) {
-  border-color: var(--controller-silent-toggle-border-hover);
-  color: var(--controller-silent-toggle-text);
-}
 
-.object-toggle-button.object-toggle-button--controller-silent.is-active {
-  background: var(--controller-silent-toggle-bg-active);
-  border-color: var(--controller-silent-toggle-border-active);
-  color: var(--ink);
-  box-shadow: 0 0 0 2px rgba(47, 122, 92, 0.28) inset;
-}
 
-.object-toggle-button.object-toggle-button--shuntline-overt {
-  border-color: var(--shuntline-overt-toggle-border);
-  background: var(--shuntline-overt-toggle-bg);
-  color: var(--shuntline-overt-toggle-text);
-}
 
-.object-toggle-button.object-toggle-button--shuntline-overt:hover:not(:disabled) {
-  border-color: var(--shuntline-overt-toggle-border-hover);
-  color: var(--shuntline-overt-toggle-text);
-}
 
-.object-toggle-button.object-toggle-button--shuntline-overt.is-active {
-  background: var(--shuntline-overt-toggle-bg-active);
-  border-color: var(--shuntline-overt-toggle-border-active);
-  color: var(--shuntline-overt-toggle-text);
-  box-shadow: 0 0 0 2px rgba(183, 92, 34, 0.3) inset;
-}
 
-.object-toggle-button.object-toggle-button--silent-zero {
-  border-color: var(--silent-zero-toggle-border);
-  background: var(--silent-zero-toggle-bg);
-  color: var(--silent-zero-toggle-text);
-  border-style: dashed;
-}
 
-.object-toggle-button.object-toggle-button--viable {
-  border-color: var(--viable-toggle-border);
-  background: var(--viable-toggle-bg);
-}
 
-.object-toggle-button.object-toggle-button--masked {
-  border-color: var(--masked-toggle-border);
-  background: var(--masked-toggle-bg);
-}
 
-.object-toggle-button.object-toggle-button--impossible {
-  border-color: var(--impossible-toggle-border);
-  background: var(--impossible-toggle-bg);
-  color: var(--impossible-toggle-text);
-  opacity: 0.78;
-}
 
-.object-toggle-button.object-toggle-button--selected-viable.is-active {
-  outline: 2px solid var(--selected-viable-ring);
-  outline-offset: -1px;
-  border-color: rgba(42, 132, 80, 0.88);
-  background: linear-gradient(145deg, rgba(66, 171, 110, 0.32), rgba(255, 255, 255, 0.94));
-}
 
-.object-toggle-button.object-toggle-button--selected-masked.is-active {
-  outline: 2px solid var(--selected-masked-ring);
-  outline-offset: -1px;
-  border-color: rgba(191, 121, 36, 0.9);
-  background: linear-gradient(145deg, rgba(221, 156, 69, 0.34), rgba(255, 255, 255, 0.93));
-}
 
-.object-toggle-button.object-toggle-button--selected-impossible.is-active {
-  outline: 2px solid var(--selected-impossible-ring);
-  outline-offset: -1px;
-  border-color: rgba(138, 74, 84, 0.88);
-  background: linear-gradient(145deg, rgba(173, 98, 111, 0.3), rgba(255, 255, 255, 0.9));
-}
 
 .calc-operator-chip:disabled,
 .calc-input-mode__button:disabled,
@@ -618,7 +521,6 @@ p {
 .verb-chip:disabled,
 .nonactive-tab:disabled,
 .tense-tab:disabled,
-.object-toggle-button:disabled,
 .legend-button:disabled {
   opacity: 0.52;
   cursor: not-allowed;
@@ -696,8 +598,7 @@ p {
 .verb-composer__slot-tab,
 .verb-chip,
 .nonactive-tab,
-.view-export-button,
-.object-toggle-button {
+.view-export-button{
   min-height: var(--mode-toggle-height);
   padding: 2px 7px;
   line-height: 1.2;
@@ -4950,7 +4851,6 @@ body.is-language-classical.is-ui-simple #classical-workbench
   #classical-source-panel :is(
     .verb-block__display,
     .classical-nnc-source-guide__rule,
-    .classical-source-context-controls,
     [data-classical-source-outline-section="analysis"],
     #classical-construction-operation-field,
     .classical-source-path-lane__heading
@@ -8008,13 +7908,7 @@ input[type="submit"]:hover {
 }
 
 @media (max-width: 640px) {
-  .object-toggle {
-    flex-wrap: wrap;
-  }
 
-  .object-toggle-button {
-    flex: 1 1 calc(50% - 4px);
-  }
 }
 
 .construction-message {
@@ -8262,55 +8156,13 @@ input[type="submit"]:hover {
   justify-items: stretch;
 }
 
-.tense-grid--source-columns {
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 34rem), 1fr));
-  gap: var(--layout-gap-base);
-}
 
-.tense-grid-source-column {
-  display: grid;
-  gap: 8px;
-  align-content: start;
-  min-width: 0;
-}
 
-.tense-grid-source-column--mixed {
-  grid-column: 1 / -1;
-}
 
-.tense-grid-source-column--mixed[hidden] {
-  display: none;
-}
 
-.tense-grid-source-column + .tense-grid-source-column {
-  padding-left: 0;
-  border-left: none;
-}
 
-.tense-grid-source-column__heading {
-  font-size: calc(var(--font-size-label) - 0.1rem);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--ink-soft);
-  font-weight: 700;
-  opacity: 0.82;
-}
 
-.tense-grid-source-column__blocks {
-  display: grid;
-  gap: 14px;
-}
 
-.tense-grid-source-column__empty {
-  border: 1px dashed rgba(29, 26, 21, 0.22);
-  border-radius: 10px;
-  padding: 10px;
-  color: var(--ink-soft);
-  text-align: center;
-  font-weight: 600;
-  background: rgba(255, 255, 255, 0.38);
-  line-height: 1.35;
-}
 
 #all-tense-conjugations {
   display: grid;
@@ -8971,10 +8823,6 @@ input[type="submit"]:hover {
 }
 
 @media (min-width: 1100px) {
-  .tense-grid--source-columns {
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 34rem), 1fr));
-    gap: var(--layout-gap-wide);
-  }
 
   .tense-tabs-main,
   .tense-tabs-universal {
@@ -9420,9 +9268,6 @@ input[type="submit"]:hover {
     var(--shadow-soft);
 }
 
-.tense-block--noun-shared-controls {
-  margin-bottom: 10px;
-}
 
 .tense-block__title {
   font-weight: 700;
@@ -9458,75 +9303,14 @@ input[type="submit"]:hover {
   max-width: 100%;
 }
 
-.tense-block__controls--stacked {
-  width: 100%;
-  justify-content: flex-start;
-  flex-direction: column;
-  align-items: stretch;
-  gap: 8px;
-}
 
-.object-toggle--stacked {
-  width: 100%;
-  display: grid;
-  grid-template-columns: 1fr;
-  justify-items: start;
-}
 
-.object-toggle--stacked.object-toggle--with-label {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
 
-.object-toggle__label {
-  flex: 0 0 auto;
-  align-self: center;
-  color: var(--ink-soft);
-  font-size: 0.62rem;
-  font-weight: 700;
-  letter-spacing: 0;
-  line-height: var(--mode-toggle-height);
-  max-width: 4.6rem;
-  opacity: 0.66;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
 
-.object-toggle--stacked.object-toggle--with-label .object-toggle__label {
-  flex-basis: 4.6rem;
-  text-align: right;
-}
 
-.object-toggle--stacked .object-toggle-button {
-  width: fit-content;
-  text-align: center;
-  padding: 2px 8px;
-  min-height: var(--mode-toggle-height);
-}
 
-.object-toggle--stacked .object-toggle-button + .object-toggle-button {
-  border-left: none;
-  border-top: none;
-}
 
-.object-toggle--ownership-corner,
-.object-toggle--patientivo-suffix-corner {
-  margin-left: auto;
-  align-self: center;
-  gap: 2px;
-  justify-content: flex-end;
-}
 
-.object-toggle--ownership-corner .object-toggle-button,
-.object-toggle--patientivo-suffix-corner .object-toggle-button {
-  width: auto;
-  min-width: 1.9rem;
-  padding: 1px 6px;
-  flex: 0 0 auto;
-}
 
 .tense-block__footer {
   display: flex;
@@ -9534,52 +9318,12 @@ input[type="submit"]:hover {
   margin-top: 10px;
 }
 
-.object-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  flex-wrap: nowrap;
-  width: 100%;
-  pointer-events: auto;
-  min-height: var(--mode-toggle-height);
-  min-width: 0;
-}
 
-.tense-block--noun-shared-controls .tense-block__title > .object-toggle--ownership-corner,
-.tense-block--noun-shared-controls .tense-block__title > .object-toggle--patientivo-suffix-corner {
-  width: fit-content;
-  max-width: 100%;
-  flex: 0 0 auto;
-}
 
-.object-toggle-button {
-  font-size: clamp(0.5rem, calc(0.4rem + var(--font-size-adjust)), 0.68rem);
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  text-transform: none;
-  cursor: pointer;
-  pointer-events: auto;
-  padding: 2px 6px;
-  width: auto;
-  min-width: 0;
-  flex: 1 1 auto;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
 
 @container (max-width: 430px) {
-  .object-toggle--stacked.object-toggle--with-label {
-    gap: 4px;
-  }
 
-  .object-toggle__label {
-    font-size: 0.56rem;
-    max-width: 3.4rem;
-  }
 
-  .object-toggle--stacked.object-toggle--with-label .object-toggle__label {
-    flex-basis: 3.4rem;
-  }
 
   .tense-block__label {
     font-size: calc(0.72rem + var(--font-size-adjust));
@@ -9609,9 +9353,6 @@ input[type="submit"]:hover {
   }
 }
 
-.object-toggle-button + .object-toggle-button {
-  border-left: none;
-}
 
 @media (max-width: 768px) {
   .conjugation-row {
@@ -10027,21 +9768,8 @@ input:checked + .slider:before {
   color: var(--combo-block-text, var(--ink-soft));
 }
 
-.tense-block--adjectival-nnc-function {
-  --combo-block-bg: rgba(255, 255, 255, 0.82);
-  --combo-block-border: rgba(126, 91, 160, 0.28);
-  --combo-block-text: #53386f;
-  border-left: 4px solid rgba(18, 107, 97, 0.42);
-}
 
-.tense-block--adjectival-nnc-function .conjugation-row {
-  background: rgba(126, 91, 160, 0.055);
-  border-color: rgba(18, 107, 97, 0.16);
-}
 
-.tense-block--adjectival-nnc-function .person-sub {
-  color: #51415f;
-}
 
 .conjugation-reflexive {
   background: transparent;
@@ -10054,14 +9782,7 @@ input:checked + .slider:before {
     grid-template-columns: 1fr;
   }
 
-  .tense-grid--source-columns {
-    grid-template-columns: 1fr;
-  }
 
-  .tense-grid-source-column + .tense-grid-source-column {
-    padding-left: 0;
-    border-left: none;
-  }
 }
 
 @media (max-width: 600px) {
@@ -10224,7 +9945,6 @@ select,
 .verb-chip.is-active,
 .nonactive-tab.is-active,
 .tense-tab.is-active,
-.object-toggle-button.is-active,
 .legend-button.is-active,
 .legend-button[aria-pressed="true"] {
   background: linear-gradient(180deg, #dff2ed, #cce7df);
@@ -10253,7 +9973,6 @@ select,
 .verb-chip,
 .nonactive-tab,
 .tense-tab,
-.object-toggle-button,
 .legend-button,
 .download-csv {
   border-radius: var(--radius);
@@ -10348,7 +10067,6 @@ body.is-language-classical #container-header {
 .verb-disambiguation,
 .tense-tabs-main .tense-tabs-voice-operator,
 .tense-tabs-column,
-.tense-grid-source-column__empty,
 .matrix-placeholder,
 .tense-placeholder {
   border-color: var(--edge);
@@ -10379,8 +10097,7 @@ body.is-language-classical #container-header {
 .verb-composer__slot-tab,
 .verb-chip,
 .nonactive-tab,
-.tense-tab,
-.object-toggle-button {
+.tense-tab{
   border-color: var(--edge);
   background: #ffffff;
 }
@@ -10940,8 +10657,7 @@ input[type="submit"]:hover {
 }
 
 .tense-grid,
-#all-tense-conjugations,
-.tense-grid-source-column__blocks {
+#all-tense-conjugations{
   gap: 12px;
 }
 
@@ -11969,25 +11685,11 @@ body.is-ui-simple #container-inputs #composer-slot-stage > .verb-composer__botto
   padding: 3px 8px;
 }
 
-.object-toggle-button,
 .nonactive-tab {
   min-height: var(--button-height-filter);
 }
 
-.object-toggle-button {
-  box-sizing: border-box;
-  height: var(--button-height-filter);
-  min-height: var(--button-height-filter);
-  padding-block: 1px;
-}
 
-.object-toggle--stacked .object-toggle-button,
-.object-toggle--ownership-corner .object-toggle-button,
-.object-toggle--patientivo-suffix-corner .object-toggle-button {
-  box-sizing: border-box;
-  height: var(--button-height-filter);
-  min-height: var(--button-height-filter);
-}
 
 .verb-composer .verb-chip,
 .verb-composer__matrix-affix-trigger {
@@ -15863,12 +15565,19 @@ body.is-language-classical #classical-rule-logic-controls[data-classical-rule-lo
     max-inline-size: 100%;
   }
 }
-body[data-classical-relational-nnc-mode="true"] #classical-construction-source-controls,
+body[data-classical-relational-nnc-mode="true"] #classical-construction-operation-field,
 body[data-classical-relational-nnc-mode="true"] #classical-authority-panel .calc-operator--derivation,
-body[data-classical-relational-nnc-mode="true"] #classical-rule-logic-controls .classical-rule-controls-grid > :not(#classical-relational-nnc-authority),
-body[data-classical-relational-result-binding="true"] #classical-construction-source-controls,
+body[data-classical-relational-nnc-mode="true"] #classical-rule-logic-controls .classical-rule-controls-grid > :not(#classical-relational-nnc-authority):not(:has(#classical-rule-logic-polarity)),
+body[data-classical-relational-result-binding="true"] #classical-construction-operation-field,
 body[data-classical-relational-result-binding="true"] #classical-authority-panel .calc-operator--derivation,
-body[data-classical-relational-result-binding="true"] #classical-rule-logic-controls .classical-rule-controls-grid > :not(#classical-relational-nnc-authority) {
+body[data-classical-relational-result-binding="true"] #classical-rule-logic-controls .classical-rule-controls-grid > :not(#classical-relational-nnc-authority):not(:has(#classical-rule-logic-polarity)) {
+  display: none !important;
+}
+
+/* Keep the shared polarity choice available to the relational owner while
+   suppressing ordinary-NNC choices owned by the relational Source. */
+body[data-classical-relational-nnc-mode="true"] .classical-nnc-grammar-organizer > section:not(:has(#classical-rule-logic-polarity)),
+body[data-classical-relational-result-binding="true"] .classical-nnc-grammar-organizer > section:not(:has(#classical-rule-logic-polarity)) {
   display: none !important;
 }
 
@@ -16809,7 +16518,28 @@ body.is-language-classical .classical-whole-canvas-choice-grid[hidden] {
 }
 
 .classical-construction-source-analysis-controls {
-  display: contents;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-column: 1 / -1;
+  gap: var(--workbench-control-gap, 8px);
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.classical-construction-source-analysis-controls > * {
+  grid-column: 1 / -1;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+/* This Source projection also mounts inside Grammar's twelve-column groups. */
+body.is-language-classical #classical-authority-panel #classical-construction-source-controls {
+  grid-column: 1 / -1;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .classical-construction-source-analysis-controls[hidden] {
@@ -20192,3 +19922,251 @@ body.is-language-classical #classical-workbench :is(
     min-block-size: 44px !important;
   }
 }
+
+/* Keep continuation content, scope, and action together at every Result boundary. */
+.classical-result-continuation-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: .5rem 1rem;
+  width: 100%;
+  padding: .85rem;
+  border: 1px solid currentColor;
+  border-radius: .6rem;
+  box-sizing: border-box;
+}
+.classical-result-continuation-card__scope {
+  grid-column: 1 / -1;
+  font-size: .8rem;
+}
+.classical-result-continuation-card__content {
+  align-self: center;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 600px) {
+  .classical-result-continuation-card { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* Full owner inventories remain in place behind the compact browsing view. */
+select[data-classical-compact-choice-original="true"] {
+  display: none !important;
+}
+
+/* Task menus disclose the existing controls without changing grammar state. */
+.classical-menu-disclosure {
+  min-width: 0;
+  grid-column: 1 / -1;
+  padding: 0;
+  border: 1px solid var(--workbench-line);
+  border-radius: var(--workbench-control-radius);
+  background: var(--workbench-paper);
+}
+.classical-menu-disclosure > summary {
+  padding: 12px;
+  cursor: pointer;
+  color: var(--workbench-ink);
+  font-weight: 600;
+  font-size: var(--classical-shell-button-size);
+}
+.classical-menu-disclosure[open] > summary {
+  border-bottom: 1px solid var(--workbench-line);
+}
+.classical-menu-disclosure > :not(summary) {
+  margin: 12px;
+}
+.classical-menu-disclosure[data-classical-analysis-format] > section > .classical-rule-surface__format-heading {
+  display: none;
+}
+#classical-particle-menu > .classical-rule-control {
+  display: grid;
+}
+#classical-source-panel [data-classical-compact-choice-tools] {
+  grid-template-columns: minmax(0, 1fr);
+}
+#classical-source-panel [data-classical-compact-choice-tools] select {
+  width: 100%;
+}
+body.is-language-classical #classical-workbench [data-classical-compact-choice-tools] {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 8px;
+}
+body.is-language-classical #classical-workbench [data-classical-compact-choice-tools] select {
+  width: 100%;
+  min-width: 0;
+}
+#classical-particle-menu .classical-particle-combination-builder__field {
+  grid-column: 1 / -1;
+  width: 100%;
+}
+
+/* A consistent visual hierarchy for the Source, Grammar, and Result menus. */
+body.is-language-classical #classical-workbench {
+  --classical-shell-control-size: calc(0.875rem + var(--font-size-adjust, 0px));
+  --classical-shell-button-size: calc(0.875rem + var(--font-size-adjust, 0px));
+  --classical-menu-control-size: var(--classical-shell-control-size);
+  --classical-menu-guidance-size: calc(0.8125rem + var(--font-size-adjust, 0px));
+}
+body.is-language-classical #classical-workbench #classical-capability-operation-plan {
+  margin-top: 0;
+  padding: 12px;
+  gap: 10px;
+  border-color: rgba(18, 63, 55, 0.32);
+  background: var(--workbench-paper-muted);
+}
+body.is-language-classical #classical-workbench #classical-authority-panel #classical-capability-operation-plan-heading {
+  color: var(--workbench-teal-deep);
+  font-size: calc(1rem + var(--font-size-adjust, 0px));
+  font-weight: 700;
+  line-height: 1.35;
+}
+body.is-language-classical #classical-workbench .classical-capability-navigator {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 8px;
+  min-width: 0;
+}
+body.is-language-classical #classical-workbench .classical-capability-navigator__field {
+  margin: 0;
+  min-width: 0;
+}
+body.is-language-classical #classical-workbench
+  :is(.classical-capability-navigator__status, .classical-capability-operation-plan__status,
+      .classical-rule-control__hint) {
+  margin: 0;
+  color: var(--workbench-muted);
+  font-size: var(--classical-menu-guidance-size);
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+body.is-language-classical #classical-workbench
+  :is(.classical-menu-disclosure, #classical-capability-navigator-unavailable) > summary {
+  box-sizing: border-box;
+  min-height: 40px;
+  padding: 10px 12px;
+  color: var(--workbench-ink);
+  font-size: var(--classical-menu-control-size);
+  font-weight: 600;
+  line-height: 1.4;
+  cursor: pointer;
+}
+body.is-language-classical #classical-workbench
+  #classical-capability-navigator-unavailable {
+  border: 1px solid var(--workbench-line);
+  border-radius: var(--workbench-control-radius);
+  background: var(--workbench-paper);
+}
+body.is-language-classical #classical-workbench
+  #classical-capability-navigator-unavailable[open] > summary {
+  border-bottom: 1px solid var(--workbench-line);
+}
+body.is-language-classical #classical-workbench
+  #classical-capability-navigator-unavailable > :not(summary) {
+  margin: 12px;
+  font-size: var(--classical-menu-guidance-size);
+  line-height: 1.45;
+}
+body.is-language-classical #classical-workbench
+  :is([data-classical-compact-choice-tools] select,
+      .classical-compact-choice-display, #classical-capability-operation-plan select) {
+  box-sizing: border-box;
+  min-height: 40px;
+  font-size: var(--classical-menu-control-size);
+  line-height: 1.4;
+}
+body.is-language-classical #classical-workbench
+  :is(.classical-menu-disclosure > summary,
+      #classical-capability-navigator-unavailable > summary,
+      [data-classical-compact-choice-tools] select,
+      #classical-capability-operation-plan select):focus-visible {
+  outline: 2px solid var(--workbench-teal-deep);
+  outline-offset: 3px;
+}
+
+body.is-language-classical #classical-workbench #classical-authority-panel
+  .classical-capability-operation-plan__status {
+  font-size: var(--classical-menu-guidance-size);
+  line-height: 1.45;
+}
+
+/* One Grammar decision per row; paired options share the full row. */
+body.is-language-classical #classical-workbench #classical-authority-panel
+  #classical-rule-logic-controls[data-classical-rule-logic-surface-unit]
+  :is(.classical-vnc-authority-section__body,
+      .classical-vnc-authority-control-group__body,
+      .classical-nnc-grammar-group__body)
+  > .classical-rule-control:not(.classical-built-in-particles):not(
+    .classical-particle-combination-builder
+  ):not([data-classical-vnc-authority-order="verbstem-derivation-option"]),
+body.is-language-classical #classical-workbench #classical-authority-panel
+  [data-classical-construction-grammar-lane] > .classical-rule-control {
+  grid-column: 1 / -1 !important;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+body.is-language-classical #classical-workbench #classical-authority-panel
+  .classical-segmented-control {
+  display: flex;
+  width: 100%;
+  box-sizing: border-box;
+}
+body.is-language-classical #classical-workbench #classical-authority-panel
+  .classical-segmented-control__option {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+/* Panel navigation is a quiet wayfinder. Stage cards stay in the existing
+   Source → Grammar → Result flow; Your path remains a support destination. */
+body.is-language-classical #classical-workbench {--font-body:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;--workbench-paper:#fffefa;--workbench-line:#dfe5de;--workbench-ink:#203b34;--workbench-muted:#68756e;--workbench-control-gap:10px;font-family:var(--font-body)}
+body.is-language-classical #classical-workbench .classical-four-panel-navigation {display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:12px 0 20px;padding:0 0 12px;border-bottom:1px solid var(--workbench-line)}
+body.is-language-classical #classical-workbench .classical-four-panel-navigation button {padding:8px 12px;border:0!important;border-radius:999px!important;background:transparent;color:var(--workbench-muted);font:14px/1.4 var(--font-body);cursor:pointer;min-height:44px}
+body.is-language-classical #classical-workbench .classical-four-panel-navigation button:hover {background:#edf3ed;color:#203b34}
+body.is-language-classical #classical-workbench .classical-four-panel-navigation button[aria-current="step"] {background:#e8f0e8;color:#203b34;font-weight:650}
+body.is-language-classical #classical-workbench .classical-four-panel-navigation button:focus-visible {outline:3px solid #81a590;outline-offset:2px}
+body.is-language-classical #classical-workbench .classical-four-panel-navigation .classical-path-navigation-trigger {margin-left:auto;color:#53645a;background:transparent;border:1px solid #dfe5de!important}
+body.is-language-classical #classical-workbench .classical-four-panel-navigation .classical-path-navigation-trigger {font-size:13px;min-height:40px;padding:7px 11px}
+body.is-language-classical #classical-workbench .panel-grid {display:grid!important;grid-template-columns:minmax(0,1.15fr) minmax(0,1.25fr) minmax(340px,1fr)!important;grid-template-areas:none!important;gap:16px!important;align-items:start!important}
+body.is-language-classical #classical-workbench .panel-stack {display:contents!important}
+body.is-language-classical #classical-workbench :is(.panel-main-column,.panel-output-column) {display:contents!important}
+body.is-language-classical #classical-workbench .panel-stack-tabs {display:none!important}
+body.is-language-classical #classical-workbench :is(#classical-source-panel,#classical-authority-panel,#classical-result-panel) {display:block!important;grid-area:auto!important;grid-column:auto!important;align-self:start;min-width:0;background:#fffefa;border:1px solid #dfe5de!important;border-radius:16px!important;padding:20px!important;box-shadow:0 2px 12px #203b3408;scroll-margin-top:76px}
+body.is-language-classical #classical-workbench #classical-path-panel {grid-column:1/-1!important;grid-row:auto!important}
+body.is-language-classical #classical-workbench :is(#container-inputs,#panel-stack-pane-inputs,#panel-stack-pane-tense,#container-tense-grid) {grid-area:auto!important;grid-column:auto!important;grid-row:auto!important;border:0!important;background:transparent!important;box-shadow:none!important;padding:0!important;margin:0!important;min-width:0}
+body.is-language-classical #classical-workbench #classical-result-panel #container-tense-grid > .panel-block-title {display:flex!important}
+body.is-language-classical #classical-workbench .panel-block-title {margin:0 0 10px!important;padding:0!important;border:0!important}
+body.is-language-classical #classical-workbench .panel-block-text {font:600 18px/1.3 var(--font-body)!important;letter-spacing:-.3px!important;text-transform:none!important}
+body.is-language-classical #classical-workbench .panel-pane-nav-btn {display:none!important}
+body.is-language-classical #classical-workbench .composition-stage-cue {font-size:13px!important;line-height:1.5!important;color:#68756e;margin:8px 0 16px}
+body.is-language-classical #classical-workbench :is(input,select,button) {border-radius:10px!important}
+body.is-language-classical #classical-workbench :is(input:not([type=checkbox],[type=radio],[type=hidden]),select) {min-height:44px!important;padding:10px!important;font:14px/1.4 var(--font-body)!important}
+body.is-language-classical #classical-workbench .classical-rule-control__label {font:600 12px/1.4 var(--font-body)!important;letter-spacing:0!important;text-transform:none!important}
+body.is-language-classical #classical-workbench .composition-disclosure {background:transparent!important;border:0!important;border-top:1px solid #dfe5de!important;border-radius:0!important;margin:16px 0 0!important}
+body.is-language-classical #classical-workbench .composition-disclosure > summary {padding:12px 0!important;font:500 13px/1.5 var(--font-body)!important;color:#68756e!important}
+body.is-language-classical #classical-workbench .classical-result-continuation-card {background:#f1f6ef!important;border:1px solid #ccdacf!important;border-radius:14px!important;padding:18px!important}
+body.is-language-classical #classical-workbench .classical-result-continuation-card__content {font:600 28px/1.3 Georgia,serif!important;letter-spacing:-.4px}
+body.is-language-classical #classical-workbench #classical-path-panel .classical-grammar-workspace-history {margin:0!important;border:0!important;border-radius:0!important;padding:0!important;background:transparent!important}
+body.is-language-classical #classical-workbench #classical-path-panel .classical-grammar-workspace-history__selectors {display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:14px!important}
+body.is-language-classical #classical-workbench #classical-path-panel .classical-grammar-workspace-history__body {padding:0!important}
+body.is-language-classical #classical-workbench #classical-path-panel .classical-grammar-workspace-history__summary {padding:12px 0!important;font:500 13px/1.5 var(--font-body)!important}
+body.is-language-classical #classical-workbench #classical-path-panel .classical-grammar-workspace-history__actions {display:flex!important;flex-wrap:wrap;gap:8px;margin:18px 0}
+body.is-language-classical #classical-workbench #classical-path-panel .classical-grammar-workspace-history__actions button {flex:1 1 90px;min-height:44px}
+body.is-language-classical #classical-workbench #classical-path-panel .classical-grammar-workspace-history__status {font:12px/1.5 var(--font-body)!important;color:#68756e!important}
+@media(min-width:1081px) and (max-width:1500px){body.is-language-classical #classical-workbench .panel-grid {grid-template-columns:minmax(260px,.85fr) minmax(330px,1fr) minmax(320px,1fr)!important}body.is-language-classical #classical-workbench #classical-result-panel {grid-column:auto!important}}
+@media(min-width:901px) and (max-width:1080px){body.is-language-classical #classical-workbench .panel-grid {grid-template-columns:minmax(280px,.85fr) minmax(0,1.15fr)!important}body.is-language-classical #classical-workbench #classical-result-panel {grid-column:1/-1!important}}
+@media(max-width:900px){body.is-language-classical #classical-workbench .panel-grid {grid-template-columns:minmax(0,1fr)!important}body.is-language-classical #classical-workbench :is(#classical-source-panel,#classical-authority-panel,#classical-result-panel) {grid-column:1!important}body.is-language-classical #classical-workbench #classical-path-panel {grid-column:1!important}}
+@media(max-width:720px){body.is-language-classical #classical-workbench :is(#classical-source-panel,#classical-authority-panel,#classical-result-panel,#classical-path-panel){padding:18px!important}body.is-language-classical #classical-workbench .classical-four-panel-navigation{gap:2px;margin-block:10px 16px;padding-bottom:8px}body.is-language-classical #classical-workbench .classical-four-panel-navigation button{font-size:13px;padding:8px 10px}body.is-language-classical #classical-workbench .classical-four-panel-navigation [data-classical-panel-jump="classical-path-panel"]{margin-left:0}}
+
+
+/* Andrews analysis: fit the actual Result panel, preserving native projections. */
+body.is-language-classical #classical-rule-logic-surface .composition-analysis-structure { padding: 0; margin: 0; border: 0; background: transparent; box-shadow: none; min-width: 0; }
+body.is-language-classical #classical-rule-logic-surface .composition-analysis-structure .classical-rule-surface__disclosure-body { padding: 8px 0; gap: 10px; min-width: 0; }
+body.is-language-classical #classical-rule-logic-surface .composition-analysis-structure .classical-rule-surface__format-heading { display: none; }
+body.is-language-classical #classical-rule-logic-surface .composition-analysis-structure [data-classical-analysis-format] { margin: 8px 0; padding: 0; border: 0; min-width: 0; }
+body.is-language-classical #classical-rule-logic-surface .composition-analysis-structure [data-classical-analysis-format] > summary { padding: 5px 0; margin: 0 0 6px; font-size: 13px; color: #536c5b; }
+body.is-language-classical #classical-rule-logic-surface .composition-analysis-structure .classical-rule-surface__format-section { padding: 12px !important; margin: 0; border: 1px solid #dce6dc !important; border-radius: 9px; background: #f1f5ed; min-width: 0; }
+body.is-language-classical #classical-rule-logic-surface .composition-analysis-structure :is(.classical-rule-surface__formula,.classical-rule-surface__diagram-expression) { display: block; font: 500 15px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace !important; letter-spacing: 0; color: #193d2d; white-space: nowrap; overflow-x: auto; max-width: 100%; min-width: 0; margin: 0; padding: 0; background: transparent; border: 0; }
+body.is-language-classical #classical-rule-logic-surface .composition-analysis-structure .classical-rule-surface__diagram-rows { display: grid; gap: 12px; min-width: 0; }
+body.is-language-classical #classical-rule-logic-surface .composition-analysis-structure .classical-rule-surface__diagram-row { display: grid; grid-template-columns: minmax(0,1fr); gap: 4px; min-width: 0; width: 100%; }
+body.is-language-classical #classical-rule-logic-surface .composition-analysis-structure .classical-rule-surface__diagram-role { grid-row: 1; justify-self: start; font: 600 12px/1.4 system-ui,sans-serif; color: #4f705b; }
+body.is-language-classical #classical-rule-logic-surface .composition-analysis-structure .classical-rule-surface__diagram-expression { grid-row: 2; }

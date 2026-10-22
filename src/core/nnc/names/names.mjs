@@ -1,3 +1,8 @@
+import {
+  buildClassicalNahuatlParticipantFrame,
+  isClassicalNahuatlParticipantFrame,
+} from "../../classical/participant_frame.mjs?v=20260823-passive-formation-continuity-238";
+
 // Canonical Andrews Lesson 56 personal-name NNC grammar.
 //
 // Runtime authority is an issued typed source unit, not a lesson number,
@@ -14,6 +19,9 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
   const issuedSentenceResults = new WeakSet();
   const issuedPlans = new WeakSet();
   const issuedExactSourceResolutions = new WeakSet();
+  const issuedOpaqueQuotedSources = new WeakMap();
+  let quotedDesignationReferenceSequence = 0;
+  const quotedDesignationSourcesByCitation = new Map();
 
   const freeze = value => {
     if (Array.isArray(value)) return Object.freeze(value.map(freeze));
@@ -60,13 +68,14 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
   const INNER_SUBJECT_CONNECTOR_MORPHS = freeze(["Ø"]);
   const INNER_NUMBER_PREFIX_MORPHS = freeze([
     "Ø", "⎕", "c", "qu", "qui", "h", "que", "li", "tl", "tli",
-    "meh", "tin",
+    "in", "meh", "tin",
   ]);
   const INNER_NUMBER_SUFFIX_MORPHS = freeze([
     "Ø", "h", "que", "meh", "tin",
   ]);
 
   const SOURCE_FAMILY_SPECS = freeze([
+    { id: "opaque-quoted-inner", section: "56.1", unitKind: "opaque-quoted-statement", innerKind: "opaque-quoted-inner", selectedUseOnly: true, minClauses: 0, maxClauses: 0 },
     { id: "preterit-agentive", section: "56.2.1.a", unitKind: "single-clause", innerKind: "nominalized-vnc", nominalization: "preterit-agentive", minClauses: 1, maxClauses: 1 },
     { id: "preterit-as-present-agentive", section: "56.2.1.a", unitKind: "single-clause", innerKind: "nominalized-vnc", nominalization: "preterit-as-present-agentive", minClauses: 1, maxClauses: 1 },
     { id: "present-agentive", section: "56.2.1.b", unitKind: "single-clause", innerKind: "nominalized-vnc", nominalization: "present-agentive", minClauses: 1, maxClauses: 1 },
@@ -103,8 +112,8 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
   const SENTENCE_OPERATION_BY_ID = new Map(SENTENCE_OPERATION_SPECS.map(spec => [spec.id, spec]));
 
   const LCM_AXES = freeze([
-    { id: "source-unit-kind", values: ["single-clause", "adjunction", "calendar", "conjunction"] },
-    { id: "inner-source-kind", values: ["nominalized-vnc", "absolutive-state-nnc", "possessive-state-nnc", "multiple-clause", "calendar-name", "conjoined-personal-name-unit"] },
+    { id: "source-unit-kind", values: ["single-clause", "adjunction", "calendar", "conjunction", "opaque-quoted-statement"] },
+    { id: "inner-source-kind", values: ["nominalized-vnc", "absolutive-state-nnc", "possessive-state-nnc", "multiple-clause", "calendar-name", "conjoined-personal-name-unit", "opaque-quoted-inner"] },
     { id: "nominalization", values: ["preterit-agentive", "preterit-as-present-agentive", "present-agentive", "customary-present-agentive", "past-agentive", "preterit-patientive", "none"] },
     { id: "source-voice", values: ["active", "passive", "impersonal", "purposive", "not-applicable"] },
     { id: "inner-subject-reference", values: ["specific", "nonspecific", "nonanimate", "animate", "independent-of-outer"] },
@@ -203,9 +212,12 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
     if (!morph || morph === "Ø") return "";
     return text(morph.replace(/-/gu, ""));
   }
-  function normalizeOuterSubject(value = "") {
+  function normalizeOuterSubject(value = "", source = null) {
     const normalized = key(value).replace(/-/gu, "");
-    return ({ "1sg": "1sg", "2sg": "2sg", "3sg": "3sg" })[normalized] || "";
+    return ({ "1sg": "1sg", "2sg": "2sg", "3sg": "3sg" })[normalized]
+      || (normalized === "3common"
+        && isPersonalNameOpaqueQuotedInnerSourceFrame(source)
+        && source.referenceKind === "quoted-designation" ? "3common" : "");
   }
   function buildPersonalNameSelectedLcmProjection(selectedCoordinates = {}) {
     const selectedValues = {};
@@ -263,6 +275,12 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
     const beginsWithVowel = /^[aeiouāēīōū]/iu.test(following);
     return beginsWithVowel ? prefix.slice(0, 1) : prefix;
   }
+  function personalNameQuotedSurface(value = "") {
+    const surface = text(value);
+    return surface
+      ? `${surface.charAt(0).toUpperCase()}${surface.slice(1)}`
+      : "";
+  }
   function renderFormulaMorph(value = "") {
     return normalizeMorph(value) || "Ø";
   }
@@ -270,8 +288,19 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
     return SOURCE_FAMILY_BY_ID.get(key(value)) || null;
   }
   function getPersonalNameNncSourceFamilyStructure(value = "") {
-    const spec = sourceFamilySpec(value);
+    const designation = key(value) === "opaque-quoted-designation";
+    const spec = sourceFamilySpec(designation ? "opaque-quoted-inner" : value);
     if (!spec) return null;
+    if (spec.id === "opaque-quoted-inner") return freeze({
+      sourceFamily: spec.id, sourceUnitKind: spec.unitKind, innerKind: spec.innerKind,
+      minimumClauseCount: null, maximumClauseCount: null,
+      nominalization: "unclaimed", sourceVoice: "unclaimed", sourceState: "unclaimed",
+      reflexiveController: "unclaimed", relationKind: "unclaimed", calendarShape: "unclaimed",
+      allowedAffectiveScopes: freeze(["none"]), allowedOuterSubjects: freeze([designation ? "3common" : "3sg"]),
+      referenceKind: designation ? "quoted-designation" : "human",
+      citationOuterSubject: designation ? "3common" : "3sg",
+      innerAnalysisClaimed: false, readOnlyDerivedFacts: true, generationAuthority: false,
+    });
     const allowedAffectiveScopes = [
       "none",
       "outer-name",
@@ -320,7 +349,7 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
     sourceFamily = "",
   ) {
     const spec = sourceFamilySpec(sourceFamily);
-    if (!spec) return null;
+    if (!spec || spec.id === "opaque-quoted-inner") return null;
     const vncSource = spec.innerKind === "nominalized-vnc";
     const truncatedNumber =
       spec.innerNumberMode === "truncated";
@@ -329,7 +358,8 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
       subjectConnector: "Ø",
       subjectReference: "independent-of-outer",
       numberPrefix:
-        truncatedNumber ? "Ø" : vncSource ? "c" : "Ø",
+        truncatedNumber || spec.nominalization === "present-agentive"
+          ? "Ø" : vncSource ? "c" : "Ø",
       numberSuffix: "Ø",
       functionalMorphsAreDerived: true,
       functionalMorphsAreUserSelectable: false,
@@ -372,6 +402,7 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
     const normalizedNumberSuffix = renderFormulaMorph(numberSuffix);
     if (
       !spec
+      || spec.id === "opaque-quoted-inner"
       || !morphs.length
       || morphs.some(value => !value)
       || !INNER_SUBJECT_PREFIX_MORPHS.includes(normalizedSubjectPrefix)
@@ -462,7 +493,8 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
     } = request;
     const spec = sourceFamilySpec(sourceFamily);
     const sourceClauses = Array.isArray(clauses) ? clauses : [];
-    if (!spec || sourceClauses.some(clause => !issuedClauses.has(clause))) return null;
+    if (!spec || spec.id === "opaque-quoted-inner"
+      || sourceClauses.some(clause => !issuedClauses.has(clause))) return null;
     if (sourceClauses.length < spec.minClauses || (spec.maxClauses && sourceClauses.length > spec.maxClauses)) return null;
     if (sourceClauses.some(clause => clause.sourceFamily !== spec.id)) return null;
     const normalizedRelation = key(spec.relationKind || "none");
@@ -513,6 +545,73 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
     return frame;
   }
 
+  // Andrews 56.1 explicitly distinguishes the quoted inner statement from
+  // the independently inflected outer name. A declared, attested citation
+  // can retain that quotation even when its inner analysis is unavailable.
+  // Each declaration fixes one external use: a human bearer, or the
+  // nonanimate quoted designation itself. It grants no inner analysis.
+  function buildPersonalNameOpaqueQuotedInnerSourceFrame(request = {}) {
+    const fields = ["sourceFamily", "quotedCitation", "referenceKind", "citationOuterSubject"];
+    if (!request || typeof request !== "object" || Array.isArray(request)
+      || Object.keys(request).some(field => !fields.includes(field))
+      || request.sourceFamily !== "opaque-quoted-inner"
+      || !(request.referenceKind === "human" && request.citationOuterSubject === "3sg"
+        || request.referenceKind === "quoted-designation" && request.citationOuterSubject === "3common")) return null;
+    const quotedCitation = text(request.quotedCitation);
+    if (!/^[\p{L}\p{M}]+(?:[ -][\p{L}\p{M}]+)*$/u.test(quotedCitation)) return null;
+    const designation = request.referenceKind === "quoted-designation";
+    if (designation && quotedDesignationSourcesByCitation.has(quotedCitation)) return quotedDesignationSourcesByCitation.get(quotedCitation);
+    const citationOuterParticipantFrame = designation ? buildClassicalNahuatlParticipantFrame({
+      role: "subject", agreement: "3common", animacy: "nonanimate", humanness: "nonhuman",
+      specificity: "specific", referenceId: `quoted-designation-${++quotedDesignationReferenceSequence}`,
+    }) : null;
+    const receipt = freeze({
+      sourceFamily: "opaque-quoted-inner", quotedCitation,
+      referenceKind: request.referenceKind, citationOuterSubject: request.citationOuterSubject,
+      ...(designation ? {citationOuterParticipantFrame} : {}),
+    });
+    const source = freeze({
+      kind: "classical-nahuatl-personal-name-source-frame", version: VERSION,
+      routeFamily: "personal-name-nnc", sourceFamily: "opaque-quoted-inner",
+      section: "56.1", sourceUnitKind: "opaque-quoted-statement",
+      innerKind: "opaque-quoted-inner", quotedCitation,
+      referenceKind: receipt.referenceKind, citationOuterSubject: receipt.citationOuterSubject,
+      referentKind: designation ? "thing" : "person",
+      ...(designation ? {citationOuterParticipantFrame} : {}),
+      innerAnalysisClaimed: false, clauses: freeze([]),
+      relationKind: "unclaimed", calendarShape: "unclaimed",
+      modificationAmbiguity: "unclaimed", selectedUseOnly: true,
+      typedFrameAuthority: true, callerSuppliedFormulaAuthority: false,
+      callerSuppliedSurfaceAuthority: false,
+    });
+    issuedOpaqueQuotedSources.set(source, receipt);
+    issuedSources.add(source);
+    if (designation) quotedDesignationSourcesByCitation.set(quotedCitation, source);
+    return source;
+  }
+
+  function isPersonalNameOpaqueQuotedInnerSourceFrame(source = null) {
+    const receipt = source && issuedOpaqueQuotedSources.get(source);
+    return Boolean(receipt && issuedSources.has(source)
+      && source.kind === "classical-nahuatl-personal-name-source-frame"
+      && source.version === VERSION && source.routeFamily === "personal-name-nnc"
+      && source.sourceFamily === receipt.sourceFamily
+      && source.quotedCitation === receipt.quotedCitation
+      && source.referenceKind === receipt.referenceKind
+      && source.citationOuterSubject === receipt.citationOuterSubject
+      && (receipt.referenceKind !== "quoted-designation" || (
+        source.citationOuterParticipantFrame === receipt.citationOuterParticipantFrame
+        && isClassicalNahuatlParticipantFrame(source.citationOuterParticipantFrame)
+        && source.citationOuterParticipantFrame.category === "3common"
+        && source.citationOuterParticipantFrame.number === "common"
+        && source.citationOuterParticipantFrame.animacy === "nonanimate"
+        && source.citationOuterParticipantFrame.humanness === "nonhuman"
+        && source.citationOuterParticipantFrame.morphologicalAgreement === "3sg"))
+      && source.innerAnalysisClaimed === false
+      && source.selectedUseOnly === true && source.clauses.length === 0
+      && Object.isFrozen(source) && Object.isFrozen(source.clauses));
+  }
+
   function isPersonalNameInnerClauseFrame(frame = null) {
     return Boolean(
       frame
@@ -528,6 +627,7 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
   }
 
   function isPersonalNameNncSourceFrame(frame = null) {
+    if (isPersonalNameOpaqueQuotedInnerSourceFrame(frame)) return true;
     return Boolean(
       frame
       && issuedSources.has(frame)
@@ -774,6 +874,7 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
     sourceFamily = "",
     sourceType = "",
     slotFrame = null,
+    preserveInnerSubject = false,
   ) {
     if (!slotFrame) return null;
     const functionalSlots =
@@ -804,27 +905,140 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
       .filter(Boolean);
     return buildPersonalNameInnerClauseFrame({
       sourceFamily,
-      subjectPrefix: functionalSlots.subjectPrefix,
-      subjectConnector: functionalSlots.subjectConnector,
+      subjectPrefix: preserveInnerSubject
+        ? slotFrame.slots.subject.pers1 : functionalSlots.subjectPrefix,
+      subjectConnector: preserveInnerSubject
+        ? slotFrame.slots.subject.pers2 : functionalSlots.subjectConnector,
       predicateMorphs,
-      numberPrefix: functionalSlots.numberPrefix,
-      numberSuffix: functionalSlots.numberSuffix,
+      // An issued NNC is downgraded whole (§56.2.2). Its number dyad is
+      // inside the name predicate, independently of the outer zero dyad.
+      numberPrefix: sourceType === "nnc"
+        ? slotFrame.slots.number?.num1 ?? functionalSlots.numberPrefix : functionalSlots.numberPrefix,
+      numberSuffix: sourceType === "nnc"
+        ? slotFrame.slots.number?.num2 ?? functionalSlots.numberSuffix : functionalSlots.numberSuffix,
       subjectReference: functionalSlots.subjectReference,
     });
   }
 
+  function getPersonalNameExactPossessorSupplementation(result = null) {
+    // Bounded exact adapter for the whole two-nucleus Source (§56.3.2).
+    // Other adjunction shapes remain available through their own typed Sources;
+    // an unsupported exact projection is not a grammatical prohibition.
+    if (targetObject.isClassicalNahuatlSupplementationFrame?.(result) !== true
+      || result.referenceFrame.referenceMode !== "shared"
+      || result.referenceFrame.headRole !== "possessor"
+      || result.referenceFrame.supplementContactRole !== "subject"
+      || result.referenceFrame.referenceIdentityUnified !== true
+      || result.referenceFrame.referenceRelationship !== "identical"
+      || result.principalContinuationFrames.length
+      || result.supplementContinuationFrames.length
+      || result.interveningClauses.length
+      || result.principalClause.unitKind !== "nnc"
+      || result.supplementClause.unitKind !== "nnc"
+      || result.principalClause.surface !== result.principalClause.nuclearSurface
+      || result.supplementClause.surface !== result.supplementClause.nuclearSurface
+      || !["principal-first", "supplement-first"].includes(
+        result.linearizationFrame.order,
+      )) return null;
+    const members = {
+      principal: result.principalClause,
+      supplement: result.supplementClause,
+    };
+    const expectedRoles = result.linearizationFrame.order === "supplement-first"
+      ? ["supplement", "principal"] : ["principal", "supplement"];
+    const tokens = result.linearizationFrame.tokens;
+    if (tokens.length !== 2
+      || tokens.some((token, index) => (
+        (token.role === "topic-supplement" ? "supplement" : token.role)
+          !== expectedRoles[index]
+      ))) {
+      return null;
+    }
+    const exactInnerSourceResults = expectedRoles.map(role => (
+      targetObject.getClassicalNahuatlSupplementationClauseSourceFrame?.(
+        members[role],
+      ) || null
+    ));
+    const canonicalTypedSlotFrames = exactInnerSourceResults.map(
+      getPersonalNameExactNncSlotFrame,
+    );
+    if (exactInnerSourceResults.some(source => !isPersonalNameExactNncResult(source))
+      || canonicalTypedSlotFrames.some(slotFrame => !slotFrame)) return null;
+    const principalIndex = expectedRoles.indexOf("principal");
+    if (canonicalTypedSlotFrames[principalIndex].slots.state.arity === "vacant") {
+      return null;
+    }
+    return {
+      exactInnerSourceResults,
+      canonicalTypedSlotFrames,
+      exactReferenceFrame: result.referenceFrame,
+      memberOrder: expectedRoles,
+    };
+  }
+
+  function resolveOpaqueQuotedPersonalNameSource(request) {
+    const source = request.canonicalSourceResult;
+    const selectedFamily = key(request.sourceFamily);
+    const selectedSubject = normalizeOuterSubject(request.outerSubject, source);
+    const blockReason = getPersonalNameExactRawSourceField(request)
+      ? "canonical-source-result-and-raw-source-are-mutually-exclusive"
+      : selectedFamily && selectedFamily !== "opaque-quoted-inner"
+        ? "selected-personal-name-source-family-incompatible-with-exact-result"
+        : text(request.outerSubject) && selectedSubject !== source.citationOuterSubject
+          ? "opaque-quoted-inner-selected-outer-subject-only"
+          : request.referentKind && request.referentKind !== source.referentKind
+            ? source.referenceKind === "quoted-designation"
+              ? "opaque-quoted-designation-reference-required" : "opaque-quoted-inner-human-reference-required"
+            : request.modificationAmbiguity && request.modificationAmbiguity !== "unambiguous"
+              ? "opaque-quoted-inner-analysis-unclaimed"
+              : "";
+    const requiredChoiceIds = freeze(!blockReason && !selectedSubject ? ["outer-subject"] : []);
+    const frame = freeze({
+      kind: "classical-nahuatl-personal-name-exact-source-resolution", version: VERSION,
+      authorizationStatus: blockReason ? "blocked" : "authorized", blockReason,
+      readinessStatus: blockReason ? "blocked" : requiredChoiceIds.length ? "needs-choices" : "ready",
+      canonicalSourceResult: source, canonicalTypedSlotFrame: null,
+      sourceType: "opaque-quoted-inner", sourceUnitKind: "selected-name-source",
+      compatibleSourceFamilyIds: freeze(["opaque-quoted-inner"]),
+      selectedSourceFamily: blockReason ? "" : "opaque-quoted-inner", requiredChoiceIds,
+      innerClauseFrame: null, sourceFrame: blockReason ? null : source,
+      exactSourceResultIdentityPreserved: !blockReason,
+      callerSuppliedSourceStringsAccepted: false, typedFrameAuthority: true,
+      callerSuppliedFormulaAuthority: false, callerSuppliedSurfaceAuthority: false,
+    });
+    issuedExactSourceResolutions.add(frame);
+    return frame;
+  }
+
   function resolvePersonalNameNncExactSource(request = {}) {
     const canonicalSourceResult = request?.canonicalSourceResult || null;
+    if (isPersonalNameOpaqueQuotedInnerSourceFrame(canonicalSourceResult)) {
+      return resolveOpaqueQuotedPersonalNameSource(request);
+    }
     const rawField = getPersonalNameExactRawSourceField(request);
     let blockReason = "";
     let sourceType = "";
     let sourceUnitKind = "";
     let slotFrame = null;
+    let multipleClauseProjection = null;
     if (!hasPersonalNameExactSourceResultField(request)) {
       blockReason = "canonical-source-result-required";
     } else if (rawField) {
       blockReason =
         "canonical-source-result-and-raw-source-are-mutually-exclusive";
+    } else if (
+      targetObject.isClassicalNahuatlSupplementationFrame?.(
+        canonicalSourceResult,
+      ) === true
+    ) {
+      sourceType = "multiple-nnc";
+      sourceUnitKind = "clause-unit-result";
+      multipleClauseProjection = getPersonalNameExactPossessorSupplementation(
+        canonicalSourceResult,
+      );
+      if (!multipleClauseProjection) {
+        blockReason = "exact-multiple-clause-personal-name-projection-unavailable";
+      }
     } else if (isPersonalNameExactNncResult(canonicalSourceResult)) {
       sourceType = "nnc";
       sourceUnitKind = (
@@ -848,15 +1062,17 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
     } else {
       blockReason = "exact-owner-issued-vnc-nnc-or-clause-result-required";
     }
-    if (!blockReason && !slotFrame) {
+    if (!blockReason && !slotFrame && !multipleClauseProjection) {
       blockReason = "exact-source-result-typed-nuclear-slots-unavailable";
     }
     const compatibleSourceFamilyIds = !blockReason
-      ? getPersonalNameExactSourceFamilyIds({
-        result: canonicalSourceResult,
-        sourceType,
-        slotFrame,
-      })
+      ? multipleClauseProjection
+        ? ["possessor-supplementation"]
+        : getPersonalNameExactSourceFamilyIds({
+          result: canonicalSourceResult,
+          sourceType,
+          slotFrame,
+        })
       : [];
     const selectedSourceFamily = key(request?.sourceFamily);
     if (
@@ -873,17 +1089,21 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
           ? compatibleSourceFamilyIds[0]
           : "")
       : "";
-    const innerClauseFrame = sourceFamily
+    const innerClauseFrames = sourceFamily && multipleClauseProjection
+      ? multipleClauseProjection.canonicalTypedSlotFrames.map(frame => (
+        buildPersonalNameExactInnerClause(sourceFamily, "nnc", frame, true)
+      )) : [];
+    const innerClauseFrame = sourceFamily && !multipleClauseProjection
       ? buildPersonalNameExactInnerClause(
         sourceFamily,
         sourceType,
         slotFrame,
       )
       : null;
-    const sourceFrame = innerClauseFrame
+    const sourceFrame = innerClauseFrame || innerClauseFrames.length
       ? buildPersonalNameNncSourceFrame({
         sourceFamily,
-        clauses: [innerClauseFrame],
+        clauses: multipleClauseProjection ? innerClauseFrames : [innerClauseFrame],
         modificationAmbiguity:
           request.modificationAmbiguity || "unambiguous",
         referentKind: request.referentKind || "person",
@@ -914,6 +1134,13 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
         ? null
         : canonicalSourceResult,
       canonicalTypedSlotFrame: blockReason ? null : slotFrame,
+      ...(multipleClauseProjection && !blockReason ? {
+        canonicalTypedSlotFrames: freeze(multipleClauseProjection.canonicalTypedSlotFrames),
+        exactInnerSourceResults: freeze(multipleClauseProjection.exactInnerSourceResults),
+        exactReferenceFrame: multipleClauseProjection.exactReferenceFrame,
+        memberOrder: freeze(multipleClauseProjection.memberOrder),
+        innerClauseFrames: freeze(innerClauseFrames),
+      } : {}),
       sourceType,
       sourceUnitKind,
       compatibleSourceFamilyIds,
@@ -931,6 +1158,38 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
     return frame;
   }
 
+  function hasPersonalNameExactMultipleClauseCustody(frame) {
+    const projection = getPersonalNameExactPossessorSupplementation(
+      frame.canonicalSourceResult,
+    );
+    return Boolean(
+      projection
+      && frame.selectedSourceFamily === "possessor-supplementation"
+      && frame.canonicalTypedSlotFrame === null
+      && frame.innerClauseFrame === null
+      && frame.exactReferenceFrame === projection.exactReferenceFrame
+      && ["canonicalTypedSlotFrames", "exactInnerSourceResults",
+        "memberOrder", "innerClauseFrames"].every(field => (
+        Array.isArray(frame[field])
+        && Object.isFrozen(frame[field])
+        && frame[field].length === 2
+      ))
+      && frame.exactInnerSourceResults.every((parent, index) => (
+        parent === projection.exactInnerSourceResults[index]
+        && frame.canonicalTypedSlotFrames[index]
+          === projection.canonicalTypedSlotFrames[index]
+        && frame.memberOrder[index] === projection.memberOrder[index]
+        && isPersonalNameInnerClauseFrame(frame.innerClauseFrames[index])
+      ))
+      && isPersonalNameNncSourceFrame(frame.sourceFrame)
+      && frame.sourceFrame.sourceFamily === "possessor-supplementation"
+      && frame.sourceFrame.clauses.length === 2
+      && frame.sourceFrame.clauses.every((clause, index) => (
+        clause === frame.innerClauseFrames[index]
+      ))
+    );
+  }
+
   function isPersonalNameNncExactSourceResolution(frame = null) {
     return Boolean(
       issuedExactSourceResolutions.has(frame)
@@ -945,13 +1204,22 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
           ? Boolean(frame.blockReason)
           : frame.exactSourceResultIdentityPreserved === true
             && Boolean(frame.canonicalSourceResult)
-            && Boolean(frame.canonicalTypedSlotFrame)
-            && (
-              frame.selectedSourceFamily
-                ? isPersonalNameNncSourceFrame(frame.sourceFrame)
-                  && isPersonalNameInnerClauseFrame(frame.innerClauseFrame)
-                : frame.sourceFrame === null
-                  && frame.innerClauseFrame === null
+            && (frame.sourceType === "opaque-quoted-inner"
+              ? isPersonalNameOpaqueQuotedInnerSourceFrame(frame.canonicalSourceResult)
+                && frame.sourceFrame === frame.canonicalSourceResult
+                && frame.selectedSourceFamily === "opaque-quoted-inner"
+                && frame.canonicalTypedSlotFrame === null
+                && frame.innerClauseFrame === null
+              : frame.sourceType === "multiple-nnc"
+              ? hasPersonalNameExactMultipleClauseCustody(frame)
+              : Boolean(frame.canonicalTypedSlotFrame)
+                && (
+                  frame.selectedSourceFamily
+                    ? isPersonalNameNncSourceFrame(frame.sourceFrame)
+                      && isPersonalNameInnerClauseFrame(frame.innerClauseFrame)
+                    : frame.sourceFrame === null
+                      && frame.innerClauseFrame === null
+                )
             )
       )
     );
@@ -982,6 +1250,8 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
     if (
       !affectiveScope
       || !affectiveMatrix
+      || (isPersonalNameOpaqueQuotedInnerSourceFrame(sourceFrame)
+        && (affectiveScope !== "none" || affectiveMatrix !== "none"))
       || ((affectiveScope === "none") !== (affectiveMatrix === "none"))
       || (
         affectiveScope === "general-use-agentive"
@@ -1058,6 +1328,18 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
     formulaSubject,
   ) {
     const source = operationFrame.sourceFrame;
+    if (isPersonalNameOpaqueQuotedInnerSourceFrame(source)) {
+      const innerFormula = `⟦${source.quotedCitation}⟧`;
+      const result = `#${formulaSubject[0]}-${formulaSubject[1]}(${innerFormula})Ø-Ø#`;
+      return freeze({
+        kind: "classical-nahuatl-personal-name-formula-projection", version: VERSION,
+        sourceKind: "opaque-quoted-personal-name-source", outerSubject: subject,
+        innerAnalysisClaimed: false, quotedCitation: source.quotedCitation,
+        clauseProjections: freeze([freeze({innerFormula, result})]),
+        coordinateFormulas: freeze([result]), result,
+        derivedFromWrittenProjection: false,
+      });
+    }
     const outerMatrix = operationFrame.affectiveScope === "outer-name"
       ? `+${operationFrame.affectiveMatrix}`
       : "";
@@ -1206,6 +1488,16 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
 
   function buildPersonalNameWrittenProjection(operationFrame, subject) {
     const source = operationFrame.sourceFrame;
+    if (isPersonalNameOpaqueQuotedInnerSourceFrame(source)) {
+      return freeze({
+        kind: "classical-nahuatl-personal-name-written-projection", version: VERSION,
+        sourceKind: "opaque-quoted-personal-name-source", outerSubject: subject,
+        innerAnalysisClaimed: false, quotedCitation: source.quotedCitation,
+        clauseProjections: freeze([freeze({result: source.quotedCitation})]),
+        coordinateSurfaces: freeze([source.quotedCitation]), result: source.quotedCitation,
+        derivedFromFormulaProjection: false,
+      });
+    }
     const outerMatrix = operationFrame.affectiveScope === "outer-name"
       ? realizeClassicalMorph(operationFrame.affectiveMatrix)
       : "";
@@ -1237,13 +1529,17 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
     const coordinateSurfaces = source.sourceUnitKind === "conjunction"
       ? clauseProjections.map(projection => (
         `${outerSubjectSurface(subject, projection.result)}${
-          projection.result
+          personalNameQuotedSurface(projection.result)
         }${outerMatrix}`
       ))
       : [(() => {
-        const innerSurface = clauseProjections
-          .map(projection => projection.result)
-          .join("");
+        const innerSurface = source.sourceFamily === "possessor-supplementation"
+          ? clauseProjections.map(projection => (
+            personalNameQuotedSurface(projection.result)
+          )).join("-")
+          : personalNameQuotedSurface(clauseProjections
+            .map(projection => projection.result)
+            .join(""));
         return `${outerSubjectSurface(subject, innerSurface)}${
           innerSurface
         }${outerMatrix}`;
@@ -1267,14 +1563,18 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
     outerSubject = "",
     exactSourceResolution = null,
   ) {
-    const subject = normalizeOuterSubject(outerSubject);
+    const subject = normalizeOuterSubject(outerSubject, operationFrame?.sourceFrame);
     if (!issuedOperations.has(operationFrame) || !subject) {
       return makeBlockedPersonalNameResult(
         !subject ? "outer-subject-required" : "issued-operation-required",
       );
     }
     const source = operationFrame.sourceFrame;
-    const formulaSubject = outerSubjectFormula(subject);
+    if (isPersonalNameOpaqueQuotedInnerSourceFrame(source)
+      && subject !== source.citationOuterSubject) {
+      return makeBlockedPersonalNameResult("opaque-quoted-inner-selected-outer-subject-only");
+    }
+    const formulaSubject = outerSubjectFormula(subject === "3common" ? "3sg" : subject);
     const formulaProjection =
       buildPersonalNameFormulaProjection(
         operationFrame,
@@ -1308,6 +1608,9 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
       innerNumberAdjustmentClauseIndexes:
         operationFrame.innerNumberAdjustmentClauseIndexes,
       outerSubject: subject,
+      ...(source.referenceKind === "quoted-designation" ? {
+        outerParticipantFrame: source.citationOuterParticipantFrame,
+      } : {}),
       outerNumberDyad: FIXED_OUTER_NUMBER_DYAD,
       innerSubjectBarrier: true,
       quotedPredicate: true,
@@ -1320,7 +1623,9 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
       writtenDerivedFromFormula: false,
       coordinateParts,
       sourceInputMode: exactSourceResolution
-        ? "exact-owner-issued-vnc-nnc-or-clause-result"
+        ? isPersonalNameOpaqueQuotedInnerSourceFrame(source)
+          ? "exact-owner-issued-opaque-quoted-inner-source"
+          : "exact-owner-issued-vnc-nnc-or-clause-result"
         : "typed-personal-name-source-frame",
       exactSourceResolution,
       canonicalSourceResult:
@@ -1329,7 +1634,8 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
         exactSourceResolution?.canonicalTypedSlotFrame || null,
       exactSourceResultIdentityPreserved: Boolean(exactSourceResolution),
       typedSlotFrame: freeze({
-        outerSubject: { person: subject, formulaPrefix: formulaSubject[0], connector: formulaSubject[1] },
+        outerSubject: { person: subject, formulaPrefix: formulaSubject[0], connector: formulaSubject[1],
+          ...(source.referenceKind === "quoted-designation" ? {participantFrame: source.citationOuterParticipantFrame} : {}) },
         downgradedSource: source,
         grammarOperation: operationFrame,
         outerNumber: FIXED_OUTER_NUMBER_DYAD,
@@ -1376,8 +1682,10 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
   }
 
   function isPersonalNameNncResult(frame = null) {
-    const exactSourceIdentityValid = frame?.sourceInputMode
-      !== "exact-owner-issued-vnc-nnc-or-clause-result"
+    const exactSourceIdentityValid = ![
+      "exact-owner-issued-vnc-nnc-or-clause-result",
+      "exact-owner-issued-opaque-quoted-inner-source",
+    ].includes(frame?.sourceInputMode)
       || Boolean(
         isPersonalNameNncExactSourceResolution(
           frame.exactSourceResolution,
@@ -1395,6 +1703,11 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
       issuedResults.has(frame)
       && frame?.kind === "classical-nahuatl-personal-name-result"
       && frame.authorizationStatus === "authorized"
+      && (frame.typedSlotFrame?.downgradedSource?.referenceKind !== "quoted-designation" || (
+        isPersonalNameOpaqueQuotedInnerSourceFrame(frame.typedSlotFrame.downgradedSource)
+        && frame.outerSubject === "3common"
+        && frame.outerParticipantFrame === frame.typedSlotFrame.downgradedSource.citationOuterParticipantFrame
+        && frame.typedSlotFrame.outerSubject.participantFrame === frame.outerParticipantFrame))
       && hasValidPersonalNameSelectedLcmProjection(frame)
       && isPersonalNameDiagrammaticProjection(
         frame.diagrammaticProjection,
@@ -1482,6 +1795,7 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
     );
     const hostilePath = findHostileAuthorityPath(extras, "request");
     const unsupportedField = Object.keys(extras)[0] || "";
+    const selectedOpaqueSource = isPersonalNameOpaqueQuotedInnerSourceFrame(sourceFrame);
     const operationFrame = buildPersonalNameNncOperationFrame(
       sourceFrame,
       { affectiveScope, affectiveMatrix },
@@ -1490,19 +1804,22 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
       kind: "classical-nahuatl-personal-name-paradigm-plan",
       version: VERSION,
       authorizationStatus:
-        operationFrame && !hostilePath && !unsupportedField
+        operationFrame && !selectedOpaqueSource && !hostilePath && !unsupportedField
           ? "authorized"
           : "blocked",
       blockReason: hostilePath
         ? `caller-authority-rejected:${hostilePath}`
         : unsupportedField
           ? `unsupported-request-field:request.${unsupportedField}`
+        : selectedOpaqueSource
+          ? "opaque-quoted-inner-paradigm-unclaimed"
         : operationFrame
           ? ""
           : "issued-source-required",
       operationFrame:
         hostilePath || unsupportedField ? null : operationFrame,
-      coordinates: freeze(["1sg", "2sg", "3sg"].map(outerSubject => ({ outerSubject }))),
+      coordinates: freeze(selectedOpaqueSource ? []
+        : ["1sg", "2sg", "3sg"].map(outerSubject => ({ outerSubject }))),
       preparedOnce: true,
       typedFrameAuthority: true,
     });
@@ -1557,6 +1874,14 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
       return freeze({ kind: "classical-nahuatl-personal-name-sentence-operation", version: VERSION, authorizationStatus: "blocked", blockReason: !spec ? "sentence-operation-unrecognized" : "issued-personal-name-result-required", typedFrameAuthority: true, callerSuppliedFormulaAuthority: false, callerSuppliedSurfaceAuthority: false });
     }
     const sourceFrame = personalNameResult.typedSlotFrame.downgradedSource;
+    if (isPersonalNameOpaqueQuotedInnerSourceFrame(sourceFrame)
+      && spec.id !== "sentence-name-use") {
+      return freeze({kind: "classical-nahuatl-personal-name-sentence-operation",
+        version: VERSION, authorizationStatus: "blocked",
+        blockReason: "opaque-quoted-inner-sentence-operation-unclaimed",
+        typedFrameAuthority: true, callerSuppliedFormulaAuthority: false,
+        callerSuppliedSurfaceAuthority: false});
+    }
     if (spec.id.startsWith("god-name-") && sourceFrame.referentKind !== "god") {
       return freeze({ kind: "classical-nahuatl-personal-name-sentence-operation", version: VERSION, authorizationStatus: "blocked", blockReason: "god-name-source-required", typedFrameAuthority: true, callerSuppliedFormulaAuthority: false, callerSuppliedSurfaceAuthority: false });
     }
@@ -1717,6 +2042,8 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
     buildPersonalNameInnerClauseFrame,
     isPersonalNameInnerClauseFrame,
     buildPersonalNameNncSourceFrame,
+    buildPersonalNameOpaqueQuotedInnerSourceFrame,
+    isPersonalNameOpaqueQuotedInnerSourceFrame,
     isPersonalNameNncSourceFrame,
     resolvePersonalNameNncExactSource,
     isPersonalNameNncExactSourceResolution,

@@ -12,6 +12,7 @@ export function createClassicalNahuatlIrregularVncApi(targetObject = globalThis)
     const CLASSICAL_NAHUATL_LESSON11_LEDGER_TAG_ID = "cn-l11-irregular-vnc-paradigm";
     const issuedClassicalNahuatlIdiomFrames = new WeakMap();
     const issuedLesson11PlanRequests = new WeakMap();
+    const issuedExistentialCompoundCooperations = new WeakSet();
     function freezeClassicalNahuatlIrregularValue(value, seen = new WeakSet()) {
       if (!value || typeof value !== "object" || seen.has(value)) return value;
       seen.add(value);
@@ -43,6 +44,10 @@ export function createClassicalNahuatlIrregularVncApi(targetObject = globalThis)
       PRESERVE_ZERO_ROOT: "preserve-zero-root-inside-verbstem"
     });
     const CLASSICAL_NAHUATL_LESSON11_RULES = Object.freeze([Object.freeze({
+      id: "cn-l19-195-il-defective-report",
+      section: "19.5",
+      exactWitness: "Quil is a unique form, here assumed to be a preterit-tense VNC with a third-person singular subject formed on an obsolete transitive stem: quil = #Ø-Ø+qu-Ø(il)Ø+⎕-Ø#",
+    }), Object.freeze({
       id: "cn-l11-111-irregularity-loci",
       section: "11.1",
       lineStart: 3991,
@@ -448,9 +453,16 @@ export function createClassicalNahuatlIrregularVncApi(targetObject = globalThis)
           kind: "defective-preterit-as-present",
           ruleIds: ["cn-l11-1144-a-defective"]
         },
+        il: {
+          lexemeId: "il",
+          kind: "defective-reporting-preterit",
+          ruleIds: ["cn-l19-195-il-defective-report"]
+        },
         huitz: {
           lexemeId: "itz-come-go",
           kind: "defective-compound-only",
+          canonicalStem: "huī-tz",
+          canonicalStemRuleId: "cn-l11-1145-attested-hui-itz-long-i-allomorph",
           ruleIds: ["cn-l11-1145-itzi-defective", "cn-l11-1145-itzi-compound-only", "cn-l11-1145-itzi-post-stem-k-deletion", "cn-l11-1145-itzi-second-person-command"]
         },
         itquitz: {
@@ -570,7 +582,7 @@ export function createClassicalNahuatlIrregularVncApi(targetObject = globalThis)
         "cen-hui": "cen-hui",
         "come-suppletive": "huāl-lā"
       };
-      return canonicalStemByLexemeId[identity?.lexemeId] || identity?.sourceStem || "";
+      return identity?.canonicalStem || canonicalStemByLexemeId[identity?.lexemeId] || identity?.sourceStem || "";
     }
     function getClassicalNahuatlParadigmRelationFrame(identityOrStem = null, options = {}) {
       const identity = typeof identityOrStem === "string" ? getClassicalNahuatlLexemeIdentity(identityOrStem, options) : identityOrStem;
@@ -850,9 +862,10 @@ export function createClassicalNahuatlIrregularVncApi(targetObject = globalThis)
           const fusion = fuseClassicalNahuatlLesson11HualToGoStem(sourceParadigmMember);
           member = fusion.fusedStem;
         } else if (tense === "present" && plural) {
-          rejectedVariants.push({
-            stem: "ya-hui",
-            usage: "dialectal-not-good-usage"
+          authorizedAlternatives.push({
+            stemOverride: "ya-hui",
+            usage: "dialectal-not-good-usage",
+            preference: "marked-not-default"
           });
         }
       }
@@ -894,7 +907,14 @@ export function createClassicalNahuatlIrregularVncApi(targetObject = globalThis)
     function buildClassicalNahuatlIrregularVncParadigmPlan(stem = "", options = {}) {
       const request = freezeClassicalNahuatlIrregularValue({
         stem: String(stem),
-        options: cloneClassicalNahuatlLesson11Value(options)
+        options: {
+          ...cloneClassicalNahuatlLesson11Value(options),
+          // Cooperation is an issuer-bound dependency. Copying its data loses
+          // the receipt; the value builder still validates the original object.
+          ...(options.pronominalNncCooperationFrame ? {
+            pronominalNncCooperationFrame: options.pronominalNncCooperationFrame
+          } : {})
+        }
       });
       const plan = freezeClassicalNahuatlIrregularValue(
         buildClassicalNahuatlIrregularVncParadigmPlanValue(request.stem, request.options)
@@ -904,6 +924,125 @@ export function createClassicalNahuatlIrregularVncApi(targetObject = globalThis)
     }
     function buildClassicalNahuatlIrregularVncParadigmPlanValue(stem = "", options = {}) {
       const sourceStem = normalizeClassicalNahuatlIrregularVncStem(stem);
+      // Andrews 19.2: identify the nominal member before inflecting the
+      // existential matrix. These are morpheme analyses, not finite forms.
+      const compoundEmbed = normalizeClassicalNahuatlIrregularVncStem(options.sourceEmbedStem || options.embedStem || "");
+      const compoundMatrix = normalizeClassicalNahuatlIrregularVncStem(options.sourceMatrixStem || options.matrixStem || "");
+      if (compoundEmbed && compoundMatrix === "i-ā"
+        && sourceStem.replace(/-/gu, "") === `${compoundEmbed}${compoundMatrix}`.replace(/-/gu, "")) {
+        const members = compoundEmbed.split("-");
+        let nominalSource = null;
+        let boundaryFrame = null;
+        let boundaryRequired = false;
+        if (members.length === 2 && members[0] === "ā" && members[1] === "qu") {
+          nominalSource = { stem: "ā-0" };
+        } else if (members.at(-1) === "e" && members.at(-2) === "tl"
+          && (members.length === 2 || members.length === 3 && members[0] === "cā")) {
+          nominalSource = members.length === 2
+            ? { stem: "tl-eh", embedStem: "tl", matrixStem: "eh" }
+            : { stem: "cā-tl-eh", embedStem: "cā", matrixStem: "tl-eh" };
+          boundaryRequired = true;
+          boundaryFrame = targetObject.buildClassicalNahuatlConsonantPhoneShiftFrame?.({
+            sourceConsonant: "glottal", followingVowel: "i", position: "intervocalic",
+            intervocalicYDisappears: true, grammaticalConstruction: true,
+          });
+        } else if (members.length === 2 && members[0] === "cā" && members[1] === "tl") {
+          nominalSource = { stem: "cā" };
+        }
+        const nominal = nominalSource
+          ? targetObject.buildClassicalNahuatlPronominalNncSourceFrame?.(nominalSource)
+          : null;
+        const nominalAuthorized = nominal
+          && targetObject.isClassicalNahuatlPronominalNncSourceFrame?.(nominal)
+          && (!boundaryRequired || boundaryFrame?.authorizationStatus === "authorized");
+        const cooperation = Object.freeze({
+          kind: "classical-nahuatl-existential-compound-cooperation",
+          authorizationStatus: nominalAuthorized ? "authorized" : "blocked",
+          nominalSourceFrame: nominal,
+          boundaryFrame,
+          matrixStem: compoundMatrix,
+          embedStem: compoundEmbed,
+          cooperatingSubject: String(options.subject || options.subjectPerson || ""),
+          requiredDefectiveIdentity: "defective-nnc-cooperation",
+          selectedTypedNncRequired: true,
+          booleanClaimAuthority: false,
+        });
+        if (nominalAuthorized) issuedExistentialCompoundCooperations.add(cooperation);
+        const matrixPlan = buildClassicalNahuatlIrregularVncParadigmPlan(compoundMatrix, {
+          ...options, sourceEmbedStem: "", embedStem: "", sourceMatrixStem: "", matrixStem: "",
+          pronominalNncCooperationFrame: cooperation,
+        });
+        const member = matrixPlan.selectedStemOverride || "0-i-h";
+        return {
+          ...matrixPlan, sourceStem, canonicalSourceStem: sourceStem,
+          sourceStemCanonicalized: false,
+          identity: { ...matrixPlan.identity, sourceStem },
+          selectedStemOverride: `${compoundEmbed}-${member}`,
+          defaultStemOverride: `${compoundEmbed}-${member}`,
+          sourceParadigmMember: sourceStem,
+          matrixParadigmPlan: matrixPlan,
+          existentialCompoundCooperationFrame: cooperation,
+          actions: [...matrixPlan.actions, "retain-pronominal-embed-and-defective-existential-matrix"],
+        };
+      }
+      // Andrews 44.3.1: the lexicalized degree VNC retains the analyzed
+      // cen + ca-h structure and the matrix's preterit-as-present morphology.
+      // Surface-only cencah does not select this structural derivation.
+      if (sourceStem === "cen-ca-h") {
+        const matrixPlan = buildClassicalNahuatlIrregularVncParadigmPlan("ca-h", options);
+        const member = matrixPlan.selectedStemOverride || "ca-h";
+        return {
+          ...matrixPlan,
+          sourceStem,
+          canonicalSourceStem: sourceStem,
+          sourceStemCanonicalized: false,
+          identity: { ...matrixPlan.identity, lexemeId: "cen-ca-h", sourceStem },
+          lexemeId: "cen-ca-h",
+          selectedStemOverride: `cen-${member}`,
+          defaultStemOverride: `cen-${member}`,
+          sourceParadigmMember: sourceStem,
+          alternatives: [],
+          authorizedAlternatives: [],
+          matrixParadigmPlan: matrixPlan,
+          actions: [...matrixPlan.actions, "retain-cen-embed-with-ca-h-matrix"],
+        };
+      }
+      // §40.8/44.3 documents cem-ihca as a standing-state compound, not a
+      // regular past event. Other explicitly analyzed Source compounds can
+      // carry the same ih-ca matrix; retain their whole stem while the
+      // existing matrix owner supplies its form/meaning paradigm.
+      const documentedStandingEmbed = sourceStem === "cem-ihca" ? "cem" : "";
+      const standingEmbed = documentedStandingEmbed || (
+        compoundEmbed && ["ihca", "ih-ca"].includes(compoundMatrix)
+        && sourceStem.replace(/-/gu, "")
+          === `${compoundEmbed}${compoundMatrix}`.replace(/-/gu, "")
+          ? compoundEmbed : ""
+      );
+      if (standingEmbed) {
+        const matrixPlan = buildClassicalNahuatlIrregularVncParadigmPlan("ih-ca", {
+          ...options, sourceEmbedStem: "", embedStem: "",
+          sourceMatrixStem: "", matrixStem: "",
+        });
+        const member = matrixPlan.selectedStemOverride || "ih-ca";
+        return {
+          ...matrixPlan,
+          sourceStem, canonicalSourceStem: sourceStem, sourceStemCanonicalized: false,
+          identity: {...matrixPlan.identity, lexemeId: "standing-state-compound", sourceStem},
+          lexemeId: "standing-state-compound",
+          selectedStemOverride: `${standingEmbed}-${member}`,
+          defaultStemOverride: `${standingEmbed}-${member}`,
+          sourceParadigmMember: sourceStem,
+          alternatives: [], authorizedAlternatives: [],
+          matrixParadigmPlan: matrixPlan,
+          standingStateSourceAnalysis: {
+            sourceStem, embedStem: standingEmbed, matrixStem: "ih-ca",
+            documentedPrimitiveSource: Boolean(documentedStandingEmbed),
+            wholeCompoundPreserved: true, matrixSemanticParadigmInherited: true,
+            finishedSurfaceAuthority: false,
+          },
+          actions: [...matrixPlan.actions, "retain-embed-with-standing-state-ih-ca-matrix"],
+        };
+      }
       const identity = getClassicalNahuatlLexemeIdentity(sourceStem, options);
       const canonicalSourceStem = getClassicalNahuatlCanonicalSourceStem(identity);
       const sourceStemCanonicalized = Boolean(identity && canonicalSourceStem && canonicalSourceStem !== sourceStem);
@@ -1029,7 +1168,19 @@ export function createClassicalNahuatlIrregularVncApi(targetObject = globalThis)
           regularSystemRemainsAuthority: true
         };
       }
-      if (identity.kind === "lesson7-delegated-irregular-sound-change") {
+      if (identity.kind === "defective-reporting-preterit") {
+        selectedClassOverride = "B";
+        selectedStemOverride = "il";
+        num1Override = CLASSICAL_NAHUATL_LESSON11_SQUARE_ZERO;
+        available = requestedMood === "indicative"
+          && requestedSemanticTense === "preterit"
+          && options.subject === "3sg"
+          && options.objectKind === "specific-projective"
+          && options.objectPerson === "3sg"
+          && !["passive", "impersonal"].includes(options.voice);
+        if (!available) blockReason = "defective-il-requires-fixed-third-singular-reporting-preterit";
+        actions.push(CLASSICAL_NAHUATL_LESSON11_ACTIONS.DISABLE_PARADIGM_CELL);
+      } else if (identity.kind === "lesson7-delegated-irregular-sound-change") {
         actions.push(CLASSICAL_NAHUATL_LESSON11_ACTIONS.REUSE_REGULAR_SOUND_RULE);
       } else if (identity.kind === "compound-class-shift") {
         selectedClassOverride = "B";
@@ -1156,6 +1307,7 @@ export function createClassicalNahuatlIrregularVncApi(targetObject = globalThis)
           (
             lesson16CooperationAuthorized
             || pronominalPluralCooperationAuthorized
+            || issuedExistentialCompoundCooperations.has(candidateCooperationFrame)
           )
           && (
             candidateCooperationFrame.requiredDefectiveIdentity
@@ -1176,7 +1328,7 @@ export function createClassicalNahuatlIrregularVncApi(targetObject = globalThis)
             !requestedSubject
             || candidateCooperationFrame.cooperatingSubject === requestedSubject
           );
-        pronominalNncCooperationFrame = typedCooperationAuthorized ? cloneClassicalNahuatlLesson11Value(candidateCooperationFrame) : null;
+        pronominalNncCooperationFrame = typedCooperationAuthorized ? candidateCooperationFrame : null;
         if (
           typedCooperationAuthorized
           && candidateCooperationFrame.compoundTypedRouteRequired === true
@@ -1275,6 +1427,7 @@ export function createClassicalNahuatlIrregularVncApi(targetObject = globalThis)
       }
       const ruleRefs = identity.ruleIds.map(getClassicalNahuatlRule).filter(Boolean);
       let allowedSemanticTenses = [...regularSemanticTenses];
+      if (identity.kind === "defective-reporting-preterit") allowedSemanticTenses = requestedMood === "indicative" ? ["preterit"] : [];
       if (identity.kind === "defective-preterit-as-present") allowedSemanticTenses = ["present"];
       if (identity.kind === "defective-compound-only") allowedSemanticTenses = ["present", "general-past"];
       if (identity.kind === "defective-alert-perfective-only") {
@@ -1340,6 +1493,9 @@ export function createClassicalNahuatlIrregularVncApi(targetObject = globalThis)
           const [selectedAlternative] = authorizedAlternatives.splice(selectedAlternativeIndex, 1);
           selectedStemOverride = selectedAlternative.stemOverride;
           selectedAlternativeStem = selectedStemOverride;
+          if (selectedAlternative.usage === "dialectal-not-good-usage") {
+            usageStatus = selectedAlternative.usage;
+          }
           if (selectedAlternative.tnsOverride) {
             tnsOverride = selectedAlternative.tnsOverride;
           }
@@ -1368,6 +1524,16 @@ export function createClassicalNahuatlIrregularVncApi(targetObject = globalThis)
         identity: cloneClassicalNahuatlLesson11Value(identity),
         lexemeId: identity.lexemeId,
         irregularityKind: identity.kind,
+        ...(identity.kind === "defective-reporting-preterit" ? {
+          // Read-only projection of this owner's existing fixed-cell checks.
+          // Source admission can discover the cell without inventing a lower
+          // finite parent or interpreting the documentary witness string.
+          fixedSourceCell: {
+            subject: "3sg", mood: "indicative", tense: "preterit",
+            objectKind: "specific-projective", objectPerson: "3sg",
+            voice: "active", sourceValence: "specific-projective",
+          },
+        } : {}),
         applies: true,
         requestedMood,
         requestedSemanticTense,
@@ -1402,7 +1568,7 @@ export function createClassicalNahuatlIrregularVncApi(targetObject = globalThis)
         rootMorphemeRole,
         zeroRootPreserved,
         zeroRootOperationFrame: cloneClassicalNahuatlLesson11Value(zeroRootOperationFrame),
-        pronominalNncCooperationFrame: cloneClassicalNahuatlLesson11Value(pronominalNncCooperationFrame),
+        pronominalNncCooperationFrame,
         authorizedSentenceRoles: Array.from(new Set(authorizedSentenceRoles)),
         supersededLowerRuleIds,
         available,

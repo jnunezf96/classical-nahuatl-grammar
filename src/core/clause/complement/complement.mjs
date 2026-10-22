@@ -1,4 +1,5 @@
 // Canonical modern ESM module.
+import {areClassicalNahuatlPersonNumberFeaturesCompatible} from "../../sentence/supplementation.mjs";
 
 export function createComplementClauseGlobals(targetObject = globalThis, installationContext = null) {
     const grammarFrameOwnerCapability = installationContext?.grammarFrameOwnerCapability || null;
@@ -642,7 +643,7 @@ export function createComplementClauseGlobals(targetObject = globalThis, install
         return [principal, complement].filter(Boolean);
       }
       if (normalizedOrder === COMPLEMENT_CLAUSE_ORDER.discontinuous) {
-        return [complement, "...", principal].filter(Boolean);
+        return [];
       }
       return [complement, principal].filter(Boolean);
     }
@@ -918,7 +919,7 @@ export function createComplementClauseGlobals(targetObject = globalThis, install
       chihua: Object.freeze(["chīhua", "chihua"]),
       cuepa: Object.freeze(["cuepa"]),
       ihtoa: Object.freeze(["ihtoa"]),
-      tocayotia: Object.freeze(["tōcāyōtia", "tōcāyotīa", "tocayotia"]),
+      tocayotia: Object.freeze(["tōcāyōtiā", "tōcāyōtia", "tōcāyotīa", "tocayotia"]),
       mati: Object.freeze(["mati"]),
       teci: Object.freeze(["teci"]),
       i: Object.freeze(["ī", "i"]),
@@ -959,31 +960,17 @@ export function createComplementClauseGlobals(targetObject = globalThis, install
         ([key, child]) => [key, freezeClassicalNahuatlClauseComposition(child)]
       )));
     }
-    const classicalNahuatlClauseCompositionStringCache = new WeakMap();
-    function stableStringifyClassicalNahuatlClauseComposition(value) {
-      const cacheable = Boolean(
-        value && typeof value === "object" && Object.isFrozen(value)
-      );
-      if (
-        cacheable
-        && classicalNahuatlClauseCompositionStringCache.has(value)
-      ) {
-        return classicalNahuatlClauseCompositionStringCache.get(value);
-      }
-      let serialized;
+    // Preserve shared derivation references without expanding each graph path.
+    function stableStringifyClassicalNahuatlClauseComposition(value, seen = new Map()) {
+      if (!value || typeof value !== "object") return JSON.stringify(value);
+      if (seen.has(value)) return `reference:${seen.get(value)}`;
+      seen.set(value, seen.size);
       if (Array.isArray(value)) {
-        serialized = `[${value.map(stableStringifyClassicalNahuatlClauseComposition).join(",")}]`;
-      } else if (value && typeof value === "object") {
-        serialized = `{${Object.keys(value).filter(key => value[key] !== undefined).sort().map(
-          key => `${JSON.stringify(key)}:${stableStringifyClassicalNahuatlClauseComposition(value[key])}`
-        ).join(",")}}`;
-      } else {
-        serialized = JSON.stringify(value);
+        return `[${value.map(entry => stableStringifyClassicalNahuatlClauseComposition(entry, seen)).join(",")}]`;
       }
-      if (cacheable) {
-        classicalNahuatlClauseCompositionStringCache.set(value, serialized);
-      }
-      return serialized;
+      return `{${Object.keys(value).filter(key => value[key] !== undefined).sort().map(
+        key => `${JSON.stringify(key)}:${stableStringifyClassicalNahuatlClauseComposition(value[key], seen)}`
+      ).join(",")}}`;
     }
     function signClassicalNahuatlClauseComposition(value, prefix) {
       const serialized = stableStringifyClassicalNahuatlClauseComposition(value);
@@ -1007,14 +994,16 @@ export function createComplementClauseGlobals(targetObject = globalThis, install
     function normalizeClassicalNahuatlClauseCompositionSurface(value = "") {
       return String(value || "").trim().replace(/[.?!]+$/u, "");
     }
-    function realizeClassicalNahuatlClauseCompositionSentence(parts = []) {
+    function realizeClassicalNahuatlClauseCompositionSentence(parts = [], sentenceKind = "assertion") {
       const text = parts.map(normalizeClassicalNahuatlClauseCompositionSurface).filter(Boolean).join(" ").trim();
       if (!text) return "";
       const initial = text.search(/\p{L}/u);
       const capitalized = initial < 0
         ? text
         : `${text.slice(0, initial)}${text[initial].toLocaleUpperCase("nah")}${text.slice(initial + 1)}`;
-      return `${capitalized}.`;
+      const punctuation = sentenceKind === "question" ? "?"
+        : sentenceKind === "exclamation" ? "!" : ".";
+      return `${capitalized}${punctuation}`;
     }
     function buildClassicalNahuatlClauseComplementationSelectedLcmProjection({
       operationKind = "",
@@ -1160,6 +1149,17 @@ export function createComplementClauseGlobals(targetObject = globalThis, install
         .map(field => [field, options[field]]));
     }
     function getClassicalNahuatlClauseCompositionNncSlotFrame(sourceFrame = null) {
+      if (targetObject.isClassicalNahuatlPronominalNncResult?.(sourceFrame) === true
+        && targetObject.isClassicalNahuatlNncSlotFrame?.(sourceFrame.typedSlotFrame) === true) {
+        return sourceFrame.typedSlotFrame;
+      }
+      if (targetObject.isClassicalNahuatlResultFrame?.(sourceFrame) === true
+        && sourceFrame.operationKind === "adjectival-modification") {
+        const head = sourceFrame.selectedClauses?.[0];
+        const ownedHeadSlot = head?.unitKind === "nnc"
+          ? getClassicalNahuatlClauseCompositionNncSlotFrame(head.sourceResult) : null;
+        if (ownedHeadSlot && ownedHeadSlot === head.typedSlotFrame) return ownedHeadSlot;
+      }
       return sourceFrame?.nncSlotFrame
         || sourceFrame?.sourceNncSlotFrame
         || sourceFrame?.resultFrame?.nncSlotFrame
@@ -1314,6 +1314,7 @@ export function createComplementClauseGlobals(targetObject = globalThis, install
         || canonicalSourceFrame?.stem
         || canonicalSourceFrame?.targetStem
         || canonicalSourceFrame?.sourceVerbstem
+        || envelope.embeddedPossessor?.canonicalNncOperationFrame?.sourceFrame?.stem
         || nncSlotFrame?.slots?.predicate?.stem
         || vncSlotFrame?.slots?.predicate?.stem
         || envelope.sourceStem
@@ -1332,6 +1333,7 @@ export function createComplementClauseGlobals(targetObject = globalThis, install
         subject: envelope.subject,
         objects: projectedObjects,
         possessor: envelope.possessor,
+        embeddedPossessor: envelope.embeddedPossessor || null,
         predicateStem,
         underivedVncSourceStem: typeof targetObject.isClassicalNahuatlVncApplicationFrame === "function"
           && targetObject.isClassicalNahuatlVncApplicationFrame(sourceFrame)
@@ -1352,7 +1354,9 @@ export function createComplementClauseGlobals(targetObject = globalThis, install
             }
           : null,
         nounClass: String(sourceFrame?.nounClass || canonicalSourceFrame?.nounClass || nncSlotFrame?.nounClass || nncSlotFrame?.slots?.predicate?.nounClass || ""),
-        state: normalizeClassicalNahuatlClauseCompositionToken(sourceFrame?.state || canonicalSourceFrame?.state || nncSlotFrame?.state || ""),
+        state: normalizeClassicalNahuatlClauseCompositionToken(sourceFrame?.state || canonicalSourceFrame?.state
+          || (targetObject.isClassicalNahuatlRelationalResult?.(sourceFrame) === true ? sourceFrame.sourceFrame?.state : "")
+          || nncSlotFrame?.state || ""),
         animacy: normalizeClassicalNahuatlClauseCompositionToken(sourceFrame?.animacy || canonicalSourceFrame?.animacy || nncSlotFrame?.animacy || ""),
         pronominalSubtype: normalizeClassicalNahuatlClauseCompositionToken(nncSlotFrame?.pronominalSubtype || ""),
         affectiveFormation: Boolean(
@@ -1375,8 +1379,10 @@ export function createComplementClauseGlobals(targetObject = globalThis, install
         ) || "active-or-unspecified",
         mood: envelope.mood,
         tense: envelope.tense,
-        formulaRealization:
-          getClassicalNahuatlClauseCompositionSourceFormula(sourceFrame),
+        formulaRealization: targetObject.isAdverbialAdjunctionResult?.(sourceFrame) === true
+          ? envelope.formulaRealization
+          : getClassicalNahuatlClauseCompositionSourceFormula(sourceFrame)
+            || envelope.formulaRealization,
         surface: envelope.surface,
         typedFrameAuthority: true,
         lessonMetadataAuthority: false,
@@ -1493,7 +1499,8 @@ export function createComplementClauseGlobals(targetObject = globalThis, install
       const reflexive = ["mainline-reflexive", "shuntline-reflexive"].includes(source?.predicateValence)
         || source?.objects?.some(object => object.objectKind === "reflexive");
       return !licenses.length || licenses.some(license => {
-        if (CLASSICAL_NAHUATL_CLAUSE_COMPLEMENTATION_LEXICAL_ALIASES[license]?.includes(stem)) return true;
+        if (CLASSICAL_NAHUATL_CLAUSE_COMPLEMENTATION_LEXICAL_ALIASES[license]
+          ?.some(alias => alias.replaceAll("-", "") === stem.replaceAll("-", ""))) return true;
         // Andrews 51.4.2 retains the lexical beginning construction when
         // pehua is impersonal; its realized nonactive stem is not a new lexeme.
         if (license === "pehua" && source.voice === "impersonal"
@@ -1504,6 +1511,41 @@ export function createComplementClauseGlobals(targetObject = globalThis, install
           (license === "mocahua" && ["cāhua", "cahua"].includes(stem))
           || (license === "motlahpaloa" && ["tlahpal-o-ā", "tlahpaloā", "tlahpaloa"].includes(stem))
         );
+      });
+    }
+    function getClassicalNahuatlDiscontinuousComplementProjection(principalClause, complementClause) {
+      const sourceOf = targetObject.getClassicalNahuatlSupplementationClauseSourceFrame;
+      if (typeof sourceOf !== "function" || complementClause?.unitKind !== "nnc") return null;
+      const principalResult = sourceOf(principalClause?.envelope);
+      const whole = sourceOf(complementClause?.envelope);
+      if (!principalResult || targetObject.isClassicalNahuatlResultFrame?.(whole) !== true
+        || whole.operationKind !== "adjectival-modification" || whole.topology !== "discontinuous"
+        || whole.selectedClauses?.length !== 3
+        || targetObject.getClassicalSupplementationIntervenerSource?.(whole) !== principalResult) return null;
+      const [head, modifier, intervener] = whole.selectedClauses;
+      const tokens = whole.linearizationTokens;
+      if (intervener.sourceResult !== principalResult || !Array.isArray(tokens)
+        || tokens.filter(token => token.kind === "clause").length !== 3
+        || tokens.filter(token => token.kind === "clause" && token.clause === intervener).length !== 1
+        || !tokens.every(token => token.kind === "adjunctor" ? token.value === "in"
+          : token.kind === "clause" && [head, modifier, intervener].includes(token.clause))) return null;
+      const roleTokens = tokens.map(token => Object.freeze({
+        role: token.kind === "adjunctor" ? "adjunctor"
+          : token.clause === intervener ? "principal"
+            : token.clause === head ? "complement-head" : "complement-modifier",
+        canonicalResult: token.kind === "adjunctor" ? null : token.clause.sourceResult,
+        formulaValue: token.kind === "adjunctor" ? token.value : token.clause.formula,
+        surface: token.kind === "adjunctor" ? token.value : token.clause.unitSurface,
+      }));
+      if (roleTokens.some(token => !token.formulaValue || !token.surface)) return null;
+      return Object.freeze({
+        kind: "classical-nahuatl-complement-shared-principal-intervener-projection",
+        canonicalPrincipalResult: principalResult,
+        canonicalComplementResult: whole,
+        canonicalTokens: tokens,
+        roleTokens: Object.freeze(roleTokens),
+        principalOccurrenceCount: 1,
+        callerSelectionAuthority: false,
       });
     }
     function orderClassicalNahuatlClauseComplementationClauses(principalClause, complementClause, order) {
@@ -1524,16 +1566,20 @@ export function createComplementClauseGlobals(targetObject = globalThis, install
       return [complementClause.formulaRealization, principalClause.formulaRealization];
     }
     function finalizeClassicalNahuatlClauseComplementationResultFrame(operationKind, principalClause, complementClause, options, relationFrame, auxiliaryClause = null) {
-      const surfaceSequence = orderClassicalNahuatlClauseComplementationClauses(
-        principalClause,
-        complementClause,
-        options.order
-      );
-      const formulaSequence = orderClassicalNahuatlClauseComplementationFormulas(
-        principalClause,
-        complementClause,
-        options.order
-      );
+      const discontinuous = normalizeClassicalNahuatlClauseCompositionToken(options.order) === "discontinuous";
+      const sharedPrincipalIntervenerProjection = discontinuous
+        ? getClassicalNahuatlDiscontinuousComplementProjection(principalClause, complementClause) : null;
+      if (discontinuous && (!sharedPrincipalIntervenerProjection || auxiliaryClause)) {
+        return buildClassicalNahuatlClauseComplementationBlockedResultFrame(
+          operationKind, "discontinuous-complement-topology-not-supported"
+        );
+      }
+      const surfaceSequence = sharedPrincipalIntervenerProjection
+        ? sharedPrincipalIntervenerProjection.roleTokens.map(token => token.surface)
+        : orderClassicalNahuatlClauseComplementationClauses(principalClause, complementClause, options.order);
+      const formulaSequence = sharedPrincipalIntervenerProjection
+        ? sharedPrincipalIntervenerProjection.roleTokens.map(token => token.formulaValue)
+        : orderClassicalNahuatlClauseComplementationFormulas(principalClause, complementClause, options.order);
       if (auxiliaryClause) {
         const auxiliaryIndex =
           normalizeClassicalNahuatlClauseCompositionToken(options.order)
@@ -1563,7 +1609,8 @@ export function createComplementClauseGlobals(targetObject = globalThis, install
       }
       const formulaRealization = formulaSequence.join(" + ");
       const surfaceRealization =
-        realizeClassicalNahuatlClauseCompositionSentence(surfaceSequence);
+        realizeClassicalNahuatlClauseCompositionSentence(
+          surfaceSequence, principalClause.envelope.sentenceKind);
       const formulaRecord = targetObject.buildGrammarFormulaRecord({
         id: `clause-complement:${operationKind}:${relationFrame.role || "relation"}`,
         unit: "CLAUSE_GROUP",
@@ -1608,6 +1655,7 @@ export function createComplementClauseGlobals(targetObject = globalThis, install
         complementClause,
         auxiliaryClause,
         relationFrame,
+        ...(sharedPrincipalIntervenerProjection ? { sharedPrincipalIntervenerProjection } : {}),
         leastCommonMultiple: buildClassicalNahuatlClauseComplementationSelectedLcmProjection({
           operationKind,
           principalClause,
@@ -1620,6 +1668,7 @@ export function createComplementClauseGlobals(targetObject = globalThis, install
         formulaRecord,
         formulaRealizationRecord,
         surfaceSequence,
+        embeddedSurface: surfaceSequence.map(normalizeClassicalNahuatlClauseCompositionSurface).filter(Boolean).join(" "),
         surfaceRealization,
         canonicalExecutor: "evaluateClassicalNahuatlClauseComplementation",
         typedFrameAuthority: true,
@@ -1705,6 +1754,14 @@ export function createComplementClauseGlobals(targetObject = globalThis, install
         return buildClassicalNahuatlClauseComplementationBlockedResultFrame(
           operationKind,
           `unrecognized-clause-complementation-operation-option-value:${invalidOptionValue}`
+        );
+      }
+      if (normalizeClassicalNahuatlClauseCompositionToken(options.order) === "discontinuous"
+        && (!getClassicalNahuatlDiscontinuousComplementProjection(principal, complement)
+          || operationRequest.auxiliaryClause)) {
+        return buildClassicalNahuatlClauseComplementationBlockedResultFrame(
+          operationKind,
+          "discontinuous-complement-topology-not-supported"
         );
       }
       const semanticCategory = normalizeClassicalNahuatlClauseCompositionToken(options.semanticCategory);
@@ -1826,11 +1883,18 @@ export function createComplementClauseGlobals(targetObject = globalThis, install
         }
         const contactKind = normalizeClassicalNahuatlClauseCompositionToken(options.contactKind || "subject");
         const specialPossessorContact = ["embedded-possessor-cel", "embedded-possessor-el"].includes(contactKind);
+        const possessorContact = complement.embeddedPossessor || complement.possessor;
         const complementReference = specialPossessorContact
-          ? complement.possessor?.referenceId || ""
+          ? possessorContact?.referenceId || ""
           : complement.subject.referenceId;
         if (!complementReference || complementReference !== principal.subject.referenceId) {
           return buildClassicalNahuatlClauseComplementationBlockedResultFrame(operationKind, "principal-subject-reference-must-match-complement-contact");
+        }
+        if(specialPossessorContact && complement.embeddedPossessor
+          && areClassicalNahuatlPersonNumberFeaturesCompatible(
+            principal.subject.features,possessorContact.features)!==true){
+          return buildClassicalNahuatlClauseComplementationBlockedResultFrame(operationKind,
+            "principal-subject-category-must-match-embedded-possessor-contact");
         }
         if (contactKind === "embedded-possessor-cel" && !classicalNahuatlClauseComplementationStemLicensed(complement, ["cel"])) {
           return buildClassicalNahuatlClauseComplementationBlockedResultFrame(operationKind, "cel-contact-requires-typed-cel-nnc");
@@ -1849,6 +1913,8 @@ export function createComplementClauseGlobals(targetObject = globalThis, install
           role: "subject-complement",
           semanticCategory,
           contactKind,
+          ...(specialPossessorContact && complement.embeddedPossessor
+            ? {embeddedPossessorContact:complement.embeddedPossessor} : {}),
           referenceIdentityUnified: true,
           stateRelationCentersOnPrincipalSubject: semanticCategory === "state",
           adverbialMannerRelationRemainsSeparate: semanticCategory === "state",

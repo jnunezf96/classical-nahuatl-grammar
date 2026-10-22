@@ -1,5 +1,16 @@
 // Canonical modern ESM module.
 
+export function installClassicalSourceApplyPointerGuard(button, documentObject) {
+  button?.addEventListener("pointerdown", event => {
+    // A Source input's blur can rearrange its guidance before pointerup.
+    // Keep the intended Apply target under the pointer; only click commits.
+    if (event.button === 0 && button.disabled !== true
+      && documentObject.activeElement?.matches?.(".classical-source-parts__input")) {
+      event.preventDefault();
+    }
+  });
+}
+
 export function createUiEventsApi(targetObject = globalThis) {
     // === Event Wiring ===
     // Keyboard navigation (kept minimal now that radios are removed)
@@ -319,6 +330,7 @@ export function createUiEventsApi(targetObject = globalThis) {
         }
         const verbEntryApplyButton = targetObject.document.getElementById("verb-entry-apply");
         if (verbEntryApplyButton) {
+          installClassicalSourceApplyPointerGuard(verbEntryApplyButton, targetObject.document);
           verbEntryApplyButton.addEventListener("click", event => {
             event.preventDefault();
             applyVerbEntryInputNow();

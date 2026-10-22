@@ -1,9 +1,19 @@
 // Canonical modern ESM module.
+import {isClassicalNahuatlParticipantFrame} from "../../classical/participant_frame.mjs";
 
 export function createConjunctionClauseGlobals(targetObject = globalThis, installationContext = null) {
     const grammarFrameOwnerCapability = installationContext?.grammarFrameOwnerCapability || null;
     const CONJUNCTION_CLAUSE_BOUNDARY_VERSION = 1;
     const issuedClassicalNahuatlClauseConjunctionResults = new WeakSet();
+    const classicalNahuatlConjunctionSignatureCertificates = new WeakMap();
+    const classicalNahuatlConjunctionSignatureIntrinsics = [
+      [Array.prototype, "map"], [Array.prototype, "filter"],
+      [Array.prototype, "sort"], [Array.prototype, "join"],
+      [Array, "isArray"], [JSON, "stringify"], [Object, "keys"],
+      [String.prototype, "charCodeAt"], [Math, "imul"],
+    ].map(([object, key]) => ({
+      object, key, descriptor: Object.getOwnPropertyDescriptor(object, key),
+    }));
     const CONJUNCTION_CLAUSE_RELATION = Object.freeze({
       marked: "marked",
       unmarked: "unmarked",
@@ -957,7 +967,9 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
         "sharedModifier",
         "leftContextAbsent",
         "markedAdjoinedException",
-        "adjoinedFunction"
+        "adjoinedFunction",
+        "identicalAdjoinedClauseEllipsis",
+        "boundaryPunctuation"
       ]),
       "correlative-conjunction": Object.freeze([
         "correlationType",
@@ -973,7 +985,8 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
         "parallelType",
         "rephraseAxis",
         "appositiveType",
-        "level"
+        "level",
+        "boundaryPunctuation"
       ])
     });
     const CLASSICAL_NAHUATL_CLAUSE_CONJUNCTION_FORBIDDEN_AUTHORITY_FIELDS =
@@ -1040,6 +1053,7 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
       "ahmo-no-ahmo-no": Object.freeze(["ahmō nō", "ahmō nō"])
     });
     const CLASSICAL_NAHUATL_CLAUSE_CONJUNCTION_REPHRASE_AXES = Object.freeze([
+      "none",
       "nonspecific-specific-object",
       "active-passive",
       "tense-shift",
@@ -1048,6 +1062,7 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
     ]);
 
     function freezeClassicalNahuatlClauseConjunction(value) {
+      if (targetObject.isAdverbialAdjunctionResult?.(value) === true) return value;
       if (
         !value
         || typeof value !== "object"
@@ -1058,14 +1073,17 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
         ([key, child]) => [key, freezeClassicalNahuatlClauseConjunction(child)]
       )));
     }
-    function stableStringifyClassicalNahuatlClauseConjunction(value) {
-      if (Array.isArray(value)) return `[${value.map(stableStringifyClassicalNahuatlClauseConjunction).join(",")}]`;
-      if (value && typeof value === "object") {
-        return `{${Object.keys(value).filter(key => value[key] !== undefined).sort().map(
-          key => `${JSON.stringify(key)}:${stableStringifyClassicalNahuatlClauseConjunction(value[key])}`
-        ).join(",")}}`;
+    // Preserve shared derivation references without expanding each graph path.
+    function stableStringifyClassicalNahuatlClauseConjunction(value, seen = new Map()) {
+      if (!value || typeof value !== "object") return JSON.stringify(value);
+      if (seen.has(value)) return `reference:${seen.get(value)}`;
+      seen.set(value, seen.size);
+      if (Array.isArray(value)) {
+        return `[${value.map(entry => stableStringifyClassicalNahuatlClauseConjunction(entry, seen)).join(",")}]`;
       }
-      return JSON.stringify(value);
+      return `{${Object.keys(value).filter(key => value[key] !== undefined).sort().map(
+        key => `${JSON.stringify(key)}:${stableStringifyClassicalNahuatlClauseConjunction(value[key], seen)}`
+      ).join(",")}}`;
     }
     function signClassicalNahuatlClauseConjunction(value, prefix) {
       const serialized = stableStringifyClassicalNahuatlClauseConjunction(value);
@@ -1082,14 +1100,36 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
     function normalizeClassicalNahuatlClauseConjunctionSurface(value = "") {
       return String(value || "").trim().replace(/[.?!]+$/u, "");
     }
-    function realizeClassicalNahuatlClauseConjunctionSentence(sequence = []) {
+    function deriveClassicalNahuatlClauseConjunctionTerminalForce(operationKind, conjuncts, relationFrame, extra) {
+      // The force of an immediate whole parent belongs to its authenticated
+      // envelope. Embedded questions and written suffixes are not evidence.
+      const commonScope = operationKind === "conjunction" && conjuncts.length >= 2
+        && !extra.sharedSupplement
+        && ["", "none"].includes(relationFrame.sharedModifierScope || "none")
+        && conjuncts.every(node => (
+          targetObject.isClassicalNahuatlClauseCompositionSourceFrame?.(node) === true
+          && targetObject.isClassicalNahuatlSupplementationClauseEnvelope?.(node.envelope) === true
+        ));
+      const parentKinds = commonScope ? conjuncts.map(node => node.envelope.sentenceKind) : [];
+      const sentenceKind = parentKinds.length && parentKinds.every(kind => kind === "question")
+        ? "question" : parentKinds.length && parentKinds.every(kind => kind === "assertion")
+          ? "assertion" : "unclaimed";
+      return freezeClassicalNahuatlClauseConjunction({
+        kind: "classical-nahuatl-conjunction-terminal-force-frame",
+        status: sentenceKind === "unclaimed" ? "unclaimed" : "common-authenticated-parent-force",
+        sentenceKind, parentKinds, immediateWholeParentScope: commonScope,
+        terminalPunctuation: sentenceKind === "question" ? "?" : ".",
+        callerPunctuationAuthority: false, surfaceSuffixAuthority: false,
+      });
+    }
+    function realizeClassicalNahuatlClauseConjunctionSentence(sequence = [], terminalForceFrame = null) {
       const text = sequence.map(normalizeClassicalNahuatlClauseConjunctionSurface).filter(Boolean).join(" ").trim();
       if (!text) return "";
       const initial = text.search(/\p{L}/u);
       const capitalized = initial < 0
         ? text
         : `${text.slice(0, initial)}${text[initial].toLocaleUpperCase("nah")}${text.slice(initial + 1)}`;
-      return `${capitalized}.`;
+      return `${capitalized}${terminalForceFrame?.sentenceKind === "question" ? "?" : "."}`;
     }
     function buildClassicalNahuatlClauseConjunctionSelectedLcmProjection({
       operationKind = "",
@@ -1298,6 +1338,88 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
         .filter(field => Object.hasOwn(options || {}, field))
         .map(field => [field, options[field]]));
     }
+    function hasCurrentClassicalNahuatlConjunctionSignatureIntrinsics() {
+      return classicalNahuatlConjunctionSignatureIntrinsics.every(({ object, key, descriptor }) => {
+        const current = Object.getOwnPropertyDescriptor(object, key);
+        return current && "value" in current && "value" in descriptor
+          && current.value === descriptor.value
+          && current.writable === descriptor.writable
+          && current.enumerable === descriptor.enumerable
+          && current.configurable === descriptor.configurable;
+      });
+    }
+    // Keep the original signature authoritative. Frozen paths can still lead
+    // to mutable formula data, so retain every such object's complete own shape.
+    function captureClassicalNahuatlConjunctionSignatureCertificate(frame) {
+      try {
+        const seen = new WeakSet(), mutableData = [], arrayMaps = [];
+        const visit = value => {
+          if (!value || typeof value !== "object") return typeof value !== "function";
+          if (seen.has(value)) return true;
+          const prototype = Object.getPrototypeOf(value), array = Array.isArray(value);
+          if (array ? prototype !== Array.prototype
+            : prototype !== Object.prototype && prototype !== null) return false;
+          seen.add(value);
+          if (array) {
+            const map = value.map;
+            if (map !== classicalNahuatlConjunctionSignatureIntrinsics[0].descriptor.value) return false;
+            arrayMaps.push({ object: value, map });
+          }
+          const mutable = !Object.isFrozen(value), keys = Reflect.ownKeys(value), entries = [];
+          for (const key of keys) {
+            const descriptor = Object.getOwnPropertyDescriptor(value, key);
+            if (!descriptor || !("value" in descriptor)) return false;
+            if (mutable) {
+              if (!Object.is(value[key], descriptor.value)) return false;
+              entries.push({ key, ...descriptor });
+            }
+            if (!visit(descriptor.value)) return false;
+          }
+          if (mutable) mutableData.push({ object: value, prototype, keys, entries,
+            extensible: Object.isExtensible(value) });
+          return true;
+        };
+        if (!visit(frame) || !hasCurrentClassicalNahuatlConjunctionSignatureIntrinsics()) return null;
+        // This records structural identity only. The exact whole Sources still
+        // pass their current owners on every parallel Result validation below.
+        const compositionSourceNodes = new Set();
+        if (frame.operationKind === "parallel-structure") {
+          for (const node of frame.conjuncts) {
+            if (Object.isFrozen(node) && Object.isFrozen(node.envelope)
+              && targetObject.isClassicalNahuatlClauseCompositionSourceFrame?.(node) === true) {
+              compositionSourceNodes.add(node);
+            }
+          }
+        }
+        return { mutableData, arrayMaps, compositionSourceNodes };
+      } catch {
+        return null;
+      }
+    }
+    function isCurrentClassicalNahuatlConjunctionSignatureCertificate(certificate) {
+      try {
+        for (const { object, map } of certificate.arrayMaps) if (object.map !== map) return false;
+        for (const { object, prototype, keys, entries, extensible } of certificate.mutableData) {
+          if (Object.getPrototypeOf(object) !== prototype
+            || Object.isExtensible(object) !== extensible) return false;
+          const currentKeys = Reflect.ownKeys(object);
+          if (currentKeys.length !== keys.length
+            || currentKeys.some((key, index) => key !== keys[index])) return false;
+          for (const entry of entries) {
+            const current = Object.getOwnPropertyDescriptor(object, entry.key);
+            if (!current || !("value" in current)
+              || current.writable !== entry.writable
+              || current.enumerable !== entry.enumerable
+              || current.configurable !== entry.configurable
+              || !Object.is(current.value, entry.value)
+              || !Object.is(object[entry.key], current.value)) return false;
+          }
+        }
+        return hasCurrentClassicalNahuatlConjunctionSignatureIntrinsics();
+      } catch {
+        return false;
+      }
+    }
     function isClassicalNahuatlClauseConjunctionResultFrame(frame = null) {
       if (
         !issuedClassicalNahuatlClauseConjunctionResults.has(frame)
@@ -1327,10 +1449,28 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
             === selection.ownerSourcePath
         ))
       ) return false;
-      const projection = { ...frame };
-      delete projection.canonicalSignature;
-      return frame.canonicalSignature === signClassicalNahuatlClauseConjunction(projection, "clause-conjunction-result");
+      let certificate = classicalNahuatlConjunctionSignatureCertificates.get(frame);
+      let certified = certificate && hasCurrentClassicalNahuatlConjunctionSignatureIntrinsics()
+        && isCurrentClassicalNahuatlConjunctionSignatureCertificate(certificate);
+      if (!certified) {
+        if (certificate) classicalNahuatlConjunctionSignatureCertificates.delete(frame);
+        const projection = { ...frame };
+        delete projection.canonicalSignature;
+        if (frame.canonicalSignature !== signClassicalNahuatlClauseConjunction(projection, "clause-conjunction-result")) return false;
+        certificate = hasCurrentClassicalNahuatlConjunctionSignatureIntrinsics()
+          ? captureClassicalNahuatlConjunctionSignatureCertificate(frame) : null;
+        if (certificate) classicalNahuatlConjunctionSignatureCertificates.set(frame, certificate);
+        certified = Boolean(certificate);
+      }
+      if (frame.operationKind !== "parallel-structure") return true;
+      const decision = decideClassicalNahuatlParallelRephraseAxisContract({
+        conjuncts: frame.conjuncts, parallelType: frame.relationFrame?.parallelType,
+        rephraseAxis: frame.relationFrame?.rephraseAxis,
+      }, certified ? certificate.compositionSourceNodes : null);
+      return decision.authorizationStatus === "authorized"
+        && (!certified || isCurrentClassicalNahuatlConjunctionSignatureCertificate(certificate));
     }
+
     function isClassicalNahuatlClauseCompositionNode(frame = null) {
       return Boolean(
         (typeof targetObject.isClassicalNahuatlClauseCompositionSourceFrame === "function"
@@ -1346,7 +1486,7 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
         return frame.surface;
       }
       return isClassicalNahuatlClauseCompositionNode(frame)
-        ? frame.surfaceRealization
+        ? normalizeClassicalNahuatlClauseConjunctionSurface(frame.surfaceRealization)
         : "";
     }
     function getClassicalNahuatlClauseCompositionNodeFormula(frame = null) {
@@ -1357,6 +1497,201 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
       return isClassicalNahuatlClauseCompositionNode(frame)
         ? String(frame.formulaRealization || "").trim()
         : "";
+    }
+    function getClassicalNahuatlGroupSummaryContact(conjuncts = []) {
+      if (conjuncts.length !== 2) return null;
+      const [group, summary] = conjuncts;
+      if (!isClassicalNahuatlClauseConjunctionResultFrame(group)
+        || group.operationKind !== "conjunction"
+        || group.relationFrame?.coordinationType !== "additive"
+        || group.conjuncts.length < 2
+        || targetObject.isClassicalNahuatlClauseCompositionSourceFrame?.(summary) !== true) return null;
+      const members = group.conjuncts;
+      if (!members.every(member => targetObject.isClassicalNahuatlClauseCompositionSourceFrame?.(member) === true
+        && member.unitKind === "nnc" && member.subject.participantFrame?.hasReferent === true)) return null;
+      const memberReferenceIds = members.map(member => member.subject.referenceId);
+      if (memberReferenceIds.some(reference => !reference)
+        || new Set(memberReferenceIds).size !== members.length) return null;
+      const summarySource = targetObject.getClassicalNahuatlSupplementationClauseSourceFrame?.(summary.envelope);
+      if (targetObject.isClassicalNahuatlPronominalNncResult?.(summarySource) !== true
+        || summarySource.sourceFrame.quantitiveReferenceScope !== "all"
+        || summary.subject.features?.number !== "plural") return null;
+      const persons = members.map(member => member.subject.features?.person);
+      const groupPerson = persons.includes("1") ? "1" : persons.includes("2") ? "2" : "3";
+      if (summary.subject.features?.person !== groupPerson) return null;
+      const memberParticipants = members.map(member => member.subject.participantFrame);
+      const summaryParticipant = summary.subject.participantFrame;
+      if (!isClassicalNahuatlParticipantFrame(summaryParticipant)
+        || memberParticipants.some(participant => ["animacy", "humanness"].some(axis =>
+          participant[axis] !== "unspecified" && summaryParticipant[axis] !== "unspecified"
+          && participant[axis] !== summaryParticipant[axis]))) return null;
+      return freezeClassicalNahuatlClauseConjunction({
+        kind: "classical-nahuatl-group-summary-contact-frame", groupResult: group,
+        memberClauses: members, memberReferenceIds, summaryClause: summary, summarySource,
+        memberIdentitiesCollapsed: false, groupSubjectNumber: "plural", groupSubjectPerson: groupPerson,
+        memberParticipants, summaryParticipant,
+        referenceRelation: "plural-group-and-its-total-summary", grammarAuthority: false,
+      });
+    }
+    function getClassicalNahuatlIncorporatedSupplementaryObjectContact(conjuncts = []) {
+      if (conjuncts.length !== 2
+        || !conjuncts.every(node => targetObject.isClassicalNahuatlClauseCompositionSourceFrame?.(node) === true)) return null;
+      const sources = conjuncts.map(node => targetObject.getClassicalNahuatlSupplementationClauseSourceFrame?.(node.envelope));
+      const incorporated = sources.find(source => targetObject.isClassicalNahuatlNominalConstructionResult?.(source) === true
+        && source.constructionKind === "nominal-embed-vnc"
+        && source.sourceAuthorizationFrame?.nominalEmbedSelections?.relation === "object");
+      const supplement = sources.find(source => targetObject.isClassicalNahuatlSupplementationFrame?.(source) === true);
+      const facts = incorporated?.sourceAuthorizationFrame?.lexicalFacts;
+      if (!incorporated || !supplement || !facts?.capturedEmbedResult || !facts.capturedMatrixVncResult
+        || supplement.referenceFrame?.referenceMode !== "shared"
+        || supplement.referenceFrame.headRole !== "object"
+        || supplement.referenceFrame.supplementContactRole !== "subject"
+        || targetObject.getClassicalNahuatlSupplementationClauseSourceFrame?.(supplement.principalClause) !== facts.capturedMatrixVncResult
+        || targetObject.getClassicalNahuatlSupplementationClauseSourceFrame?.(supplement.supplementClause) !== facts.capturedEmbedResult) return null;
+      return freezeClassicalNahuatlClauseConjunction({
+        kind: "classical-nahuatl-incorporated-supplementary-object-contact-frame",
+        incorporatedResult: incorporated, supplementationResult: supplement,
+        canonicalMatrixResult: facts.capturedMatrixVncResult, canonicalNominalResult: facts.capturedEmbedResult,
+        sourceObjectContact: supplement.referenceFrame.principalHead,
+        exactSameMatrixAndNominalSources: true,
+        generalPatientAreaVersusSpecifiedSupplement: true, grammarAuthority: false,
+      });
+    }
+    function getClassicalNahuatlParallelRephraseAxisContract(request = {}) {
+      return decideClassicalNahuatlParallelRephraseAxisContract(request, null);
+    }
+    // Only the Result validator can supply this private structural provenance;
+    // proposed tuples, including callers' extra flags, always take full checks.
+    function decideClassicalNahuatlParallelRephraseAxisContract({
+      conjuncts = [], parallelType = "rephrasive", rephraseAxis = "",
+    } = {}, certifiedSourceNodes = null) {
+      const axis = parallelType === "progressive" ? ""
+        : normalizeClassicalNahuatlClauseConjunctionToken(rephraseAxis);
+      const blocked = blockReason => Object.freeze({
+        authorizationStatus: "blocked", blockReason, availableAxes: Object.freeze([]),
+      });
+      if (!Array.isArray(conjuncts) || conjuncts.length < 2
+        || !["rephrasive", "progressive", "combined"].includes(parallelType)) {
+        return blocked("parallel-structure-requires-at-least-two-conjuncts-and-a-licensed-type");
+      }
+      // These maps last only for this read. Each whole Source is authenticated
+      // once, then the same owned facts serve every offered contrast axis.
+      const nodeFacts = new Map(), sourceFacts = new Map();
+      const facts = [];
+      try {
+        // Existing exact incorporation contact checks remain unchanged. Other
+        // already-issued axes need only their own current formal contrast.
+        const incorporationContact = !certifiedSourceNodes || axis === "incorporated-supplementary-object"
+          ? getClassicalNahuatlIncorporatedSupplementaryObjectContact(conjuncts) : null;
+        for (const node of conjuncts) {
+          if (nodeFacts.has(node)) { facts.push(nodeFacts.get(node)); continue; }
+          const certifiedSource = certifiedSourceNodes?.has(node) === true;
+          if (!certifiedSource && !isClassicalNahuatlClauseCompositionNode(node)) {
+            return blocked("every-conjunct-must-be-a-signed-canonical-clause-node");
+          }
+          if (!certifiedSource && targetObject.isClassicalNahuatlClauseCompositionSourceFrame?.(node) !== true) {
+            nodeFacts.set(node, null); facts.push(null); continue;
+          }
+          const exact = targetObject.getClassicalNahuatlSupplementationClauseSourceFrame?.(node.envelope);
+          if (!exact) return blocked("parallel-rephrasing-current-whole-source-required");
+          if (!sourceFacts.has(exact)) {
+            // The exact-contact owner has already checked both whole Sources.
+            // Reuse that check within this read, never across separate reads.
+            if (exact !== incorporationContact?.incorporatedResult
+              && exact !== incorporationContact?.supplementationResult) {
+              const current = targetObject.buildClassicalNahuatlSupplementationClauseEnvelope?.(exact, {
+                referenceId: node.referenceId,
+                subjectReferenceId: node.subject?.referenceId || node.referenceId,
+                objectReferenceId: node.objects?.[0]?.referenceId || node.referenceId,
+                possessorReferenceId: node.possessor?.referenceId || node.referenceId,
+              });
+              if (targetObject.isClassicalNahuatlSupplementationClauseEnvelope?.(current) !== true
+                || targetObject.getClassicalNahuatlSupplementationClauseSourceFrame?.(current) !== exact) {
+                return blocked("parallel-rephrasing-current-whole-source-required");
+              }
+            }
+            // The validated whole sentence owns this carrier; it remains the
+            // exact captured parent. This does not admit an inner Source.
+            const carrier = exact.kind === "classical-nahuatl-vnc-sentence-result-frame"
+              ? exact.vncApplicationFrame || exact.lateOperationClosureFrame : exact;
+            const machinery = carrier?.resultFrame?.selectedMachineryFrame
+              || carrier?.selectedMachineryFrame || carrier;
+            const slots = carrier?.finalTypedVncSlotFrame
+              || carrier?.resultFrame?.finalTypedVncSlotFrame
+              || carrier?.targetTypedVncSlotFrame
+              || carrier?.proofFrame?.conclusion?.finalTypedVncSlotFrame
+              || carrier?.proofFrame?.conclusion?.finalBoundaryRealizationFrame?.typedSlotFrame;
+            const finiteSlots = targetObject.isClassicalNahuatlVncSlotFrame?.(slots) === true;
+            const typedSlots = node.unitKind === "vnc" && finiteSlots;
+            // Vacant final slots are authoritative even when an envelope still
+            // retains the passive's original specific object as Source history.
+            const positions = !typedSlots ? null : slots.valenceArity === "vacant" ? []
+              : slots.valenceArity === "multiple"
+                ? slots.slots.prePredicate.map(slot => slot.objectPositionFrame).filter(Boolean)
+                : slots.objectProfile ? [slots.objectProfile] : null;
+            const objectKinds = positions?.map(position =>
+              normalizeClassicalNahuatlClauseConjunctionToken(position.objectKind));
+            const voice = normalizeClassicalNahuatlClauseConjunctionToken(
+              carrier?.controlFrame?.selectedVoice || machinery?.voice || node.voice,
+            );
+            const valence = normalizeClassicalNahuatlClauseConjunctionToken(
+              machinery?.classTargetValence || machinery?.valence || node.predicateValence,
+            );
+            // An envelope's contextual tense label is not finite grammar.
+            // Read the current owner's actual semantic tense plan, or the
+            // request coordinate backed by its genuine final finite slots.
+            const tense = finiteSlots ? normalizeClassicalNahuatlClauseConjunctionToken(
+              machinery?.selectedOutputLogicFrame?.outputFillers?.lesson11RequestedSemanticTense
+              || carrier?.selectedOutputLogicFrame?.outputFillers?.lesson11RequestedSemanticTense
+              || machinery?.lesson11ParadigmPlan?.requestedSemanticTense
+              || carrier?.lesson11ParadigmPlan?.requestedSemanticTense
+              || carrier?.lesson11VncApplicationFrame?.plan?.requestedSemanticTense
+              || carrier?.proofFrame?.conclusion?.lesson11RequestedSemanticTense
+              || carrier?.normalizedRequest?.tense || "",
+            ) : "";
+            sourceFacts.set(exact, {
+              unitKind: node.unitKind, voice, valence, tense,
+              objectKinds,
+              specific: objectKinds?.filter(kind => kind === "specific-projective").length || 0,
+              nonspecific: objectKinds?.filter(kind => ["nonspecific-human", "nonspecific-nonhuman"].includes(kind)).length || 0,
+              intransitive: typedSlots && slots.valenceArity === "vacant"
+                && valence === "intransitive" && voice === "active",
+              reflexive: typedSlots && voice === "active"
+                && objectKinds?.some(kind => ["reflexive", "mainline-reflexive"].includes(kind)),
+            });
+          }
+          const owned = sourceFacts.get(exact);
+          nodeFacts.set(node, owned); facts.push(owned);
+        }
+        const pairs = facts.flatMap((left, index) => facts.slice(index + 1)
+          .filter(right => left && right).map(right => [left, right]));
+        const verbalPairs = pairs.filter(pair => pair.every(item => item.unitKind === "vnc"));
+        const availableAxes = ["none"];
+        if (verbalPairs.some(([left, right]) =>
+          left.nonspecific > right.nonspecific && left.specific < right.specific
+          || right.nonspecific > left.nonspecific && right.specific < left.specific)) {
+          availableAxes.push("nonspecific-specific-object");
+        }
+        if (verbalPairs.some(([left, right]) =>
+          left.voice === "active" && right.voice === "passive"
+          || right.voice === "active" && left.voice === "passive")) availableAxes.push("active-passive");
+        if (pairs.some(([left, right]) => left.tense && right.tense
+          && !["unknown", "unspecified"].includes(left.tense)
+          && !["unknown", "unspecified"].includes(right.tense)
+          && left.tense !== right.tense)) availableAxes.push("tense-shift");
+        if (incorporationContact) availableAxes.push("incorporated-supplementary-object");
+        if (verbalPairs.some(([left, right]) => left.intransitive && right.reflexive
+          || right.intransitive && left.reflexive)) availableAxes.push("intransitive-reflexive-transitive");
+        const authorized = !axis || availableAxes.includes(axis);
+        return Object.freeze({authorizationStatus: authorized ? "authorized" : "blocked",
+          blockReason: authorized ? "" : axis === "incorporated-supplementary-object"
+            ? "incorporation-rephrasing-requires-the-same-exact-matrix-and-supplementary-nominal-sources"
+            : "rephrasive-parallelism-owned-contrast-required",
+          availableAxes: Object.freeze(availableAxes),
+          incorporatedSupplementaryObjectContactFrame: incorporationContact});
+      } catch {
+        return blocked("parallel-rephrasing-current-whole-source-required");
+      }
     }
     function buildClassicalNahuatlClauseConjunctionOperationRequest(request = {}) {
       const operationKind = normalizeClassicalNahuatlClauseConjunctionToken(request.operationKind);
@@ -1380,6 +1715,7 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
         requestAuthorityLicensed: forbiddenAuthorityFields.length === 0,
         forbiddenAuthorityFields,
         conjuncts: Array.isArray(request.conjuncts) ? request.conjuncts : [],
+        conjunctorResult: request.conjunctorResult || null,
         sharedSupplement: request.sharedSupplement || null,
         options: selectClassicalNahuatlClauseConjunctionOptions(operationKind, request.options || {}),
         typedFrameAuthority: true,
@@ -1453,8 +1789,10 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
         );
       }
       const formulaRealization = normalizedFormulaSequence.join(" + ");
+      const terminalForceFrame = deriveClassicalNahuatlClauseConjunctionTerminalForce(
+        operationKind, conjuncts, relationFrame, extra);
       const surfaceRealization =
-        realizeClassicalNahuatlClauseConjunctionSentence(surfaceSequence);
+        realizeClassicalNahuatlClauseConjunctionSentence(surfaceSequence, terminalForceFrame);
       const formulaRecord = targetObject.buildGrammarFormulaRecord({
         id: `clause-conjunction:${operationKind}:${relationFrame.coordinationType || relationFrame.relation || "relation"}`,
         unit: "CLAUSE_GROUP",
@@ -1521,6 +1859,7 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
         formulaRealizationRecord,
         surfaceSequence,
         surfaceRealization,
+        terminalForceFrame,
         canonicalExecutor: "evaluateClassicalNahuatlClauseConjunction",
         typedFrameAuthority: true,
         lessonMetadataAuthority: false,
@@ -1607,6 +1946,30 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
         return sequence;
       }, []);
     }
+    function getCompositeConjunctorRole(exactParticleResult = null, conjuncts = []) {
+      const sourceUse = targetObject.getClassicalNahuatlParticleRelationalUse?.(exactParticleResult);
+      const sourceRole = sourceUse?.compositeRoles?.outerConjunctor;
+      if (!sourceRole || sourceRole.relation !== "conjunction" || sourceRole.semanticMarker !== "auh") return null;
+      const rightNode = conjuncts.at(-1);
+      const innerResult = targetObject.getClassicalNahuatlSupplementationClauseSourceFrame?.(rightNode?.envelope);
+      const markerSource = innerResult?.sourceContract?.marker;
+      const innerRole = markerSource?.compositeMarkerRole;
+      if (targetObject.isAdverbialAdjunctionResult?.(innerResult) !== true
+        || innerResult.ruleProfile?.relation !== sourceUse.relation
+        || innerResult.ruleProfile?.degree !== sourceUse.degree
+        || markerSource.issuedResult !== exactParticleResult
+        || innerRole?.kind !== "classical-composite-inner-marker-projection"
+        || innerRole.exactParticleResult !== exactParticleResult
+        || innerRole.sourceUse !== sourceUse || innerRole.sourceRole !== sourceUse.compositeRoles.innerMarker
+        || !Object.isFrozen(innerRole)) return null;
+      const formulaSegments = Object.freeze(exactParticleResult.formulaSegments.slice(
+        sourceRole.memberStart, sourceRole.memberStart + sourceRole.memberCount));
+      if (formulaSegments.length !== sourceRole.memberCount) return null;
+      return Object.freeze({kind: "classical-composite-outer-conjunctor-projection",
+        exactParticleResult, sourceUse, sourceRole, innerResult, innerRole,
+        formulaSegments, formula: formulaSegments.join(" "), surface: formulaSegments.join(" "),
+        separatelyIssuedParticle: false, callerSuppliedAuthorityAccepted: false});
+    }
     function evaluateClassicalNahuatlClauseConjunction(request = {}) {
       const operationRequest = isClassicalNahuatlClauseConjunctionOperationRequest(request)
         ? request
@@ -1629,10 +1992,22 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
       }
       const conjuncts = operationRequest.conjuncts;
       const options = operationRequest.options || {};
+      const boundaryPunctuation = normalizeClassicalNahuatlClauseConjunctionToken(options.boundaryPunctuation || "none");
+      if (!(operationKind === "parallel-structure"
+        ? ["none", "comma", "semicolon", "dash"] : ["none", "comma", "semicolon"]).includes(boundaryPunctuation)) {
+        return buildClassicalNahuatlClauseConjunctionBlockedResultFrame(operationKind, "recognized-conjunct-boundary-punctuation-required");
+      }
+      const boundaryMark = ({comma: ",", semicolon: ";", dash: "—"})[boundaryPunctuation] || "";
       if (!conjuncts.every(isClassicalNahuatlClauseCompositionNode)) {
         return buildClassicalNahuatlClauseConjunctionBlockedResultFrame(operationKind, "every-conjunct-must-be-a-signed-canonical-clause-node");
       }
       if (operationKind === "conjunction") {
+        const compositeConjunctorRole = operationRequest.conjunctorResult
+          ? getCompositeConjunctorRole(operationRequest.conjunctorResult, conjuncts) : null;
+        if (operationRequest.conjunctorResult && !compositeConjunctorRole) {
+          return buildClassicalNahuatlClauseConjunctionBlockedResultFrame(operationKind,
+            "composite-conjunctor-requires-exact-paired-inner-condition");
+        }
         const relation = normalizeClassicalNahuatlClauseConjunctionToken(options.relation);
         const coordinationType = normalizeClassicalNahuatlClauseConjunctionToken(options.coordinationType);
         const level = normalizeClassicalNahuatlClauseConjunctionToken(options.level || "principal");
@@ -1643,6 +2018,11 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
         const sharedModifier = normalizeClassicalNahuatlClauseConjunctionToken(options.sharedModifier || "none");
         const adjoinedFunction = normalizeClassicalNahuatlClauseConjunctionToken(options.adjoinedFunction || "none");
         const leftContextAbsent = options.leftContextAbsent === true;
+        if (compositeConjunctorRole && (relation !== compositeConjunctorRole.sourceRole.coordinationRelation
+          || level !== compositeConjunctorRole.sourceRole.clauseLevel)) {
+          return buildClassicalNahuatlClauseConjunctionBlockedResultFrame(operationKind,
+            "composite-conjunctor-marked-principal-role-required");
+        }
         if (!["marked", "unmarked"].includes(relation)
           || !["additive", "alternative", "adversative"].includes(coordinationType)
           || !["principal", "adjoined"].includes(level)
@@ -1712,6 +2092,45 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
             sharedModifierScope,
             leftContextAbsent
           });
+        let identicalAdjoinedClauseEllipsisFrame = null;
+        const ellipsis = normalizeClassicalNahuatlClauseConjunctionToken(options.identicalAdjoinedClauseEllipsis || "none");
+        if (!["none", "first"].includes(ellipsis)) {
+          return buildClassicalNahuatlClauseConjunctionBlockedResultFrame(operationKind, "recognized-identical-adjoined-clause-ellipsis-required");
+        }
+        if (ellipsis === "first") {
+          const parents = conjuncts.map(node => targetObject.getClassicalNahuatlSupplementationClauseSourceFrame?.(node.envelope));
+          const child = parents[0]?.sourceContract?.principal?.issuedResult;
+          if (relation !== "marked" || coordinationType !== "additive" || level !== "principal"
+            || conjuncts.length !== 2 || sharedModifier !== "none"
+            || !parents.every(parent => targetObject.isAdverbialAdjunctionResult?.(parent) === true
+              && parent.ruleProfile?.structure === "adverbial-principal"
+              && parent.ruleProfile?.order === "principal-adverbial-head"
+              && parent.ruleProfile?.marking === "in"
+              && parent.sourceContract?.principal?.issuedResult === child
+              && targetObject.isClassicalNahuatlParticleResultFrame?.(parent.sourceContract?.marker?.issuedResult) === true
+              && parent.sourceContract.marker.issuedResult.particleId === "l3-in")) {
+            return buildClassicalNahuatlClauseConjunctionBlockedResultFrame(operationKind, "ellipsis-requires-two-whole-principal-units-with-the-same-exact-in-adjunct");
+          }
+          const modifier = targetObject.buildClassicalNahuatlSupplementationClauseEnvelope(
+            parents[0].sourceContract.adjoined.issuedResult, {referenceId: "ellipsis-left-principal"});
+          const marker = parents[0].sourceContract.marker.issuedResult;
+          if (targetObject.isClassicalNahuatlSupplementationClauseEnvelope?.(modifier) !== true) {
+            return buildClassicalNahuatlClauseConjunctionBlockedResultFrame(operationKind, "ellipsis-principal-envelope-required");
+          }
+          sequence[0] = `${modifier.surface} ${marker.surface}`;
+          formulaSequence[0] = `${modifier.formulaRealization} + ${marker.formula} + ⎕`;
+          identicalAdjoinedClauseEllipsisFrame = {kind: "classical-nahuatl-identical-adjoined-clause-ellipsis-frame",
+            sourceSection: "52.3", leftParent: parents[0], rightParent: parents[1], sharedChildResult: child,
+            silencedOccurrence: "first", soundedAdjunctorRetained: true, bothWholeParentsRetained: true};
+        }
+        if (boundaryMark) {
+          let index = 0;
+          for (let conjunctIndex = 0; conjunctIndex < conjuncts.length - 1; conjunctIndex += 1) {
+            if (conjunctIndex === 0 && sharedModifierScope === "before-first-applies-to-all") index += 1;
+            sequence[index] += boundaryMark;
+            index += 1 + (relation === "marked" ? 1 : 0) + (rightwardModifier ? 1 : 0);
+          }
+        }
         if (sharedSupplement) sequence.push(getClassicalNahuatlClauseCompositionNodeSurface(sharedSupplement));
         if (sharedSupplement) {
           formulaSequence.push(
@@ -1742,8 +2161,12 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
           balancedConjunctsWithoutHead: true,
           adjoinedFunction,
           leftContextAbsent,
-          markedAdjoinedException: relation === "marked" && level === "adjoined"
+          markedAdjoinedException: relation === "marked" && level === "adjoined",
+          boundaryPunctuation
         }, {
+          ...(identicalAdjoinedClauseEllipsisFrame ? {identicalAdjoinedClauseEllipsisFrame} : {}),
+          ...(compositeConjunctorRole ? {conjunctorResult: operationRequest.conjunctorResult,
+            compositeConjunctorRole} : {}),
           sharedSupplement: sharedSupplement || null,
           sharedSupplementNormallyAfterLastConjunct: Boolean(sharedSupplement)
         }, formulaSequence);
@@ -1885,7 +2308,8 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
       }
       if (operationKind === "parallel-structure") {
         const parallelType = normalizeClassicalNahuatlClauseConjunctionToken(options.parallelType);
-        const rephraseAxis = normalizeClassicalNahuatlClauseConjunctionToken(options.rephraseAxis);
+        const rephraseAxis = parallelType === "progressive" ? ""
+          : normalizeClassicalNahuatlClauseConjunctionToken(options.rephraseAxis);
         const appositiveType = normalizeClassicalNahuatlClauseConjunctionToken(options.appositiveType || "none");
         if (conjuncts.length < 2 || !["rephrasive", "progressive", "combined"].includes(parallelType)) {
           return buildClassicalNahuatlClauseConjunctionBlockedResultFrame(operationKind, "parallel-structure-requires-at-least-two-conjuncts-and-a-licensed-type");
@@ -1898,7 +2322,19 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
         if (!["none", "clarifying", "summarizing"].includes(appositiveType)) {
           return buildClassicalNahuatlClauseConjunctionBlockedResultFrame(operationKind, "recognized-appositive-parallelism-type-required");
         }
-        const sequence = conjuncts.map(getClassicalNahuatlClauseCompositionNodeSurface);
+        const groupSummaryContactFrame = appositiveType === "summarizing"
+          ? getClassicalNahuatlGroupSummaryContact(conjuncts) : null;
+        if (appositiveType === "summarizing" && !groupSummaryContactFrame) {
+          return buildClassicalNahuatlClauseConjunctionBlockedResultFrame(operationKind,
+            "summarizing-apposition-requires-exact-distinct-member-list-and-plural-total-summary");
+        }
+        const contrast = getClassicalNahuatlParallelRephraseAxisContract({conjuncts, parallelType, rephraseAxis});
+        if (contrast.authorizationStatus !== "authorized") {
+          return buildClassicalNahuatlClauseConjunctionBlockedResultFrame(operationKind, contrast.blockReason);
+        }
+        const incorporatedSupplementaryObjectContactFrame = rephraseAxis === "incorporated-supplementary-object"
+          ? contrast.incorporatedSupplementaryObjectContactFrame : null;
+        const sequence = conjuncts.map((node, index) => `${getClassicalNahuatlClauseCompositionNodeSurface(node)}${index < conjuncts.length - 1 ? boundaryMark : ""}`);
         const formulaSequence = conjuncts.map(
           getClassicalNahuatlClauseCompositionNodeFormula
         );
@@ -1911,8 +2347,10 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
           keepsSimilarContent: ["rephrasive", "combined"].includes(parallelType),
           changesContent: ["progressive", "combined"].includes(parallelType),
           keepsOrChangesGrammar: ["rephrasive", "combined"].includes(parallelType),
-          listlikeStatements: ["progressive", "combined"].includes(parallelType)
-        }, {}, formulaSequence);
+          listlikeStatements: ["progressive", "combined"].includes(parallelType),
+          boundaryPunctuation
+        }, {...(groupSummaryContactFrame ? {groupSummaryContactFrame} : {}),
+          ...(incorporatedSupplementaryObjectContactFrame ? {incorporatedSupplementaryObjectContactFrame} : {})}, formulaSequence);
       }
       return buildClassicalNahuatlClauseConjunctionBlockedResultFrame(operationKind, "recognized-clause-conjunction-operation-required");
     }
@@ -2174,6 +2612,7 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
       enumerable: true,
       get() { return CLASSICAL_NAHUATL_CLAUSE_CONJUNCTION_LCM_AXES; }
     });
+    api.getClassicalNahuatlParallelRephraseAxisContract = getClassicalNahuatlParallelRephraseAxisContract;
     api.isClassicalNahuatlClauseCompositionNode = isClassicalNahuatlClauseCompositionNode;
     api.buildClassicalNahuatlClauseConjunctionOperationRequest = buildClassicalNahuatlClauseConjunctionOperationRequest;
     api.isClassicalNahuatlClauseConjunctionOperationRequest = isClassicalNahuatlClauseConjunctionOperationRequest;

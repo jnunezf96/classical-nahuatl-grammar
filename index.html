@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta
       name="description"
-      content="Classical Nahuatl Source, Grammar, and Result workbench backed by one canonical grammar engine."
+      content="Compose Classical Nahuatl sentences through Source, Grammar, and Result, with connected grammatical analysis."
     />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
@@ -16,20 +16,20 @@
     <meta name="google-site-verification" content="JM-0cbhFodEemBNgTuA191-_JUoKW4JDu1rOD8Z6MEE" />
     <meta name="theme-color" content="#eef3ed" />
     <meta name="application-name" content="Grammar OS" />
-    <meta name="classical-grammar-os-version" content="1.2.7" />
+    <meta name="classical-grammar-os-version" content="1.2.8" />
     <meta
       name="classical-grammar-os-release"
-      content="Grammar Interface Update"
+      content="Language and Interface Update"
     />
     <meta
       name="classical-grammar-os-build"
-      content="20260922-grammar-interface-549"
+      content="20261022-language-interface-1"
     />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Classical Nahuatl Grammar — Grammar OS v1.2.7" />
+    <meta property="og:title" content="Classical Nahuatl Grammar — Grammar OS v1.2.8" />
     <meta
       property="og:description"
-      content="Compose typed Classical Nahuatl Sources through canonical Grammar operations and continue from exact Results."
+      content="Choose a source, shape its grammar, and read your Classical Nahuatl sentence with connected analysis."
     />
     <meta
       property="og:url"
@@ -42,17 +42,55 @@
       rel="canonical"
       href="https://jnunezf96.github.io/classical-nahuatl-grammar/"
     />
+    <style id="classical-loading-presentation">
+      /* Critical first-paint styles: never expose the unfinished workbench. */
+      #classical-workbench[aria-busy="true"] { visibility: hidden; }
+      html:has(#classical-workbench[aria-busy="true"]) { overflow: hidden; }
+      body.is-language-classical #classical-bootstrap-status {
+        position: fixed; inset: 0; z-index: 1100;
+        display: flex; flex-direction: column; align-items: center;
+        justify-content: center; gap: 12px; box-sizing: border-box;
+        width: 100%; margin: 0; padding: 24px; border: 0; border-radius: 0;
+        background: var(--workbench-paper, #fffdf5);
+        color: var(--workbench-muted, #52645a);
+        font: 400 15px/1.5 system-ui, sans-serif; text-align: center;
+      }
+      #classical-bootstrap-status .classical-bootstrap-title {
+        color: var(--workbench-ink, #173e34); font-size: 22px; font-weight: 600;
+      }
+      #classical-bootstrap-status .classical-bootstrap-progress {
+        display: flex; align-items: center; justify-content: center; gap: 10px;
+      }
+      #classical-bootstrap-status .classical-bootstrap-spinner {
+        width: 18px; height: 18px; flex: 0 0 18px; box-sizing: border-box;
+        border: 2px solid #ccd7ce; border-top-color: #315f50;
+        border-radius: 50%; animation: classical-bootstrap-spin 900ms linear infinite;
+      }
+      #classical-bootstrap-status.is-error .classical-bootstrap-spinner { display: none; }
+      @keyframes classical-bootstrap-spin { to { transform: rotate(360deg); } }
+      @media (prefers-reduced-motion: reduce) {
+        #classical-bootstrap-status .classical-bootstrap-spinner { animation: none; }
+      }
+      body.is-language-classical #classical-bootstrap-status[hidden] { display: none; }
+    </style>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="style.css?v=20260922-grammar-interface-549" />
-    <script type="module" src="src/browser/main.mjs?v=20260922-grammar-interface-549"></script>
-    <title>Classical Nahuatl Grammar — Grammar OS v1.2.7</title>
+    <link rel="stylesheet" href="style.css?v=20261022-language-interface-1&cleanup=classical-only-20261009-1&speakerContext=20261021-1" />
+    <script type="module" src="src/browser/main.mjs?v=20261022-language-interface-1&choices=20261013-build-constructions-2&design=lesson42-path-27&loading=1&panel=33&reader=42-10-275&cleanup=classical-only-20261009-1&modifier=canonical-20261009-1&continuation=shared-preparation-20261009-1&repair=position-model-20261012-25&audit=20261013-source-facts-1&remaining=20261013-inventory-1&caseMeta=20261013-1&navigation=20261014-1&placement=20261014-1&operationMenu=20261014-2&choicesLayout=20261014-4&exampleMirror=20261014-1&resultEditing=20261014-8&pickerTransport=20261014-1&sourceAdmission=20261014-3&operationClear=20261014-1&routeShapes=20261021-1&subjectTransition=20261021-29"></script>
+    <link rel="stylesheet" href="src/ui/composition/composition_workbench.css?v=20261014-task-menu-1&choicesLayout=20261014-4&objectsStyle=20261014-3&sectionStyle=20261014-9&summaryAlign=20261014-2&resultEditing=20261014-7&journeyOrganization=20261019-1&presentation=20261019-1&actionIcons=20261021-3&resultLabels=20261021-1&writingSource=20261022-3&hiddenFacts=20261022-1" />
+    <script type="module" src="src/ui/composition/sentence_composition.mjs?v=20261014-task-menu-1&choicesLayout=20261014-4&objectsPlacement=20261014-1&resultEditing=20261014-8&pickerTransport=20261014-1&sourceAdmission=20261014-3&operationClear=20261014-1&journeyOrganization=20261019-1&presentation=20261019-1&actionIcons=20261021-1&routeShapes=20261021-2&subjectTransition=20261021-29"></script>
+    <title>Classical Nahuatl Grammar — Grammar OS v1.2.8</title>
+    <noscript>
+      <style>
+        #classical-bootstrap-status, #classical-workbench, .skip-link { display: none !important; }
+      </style>
+    </noscript>
   </head>
-  <body class="is-language-classical">
+  <body class="is-language-classical" data-classical-interface-page="workspace">
     <div
       class="classical-bootstrap-status"
       id="classical-bootstrap-status"
@@ -60,12 +98,16 @@
       role="status"
       aria-live="polite"
     >
-      <span data-classical-bootstrap-message>Loading Grammar OS…</span>
+      <strong class="classical-bootstrap-title">Classical Nahuatl Grammar</strong>
+      <span class="classical-bootstrap-progress">
+        <span class="classical-bootstrap-spinner" aria-hidden="true"></span>
+        <span data-classical-bootstrap-message>Preparing your workspace…</span>
+      </span>
       <a href="" data-classical-bootstrap-reload hidden>Reload</a>
     </div>
     <noscript>
       <div class="classical-bootstrap-status is-error" role="alert">
-        Grammar OS requires JavaScript. Enable it, then reload this page.
+        Enable JavaScript to use this website, then reload this page.
       </div>
     </noscript>
     <a class="skip-link" href="#classical-workbench">Skip to Source, Grammar, and Result</a>
@@ -73,9 +115,9 @@
       class="app-shell"
       id="classical-workbench"
       data-classical-workbench="true"
-      data-classical-grammar-os-version="1.2.7"
+      data-classical-grammar-os-version="1.2.8"
       data-classical-grammar-os-release="grammar-interface-update"
-      data-classical-grammar-os-build="20260922-grammar-interface-549"
+      data-classical-grammar-os-build="20261022-language-interface-1"
       data-classical-shell-authority="false"
       data-classical-grammar-authority="false"
       data-classical-presentation-only="true"
@@ -90,12 +132,12 @@
             Source · Grammar · Result ·
             <span
               data-classical-grammar-os-version-label
-              title="Grammar Interface Update"
-            >Grammar OS v1.2.7</span>
+              title="Language and Interface Update"
+            >Grammar OS v1.2.8</span>
           </p>
-          <h1 id="app-title">Classical Nahuatl Grammar</h1>
+          <h1 id="app-title">Classical Nahuatl</h1>
           <p class="hero-summary">
-            Type a Source. Choose what to do. Make a Result. Keep going.
+            Choose a source, shape its grammar, and read your sentence.
           </p>
         </div>
         <div class="hero-controls">
@@ -117,9 +159,9 @@
                 id="ui-density-simple"
                 data-ui-density="simple"
                 aria-pressed="true"
-                aria-description="Show the selected form and formula"
+                aria-description="Show essential sentence controls and the selected form"
               >
-                <span class="button-label">Play</span>
+                <span class="button-label">Simple</span>
               </button>
               <button
                 type="button"
@@ -127,7 +169,7 @@
                 id="ui-density-advanced"
                 data-ui-density="advanced"
                 aria-pressed="false"
-                aria-description="Show structure, proof, and clause composition"
+                aria-description="Show grammatical structure, analysis, and sentence composition"
               >
                 <span class="button-label">Analysis</span>
               </button>

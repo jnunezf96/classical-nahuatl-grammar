@@ -829,6 +829,26 @@ export function buildClassicalGrammaticalRhymeOwnerCalibrationFrame({
       && observation.grammarAuthority === false
     )),
   );
+  // Index only for this calibration. Positions keep the topology's order and
+  // duplicate edges when a lesson names several producer operations.
+  const routeEdgeIndexes = new Map();
+  const matchingInnerRouteEdges = (field, operationIds) => {
+    if (!routeEdgeIndexes.has(field)) {
+      const byInnerOperation = new Map();
+      (routeTopology?.[field] || []).forEach((routeEdge, position) => {
+        const operationId = routeEdge.innerOperationId;
+        const entries = byInnerOperation.get(operationId) || [];
+        entries.push({ routeEdge, position });
+        byInnerOperation.set(operationId, entries);
+      });
+      routeEdgeIndexes.set(field, byInnerOperation);
+    }
+    const byInnerOperation = routeEdgeIndexes.get(field);
+    return operationIds.flatMap(operationId => (
+      byInnerOperation.get(operationId) || []
+    )).sort((left, right) => left.position - right.position)
+      .map(entry => entry.routeEdge);
+  };
   const calibratedEdges = Object.freeze(
     (discovery?.directRhymeEdges || []).map(edge => {
       const innerEvidence = evidenceByLesson.get(edge.innerLessonNumber)
@@ -842,9 +862,10 @@ export function buildClassicalGrammaticalRhymeOwnerCalibrationFrame({
         outerEvidence?.operationIds,
       );
       const ownerRoutePairs = Object.freeze(
-        (routeTopology?.exactContinuationEdges || []).filter(routeEdge => (
-          innerOperationIds.includes(routeEdge.innerOperationId)
-          && outerOperationIds.includes(routeEdge.outerOperationId)
+        matchingInnerRouteEdges(
+          "exactContinuationEdges", innerOperationIds,
+        ).filter(routeEdge => (
+          outerOperationIds.includes(routeEdge.outerOperationId)
           && routeEdge.sharedFamilyUnitKinds.some(unitKind => (
             edge.sharedUnitKinds.includes(unitKind)
           ))
@@ -857,9 +878,10 @@ export function buildClassicalGrammaticalRhymeOwnerCalibrationFrame({
         })),
       );
       const rhymeOnlyRoutePairs = Object.freeze(
-        (routeTopology?.insideOutEdges || []).filter(routeEdge => (
-          innerOperationIds.includes(routeEdge.innerOperationId)
-          && outerOperationIds.includes(routeEdge.outerOperationId)
+        matchingInnerRouteEdges(
+          "insideOutEdges", innerOperationIds,
+        ).filter(routeEdge => (
+          outerOperationIds.includes(routeEdge.outerOperationId)
           && routeEdge.sharedUnitKinds.some(unitKind => (
             edge.sharedUnitKinds.includes(unitKind)
           ))

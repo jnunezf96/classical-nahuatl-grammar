@@ -1,3 +1,5 @@
+import { capitalizeClassicalNahuatlNncSentenceInitial } from "./nnc_layer_evaluator.mjs?v=20260928-reader-evidence-cache-790";
+
 // Canonical Lesson 44 adverbial-nuclear grammar contribution.
 // Grammar and lexical records in this module come only from
 // ANDREWS_TRANSCRIPTION_CANVAS.md lines 17296-17908. Source-span audit
@@ -9,7 +11,11 @@ const LCM_PROJECTION_IDENTITY =
   "classical-nahuatl-adverbial-nuclear-owner-selected-lcm-projection";
 const ISSUED_ADVERBIAL_POTENTIAL_FRAMES = new WeakSet();
 const ADVERBIAL_POTENTIAL_RECORDS = new WeakMap();
+const LEXICAL_ADVERBIAL_NNC_SOURCES = new WeakMap();
+const LEXICAL_ADVERBIAL_VNC_SOURCES = new WeakMap();
+const PRIMITIVE_ADVERBIAL_SOURCES = new WeakMap();
 const ISSUED_ADVERBIAL_FRAMES = new WeakSet();
+const EXACT_INCORPORATION_MATRICES = new WeakMap();
 const ISSUED_ADVERBIAL_BATCH_PLANS = new WeakSet();
 const ISSUED_ADVERBIAL_BATCH_COORDINATES = new WeakSet();
 const ISSUED_ADVERBIAL_OPERATION_FRAMES = new WeakSet();
@@ -17,6 +23,8 @@ const ISSUED_ADVERBIAL_SUBJECT_OPERATION_FRAMES = new WeakSet();
 const ISSUED_ADVERBIAL_CONTEXT_FRAMES = new WeakSet();
 const ISSUED_ADVERBIAL_LCM_FRAMES = new WeakSet();
 const ISSUED_ADVERBIAL_EXACT_SOURCE_RESOLUTIONS = new WeakSet();
+const ISSUED_PRETERIT_AGENTIVE_ADVERBIAL_USES = new WeakSet();
+const EXACT_SOURCE_PRODUCTIVE_RECORDS = new WeakMap();
 const RETIRED_PRODUCTIVE_SOURCE_KEYS = Object.freeze([
   "predicateSegments",
   "route",
@@ -109,13 +117,14 @@ function deepFreeze(value) {
   return Object.freeze(value);
 }
 
-function findHostileAuthorityPath(value, path = "request") {
+function findHostileAuthorityPath(value, path = "request", trustedValue = null) {
   if (!value || typeof value !== "object") return "";
+  if (trustedValue?.(value) === true) return "";
   for (const [key, item] of Object.entries(value)) {
     const nextPath = `${path}.${key}`;
     if (HOSTILE_AUTHORITY_KEYS.includes(key) && item !== undefined && item !== null && item !== "") return nextPath;
     if (item && typeof item === "object") {
-      const nested = findHostileAuthorityPath(item, nextPath);
+      const nested = findHostileAuthorityPath(item, nextPath, trustedValue);
       if (nested) return nested;
     }
   }
@@ -166,8 +175,13 @@ function makeRecord({
   writtenBoundaryRule = "identity",
   lexicalReadings = [],
   sourceAnalysis = null,
+  sourceUseAnalysis = null,
+  initialIAnalysis = null,
   compositionalReading = "",
   numberSystem = null,
+  licensedUses = ["ordinary-adverb"],
+  useEvidence = [],
+  licensedAdjunctionRelations = null,
 } = {}) {
   const degrees = Array.isArray(degree) ? degree : [degree];
   const sourceForm = normalizeToken(surface);
@@ -178,6 +192,10 @@ function makeRecord({
     clauseKind: normalizeKey(clauseKind),
     allowedDegrees: degrees.map(normalizeKey).filter(Boolean),
     domain: normalizeKey(domain),
+    licensedUses: licensedUses.map(normalizeKey).filter(Boolean),
+    useEvidence: useEvidence.map(normalizeToken).filter(Boolean),
+    licensedAdjunctionRelations: Array.isArray(licensedAdjunctionRelations)
+      ? licensedAdjunctionRelations.map(normalizeKey).filter(Boolean) : null,
     sourceForms: sourceForm ? [sourceForm] : [],
     predicateStem: normalizeStem(predicateStem || sourceForm),
     formulaKind: normalizeKey(formulaKind),
@@ -199,13 +217,15 @@ function makeRecord({
     writtenBoundaryRule: normalizeKey(writtenBoundaryRule || "identity"),
     lexicalReadings: lexicalReadings.map(normalizeToken).filter(Boolean),
     sourceAnalysis: sourceAnalysis ? deepClone(sourceAnalysis) : null,
+    ...(sourceUseAnalysis ? {sourceUseAnalysis: deepClone(sourceUseAnalysis)} : {}),
+    ...(initialIAnalysis?{initialIAnalysis:deepClone(initialIAnalysis)}:{}),
     compositionalReading: normalizeToken(compositionalReading),
     numberSystem: numberSystem ? deepClone(numberSystem) : null,
   });
 }
 
 const VNC_RECORDS = Object.freeze([
-  makeRecord({ id: "44.3-cencah", section: "44.3.1", family: "lexicalized-vnc", clauseKind: "vnc", degree: "first-degree", domain: "degree", surface: "cencah", predicateStem: "cen-ca-h", formulaKind: "vnc", valence: "Ø", num1: "⎕", lexicalStatus: "lexicalized" }),
+  makeRecord({ id: "44.3-cencah", section: "44.3.1", family: "lexicalized-vnc", clauseKind: "vnc", degree: "first-degree", domain: "degree", surface: "cencah", predicateStem: "cen-ca-h", formulaKind: "vnc", valence: "Ø", num1: "⎕", lexicalStatus: "lexicalized", licensedUses: ["ordinary-adverb", "intensifier"], useEvidence: ["49.6"] }),
   makeRecord({ id: "44.3-hualcah", section: "44.3.2", family: "lexicalized-vnc", clauseKind: "vnc", degree: "first-degree", domain: "direction", surface: "huālcah", predicateStem: "ca-h", formulaKind: "vnc", stateSlots: ["huāl"], valence: "Ø", num1: "⎕", restrictions: ["normally-modified-by-oc", "lexicalized-degree-reading"] }),
   makeRecord({ id: "44.3-cemihcac", section: "44.3.3", family: "lexicalized-vnc", clauseKind: "vnc", degree: "first-degree", domain: "duration", surface: "cemihcac", predicateStem: "cem-ihca", formulaKind: "vnc", valence: "Ø", num1: "c" }),
   makeRecord({ id: "44.3-ihui", section: "44.3.4", family: "lexicalized-vnc", clauseKind: "vnc", degree: "first-degree", domain: "manner", surface: "ihui", predicateStem: "ihui", formulaKind: "vnc", valence: "Ø", num1: "Ø" }),
@@ -250,7 +270,8 @@ const PARTICLE_LOOKING_RECORDS = Object.freeze([
   num1: id === "quen" ? "Ø" : "⎕",
   lexicalStatus,
   restrictions,
-  allowedNegativeParticles: id === "huel" ? ["ah"] : id === "mo" ? ["ah", "ca"] : [],
+  incorporatedAllowed: id !== "mo",
+  allowedNegativeParticles: ["huel", "quen"].includes(id) ? ["ah"] : id === "mo" ? ["ah", "ca"] : [],
   stressPartners: id === "cuel" ? ["eh", "yeh"] : id === "mach" ? ["eh"] : [],
 })));
 
@@ -293,6 +314,13 @@ const OTHER_ABSOLUTIVE_SPECS = Object.freeze([
   ["quemah", "quēmah", "manner", ["variants-quemahca-honorific-quemahcatzin"]],
 ]);
 
+// Attested whole NNC use is independent of a proposed historical derivation.
+// This records the admitted rank/cell, never an ordinary noun or finite Source.
+const ATTESTED_WHOLE_ADVERBIAL_NNC = deepFreeze({
+  kind: "attested-whole-adverbial-nnc", sourceRank: "nnc", state: "absolutive",
+  degree: "second-degree", predicateAnalysis: "opaque", derivationalAncestry: "unclaimed",
+});
+
 const OTHER_ABSOLUTIVE_SEMANTICS = Object.freeze({
   noncuah: {
     compositionalReading: "it is off in a separate place",
@@ -326,6 +354,7 @@ const OTHER_ABSOLUTIVE_SEMANTICS = Object.freeze({
     },
   },
   tlapic: {
+    sourceUseAnalysis: ATTESTED_WHOLE_ADVERBIAL_NNC,
     compositionalReading: "it is in the manner of an imagined thing",
     lexicalReadings: ["falsely", "in vain", "futilely"],
     sourceAnalysis: {
@@ -337,6 +366,8 @@ const OTHER_ABSOLUTIVE_SEMANTICS = Object.freeze({
       patientiveKind: "perfective",
     },
   },
+  ilhuiz: {sourceUseAnalysis: ATTESTED_WHOLE_ADVERBIAL_NNC},
+  tlalhuiz: {sourceUseAnalysis: ATTESTED_WHOLE_ADVERBIAL_NNC},
   tlamach: {
     compositionalReading: "it is in the manner of a known thing",
     lexicalReadings: ["quietly", "calmly", "gently"],
@@ -412,6 +443,7 @@ const PRETERIT_AGENTIVE_RECORDS = Object.freeze(PRETERIT_AGENTIVE_SPECS.map(([id
     ? "shorten-final-a"
     : "identity",
   lexicalReadings: id === "yocoxca" ? ["calmly", "peacefully"] : [],
+  ...(id === "ichtaca"?{initialIAnalysis:{kind:"real",sourceRank:"nominal-root",inheritedFrom:"ich",formationAncestry:["ich","ich-tequi","ich-tec-Ø-qui","ich-ta-Ø-cā"],sourceSections:["30.3","44.7"],sourceInitialIIsVerbalDefault:false}}:{}),
   sourceAnalysis: id === "yocoxca" ? {
     sourceStem: "yōco-ya",
     sourceStemStrategy: "full-root-plus-ya",
@@ -437,6 +469,27 @@ const POSSESSIVE_RECORDS = Object.freeze([
   makeRecord({ id: "44.8-tonohmatca", section: "44.8.2.b", family: "possessive-state-nnc", clauseKind: "nnc-possessive", degree: "first-degree", domain: "manner", surface: "tonohmatca", predicateStem: "noh-mat-ca", stateSlots: ["t", "o"], lexicalStatus: "conjectural-analysis" }),
 ]);
 
+// These are Source rank/use facts, not an alternative sentence generator.
+// The shared transformer still requires the exact ordinary NNC and its class
+// and number carriers; the compared-use contract remains on the issued Result.
+const COMPARED_MANNER_SOURCE_RECORDS = Object.freeze([
+  makeRecord({
+    id: "49.1-cuica-compared-manner", section: "49.1.1.d",
+    family: "first-degree-nnc", clauseKind: "nnc-absolutive",
+    degree: "first-degree", domain: "manner", surface: "cuīcatl",
+    predicateStem: "cuīca", num1: "tl", lexicalStatus: "productive",
+    sourceKind: "ordinary-nnc-compared-manner-analysis",
+    incorporatedAllowed: false,
+    licensedUses: ["compared-manner"], useEvidence: ["44.1", "44.2", "49.1.1.d"],
+    licensedAdjunctionRelations: ["compared-manner"],
+    sourceAnalysis: {
+      kind: "ordinary-nnc-adverbial-source-analysis",
+      nounClass: "tl", num1: "tl", state: "absolutive",
+      subjectMode: "third-form-nonreferential-adverbial",
+    },
+  }),
+]);
+
 const INCORPORATION_ONLY_RECORDS = Object.freeze([
   makeRecord({ id: "44.9-nal", section: "44.9", family: "incorporated-adverbial", clauseKind: "nnc-absolutive", degree: "second-degree", domain: "location", surface: "nal", predicateStem: "nal", lexicalStatus: "compound-only", externalAllowed: false, incorporatedAllowed: true }),
   makeRecord({ id: "44.9-nepan", section: "44.9", family: "incorporated-adverbial", clauseKind: "nnc-absolutive", degree: "second-degree", domain: "manner", surface: "nepan", predicateStem: "ne-pan", incorporatedStem: "ne-pan", lexicalStatus: "compound-only", externalAllowed: false, incorporatedAllowed: true }),
@@ -450,6 +503,7 @@ const SOURCE_RECORDS = deepFreeze([
   ...PRETERIT_AGENTIVE_RECORDS,
   ...POSSESSIVE_RECORDS,
   ...INCORPORATION_ONLY_RECORDS,
+  ...COMPARED_MANNER_SOURCE_RECORDS,
 ]);
 
 const SOURCE_RECORD_BY_ID = new Map(SOURCE_RECORDS.map(record => [record.id, record]));
@@ -541,6 +595,8 @@ function getAdverbialExactSourceRawField(source = {}) {
     "clauseKind",
     "preteritAgentiveFrame",
     "adverbialPotentialFrame",
+    "sourceAnalysis",
+    "licensedAdjunctionRelations",
   ].find(field => (
     Object.prototype.hasOwnProperty.call(source, field)
     && source[field] !== undefined
@@ -569,13 +625,23 @@ function getAdverbialExactNncSlotFrame(result = null, target = globalThis) {
   )) || null;
 }
 
+function getOwnedNominalVncKernel(result = null, target = globalThis) {
+  if (target.isClassicalNahuatlNominalConstructionResult?.(result) !== true
+    || result.constructionKind !== 'nominal-embed-vnc') return null;
+  const kernel = result.canonicalResult?.resultFrame;
+  return kernel && isAdverbialExactVncResult(kernel,target)
+    && getAdverbialExactVncSlotFrame(kernel,target)
+    ? kernel : null;
+}
+
 function getAdverbialExactVncSlotFrame(result = null, target = globalThis) {
+  const ownedKernel = getOwnedNominalVncKernel(result,target);
   const source = (
     typeof target.isClassicalNahuatlVncSentenceResultFrame === "function"
     && target.isClassicalNahuatlVncSentenceResultFrame(result)
   )
     ? result.canonicalSourceFrame || result.canonicalResultFrame || null
-    : result;
+    : ownedKernel || result;
   return [
     source?.finalTypedVncSlotFrame,
     source?.targetTypedVncSlotFrame,
@@ -598,6 +664,8 @@ function getAdverbialExactVncSlotFrame(result = null, target = globalThis) {
 }
 
 function isAdverbialExactNncResult(result = null, target = globalThis) {
+  if (target.isClassicalNahuatlNominalConstructionResult?.(result) === true
+    && result.constructionKind === 'nominal-embed-vnc') return false;
   return Boolean([
     "isClassicalNahuatlOrdinaryNncResult",
     "isClassicalNahuatlPronominalNncResult",
@@ -612,6 +680,7 @@ function isAdverbialExactNncResult(result = null, target = globalThis) {
 }
 
 function isAdverbialExactVncResult(result = null, target = globalThis) {
+  if (getOwnedNominalVncKernel(result,target)) return true;
   const exactApplicationCapture = (
     typeof target.captureClassicalGrammarApplicationResult === "function"
     && typeof target.isClassicalGrammarApplicationResultCapture
@@ -642,36 +711,111 @@ function isAdverbialExactVncResult(result = null, target = globalThis) {
   ));
 }
 
+function matchesDocumentedAdverbialNncSourceAnalysis(record, result, slotFrame, target) {
+  const analysis = record.sourceAnalysis;
+  if (analysis?.kind !== "ordinary-nnc-adverbial-source-analysis") return true;
+  if (target?.isClassicalNahuatlOrdinaryNncResult?.(result) !== true
+    || target?.isClassicalNahuatlOrdinaryNncSourceFrame?.(result.sourceFrame) !== true
+    || result.typedSlotFrame !== slotFrame
+    || result.sourceFrame.nounClass !== analysis.nounClass
+    || slotFrame?.slots?.state?.arity !== "vacant"
+    || slotFrame.slots.number.num1 !== analysis.num1) return false;
+  return ![slotFrame.slots.subject.pers1, slotFrame.slots.subject.pers2,
+    slotFrame.slots.number.num2].some(realizeTypedCarrier);
+}
+
 function getAdverbialExactSourceRecord({
   clauseKind = "",
   slotFrame = null,
+  generalUseStemFrame = null,
+  canonicalSourceResult = null,
+  target = globalThis,
 } = {}) {
   // Raw-entry aliases may omit quantity. An already-typed Result may not:
   // normalize Unicode composition, not the phonemic vowel distinction.
   const exactStemKey = value => normalizeToken(value).normalize("NFC")
     .toLowerCase().replace(/[^\p{L}\p{N}]/gu, "");
-  const predicateStem = exactStemKey(
-    realizeCarrier(slotFrame?.slots?.predicate?.stem || ""),
-  );
+  const exactStateKey = value => exactStemKey(normalizeToken(value).replaceAll("Ø", "0"));
+  const selectedStem = generalUseStemFrame?.generalUseStem
+    || slotFrame?.slots?.predicate?.stem || "";
+  const predicateStem = exactStemKey(realizeCarrier(selectedStem));
   const exactStateSlots = (
     slotFrame?.slots?.state?.slots
     || slotFrame?.slots?.prePredicate
     || []
   ).filter(slot => (
     !slot?.kind || slot.kind === "vnc-internal-state"
-  )).map(slot => exactStemKey(slot?.carrier || ""))
+  )).map(slot => exactStateKey(slot?.carrier || ""))
     .filter(Boolean);
   const matches = SOURCE_RECORDS.filter(record => (
     record.clauseKind === clauseKind
+    && matchesDocumentedAdverbialNncSourceAnalysis(record, canonicalSourceResult, slotFrame, target)
+    && (!generalUseStemFrame || record.allowedDegrees.includes("second-degree"))
     && exactStemKey(realizeCarrier(record.predicateStem))
       === predicateStem
+    && (!record.predicateStem.includes("-")
+      || normalizeStem(selectedStem).replaceAll("0", "Ø")
+        === record.predicateStem.replaceAll("0", "Ø"))
     && (
       !record.stateSlots.length
-      || record.stateSlots.map(exactStemKey).join("|")
+      || record.stateSlots.map((carrier,index) => exactStateKey(index === 0
+          && record.writtenBoundaryRule === "lengthen-initial-i" && carrier === "i" ? "ī" : carrier)).join("|")
         === exactStateSlots.join("|")
     )
   ));
   return matches.length === 1 ? matches[0] : null;
+}
+
+function buildOwnedPreteritAgentiveAdverbialUse(parent, slotFrame, productiveRecord, use, target) {
+  const originalGeneralUseStem = parent.operationFrame.targetStems.generalUse;
+  const capture = parent.sourceFrame.preteritVncCaptureFrame || null;
+  let generalUseStem = originalGeneralUseStem;
+  let initialContext = "preserve-owned-general-use";
+  let reflexiveShape = parent.sourceFrame.sourceObjectPattern === "reflexive" ? "shuntline" : "none";
+  if (reflexiveShape === "shuntline") {
+    const slots = capture?.canonicalVncTypedSlotFrame?.slots;
+    const projection = target.getClassicalNahuatlVncContinuationSourceConstituents?.(capture?.canonicalVncResult);
+    const capturedReflexive = target.isClassicalNahuatlPreteritVncNominalizationCaptureFrame?.(capture) === true
+      && target.isClassicalNahuatlVncSlotFrame?.(capture.canonicalVncTypedSlotFrame) === true
+      && capture.sourceVoice === "active" && capture.sourceObjectPattern === "reflexive"
+      && capture.sourceObjectRequests.length === 1 && capture.sourceObjectRequests[0].objectKind === "reflexive"
+      && slots.predicate.stem === parent.sourceFrame.sourceStem && slots.predicate.tns === "0"
+      && generalUseStem.startsWith(`ne-${slots.predicate.stem}-0-`);
+    if (use === "lexicalized") {
+      const object = slots?.prePredicate?.length === 1 ? slots.prePredicate[0] : null;
+      if (!capturedReflexive || capture.sourceSubject !== "3sg"
+        || object?.kind !== "dyadic-valence" || !object.va1 || !object.va2) return null;
+      // Retain the actual captured mainline morphs and the already-owned
+      // predicate/preterit/cā body. The record match below licenses this use.
+      generalUseStem = `${object.va1}-${object.va2}-${generalUseStem.slice(3)}`;
+      reflexiveShape = "retained-mainline";
+    } else if (capturedReflexive && projection?.sourceStem?.replaceAll("-", "") === "ihmati"
+      && projection.verbClass === "B" && slots.predicate.stem.replaceAll("-", "") === "ihmat") {
+      // Andrews 35.12/44.7: ih-mati retains i after mainline contact but
+      // has supportive i after shuntline ne. This is captured lexical contact,
+      // not deletion of arbitrary real initial vowels or caller stem editing.
+      generalUseStem = generalUseStem.replace(/^ne-i/u, "ne-");
+      initialContext = "supportive-after-ne";
+    }
+  }
+  let record = productiveRecord;
+  if (use === "lexicalized") {
+    record = getAdverbialExactSourceRecord({clauseKind: "nnc-absolutive", slotFrame,
+      generalUseStemFrame: {generalUseStem}, canonicalSourceResult: parent, target});
+    if (!record || record.family !== "preterit-agentive-nnc"
+      || (reflexiveShape === "retained-mainline" && record.sourceKind !== "reflexive-mainline-lexicalized")) return null;
+  } else if (generalUseStem !== originalGeneralUseStem) {
+    record = deepFreeze({...productiveRecord, predicateStem: generalUseStem,
+      surface: realizeCarrier(generalUseStem), incorporatedStem: generalUseStem});
+  }
+  const frame = deepFreeze({kind: "classical-nahuatl-preterit-agentive-adverbial-use-operation-frame",
+    authorizationStatus: "authorized", use, canonicalSourceResult: parent,
+    canonicalSourceCapture: capture, canonicalTypedNncSlotFrame: slotFrame,
+    originalGeneralUseStem, generalUseStem, initialContext, reflexiveShape,
+    lexicalEntryId: record.id, writtenBoundaryRule: record.writtenBoundaryRule,
+    callerSuppliedAuthorityAccepted: false, formulaStringAuthority: false, surfaceStringAuthority: false});
+  ISSUED_PRETERIT_AGENTIVE_ADVERBIAL_USES.add(frame);
+  return {frame, record};
 }
 
 function resolveClassicalNahuatlAdverbialExactSource(
@@ -684,7 +828,16 @@ function resolveClassicalNahuatlAdverbialExactSource(
   let sourceUnitKind = "";
   let slotFrame = null;
   let record = null;
-  if (!hasAdverbialExactSourceResultField(source)) {
+  let generalUseStemFrame = null;
+  let obsoleteRootGeneralUseCaptureFrame = null;
+  let productivePreteritAgentiveRecord = null;
+  let lexicalUseOperationFrame = null;
+  const useRequested = Object.prototype.hasOwnProperty.call(source, "preteritAgentiveUse");
+  const preteritAgentiveUse = useRequested && typeof source.preteritAgentiveUse === "string"
+    ? normalizeKey(source.preteritAgentiveUse) : useRequested ? "" : "productive";
+  if (!["productive", "lexicalized"].includes(preteritAgentiveUse)) {
+    blockReason = "preterit-agentive-adverbial-use-invalid";
+  } else if (!hasAdverbialExactSourceResultField(source)) {
     blockReason = "canonical-source-result-required";
   } else if (rawField) {
     blockReason =
@@ -704,7 +857,56 @@ function resolveClassicalNahuatlAdverbialExactSource(
     const clauseKind = slotFrame?.slots?.state?.arity === "vacant"
       ? "nnc-absolutive"
       : "nnc-possessive";
-    record = getAdverbialExactSourceRecord({ clauseKind, slotFrame });
+    // The genuine agentive owner already derived its general-use stem. Reuse
+    // that projection; an ordinary noun or a copied agentive cannot supply it.
+    productivePreteritAgentiveRecord = clauseKind === "nnc-absolutive"
+      && target.isClassicalNahuatlDeverbalNncGrammarFrame?.(canonicalSourceResult) === true
+      ? buildProductivePreteritRecord(canonicalSourceResult)
+      : null;
+    if (productivePreteritAgentiveRecord) {
+      const ownedUse = buildOwnedPreteritAgentiveAdverbialUse(canonicalSourceResult,
+        slotFrame, productivePreteritAgentiveRecord, preteritAgentiveUse, target);
+      if (!ownedUse) blockReason = "exact-preterit-agentive-source-has-no-licensed-lexical-adverbial-use";
+      record = ownedUse?.record || null;
+      lexicalUseOperationFrame = ownedUse?.frame || null;
+      generalUseStemFrame = ownedUse ? deepFreeze({
+        kind: "classical-nahuatl-owned-agentive-general-use-projection",
+        authorizationStatus: "authorized",
+        canonicalSourceResult,
+        sourceFrame: canonicalSourceResult.sourceFrame,
+        operationFrame: canonicalSourceResult.operationFrame,
+        generalUseStem: ownedUse.frame.generalUseStem,
+        lexicalUseOperationFrame,
+        independentlyIssuedOrdinaryNnc: false,
+        callerSuppliedAuthorityAccepted: false,
+      }) : null;
+    } else {
+      record = getAdverbialExactSourceRecord({ clauseKind, slotFrame, canonicalSourceResult, target });
+    }
+    const nounSource = canonicalSourceResult?.sourceFrame;
+    if (!record && clauseKind === "nnc-absolutive"
+      && target.isClassicalNahuatlOrdinaryNncSourceFrame?.(nounSource)
+      && nounSource.useShape === "truncated"
+      && slotFrame?.slots?.predicate?.stem === nounSource.stem) {
+      const generalUse = target.buildClassicalNahuatlNounstemSourceFrame?.(
+        nounSource.stem,
+        {
+          nounClass: nounSource.nounClass,
+          classSelectionAuthority: nounSource.lexicalSelectionAuthority,
+          generalUseShape: nounSource.useShape,
+          tlSubclass: nounSource.sourceClassShapeFrame.tlSubclass,
+          ephemeralFinalVowel: nounSource.ephemeralFinalVowel,
+          truncationRepair: nounSource.truncationRepair,
+          state: "absolutive",
+        },
+      );
+      if (generalUse?.authorizationStatus === "authorized") {
+        record = getAdverbialExactSourceRecord({
+          clauseKind, slotFrame, generalUseStemFrame: generalUse,
+        });
+        if (record) generalUseStemFrame = generalUse;
+      }
+    }
   } else if (isAdverbialExactVncResult(canonicalSourceResult, target)) {
     sourceUnitKind = (
       typeof target.isClassicalNahuatlVncSentenceResultFrame === "function"
@@ -720,14 +922,43 @@ function resolveClassicalNahuatlAdverbialExactSource(
       clauseKind: "vnc",
       slotFrame,
     });
+    if (!record) {
+      const capture = target.captureClassicalNahuatlObsoleteRootVncGeneralUse?.(canonicalSourceResult);
+      if (target.isClassicalNahuatlPreteritVncNominalizationCaptureFrame?.(capture) === true
+        && capture.obsoleteRootPreteritAnalysis?.generalUseOnly === true) {
+        obsoleteRootGeneralUseCaptureFrame = capture;
+        generalUseStemFrame = deepFreeze({
+          kind: "classical-nahuatl-obsolete-root-general-use-stem-projection",
+          authorizationStatus: "authorized", generalUseStem: capture.obsoleteRootPreteritAnalysis.generalUseStem,
+          canonicalSourceResult, canonicalCaptureFrame: capture,
+          restrictedNounGenerated: false, callerSuppliedAuthorityAccepted: false,
+        });
+        const predicateStem = capture.obsoleteRootPreteritAnalysis.generalUseStem.replaceAll("0", "Ø");
+        record = makeRecord({id: `productive-obsolete:${capture.obsoleteRootPreteritAnalysis.originalSourceStem}`,
+          section: "40.9", family: "preterit-agentive-nnc", clauseKind: "nnc-absolutive",
+          degree: "second-degree", domain: "manner", surface: realizeCarrier(predicateStem),
+          predicateStem, num1: "⎕", sourceKind: "obsolete-root-plus-ya-preterit", lexicalStatus: "productive"});
+      }
+    }
   } else {
     blockReason = "exact-owner-issued-vnc-nnc-or-clause-result-required";
+  }
+  if (!blockReason && useRequested && !productivePreteritAgentiveRecord) {
+    blockReason = "preterit-agentive-adverbial-use-requires-owned-agentive-parent";
   }
   if (!blockReason && !slotFrame) {
     blockReason = "exact-source-result-typed-nuclear-slots-unavailable";
   }
   if (!blockReason && !record) {
     blockReason = "exact-source-result-has-no-licensed-adverbial-potential";
+  }
+  if (!blockReason && record?.clauseKind === "vnc") {
+    const canonicalCarrier = value => normalizeStem(value).replaceAll("Ø", "0");
+    const slots = slotFrame.slots;
+    if (canonicalCarrier(slots.predicate.tns) !== canonicalCarrier(record.valence)
+      || canonicalCarrier(slots.number.num1) !== canonicalCarrier(record.num1)) {
+      blockReason = "adverbial-source-tense-and-number-must-already-be-derived";
+    }
   }
   const allowedScopes = record ? [
     ...(record.externalAllowed ? ["external-clause"] : []),
@@ -750,11 +981,15 @@ function resolveClassicalNahuatlAdverbialExactSource(
     authorizationStatus: blockReason ? "blocked" : "authorized",
     blockReason,
     sourceUnitKind,
+    canonicalVncKernel: blockReason ? null : getOwnedNominalVncKernel(canonicalSourceResult,target),
     canonicalSourceResult: blockReason
       && !canonicalSourceResult?.authorizationStatus
       ? null
       : canonicalSourceResult,
     canonicalTypedSlotFrame: blockReason ? null : slotFrame,
+    generalUseStemFrame: blockReason ? null : generalUseStemFrame,
+    lexicalUseOperationFrame: blockReason ? null : lexicalUseOperationFrame,
+    obsoleteRootGeneralUseCaptureFrame: blockReason ? null : obsoleteRootGeneralUseCaptureFrame,
     lexicalEntryId: blockReason ? "" : record.id,
     sourceConstituents: deepFreeze(blockReason ? {} : {
       stem: record.sourceForms[0],
@@ -770,6 +1005,9 @@ function resolveClassicalNahuatlAdverbialExactSource(
     surfaceStringAuthority: false,
   });
   ISSUED_ADVERBIAL_EXACT_SOURCE_RESOLUTIONS.add(frame);
+  if (!blockReason && (obsoleteRootGeneralUseCaptureFrame || productivePreteritAgentiveRecord)) {
+    EXACT_SOURCE_PRODUCTIVE_RECORDS.set(frame, record);
+  }
   return frame;
 }
 
@@ -789,14 +1027,187 @@ function isClassicalNahuatlAdverbialExactSourceResolution(frame = null) {
           && Boolean(frame.canonicalSourceResult)
           && Boolean(frame.canonicalTypedSlotFrame)
           && Boolean(frame.lexicalEntryId)
+          && (!frame.lexicalUseOperationFrame
+            || (ISSUED_PRETERIT_AGENTIVE_ADVERBIAL_USES.has(frame.lexicalUseOperationFrame)
+              && frame.lexicalUseOperationFrame.canonicalSourceResult === frame.canonicalSourceResult
+              && frame.lexicalUseOperationFrame.canonicalTypedNncSlotFrame === frame.canonicalTypedSlotFrame))
     )
   );
+}
+
+function hasAttestedWholeAdverbialNncAnalysis(record) {
+  const analysis = record.sourceUseAnalysis;
+  return analysis?.kind === "attested-whole-adverbial-nnc"
+    && analysis.sourceRank === "nnc" && analysis.state === "absolutive"
+    && analysis.degree === "second-degree" && analysis.predicateAnalysis === "opaque"
+    && analysis.derivationalAncestry === "unclaimed"
+    && record.clauseKind === "nnc-absolutive" && record.formulaKind === "nnc";
+}
+
+// Lexical nuclei can be documented only in their adverbial shape. Their
+// recorded slots do not establish an ordinary noun paradigm or verb class.
+function buildClassicalNahuatlLexicalAdverbialPotentialFrame(source = {},target = globalThis) {
+  const rejectedKey=Object.keys(source || {}).find(key=>key!=="stem");
+  const stem=normalizeToken(source?.stem).normalize("NFC");
+  const verbalRecords=SOURCE_RECORDS.filter(record=>record.family==="lexicalized-vnc"
+    && record.clauseKind==="vnc" && record.formulaKind==="vnc"
+    && record.allowedDegrees.length===1 && record.allowedDegrees[0]==="first-degree"
+    && !record.sourceAnalysis
+    && record.sourceForms.some(form=>form.normalize("NFC")===stem));
+  if(!rejectedKey && verbalRecords.length===1){
+    const record=verbalRecords[0];
+    const typedSlotFrame=target.buildClassicalNahuatlVncSlotFrame?.({
+      sourceFrameKind:"classical-nahuatl-lexical-adverbial-vnc-source-frame",
+      sourceAuthorizationStatus:"authorized",stem:record.predicateStem,
+      personDyad:{pers1:record.subjectSlots.pers1,pers2:record.subjectSlots.pers2},
+      tenseFrame:{tns:record.valence},numberDyad:{num1:record.num1,num2:record.num2},
+      ...(record.stateSlots.length===2 ? {objectFrame:{valenceArity:"dyadic",
+        va1:record.stateSlots[0],va2:record.stateSlots[1]}}
+        : record.stateSlots.length ? {internalStateFrame:buildAdverbialStateFrame(record.stateSlots)} : {}),
+    });
+    if(target.isClassicalNahuatlVncSlotFrame?.(typedSlotFrame)!==true)
+      return buildBlockedAdverbialPotentialFrame("lexical-adverbial-typed-source-slots-unavailable",{});
+    const lexicalVncSourceFrame=deepFreeze({kind:"classical-nahuatl-lexical-adverbial-vnc-source-frame",
+      authorizationStatus:"authorized",lexicalEntryId:record.id,predicateStem:record.predicateStem,
+      clauseKind:"vnc",subjectHasReferent:false,finiteSubjectAsserted:false,typedSlotFrame,
+      ordinaryVncApplicationResult:null,ordinaryVncUseAuthorized:false,
+      callerSuppliedAuthorityAccepted:false,formulaStringAuthority:false,surfaceStringAuthority:false});
+    LEXICAL_ADVERBIAL_VNC_SOURCES.set(lexicalVncSourceFrame,record);
+    return resolveClassicalNahuatlAdverbialPotential({stem,clauseKind:"vnc"},target,null,null,null,lexicalVncSourceFrame);
+  }
+  const records=SOURCE_RECORDS.filter(record=>
+    (["particle-looking-nnc","other-absolutive-nnc","second-degree-nnc"].includes(record.family)
+      || record.family === "preterit-agentive-nnc" && record.sourceKind === "irregular" && record.lexicalStatus === "irregular")
+    && record.clauseKind==="nnc-absolutive"
+    && record.allowedDegrees.length===1 && record.allowedDegrees[0]==="second-degree"
+    // An affirmed whole NNC remains usable when its historical analysis is
+    // conjectural or differs in quantity. Other derived recipes still require
+    // their exact parents; caller-authored analyses never enter this gate.
+    && (hasAttestedWholeAdverbialNncAnalysis(record) || (
+      (["lexicalized","obligatorily-adverbial","obsolete-source"].includes(record.lexicalStatus)
+        || record.family === "preterit-agentive-nnc" && record.sourceKind === "irregular" && record.lexicalStatus === "irregular"
+        || record.id === "44.5-mo" && record.lexicalStatus === "conjectural-analysis")
+      && !record.sourceAnalysis
+      && !record.restrictions.some(restriction=>/patientive|pronominal|compound|uncertain/u.test(restriction))
+    ))
+    && record.sourceForms.some(form=>form.normalize("NFC")===stem));
+  if(rejectedKey || records.length!==1)return buildBlockedAdverbialPotentialFrame(
+    rejectedKey?"lexical-adverbial-source-only-accepts-stem":"documented-lexical-adverbial-nnc-source-required",{});
+  const record=records[0];
+  const typedSlotFrame=target.buildClassicalNahuatlNncSlotFrame?.({
+    sourceFrameKind:"classical-nahuatl-lexical-adverbial-nnc-source-frame",
+    sourceAuthorizationStatus:"authorized",stem:record.predicateStem,
+    stateFrame:{authorizationStatus:"authorized",arity:"vacant",slots:[]},
+    personFrame:{authorizationStatus:"authorized",pers1:record.subjectSlots.pers1,
+      pers2:record.subjectSlots.pers2,subject:"adverbial"},
+    numberFrame:{authorizationStatus:"authorized",num1:record.num1,num2:record.num2,
+      subjectNumber:"adverbial"},
+    appliedOperationIds:["nnc-clause-shell","nnc-absolutive-state"],
+    resultOperationId:"nnc-absolutive-state",requestedOutputKind:"selected-absolutive-nnc-formula",nncFamily:"adverbial"});
+  if(target.isClassicalNahuatlNncSlotFrame?.(typedSlotFrame)!==true)
+    return buildBlockedAdverbialPotentialFrame("lexical-adverbial-typed-source-slots-unavailable",{});
+  const lexicalNncSourceFrame=deepFreeze({kind:"classical-nahuatl-lexical-adverbial-nnc-source-frame",
+    authorizationStatus:"authorized",lexicalEntryId:record.id,predicateStem:record.predicateStem,
+    clauseKind:record.clauseKind,subjectHasReferent:false,typedSlotFrame,
+    ...(record.initialIAnalysis?{initialIAnalysis:record.initialIAnalysis}:{}),
+    ...(record.sourceUseAnalysis ? {sourceUseAnalysis:record.sourceUseAnalysis,derivationalAncestryAsserted:false} : {}),
+    ordinaryNounParadigmAuthorized:false,callerSuppliedAuthorityAccepted:false,
+    formulaStringAuthority:false,surfaceStringAuthority:false});
+  LEXICAL_ADVERBIAL_NNC_SOURCES.set(lexicalNncSourceFrame,record);
+  return resolveClassicalNahuatlAdverbialPotential({stem,clauseKind:record.clauseKind},target,null,lexicalNncSourceFrame);
+}
+
+function buildClassicalNahuatlPrimitiveAdverbialPotentialFrame(source = {}, target = globalThis) {
+  const allowed = new Set(["predicateKind", "sourceStem", "verbClass", "sourceValence", "tense", "sourceInitialISelection", "possessor"]);
+  const kind = normalizeKey(source.predicateKind);
+  const stem = normalizeStem(source.sourceStem);
+  const verbClass = normalizeToken(source.verbClass).toUpperCase();
+  const blocked = reason => buildBlockedAdverbialPotentialFrame(reason, {});
+  if (Object.keys(source).some(key => !allowed.has(key)) || !stem
+    || !["A", "B", "C", "D"].includes(verbClass)
+    || source.sourceValence !== "intransitive"
+    || !["vnc", "preterit-agentive", "active-action"].includes(kind)) {
+    return blocked("complete-primitive-adverbial-predicate-source-required");
+  }
+  let record = null, typedSlotFrame = null, morphology = null, surfaceFrame = null, nominal = null;
+  const coordinate = kind === "vnc" ? {subject:"3sg",role:"morphology-only-unchanged-first-degree-shape"} : null;
+  if (kind === "vnc") {
+    if (source.possessor || !source.tense) return blocked("complete-primitive-adverbial-vnc-source-required");
+    morphology = target.buildClassicalNahuatlVerbstemClassFrame?.(stem, {
+      verbClass,perfectiveClass:verbClass,valence:"intransitive",transitivity:"intransitive",
+      requestedSourceValence:"intransitive",objectKind:"none",tenseMode:"verbo",
+      subject:"3sg",mood:"indicative",tense:source.tense,
+      ...(source.sourceInitialISelection ? {initialVowelKind:source.sourceInitialISelection} : {}),
+    });
+    const slots = getAdverbialExactVncSlotFrame(morphology, target)?.slots;
+    if (morphology?.authorizationStatus !== "authorized" || morphology.classId !== verbClass || !slots) return blocked("canonical-adverbial-vnc-predicate-morphology-required");
+    typedSlotFrame = target.buildClassicalNahuatlVncSlotFrame?.({
+      sourceFrameKind:"classical-nahuatl-primitive-adverbial-source-frame",sourceAuthorizationStatus:"authorized",
+      stem:slots.predicate.stem,personDyad:{pers1:"0",pers2:"0",subject:"adverbial"},
+      tenseFrame:{tns:slots.predicate.tns},numberDyad:{num1:slots.number.num1,num2:slots.number.num2},
+    });
+    record = getAdverbialExactSourceRecord({clauseKind:"vnc",slotFrame:typedSlotFrame});
+    if (!record) {
+      const eligible = SOURCE_RECORDS.filter(candidate => candidate.family === "lexicalized-vnc"
+        && normalizeStem(candidate.predicateStem) === stem
+        && realizeCarrier(candidate.predicateStem) === realizeCarrier(slots.predicate.stem));
+      if (eligible.length === 1) record = eligible[0];
+    }
+    surfaceFrame = target.buildClassicalNahuatlVncFiniteSurfaceFrame?.(morphology);
+    const sameCarrier = (left, right) => normalizeStem(left).replaceAll("Ø", "0")
+      === normalizeStem(right).replaceAll("Ø", "0");
+    if (!record || surfaceFrame?.authorizationStatus !== "authorized"
+      || !sameCarrier(slots.predicate.tns,record.valence)
+      || !sameCarrier(slots.number.num1,record.num1)) {
+      return blocked("documented-adverbial-vnc-predicate-and-tense-required");
+    }
+  } else {
+    if (source.tense) return blocked("nominal-adverbial-source-does-not-take-finite-tense-choice");
+    nominal = target.buildClassicalNahuatlAdverbialNominalPredicateSourceFrame?.({
+      sourceStem:stem,verbClass,sourceValence:"intransitive",nominalizationKind:kind,
+      ...(source.sourceInitialISelection !== undefined ? {sourceInitialISelection:source.sourceInitialISelection} : {}),
+      ...(source.possessor !== undefined ? {possessor:source.possessor} : {}),
+    });
+    if (target.isClassicalNahuatlAdverbialNominalPredicateSourceFrame?.(nominal) !== true) {
+      return blocked(nominal?.blockReason || "canonical-adverbial-nominal-predicate-source-required");
+    }
+    const stateFrame = kind === "active-action"
+      ? target.buildClassicalNahuatlPossessiveStateFrame?.({possessor:nominal.possessor,
+        subject:"3common",stem:nominal.predicateStem,nounstemRelationKind:"nonrelational"})
+      : buildAdverbialStateFrame([]);
+    typedSlotFrame = target.buildClassicalNahuatlNncSlotFrame?.({
+      sourceFrameKind:"classical-nahuatl-primitive-adverbial-source-frame",sourceAuthorizationStatus:"authorized",
+      stem:nominal.predicateStem,stateFrame,
+      personFrame:{authorizationStatus:"authorized",pers1:"Ø",pers2:"Ø",subject:"adverbial"},
+      numberFrame:{authorizationStatus:"authorized",num1:kind === "preterit-agentive" ? "⎕" : "Ø",num2:"Ø",subjectNumber:"adverbial"},
+      appliedOperationIds:["nnc-clause-shell",kind === "active-action" ? "nnc-possessive-state" : "nnc-absolutive-state"],
+      resultOperationId:kind === "active-action" ? "nnc-possessive-state" : "nnc-absolutive-state",
+      requestedOutputKind:"selected-nnc-word",nncFamily:"adverbial",
+    });
+    record = kind === "preterit-agentive" ? buildProductivePreteritRecord(nominal)
+      : getAdverbialExactSourceRecord({clauseKind:"nnc-possessive",slotFrame:typedSlotFrame});
+    if (!record) return blocked("licensed-adverbial-nominal-predicate-source-required");
+  }
+  if (!(record.clauseKind === "vnc" ? target.isClassicalNahuatlVncSlotFrame?.(typedSlotFrame)
+    : target.isClassicalNahuatlNncSlotFrame?.(typedSlotFrame))) return blocked("primitive-adverbial-typed-source-slots-required");
+  const primitive = deepFreeze({kind:"classical-nahuatl-primitive-adverbial-source-frame",
+    authorizationStatus:"authorized",predicateKind:kind,lexicalEntryId:record.id,
+    subjectHasReferent:false,subjectDomain:record.domain,finiteSubjectAsserted:false,
+    ordinaryVncApplicationResult:null,ordinaryNncResult:null,predicateMorphologyCoordinate:coordinate,
+    canonicalPredicateMorphologyFrame:morphology,canonicalVncFiniteSurfaceFrame:surfaceFrame,
+    nominalPredicateSourceFrame:nominal,typedSlotFrame,
+    callerSuppliedAuthorityAccepted:false,formulaStringAuthority:false,surfaceStringAuthority:false});
+  PRIMITIVE_ADVERBIAL_SOURCES.set(primitive,record);
+  return resolveClassicalNahuatlAdverbialPotential({stem,clauseKind:record.clauseKind},target,null,null,primitive);
 }
 
 function resolveClassicalNahuatlAdverbialPotential(
   source = {},
   target = globalThis,
   exactSourceResolution = null,
+  lexicalNncSourceFrame = null,
+  primitiveAdverbialSourceFrame = null,
+  lexicalVncSourceFrame = null,
 ) {
   if (
     hasAdverbialExactSourceResultField(source)
@@ -869,6 +1280,23 @@ function resolveClassicalNahuatlAdverbialPotential(
       source,
     );
   }
+  if (productiveRecord && !exactSourceResolution) {
+    // The compatibility prerequisite needs the same owned general-use
+    // projection as canonicalSourceResult, not its restricted NNC stem.
+    exactSourceResolution = resolveClassicalNahuatlAdverbialExactSource(
+      { canonicalSourceResult: preteritAgentiveFrame,
+        ...(Object.prototype.hasOwnProperty.call(source, "preteritAgentiveUse")
+          ? {preteritAgentiveUse: source.preteritAgentiveUse} : {}) },
+      target,
+    );
+    if (exactSourceResolution.authorizationStatus !== "authorized") {
+      return buildBlockedAdverbialPotentialFrame(
+        exactSourceResolution.blockReason,
+        source,
+        { exactSourceResolution },
+      );
+    }
+  }
   const clauseKind = normalizeKey(source.clauseKind);
   if (
     !productiveRecord
@@ -880,13 +1308,22 @@ function resolveClassicalNahuatlAdverbialPotential(
     );
   }
   const sourceStem = normalizeToken(source.stem);
+  const lexicalSourceRecord=LEXICAL_ADVERBIAL_NNC_SOURCES.get(lexicalNncSourceFrame);
+  const lexicalVncSourceRecord=LEXICAL_ADVERBIAL_VNC_SOURCES.get(lexicalVncSourceFrame);
+  const primitiveSourceRecord=PRIMITIVE_ADVERBIAL_SOURCES.get(primitiveAdverbialSourceFrame);
+  if (!exactSourceResolution && !productiveRecord && !lexicalSourceRecord && !lexicalVncSourceRecord && !primitiveSourceRecord) {
+    return buildBlockedAdverbialPotentialFrame(
+      "Generate the underlying VNC or NNC first, then Continue this exact Result and choose NNC adverbial. Lexical lookup cannot perform its grammatical operations.",
+      source,
+    );
+  }
   const typedKey = `${clauseKind}:${normalizeTypedSourceStem(sourceStem)}`;
   const lexicalMatches = SOURCE_RECORDS_BY_TYPED_SOURCE.get(typedKey) || [];
-  const record = productiveRecord
-    ? productiveRecord
-    : lexicalMatches.length === 1
+  const record = primitiveSourceRecord || lexicalSourceRecord || lexicalVncSourceRecord
+    || EXACT_SOURCE_PRODUCTIVE_RECORDS.get(exactSourceResolution) || productiveRecord
+    || (lexicalMatches.length === 1
       ? lexicalMatches[0]
-      : null;
+      : null);
   if (!record) {
     return buildBlockedAdverbialPotentialFrame(
       lexicalMatches.length > 1
@@ -926,12 +1363,25 @@ function resolveClassicalNahuatlAdverbialPotential(
     allowedDegrees: record.allowedDegrees.slice(),
     allowedScopes,
     contextChoices: getAdverbialContextChoices(record),
+    inheritedContext: (() => {
+      const exact = exactSourceResolution?.canonicalSourceResult;
+      const sentence = exact?.sentenceFrame || exact;
+      if (!target.isClassicalNahuatlIssuedNncSentenceSurfaceFrame?.(sentence)
+        || sentence.polarity !== "negative") return {};
+      const stack = sentence.sentencePrefixalStack || [];
+      // Read an issued grammatical prefix slot, never the written surface.
+      const negativeParticle = stack.length === 1
+        ? String(stack[0]).replace(/#$/u, "") : "";
+      return negativeParticle ? { negativeParticle } : {};
+    })(),
     lexicalFacts: {
       family: record.family,
       semanticDomain: record.domain,
       lexicalStatus: record.lexicalStatus,
       sourceKind: record.sourceKind,
       restrictions: record.restrictions.slice(),
+      licensedUses: record.licensedUses.slice(),
+      useEvidence: record.useEvidence.slice(),
     },
     prerequisiteOperation: productiveRecord
       ? {
@@ -959,15 +1409,25 @@ function resolveClassicalNahuatlAdverbialPotential(
       ...(record.id === "44.5-mo" ? ["clause-type"] : []),
       ...(record.allowedNegativeParticles.length ? ["negation-scope"] : []),
     ],
-    sourceInputMode: exactSourceResolution
+    sourceInputMode: primitiveSourceRecord
+      ? "owner-issued-primitive-adverbial-predicate-source"
+      : lexicalVncSourceRecord
+      ? "owner-issued-lexical-adverbial-vnc-source"
+      : lexicalSourceRecord
+      ? "owner-issued-lexical-adverbial-nnc-source"
+      : exactSourceResolution
       ? "exact-owner-issued-vnc-nnc-or-clause-result"
       : "typed-source-fields",
+    lexicalNncSourceFrame,
+    ...(lexicalVncSourceFrame?{lexicalVncSourceFrame}:{}),
+    primitiveAdverbialSourceFrame,
     exactSourceResolution,
     canonicalSourceResult:
-      exactSourceResolution?.canonicalSourceResult || null,
+      exactSourceResolution?.canonicalSourceResult || preteritAgentiveFrame || null,
     canonicalTypedSlotFrame:
-      exactSourceResolution?.canonicalTypedSlotFrame || null,
-    exactSourceResultIdentityPreserved: Boolean(exactSourceResolution),
+      primitiveAdverbialSourceFrame?.typedSlotFrame || lexicalNncSourceFrame?.typedSlotFrame || lexicalVncSourceFrame?.typedSlotFrame || exactSourceResolution?.canonicalTypedSlotFrame
+        || getAdverbialExactNncSlotFrame(preteritAgentiveFrame, target),
+    exactSourceResultIdentityPreserved: Boolean(exactSourceResolution || preteritAgentiveFrame),
     typedSourceAuthority: true,
     lexicalAuthorization: true,
     formulaStringAuthority: false,
@@ -996,6 +1456,17 @@ function isClassicalNahuatlAdverbialPotentialFrame(frame = null) {
       && frame.lexicalAuthorization === false
     );
   }
+  if(frame.sourceInputMode==="owner-issued-lexical-adverbial-nnc-source"
+    && (LEXICAL_ADVERBIAL_NNC_SOURCES.get(frame.lexicalNncSourceFrame)!==ADVERBIAL_POTENTIAL_RECORDS.get(frame)
+      || frame.canonicalTypedSlotFrame!==frame.lexicalNncSourceFrame?.typedSlotFrame))return false;
+  if(frame.sourceInputMode==="owner-issued-lexical-adverbial-vnc-source"
+    && (LEXICAL_ADVERBIAL_VNC_SOURCES.get(frame.lexicalVncSourceFrame)!==ADVERBIAL_POTENTIAL_RECORDS.get(frame)
+      || frame.canonicalTypedSlotFrame!==frame.lexicalVncSourceFrame?.typedSlotFrame
+      || frame.canonicalSourceResult!==null))return false;
+  if(frame.sourceInputMode==="owner-issued-primitive-adverbial-predicate-source"
+    && (PRIMITIVE_ADVERBIAL_SOURCES.get(frame.primitiveAdverbialSourceFrame)!==ADVERBIAL_POTENTIAL_RECORDS.get(frame)
+      || frame.canonicalTypedSlotFrame!==frame.primitiveAdverbialSourceFrame?.typedSlotFrame
+      || frame.canonicalSourceResult!==null))return false;
   return Boolean(
     ADVERBIAL_POTENTIAL_RECORDS.has(frame)
     && frame.typedSourceAuthority === true
@@ -1130,6 +1601,11 @@ function buildTypedAdverbialNuclearProjection(
   record,
   subjectOperationFrame,
   target = globalThis,
+  canonicalTypedSlotFrame = null,
+  canonicalSourceResult = null,
+  generalUseStemFrame = null,
+  primitiveAdverbialSourceFrame = null,
+  lexicalVncSourceFrame = null,
 ) {
   if (subjectOperationFrame.subjectDiscarded) {
     return {
@@ -1140,68 +1616,45 @@ function buildTypedAdverbialNuclearProjection(
       wordSurface: "",
     };
   }
-  const subjectSlots = subjectOperationFrame.resultSubjectSlots || {};
-  const stateFrame = buildAdverbialStateFrame(record.stateSlots);
+  if (!canonicalTypedSlotFrame) {
+    return { authorizationStatus: "blocked", blockReason: "derived-nuclear-slot-frame-required" };
+  }
+  const sourceSlots = canonicalTypedSlotFrame.slots;
+  const subjectSlots = sourceSlots.subject;
+  const stateFrame = { authorizationStatus: "authorized", ...sourceSlots.state };
   if (record.formulaKind === "vnc") {
-    if (
-      typeof target.buildClassicalNahuatlVncSlotFrame !== "function"
-      || typeof target.renderClassicalNahuatlVncSlotFrameFormula
-        !== "function"
-      || typeof target.isClassicalNahuatlVncSlotFrame !== "function"
-    ) {
-      return {
-        authorizationStatus: "blocked",
-        blockReason: "canonical-typed-vnc-slot-evaluator-unavailable",
-      };
+    if(LEXICAL_ADVERBIAL_VNC_SOURCES.get(lexicalVncSourceFrame)===record){
+      if(lexicalVncSourceFrame.typedSlotFrame!==canonicalTypedSlotFrame)
+        return {authorizationStatus:"blocked",blockReason:"lexical-adverbial-exact-vnc-slots-required"};
+      const surfaceFrame=target.realizeClassicalNahuatlVncSlotFrameAtFinalBoundary?.({vncSlotFrame:canonicalTypedSlotFrame});
+      if(surfaceFrame?.authorizationStatus!=="authorized")
+        return {authorizationStatus:"blocked",blockReason:"lexical-adverbial-vnc-boundary-required"};
+      const slots=surfaceFrame.typedSlotFrame.slots;
+      const wordSurface=[slots.subject.pers1,slots.subject.pers2,
+        ...slots.prePredicate.map(slot=>slot.carrier),slots.predicate.stem,
+        slots.predicate.tns,slots.number.num1,slots.number.num2].map(realizeTypedCarrier).join("");
+      return {authorizationStatus:"authorized",blockReason:"",typedSlotFrame:canonicalTypedSlotFrame,
+        surfaceFrame,formulaRealization:target.renderClassicalNahuatlVncSlotFrameFormula(canonicalTypedSlotFrame),
+        wordSurface:realizeAdverbialWrittenBoundary(wordSurface,record.writtenBoundaryRule)};
     }
-    const typedSlotFrame = target.buildClassicalNahuatlVncSlotFrame({
-      sourceFrameKind: "classical-nahuatl-adverbial-potential-frame",
-      sourceAuthorizationStatus: "authorized",
-      stem: record.predicateStem,
-      personDyad: {
-        pers1: subjectSlots.pers1,
-        pers2: subjectSlots.pers2,
-      },
-      tenseFrame: { tns: record.valence || "Ø" },
-      numberDyad: { num1: record.num1, num2: record.num2 },
-      objectFrame: { valenceArity: "vacant" },
-      internalStateFrame: record.stateSlots.length
-        ? {
-          authorizationStatus: "authorized",
-          slots: [{
-            role: "state",
-            carrier: record.stateSlots.join("-"),
-          }],
-        }
-        : null,
-    });
-    if (!target.isClassicalNahuatlVncSlotFrame(typedSlotFrame)) {
-      return {
-        authorizationStatus: "blocked",
-        blockReason: "canonical-typed-vnc-slot-frame-blocked",
-        typedSlotFrame,
-      };
+    const nuclear = getOwnedNominalVncKernel(canonicalSourceResult, target)
+      || canonicalSourceResult?.canonicalSourceFrame
+      || canonicalSourceResult?.canonicalResultFrame || canonicalSourceResult;
+    const result = nuclear?.resultFrame || nuclear;
+    const surfaceFrame = PRIMITIVE_ADVERBIAL_SOURCES.has(primitiveAdverbialSourceFrame)
+      ? primitiveAdverbialSourceFrame.canonicalVncFiniteSurfaceFrame
+      : result?.finiteSurfaceFrame
+      || target.buildClassicalNahuatlVncFiniteSurfaceFrame?.(result?.selectedMachineryFrame);
+    if (surfaceFrame?.authorizationStatus !== "authorized") {
+      return { authorizationStatus: "blocked", blockReason: "derived-vnc-boundary-result-required" };
     }
-    const slots = typedSlotFrame.slots;
-    const wordSurface = [
-      slots.subject?.pers1,
-      slots.subject?.pers2,
-      ...(slots.prePredicate || []).map(slot => slot.carrier),
-      slots.predicate?.stem,
-      slots.predicate?.tns,
-      slots.number?.num1,
-      slots.number?.num2,
-    ].map(realizeTypedCarrier).join("");
     return {
       authorizationStatus: "authorized",
       blockReason: "",
-      typedSlotFrame,
-      formulaRealization:
-        target.renderClassicalNahuatlVncSlotFrameFormula(typedSlotFrame),
-      wordSurface: realizeAdverbialWrittenBoundary(
-        wordSurface,
-        record.writtenBoundaryRule,
-      ),
+      typedSlotFrame: canonicalTypedSlotFrame,
+      surfaceFrame,
+      formulaRealization: target.renderClassicalNahuatlVncSlotFrameFormula(canonicalTypedSlotFrame),
+      wordSurface: surfaceFrame.wordRealization,
     };
   }
   if (
@@ -1217,10 +1670,13 @@ function buildTypedAdverbialNuclearProjection(
       blockReason: "canonical-typed-nnc-slot-evaluator-unavailable",
     };
   }
-  const typedSlotFrame = target.buildClassicalNahuatlNncSlotFrame({
+  const typedSlotFrame = subjectOperationFrame.degree === "first-degree"
+      && record.sourceAnalysis?.kind !== "ordinary-nnc-adverbial-source-analysis"
+    ? canonicalTypedSlotFrame
+    : target.buildClassicalNahuatlNncSlotFrame({
     sourceFrameKind: "classical-nahuatl-adverbial-potential-frame",
     sourceAuthorizationStatus: "authorized",
-    stem: record.predicateStem,
+    stem: generalUseStemFrame?.generalUseStem || sourceSlots.predicate.stem,
     stateFrame,
     personFrame: {
       authorizationStatus: "authorized",
@@ -1230,8 +1686,8 @@ function buildTypedAdverbialNuclearProjection(
     },
     numberFrame: {
       authorizationStatus: "authorized",
-      num1: record.num1,
-      num2: record.num2,
+      num1: subjectOperationFrame.resultNum1,
+      num2: sourceSlots.number.num2,
       subjectNumber: "adverbial",
     },
     appliedOperationIds: [
@@ -1284,23 +1740,31 @@ function buildTypedAdverbialNuclearProjection(
   };
 }
 
-function buildSubjectOperationFrame(record, degree, scope) {
+function buildSubjectOperationFrame(record, degree, scope, sourceSlots = null) {
   const incorporated = scope === "incorporated-predicate";
+  const fusedAdjunctorShapePreserved = degree === "second-degree"
+    && record.restrictions.includes("fused-in-adjunctor")
+    && sourceSlots?.number?.num1 === record.num1;
   return deepFreeze({
     kind: "classical-nahuatl-adverbialized-subject-operation-frame",
     version: VERSION,
     authorizationStatus: "authorized",
     sourceClauseKind: record.clauseKind,
+    subjectHasReferent: false,
+    formalSubjectId: "3sg",
+    subjectDomain: record.domain,
     degree,
     operationId: incorporated
       ? "adverbial-incorporation-discards-subject"
       : degree === "second-degree"
         ? "adverbial-second-degree-sounded-num1-to-silent"
         : "adverbial-first-degree-shape-preserved",
-    sourceSubjectSlots: cloneRecord(record.subjectSlots),
-    resultSubjectSlots: incorporated ? null : cloneRecord(record.subjectSlots),
-    sourceNum1: degree === "second-degree" ? "sounded-lexical-source-num1" : record.num1,
-    resultNum1: incorporated ? "" : record.num1,
+    sourceSubjectSlots: cloneRecord(sourceSlots?.subject || {}),
+    resultSubjectSlots: incorporated ? null : cloneRecord(sourceSlots?.subject || {}),
+    sourceNum1: sourceSlots?.number?.num1 || "",
+    resultNum1: incorporated ? "" : degree === "second-degree" ? record.num1 : sourceSlots?.number?.num1 || "",
+    subjectNumberOperation: fusedAdjunctorShapePreserved ? "fused-adjunctor-shape-preserved"
+      : degree === "second-degree" ? "sounded-num1-to-silent" : "shape-preserved",
     subjectDiscarded: incorporated,
     firstDegreeShapePreserved: !incorporated && degree === "first-degree",
     secondDegreeNum1Silent: !incorporated && degree === "second-degree" && record.num1 === "⎕",
@@ -1483,12 +1947,12 @@ function evaluateExternalContext(record, request = {}, canonicalWord = "") {
     };
   }
   let realizedSurface = baseSurface;
-  if (negativeParticle === "ah" && record.id === "44.5-huel") realizedSurface = `ah${baseSurface}`;
-  if (negativeParticle === "ah" && record.id === "44.5-mo") realizedSurface = "ahmō";
-  if (negativeParticle === "ca" && record.id === "44.5-mo") realizedSurface = "camō";
+  // Admission above has already validated the licensed negative prefix.
+  // Realize it on the derived nucleus rather than substituting a stored word.
+  if (negativeParticle) realizedSurface = `${negativeParticle}${baseSurface}`;
   const surfaceParts = [precedingParticle, realizedSurface, stressPartner].filter(Boolean);
   const interrogativeForce = record.id === "44.5-quen"
-    ? sentencePosition === "initial"
+    ? !negativeParticle && sentencePosition === "initial"
     : clauseType === "question" && record.id === "44.5-mo"
       ? "rhetorical"
       : false;
@@ -1518,11 +1982,36 @@ function evaluateExternalContext(record, request = {}, canonicalWord = "") {
   };
 }
 
-function evaluateIncorporatedRecord(record, request, target) {
+function resolveExactIncorporationMatrix(exactResult, target, retainedSentence = null) {
+  const projection = target.getClassicalNahuatlVncContinuationSourceConstituents?.(exactResult);
+  if (!projection) return null;
+  const sentence = retainedSentence || (target.isClassicalNahuatlVncSentenceResultFrame?.(exactResult) === true
+    ? exactResult : target.requestClassicalVncSentenceResultFrame?.(exactResult));
+  if (!projection || projection.grammarAuthority !== false
+    || projection.callerSuppliedAuthorityAccepted !== false
+    || target.isClassicalNahuatlVncSentenceResultFrame?.(sentence) !== true
+    || sentence.authorizationStatus !== "authorized"
+    || (sentence !== exactResult && sentence.canonicalSourceFrame !== exactResult)) return null;
+  const application = sentence.vncApplicationFrame;
+  if (target.isClassicalNahuatlVncApplicationFrame?.(application) !== true
+    || application.authorizationStatus !== "authorized") return null;
+  const finite = application.normalizedRequest;
+  const objectCount = projection.sourceObjectRequests?.length;
+  const valence = ["intransitive", "single-object", "double-object", "triple-object"][objectCount];
+  if (!valence || !projection.sourceStem || !projection.sourceSubject
+    || !finite?.mood || !finite.tense) return null;
+  return {exactResult, sentence, target, matrix: {
+    stem: projection.sourceStem, verbClass: projection.verbClass, valence,
+    subject: projection.sourceSubject, voice: projection.sourceVoice,
+    mood: finite.mood, tense: finite.tense,
+  }};
+}
+
+function evaluateIncorporatedRecord(record, request, target, exactMatrix = null) {
   if (!record.incorporatedAllowed) {
     return { authorizationStatus: "blocked", blockReason: "lesson44-source-does-not-license-incorporation" };
   }
-  const matrix = request.matrix && typeof request.matrix === "object" ? request.matrix : {};
+  const matrix = exactMatrix?.matrix || (request.matrix && typeof request.matrix === "object" ? request.matrix : {});
   const matrixStem = normalizeStem(matrix.stem);
   const matrixVerbClass = normalizeToken(matrix.verbClass || "A").toUpperCase();
   const matrixValence = normalizeKey(matrix.valence || "intransitive");
@@ -1551,6 +2040,9 @@ function evaluateIncorporatedRecord(record, request, target) {
       matrixStem,
       matrixVerbClass,
       matrixValence,
+      ...(exactMatrix ? {matrixConstituent: {
+        kind: "vnc-result", stem: matrixStem, resultFrame: exactMatrix.exactResult,
+      }} : {}),
     },
     subject: normalizeKey(matrix.subject || "3sg"),
     mood: normalizeKey(matrix.mood || "indicative"),
@@ -1572,6 +2064,13 @@ function evaluateIncorporatedRecord(record, request, target) {
 
 function evaluateClassicalNahuatlAdverbialNuclear(request = {}, target = globalThis) {
   const exactSourceRequested = hasAdverbialExactSourceResultField(request);
+  const exactMatrixRequested = request.canonicalMatrixResult != null;
+  const exactMatrix = exactMatrixRequested
+    ? resolveExactIncorporationMatrix(request.canonicalMatrixResult, target) : null;
+  if (exactMatrixRequested && !exactMatrix) return buildBlockedFrame(
+    "lesson44-incorporation-exact-matrix-result-required", request);
+  if (exactMatrix && request.matrix != null) return buildBlockedFrame(
+    "lesson44-exact-matrix-and-scalar-matrix-are-mutually-exclusive", request);
   const exactAndPotentialMixed = exactSourceRequested
     && Object.prototype.hasOwnProperty.call(
       request,
@@ -1585,18 +2084,21 @@ function evaluateClassicalNahuatlAdverbialNuclear(request = {}, target = globalT
       request,
     );
   }
-  const requestForAuthorityScan = exactSourceRequested
-    ? Object.fromEntries(Object.entries(request).filter(
-      ([field]) => field !== "canonicalSourceResult",
-    ))
-    : request;
+  const requestForAuthorityScan = Object.fromEntries(Object.entries(request).filter(
+    ([field, value]) => !(field === "canonicalSourceResult" && exactSourceRequested)
+      && !(field === "canonicalMatrixResult" && exactMatrix)
+      && !(field === "adverbialPotentialFrame"
+        && isClassicalNahuatlAdverbialPotentialFrame(value)),
+  ));
   const hostilePath = findHostileAuthorityPath(requestForAuthorityScan);
   if (hostilePath) {
     return buildBlockedFrame(`caller-supplied-derived-authority-rejected:${hostilePath}`, request);
   }
   const adverbialPotentialFrame = exactSourceRequested
     ? resolveClassicalNahuatlAdverbialPotential(
-      { canonicalSourceResult: request.canonicalSourceResult },
+      { canonicalSourceResult: request.canonicalSourceResult,
+        ...(Object.prototype.hasOwnProperty.call(request, "preteritAgentiveUse")
+          ? {preteritAgentiveUse: request.preteritAgentiveUse} : {}) },
       target,
     )
     : request.adverbialPotentialFrame || null;
@@ -1624,18 +2126,31 @@ function evaluateClassicalNahuatlAdverbialNuclear(request = {}, target = globalT
     return buildBlockedFrame("adverbial-possessive-nnc-allows-first-degree-only", request, { lexicalEntryId: record.id });
   }
   const scope = normalizeKey(request.scope || (record.externalAllowed ? "external-clause" : "incorporated-predicate"));
+  if (exactMatrix && scope !== "incorporated-predicate") return buildBlockedFrame(
+    "lesson44-exact-matrix-requires-incorporated-scope", request);
   if (!LCM_AXES.scopes.includes(scope)) {
     return buildBlockedFrame("adverbial-scope-required", request, { lexicalEntryId: record.id });
   }
   if (scope === "external-clause" && !record.externalAllowed) {
     return buildBlockedFrame("adverbial-source-is-compound-only", request, { lexicalEntryId: record.id });
   }
-  const subjectOperationFrame = buildSubjectOperationFrame(record, degree, scope);
+  const sourceSlots = adverbialPotentialFrame.canonicalTypedSlotFrame?.slots;
+  if (!sourceSlots) return buildBlockedFrame("derived-nuclear-slot-frame-required", request);
+  if ([sourceSlots.subject?.pers1, sourceSlots.subject?.pers2, sourceSlots.number?.num2]
+    .some(carrier => realizeTypedCarrier(carrier))) {
+    return buildBlockedFrame("adverbialization-requires-third-person-nonplural-source", request);
+  }
+  const subjectOperationFrame = buildSubjectOperationFrame(record, degree, scope, sourceSlots);
   const typedProjection = scope === "external-clause"
     ? buildTypedAdverbialNuclearProjection(
       record,
       subjectOperationFrame,
       target,
+      adverbialPotentialFrame.canonicalTypedSlotFrame,
+      adverbialPotentialFrame.canonicalSourceResult,
+      adverbialPotentialFrame.exactSourceResolution?.generalUseStemFrame,
+      adverbialPotentialFrame.primitiveAdverbialSourceFrame,
+      adverbialPotentialFrame.lexicalVncSourceFrame,
     )
     : null;
   if (
@@ -1650,7 +2165,14 @@ function evaluateClassicalNahuatlAdverbialNuclear(request = {}, target = globalT
     });
   }
   const externalContext = scope === "external-clause"
-    ? evaluateExternalContext(record, request, typedProjection.wordSurface)
+    ? evaluateExternalContext(record, {
+      ...request,
+      context: {
+        ...adverbialPotentialFrame.inheritedContext,
+        ...Object.fromEntries(Object.entries(request.context || {})
+          .filter(([, value]) => value !== "" && value != null)),
+      },
+    }, typedProjection.wordSurface)
     : null;
   if (externalContext && externalContext.authorizationStatus !== "authorized") {
     return buildBlockedFrame(externalContext.blockReason, request, {
@@ -1661,7 +2183,7 @@ function evaluateClassicalNahuatlAdverbialNuclear(request = {}, target = globalT
     });
   }
   const incorporation = scope === "incorporated-predicate"
-    ? evaluateIncorporatedRecord(record, request, target)
+    ? evaluateIncorporatedRecord(record, request, target, exactMatrix)
     : null;
   if (incorporation && incorporation.authorizationStatus !== "authorized") {
     return buildBlockedFrame(incorporation.blockReason, request, {
@@ -1673,17 +2195,21 @@ function evaluateClassicalNahuatlAdverbialNuclear(request = {}, target = globalT
   }
   const baseFormulaRealization =
     typedProjection?.formulaRealization || "";
-  const formulaRealization = incorporation?.formulaRealization
-    || (externalContext?.negativeParticle
+  const contextualNuclearFormula = externalContext?.negativeParticle
       ? `${externalContext.negativeParticle}#${baseFormulaRealization.slice(1)}`
-      : baseFormulaRealization);
+      : baseFormulaRealization;
+  const formulaRealization = incorporation?.formulaRealization
+    || [externalContext?.precedingParticle,contextualNuclearFormula,
+      externalContext?.stressPartner].filter(Boolean).join(" ");
   const wordSurface =
     incorporation?.wordSurface
     || externalContext?.realizedSurface
     || typedProjection?.wordSurface
     || "";
   const sentenceSurface = incorporation?.sentenceSurface
-    || `${externalContext?.phraseSurface || wordSurface}.`;
+    || `${capitalizeClassicalNahuatlNncSentenceInitial(
+      externalContext?.phraseSurface || wordSurface,
+    )}.`;
   const selectedResultId = `${record.id}:${degree}:${scope}`;
   const appliedSemanticRules = [
     "adverbial-potential-gate",
@@ -1703,16 +2229,26 @@ function evaluateClassicalNahuatlAdverbialNuclear(request = {}, target = globalT
       adverbialPotentialFrame.exactSourceResolution || null,
     canonicalSourceResult:
       adverbialPotentialFrame.canonicalSourceResult || null,
+    adverbialPotentialFrame,
+    lexicalNncSourceFrame:adverbialPotentialFrame.lexicalNncSourceFrame || null,
+    ...(adverbialPotentialFrame.lexicalVncSourceFrame?{lexicalVncSourceFrame:adverbialPotentialFrame.lexicalVncSourceFrame}:{}),
+    primitiveAdverbialSourceFrame:adverbialPotentialFrame.primitiveAdverbialSourceFrame || null,
     canonicalTypedSlotFrame:
       adverbialPotentialFrame.canonicalTypedSlotFrame || null,
     exactSourceResultIdentityPreserved:
       adverbialPotentialFrame.exactSourceResultIdentityPreserved === true,
+    canonicalMatrixResult: exactMatrix?.exactResult || null,
+    exactMatrixResultIdentityPreserved: Boolean(exactMatrix),
     lexicalAuthorizationFrame: {
       kind: "classical-nahuatl-adverbial-lexical-authorization",
       authorizationStatus: "authorized",
       lexicalEntryId: record.id,
       allowedDegrees: record.allowedDegrees.slice(),
       allowedScopes: adverbialPotentialFrame.allowedScopes.slice(),
+      licensedUses: record.licensedUses.slice(),
+      licensedAdjunctionRelations: record.licensedAdjunctionRelations?.slice() || null,
+      sourceAnalysis: record.sourceAnalysis,
+      useEvidence: record.useEvidence.slice(),
       family: record.family,
       semanticDomain: record.domain,
       lexicalStatus: record.lexicalStatus,
@@ -1788,6 +2324,7 @@ function evaluateClassicalNahuatlAdverbialNuclear(request = {}, target = globalT
     surfaceStringAuthority: false,
   });
   ISSUED_ADVERBIAL_FRAMES.add(frame);
+  if (exactMatrix) EXACT_INCORPORATION_MATRICES.set(frame, exactMatrix);
   ISSUED_ADVERBIAL_OPERATION_FRAMES.add(frame.operationFrame);
   ISSUED_ADVERBIAL_SUBJECT_OPERATION_FRAMES.add(
     frame.operationFrame.subjectOperationFrame
@@ -1815,6 +2352,27 @@ function isClassicalNahuatlAdverbialNuclearResult(frame = null) {
   if (frame.authorizationStatus === "blocked") {
     return Boolean(frame.blockReason);
   }
+  if (frame.canonicalMatrixResult) {
+    const captured = EXACT_INCORPORATION_MATRICES.get(frame);
+    if (!captured || captured.exactResult !== frame.canonicalMatrixResult
+      || frame.exactMatrixResultIdentityPreserved !== true
+      || !resolveExactIncorporationMatrix(captured.exactResult, captured.target, captured.sentence)
+      || captured.target.isClassicalNahuatlNominalConstructionResult?.(frame.canonicalResult) !== true
+      || frame.canonicalResult.sourceAuthorizationFrame?.lexicalFacts?.capturedMatrixVncResult !== captured.exactResult)
+      return false;
+  }
+  if(frame.sourceInputMode==="owner-issued-lexical-adverbial-nnc-source"
+    && (!isClassicalNahuatlAdverbialPotentialFrame(frame.adverbialPotentialFrame)
+      || frame.lexicalNncSourceFrame!==frame.adverbialPotentialFrame.lexicalNncSourceFrame
+      || frame.canonicalTypedSlotFrame!==frame.lexicalNncSourceFrame?.typedSlotFrame))return false;
+  if(frame.sourceInputMode==="owner-issued-lexical-adverbial-vnc-source"
+    && (!isClassicalNahuatlAdverbialPotentialFrame(frame.adverbialPotentialFrame)
+      || frame.lexicalVncSourceFrame!==frame.adverbialPotentialFrame.lexicalVncSourceFrame
+      || frame.canonicalTypedSlotFrame!==frame.lexicalVncSourceFrame?.typedSlotFrame))return false;
+  if(frame.sourceInputMode==="owner-issued-primitive-adverbial-predicate-source"
+    && (!isClassicalNahuatlAdverbialPotentialFrame(frame.adverbialPotentialFrame)
+      || frame.primitiveAdverbialSourceFrame!==frame.adverbialPotentialFrame.primitiveAdverbialSourceFrame
+      || frame.canonicalTypedSlotFrame!==frame.primitiveAdverbialSourceFrame?.typedSlotFrame))return false;
   const exactSourceIdentityValid = frame.sourceInputMode
     !== "exact-owner-issued-vnc-nnc-or-clause-result"
     || Boolean(
@@ -1927,7 +2485,11 @@ function buildClassicalNahuatlAdverbialNuclearBatchPlan(
   request = {},
   target = globalThis
 ) {
-  const hostilePath = findHostileAuthorityPath(request);
+  // Match scalar admission: only exact owner-issued potentials may carry
+  // their internal morphology. Copies still pass through the authority scan.
+  const hostilePath = findHostileAuthorityPath(
+    request, "request", isClassicalNahuatlAdverbialPotentialFrame,
+  );
   if (hostilePath) {
     return buildBlockedAdverbialBatchPlan(
       `caller-supplied-derived-authority-rejected:${hostilePath}`,
@@ -2028,7 +2590,9 @@ function projectClassicalNahuatlAdverbialNuclearBatchCoordinates(plan = null, co
   }
   const selected = Array.isArray(coordinates) && coordinates.length ? coordinates : plan.coordinates;
   return Object.freeze(selected.map(coordinate => {
-    const hostilePath = findHostileAuthorityPath(coordinate);
+    const hostilePath = findHostileAuthorityPath(
+      coordinate, "request", isClassicalNahuatlAdverbialPotentialFrame,
+    );
     if (hostilePath) {
       return deepFreeze({
         kind: "classical-nahuatl-adverbial-nuclear-batch-coordinate",
@@ -2096,6 +2660,24 @@ function isClassicalNahuatlAdverbialNuclearBatchCoordinate(
   );
 }
 
+function getObsoleteGeneralUseAdverbialConstituent(result, target) {
+  if (!isClassicalNahuatlAdverbialNuclearResult(result)
+    || result.scope !== "external-clause") return null;
+  const resolution = result.exactSourceResolution;
+  const capture = resolution?.obsoleteRootGeneralUseCaptureFrame;
+  const stem = capture?.obsoleteRootPreteritAnalysis?.generalUseStem;
+  if (target.isClassicalNahuatlPreteritVncNominalizationCaptureFrame?.(capture) !== true
+    || capture.obsoleteRootPreteritAnalysis.generalUseOnly !== true
+    || capture.canonicalVncResult !== result.canonicalSourceResult
+    || result.operationFrame.typedSlotFrame?.slots?.predicate?.stem !== stem) return null;
+  // The existing preterit general-use cā body has TL1A embedding shape.
+  // This derives its Source shape; it does not declare a detached noun lexeme.
+  return deepFreeze({kind: "obsolete-general-use-nnc", stem,
+    nounClass: "tl", sourceClass: "tl-1-a", canonicalResultFrame: result,
+    canonicalCaptureFrame: capture, restrictedNounGenerated: false,
+    callerSuppliedAuthorityAccepted: false});
+}
+
 export function installClassicalNahuatlAdverbialNuclearGlobals(targetObject = globalThis) {
   const target = targetObject && typeof targetObject === "object" ? targetObject : globalThis;
   const api = {
@@ -2104,6 +2686,13 @@ export function installClassicalNahuatlAdverbialNuclearGlobals(targetObject = gl
     getClassicalNahuatlLcm,
     isClassicalNahuatlLcm,
     listClassicalNahuatlLesson44SourceRecords,
+    buildClassicalNahuatlLexicalAdverbialPotentialFrame:source=>
+      buildClassicalNahuatlLexicalAdverbialPotentialFrame(source,target),
+    buildClassicalNahuatlPrimitiveAdverbialPotentialFrame:source=>
+      buildClassicalNahuatlPrimitiveAdverbialPotentialFrame(source,target),
+    isClassicalNahuatlPrimitiveAdverbialPotentialFrame:frame=>
+      isClassicalNahuatlAdverbialPotentialFrame(frame)
+      && frame.sourceInputMode === "owner-issued-primitive-adverbial-predicate-source",
     resolveClassicalNahuatlAdverbialPotential:
       source => resolveClassicalNahuatlAdverbialPotential(
         source,
@@ -2120,6 +2709,8 @@ export function installClassicalNahuatlAdverbialNuclearGlobals(targetObject = gl
       evaluateClassicalNahuatlAdverbialNuclear(request, target)
     ),
     isClassicalNahuatlAdverbialNuclearResult,
+    getClassicalNahuatlObsoleteGeneralUseAdverbialConstituent:
+      result => getObsoleteGeneralUseAdverbialConstituent(result, target),
     isClassicalNahuatlAdverbialNuclearOperationFrame,
     isClassicalNahuatlAdverbializedSubjectOperationFrame,
     isClassicalNahuatlAdverbialContextFrame,

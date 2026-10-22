@@ -676,8 +676,8 @@ function buildExtantFusedNonspecificCauseeProjection(runtime, sourceSelection) {
     && participantTransformFrame.authorizationStatus === "authorized"
     && participantTransformFrame.sourceVoice === "impersonal"
     && participantTransformFrame.implicitAgentBecomesCausativeObject === true
-    && participantTransformFrame.sourceSubjectBecomesCausativeObject === false
-    && participantTransformFrame.referentiallyEmptySourceSubjectDiscarded === true
+    && participantTransformFrame.sourceSubjectBecomesCausativeObject === true
+    && participantTransformFrame.referentiallyEmptySourceSubjectDiscarded === false
     && participantTransformFrame.requestedCausativeObjectKind === ""
     && participantTransformFrame.causativeObjectKindChoiceEligible === false
     && participantTransformFrame.implicitAgentObjectKind === "nonspecific-nonhuman"

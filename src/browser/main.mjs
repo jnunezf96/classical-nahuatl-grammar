@@ -1,4 +1,4 @@
-import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260922-grammar-interface-549";
+import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20261008-apple-operation-gate-2&choices=20261013-build-constructions-2&design=lesson42-path-27&loading=1&panel=33&reader=42-10-275&cleanup=classical-only-20261009-1&modifier=canonical-20261009-1&continuation=shared-preparation-20261009-1&repair=position-model-20261012-25&audit=20261013-source-facts-1&remaining=20261013-inventory-1&caseMeta=20261013-1&navigation=20261014-1&placement=20261014-1&operationMenu=20261014-2&choicesLayout=20261014-4&exampleMirror=20261014-1&resultEditing=20261014-8&pickerTransport=20261014-1&sourceAdmission=20261014-3&operationClear=20261014-1&routeShapes=20261021-1&subjectTransition=20261021-29";
 
 const bootstrapPromise = bootstrapBrowserApp();
 
@@ -22,9 +22,11 @@ if (typeof window !== "undefined") {
 function publishBootstrapStatus(status, error = null) {
     if (typeof document === "undefined") return;
     document.documentElement.dataset.classicalBootstrapStatus = status;
+    const presentationReady = document.documentElement.dataset.classicalPresentationStatus === "ready";
+    const waitingForPresentation = status === "ready" && !presentationReady;
     const workbench = document.getElementById("classical-workbench");
     if (workbench) {
-        if (status === "ready") {
+        if (status === "ready" && presentationReady) {
             workbench.removeAttribute("inert");
             workbench.setAttribute("aria-busy", "false");
         } else {
@@ -34,7 +36,11 @@ function publishBootstrapStatus(status, error = null) {
     }
     const projection = document.getElementById("classical-bootstrap-status");
     if (!projection) return;
-    projection.dataset.classicalBootstrapStatus = status;
+    projection.dataset.classicalBootstrapStatus = waitingForPresentation ? "loading" : status;
+    if (waitingForPresentation) {
+        projection.hidden = false;
+        return;
+    }
     if (status === "ready") {
         projection.hidden = true;
         return;
@@ -52,6 +58,20 @@ function publishBootstrapStatus(status, error = null) {
     );
     if (reload) reload.hidden = false;
     projection.dataset.classicalBootstrapError = error?.name || "Error";
+}
+
+// Runtime readiness precedes the composition module's first layout pass.
+// Keep the stable loading shell until both are ready, regardless of order.
+if (typeof document !== "undefined") {
+    document.addEventListener("classical:presentation-ready", () => {
+        document.documentElement.dataset.classicalPresentationStatus = "ready";
+        if (document.documentElement.dataset.classicalBootstrapStatus === "ready") {
+            publishBootstrapStatus("ready");
+        }
+    }, { once: true });
+    document.addEventListener("classical:presentation-failed", event => {
+        publishBootstrapStatus("failed", event.detail);
+    }, { once: true });
 }
 
 bootstrapPromise.then(

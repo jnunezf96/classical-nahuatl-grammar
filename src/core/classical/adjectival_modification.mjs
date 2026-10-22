@@ -38,6 +38,7 @@ const ADJUNCTOR_PATTERNS = Object.freeze([
 ]);
 const LINK_ROLES = Object.freeze([
   "shared-subject",
+  "supplement-possessor",
   "vnc-subject",
   "vnc-object",
 ]);
@@ -100,6 +101,7 @@ const FORBIDDEN_AUTHORITY_KEYS = Object.freeze(new Set([
   "canvasAnswer",
   "citation",
   "compositionScope",
+  "sentencePunctuation",
   "evidenceSource",
   "formula",
   "formulaArtifact",
@@ -209,9 +211,11 @@ function issueSelectedClause(targetObject, value) {
 function getCapturedCanonicalResult(targetObject, input = null) {
   if (!input || typeof input !== "object") return null;
   if (targetObject.isAdverbialAdjunctionResult?.(input) === true) return input;
+  if (targetObject.isClassicalNahuatlIssuedParticleSentenceLayerFrame?.(input) === true
+    || targetObject.isClassicalNahuatlIssuedNncSentenceSurfaceFrame?.(input) === true) return input;
   if (targetObject.isClassicalNahuatlClosureFrame?.(input) === true
     && input.authorizationStatus === "authorized"
-    && input.operationFrame?.operation === "purposive") return input;
+    && ["purposive", "compound"].includes(input.operationFrame?.operation)) return input;
   if (
     getOwnerState(targetObject).results.has(input)
     && input.authorizationStatus === "authorized"
@@ -279,10 +283,17 @@ function buildNncSelectedClause(
   ) {
     return null;
   }
+  const ownedSentence = targetObject.isClassicalNahuatlIssuedNncSentenceSurfaceFrame?.(canonicalInput) === true
+    ? canonicalInput : targetObject.isClassicalNahuatlIssuedNncSentenceSurfaceFrame?.(canonicalInput?.sentenceFrame) === true
+      ? canonicalInput.sentenceFrame : null;
+  const sentencePunctuation = ownedSentence?.sourceNncSlotFrame === slotFrame
+    && [".", "?", "!"].includes(ownedSentence.finalPunctuation)
+    ? ownedSentence.finalPunctuation : ".";
   return issueSelectedClause(targetObject, {
     role: normalizeKey(role) || "unknown",
     sourceResult: canonicalInput,
     unitKind: "nnc",
+    sentencePunctuation,
     clauseClass: normalizeKey(clauseClass) || "ordinary-nnc",
     formula: normalizeToken(formula),
     unitSurface: stripSentenceBoundary(surface),
@@ -340,6 +351,11 @@ function buildVncSelectedClause(
     ? slotFrame.slots?.prePredicate?.map(slot => slot.objectPositionFrame)
       .find(position => position?.objectPerson) || {}
     : {};
+  const specificObjectPosition = transitive
+    ? slotFrame.slots?.prePredicate?.map(slot => slot.objectPositionFrame)
+      .find(hasIndependentObjectReference) || null : null;
+  const independentObject = hasIndependentObjectReference(objectProfile)
+    ? objectProfile : specificObjectPosition;
   const sourceValence = normalizeKey(
     !transitive ? "intransitive" : selectedMachinery?.valence
       || selectedMachinery?.classTargetValence || objectProfile.objectKind,
@@ -358,7 +374,7 @@ function buildVncSelectedClause(
         || selectedMachinery?.subject || selectedMachinery?.targetSubject
         || selectedMachinery?.priorVncFrame?.subject
         || (targetObject.isClassicalNahuatlClosureFrame?.(canonicalInput) === true
-          && canonicalInput.operationFrame?.operation === "purposive"
+          && ["purposive", "compound"].includes(canonicalInput.operationFrame?.operation)
           ? canonicalInput.normalizedRequest?.subject : ""),
     ),
     predicateStem: normalizeStem(
@@ -373,11 +389,77 @@ function buildVncSelectedClause(
     objectKind: normalizeKey(
       objectProfile.objectKind || objectPosition.objectKind,
     ),
+    independentObjectContact: Boolean(independentObject),
+    independentObjectPerson: normalizeKey(independentObject?.objectPerson || ""),
     compoundHead: false,
     pronominalFamily: "",
     typedSlotFrame: slotFrame,
     isComposition: false,
   });
+}
+
+function buildSupplementationPossessorContact(targetObject, source) {
+  if (source.referenceFrame?.referenceMode !== "shared"
+    || source.referenceFrame.headRole !== "subject"
+    || source.referenceFrame.supplementContactRole !== "subject"
+    || source.principalClause?.unitKind !== "nnc"
+    || source.supplementClause?.unitKind !== "nnc"
+    || source.principalContinuationFrames?.length
+    || source.supplementContinuationFrames?.length
+    || source.interveningClauses?.length) return null;
+  const canonicalPrincipalSource = targetObject.getClassicalNahuatlSupplementationClauseSourceFrame?.(source.principalClause);
+  const canonicalSupplementSource = targetObject.getClassicalNahuatlSupplementationClauseSourceFrame?.(source.supplementClause);
+  const principal = getSelectedCanonicalClause(targetObject, canonicalPrincipalSource, "inner-principal");
+  const supplement = getSelectedCanonicalClause(targetObject, canonicalSupplementSource, "inner-supplement");
+  const ownsInnerNominalSlot = (clause, canonicalSource, envelope) => {
+    if (targetObject.isClassicalNahuatlNncSlotFrame?.(clause?.typedSlotFrame) === true) return true;
+    // A privately issued name retains its own outer shell rather than the
+    // ordinary NNC slot shape. It may be the nonpossessed inner clause only;
+    // the possessed clause below still supplies the actual dyadic NNC slots.
+    const slot = clause?.typedSlotFrame;
+    return clause?.clauseClass === "personal-name"
+      && clause.stateArity === "vacant" && !envelope.possessor
+      && targetObject.isPersonalNameNncResult?.(canonicalSource) === true
+      && slot === canonicalSource.typedSlotFrame && Object.isFrozen(slot)
+      && targetObject.isPersonalNameNncSourceFrame?.(slot.downgradedSource) === true
+      && slot.grammarOperation?.sourceFrame === slot.downgradedSource
+      && slot.outerSubject?.person === canonicalSource.outerSubject
+      && slot.outerNumber === canonicalSource.outerNumberDyad;
+  };
+  if (principal?.unitKind !== "nnc" || supplement?.unitKind !== "nnc"
+    || !ownsInnerNominalSlot(principal, canonicalPrincipalSource, source.principalClause)
+    || !ownsInnerNominalSlot(supplement, canonicalSupplementSource, source.supplementClause)) return null;
+  const candidates = [
+    [source.principalClause, principal.typedSlotFrame],
+    [source.supplementClause, supplement.typedSlotFrame],
+  ].filter(([envelope, slots]) => envelope.possessor?.participantFrame?.hasReferent === true
+    && slots.slots?.state?.arity === "dyadic"
+    && slots.slots.state.slots?.length === 2
+    && slots.slots.state.slots.every(slot => slot.possessorPerson === envelope.possessor.category));
+  if (candidates.length !== 1) return null;
+  const [possessedEnvelope, possessorSlotFrame] = candidates[0];
+  return deepFreeze({
+    kind: "classical-nahuatl-adjectival-supplementation-possessor-contact-frame",
+    exactSupplementationResult: source,
+    canonicalPrincipalSource,
+    canonicalSupplementSource,
+    principalSlotFrame: principal.typedSlotFrame,
+    supplementSlotFrame: supplement.typedSlotFrame,
+    sharedSubjectReferenceFrame: source.referenceFrame,
+    possessedEnvelope,
+    possessorSlotFrame,
+    possessorContact: possessedEnvelope.possessor,
+    possessorCategory: possessedEnvelope.possessor.category,
+    contactRole: "supplement-possessor",
+    factsAreReadOnly: true,
+    formulaStringAuthority: false,
+    surfaceStringAuthority: false,
+  });
+}
+
+function isPreposedModifierContext({order = "", topology = ""} = {}) {
+  return order === "modifier-head-preposed"
+    || topology === "cooperating-preposed-nonpreposed";
 }
 
 function getSelectedCanonicalClause(
@@ -388,18 +470,96 @@ function getSelectedCanonicalClause(
   const canonicalInput = getCapturedCanonicalResult(targetObject, input);
   if (!canonicalInput) return null;
 
-  // Adverbial modification preserves the principal NNC's contact features;
+  if (targetObject.isClassicalNahuatlClauseConjunctionResultFrame?.(canonicalInput) === true) {
+    // §52.6 supplies the whole shared-subject lexical unit as a modifier.
+    // The supplementation owner already validates its member contacts; no
+    // member's single predicate slot is substituted for the whole unit.
+    const envelope = targetObject.buildClassicalNahuatlSupplementationClauseEnvelope?.(canonicalInput);
+    if (targetObject.isClassicalNahuatlSupplementationClauseEnvelope?.(envelope) !== true
+      || envelope.sharedLexicalConjunctionSubjectContact !== true
+      || envelope.canonicalConjunctionResult !== canonicalInput
+      || targetObject.getClassicalNahuatlSupplementationClauseSourceFrame?.(envelope) !== canonicalInput) return null;
+    return issueSelectedClause(targetObject, {
+      role: normalizeKey(role) || "unknown",
+      sourceResult: canonicalInput,
+      unitKind: "nnc",
+      clauseClass: "lexical-conjunction-nnc",
+      formula: envelope.formulaRealization,
+      unitSurface: stripSentenceBoundary(envelope.surface),
+      subjectId: envelope.subject.category,
+      predicateStem: "",
+      stateArity: "not-applicable",
+      sourceValence: "not-applicable",
+      objectPerson: "",
+      objectKind: "",
+      compoundHead: false,
+      pronominalFamily: "",
+      typedSlotFrame: null,
+      lexicalConjunctionEnvelope: envelope,
+      lexicalConjunctionMembers: envelope.lexicalConjunctionMembers,
+      ownedModifierAdjunctor: ["in-before-each", "in-before-left-only"].includes(
+        canonicalInput.relationFrame.adjunctorDistribution) ? "in" : "",
+      ownedAdjunctorDistribution: canonicalInput.relationFrame.adjunctorDistribution,
+      isComposition: true,
+    });
+  }
+
+  if (targetObject.isClassicalNahuatlIssuedParticleSentenceLayerFrame?.(canonicalInput) === true) {
+    const nucleus = getSelectedCanonicalClause(targetObject,
+      canonicalInput.canonicalInputFrame, role);
+    if (!nucleus) return null;
+    return issueSelectedClause(targetObject, {
+      ...nucleus,
+      sourceResult: canonicalInput,
+      formula: stripSentenceBoundary(canonicalInput.sentenceFormulaDisplay),
+      unitSurface: stripSentenceBoundary(canonicalInput.sentenceSurfaceDisplay)
+        .replace(/^./u, initial => initial.toLowerCase()),
+      leadingClauseMarker: targetObject.isClassicalNahuatlParticleResultFrame?.(canonicalInput.particleResultFrame) === true
+        ? canonicalInput.particleResultFrame.semanticMarker || '' : '',
+      leadingClauseMarkerFrame: canonicalInput.particleResultFrame,
+    });
+  }
+
+  if (targetObject.isClassicalNahuatlVncSentenceResultFrame?.(canonicalInput) === true) {
+    const application = canonicalInput.vncApplicationFrame;
+    // This issued whole may own an internal application holder which was not
+    // separately registered as a public Result. Its exact owned nucleus still
+    // supplies the contacts; the complete Sentence remains the selected Source.
+    const matchingApplication = application
+      && targetObject.isClassicalNahuatlVncApplicationFrame?.(application) === true
+      && canonicalInput.canonicalSourceFrame === application
+      && canonicalInput.canonicalResultFrame === application.resultFrame
+      && canonicalInput.vncApplicationResultFrame === application.resultFrame;
+    const nucleus = application
+      ? matchingApplication
+        ? buildVncSelectedClause(targetObject, application, role) : null
+      : getSelectedCanonicalClause(targetObject,
+        canonicalInput.lateOperationClosureFrame, role);
+    if (!nucleus || nucleus.unitKind !== "vnc") return null;
+    return issueSelectedClause(targetObject, {
+      ...nucleus,
+      sourceResult: canonicalInput,
+      formula: canonicalInput.sentenceFormulaDisplay.replace(/[.?!]+$/u, ""),
+      unitSurface: stripSentenceBoundary(canonicalInput.sentenceSurfaceDisplay)
+        .replace(/^./u, initial => initial.toLowerCase()),
+    });
+  }
+
+  // Adverbial modification preserves the principal clause's contact features;
   // the whole issued composition, not its spelling, becomes the selected unit.
   if (targetObject.isAdverbialAdjunctionResult?.(canonicalInput) === true) {
     const principal = getSelectedCanonicalClause(targetObject,
       canonicalInput.sourceContract?.principal?.issuedResult, role);
-    if (!principal || principal.unitKind !== "nnc") return null;
+    if (!principal || !["nnc", "vnc"].includes(principal.unitKind)) return null;
     return issueSelectedClause(targetObject, {
       ...principal,
       sourceResult: canonicalInput,
-      clauseClass: "adverbially-modified-nnc",
+      clauseClass: principal.unitKind === "nnc"
+        ? "adverbially-modified-nnc"
+        : principal.clauseClass,
       formula: canonicalInput.formulaRecord?.formula,
-      unitSurface: stripSentenceBoundary(canonicalInput.surface),
+      unitSurface: stripSentenceBoundary(
+        canonicalInput.embeddedSurface ?? canonicalInput.surface),
       isComposition: true,
     });
   }
@@ -427,7 +587,40 @@ function getSelectedCanonicalClause(
       compoundHead: headSource.compoundHead === true,
       pronominalFamily: headSource.pronominalFamily || "",
       typedSlotFrame: headSource.typedSlotFrame,
+      sentencePunctuation: headSource.sentencePunctuation || ".",
       isComposition: true,
+    });
+  }
+
+  const attestedAdjective = targetObject
+    .getClassicalNahuatlAttestedNncCellExternalProjection?.(canonicalInput);
+  if (attestedAdjective?.canonicalResultFrame === canonicalInput
+    && attestedAdjective.canonicalSourceFrame === canonicalInput.sourceFrame
+    && attestedAdjective.adjectivalFunction === "predicative-quality"
+    && attestedAdjective.subjectParticipantFrame === canonicalInput.subjectParticipantFrame
+    && attestedAdjective.subjectParticipantFrame?.hasReferent === true) {
+    // The selected external NNC assertion is known; its inner primitive,
+    // ordinary slots and paradigm are not thereby supplied.
+    return issueSelectedClause(targetObject, {
+      role: normalizeKey(role) || "unknown",
+      sourceResult: canonicalInput,
+      unitKind: "nnc",
+      clauseClass: "attested-adjectival-nnc",
+      formula: normalizeToken(attestedAdjective.formulaRealization),
+      unitSurface: stripSentenceBoundary(attestedAdjective.wordSurface),
+      subjectId: attestedAdjective.subjectParticipantFrame.category,
+      subjectParticipantFrame: attestedAdjective.subjectParticipantFrame,
+      attestedCellExternalProjection: attestedAdjective,
+      predicateStem: "",
+      stateArity: "unclaimed",
+      sourceValence: "not-applicable",
+      objectPerson: "",
+      objectKind: "",
+      compoundHead: false,
+      pronominalFamily: "",
+      typedSlotFrame: null,
+      sentencePunctuation: canonicalInput.sentenceSurface?.match(/[.?!]$/u)?.[0] || ".",
+      isComposition: false,
     });
   }
 
@@ -446,6 +639,21 @@ function getSelectedCanonicalClause(
     });
   }
 
+  if (targetObject.isPlaceGentilicNncFrame?.(canonicalInput) === true
+    && canonicalInput.authorizationStatus === "authorized") {
+    // The derived people retain the complete place/gentilic Result as Source.
+    // Their owned agreement slots differ from the captured city's slots.
+    return buildNncSelectedClause(targetObject, {
+      canonicalInput,
+      role,
+      slotFrame: canonicalInput.finiteFrame?.typedSlotFrame,
+      formula: canonicalInput.formulaRealization,
+      surface: canonicalInput.wordSurface,
+      sourceFrame: canonicalInput.sourceAnalysis,
+      clauseClass: "place-gentilic-nnc",
+    });
+  }
+
   if (
     typeof targetObject?.isClassicalNahuatlPronominalNncResult === "function"
     && targetObject.isClassicalNahuatlPronominalNncResult(canonicalInput)
@@ -454,8 +662,10 @@ function getSelectedCanonicalClause(
       canonicalInput,
       role,
       slotFrame: canonicalInput.typedSlotFrame,
-      formula: canonicalInput.formulaProjection?.formulaRealization,
-      surface: canonicalInput.writtenProjection?.surfaceRealization,
+      formula: stripSentenceBoundary(canonicalInput.sentenceFrame?.sentenceFormulaDisplay
+        || canonicalInput.formulaProjection?.formulaRealization),
+      surface: canonicalInput.sentenceFrame?.embeddedSentenceSurface
+        || canonicalInput.writtenProjection?.surfaceRealization,
       sourceFrame: canonicalInput.sourceFrame,
       clauseClass: "pronominal-nnc",
       pronominalFamily: canonicalInput.sourceFrame?.familyId,
@@ -473,8 +683,9 @@ function getSelectedCanonicalClause(
       canonicalInput,
       role,
       slotFrame: canonicalInput.sourceNncSlotFrame,
-      formula: canonicalInput.baseNncFormula,
-      surface: canonicalInput.canonicalNuclearSurface,
+      formula: stripSentenceBoundary(canonicalInput.sentenceFormulaDisplay),
+      surface: stripSentenceBoundary(canonicalInput.sentenceSurface)
+        .replace(/^./u, initial => initial.toLowerCase()),
       clauseClass: canonicalInput.sourceNncSlotFrame?.nncFamily || "nnc",
       pronominalFamily:
         canonicalInput.sourceNncSlotFrame?.pronominalSubtypeDetail || "",
@@ -514,11 +725,31 @@ function getSelectedCanonicalClause(
         role,
         slotFrame,
         formula: canonicalInput.formulaRealization,
-        surface: canonicalInput.wordSurface,
+        surface: canonicalInput.constructionKind === "calendar-date-nnc"
+          ? canonicalInput.wordSurface : stripSentenceBoundary(
+          canonicalInput.sentenceSurface || canonicalInput.wordSurface,
+        ).replace(/^./u, initial => initial.toLowerCase()),
         sourceFrame: canonicalInput.sourceAuthorizationFrame,
         clauseClass: canonicalInput.constructionKind,
       });
     }
+  }
+
+  if (
+    typeof targetObject?.isClassicalNahuatlRelationalResult === "function"
+    && targetObject.isClassicalNahuatlRelationalResult(canonicalInput)
+    && canonicalInput.sourceFrame?.subjectMode === "adverbialized"
+    && canonicalInput.typedSlotFrame === canonicalInput.nncSlotFrame
+  ) {
+    return buildNncSelectedClause(targetObject, {
+      canonicalInput,
+      role,
+      slotFrame: canonicalInput.typedSlotFrame,
+      formula: canonicalInput.formulaProjection?.formulaRealization,
+      surface: canonicalInput.surface,
+      sourceFrame: canonicalInput.sourceFrame,
+      clauseClass: "adverbialized-nnc",
+    });
   }
 
   if (
@@ -573,7 +804,7 @@ function getSelectedCanonicalClause(
     && targetObject.isClassicalNahuatlVncApplicationFrame(canonicalInput)
     || targetObject.isClassicalNahuatlClosureFrame?.(canonicalInput) === true
       && canonicalInput.authorizationStatus === "authorized"
-      && canonicalInput.operationFrame?.operation === "purposive"
+      && ["purposive", "compound"].includes(canonicalInput.operationFrame?.operation)
   ) {
     return buildVncSelectedClause(targetObject, canonicalInput, role);
   }
@@ -588,12 +819,13 @@ function getSelectedCanonicalClause(
       sourceResult: canonicalInput,
       unitKind: "supplementation",
       clauseClass: "supplementation-structure",
+      supplementationPossessorContactFrame: buildSupplementationPossessorContact(targetObject, canonicalInput),
       formula: canonicalInput.formulaProjection?.formulaRealization
         || canonicalInput.formulaRealization,
       unitSurface: stripSentenceBoundary(
         canonicalInput.writtenProjection?.surfaceRealization
           || canonicalInput.surfaceRealization,
-      ),
+      ).replace(/^./u, initial => initial.toLowerCase()),
       subjectId: normalizeKey(
         principal.subject?.subject
           || principal.subject?.category
@@ -674,7 +906,9 @@ function getSourceConditionedExceptionProfilesForPair(
   const headStem = normalizeStem(head?.predicateStem);
   const profiles = [];
   if (
-    isOneOrNoneStem(headStem)
+    (isOneOrNoneStem(headStem)
+      || head?.pronominalFamily === "interrogative-who"
+        && head.sourceResult?.operationFrame?.polarity === "negative")
     && subjectIsPlural(modifier?.subjectId)
   ) {
     profiles.push("one-or-none-of-group");
@@ -738,6 +972,14 @@ function deriveModifierClauseType(modifier = null) {
   return modifier.clauseClass || modifier.unitKind || "";
 }
 
+function hasIndependentObjectReference(frame) {
+  return Boolean(frame?.objectPerson && frame.objectReflectsSubject !== true
+    && ["specific", "specific-projective"].includes(normalizeKey(frame.objectKind)));
+}
+function hasIndependentObjectContact(clause) {
+  return Boolean(clause?.independentObjectContact === true && clause.independentObjectPerson);
+}
+
 function deriveAmbiguityType(head, modifiers, linkRoles) {
   const interrogative = [head, ...modifiers].some(item => (
     ["interrogative-who", "interrogative-what"].includes(
@@ -749,7 +991,7 @@ function deriveAmbiguityType(head, modifiers, linkRoles) {
   ));
   if (interrogative) return "supplementation-or-modification";
   if (
-    modifiers.some(item => item.clauseClass === "transitive-vnc")
+    modifiers.some(item => item.clauseClass === "transitive-vnc" && hasIndependentObjectContact(item))
     && linkRoles.some(
       linkRole => ["vnc-subject", "vnc-object"].includes(linkRole),
     )
@@ -823,6 +1065,9 @@ function buildSelection(request, head, modifiers) {
       : index - 1 < additionalLinkRoleInputs.length;
     return modifier.clauseClass === "transitive-vnc"
       ? choose(supplied, ["vnc-subject", "vnc-object"], "")
+      : modifier.supplementationPossessorContactFrame
+        && index === 0 && (isPreposedModifierContext({order, topology}) || supplied === "supplement-possessor")
+        ? suppliedPresent ? choose(supplied, ["supplement-possessor"], "") : "supplement-possessor"
       : suppliedPresent
         ? choose(supplied, ["shared-subject"], "")
         : "shared-subject";
@@ -908,12 +1153,9 @@ function validateSelection(
   ) {
     return "lessons40-43-ordinary-topology-requires-one-modifier";
   }
-  if (
-    modifiers.some(item => item.unitKind === "nnc"
-      && item.stateArity !== "vacant")
-  ) {
-    return "lessons40-43-nnc-modifier-must-have-vacant-state";
-  }
+  // Modifier function does not require an adjectival nounstem's vacant state.
+  // These are complete clauses (§42.2, §42.8); §43.1.3 explicitly uses a
+  // possessive NNC as the following modifier of a personal pronominal head.
   if (
     (
       selection.order === "modifier-head-preposed"
@@ -921,16 +1163,30 @@ function validateSelection(
         === "cooperating-preposed-nonpreposed"
     )
     && modifiers[0]?.clauseClass === "supplementation-structure"
+    && !(modifiers[0].supplementationPossessorContactFrame
+      && selection.modifierLinkRoles[0] === "supplement-possessor")
   ) {
     return "lessons40-43-preposed-modifier-cannot-contain-supplementation";
   }
   for (const [index, modifier] of modifiers.entries()) {
+    const marksModifier = selection.topology === "cooperating-preposed-nonpreposed"
+      ? (index === 0 ? ["preposed-in", "both-in"] : ["nonpreposed-in", "both-in"])
+        .includes(selection.adjunctor)
+      : selection.adjunctor === "in";
+    if (modifier.ownedModifierAdjunctor === "in" && !marksModifier) {
+      return "lessons40-43-owned-modifier-adjunctor-selection-mismatch";
+    }
     const linkRole = selection.modifierLinkRoles[index];
     const referenceTarget = linkRole === "vnc-object"
-      ? modifier.objectPerson
+      ? modifier.independentObjectPerson
+      : linkRole === "supplement-possessor"
+        ? modifier.supplementationPossessorContactFrame?.possessorCategory
       : modifier.subjectId;
-    if (linkRole === "vnc-object" && !modifier.objectPerson) {
+    if (linkRole === "vnc-object" && !hasIndependentObjectContact(modifier)) {
       return "lessons40-43-typed-vnc-object-contact-required";
+    }
+    if (linkRole === "supplement-possessor" && !subjectsCompatible(head.subjectId, referenceTarget)) {
+      return "lessons40-43-supplement-possessor-reference-not-satisfied";
     }
     const exceptionProfiles =
       getSourceConditionedExceptionProfilesForPair(
@@ -978,7 +1234,9 @@ function deriveReadOnlyFacts(
     discourseSourceContextFrame,
   );
   const exceptionProfile = getPrimaryExceptionProfile(exceptionProfiles);
-  const markedPreposed = (
+  const retainedHeadIn = selection.topology === 'ordinary'
+    && selection.order === 'modifier-head-preposed' && head.leadingClauseMarker === 'in';
+  const markedPreposed = retainedHeadIn || (
     selection.order === "modifier-head-preposed"
       && selection.adjunctor === "in"
   ) || (
@@ -993,6 +1251,9 @@ function deriveReadOnlyFacts(
     compositionScope: markedPreposed
       ? "adjoined-unit"
       : "complete-sentence",
+    sentencePunctuation: head.sentencePunctuation || ".",
+    retainedHeadMarker: retainedHeadIn ? 'in' : '',
+    retainedHeadMarkerOrigin: retainedHeadIn ? 'owner-issued-head-layer' : '',
     linkRole: selection.linkRole,
     modifierLinkRoles: selection.modifierLinkRoles,
     ambiguityType: deriveAmbiguityType(
@@ -1157,6 +1418,7 @@ function buildLinearizationTokens(
     clause,
   }));
   const marked = selection.adjunctor === "in";
+  const newMarker = index => modifiers[index]?.ownedModifierAdjunctor === "in" ? [] : [marker()];
   if (selection.topology === "cooperating-preposed-nonpreposed") {
     const markPreposed = [
       "preposed-in",
@@ -1167,16 +1429,16 @@ function buildLinearizationTokens(
       "both-in",
     ].includes(selection.adjunctor);
     return [
-      ...(markPreposed ? [marker()] : []),
+      ...(markPreposed ? newMarker(0) : []),
       modifierTokens[0],
       headToken,
-      ...(markNonpreposed ? [marker()] : []),
+      ...(markNonpreposed ? newMarker(1) : []),
       modifierTokens[1],
     ];
   }
   if (selection.topology === "discontinuous") {
     const markedModifier = marked
-      ? [marker(), modifierTokens[0]]
+      ? [...newMarker(0), modifierTokens[0]]
       : [modifierTokens[0]];
     return selection.order === "discontinuous-modifier-first"
       ? [...markedModifier, ...dependentTokens, headToken]
@@ -1184,14 +1446,14 @@ function buildLinearizationTokens(
   }
   if (selection.order === "modifier-head-preposed") {
     return [
-      ...(marked ? [marker()] : []),
+      ...(marked ? newMarker(0) : []),
       modifierTokens[0],
       headToken,
     ];
   }
   return [
     headToken,
-    ...(marked ? [marker()] : []),
+    ...(marked ? newMarker(0) : []),
     modifierTokens[0],
   ];
 }
@@ -1204,7 +1466,7 @@ function projectFormula(tokens) {
   )).join(" ");
 }
 
-function projectWritten(tokens, compositionScope) {
+function projectWritten(tokens, compositionScope, sentencePunctuation = ".") {
   const unitSurface = tokens.map(token => (
     token.kind === "adjunctor"
       ? token.value
@@ -1213,7 +1475,7 @@ function projectWritten(tokens, compositionScope) {
   return {
     unitSurface,
     result: compositionScope === "complete-sentence"
-      ? `${capitalizeInitial(unitSurface)}.`
+      ? `${capitalizeInitial(unitSurface)}${sentencePunctuation}`
       : unitSurface,
   };
 }
@@ -1224,7 +1486,7 @@ function buildCanonicalProjectionBundle(
   derived,
 ) {
   const formula = projectFormula(tokens);
-  const written = projectWritten(tokens, derived.compositionScope);
+  const written = projectWritten(tokens, derived.compositionScope, derived.sentencePunctuation);
   const idSeed = tokens.map(token => (
     token.kind === "adjunctor"
       ? "in"
@@ -1629,6 +1891,17 @@ function buildIncorporatedClauseStem(
       ]),
   ];
   const stem = realizeNncCarriers(targetObject, carriers);
+  const parent = clause.sourceResult;
+  const ordinarySource = targetObject.isClassicalNahuatlOrdinaryNncResult?.(parent) === true
+    && targetObject.isClassicalNahuatlOrdinaryNncSourceFrame?.(parent.sourceFrame) === true
+      ? parent.sourceFrame : null;
+  const preteritSource = targetObject.isClassicalNahuatlDeverbalNncGrammarFrame?.(parent) === true
+    ? parent.sourceFrame?.preteritVncCaptureFrame?.canonicalVncSourceAnalysisFrame : null;
+  const canonicalInitialISourceFrame = ordinarySource || preteritSource || null;
+  const sourceInitialISelection = ordinarySource && typeof ordinarySource.supportiveInitialI === "boolean"
+    ? ordinarySource.supportiveInitialI ? "supportive" : "real"
+    : ["real", "supportive"].includes(preteritSource?.sourceInitialIKind)
+      ? preteritSource.sourceInitialIKind : "";
   return stem ? deepFreeze({
     clause,
     stem,
@@ -1638,6 +1911,7 @@ function buildIncorporatedClauseStem(
     ]),
     numberDyadDeleted: deleteNumberDyad,
     numberDyadPreserved: !deleteNumberDyad,
+    sourceInitialISelection, canonicalInitialISourceFrame,
     derivedOnlyFromOwnerIssuedTypedSlots: true,
     formulaStringAuthority: false,
     surfaceStringAuthority: false,
@@ -1806,6 +2080,33 @@ export function createClassicalNahuatlClosureModule(
     CLASSICAL_NAHUATL_LESSONS42_43_COMPOUND_HEAD_TARGETS:
       COMPOUND_HEAD_TARGETS,
     getClassicalNahuatlLcmAxes: getLcmAxes,
+    getClassicalNahuatlAdjectivalModifierClauseType:
+      source => getSelectedCanonicalClause(targetObject, source, "modifier")
+        ?.clauseClass || "",
+    getClassicalNahuatlAdjectivalModifierReferenceContacts: (source, context = {}) => {
+      const clause = getSelectedCanonicalClause(targetObject, source, "modifier");
+      if (!clause) return Object.freeze([]);
+      if (clause.clauseClass === "supplementation-structure") {
+        return Object.freeze(isPreposedModifierContext(context)
+          ? clause.supplementationPossessorContactFrame ? ["supplement-possessor"] : []
+          : clause.supplementationPossessorContactFrame ? ["shared-subject", "supplement-possessor"] : ["shared-subject"]);
+      }
+      return Object.freeze(clause.clauseClass === "transitive-vnc"
+        ? hasIndependentObjectContact(clause) ? ["vnc-subject", "vnc-object"] : ["vnc-subject"]
+        : ["shared-subject"]);
+    },
+    getClassicalNahuatlAdjectivalSupplementationPossessorContactFrame: (head, modifier) => {
+      const headClause = getSelectedCanonicalClause(targetObject, head, "head");
+      const modifierClause = getSelectedCanonicalClause(targetObject, modifier, "modifier");
+      const contact = modifierClause?.supplementationPossessorContactFrame;
+      return headClause?.unitKind === "nnc" && contact ? deepFreeze({
+        ...contact,
+        canonicalHeadSource: headClause.sourceResult,
+        headSlotFrame: headClause.typedSlotFrame,
+        headSubject: headClause.subjectId,
+        headSubjectMatchesPossessor: subjectsCompatible(headClause.subjectId, contact.possessorCategory),
+      }) : null;
+    },
     isClassicalNahuatlAdjectivalModificationGrammarFrame:
       frame => isGrammarFrame(targetObject, frame),
     isClassicalNahuatlResultFrame:

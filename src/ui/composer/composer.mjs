@@ -1,3 +1,5 @@
+import { installClassicalSourceObjectRows, syncClassicalSourceObjectRows } from "./source_objects.mjs?v=20261007-panel-source-objects-1";
+import { getSourceClassRequirement } from "./source_admission.mjs?v=20261014-source-admission-3";
 // Canonical modern ESM module.
 
 import {
@@ -64,7 +66,9 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       const source = state && typeof state === "object" ? state : VerbComposerState;
       const slotKey = getComposerSlotKeyForTransitivity(source?.transitivity);
       const stateKeys = getComposerSlotStateKeys(slotKey);
-      return normalizeComposerStem(source?.[stateKeys.stem] || "");
+      return getClassicalBasalUnitFromRuntime() === CLASSICAL_BASAL_UNIT.nnc
+        ? normalizeClassicalFuenteSourcePartStem(source?.[stateKeys.stem] || "")
+        : normalizeComposerStem(source?.[stateKeys.stem] || "");
     }
     function setComposerActiveSlotStem(stemValue) {
       const stem = normalizeComposerStem(stemValue || "");
@@ -3327,8 +3331,20 @@ export function createUiComposerRuntime(targetObject = globalThis) {
     function normalizeComposerEmbedValue(value) {
       return getComposerEmbedTokens(value).join("/");
     }
-    function normalizeClassicalFuenteSourcePartStem(value = "") {
-      const rawSource = String(value || "").trim().replace(/^\((.*)\)$/u, "$1").trim().toLowerCase();
+    function normalizeClassicalFuenteSourcePartStem(value = "", sourceOptions = null) {
+      const rawSource = String(value || "").trim().replace(/^\((.*)\)$/u, "$1").trim().normalize("NFC");
+      // Foreign name words belong to one explicitly classified nominal Source.
+      // Native stems retain their existing compact transcription normalization.
+      const borrowedName = sourceOptions
+        ? sourceOptions.active === true && sourceOptions.sourceClass === "borrowed-name"
+        : getClassicalBasalUnitFromRuntime() === CLASSICAL_BASAL_UNIT.nnc
+          && targetObject.document?.getElementById?.("classical-rule-logic-nnc-class")?.value === "borrowed-name";
+      if (borrowedName) {
+        return rawSource.replace(/\s+/gu, " ").replace(/[^\p{Script=Latin}0 -]/gu, "");
+      }
+      if (getClassicalBasalUnitFromRuntime() === CLASSICAL_BASAL_UNIT.nnc
+        && (targetObject.document?.getElementById?.("classical-rule-logic-nnc-source-use")?.value || "nounstem") === "nounstem"
+        && /^[0-9]+$/u.test(rawSource)) return rawSource;
       const transcriptionFrame = rawSource.includes("/")
         && typeof targetObject.buildClassicalNahuatlCompactTranscriptionFrame === "function"
         ? targetObject.buildClassicalNahuatlCompactTranscriptionFrame(rawSource)
@@ -3337,7 +3353,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         && transcriptionFrame.authorizationStatus === "authorized"
         ? transcriptionFrame.surface
         : rawSource;
-      return source.replace(/\s+/gu, "").replace(/[^a-zāēīō0-]/gu, "").replace(/-{2,}/gu, "-").replace(/^-|-$/gu, "");
+      return source.replace(/\s+/gu, "").replace(/[^\p{Script=Latin}0-]/gu, "").replace(/-{2,}/gu, "-").replace(/^-|-$/gu, "");
     }
     function normalizeComposerSecondaryValenceSurfaceToken(value) {
       const token = String(value || "").trim().toLowerCase().normalize("NFC");
@@ -4479,9 +4495,13 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         classicalNnc: {
           active: false,
           sourceClass: "",
+          sourceUse: "nounstem",
+          initialI: "real",
           tl2ARealization: "retain-2a",
           subject: "3common",
           state: "absolutive",
+          singularConnector: "hui",
+          nonspecificHumanForm: "tē",
           pluralConnector: "",
           predicateOptionId: "source-stem",
           possessorReduplication: false,
@@ -4582,7 +4602,9 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         invalidComposerFields.add("input");
         next.input = "";
       } else {
-        next.input = targetObject.serializeRegexInputValue(requestedInput) || requestedInput;
+        next.input = normalizeEntradaUrlBoolean(source.classicalNnc?.active)
+          && source.classicalNnc?.sourceClass === "borrowed-name"
+          ? requestedInput : targetObject.serializeRegexInputValue(requestedInput) || requestedInput;
       }
       const sourceLexemeSelectionFrame =
         buildClassicalVncSourceLexemeSelectionFrame(
@@ -4692,19 +4714,21 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       next.sentence.surface = normalizeSentenceChoice("surface", ["statement", "question", "exclamation"], "statement");
       next.sentence.introductoryParticle = normalizeSentenceChoice("introductoryParticle", ["none", "mā", "tlā"], "none");
       next.sentence.prefaceParticle = normalizeSentenceChoice("prefaceParticle", ["none", "ihyo", "ye"], "none");
-      next.sentence.introductoryModifier = normalizeSentenceChoice("introductoryModifier", ["none", "cuēl", "ye-cuēl", "cuēl-eh", "ye-cuēl-eh", "tēl", "quin", "nēn"], "none");
+      next.sentence.introductoryModifier = normalizeSentenceChoice("introductoryModifier", ["none", "cuēl", "ye-cuēl", "cuēl-eh", "ye-cuēl-eh", "cuēl-yeh", "ye-cuēl-yeh", "tēl", "quin", "nēn"], "none");
       next.sentence.antecessive = normalizeEntradaUrlBoolean(sentenceSource.antecessive);
       next.sentence.invalidFields = sentenceInvalidFields;
       next.classicalNnc.active = normalizeEntradaUrlBoolean(classicalSource.active);
+      next.classicalNnc.sourceUse = normalizeChoice(classicalSource.sourceUse, ["nounstem", "general-use", "lexicalized-nnc", "attested-cell", "attested-place", "attested-collocation"], "nounstem");
       const requestedNncSourceClass = normalizeChoice(
         classicalSource.sourceClass,
-        ["", "tl-1-a", "tl-1-b", "tl-2-a", "tl-2-a-to-1-a", "tl-2-b-a", "tl-2-b-i", "tl-2-c", "tli-1", "tli-2", "in", "zero"],
+        ["lexicalized-nnc", "attested-cell", "attested-place", "attested-collocation"].includes(next.classicalNnc.sourceUse) ? [""] : next.classicalNnc.sourceUse === "general-use" ? ["", "tl", "tli"] : ["", "tl", "tli", "tl-1-a", "tl-1-b", "tl-2-a", "tl-2-a-to-1-a", "tl-2-b-a", "tl-2-b-i", "tl-2-c", "tli-1", "tli-2", "in", "zero", "borrowed-name"],
         ""
       );
       next.classicalNnc.sourceClass = requestedNncSourceClass
         === "tl-2-a-to-1-a"
           ? "tl-2-a"
           : requestedNncSourceClass;
+      next.classicalNnc.initialI = normalizeChoice(classicalSource.initialI, ["real", "supportive"], "real");
       next.classicalNnc.tl2ARealization = normalizeChoice(
         classicalSource.tl2ARealization,
         ["retain-2a", "reclassify-1a"],
@@ -4732,15 +4756,18 @@ export function createUiComposerRuntime(targetObject = globalThis) {
           canonicalRouteSource?.authorizationStatus === "authorized"
           && canonicalRouteSource?.openStemSource !== true
           && next.classicalNnc.tl2ARealization !== "reclassify-1a"
+          && next.classicalNnc.sourceUse !== "general-use"
         ) {
           next.classicalNnc.sourceClass = "";
         }
       }
       next.classicalNnc.subject = normalizeChoice(classicalSource.subject, ["1sg", "2sg", "3sg", "3common", "1pl", "2pl", "3pl"], "3common");
       next.classicalNnc.state = normalizeChoice(classicalSource.state, ["absolutive", "possessive"], "absolutive");
+      next.classicalNnc.nonspecificHumanForm = normalizeChoice(classicalSource.nonspecificHumanForm, ["tē", "ti", "t"], "tē");
+      next.classicalNnc.singularConnector = normalizeChoice(classicalSource.singularConnector, ["hui", "silent"], "hui");
       next.classicalNnc.pluralConnector = normalizeChoice(
         classicalSource.pluralConnector,
-        ["", "t-in", "m-eh", "0-h"],
+        ["", "t-in", "m-eh", "0-h", "silent"],
         ""
       );
       next.classicalNnc.predicateOptionId = normalizeChoice(classicalSource.predicateOptionId, ["source-stem", "yo-matrix", "secondary-general-use", "analogical-restricted-use", "tl-2a-to-1a", "tec-title"], "source-stem");
@@ -4750,7 +4777,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         next.classicalNnc.predicateOptionId = "source-stem";
       }
       next.classicalNnc.possessorReduplication = normalizeEntradaUrlBoolean(classicalSource.possessorReduplication);
-      next.classicalNnc.possessor = normalizeChoice(classicalSource.possessor, ["reciprocal", "nonspecific-human", "nonspecific-nonhuman", "1sg", "2sg", "3sg", "1pl", "2pl", "3pl"], "3sg");
+      next.classicalNnc.possessor = normalizeChoice(classicalSource.possessor, ["reciprocal", "nonspecific-human", "nonspecific-nonhuman", "1sg", "2sg", "3sg", "3common", "1pl", "2pl", "3pl"], "3sg");
       next.classicalNnc.stemRelation = normalizeChoice(classicalSource.stemRelation, ["plain", "affinity", "distributive-varietal"], "plain");
       const requestedNncOutputScope = String(classicalSource.outputScope ?? "").trim();
       const nncOutputScopeExplicit = Array.isArray(source.presentFields)
@@ -4921,9 +4948,13 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         classicalNnc: {
           active: nncActive,
           sourceClass: targetObject.document.getElementById("classical-rule-logic-nnc-class")?.value || "",
+          sourceUse: ["general-use", "lexicalized-nnc", "attested-cell", "attested-place", "attested-collocation"].includes(targetObject.document.getElementById("classical-rule-logic-nnc-source-use")?.value) ? targetObject.document.getElementById("classical-rule-logic-nnc-source-use").value : "nounstem",
+          initialI: targetObject.document.getElementById("classical-rule-logic-nnc-initial-i")?.value || "real",
           tl2ARealization: targetObject.document.getElementById("classical-rule-logic-nnc-tl2a-realization")?.value || "retain-2a",
           subject: targetObject.document.getElementById("classical-rule-logic-subject")?.value || "3common",
           state: targetObject.document.getElementById("classical-rule-logic-nnc-state")?.value || "absolutive",
+          nonspecificHumanForm: targetObject.document.getElementById("classical-rule-logic-nnc-nonspecific-human-form")?.value || "tē",
+          singularConnector: targetObject.document.getElementById("classical-rule-logic-nnc-singular-connector")?.value || "hui",
           pluralConnector:
             targetObject.document.getElementById("classical-rule-logic-nnc-state")?.value === "absolutive"
               ? targetObject.document.getElementById("classical-rule-logic-nnc-plural-connector")?.value || ""
@@ -4961,11 +4992,12 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       }
       const value = getEntradaUrlNestedValue(snapshot, field.path);
       const defaultValue = field.defaultValue ?? "";
+      if (field.key === "classicalNncSourceUse") return snapshot?.classicalNnc?.active === true && value === "general-use";
       if (field.classicalNncOnly) {
         return snapshot?.classicalNnc?.active === true && value !== undefined && value !== null && !(String(value) === "" && String(defaultValue) === "");
       }
       if (field.derivedVncOnly) {
-        return ["causative", "applicative"].includes(snapshot?.derivationType) && String(value || "") !== "";
+        return snapshot?.classicalNnc?.active !== true && String(value || "") !== "";
       }
       if (field.key === "classicalNncEnabled") {
         // The leading `nnc` segment names the clause kind. Keep the explicit
@@ -5025,8 +5057,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       if (typeof targetObject.document === "undefined") {
         return "";
       }
-      const derivationType = typeof targetObject.getActiveDerivationType === "function" ? targetObject.getActiveDerivationType() : "direct";
-      if (!["causative", "applicative"].includes(derivationType)) {
+      if (getClassicalBasalUnitFromRuntime() !== CLASSICAL_BASAL_UNIT.vnc) {
         return "";
       }
       return ENTRADA_URL_DERIVED_VNC_CONTROL_SPECS.reduce((entries, spec, controlIndex) => {
@@ -5054,7 +5085,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       }));
     }
     function applyEntradaUrlDerivedVncStateToControls(snapshot = {}) {
-      if (typeof targetObject.document === "undefined" || !["causative", "applicative"].includes(snapshot?.derivationType)) {
+      if (typeof targetObject.document === "undefined" || snapshot?.classicalNnc?.active === true) {
         return false;
       }
       const selections = getEntradaUrlDerivedVncCapsuleSelections(snapshot.derivedVnc || "");
@@ -5087,6 +5118,15 @@ export function createUiComposerRuntime(targetObject = globalThis) {
           if (control.value !== requestedValue) {
             control.value = requestedValue;
             appliedAny = true;
+          }
+          if (spec.id === "classical-rule-logic-subject") {
+            const categories = String(requestedValue).match(/^([123])(sg|pl)$/u);
+            if (categories) {
+              const person = targetObject.document.getElementById("classical-rule-logic-vnc-subject-person");
+              const number = targetObject.document.getElementById("classical-rule-logic-vnc-subject-number");
+              if (person) person.value = categories[1];
+              if (number) number.value = categories[2] === "pl" ? "plural" : "singular";
+            }
           }
         });
         const signature = selections.map(({ controlIndex }) => {
@@ -5246,7 +5286,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       if (fact) {
         fact.hidden = !selectionRequired;
         fact.textContent = selectionRequired
-          ? "Lexical Source: this pach-i-hui verbstem names distinct pressed-down and satiated lexemes. Choose the intended Source meaning; causative formation remains a Grammar operation."
+          ? sourceRecord?.sourceLexemeOptions ? "Choose the intended Source meaning." : "Lexical Source: this pach-i-hui verbstem names distinct pressed-down and satiated lexemes. Choose the intended Source meaning; causative formation remains a Grammar operation."
           : "";
       }
       return true;
@@ -5255,7 +5295,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       if (typeof targetObject.document === "undefined" || snapshot?.classicalNnc?.active !== true) {
         return false;
       }
-      const explicitKeys = ["classicalNncSourceClass", "classicalNncTl2ARealization", "classicalNncSubject", "classicalNncState", "classicalNncPluralConnector", "classicalNncPredicateOptionId", "classicalNncPossessorReduplication", "classicalNncPossessor", "classicalNncStemRelation", "classicalNncOutputScope", "classicalNncAnimacy", "classicalNncHumanness", "classicalNncMetaphoricalUse", "classicalNncClausePosition", "classicalNncQuantityPluralFormation", "classicalNncDoubledFirstPlural", "classicalNncDependentClauseIntroducedByIn", "classicalNncSpecialHumanUse"];
+      const explicitKeys = ["classicalNncSourceUse", "classicalNncSourceClass", "classicalNncTl2ARealization", "classicalNncSubject", "classicalNncState", "classicalNncPluralConnector", "classicalNncPredicateOptionId", "classicalNncPossessorReduplication", "classicalNncPossessor", "classicalNncStemRelation", "classicalNncOutputScope", "classicalNncAnimacy", "classicalNncHumanness", "classicalNncMetaphoricalUse", "classicalNncClausePosition", "classicalNncQuantityPluralFormation", "classicalNncDoubledFirstPlural", "classicalNncDependentClauseIntroducedByIn", "classicalNncSpecialHumanUse"];
       if (!explicitKeys.some(key => hasEntradaUrlExplicitField(snapshot, key))) {
         return false;
       }
@@ -5265,7 +5305,9 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       const subjectNumber = subjectValue === "3common" ? "common" : subjectMatch?.[2] === "pl" ? "plural" : "singular";
       const animacyValue = String(snapshot.classicalNnc?.animacy || "animate");
       const valuesByControl = {
+        "classical-rule-logic-nnc-source-use": snapshot.classicalNnc?.sourceUse || "nounstem",
         "classical-rule-logic-nnc-class": snapshot.classicalNnc?.sourceClass,
+        "classical-rule-logic-nnc-initial-i": snapshot.classicalNnc?.initialI || "real",
         "classical-rule-logic-nnc-tl2a-realization": snapshot.classicalNnc?.tl2ARealization,
         "classical-rule-logic-subject": snapshot.classicalNnc?.subject,
         "classical-rule-logic-nnc-subject-person": subjectPerson,
@@ -5275,6 +5317,8 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         "classical-rule-logic-nnc-metaphorical-use": snapshot.classicalNnc?.metaphoricalUse === true,
         "classical-rule-logic-nnc-state": snapshot.classicalNnc?.state,
         "classical-rule-logic-nnc-plural-connector": snapshot.classicalNnc?.pluralConnector,
+        "classical-rule-logic-nnc-nonspecific-human-form": snapshot.classicalNnc?.nonspecificHumanForm || "tē",
+        "classical-rule-logic-nnc-singular-connector": snapshot.classicalNnc?.singularConnector || "hui",
         "classical-rule-logic-nnc-predicate-form": snapshot.classicalNnc?.predicateOptionId,
         "classical-rule-logic-nnc-possessor-reduplication": snapshot.classicalNnc?.possessorReduplication,
         "classical-rule-logic-nnc-possessor": snapshot.classicalNnc?.possessor,
@@ -6030,7 +6074,9 @@ export function createUiComposerRuntime(targetObject = globalThis) {
           slotRefs.embedInput.value = normalizeComposerEmbedValue(VerbComposerState[stateKeys.embed] || "");
         }
         if (slotRefs.stemInput) {
-          const rawStem = normalizeComposerStem(VerbComposerState[stateKeys.stem] || "");
+          const rawStem = nncActive
+            ? normalizeClassicalFuenteSourcePartStem(VerbComposerState[stateKeys.stem] || "")
+            : normalizeComposerStem(VerbComposerState[stateKeys.stem] || "");
           const matrixInputRow = slotRefs.stemInput.closest(".verb-composer__matrix-input-row");
           const matrixInputTag = matrixInputRow ? matrixInputRow.querySelector(".verb-composer__tagged-input-tag") : null;
           const matrixLabel = slotRefs.matrixField ? slotRefs.matrixField.querySelector(".verb-composer__matrix-head > .verb-composer__sub-label") : null;
@@ -6047,7 +6093,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
             });
           }
           slotRefs.stemInput.placeholder = "";
-          slotRefs.stemInput.value = formatComposerStemForInputDisplay(rawStem, {
+          slotRefs.stemInput.value = nncActive ? rawStem : formatComposerStemForInputDisplay(rawStem, {
             slotKey,
             preferSplitFromStem: true,
             templateSuffix: getComposerStemInputTemplateSuffix(slotRefs.stemInput, slotKey)
@@ -6097,7 +6143,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
     function syncComposerStateFromVerbInput(rawValue = "") {
       const baseValue = String(targetObject.getSearchInputBase(rawValue || "") || "").toLowerCase().trim();
       if (getClassicalBasalUnitFromRuntime() === CLASSICAL_BASAL_UNIT.nnc) {
-        const stem = normalizeClassicalFuenteSourcePartStem(baseValue.replace(/[()]/g, ""));
+        const stem = normalizeClassicalFuenteSourcePartStem(String(targetObject.getSearchInputBase(rawValue || "") || "").replace(/[()]/g, ""));
         VerbComposerState.transitivity = "";
         VerbComposerState.valenceIntransitive = "";
         VerbComposerState.valenceIntransitiveEmbed = "";
@@ -7074,7 +7120,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         return false;
       }
       const tagName = String(element.tagName || "").toUpperCase();
-      if (tagName === "BUTTON" || tagName === "SELECT" || tagName === "TEXTAREA") {
+      if (tagName === "BUTTON" || tagName === "SELECT" || tagName === "TEXTAREA" || tagName === "SUMMARY") {
         return true;
       }
       if (tagName === "A" && typeof element.getAttribute === "function" && element.getAttribute("href")) {
@@ -8102,7 +8148,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       return CLASSICAL_BASAL_UNIT.vnc;
     }
     function syncClassicalConstructionSourceUnitAvailability(unit = "") {
-      const activeUnit = normalizeClassicalBasalUnit(
+      let activeUnit = normalizeClassicalBasalUnit(
         unit || getClassicalBasalUnitFromRuntime()
       );
       const construction = targetObject.document?.getElementById?.(
@@ -8114,6 +8160,9 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       const exactContinuationActive =
         construction.dataset?.classicalCapabilityContinuationActive
           === "true";
+      const continuationUnit = exactContinuationActive
+        ? targetObject.getClassicalConstructionContinuationSourceUnit?.() : "";
+      if (continuationUnit === "nnc" || continuationUnit === "vnc") activeUnit = continuationUnit;
       const continuationIncompatibleOperationIds = new Set(
         String(
           construction.dataset
@@ -8121,12 +8170,14 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         ).split("|").map(value => value.trim()).filter(Boolean)
       );
       Array.from(construction.options || []).forEach(option => {
+        // The same numeral owner builds an NNC or incorporates a quantity
+        // into the actual VNC Source. Keep its menu in that Source family.
+        if (option.value === "cardinal-numeral-nnc") {
+          option.dataset.classicalSourceUnit = activeUnit;
+        }
         const sourceUnit = String(
           option.dataset?.classicalSourceUnit || ""
         ).trim();
-        const sourceCompatible = !sourceUnit
-          || sourceUnit === "any"
-          || sourceUnit === activeUnit;
         const applicationOperationId = String(
           option.dataset?.classicalApplicationOperation || ""
         ).trim();
@@ -8141,7 +8192,16 @@ export function createUiComposerRuntime(targetObject = globalThis) {
           || !continuationIncompatibleOperationIds.has(
             effectiveApplicationOperationId
           );
-        const available = sourceCompatible && continuationCompatible;
+        const exactVncPlaceSource = exactContinuationActive
+          && continuationUnit === CLASSICAL_BASAL_UNIT.vnc
+          && effectiveApplicationOperationId === "nnc:place-gentilic"
+          && continuationCompatible;
+        const sourceCompatible = !sourceUnit
+          || sourceUnit === "any"
+          || sourceUnit === activeUnit
+          || exactVncPlaceSource;
+        const available = sourceCompatible && continuationCompatible
+          && (option.value !== "adjectival-nnc" || exactContinuationActive);
         option.hidden = !available;
         option.disabled = !available;
         option.dataset.classicalCapabilityStatus = !sourceCompatible
@@ -8164,24 +8224,16 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         );
         group.hidden = !available;
         group.disabled = !available;
-        group.label = groupUnit === activeUnit
+        group.label = available
           ? `Available from the current ${activeUnit.toUpperCase()} Source`
           : `Requires ${groupUnit === CLASSICAL_BASAL_UNIT.nnc ? "an" : "a"} ${groupUnit.toUpperCase()} Source`;
       });
       const selectedOption = construction.selectedOptions?.[0] || null;
-      const selectedSourceUnit = String(
-        selectedOption?.dataset?.classicalSourceUnit || ""
-      ).trim();
       if (
         selectedOption
         && (
           selectedOption.hidden === true
           || selectedOption.disabled === true
-          || (
-            selectedSourceUnit
-            && selectedSourceUnit !== "any"
-            && selectedSourceUnit !== activeUnit
-          )
         )
       ) {
         construction.value = "none";
@@ -8193,6 +8245,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
           ? "No added operation layer · VNC Source → VNC Result"
           : "No added operation layer · NNC Source → NNC Result";
       }
+      targetObject.syncClassicalConstructionMenuPresentation?.();
       return activeUnit;
     }
     function populateClassicalSentenceParticleControl() {
@@ -8343,7 +8396,10 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       control.value = "none";
       const shortcutId = targetObject.document?.getElementById?.("classical-rule-logic-particle-combination-shortcut")?.value || "none";
       const honorificized = targetObject.document?.getElementById?.("classical-rule-logic-sentence-particle-honorific")?.checked === true;
-      const baseId = shortcutId !== "none" ? shortcutId : ClassicalParticleMatrixIndividualId;
+      const retainedParticleId = targetObject.document?.getElementById?.("classical-rule-logic-sentence-particle")?.value || "none";
+      const baseId = shortcutId !== "none" ? shortcutId
+        : ClassicalParticleMatrixIndividualId !== "none" ? ClassicalParticleMatrixIndividualId
+        : retainedParticleId;
       const honorificizedId = honorificized ? CLASSICAL_HONORIFICIZED_PARTICLES_BY_BASE[baseId] || "" : "";
       if (honorificizedId && control.querySelector?.(`option[value="${honorificizedId}"]`)) {
         control.value = honorificizedId;
@@ -8351,7 +8407,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       }
       const selectedEntry = (typeof targetObject.getClassicalNahuatlParticleEntries === "function"
         ? targetObject.getClassicalNahuatlParticleEntries()
-        : []).find(entry => entry.id === shortcutId);
+        : []).find(entry => entry.id === baseId);
       if (selectedEntry && control.querySelector?.(`option[value="${selectedEntry.id}"]`)) {
         control.value = selectedEntry.id;
       }
@@ -8392,7 +8448,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
     function getClassicalParticleMatrixEntries() {
       const polarity = targetObject.document?.getElementById?.("classical-rule-logic-polarity")?.value || "positive";
       return getClassicalParticleCombinationShortcutEntries()
-        .filter(entry => entry.polarity === polarity);
+        .filter(entry => entry.polarity === polarity || entry.polarity === "positive");
     }
     function getClassicalParticleMatrixIndividualEntries() {
       const polarity = targetObject.document?.getElementById?.("classical-rule-logic-polarity")?.value || "positive";
@@ -8414,7 +8470,9 @@ export function createUiComposerRuntime(targetObject = globalThis) {
     }
     function getClassicalParticleMatrixCombinationSegment(entry = null) {
       if (entry?.id === "l3-no-adverbial") return "no";
-      return String(entry?.sourceForm || "");
+      return String(entry?.formulaSegments?.length === 1
+        ? entry.formulaSegments[0]
+        : entry?.sourceForm || "");
     }
     function populateClassicalParticleMatrixSelect(select, choices, value, placeholder) {
       Array.from(select.children || []).forEach(child => child.remove());
@@ -8431,6 +8489,8 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       select.value = choices.includes(value) ? value : "";
     }
     function resolveClassicalParticleMatrix() {
+      const antecessiveControl = targetObject.document?.getElementById?.("classical-rule-logic-prefix-stack");
+      const preserveAntecessive = Boolean(antecessiveControl?.checked);
       const entries = getClassicalParticleMatrixEntries();
       const polarity = targetObject.document?.getElementById?.("classical-rule-logic-polarity")?.value || "positive";
       const shortcutControl = targetObject.document?.getElementById?.("classical-rule-logic-particle-combination-shortcut");
@@ -8452,19 +8512,21 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       if (ClassicalParticleMatrixIndividualId !== "none"
         && ClassicalParticleCombinationDraftSegments.length === 1) {
         clearClassicalParticleCombinationAppliedResult();
+        if (antecessiveControl) antecessiveControl.checked = preserveAntecessive;
         if (shortcutControl) shortcutControl.value = "none";
         if (ClassicalParticleMatrixIndividualKind === "adverbial") {
           if (adverbialControl) adverbialControl.value = ClassicalParticleMatrixIndividualId;
+        } else if (["l3-ma", "l3-tla"].includes(ClassicalParticleMatrixIndividualId)
+          && getClassicalBasalUnitFromRuntime() === CLASSICAL_BASAL_UNIT.vnc) {
+          const mood = targetObject.document?.getElementById?.("classical-rule-logic-mood");
+          const introductory = targetObject.document?.getElementById?.("classical-rule-logic-introductory-particle");
+          if (mood) mood.value = "optative";
+          if (introductory) introductory.value = ClassicalParticleMatrixIndividualId === "l3-ma" ? "mā" : "tlā";
         } else if (particleControl?.querySelector?.(`option[value="${ClassicalParticleMatrixIndividualId}"]`)) {
           particleControl.value = ClassicalParticleMatrixIndividualId;
         } else if (adverbialControl?.querySelector?.(`option[value="${ClassicalParticleMatrixIndividualId}"]`)) {
           adverbialControl.value = ClassicalParticleMatrixIndividualId;
           ClassicalParticleMatrixIndividualKind = "adverbial";
-        } else if (["l3-ma", "l3-tla"].includes(ClassicalParticleMatrixIndividualId)) {
-          const mood = targetObject.document?.getElementById?.("classical-rule-logic-mood");
-          const introductory = targetObject.document?.getElementById?.("classical-rule-logic-introductory-particle");
-          if (mood) mood.value = "optative";
-          if (introductory) introductory.value = ClassicalParticleMatrixIndividualId === "l3-ma" ? "mā" : "tlā";
         } else if (ClassicalParticleMatrixIndividualId === "l3-o-antecessive") {
           const antecessive = targetObject.document?.getElementById?.("classical-rule-logic-prefix-stack");
           if (antecessive) antecessive.checked = true;
@@ -8472,17 +8534,20 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         return null;
       }
       if (exact.length) {
-        const chosen = exact.find(entry => entry.shortcutId === shortcutControl?.value) || exact[0];
+        const chosen = exact.find(entry => entry.polarity === polarity && entry.shortcutId === shortcutControl?.value)
+          || exact.find(entry => entry.polarity === polarity) || exact[0];
         if (shortcutControl) shortcutControl.value = chosen.shortcutId;
         applyClassicalParticleCombinationShortcut(chosen.shortcutId);
         return chosen;
       }
       clearClassicalParticleCombinationAppliedResult();
+      if (antecessiveControl) antecessiveControl.checked = preserveAntecessive;
       if (ClassicalParticleCombinationDraftSegments.length === 1 && particleControl) {
         const segment = ClassicalParticleCombinationDraftSegments[0];
         const entry = (typeof targetObject.getClassicalNahuatlSentenceParticleEntries === "function"
           ? targetObject.getClassicalNahuatlSentenceParticleEntries()
-          : []).find(candidate => candidate.sourceForm === segment && candidate.formulaSegments?.length === 1);
+          : []).find(candidate => candidate.formulaSegments?.length === 1
+            && getClassicalParticleMatrixCombinationSegment(candidate) === segment);
         if (entry) particleControl.value = entry.id;
       }
       return null;
@@ -8577,6 +8642,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         const select = targetObject.document.createElement("select");
         select.className = "classical-particle-combination-builder__part-select";
         select.dataset.combinationPartIndex = String(index);
+        select.id = `classical-particle-slot-${index}`;
         if (index === 0) {
           Array.from(select.children || []).forEach(child => child.remove());
           const none = targetObject.document.createElement("option");
@@ -8591,6 +8657,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
             option.textContent = [entry.sourceForm, entry.gloss].filter(Boolean).join(" · ");
             option.dataset.particleSegment = getClassicalParticleMatrixCombinationSegment(entry);
             option.dataset.particleKind = entry.matrixKind;
+            option.dataset.classicalParticlePresentationGroup = entry.functionScope || "particle";
             group.appendChild(option);
           });
           select.appendChild(group);
@@ -8650,6 +8717,11 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         : combinationSegments.length
           ? "Choose a licensed next particle."
           : "Choose an individual particle. More choices appear only when a combination is licensed.";
+      if (tense === "preterit" && targetObject.document?.getElementById?.("classical-rule-logic-mood")?.value === "optative") {
+        status.textContent += " Preterit optative requires ō#: the Result includes it even when the optional Antecessive switch is off (Andrews §9.2).";
+      } else if (["preterit", "distant-past", "distant-past-as-past", "imperfect", "past"].includes(tense)) {
+        status.textContent += " Choose particles here and switch Antecessive ō# on or off independently. The Result places them in sentence order (Andrews §8.3).";
+      }
       syncClassicalBuiltInParticleControls();
       return true;
     }
@@ -8715,6 +8787,11 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       const honorificControl = targetObject.document?.getElementById?.("classical-rule-logic-sentence-particle-honorific");
       if (honorificControl) honorificControl.checked = false;
       if (!entryId || entryId === "none") {
+        const shortcutControl = targetObject.document?.getElementById?.("classical-rule-logic-particle-combination-shortcut");
+        const previousCombination = targetObject.findClassicalNahuatlParticleCombinationShortcutEntry?.(shortcutControl?.value);
+        if (previousCombination?.consumesSelectedPolarity === true) {
+          setClassicalParticlePolarityControl("positive");
+        }
         clearClassicalParticleCombinationAppliedResult();
         ClassicalParticleCombinationDraftSegments = [];
         ClassicalParticleMatrixIndividualId = "none";
@@ -8723,7 +8800,25 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         refreshClassicalRuleLogicSurfaceFromControl();
         return true;
       }
-      if (category === "honorificized") {
+      if (entryId === "l3-in-tla" && targetObject.document?.getElementById?.("classical-rule-logic-mood")?.value === "optative") {
+        const before = targetObject.document.getElementById("classical-rule-logic-preface-particle");
+        const after = targetObject.document.getElementById("classical-rule-logic-introductory-modifier");
+        const savedBefore = before?.value;
+        const savedAfter = after?.value;
+        clearClassicalParticleCombinationAppliedResult();
+        ClassicalParticleCombinationDraftSegments = [];
+        ClassicalParticleMatrixIndividualId = "none";
+        targetObject.document.getElementById("classical-rule-logic-introductory-particle").value = "in-tlā";
+        if (before) before.value = savedBefore;
+        if (after) after.value = savedAfter;
+      } else if (["l3-ma", "l3-tla"].includes(entryId)) {
+        const entry = getClassicalParticleMatrixIndividualEntries().find(candidate => candidate.id === entryId);
+        if (!entry) return false;
+        ClassicalParticleMatrixIndividualId = entry.id;
+        ClassicalParticleMatrixIndividualKind = "particle";
+        ClassicalParticleCombinationDraftSegments = [getClassicalParticleMatrixCombinationSegment(entry)];
+        resolveClassicalParticleMatrix();
+      } else if (category === "honorificized") {
         const baseId = CLASSICAL_HONORIFICIZED_PARTICLE_BASES[entryId] || "";
         if (!baseId) return false;
         const shortcut = typeof targetObject.findClassicalNahuatlParticleCombinationShortcutEntry === "function"
@@ -8775,8 +8870,12 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         ? targetObject.findClassicalNahuatlParticleCombinationShortcutEntry(shortcutId)
         : null;
       if (!entry) return false;
-      clearClassicalCombinationInternalInputs();
       const combinationSegments = getClassicalParticleCombinationSequenceSegments(entry);
+      // A collocation without an introduction does not replace the user's
+      // independently selected wish introduction or antecessive (§9.6).
+      if (combinationSegments.some(segment => ["mā", "tlā", "mah"].includes(segment))) {
+        clearClassicalCombinationInternalInputs();
+      }
       const moodControl = targetObject.document?.getElementById?.("classical-rule-logic-mood");
       if (combinationSegments.length > 1
         && combinationSegments.includes("mā")
@@ -8804,10 +8903,10 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         }
       }
       if (adverbialControl) adverbialControl.value = entry.adverbialId;
-      if (polarityControl) polarityControl.value = entry.polarity;
+      if (polarityControl && entry.polarity === "negative") polarityControl.value = "negative";
       targetObject.document?.querySelectorAll?.('[data-classical-segment-control="classical-rule-logic-polarity"]')
         ?.forEach(button => {
-          const active = button.dataset.classicalSegmentValue === entry.polarity;
+          const active = button.dataset.classicalSegmentValue === (polarityControl?.value || entry.polarity);
           button.classList.toggle("is-active", active);
           button.setAttribute("aria-pressed", active ? "true" : "false");
         });
@@ -8987,6 +9086,11 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       const stem = normalizeClassicalFuenteSourcePartStem(
         option?.dataset?.classicalVncSourceStem || ""
       );
+      const source = getClassicalSourcePartControlState();
+      if (source.mode !== "whole-stem"
+        || normalizeClassicalFuenteSourcePartStem(source.sourceWholeStem) !== stem) {
+        return false;
+      }
       const classControl = targetObject.document?.getElementById?.(
         "classical-rule-logic-class"
       );
@@ -9104,6 +9208,12 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         surfaceStringAuthority: false
       });
     }
+    const classicalSourceLexemeDeclaredOptions = new WeakMap();
+    function getClassicalVncSourceLexemeId() {
+      const choice=getClassicalVncSourceGuideElements().sourceLexemeChoice;
+      const stem=getClassicalSourcePartControlState()?.sourceWholeStem || "";
+      return choice && !choice.disabled && choice.dataset.classicalSourceLexemeStem===stem ? String(choice.value || "") : "";
+    }
     function syncClassicalVncSourceLexemeFact(root = null, select = null, options = {}) {
       const {
         sourceLexemeFact: fact,
@@ -9122,6 +9232,15 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         sourceValence
       );
       const sourceRecord = selectionFrame.canonicalSourceRecord;
+      if(choice && !classicalSourceLexemeDeclaredOptions.has(choice)) classicalSourceLexemeDeclaredOptions.set(choice,
+        Array.from(choice.options).map(o=>({value:o.value,label:o.textContent})));
+      const ownedOptions=sourceRecord?.sourceLexemeOptions;
+      const declared=classicalSourceLexemeDeclaredOptions.get(choice);
+      const projected=ownedOptions ? [{value:"",label:"Choose a Source meaning"},...ownedOptions.map(o=>({value:o.id,label:o.label}))] : declared;
+      if(choice && projected && Array.from(choice.options).map(o=>o.value).join("|")!==projected.map(o=>o.value).join("|")) {
+        const prior=choice.value;choice.replaceChildren(...projected.map(o=>{const option=targetObject.document.createElement("option");option.value=o.value;option.textContent=o.label;return option;}));
+        if(projected.some(o=>o.value===prior))choice.value=prior;
+      }
       const expectedOptionValues = sourceRecord
         ? ["", ...selectionFrame.availableSourceLexemeIds]
         : [];
@@ -9203,21 +9322,33 @@ export function createUiComposerRuntime(targetObject = globalThis) {
           )
         : sourceParts.sourceWholeStem;
       const sourceValence = targetObject.document?.getElementById?.("classical-rule-logic-valence")?.value || "intransitive";
-      const canonicalRecord = getClassicalVncCanonicalInitialIRecord(sourceStem, sourceValence)
-        || getClassicalVncCanonicalInitialIRecord(sourceStem, String(select?.selectedOptions?.[0]?.dataset?.classicalVncSourceValenceDisplay || ""));
+      // The selected example may belong to another valence. Its read-only
+      // fact cannot suppress the actual Source's unresolved analysis.
+      const canonicalRecord = getClassicalVncCanonicalInitialIRecord(sourceStem, sourceValence);
       const canonicalKind = String(canonicalRecord?.initialIAnalysis?.kind || "").trim();
       const initialI = /^[iī]/iu.test(sourceStem);
+      const initialIAnalysis = targetObject.getClassicalNahuatlVncApplicationSourceInitialIAnalysis?.(
+        sourceStem, sourceValence, {sourceInitialISelection: choice?.value},
+      );
+      const allowedResolvedKinds = initialIAnalysis?.allowedResolvedKinds || canonicalRecord?.initialIAnalysis
+        ?.allowedResolvedKindsByValence?.[sourceValence] || [];
+      const canonicalRealizationChoice = allowedResolvedKinds.length > 1;
       const userChoiceApplies = initialI
-        && !canonicalKind;
+        && (!canonicalKind || canonicalRealizationChoice);
       if (choiceField) {
         choiceField.hidden = !userChoiceApplies;
       }
       if (choice) {
         choice.disabled = !userChoiceApplies;
-        choice.required = userChoiceApplies;
+        choice.required = userChoiceApplies && !canonicalRealizationChoice;
+        Array.from(choice.options || []).forEach(option => {
+          option.disabled = canonicalRealizationChoice
+            && !allowedResolvedKinds.includes(option.value);
+        });
         if (userChoiceApplies) {
           if (root?.dataset?.classicalVncSourceInitialIChoiceStem !== sourceStem) {
-            choice.value = "";
+            choice.value = canonicalRealizationChoice
+              ? canonicalRecord?.initialIAnalysis?.defaultResolvedKind || initialIAnalysis?.resolvedKind || "real" : "";
           }
           if (root?.dataset) {
             root.dataset.classicalVncSourceInitialIChoiceStem = sourceStem;
@@ -9236,7 +9367,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
           ? String(choice.value)
           : ""
         : "";
-      const kind = canonicalKind
+      const kind = (canonicalRealizationChoice && selectedKind) || canonicalKind
         || (userChoiceApplies ? selectedKind || "unresolved" : "not-applicable");
       const visible = initialI;
       if (root?.dataset) {
@@ -9249,11 +9380,15 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       fact.hidden = !visible;
       fact.textContent = !visible
         ? ""
+        : canonicalRealizationChoice
+          ? canonicalKind === "contextual"
+            ? "Initial i: Andrews permits retaining i or treating it as supportive after tla. Choose its realization, then use this Source."
+            : "Initial i: choose the analysis shown in Andrews."
         : canonicalKind
           ? `Initial i: ${canonicalKind === "contextual" ? "context-sensitive" : canonicalKind} (canonical source fact)`
           : selectedKind
             ? `Initial i: ${selectedKind === "contextual" ? "context-sensitive" : selectedKind} (Source choice)`
-            : "Initial i: choose its Source analysis before generating.";
+            : "Initial i: choose its Source analysis before generating. Real i belongs to the stem; supportive i supplies a vowel that can disappear when its sound environment changes. Context-sensitive i behaves as supportive in some constructions and real in others. Use the stem’s analysis in Andrews §7.8, Note 1; spelling alone does not decide. Then use this Source.";
       return visible;
     }
     function syncClassicalVncSourceValenceAvailability(options = {}) {
@@ -9417,7 +9552,9 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       const selectedOption = relationalStemId
         ? currentOption
         : canonicalOptionFromParts
-          || Array.from(select.options || []).find(option => normalizeClassicalFuenteSourcePartStem(option.dataset?.classicalNncSourceStem || "") === sourceStem);
+          || Array.from(select.options || []).find(option =>
+            !option.dataset?.classicalRelationalStemId
+            && normalizeClassicalFuenteSourcePartStem(option.dataset?.classicalNncSourceStem || "") === sourceStem);
       const currentStem = normalizeClassicalFuenteSourcePartStem(currentOption?.dataset?.classicalNncSourceStem || "");
       if (!relationalStemId && sourceStem && selectedOption && currentStem !== sourceStem) {
         select.value = selectedOption.value;
@@ -9428,7 +9565,12 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       if (!relationalStemId && select.value && selectedStructure.sourceMode !== CLASSICAL_SOURCE_PARTS_MODE.embedMatrix && sourceParts.mode !== CLASSICAL_SOURCE_PARTS_MODE.embedMatrix) {
         setClassicalSourcePartsMode(CLASSICAL_SOURCE_PARTS_MODE.wholeStem);
       }
-      root.dataset.classicalNncSourceSelection = relationalStemId
+      const numericSource = !relationalStemId && sourceParts.mode === CLASSICAL_SOURCE_PARTS_MODE.wholeStem
+        && (targetObject.document?.getElementById?.("classical-rule-logic-nnc-source-use")?.value || "nounstem") === "nounstem"
+        && /^[1-9][0-9]*$/u.test(sourceStem)
+        ? targetObject.buildClassicalNahuatlNominalConstructionTypedSourceFrame?.({value:Number(sourceStem)}) : null;
+      root.dataset.classicalNncSourceSelection = targetObject.isClassicalNahuatlNominalConstructionTypedSourceFrame?.(numericSource) === true
+        ? "cardinal-number" : relationalStemId
         ? "canonical-relational-nounstem"
         : select.value ? "canonical-nounstem" : "user-nounstem";
       root.dataset.classicalNncSourceMode = relationalStemId
@@ -9625,6 +9767,37 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       }));
       return true;
     }
+    function resetClassicalVncClassForChangedSource({ initialize = false } = {}) {
+      if (getClassicalBasalUnitFromRuntime() !== CLASSICAL_BASAL_UNIT.vnc) return;
+      const { root } = getClassicalVncSourceGuideElements();
+      const source = getClassicalSourcePartControlState();
+      const identity = JSON.stringify([
+        source.mode, source.sourceWholeStem, source.sourceEmbedStem, source.sourceMatrixStem
+      ]);
+      if (!root?.dataset || root.dataset.classicalVncClassSourceIdentity === identity) return;
+      root.dataset.classicalVncClassSourceIdentity = identity;
+      if (initialize) return;
+      const control = targetObject.document?.getElementById?.("classical-rule-logic-class");
+      const retainedClass = targetObject.getClassicalRuleLogicCanvasClassSelection?.(
+        source.sourceWholeStem,
+        {
+          requestedClassId: control?.value || "",
+          valence: targetObject.document?.getElementById?.("classical-rule-logic-valence")?.value || "",
+        },
+      );
+      const exactReturnedClass = source.mode === "whole-stem"
+        && retainedClass?.canvasRuleId === "owner-issued-retained-vnc-coordinate";
+      if (control && !exactReturnedClass) {
+        control.value = "";
+        delete control.dataset.classicalBuiltInSourceDefault;
+      }
+      // A lexical alternative belongs to the previous Source.
+      const alternative = targetObject.document?.getElementById?.("classical-rule-logic-irregular-alternative");
+      if (alternative) {
+        alternative.value = "";
+        delete alternative.dataset.classicalLesson11AlternativeSignature;
+      }
+    }
     function applyClassicalVncSourceStemSelection() {
       const { root, select } = getClassicalVncSourceGuideElements();
       const option = select?.selectedOptions?.[0] || null;
@@ -9642,6 +9815,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         return false;
       }
       wholeInput.value = sourceStem;
+      resetClassicalVncClassForChangedSource();
       applyClassicalVncBuiltInSourceValenceDefault(root, option, {
         force: true
       });
@@ -9763,7 +9937,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       const sourceEmbedStem = normalizeClassicalFuenteSourcePartStem(getHashPart("a-embed"));
       const sourceMatrixStem = sourceEmbedStem ? normalizeClassicalFuenteSourcePartStem(getHashPart("a-stem")) : "";
       const snapshot = typeof readEntradaUrlStateSnapshotFromLocation === "function" ? readEntradaUrlStateSnapshotFromLocation(targetObject.window.location) : null;
-      const sourceWholeStem = normalizeClassicalFuenteSourcePartStem(stripClassicalSourceDisplayWrapping(snapshot?.input || getHashPart("verb") || ""));
+      const sourceWholeStem = normalizeClassicalFuenteSourcePartStem(stripClassicalSourceDisplayWrapping(snapshot?.input || getHashPart("verb") || ""), snapshot?.classicalNnc || null);
       return {
         sourceWholeStem,
         sourceEmbedStem,
@@ -9789,6 +9963,12 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       const nextSnapshot = normalizeEntradaUrlStateSnapshot({
         ...currentSnapshot,
         input: builtSourceFrame?.displaySource || currentSnapshot?.input || "",
+        classicalNnc: {
+          ...(currentSnapshot?.classicalNnc || {}),
+          sourceUse: ["general-use", "lexicalized-nnc", "attested-cell", "attested-place", "attested-collocation"].includes(targetObject.document.getElementById("classical-rule-logic-nnc-source-use")?.value) ? targetObject.document.getElementById("classical-rule-logic-nnc-source-use").value : "nounstem",
+          ...(targetObject.document.getElementById("classical-rule-logic-nnc-source-use")?.value === "general-use"
+            ? {sourceClass: targetObject.document.getElementById("classical-rule-logic-nnc-class")?.value || ""} : {}),
+        },
         sourceLexemeId:
           getClassicalVncSourceGuideElements().sourceLexemeChoice?.value || "",
         slots: {
@@ -9837,7 +10017,24 @@ export function createUiComposerRuntime(targetObject = globalThis) {
           targetObject.document?.getElementById?.(
             "classical-rule-logic-valence"
           )?.value || "intransitive",
-        sourceLexemeId: getClassicalVncSourceGuideElements().sourceLexemeChoice?.value || ""
+        sourceVoice: targetObject.document?.getElementById?.("classical-rule-logic-causative-source-voice")?.value || "active",
+        sourceNonactiveOptionId: targetObject.document?.getElementById?.("classical-rule-logic-causative-source-nonactive")?.value || "",
+        sourceRelationalChoices: isClassicalRelationalNncUiModeEnabled()
+          ? [targetObject.document.getElementById("classical-nnc-source-example"), ...Array.from(targetObject.document.querySelectorAll("[data-classical-relational-nnc-control]"))].filter(Boolean).map(control=>[control.id,control.value])
+          : [],
+        sourceNncClass: targetObject.document?.getElementById?.("classical-rule-logic-nnc-class")?.value || "",
+        sourceNncUse: targetObject.document?.getElementById?.("classical-rule-logic-nnc-source-use")?.value || "nounstem",
+        sourceNncInitialI: targetObject.document?.getElementById?.("classical-rule-logic-nnc-initial-i")?.value || "real",
+        ...(targetObject.document?.getElementById?.("classical-construction-operation")?.value === "personal-name-nnc"
+          ? {sourcePersonalNameFamily: targetObject.document?.getElementById?.("classical-personal-name-source-family")?.value || ""} : {}),
+        affectiveIrregularEmbed: targetObject.document?.getElementById?.("classical-affective-irregular-embed-stem")?.value || "",
+        affectiveLexicalStatus: targetObject.document?.getElementById?.("classical-affective-lexical-status")?.value || "",
+        affectiveFlawedSourceStatus: targetObject.document?.getElementById?.("classical-affective-flawed-source-status")?.value || "",
+        affectiveFlawedClassStrategy: targetObject.document?.getElementById?.("classical-affective-flawed-class-strategy")?.value || "",
+        affectiveFlawedLexicalReading: targetObject.document?.getElementById?.("classical-affective-flawed-lexical-reading")?.value || "",
+        attitudeSourceAnalysis: targetObject.document?.getElementById?.("classical-attitude-source-analysis")?.value || "",
+        sourceLexemeId: getClassicalVncSourceGuideElements().sourceLexemeChoice?.value || "",
+        sourceObjectSelections: ["classical-source-object-count", "classical-source-object-2-kind", "classical-source-object-2-person", "classical-source-object-3-kind", "classical-source-object-3-person", ...(getClassicalBasalUnitFromRuntime() === "vnc" && targetObject.document?.getElementById?.("classical-rule-logic-valence")?.value === "specific-projective" ? ["classical-rule-logic-object"] : [])].map(id => targetObject.document?.getElementById?.(id)?.value || "")
       });
     }
     function hasCommittableClassicalSourceParts(state = null) {
@@ -9866,7 +10063,41 @@ export function createUiComposerRuntime(targetObject = globalThis) {
           note.textContent = "";
         }
       }
+      if (root?.dispatchEvent && typeof targetObject.Event === "function") {
+        root.dispatchEvent(new targetObject.Event("classical-source-commit-state-change"));
+      }
       return pending;
+    }
+    function stageClassicalSourcePartsEvaluation(prepare = null) {
+      const root = targetObject.document?.getElementById?.("classical-source-parts");
+      const wasPending = root?.dataset?.classicalSourceCommitState === "pending";
+      delete root?.dataset?.classicalSourceSoundErrorField;
+      delete root?.dataset?.classicalSourceSoundErrorReason;
+      delete root?.dataset?.classicalSourceSoundErrorValue;
+      const { wholeInput, embedInput, matrixInput } = getClassicalSourcePartControlElements();
+      [wholeInput, embedInput, matrixInput].filter(Boolean).forEach(input => input.removeAttribute?.("aria-invalid"));
+      // Prepare source facts without allowing its readout to replace the
+      // committed machine mirror or accepted Result.
+      setClassicalSourcePartsPendingState(true);
+      const prepared = !prepare || prepare() !== false;
+      setClassicalSourcePartsPendingState(prepared
+        ? getClassicalSourcePartsEvaluationSignature() !== ClassicalSourcePartsCommittedSignature
+        : wasPending);
+      return prepared;
+    }
+    function stageClassicalSourceExampleSelection(select = null, prepare = null, selectedValue = select?.value || "") {
+      const option = Array.from(select?.options || []).find(item => item.value === selectedValue);
+      const available = () => Boolean(select && !select.disabled && option
+        && Array.from(select.options || []).includes(option) && !option.disabled && !option.hidden
+        && !option.parentElement?.disabled && !option.parentElement?.hidden);
+      if (!available()) return false;
+      return stageClassicalSourcePartsEvaluation(() => {
+        // Pending readouts may reconcile the picker to the accepted Source.
+        // Keep this offered native choice until its existing handler prepares it.
+        if (!available()) return false;
+        select.value = selectedValue;
+        return prepare?.() !== false;
+      });
     }
     function commitClassicalSourcePartsEvaluation(options = {}) {
       let sourceState = getClassicalSourcePartControlState();
@@ -9885,29 +10116,153 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       const activeInputs = sourceState.mode === CLASSICAL_SOURCE_PARTS_MODE.embedMatrix
         ? [embedInput, matrixInput]
         : [wholeInput];
+      const preparedTranscriptions = [];
       for (const input of activeInputs.filter(Boolean)) {
         const soundSource = String(input.value || "").normalize("NFC").trim();
-        if (!/\/[^/]+\//u.test(soundSource)) continue;
+        if (!soundSource.includes("/")) continue;
         const transcriptionFrame = typeof targetObject.buildClassicalNahuatlCompactTranscriptionFrame === "function"
           ? targetObject.buildClassicalNahuatlCompactTranscriptionFrame(soundSource)
           : null;
         if (!targetObject.isClassicalNahuatlTranscriptionFrame?.(transcriptionFrame)
           || transcriptionFrame.authorizationStatus !== "authorized") {
+          const root = targetObject.document?.getElementById?.("classical-source-parts");
+          if (root?.dataset) {
+            root.dataset.classicalSourceSoundErrorField = input.id;
+            root.dataset.classicalSourceSoundErrorReason = transcriptionFrame?.blockReason || "transcription-unavailable";
+            root.dataset.classicalSourceSoundErrorValue = String(input.value || "");
+          }
+          input.setAttribute?.("aria-invalid", "true");
+          setClassicalSourcePartsPendingState(true);
+          targetObject.syncClassicalSourceCommitPresentation?.();
           return false;
         }
+        preparedTranscriptions.push({ input, soundSource, transcriptionFrame });
+      }
+      // Validate the entire active Source before normalizing either component.
+      const root = targetObject.document?.getElementById?.("classical-source-parts");
+      delete root?.dataset?.classicalSourceSoundErrorField;
+      delete root?.dataset?.classicalSourceSoundErrorReason;
+      delete root?.dataset?.classicalSourceSoundErrorValue;
+      [wholeInput, embedInput, matrixInput].filter(Boolean).forEach(input => input.removeAttribute?.("aria-invalid"));
+      for (const { input, soundSource, transcriptionFrame } of preparedTranscriptions) {
         input.dataset.classicalTranscriptionSoundSource = soundSource;
         input.dataset.classicalTranscriptionWrittenResult = transcriptionFrame.surface;
         input.value = transcriptionFrame.surface;
       }
       sourceState = getClassicalSourcePartControlState();
+      const classRequirement = getSourceClassRequirement(targetObject, sourceState);
+      if (classRequirement) {
+        setClassicalSourcePartsPendingState(true);
+        targetObject.syncClassicalSourceCommitPresentation?.();
+        targetObject.document?.getElementById?.(classRequirement.fieldId)?.focus?.();
+        return false;
+      }
+      const nncSourceGuide = targetObject.document?.getElementById?.("classical-nnc-source-guide");
+      if (getClassicalBasalUnitFromRuntime() === CLASSICAL_BASAL_UNIT.nnc
+        && nncSourceGuide?.dataset?.classicalNncSourceSelection === "canonical-nounstem"
+        && (sourceState.mode === CLASSICAL_SOURCE_PARTS_MODE.embedMatrix
+          || normalizeClassicalFuenteSourcePartStem(
+            nncSourceGuide.dataset.classicalNncSourceSelectedStem || ""
+          ) !== sourceState.sourceWholeStem)) {
+        const example = targetObject.document.getElementById("classical-nnc-source-example");
+        if (example) example.value = "";
+        nncSourceGuide.dataset.classicalNncSourceSelection = "user-nounstem";
+        delete nncSourceGuide.dataset.classicalNncSourceSelectedStem;
+        delete nncSourceGuide.dataset.classicalNncSourceSelectedType;
+      }
       const signature = getClassicalSourcePartsEvaluationSignature();
       const previousSignature = ClassicalSourcePartsCommittedSignature;
+      const sourceRefinement = (() => {
+        if (!previousSignature) return null;
+        const prior = JSON.parse(previousSignature), next = JSON.parse(signature);
+        if (prior.sourceVoice === next.sourceVoice
+          && prior.sourceNonactiveOptionId === next.sourceNonactiveOptionId) return null;
+        delete prior.sourceVoice; delete prior.sourceNonactiveOptionId;
+        delete next.sourceVoice; delete next.sourceNonactiveOptionId;
+        if (JSON.stringify(prior) !== JSON.stringify(next)) return null;
+        const binding = targetObject.getActiveClassicalGrammarTypedSourceOperationBinding?.();
+        if (binding?.operationId !== "vnc:application"
+          || binding.effectiveSelections?.requestedDerivation !== "causative"
+          || targetObject.isClassicalGrammarTypedSourceOperationBindingFrame?.(binding) !== true) return null;
+        // Only scalar, owner-offered Build context is retained for the fresh
+        // raw preview. Its input machinery, not its target, becomes Source.
+        const sourceVoice = JSON.parse(signature).sourceVoice;
+        // Active Source admission uses its ordinary Source owner; choosing a
+        // new causee belongs to the later Build and cannot block that admission.
+        const derivationType = sourceVoice === "active" ? "direct" : "causative";
+        return {
+          requestedDerivation: derivationType, derivationType,
+          derivationOptionId: sourceVoice === "active" ? "" : binding.callerSelections?.derivationOptionId || "",
+          sourceVoice,
+          sourceNonactiveOptionId: JSON.parse(signature).sourceNonactiveOptionId,
+          subject: binding.callerSelections?.subject || "3sg",
+          causativeObjectKind: "",
+        };
+      })();
+      const explicitSourceReturn = options.force === true
+        && ["manual-entry", "enter"].includes(options.source);
+      if (explicitSourceReturn) targetObject.clearClassicalUnsupportedResultReload?.();
       if (options.force !== true && signature === ClassicalSourcePartsCommittedSignature) {
         setClassicalSourcePartsPendingState(false);
         syncClassicalSourceReadout();
         return false;
       }
-      if (previousSignature && signature !== previousSignature) {
+      const semanticAnalysisOnly = previousSignature && (() => {
+        const prior = JSON.parse(previousSignature);
+        const next = JSON.parse(signature);
+        for (const key of ["affectiveLexicalStatus", "affectiveIrregularEmbed",
+          "affectiveFlawedSourceStatus", "affectiveFlawedClassStrategy",
+          "affectiveFlawedLexicalReading", "attitudeSourceAnalysis"]) {
+          delete prior[key];
+          delete next[key];
+        }
+        return JSON.stringify(prior) === JSON.stringify(next);
+      })();
+      let sourceDeclarations = [];
+      const declaredNameRequest = targetObject.document?.getElementById?.("classical-construction-operation")?.value === "personal-name-nnc"
+        ? targetObject.buildClassicalNominalConstructionUiRequest?.() : null;
+      const nameSourceDeclarations = targetObject.isPersonalNameNncSourceFrame?.(declaredNameRequest?.sourceFrame) === true
+        ? ["classical-construction-operation", "classical-personal-name-source-family"]
+          .map(id => [id, targetObject.document.getElementById(id)?.value || ""]) : [];
+      const relationalDeclarations = typeof isClassicalRelationalNncUiModeEnabled === "function" && isClassicalRelationalNncUiModeEnabled()
+        ? ["classical-nnc-source-example", "classical-rule-logic-nnc-clause-position", ...Array.from(targetObject.document.querySelectorAll("[data-classical-relational-nnc-control]")).map(control=>control.id)]
+            .map(id=>targetObject.document.getElementById(id)).filter(Boolean).map(control=>[control.id,control.value])
+        : [];
+      if (explicitSourceReturn || previousSignature && signature !== previousSignature
+        && !semanticAnalysisOnly) {
+        const priorSource = previousSignature ? JSON.parse(previousSignature) : null;
+        const nextSource = JSON.parse(signature);
+        const sameSourceMaterial = priorSource && ["unit", "mode",
+          "sourceWholeStem", "sourceEmbedStem", "sourceMatrixStem"]
+          .every(key => priorSource[key] === nextSource[key]);
+        sourceDeclarations = sameSourceMaterial
+          ? ["classical-affective-lexical-status", "classical-affective-irregular-embed-stem",
+            "classical-affective-flawed-source-status", "classical-affective-flawed-class-strategy",
+            "classical-affective-flawed-lexical-reading", "classical-attitude-source-analysis"]
+            .map(id => targetObject.document?.getElementById?.(id)).filter(Boolean)
+            .map(control => [control.id, control.value])
+          : [];
+        if (nextSource.unit === CLASSICAL_BASAL_UNIT.nnc && ["general-use", "lexicalized-nnc", "attested-cell", "attested-place", "attested-collocation"].includes(nextSource.sourceNncUse)) {
+          sourceDeclarations.push(["classical-rule-logic-nnc-source-use", nextSource.sourceNncUse]);
+        }
+        const coarseNncClass = nextSource.unit === CLASSICAL_BASAL_UNIT.nnc
+          ? {tl: {nounClass: "tl", nounSubclass: ""},
+              tli: {nounClass: "tli", nounSubclass: ""},
+              "tl-1": {nounClass: "tl", nounSubclass: "1"}}[nextSource.sourceNncClass]
+          : null;
+        const coarseSourceStem = nextSource.mode === CLASSICAL_SOURCE_PARTS_MODE.embedMatrix
+          ? [nextSource.sourceEmbedStem, nextSource.sourceMatrixStem].filter(Boolean).join("-")
+          : nextSource.sourceWholeStem;
+        if (coarseNncClass && (targetObject.isClassicalCoarseNominalSourceAvailable?.(
+          coarseSourceStem, nextSource.sourceNncClass) === true
+          || sameSourceMaterial && targetObject.getClassicalNahuatlOwnerhoodSourceAnalysis?.({
+          sourceStem: coarseSourceStem, ...coarseNncClass,
+        })?.authorizationStatus === "authorized")) {
+          sourceDeclarations.push(["classical-rule-logic-nnc-class", nextSource.sourceNncClass]);
+        }
+        // Withdraw the previous preview before clearing its binding: navigator
+        // synchronization must not recapture the Result that Source replaces.
+        targetObject.clearClassicalRuleLogicSurfaceBlock?.();
         targetObject.clearClassicalGrammarResultSourceContinuation?.(
           "typed-source-committed"
         );
@@ -9915,9 +10270,22 @@ export function createUiComposerRuntime(targetObject = globalThis) {
           clearAll: true,
           resetRouteControls: true
         });
-        targetObject.clearClassicalRuleLogicSurfaceBlock?.();
       }
-      ClassicalSourcePartsCommittedSignature = signature;
+      sourceDeclarations.push(...nameSourceDeclarations);
+      [...sourceDeclarations, ...relationalDeclarations].forEach(([id,value])=>{const control=targetObject.document.getElementById(id);if(control)control.value=value;});
+      if (sourceRefinement) {
+        targetObject.setActiveDerivationType?.(sourceRefinement.derivationType);
+        for (const [id, value] of [
+          ["classical-rule-logic-causative-source-voice", sourceRefinement.sourceVoice],
+          ["classical-rule-logic-causative-source-nonactive", sourceRefinement.sourceNonactiveOptionId],
+          ["classical-rule-logic-derivation-option", sourceRefinement.derivationOptionId],
+          ["classical-rule-logic-causative-causee-valence", ""],
+        ]) {
+          const control = targetObject.document.getElementById(id);
+          if (control) control.value = value;
+        }
+      }
+      ClassicalSourcePartsCommittedSignature = getClassicalSourcePartsEvaluationSignature();
       setClassicalSourcePartsPendingState(false);
       syncClassicalSourcePartsToEntradaUrl();
       syncClassicalSourceReadout();
@@ -9934,6 +10302,9 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         );
       }
       ClassicalSourcePartsCommittedSignature = getClassicalSourcePartsEvaluationSignature();
+      const finiteSelection = () => ["classical-rule-logic-mood", "classical-rule-logic-tense"]
+        .map(id => targetObject.document.getElementById(id)?.value || "").join("|");
+      const selectionBeforeRefresh = finiteSelection();
       const sourceInput = targetObject.document.getElementById("verb");
       if (sourceInput && typeof scheduleVerbInputRefresh === "function") {
         scheduleVerbInputRefresh(sourceInput.value, {
@@ -9942,6 +10313,27 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         });
       } else {
         refreshClassicalRuleLogicSurfaceFromControl();
+      }
+      // New lexical facts may normalize an unavailable tense during rendering.
+      // Generate from that normalized choice within the same Apply action.
+      if (getClassicalBasalUnitFromRuntime() === CLASSICAL_BASAL_UNIT.vnc
+        && finiteSelection() !== selectionBeforeRefresh) {
+        refreshClassicalRuleLogicSurfaceFromControl();
+      }
+      if (sourceRefinement) targetObject.renderClassicalRuleLogicSurfaceBlock?.(sourceRefinement);
+      sourceDeclarations.push(...relationalDeclarations);
+      sourceDeclarations.forEach(([id, value]) => {
+        const control = targetObject.document?.getElementById?.(id);
+        if (control) control.value = value;
+      });
+      // The committed facts include any Source normalization performed by
+      // the refresh and the declarations restored above.
+      ClassicalSourcePartsCommittedSignature = getClassicalSourcePartsEvaluationSignature();
+      if (explicitSourceReturn && targetObject.document?.dispatchEvent
+        && targetObject.window?.CustomEvent) {
+        targetObject.document.dispatchEvent(new targetObject.window.CustomEvent(
+          "classical:source-committed", { detail: { source: options.source } }
+        ));
       }
       return true;
     }
@@ -9956,9 +10348,18 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       if (!root) {
         return false;
       }
-      targetObject.clearClassicalVncResultSourceContinuation?.(
+      delete root.dataset.classicalSourceSoundErrorField;
+      delete root.dataset.classicalSourceSoundErrorReason;
+      delete root.dataset.classicalSourceSoundErrorValue;
+      [wholeInput, embedInput, matrixInput].filter(Boolean).forEach(input => input.removeAttribute?.("aria-invalid"));
+      targetObject.clearClassicalGrammarResultSourceContinuation?.(
         options.source || "source-cleared"
       );
+      // Clear ends the pending Build as well as its Source. A retained
+      // derivation would make the next Source preview require that family's
+      // formation before its ordinary typed Source could be admitted.
+      targetObject.setActiveDerivationType?.(DERIVATION_TYPE.direct);
+      targetObject.updateDerivationTypeControl?.();
       setClassicalSourcePartsMode(CLASSICAL_SOURCE_PARTS_MODE.wholeStem, {
         clearValues: true
       });
@@ -9974,8 +10375,12 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       }
       const vncGuide = getClassicalVncSourceGuideElements();
       const nncGuide = getClassicalNncSourceGuideElements();
+      const sentenceUse = targetObject.document.getElementById("classical-rule-logic-optative-use");
+      if (sentenceUse) sentenceUse.value = "auto";
       if (vncGuide.select) vncGuide.select.value = "";
       if (vncGuide.initialIChoice) vncGuide.initialIChoice.value = "";
+      const nncInitialI = targetObject.document.getElementById("classical-rule-logic-nnc-initial-i");
+      if (nncInitialI) nncInitialI.value = "real";
       if (vncGuide.sourceLexemeChoice) {
         vncGuide.sourceLexemeChoice.value = "";
       }
@@ -10000,6 +10405,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       [
         "classical-rule-logic-class",
         "classical-rule-logic-nnc-class",
+        "classical-rule-logic-nnc-source-use",
         "classical-rule-logic-causative-source-nonactive"
       ].map(id => targetObject.document?.getElementById?.(id))
         .filter(Boolean)
@@ -10024,6 +10430,9 @@ export function createUiComposerRuntime(targetObject = globalThis) {
           sourceInput.dataset.prevValue = "_";
         }
       }
+      // The picker is now empty. Release the former relational Source using
+      // its existing inactive-mode transition before accepting new raw parts.
+      syncClassicalRelationalNncUiControls({ render: false });
       syncClassicalBuiltSourceToVerbInput();
       syncClassicalSourcePartsToEntradaUrl();
       syncClassicalVncSourceGuide();
@@ -10157,7 +10566,9 @@ export function createUiComposerRuntime(targetObject = globalThis) {
           : null;
         if (targetObject.isClassicalNahuatlLesson2WrittenResult?.(writtenResult)
           && writtenResult.authorizationStatus === "authorized") {
-          return writtenResult.surface;
+          // Keep the typed source boundary. The grammatical owner writes
+          // the completed Result after analyzing both compound constituents.
+          return `${embed}-${matrix}`;
         }
         return `${embed}-${matrix}`;
       }
@@ -10184,8 +10595,12 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       );
       const canonicalNncSourceStem =
         getClassicalBasalUnitFromRuntime() === CLASSICAL_BASAL_UNIT.nnc
+        && !hasParts
         && nncSourceGuide?.dataset?.classicalNncSourceSelection
           === "canonical-nounstem"
+        && normalizeClassicalFuenteSourcePartStem(
+          nncSourceGuide.dataset.classicalNncSourceSelectedStem || ""
+        ) === wholeSurface
           ? normalizeClassicalFuenteSourcePartStem(
             nncSourceGuide.dataset.classicalNncSourceSelectedStem || ""
           )
@@ -10222,6 +10637,8 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         return null;
       }
       const frame = getClassicalTypedBuiltSourceFrame(sourceInput.value || "", options.sourceSelectionOptions || null);
+      if (targetObject.document.getElementById("classical-source-parts")
+        ?.dataset?.classicalSourceCommitState === "pending") return frame;
       const mirrorValue = frame.displaySource || "_";
       sourceInput.readOnly = true;
       if (sourceInput.dataset) {
@@ -10245,12 +10662,34 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       const sourceSelectionOptions = getClassicalSourceSelectionOptionsFromRuntime();
       const builtSourceFrame = getClassicalTypedBuiltSourceFrame(rawSourceValue, sourceSelectionOptions);
       const sourceValue = builtSourceFrame.displaySource || rawSourceValue;
+      const sourceParts = getClassicalSourcePartControlState();
+      const nominalRankCorrection = activeUnit === CLASSICAL_BASAL_UNIT.vnc
+        && sourceParts?.mode === CLASSICAL_SOURCE_PARTS_MODE.wholeStem
+        ? targetObject.resolveClassicalNahuatlNominalRankCorrectedSourceFrame?.({
+          enteredStem: sourceParts.sourceWholeStem,
+          valence: sourceValenceControl?.value || "intransitive"
+        }) : null;
+      if (targetObject.isClassicalNahuatlNominalRankCorrectedSourceFrame?.(nominalRankCorrection) === true) {
+        return {
+          unit: CLASSICAL_BASAL_UNIT.nnc,
+          sourceValue,
+          rank: "Nounstem Source",
+          machine: "Source determines nominal rank",
+          authorizes: "none",
+          stem: nominalRankCorrection.sourceStem,
+          morphs: nominalRankCorrection.sourceStem,
+          roles: "one nominal stem",
+          canonicalNominalRankCorrectionFrame: nominalRankCorrection
+        };
+      }
       const sourceSelectionFrame = activeUnit === CLASSICAL_BASAL_UNIT.vnc && typeof targetObject.requestClassicalVncSourceSelectionFrame === "function" ? targetObject.requestClassicalVncSourceSelectionFrame(sourceValue, sourceSelectionOptions) : null;
       const boundaryStem = sourceSelectionFrame?.stem || "";
       const boundaryMorphs = Array.isArray(sourceSelectionFrame?.selectedInternalMorphs) ? sourceSelectionFrame.selectedInternalMorphs.join(" | ") : "";
       const boundaryRoles = sourceSelectionFrame?.sourceReadoutRole || "";
       const sourceConstitution = activeUnit === CLASSICAL_BASAL_UNIT.vnc && typeof targetObject.buildClassicalNahuatlVncSourceConstitutionProjection === "function" ? targetObject.buildClassicalNahuatlVncSourceConstitutionProjection({
         sourceStem: sourceValue,
+        sourceEmbedStem: sourceSelectionOptions.sourceEmbedStem || "",
+        sourceMatrixStem: sourceSelectionOptions.sourceMatrixStem || "",
         sourceValence: sourceValenceControl?.value || "intransitive",
         verbClass: sourceClassControl?.value || "",
         derivationType: "direct"
@@ -10309,14 +10748,15 @@ export function createUiComposerRuntime(targetObject = globalThis) {
                 sourceMatrixStem: builtSourceFrame.hasParts
                   ? builtSourceFrame.matrixSurface || ""
                   : ""
-              }
+              }, {sourceUse: targetObject.document?.getElementById?.("classical-rule-logic-nnc-source-use")?.value || "nounstem"}
             )
             : null;
         const sourceKind = sourceIdentity?.recognized
           ? String(sourceIdentity.nncType || "ordinary").replace(/-/gu, " ")
           : "unrecognized nounstem";
         const sourceMorphs = normalizedNncStem.includes("-") ? normalizedNncStem.split("-").join(" | ") : normalizedNncStem;
-        let sourceRoles = `one nominal predicate stem · ${sourceKind}`;
+        let sourceRoles = sourceIdentity?.nncType === "cardinal-number"
+          ? "cardinal number value" : `one nominal predicate stem · ${sourceKind}`;
         if (builtSourceFrame.hasParts) {
           sourceRoles = `embed: ${builtSourceFrame.embedSurface || "_"} | matrix: ${builtSourceFrame.matrixSurface || "_"} · ${sourceKind}`;
         } else if (selectedExampleMatches && selectedSourceExample?.dataset?.classicalNncSourceMode === CLASSICAL_SOURCE_ANALYSIS_KIND.internalMorphemes) {
@@ -10325,7 +10765,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         return {
           unit: activeUnit,
           sourceValue,
-          rank: `NNC stem source · ${sourceKind}`,
+          rank: sourceIdentity?.nncType === "cardinal-number" ? "Number" : `NNC stem source · ${sourceKind}`,
           machine: "Source determines NNC identity; Authority supplies grammatical choices",
           authorizes: "none",
           lineStart: "2326",
@@ -10371,6 +10811,14 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       }
       const builtSourceFrame = syncClassicalBuiltSourceToVerbInput();
       const frame = getClassicalSourceReadoutFrame(unit);
+      const sourceHeading = targetObject.document.getElementById("classical-stage-source-heading");
+      if (sourceHeading && frame.canonicalNominalRankCorrectionFrame) {
+        sourceHeading.textContent = "Nounstem Source";
+        sourceHeading.dataset.classicalNominalSourceRankLabel = "true";
+      } else if (sourceHeading?.dataset.classicalNominalSourceRankLabel === "true") {
+        sourceHeading.textContent = "Source";
+        delete sourceHeading.dataset.classicalNominalSourceRankLabel;
+      }
       readout.dataset.classicalSourceUnit = frame.unit;
       readout.dataset.classicalSourceValue = frame.sourceValue;
       readout.dataset.classicalSourceAuthorizes = frame.authorizes;
@@ -10424,8 +10872,11 @@ export function createUiComposerRuntime(targetObject = globalThis) {
           "perfective-impersonal-tla",
         ].includes(relationalSourceFormation);
       if (sourceIdentityEl) {
+        const identityUnit = targetObject.document.getElementById("classical-source-parts")
+          ?.dataset.classicalSourceCommitState === "pending"
+          ? getClassicalBasalUnitFromRuntime() : frame.unit;
         sourceIdentityEl.hidden =
-          frame.unit !== CLASSICAL_BASAL_UNIT.vnc
+          identityUnit !== CLASSICAL_BASAL_UNIT.vnc
           && !relationalCompositionNeedsVncSource;
         sourceIdentityEl.setAttribute("aria-hidden", String(sourceIdentityEl.hidden));
       }
@@ -10546,13 +10997,14 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         target.dataset.classicalSourceBoardSourceUnit = activeUnit;
         target.dataset.classicalSourceBoardMirrorRole = "engine-sync-not-user-source";
       });
+      const writingMode = targetObject.document.getElementById("classical-workbench")?.dataset?.classicalWritingSourceMode === "true";
       const controls = targetObject.document.getElementById("classical-basal-unit-controls");
       if (controls) {
-        controls.setAttribute("aria-label", `Classical Nahuatl basal unit: ${activeUnit.toUpperCase()}`);
+        controls.setAttribute("aria-label", writingMode ? "Nuclear-clause Source" : `Classical Nahuatl basal unit: ${activeUnit.toUpperCase()}`);
       }
       targetObject.document.querySelectorAll("button[data-classical-basal-unit]").forEach(button => {
         const buttonUnit = normalizeClassicalBasalUnit(button.getAttribute("data-classical-basal-unit") || "");
-        const isActive = buttonUnit === activeUnit;
+        const isActive = !writingMode && buttonUnit === activeUnit;
         button.classList.toggle("is-active", isActive);
         button.setAttribute("aria-pressed", String(isActive));
         button.removeAttribute("aria-selected");
@@ -10562,6 +11014,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       syncClassicalConstructionSourceUnitAvailability(activeUnit);
       syncClassicalSourceReadout(activeUnit);
       syncClassicalRelationalNncUiControls();
+      syncClassicalSourceObjectRows(targetObject.document);
       return activeUnit;
     }
     function refreshClassicalBasalUnitRenderedOutput() {
@@ -10678,7 +11131,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       "ic-downward-direction": "ic · downward direction",
       "teuh-similarity": "teuh · similarity / manner",
       "tzalan-between": "tzālan · between / among",
-      "huic-direction": "huic · direction",
+      "huic-direction": "huīc · direction",
       "ca-means": "ca · means",
       "icpac-top": "icpac · top",
       "tech-contact": "tech · contact",
@@ -10687,7 +11140,8 @@ export function createUiComposerRuntime(targetObject = globalThis) {
     });
     function isClassicalRelationalNncUiModeEnabled() {
       const selected = getClassicalNncSourceGuideElements().select?.selectedOptions?.[0] || null;
-      return Boolean(selected?.dataset?.classicalRelationalStemId);
+      return getClassicalBasalUnitFromRuntime() === CLASSICAL_BASAL_UNIT.nnc
+        && Boolean(selected?.dataset?.classicalRelationalStemId);
     }
     function getClassicalRelationalNncUiElements() {
       const byId = id => targetObject.document?.getElementById?.(id) || null;
@@ -10867,10 +11321,34 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       const derivedSource = ["n-locative", "yan-locative"].includes(stemId)
         && option === "option-two"
         && sourceFormation !== "plain-nounstem";
+      if (operation === "relational-nnc" && derivedSource) {
+        const signature = [stemId, sourceFormation, sourceEmbedStem].join("|");
+        const priorSignature = String(elements.sourceKind?.dataset?.classicalRelationalSourceSignature || "");
+        if (elements.sourceKind && (resetSelection || priorSignature && priorSignature !== signature)) {
+          elements.sourceKind.value = "";
+        }
+        const selectedSource = getClassicalRelationalNncUiSelectedImperfectSource(sourceFormation, sourceEmbedStem);
+        if (elements.sourceKind && selectedSource) {
+          if (!Array.from(elements.sourceKind.options || []).some(item => item.value === selectedSource.sourceKind)) {
+            const item = targetObject.document.createElement("option");
+            item.value = selectedSource.sourceKind;
+            item.textContent = CLASSICAL_RELATIONAL_NNC_SOURCE_KIND_LABELS[selectedSource.sourceKind]
+              || selectedSource.sourceKind.replace(/-/gu, " ");
+            elements.sourceKind.appendChild(item);
+          }
+          elements.sourceKind.value = selectedSource.sourceKind;
+          elements.sourceKind.dataset.classicalRelationalSourceAdmission = "owner-selected";
+        }
+        if (elements.sourceKind) {
+          elements.sourceKind.dataset.classicalRelationalSourceSignature = signature;
+          elements.sourceKind.disabled = true;
+        }
+        if (elements.sourceKindField) elements.sourceKindField.hidden = true;
+        return null;
+      }
       if (
         operation !== "relational-nnc"
         || option === "option-one"
-        || derivedSource
         || typeof targetObject.issueClassicalNahuatlRelationalSourceAdmissionFrame
           !== "function"
         || typeof targetObject.isClassicalNahuatlRelationalSourceAdmissionFrame
@@ -10894,6 +11372,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
           sourceEmbedStem,
           sourceFormation,
           requestedSourceKind,
+          formation: option,
         });
       if (!targetObject.isClassicalNahuatlRelationalSourceAdmissionFrame(frame)) {
         if (elements.sourceKindField) elements.sourceKindField.hidden = true;
@@ -10947,11 +11426,26 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       }
       return frame;
     }
+    function getClassicalRelationalNncUiSelectedImperfectSource(sourceFormation, enteredStem) {
+      const elements = getClassicalRelationalNncUiElements();
+      const stemId = elements.stem?.selectedOptions?.[0]?.dataset?.classicalRelationalStemId;
+      if (stemId !== "n-locative" || elements.operation?.value !== "relational-nnc"
+        || elements.option?.value !== "option-two"
+        || typeof targetObject.resolveClassicalNahuatlSelectedImperfectPredicateSourceFrame !== "function"
+        || typeof targetObject.isClassicalNahuatlSelectedImperfectPredicateSourceFrame !== "function") return null;
+      const sourceKind = String(elements.sourceKind?.value || "").trim();
+      const source = targetObject.resolveClassicalNahuatlSelectedImperfectPredicateSourceFrame({
+        enteredStem, sourceFormation, ...(sourceKind ? {sourceKind} : {}),
+      });
+      return targetObject.isClassicalNahuatlSelectedImperfectPredicateSourceFrame(source) ? source : null;
+    }
     function getClassicalRelationalNncUiRequest() {
       const elements = getClassicalRelationalNncUiElements();
       const selectedStem = elements.stem?.selectedOptions?.[0] || null;
       const stemId = String(selectedStem?.dataset?.classicalRelationalStemId || "");
       const operation = String(elements.operation?.value || "relational-nnc");
+      const stemAuthority = targetObject.getClassicalNahuatlRelationalStemInventory?.()
+        .find(entry => entry.stemId === stemId);
       const option = operation === "compound-embed"
         ? "option-four"
         : String(elements.option?.value || "option-two");
@@ -10971,25 +11465,24 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         && option === "option-two"
           ? String(elements.sourceFormation?.value || "plain-nounstem")
           : "plain-nounstem";
-      const ownerIssuedDerivedSource = buildClassicalRelationalNncDeverbalUpstreamResult(
+      const sourceAdmission = issueClassicalRelationalNncUiSourceAdmission({updateControl: true});
+      const selectedImperfectPredicateSource = getClassicalRelationalNncUiSelectedImperfectSource(
+        selectedSourceFormation, sourceEmbedStem,
+      );
+      const ownerIssuedDerivedSource = selectedImperfectPredicateSource ? null : buildClassicalRelationalNncDeverbalUpstreamResult(
         selectedSourceFormation,
         sourceEmbedStem,
       );
-      const sourceAdmission = ownerIssuedDerivedSource
-        ? null
-        : issueClassicalRelationalNncUiSourceAdmission({
-          updateControl: true,
-        });
       const sourceKind = option === "option-one"
         ? "possessor"
         : selectedSourceFormation === "can-interrogative"
           ? "interrogative-empty"
           : selectedSourceFormation === "can-modified"
             ? "interrogative-modifier"
-            : sourceAdmission?.selectedSourceKind || "";
+            : selectedImperfectPredicateSource?.sourceKind || sourceAdmission?.selectedSourceKind || "";
       const state = operation === "relational-nnc" && option === "option-one"
         ? "possessive"
-        : String(elements.state?.value || "absolutive");
+        : selectedImperfectPredicateSource?.selectedState || String(elements.state?.value || "absolutive");
       const possessorId = stemId === "c-means-purpose-reason-time"
         ? "3common"
         : state === "possessive"
@@ -11015,6 +11508,9 @@ export function createUiComposerRuntime(targetObject = globalThis) {
               ...(sourceAdmission?.sourceLexemeId
                 ? { sourceLexemeId: sourceAdmission.sourceLexemeId }
                 : {}),
+              ...(sourceAdmission?.sourceCompositionRequest
+                ? { sourceComposition: sourceAdmission.sourceCompositionRequest }
+                : {}),
           ...(ownerIssuedDerivedSource
             ? { upstreamResult: ownerIssuedDerivedSource }
             : operation === "relational-nnc"
@@ -11035,6 +11531,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
                     .join("-"),
                 }),
           affective: String(elements.affective?.value || "none"),
+          ...(selectedImperfectPredicateSource ? {selectedImperfectPredicateSource} : {}),
           pertinencySourceKind: String(
             elements.pertinencySource?.value || "direct-relational"
           )
@@ -11042,7 +11539,15 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         state,
         possessorId,
         subjectMode: String(elements.subjectMode?.value || "adverbialized"),
-        subjectId: String(elements.subject?.value || "3common"),
+        subjectId: operation === "relational-nnc" && elements.subjectMode?.value !== "normal"
+          ? stemAuthority?.adverbialSubject?.formalSubjectId || ""
+          : String(elements.subject?.value || "3common"),
+        sentencePosition: String(targetObject.document?.getElementById?.(
+          "classical-rule-logic-nnc-clause-position"
+        )?.value || "initial"),
+        negative: targetObject.document?.getElementById(
+          "classical-rule-logic-polarity"
+        )?.value === "negative",
       };
       if (
         operation === "pertinency"
@@ -11173,6 +11678,17 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       const nncActive = activeUnit === CLASSICAL_BASAL_UNIT.nnc;
       const selectedStem = stemControl.selectedOptions?.[0] || null;
       const modeActive = nncActive && Boolean(selectedStem?.dataset?.classicalRelationalStemId);
+      // Embedded Source classification must be reachable before Apply while
+      // the dependent Grammar workspace is intentionally hidden.
+      const sourceGuide = targetObject.document.getElementById("classical-nnc-source-guide");
+      for (const field of [elements.optionField, elements.sourceFormationField, elements.sourceKindField]) {
+        if (sourceGuide && field && field.parentElement !== sourceGuide)
+          sourceGuide.appendChild(field);
+      }
+      if (!modeActive) {
+        for (const field of [elements.optionField, elements.sourceFormationField, elements.sourceKindField])
+          if (field) field.hidden = true;
+      }
       if (targetObject.document?.body) {
         targetObject.document.body.dataset.classicalRelationalNncMode = String(modeActive);
       }
@@ -11278,7 +11794,16 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         operation === "relational-nnc"
         && ["n-locative", "yan-locative"].includes(selectedStemId)
         && option === "option-two";
-      const sourceFormationState = {
+      const exactBinding = targetObject.getActiveClassicalGrammarResultBinding?.("nnc:relational");
+      const exactChoice = targetObject.isClassicalNahuatlFormationResultBindingFrame?.(exactBinding?.ownerBindingFrame) === true
+        && exactBinding.ownerBindingFrame.exactResult === exactBinding.exactResult
+        ? exactBinding.ownerBindingFrame.bindingChoices.find(choice => choice.id === exactBinding.selectedBindingId) : null;
+      const inheritedCharacteristic = exactChoice?.inputRole === "characteristic-yo-nominal-source" ? exactChoice : null;
+      const selectedImperfectPredicateSource = getClassicalRelationalNncUiSelectedImperfectSource(
+        derivedSourceFormation, getClassicalSourcePartControlState().sourceEmbedStem,
+      );
+      const sourceFormationState = inheritedCharacteristic?.derivedRelationalSourceState
+        || selectedImperfectPredicateSource?.selectedState || {
         "preterit-agentive": "absolutive",
         "active-action": "possessive",
         "can-interrogative": "absolutive",
@@ -11329,9 +11854,11 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       }
       if (elements.possessorField) elements.possessorField.hidden = state !== "possessive";
       if (elements.possessor) {
-        const fixedThird = selectedStemId === "c-means-purpose-reason-time";
-        elements.possessor.disabled = fixedThird;
-        if (fixedThird) elements.possessor.value = "3sg";
+        const fixedPossessor = targetObject.getClassicalNahuatlRelationalStemInventory?.()
+          .find(entry => entry.stemId === selectedStemId)?.fixedPossessorId;
+        elements.possessor.disabled = Boolean(fixedPossessor || inheritedCharacteristic);
+        if (inheritedCharacteristic) elements.possessor.value = inheritedCharacteristic.derivedRelationalSourcePossessor || "";
+        if (fixedPossessor) elements.possessor.value = fixedPossessor;
       }
       const subjectIsDerived = elements.subjectMode?.value !== "normal";
       if (elements.subjectField) elements.subjectField.hidden = subjectIsDerived;
@@ -11377,31 +11904,34 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         elements.pertinencySource,
       ]
         .filter(Boolean)
-        .forEach(control => control.addEventListener("change", () => {
-          syncClassicalRelationalNncUiControls({ render: true });
+        .forEach(control => control.addEventListener("change", event => {
+          if (targetObject.handleClassicalCapabilityStagedGrammarControlChange?.(control, event) === true) return;
+          stageClassicalSourcePartsEvaluation(() => syncClassicalRelationalNncUiControls({ render: false }));
         }));
       elements.option?.addEventListener("change", () => {
-        syncClassicalRelationalNncUiControls();
-        commitClassicalSourcePartsEvaluation({
-          force: true,
-          source: "classical-relational-nnc-formation"
-        });
+        stageClassicalSourcePartsEvaluation(() => syncClassicalRelationalNncUiControls());
       });
       [elements.operation, elements.sourceFormation]
         .filter(Boolean)
         .forEach(control => control.addEventListener("change", () => {
-          syncClassicalRelationalNncUiControls();
-          commitClassicalSourcePartsEvaluation({
-            force: true,
-            source: "classical-relational-nnc-operation"
-          });
+          stageClassicalSourcePartsEvaluation(() => syncClassicalRelationalNncUiControls());
         }));
       elements.sourceKind?.addEventListener("change", () => {
-        issueClassicalRelationalNncUiSourceAdmission();
-        commitClassicalSourcePartsEvaluation({
-          force: true,
-          source: "classical-relational-nnc-source-kind"
+        const selectedValue = String(elements.sourceKind.value || "");
+        const available = () => !elements.sourceKind.disabled
+          && Array.from(elements.sourceKind.options || []).some(option => (
+            option.value === selectedValue && !option.disabled && !option.hidden
+            && !option.parentElement?.disabled && !option.parentElement?.hidden
+          ));
+        if (!available()) return;
+        const prepared = stageClassicalSourcePartsEvaluation(() => {
+          // Pending readouts reconcile to committed Source before preparation.
+          // Retain this offered declaration for the canonical admission owner.
+          if (!available()) return false;
+          elements.sourceKind.value = selectedValue;
+          return issueClassicalRelationalNncUiSourceAdmission();
         });
+        if (prepared && available()) elements.sourceKind.value = selectedValue;
       });
       nounstemSelect.dataset.classicalRelationalNncBound = "true";
       syncClassicalRelationalNncUiControls();
@@ -11454,7 +11984,10 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         initialIChoice: vncSourceInitialIChoice,
         sourceLexemeChoice: vncSourceLexemeChoice
       } = getClassicalVncSourceGuideElements();
+      resetClassicalVncClassForChangedSource({ initialize: true });
       const handleSourcePartsChange = (event = null) => {
+        setClassicalSourcePartsPendingState(true);
+        resetClassicalVncClassForChangedSource();
         targetObject
           .clearClassicalVncResultSourceContinuation?.(
             "source-constituent-edited"
@@ -11462,13 +11995,17 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         const relationalEmbedEdit = isClassicalRelationalNncUiModeEnabled()
           && event?.target === embedInput;
         if (relationalEmbedEdit && root?.dataset) {
-          root.dataset.classicalRelationalNncLastEmbed = normalizeClassicalFuenteSourcePartStem(embedInput?.value || "");
+          const nextEmbed = normalizeClassicalFuenteSourcePartStem(embedInput?.value || "");
+          const materialChanged = root.dataset.classicalRelationalNncLastEmbed !== nextEmbed;
+          root.dataset.classicalRelationalNncLastEmbed = nextEmbed;
           issueClassicalRelationalNncUiSourceAdmission({
-            resetSelection: true,
+            resetSelection: materialChanged,
           });
           syncClassicalBuiltSourceToVerbInput();
         }
         if (event?.isTrusted === true && nncSourceExample && !relationalEmbedEdit) {
+          const initialIControl = targetObject.document.getElementById("classical-rule-logic-nnc-initial-i");
+          if (initialIControl) initialIControl.value = "real";
           nncSourceExample.value = "";
           if (nncSourceGuide?.dataset) {
             nncSourceGuide.dataset.classicalNncSourceSelection = "user-nounstem";
@@ -11481,46 +12018,30 @@ export function createUiComposerRuntime(targetObject = globalThis) {
           vncSourceStemPicker
         );
         syncClassicalVncSourceValenceAvailability();
+        syncClassicalVncSourceLexemeFact(getClassicalVncSourceGuideElements().root, vncSourceStemPicker);
         setClassicalSourcePartsPendingState(getClassicalSourcePartsEvaluationSignature() !== ClassicalSourcePartsCommittedSignature);
       };
       nncSourceExample?.addEventListener("change", () => {
-        if (applyClassicalNncSourceExampleSelection()) {
-          if (isClassicalRelationalNncUiModeEnabled()) {
-            syncClassicalRelationalNncUiControls();
-            commitClassicalSourcePartsEvaluation({
-              force: true,
-              source: "classical-relational-nnc-source"
-            });
-            return;
-          }
-          commitClassicalSourcePartsEvaluation({
-            force: true,
-            source: "classical-source-example"
-          });
-        }
+        const initialIControl = targetObject.document.getElementById("classical-rule-logic-nnc-initial-i");
+        if (initialIControl) initialIControl.value = "real";
+        stageClassicalSourceExampleSelection(nncSourceExample, () => applyClassicalNncSourceExampleSelection());
       });
       populateClassicalVncSourceStemPicker();
       vncSourceStemPicker?.addEventListener("change", () => {
+        const selectedValue = vncSourceStemPicker.value;
         targetObject
           .clearClassicalVncResultSourceContinuation?.(
             "canonical-source-picker-changed"
           );
-        if (applyClassicalVncSourceStemSelection()) {
-          commitClassicalSourcePartsEvaluation({
-            force: true,
-            source: "classical-source-picker"
-          });
-        }
+        stageClassicalSourceExampleSelection(vncSourceStemPicker, () => applyClassicalVncSourceStemSelection(), selectedValue);
       });
       vncSourceInitialIChoice?.addEventListener("change", () => {
         targetObject
           .clearClassicalVncResultSourceContinuation?.(
             "source-initial-i-changed"
           );
-        syncClassicalVncSourceInitialIFact(getClassicalVncSourceGuideElements().root, vncSourceStemPicker);
-        commitClassicalSourcePartsEvaluation({
-          force: true,
-          source: "classical-source-initial-i"
+        stageClassicalSourcePartsEvaluation(() => {
+          syncClassicalVncSourceInitialIFact(getClassicalVncSourceGuideElements().root, vncSourceStemPicker);
         });
       });
       vncSourceLexemeChoice?.addEventListener("change", () => {
@@ -11528,13 +12049,8 @@ export function createUiComposerRuntime(targetObject = globalThis) {
           .clearClassicalVncResultSourceContinuation?.(
             "source-lexeme-changed"
           );
-        syncClassicalVncSourceLexemeFact(
-          getClassicalVncSourceGuideElements().root,
-          vncSourceStemPicker
-        );
-        commitClassicalSourcePartsEvaluation({
-          force: true,
-          source: "classical-source-lexeme"
+        stageClassicalSourcePartsEvaluation(() => {
+          syncClassicalVncSourceLexemeFact(getClassicalVncSourceGuideElements().root, vncSourceStemPicker);
         });
       });
       modeButtons.forEach(button => {
@@ -11543,12 +12059,9 @@ export function createUiComposerRuntime(targetObject = globalThis) {
           if (nncSourceExample) {
             nncSourceExample.value = "";
           }
-          setClassicalSourcePartsMode(mode, {
-            clearValues: mode === "whole-stem"
-          });
-          handleSourcePartsChange();
-          commitClassicalSourcePartsEvaluation({
-            source: "classical-source-mode"
+          stageClassicalSourcePartsEvaluation(() => {
+            setClassicalSourcePartsMode(mode, { clearValues: mode === "whole-stem" });
+            handleSourcePartsChange();
           });
           if (mode === "embed-matrix" && embedInput && typeof embedInput.focus === "function") {
             embedInput.focus();
@@ -11655,17 +12168,42 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         ? { nonactiveOptionId: selectedOptionId }
         : {};
     }
-    function refreshClassicalRuleLogicSurfaceFromControl(control = null) {
+    function refreshClassicalRuleLogicSurfaceFromControl(control = null, event = null) {
       if (targetObject.handleClassicalCapabilityStagedGrammarControlChange?.(
-        control
+        control, event
       ) === true) return true;
       if (typeof targetObject.renderClassicalRuleLogicSurfaceBlock !== "function") {
         return;
       }
-      const rendered = targetObject.renderClassicalRuleLogicSurfaceBlock({
+      const alternative = targetObject.document?.getElementById?.(
+        "classical-rule-logic-irregular-alternative"
+      );
+      const previousAlternative = alternative?.value || "";
+      const overrides = {
         ...getClassicalCausativeParticipantControlRequestOverrides(control),
         ...getClassicalPreservedNonactiveFormationRequestOverrides(control)
-      });
+      };
+      let rendered = targetObject.renderClassicalRuleLogicSurfaceBlock(overrides);
+      const formationControl = targetObject.document?.getElementById?.(
+        CLASSICAL_NONACTIVE_FORMATION_CONTROL_ID
+      );
+      // A Source or voice change may withdraw the previously accepted option.
+      // Consume the owner's reset once; explicit formation choices retain
+      // their own authorization result instead of silently choosing another.
+      if (overrides.nonactiveOptionId
+        && !isClassicalNonactiveFormationControl(control)
+        && !String(formationControl?.value || "").trim()) {
+        rendered = targetObject.renderClassicalRuleLogicSurfaceBlock({
+          ...overrides,
+          nonactiveOptionId: ""
+        });
+      }
+      // A new paradigm cell can withdraw the previous cell's alternative.
+      // Re-evaluate once after the owner-driven control reset, rather than
+      // leaving the rejected old choice on screen until another user action.
+      if (previousAlternative && alternative?.value !== previousAlternative) {
+        rendered = targetObject.renderClassicalRuleLogicSurfaceBlock(overrides);
+      }
       const derivationType = typeof targetObject.getActiveDerivationType === "function" ? targetObject.getActiveDerivationType() : "direct";
       if (["causative", "applicative"].includes(derivationType)) {
         syncEntradaUrlSegmentsFromCurrentState({
@@ -11678,6 +12216,17 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       const control = event?.target || null;
       if (!isClassicalCausativeParticipantControl(control) || typeof targetObject.window?.setTimeout !== "function") {
         return false;
+      }
+      if (targetObject.handleClassicalCapabilityStagedGrammarControlChange?.(
+        control, event
+      ) === true) {
+        if (ClassicalCausativeParticipantControlRefreshTimer) {
+          targetObject.window.clearTimeout(ClassicalCausativeParticipantControlRefreshTimer);
+          ClassicalCausativeParticipantControlRefreshTimer = null;
+          PendingClassicalCausativeParticipantControlOverrides = null;
+        }
+        if (event) HandledClassicalCausativeParticipantChangeEvents.add(event);
+        return true;
       }
       if (event) {
         HandledClassicalCausativeParticipantChangeEvents.add(event);
@@ -11710,7 +12259,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       if (event) {
         HandledClassicalCausativeParticipantChangeEvents.add(event);
       }
-      refreshClassicalRuleLogicSurfaceFromControl(control);
+      refreshClassicalRuleLogicSurfaceFromControl(control, event);
       return true;
     }
     function bindClassicalCausativeParticipantControlEvents(control = null) {
@@ -11735,7 +12284,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       if (event) {
         HandledClassicalNonactiveFormationChangeEvents.add(event);
       }
-      refreshClassicalRuleLogicSurfaceFromControl(control);
+      refreshClassicalRuleLogicSurfaceFromControl(control, event);
       return true;
     }
     function handleClassicalCausativeParticipantRevisionClick(event = null) {
@@ -11850,13 +12399,50 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       const classicalBasalButtons = targetObject.document.querySelectorAll("button[data-classical-basal-unit]");
       const classicalRuleLogicControls = targetObject.document.querySelectorAll("[data-classical-rule-logic-control]");
       const classicalSourceDraftControlIds = new Set([
+        "classical-attitude-source-analysis",
+        "classical-affective-lexical-status",
+        "classical-affective-irregular-embed-stem",
+        "classical-affective-flawed-source-status",
+        "classical-affective-flawed-class-strategy",
+        "classical-affective-flawed-lexical-reading",
+        "classical-rule-logic-nnc-initial-i",
         "classical-rule-logic-class",
         "classical-rule-logic-valence",
+        "classical-rule-logic-causative-source-voice",
+        "classical-rule-logic-causative-source-nonactive",
+        "classical-rule-logic-object",
         "classical-rule-logic-nnc-class",
+        "classical-rule-logic-nnc-source-use",
         "classical-rule-logic-nnc-tl2a-realization",
         "classical-vnc-source-initial-i-choice",
         "classical-vnc-source-lexeme-choice",
+        "classical-source-object-2-kind",
+        "classical-source-object-2-person",
+        "classical-source-object-3-kind",
+        "classical-source-object-3-person",
       ]);
+      const isClassicalTypedImperfectiveObjectChoice = control => {
+        const binding = targetObject.getActiveClassicalGrammarTypedSourceOperationBinding?.();
+        const source = getClassicalSourcePartControlState();
+        return control === targetObject.document.getElementById("classical-rule-logic-object")
+          && binding?.operationId === "vnc:application"
+          && targetObject.document.getElementById("classical-source-parts")?.dataset.classicalSourceCommitState === "committed"
+          && source.mode === CLASSICAL_SOURCE_PARTS_MODE.wholeStem
+          && targetObject.isClassicalGrammarTypedSourceOperationBindingFrame?.(binding) === true
+          && (targetObject.isClassicalNahuatlImperfectiveVncSourceFrame?.(binding.exactSource) === true
+            && binding.exactSource.sourceValence === "specific-projective"
+            && targetObject.resolveClassicalNahuatlImperfectiveVncSourceFrame?.({enteredStem:source.sourceWholeStem,
+              valence:targetObject.document.getElementById("classical-rule-logic-valence")?.value}) === binding.exactSource
+            || targetObject.isClassicalNahuatlAnalyticalVncSourceFrame?.(binding.exactSource) === true
+              && targetObject.resolveClassicalNahuatlAnalyticalVncSourceFrame?.({enteredStem:source.sourceWholeStem,valence:"intransitive"})===binding.exactSource)
+          && Array.isArray(binding.choiceOptionProjection?.objectSelection);
+      };
+      const isClassicalSourceDraftControl = control => classicalSourceDraftControlIds.has(control.id)
+        && (control.id !== "classical-rule-logic-object"
+          || getClassicalBasalUnitFromRuntime() === "vnc"
+            && targetObject.document?.getElementById?.("classical-rule-logic-valence")?.value === "specific-projective"
+            && control.disabled !== true && !isClassicalTypedImperfectiveObjectChoice(control));
+      installClassicalSourceObjectRows(targetObject.document, () => { setClassicalSourcePartsPendingState(true); });
       initClassicalCausativeParticipantControlEvents();
       initClassicalNonactiveFormationControlEvents();
       if (!ansButton && !modeButton && !transitivityButton && !supportiveIButton && !acButton && !ceButton && !delButton && !equalsButton && !classicalBasalButtons.length && !classicalRuleLogicControls.length) {
@@ -11897,6 +12483,16 @@ export function createUiComposerRuntime(targetObject = globalThis) {
             : control.id.includes("-nnc-subject-")
               ? "nnc"
               : "";
+          // Cardinal reference agreement belongs to its construction owner.
+          // Stage it before ordinary noun normalization can force common
+          // number or erase a licensed gross-count participant.
+          if (subjectFamily === "nnc"
+            && targetObject.document?.getElementById?.("classical-construction-operation")?.value === "cardinal-numeral-nnc"
+            && targetObject.handleClassicalCapabilityStagedGrammarControlChange?.(control, event) === true) return;
+          if (subjectFamily === "vnc"
+            && targetObject.document?.getElementById?.("classical-construction-operation")?.value === "deverbal-nnc"
+            && targetObject.document?.getElementById?.("classical-deverbal-nnc-family")?.value === "verbal-continuation"
+            && targetObject.handleClassicalCapabilityStagedGrammarControlChange?.(control, event) === true) return;
           if (subjectFamily) {
             const subjectControlPrefix = `classical-rule-logic-${subjectFamily}-subject`;
             const personControl = targetObject.document?.getElementById?.(`${subjectControlPrefix}-person`);
@@ -11910,21 +12506,32 @@ export function createUiComposerRuntime(targetObject = globalThis) {
             if (control.id === `${subjectControlPrefix}-humanness` && humannessControl?.value === "nonhuman") {
               if (personControl) personControl.value = "3";
             }
+            // A newly selected nonanimate referent changes person as well.
+            // Honor that edit before normalizing a former first/second person.
+            if (control.id === `${subjectControlPrefix}-animacy`
+              && animacyControl?.value === "nonanimate" && personControl) {
+              personControl.value = "3";
+            }
             if (personControl?.value !== "3") {
               if (animacyControl) animacyControl.value = "animate";
               if (humannessControl) humannessControl.value = "human";
             }
             const nonanimate = animacyControl?.value === "nonanimate";
+            const affectiveNumberContract = nonanimate && subjectFamily === "nnc"
+              ? targetObject.getClassicalNncAuthorityOptionContract?.() : null;
+            const licensedAffectivePlural = affectiveNumberContract?.authorizationStatus === "authorized"
+              && affectiveNumberContract.affectiveSubjectChoiceFrame?.subjectValues.includes("3pl")
+              && affectiveNumberContract.selectedSubject === "3pl";
             if (nonanimate) {
               if (personControl) personControl.value = "3";
               if (humannessControl) humannessControl.value = "nonhuman";
-              if (numberControl) numberControl.value = "common";
+              if (numberControl && !licensedAffectivePlural) numberControl.value = "common";
             } else if (numberControl?.value === "common") {
               numberControl.value = "singular";
             }
             if (agreementControl) {
               agreementControl.value = nonanimate
-                ? subjectFamily === "nnc" ? "3common" : "3sg"
+                ? subjectFamily === "nnc" ? licensedAffectivePlural ? "3pl" : "3common" : "3sg"
                 : `${personControl?.value || "3"}${numberControl?.value === "plural" ? "pl" : "sg"}`;
             }
           }
@@ -11935,6 +12542,13 @@ export function createUiComposerRuntime(targetObject = globalThis) {
             "classical-rule-logic-sentence-adverbial",
             "classical-rule-logic-polarity"
           ].includes(control.id)) {
+            const previousCombination = targetObject.findClassicalNahuatlParticleCombinationShortcutEntry?.(shortcutControl.value);
+            // Its negation is already carried by the retained particle Result.
+            // Releasing the selection must not negate the newly chosen adverbial.
+            if (control.id !== "classical-rule-logic-polarity"
+              && previousCombination?.consumesSelectedPolarity === true) {
+              setClassicalParticlePolarityControl("positive");
+            }
             shortcutControl.value = "none";
             if (control.id !== "classical-rule-logic-polarity") {
               ClassicalParticleCombinationDraftSegments = [];
@@ -11958,10 +12572,17 @@ export function createUiComposerRuntime(targetObject = globalThis) {
               getClassicalBasalUnitFromRuntime()
             );
           }
+          if (isClassicalSourceDraftControl(control)
+            && hasCommittableClassicalSourceParts()) {
+            stageClassicalSourcePartsEvaluation(() => {
+              if (control.id === "classical-rule-logic-valence") syncClassicalVncSourceGuide();
+            });
+            return;
+          }
           if (
             targetObject
               .handleClassicalCapabilityStagedGrammarControlChange?.(
-                control
+                control, event
               ) === true
           ) {
             renderClassicalParticleCombinationBuilder();
@@ -11986,23 +12607,23 @@ export function createUiComposerRuntime(targetObject = globalThis) {
             syncClassicalVncSourceGuide();
           }
           if (
-            classicalSourceDraftControlIds.has(control.id)
+            isClassicalSourceDraftControl(control)
             && hasCommittableClassicalSourceParts()
           ) {
             setClassicalSourcePartsPendingState(true);
             return;
           }
-          refreshClassicalRuleLogicSurfaceFromControl(control);
+          refreshClassicalRuleLogicSurfaceFromControl(control, event);
           renderClassicalParticleCombinationBuilder();
           if (control.closest?.("[data-classical-source-identity-controls]")) {
             syncClassicalSourceReadout(getClassicalBasalUnitFromRuntime());
           }
         });
-        control.addEventListener("input", () => {
+        control.addEventListener("input", event => {
           if (control.tagName === "SELECT") {
             return;
           }
-          refreshClassicalRuleLogicSurfaceFromControl(control);
+          refreshClassicalRuleLogicSurfaceFromControl(control, event);
           if (control.closest?.("[data-classical-source-identity-controls]")) {
             syncClassicalSourceReadout(getClassicalBasalUnitFromRuntime());
           }
@@ -12015,8 +12636,16 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         if (!control || typeof targetObject.window?.setTimeout !== "function") {
           return;
         }
+        if (isClassicalSourceDraftControl(control)
+          && hasCommittableClassicalSourceParts()) {
+          stageClassicalSourcePartsEvaluation();
+          return;
+        }
+        if (targetObject.handleClassicalCapabilityStagedGrammarControlChange?.(
+          control, event
+        ) === true) return;
         targetObject.window.setTimeout(() => {
-          refreshClassicalRuleLogicSurfaceFromControl(control);
+          refreshClassicalRuleLogicSurfaceFromControl(control, event);
         }, 0);
       }, true);
       targetObject.document.querySelectorAll("[data-classical-segment-control]").forEach(option => {
@@ -13030,6 +13659,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       { id: "classical-rule-logic-object-interpretation", defaultValue: "reflexive" },
       { id: "classical-rule-logic-tla-fusion", defaultValue: false, type: "checkbox" },
       { id: "classical-rule-logic-directional", defaultValue: "none" },
+      { id: "classical-rule-logic-directional-contraction", defaultValue: "ordinary" },
       { id: "classical-rule-logic-prefix-stack", defaultValue: false, type: "checkbox", legacySentence: true },
       { id: "classical-rule-logic-polarity", defaultValue: "positive", values: ["positive", "negative"], legacySentence: true },
       { id: "classical-rule-logic-sentence-surface", defaultValue: "statement", legacySentence: true },
@@ -13245,10 +13875,22 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       defaultValue: false,
       type: "boolean"
     }, {
+      key: "classicalNncSourceUse",
+      segment: "cn-source-use",
+      path: ["classicalNnc", "sourceUse"],
+      defaultValue: "nounstem",
+      classicalNncOnly: true
+    }, {
       key: "classicalNncSourceClass",
       segment: "cn-source-class",
       path: ["classicalNnc", "sourceClass"],
       defaultValue: "",
+      classicalNncOnly: true
+    }, {
+      key: "classicalNncInitialI",
+      segment: "cn-initial-i",
+      path: ["classicalNnc", "initialI"],
+      defaultValue: "real",
       classicalNncOnly: true
     }, {
       key: "classicalNncTl2ARealization",
@@ -13267,6 +13909,18 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       segment: "cn-state",
       path: ["classicalNnc", "state"],
       defaultValue: "absolutive",
+      classicalNncOnly: true
+    }, {
+      key: "classicalNncNonspecificHumanForm",
+      segment: "cn-nonspecific-form",
+      path: ["classicalNnc", "nonspecificHumanForm"],
+      defaultValue: "tē",
+      classicalNncOnly: true
+    }, {
+      key: "classicalNncSingularConnector",
+      segment: "cn-singular-connector",
+      path: ["classicalNnc", "singularConnector"],
+      defaultValue: "hui",
       classicalNncOnly: true
     }, {
       key: "classicalNncPluralConnector",
@@ -13934,6 +14588,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
     api.getClassicalSourcePartControlElements = getClassicalSourcePartControlElements;
     api.getClassicalNncSourceGuideElements = getClassicalNncSourceGuideElements;
     api.getClassicalVncSourceGuideElements = getClassicalVncSourceGuideElements;
+    api.getClassicalVncSourceLexemeId = getClassicalVncSourceLexemeId;
     api.getClassicalVncSourceLexemeRecord = getClassicalVncSourceLexemeRecord;
     api.buildClassicalVncSourceLexemeSelectionFrame = buildClassicalVncSourceLexemeSelectionFrame;
     api.syncClassicalVncSourceLexemeFact = syncClassicalVncSourceLexemeFact;
@@ -13951,6 +14606,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
     api.syncClassicalSourcePartsToEntradaUrl = syncClassicalSourcePartsToEntradaUrl;
     api.getClassicalSourcePartsEvaluationSignature = getClassicalSourcePartsEvaluationSignature;
     api.commitClassicalSourcePartsEvaluation = commitClassicalSourcePartsEvaluation;
+    api.setClassicalSourcePartsPendingState = setClassicalSourcePartsPendingState;
     api.clearClassicalSourcePartsEvaluation = clearClassicalSourcePartsEvaluation;
     api.syncClassicalSourcePartControlsFromRuntime = syncClassicalSourcePartControlsFromRuntime;
     api.getClassicalSourceSelectionOptionsFromRuntime = getClassicalSourceSelectionOptionsFromRuntime;
