@@ -5840,7 +5840,7 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
       return `      <footer>
             <p><span id="copyright-label">Copyright © 2026 Jaime Núñez</span></p>
             <p>Thanks to Sigfredo Olmedo</p>
-            <p><a href="privacy.html">Privacy</a> · <a href=".well-known/security.txt">Security</a> · Grammar OS v1.2.8</p>
+            <p><a href="privacy.html">Privacy</a> · <a href=".well-known/security.txt">Security</a> · Grammar OS v1.2.9</p>
           </footer>
     `;
     }

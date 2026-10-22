@@ -2,6 +2,14 @@
 
 User-facing release notes for Classical Nahuatl Grammar.
 
+## Version 1.2.9 — Action Intent Icons
+
+Released October 22, 2026.
+
+- Distinguishes applying Source, choosing an operation, making a Result and continuing Result with consistent decorative icons beside existing labels.
+- Makes the Applied state use a check and Writing editing use a pencil.
+- Preserves grammar choices, availability, accepted Results and explicit Make behavior.
+
 ## Version 1.2.8 — Language and Interface Update
 
 Released October 22, 2026.

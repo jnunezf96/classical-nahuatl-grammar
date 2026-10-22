@@ -1,19 +1,17 @@
-# Grammar OS v1.2.8 release
+# Grammar OS v1.2.9 release
 
-Release name: **Language and Interface Update**
+Release name: **Action Intent Icons**
 
-Browser build: **20261022-language-interface-1**
+Browser build: **20261022-action-intentions-1**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Organizes VNC, NNC and particle choices by language structure, formation, participants, sentence form, and linking.
-- Preserves explicit Source and Make Result actions, with accepted Results retained while edits are staged.
-- Repairs reviewed grammatical handoffs, number/possession choices, contextual readiness, writing, and continuation boundaries.
-- Adds an explicit Writing Source with original sound/morph parts and owner-licensed spelling choices, including obligatory n+p assimilation.
-- Restores the exact Writing Source and spelling choice through direct editing and session History/Undo.
-- Keeps action icons beside text labels and grammatical choices in words.
+- Adds incoming-arrow icons to Use this Source, sliders to Operation, and linked arrows to Continue Result.
+- Shows a play icon for Make, a check for Applied, and the relevant Source/Build cue while prerequisites are pending.
+- Uses a pencil for Change and Edit Writing Source.
+- Retains text labels, native choices, keyboard interaction and explicit Source/Make actions.
 
 ## Review scope and current limits
 
@@ -37,7 +35,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.8/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.9/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.

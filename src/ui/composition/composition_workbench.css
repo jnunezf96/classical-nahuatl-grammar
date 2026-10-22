@@ -1100,3 +1100,51 @@ body.is-language-classical #classical-workbench .classical-four-panel-navigation
 body.is-language-classical #classical-workbench .classical-four-panel-navigation > button[data-classical-panel-jump="classical-authority-panel"] {--recurring-action-icon:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.8%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M5%203v7m0%204v7M12%203v11m0%204v3M19%203v3m0%204v11M2%2010h6m1%208h6m1-12h6%22%2F%3E%3C%2Fsvg%3E")}
 
 body.is-language-classical #classical-workbench .classical-four-panel-navigation > button[data-classical-panel-jump="classical-result-panel"] {--recurring-action-icon:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.8%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M5%203h10l5%205v13H5ZM15%203v5h5m-12%207%203%203%206-7%22%2F%3E%3C%2Fsvg%3E")}
+
+/* Intent cues use the existing decorative action style. Native labels,
+   option values and owner-issued readiness remain the interaction contract. */
+body.is-language-classical #classical-workbench {
+  --intent-source-icon:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.8%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M14%203h6v18h-6M3%2012h12m-4-4%204%204-4%204%22%2F%3E%3C%2Fsvg%3E");
+  --intent-build-icon:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.8%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M5%203v7m0%204v7M12%203v11m0%204v3M19%203v3m0%204v11M2%2010h6m1%208h6m1-12h6%22%2F%3E%3C%2Fsvg%3E");
+  --intent-continue-icon:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.8%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Crect%20x%3D%223%22%20y%3D%223%22%20width%3D%227%22%20height%3D%227%22%20rx%3D%221%22%2F%3E%3Cpath%20d%3D%22M6.5%2010v6H21m-5-5%205%205-5%205%22%2F%3E%3C%2Fsvg%3E");
+  --intent-applied-icon:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.8%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%229%22%2F%3E%3Cpath%20d%3D%22m8%2012%203%203%205-6%22%2F%3E%3C%2Fsvg%3E");
+  --intent-edit-icon:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.8%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22m16%203%205%205M4%2015%2015%204a2%202%200%200%201%205%205L9%2020l-6%201Z%22%2F%3E%3C%2Fsvg%3E");
+}
+body.is-language-classical #classical-workbench :is(
+  #verb-entry-apply,
+  #classical-transcription-source-apply,
+  #classical-result-action-change,
+  #classical-capability-navigator-heading,
+  [data-classical-result-continuation-kind="exact-result-to-source"],
+  [data-classical-result-continuation-kind="writing-source-edit"]
+)::before {
+  content:"";display:inline-block;flex:0 0 auto;box-sizing:border-box;
+  width:16px;height:16px;margin-inline:0 7px;vertical-align:-0.18em;
+  border:0;background:currentColor;
+  -webkit-mask:var(--recurring-action-icon) center / contain no-repeat;
+  mask:var(--recurring-action-icon) center / contain no-repeat;
+}
+body.is-language-classical #classical-workbench :is(#verb-entry-apply,#classical-transcription-source-apply) {
+  --recurring-action-icon:var(--intent-source-icon);
+}
+body.is-language-classical #classical-workbench #classical-capability-navigator-heading {
+  --recurring-action-icon:var(--intent-build-icon);
+}
+body.is-language-classical #classical-workbench [data-classical-result-continuation-kind="exact-result-to-source"] {
+  --recurring-action-icon:var(--intent-continue-icon);
+}
+body.is-language-classical #classical-workbench :is(#classical-result-action-change,[data-classical-result-continuation-kind="writing-source-edit"]) {
+  --recurring-action-icon:var(--intent-edit-icon);
+}
+body.is-language-classical #classical-workbench #classical-capability-apply-operation[data-classical-capability-apply-state="applied"] {
+  --recurring-action-icon:var(--intent-applied-icon);
+}
+body.is-language-classical #classical-workbench #classical-capability-apply-operation:is(
+  [data-classical-capability-apply-state="pending-source"],
+  [data-classical-capability-apply-state="needs-source"]
+) {
+  --recurring-action-icon:var(--intent-source-icon);
+}
+body.is-language-classical #classical-workbench #classical-capability-apply-operation[data-classical-capability-apply-state="needs-choices"] {
+  --recurring-action-icon:var(--intent-build-icon);
+}
