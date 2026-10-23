@@ -182,6 +182,8 @@ export function createResultActions(doc,{selection,onSelect,onAction,onAdd,sched
     orderSelect.dataset.inventorySelectedRef=inventoryOptionReference(ORDER_FIELD,value);
     const selected=detail?partLabel(detail.record,targets):'Whole result';
     const action=pending||requestedAction;
+    const quiet=!action&&detail?.path.length===0;
+    if(status.hidden!==quiet)status.hidden=quiet;
     text(status,pending==='remove'?`${selected} · Remove. Removal pending. Make Result to apply.`:`${selected}${action?` · ${actionLabel(action)}`:''}`);
   };
 }

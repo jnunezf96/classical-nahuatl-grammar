@@ -1,14 +1,14 @@
+import {findOwnerChoice} from './owner_choice_roots.mjs?v=20261023-core-1';
 // Organize existing controls. Owner projections still decide choices/readiness;
 // the presentation never changes a field value or executes an operation.
-export function createGrammarPresentation(doc,{constructionPlacement='legacy'}={}) {
-  const requiredSignatures=new WeakMap();
-  let previousSentenceFields=new Set();
-  const moveAfter=(node,anchor)=>{
-    if(node && anchor && anchor.nextElementSibling!==node)anchor.after(node);
-  };
-  const ownerVisible=node=>{
+export function isGrammarOwnerVisible(doc,node){
     if(!node)return false;
-    for(let current=node;current;current=current.parentElement)
+    for(let current=node;current;current=current.parentElement) {
+      // Derived layout visibility cannot decide whether an exact projection
+      // replaces a native mirror. Its own owner field/collector still can.
+      if(current.dataset.buildOwnerSlot!==undefined||current.dataset.buildFormulaPart!==undefined
+        ||current.dataset.buildFormula!==undefined||current.dataset.buildFormulaSlot!==undefined
+        ||current.id==='classical-capability-operation-choices')continue;
       if(current.hidden || !current.classList.contains('composition-empty-group')
         && !current.hasAttribute('data-composition-native-choice-mirror')
         && !current.hasAttribute('data-composition-mirrored-choice')
@@ -16,8 +16,17 @@ export function createGrammarPresentation(doc,{constructionPlacement='legacy'}={
         && !current.hasAttribute('data-classical-compact-choice-original')
         && !current.hasAttribute('data-composition-duplicate-control')
         && doc.defaultView.getComputedStyle(current).display==='none')return false;
+    }
     return true;
+}
+
+export function createGrammarPresentation(doc,{constructionPlacement='legacy'}={}) {
+  const requiredSignatures=new WeakMap();
+  let previousSentenceFields=new Set();
+  const moveAfter=(node,anchor)=>{
+    if(node && anchor && anchor.nextElementSibling!==node)anchor.after(node);
   };
+  const ownerVisible=node=>isGrammarOwnerVisible(doc,node);
   return function refreshGrammar({action=''}={}) {
     const plan=doc.getElementById('classical-capability-operation-plan');
     const controls=doc.getElementById('classical-rule-logic-controls');
@@ -89,7 +98,7 @@ export function createGrammarPresentation(doc,{constructionPlacement='legacy'}={
       ['causativeObjectKind',doc.getElementById('classical-rule-logic-causative-causee-valence')?.closest('.classical-rule-control')],
       ['derivationOptionId',doc.getElementById('classical-rule-logic-derivation-option')?.closest('.classical-rule-control')],
     ]) {
-      const projection=choices?.querySelector(`[data-classical-capability-choice-id="${choiceId}"][data-classical-capability-owner-projection="exact-binding"]`);
+      const projection=findOwnerChoice(doc,`[data-classical-capability-choice-id="${choiceId}"][data-classical-capability-owner-projection="exact-binding"]`);
       // The typed owner supplies this optional field's complete domain,
       // including its absence. A prior plural Result cannot supply a fallback.
       const mirrored=typedVnc && (choiceId==='admonitivePluralEnding'
@@ -108,7 +117,7 @@ export function createGrammarPresentation(doc,{constructionPlacement='legacy'}={
       .map(option=>option.value));
     const covers=(values,required)=>required.size>0 && [...required].every(value=>values.has(value));
     const projectedChoice=choiceId=>{
-      const control=choices?.querySelector(`[data-classical-capability-choice-id="${choiceId}"][data-classical-capability-owner-projection="exact-binding"]`);
+      const control=findOwnerChoice(doc,`[data-classical-capability-choice-id="${choiceId}"][data-classical-capability-owner-projection="exact-binding"]`);
       const field=control?.closest('.classical-capability-operation-plan__choice,label');
       const values=new Set(Array.from(control?.options || []).filter(option=>
         option.value && !option.disabled && !option.hidden
@@ -165,7 +174,7 @@ export function createGrammarPresentation(doc,{constructionPlacement='legacy'}={
       ['possessor','classical-rule-logic-nnc-possessor'],
       ['animacy','classical-rule-logic-nnc-subject-animacy'],
     ]) {
-      const projection=choices?.querySelector(`[data-classical-capability-choice-id="${choiceId}"][data-classical-capability-owner-projection="exact-binding"]`);
+      const projection=findOwnerChoice(doc,`[data-classical-capability-choice-id="${choiceId}"][data-classical-capability-owner-projection="exact-binding"]`);
       const field=projection?.closest('.classical-capability-operation-plan__choice');
       if(!field)continue;
       const native=doc.getElementById(controlId);
@@ -173,10 +182,12 @@ export function createGrammarPresentation(doc,{constructionPlacement='legacy'}={
       const projectedValues=Array.from(projection.options).filter(option=>option.value && !option.disabled && !option.hidden && option.dataset.classicalCapabilityOwnerOptionAvailability==='available').map(option=>option.value);
       const resolved=!projection.disabled && !projection.required && projection.getAttribute('aria-required')!=='true'
         && projection.value && !projection.selectedOptions[0]?.disabled;
-      const mirrored=typedNnc && resolved && ownerVisible(projection) && ownerVisible(native)
+      const pendingFallback=choiceId!=='possessor' && !projection.required
+        && projection.getAttribute('aria-required')!=='true' && !projection.value;
+      const mirrored=typedNnc && (resolved||pendingFallback) && ownerVisible(projection) && ownerVisible(native)
         && !native.disabled && !native.readOnly
-        && nativeValues.has(native?.value) && native.value===projection.value && projectedValues.length>0
-        && projectedValues.includes(projection.value) && projectedValues.every(value=>nativeValues.has(value));
+        && nativeValues.has(native?.value) && (pendingFallback||native.value===projection.value) && projectedValues.length>0
+        && (pendingFallback||projectedValues.includes(projection.value)) && projectedValues.every(value=>nativeValues.has(value));
       if(mirrored) {
         if(field.dataset.compositionNativeChoiceMirror!==controlId)field.dataset.compositionNativeChoiceMirror=controlId;
       } else if(field.hasAttribute('data-composition-native-choice-mirror'))field.removeAttribute('data-composition-native-choice-mirror');
@@ -185,7 +196,7 @@ export function createGrammarPresentation(doc,{constructionPlacement='legacy'}={
     // Subject is a joint Person/Number decision. A completed-request menu may
     // omit plural while its ending is unresolved; retain the native pending
     // editor until the projected domain covers those available staging paths.
-    const subjectProjection=choices?.querySelector('[data-classical-capability-choice-id="subject"][data-classical-capability-owner-projection="exact-binding"]');
+    const subjectProjection=findOwnerChoice(doc,'[data-classical-capability-choice-id="subject"][data-classical-capability-owner-projection="exact-binding"]');
     const subjectField=subjectProjection?.closest('.classical-capability-operation-plan__choice');
     if(subjectField) {
       const person=nativeChoice('classical-rule-logic-nnc-subject-person');
@@ -212,7 +223,7 @@ export function createGrammarPresentation(doc,{constructionPlacement='legacy'}={
     // The plural ending is the same pending decision in both representations.
     // Keep the native staging domain when the completed owner projection is
     // narrower; otherwise the exact owner editor is the single visible writer.
-    const endingProjection=choices?.querySelector('[data-classical-capability-choice-id="pluralConnector"][data-classical-capability-owner-projection="exact-binding"]');
+    const endingProjection=findOwnerChoice(doc,'[data-classical-capability-choice-id="pluralConnector"][data-classical-capability-owner-projection="exact-binding"]');
     const endingField=endingProjection?.closest('.classical-capability-operation-plan__choice');
     let endingProjectionReplacesNative=false;
     if(endingField) {
@@ -233,7 +244,7 @@ export function createGrammarPresentation(doc,{constructionPlacement='legacy'}={
     // retain their native values/listeners but cannot display a second answer.
     const ownerFields={subject:['subject-person','subject-number'],
       humanness:['subject-humanness'],animacy:['subject-animacy'],state:['state'],
-      possessor:['possessor'],predicateFormation:['predicate-form'],stemFormation:['stem-relation'],
+      possessor:['possessor'],possessorReduplication:['possessor-reduplication'],metaphoricalUse:['metaphorical-use'],predicateFormation:['predicate-form'],stemFormation:['stem-relation'],
       pluralConnector:['plural-connector']};
     const pronominalFields={subject:['subject-person','subject-number'],
       humanness:['subject-humanness'],animacy:['subject-animacy'],
@@ -242,7 +253,7 @@ export function createGrammarPresentation(doc,{constructionPlacement='legacy'}={
       doubledFirstPlural:['doubled-first-plural'],specialHumanUse:['special-human-use']};
     const currentOwnerFields=typedNnc?ownerFields:typedPronominal?pronominalFields:{};
     for(const [choiceId,nativeIds] of Object.entries(currentOwnerFields)) {
-      const projection=choices?.querySelector(`[data-classical-capability-choice-id="${choiceId}"][data-classical-capability-owner-projection="exact-binding"]`);
+      const projection=findOwnerChoice(doc,`[data-classical-capability-choice-id="${choiceId}"][data-classical-capability-owner-projection="exact-binding"]`);
       if(!projection || !ownerVisible(projection) || projection.closest('[data-composition-native-choice-mirror]'))continue;
       if(typedNnc && choiceId==='pluralConnector'&&!endingProjectionReplacesNative)continue;
       if(typedPronominal && (projection.disabled || projection.readOnly
@@ -252,7 +263,7 @@ export function createGrammarPresentation(doc,{constructionPlacement='legacy'}={
     }
     const typedParticle=plan.dataset.classicalCapabilityOperationId==='particle:result'
       && plan.dataset.classicalCapabilityTypedSourceBindingOperation==='particle:result';
-    if(typedParticle && choices?.querySelector('[data-classical-capability-choice-id="particleId"][data-classical-capability-owner-projection="exact-binding"]'))
+    if(typedParticle && findOwnerChoice(doc,'[data-classical-capability-choice-id="particleId"][data-classical-capability-owner-projection="exact-binding"]'))
       duplicate(grid,'inactive-nuclear');
     const navigator=doc.getElementById('classical-capability-navigator');
     const operation=doc.getElementById('classical-capability-navigator-operation');

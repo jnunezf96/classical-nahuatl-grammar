@@ -1,4 +1,4 @@
-import {getWritingSourcePresentation} from './choice_design.mjs?v=20261022-reset-eligibility-1&writingSource=20261022-1&fixedChoices=20261022-1';
+import {getWritingSourcePresentation} from './choice_design.mjs?coreStem=20261023-1&v=20261022-reset-eligibility-1&writingSource=20261022-1&fixedChoices=20261022-1';
 import {getBuildOperationGroup, getBuildOperationOrder, inventoryOptionReference} from './build_navigation_model.mjs?v=20261021-ending-reference-2';
 
 const navigatorId = 'classical-capability-navigator-operation';

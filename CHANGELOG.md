@@ -2,6 +2,17 @@
 
 User-facing release notes for Classical Nahuatl Grammar.
 
+## Version 1.2.15 — NNC and VNC Composition
+
+Released October 23, 2026.
+
+- Organizes NNC and VNC Source, Build and Result together around Andrews’ clause, Core, Stem and Tense relationships.
+- Groups conditional nounstem and verbstem choices while retaining their native grammatical restrictions.
+- Unifies control styling, left-aligned icons and progressive disclosure; retains long-vowel input.
+- Presents accepted Results separately from pending previews, with explicit Make as the acceptance boundary.
+- Restores the choices behind accepted Results on supported reload paths, and corrects reviewed number, optative and valence-analysis behavior.
+- Keeps the current Source readable on narrow screens, brings explicit Make to the Result, and pins a desktop Result only when it fits.
+
 ## Version 1.2.14 — Reliable Startup
 
 Released October 22, 2026.

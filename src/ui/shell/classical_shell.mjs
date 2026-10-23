@@ -539,24 +539,6 @@ export function createClassicalShellModule(targetObject = globalThis) {
                       <span class="classical-basal-unit-button__sub">nominal nuclear clause</span>
                     </button>
                   </div>
-                  <button type="button" id="classical-writing-source-entry" class="classical-basal-unit-button" aria-pressed="false">Writing</button>
-                  <section id="classical-transcription-source" class="classical-source-parts" hidden>
-                    <h3>Writing Source</h3>
-                    <label class="classical-rule-control"><span>Source</span>
-                      <select id="classical-writing-source-kind">
-                        <option value="sounds">Sound sequence</option>
-                        <option value="particle-group">zā + oc</option>
-                        <option value="compound">Simple accepted compound</option>
-                      </select>
-                    </label>
-                    <label id="classical-writing-sounds-field" class="classical-rule-control"><span>Sounds</span>
-                      <input id="classical-transcription-source-input" class="classical-source-parts__input" data-classical-writing-sound-input="true" autocomplete="off" spellcheck="false" placeholder="/n/o/λ/ā…" />
-                    </label>
-                    <div id="classical-writing-compound-parts" hidden></div>
-                    <button type="button" id="classical-transcription-source-apply">Use this Source</button>
-                    <p id="classical-transcription-source-status" role="status">Enter sounds, then use this Source.</p>
-                    <small>Writing stays in this session. Reload is not supported.</small>
-                  </section>
                   <p class="classical-toy-stage-prompt" data-classical-toy-stage-prompt="source">
                     Type a stem, then use this Source.
                   </p>
@@ -632,7 +614,6 @@ export function createClassicalShellModule(targetObject = globalThis) {
                           id="classical-rule-logic-class"
                           class="classical-nnc-source-guide__select"
                           data-classical-rule-logic-control="class"
-                          aria-describedby="classical-vnc-source-class-guidance"
                         >
                           <option value="" selected>Choose a verbstem class</option>
                           <option value="A">A</option>
@@ -641,7 +622,6 @@ export function createClassicalShellModule(targetObject = globalThis) {
                           <option value="D">D</option>
                         </select>
                       </label>
-                      <p id="classical-vnc-source-class-guidance" class="classical-vnc-source-guide__fact">A new Source clears the previous stem’s class. Choose an unresolved class from Andrews’s Lesson 7, then use this Source. A fixed class is supplied automatically.</p>
                       <p id="classical-vnc-source-initial-i" class="classical-vnc-source-guide__fact" hidden aria-live="polite"></p>
                       <label id="classical-vnc-source-initial-i-choice-field" class="classical-nnc-source-guide__field" hidden>
                         <span class="classical-nnc-source-guide__label">Initial i analysis</span>
@@ -964,22 +944,14 @@ export function createClassicalShellModule(targetObject = globalThis) {
                         data-classical-source-authorizes="none"
                         hidden
                       ></p>
-                      <details
+                      <div
                         id="classical-transcription-keyboard"
                         class="classical-transcription-keyboard classical-source-parts__keyboard"
-                        aria-label="Sound keyboard for the active stem field"
+                        role="group" aria-label="Long vowels"
                         data-classical-source-authorizes="none"
                       >
-                        <summary class="classical-transcription-keyboard__toggle">Sound keyboard</summary>
-                        <details class="classical-transcription-keyboard__group" open>
-                          <summary class="classical-transcription-keyboard__summary">Vowels</summary>
-                          <div id="classical-transcription-keyboard-vowels" class="classical-transcription-keyboard__keys"></div>
-                        </details>
-                        <details class="classical-transcription-keyboard__group">
-                          <summary class="classical-transcription-keyboard__summary">Consonants</summary>
-                          <div id="classical-transcription-keyboard-consonants" class="classical-transcription-keyboard__keys"></div>
-                        </details>
-                      </details>
+                        <div id="classical-transcription-keyboard-vowels" class="classical-transcription-keyboard__keys"></div>
+                      </div>
                       <div
                         id="classical-transcription-optional-controls"
                         class="classical-transcription-source__optional-controls"
@@ -5436,7 +5408,7 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
           : soundError === "classical-compact-transcription-mixes-spelling-and-sound-source"
           ? "Use sound tokens throughout this field, or enter ordinary spelling."
           : "This sound notation could not be applied.";
-        message.textContent = `Check ${fieldName} sound notation. ${reason} Correct the entry or use the Sound keyboard.${sourceInUse ? ` Using ${sourceInUse}` : ""}`;
+        message.textContent = `Check ${fieldName} sound notation. ${reason} Correct the entry.${sourceInUse ? ` Using ${sourceInUse}` : ""}`;
       }
       if (applyButton) {
         applyButton.disabled = !draftHasSource || Boolean(classRequirement);
@@ -5542,21 +5514,12 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
         return true;
       }
       let activeInput = wholeInput;
-      let activeWritingInput = null;
       const getActiveInput = () => {
-        const writing=documentObject.getElementById("classical-transcription-source");
-        if (writing && !writing.hidden) return activeWritingInput
-          || documentObject.getElementById("classical-transcription-source-input");
         if (sourceParts.dataset.classicalSourcePartsMode !== "embed-matrix") {
           return wholeInput;
         }
         return activeInput === matrixInput ? matrixInput : embedInput;
       };
-      documentObject.getElementById("classical-transcription-source")?.addEventListener("focusin",event=>{
-        if(event.target?.matches?.("[data-classical-writing-sound-input]")) {
-          activeWritingInput=event.target;syncKeyboardAvailability();
-        }
-      });
       const keys = [];
       const status = documentObject.createElement("p");
       status.className = "classical-source-context-controls__help";
@@ -5578,17 +5541,11 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
         const vowelRoot = documentObject.getElementById(
           "classical-transcription-keyboard-vowels"
         );
-        const consonantRoot = documentObject.getElementById(
-          "classical-transcription-keyboard-consonants"
-        );
-        if (!vowelRoot || !consonantRoot) return false;
+        if (!vowelRoot) return false;
         const ownerVowels = new Set(Object.keys(
           targetObject.CLASSICAL_NAHUATL_TRANSCRIPTION_VOWEL_CARRIERS || {}
         ));
-        const ownerConsonants = new Set(Object.keys(
-          targetObject.CLASSICAL_NAHUATL_TRANSCRIPTION_CONSONANT_CARRIERS || {}
-        ));
-        if (!ownerVowels.size || !ownerConsonants.size) return false;
+        if (!ownerVowels.size) return false;
         const makeKey = token => {
           const button = documentObject.createElement("button");
           button.type = "button";
@@ -5600,18 +5557,9 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
           keys.push(button);
           return button;
         };
-        const vowelOrder = ["a", "ā", "e", "ē", "i", "ī", "o", "ō"];
-        const consonantOrder = [
-          "/l/", "/n/", "/m/", "/s/", "/š/", "/y/", "/w/", "/p/",
-          "/t/", "/k/", "/kʷ/", "/ʔ/", "/λ/", "/¢/", "/č/"
-        ];
+        const vowelOrder = ["ā", "ē", "ī", "ō"];
         vowelRoot.replaceChildren(
           ...vowelOrder.filter(token => ownerVowels.has(token)).map(makeKey)
-        );
-        consonantRoot.replaceChildren(
-          ...consonantOrder
-            .filter(token => ownerConsonants.has(token))
-            .map(makeKey)
         );
         keyboard.dataset.classicalTranscriptionKeyboardReady = "true";
         syncKeyboardAvailability();
@@ -5656,15 +5604,8 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
         const token = String(
           button.dataset.classicalTranscriptionToken || ""
         );
-        const ownerTokens = new Set([
-          ...Object.keys(
-            targetObject.CLASSICAL_NAHUATL_TRANSCRIPTION_VOWEL_CARRIERS || {}
-          ),
-          ...Object.keys(
-            targetObject.CLASSICAL_NAHUATL_TRANSCRIPTION_CONSONANT_CARRIERS || {}
-          )
-        ]);
-        if (!ownerTokens.has(token)) return;
+        const ownerVowels = targetObject.CLASSICAL_NAHUATL_TRANSCRIPTION_VOWEL_CARRIERS || {};
+        if (!["ā", "ē", "ī", "ō"].includes(token) || !Object.hasOwn(ownerVowels, token)) return;
         event.preventDefault();
         insertSoundToken(token);
       });

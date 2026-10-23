@@ -68,15 +68,24 @@ export function createResultInformation(doc) {
         move(composition,same ? analysis : host(menu,'other-compositions','Other compositions'));
       }
       analysis.hidden=analysis.children.length===1;
-      const copy=surface.querySelector('[data-classical-rule-surface-action="copy-result"]');
+      // Keep the native Copy closure and live feedback with their exact card.
+      // A retained same-spelling Result may have its own toolbar already.
+      const belongsHere=node=>{
+        const owner=node.closest('.classical-result-continuation-card');
+        return !owner||owner===nativeCard;
+      };
+      const copy=Array.from(surface.querySelectorAll('[data-classical-rule-surface-action="copy-result"]')).find(belongsHere);
       if(copy) {
-        let tools=surface.querySelector(':scope > .composition-result-tools');
+        let tools=copy.closest('.composition-result-tools')||nativeCard.querySelector(':scope > .composition-result-tools');
         if(!tools) {
           tools=doc.createElement('div');tools.className='composition-result-tools';
-          tools.setAttribute('aria-label','Result actions');surface.insertBefore(tools,menu);
+          tools.setAttribute('aria-label','Result actions');
         }
         move(copy,tools);
-        move(surface.querySelector('.classical-rule-surface__action-status'),tools);
+        move(Array.from(surface.querySelectorAll('.classical-rule-surface__action-status')).find(belongsHere),tools);
+        const content=nativeCard.querySelector(':scope > .classical-result-continuation-card__content');
+        if(content&&content.nextElementSibling!==tools)content.after(tools);
+        else if(!content)move(tools,nativeCard);
       }
       for(const continuation of surface.querySelectorAll('[data-classical-result-continuation-kind="exact-result-to-source"], [data-classical-result-continuation-kind="writing-source-edit"]')) {
         const owner=continuationOwners.get(continuation);

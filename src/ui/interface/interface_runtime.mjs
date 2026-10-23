@@ -1,3 +1,4 @@
+import {ownerChoiceHost} from '../composition/owner_choice_roots.mjs?v=20261023-core-1';
 import {getEmbeddedStartupData} from "../../bootstrap/startup_data.mjs?v=20261022-startup-1";
 import {EMPTY_INTERFACE_MODEL,validateInterfaceModel} from './interface_model.mjs?v=20261012-interface-tool-3';
 
@@ -98,7 +99,7 @@ function placementNode(node) {
   return node;
 }
 function groupZone(node) {
-  return node.closest('#classical-capability-operation-choices');
+  return ownerChoiceHost(node);
 }
 function previewRule(doc,rule,rules=[],locations=new Map()) {
   const nodes=resolveTarget(doc,rule.target);

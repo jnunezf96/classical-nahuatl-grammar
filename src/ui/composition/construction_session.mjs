@@ -1,4 +1,4 @@
-import {createConstructionPosition,projectConstructionPosition} from './construction_position.mjs?v=20261012-position-12';
+import {createConstructionPosition,projectConstructionPosition} from './construction_position.mjs?v=20261012-position-12&acceptedBuild=20261023-1';
 
 // The only execution input is the current position's captured owner packet.
 export function createConstructionSession({isSource,isResult,execute,present,onChange=()=>{},onFailure=()=>{}}) {

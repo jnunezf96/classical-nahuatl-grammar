@@ -24,7 +24,7 @@ import { installClassicalNahuatlDeverbalNncGlobals } from "../core/classical/nnc
 import { installClassicalNahuatlClosureGlobals } from "../core/classical/adjectival_modification.mjs?v=20261011-reader-42-8-272";
 import { installClassicalNahuatlAdverbialNuclearGlobals } from "../core/classical/adverbial_nuclear_grammar.mjs?v=20261009-reader-42-6-224&exactMatrix=20261022-1";
 import { installClassicalNahuatlRelationalNncGlobals } from "../core/classical/nnc_lessons45_47_closure.mjs?v=20261009-reader-42-8-234";
-import { installClassicalNahuatlVncLayerEvaluatorGlobals } from "../core/classical/vnc_layer_evaluator.mjs?v=20261008-reader-40-8-184";
+import { installClassicalNahuatlVncLayerEvaluatorGlobals } from "../core/classical/vnc_layer_evaluator.mjs?formulaSlots=20261023-24&v=20261008-reader-40-8-184";
 import { installClassicalNahuatlVncClosureGlobals } from "../core/classical/vnc_lessons27_29_33_closure.mjs?v=20261011-reader-42-8-272&reader=41-2-205&audit=20261013-source-facts-1";
 import { installClassicalNahuatlVncLateOperationUiContractGlobals } from "../core/classical/vnc_late_operation_ui_contract.mjs?v=20261001-reader-27-2-copy-i-1";
 import { installClassicalNahuatlDenominalVncGrammarGlobals } from "../core/classical/denominal_vnc_grammar.mjs?v=20261007-reader-39-7-162&reader=41-3-213&exactMeaning=20261021-1";
@@ -74,7 +74,7 @@ import { installUiExportGlobals } from "../ui/export/export.mjs?v=20260818-lesso
 import { installUiI18nGlobals } from "../ui/i18n/i18n.mjs?v=20260818-lesson29-groups10-12-357";
 import { installUiEventsGlobals } from "../ui/events/events.mjs?v=20261009-reader-42-7-233";
 import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260912-selection-repair-447&cleanup=classical-only-20261009-1";
-import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20261011-reader-42-10-275&choices=20261013-build-constructions-2&design=lesson42-path-27&cleanup=classical-only-20261009-1&modifier=canonical-20261009-1&continuation=shared-preparation-20261009-1&repair=position-model-20261012-25&audit=20261013-source-facts-1&remaining=20261013-inventory-1&operationClear=20261014-1&makePreview=20261022-1&fixedChoices=20261022-1&nominalSource=20261022-1";
+import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?formulaSlots=20261023-24&v=20261011-reader-42-10-275&choices=20261013-build-constructions-2&design=lesson42-path-27&cleanup=classical-only-20261009-1&modifier=canonical-20261009-1&continuation=shared-preparation-20261009-1&repair=position-model-20261012-25&audit=20261013-source-facts-1&remaining=20261013-inventory-1&operationClear=20261014-1&makePreview=20261022-1&fixedChoices=20261022-1&nominalSource=20261022-1";
 import { installUiStateGlobals } from "../ui/state.mjs?v=20261001-reader-26-6-family-draft-2";
 import { installCurriculumGlobals } from "../ui/curriculum/curriculum.mjs?v=20260818-lesson29-groups10-12-357";
 import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20261011-reader-42-8-272&audit=20261013-source-facts-1&sourceAdmission=20261014-3&classDecision=20261022-1&writingSource=20261022-4&startupDelivery=20261022-1";

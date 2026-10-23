@@ -1,3 +1,7 @@
+import {orderVncSubjectFields,presentNncBuildOptions} from './build_composition.mjs?v=20261023-1';
+import {nativeChoiceAddress,BUILD_SLOT_LABELS,BUILD_SLOT_ORDER,CONDITIONAL_NATIVE_FIELDS} from './build_choice_catalog.mjs?v=20261023-all-build-2';
+import {ownerChoiceRoots,findOwnerChoice} from './owner_choice_roots.mjs?v=20261023-core-1';
+import {arrangeNuclearClauseSlots,arrangeProjectedFormulaChoices,stemCollectorCaption,vncSubjectCaption,uniteCoreStemChoices,uniteNounstemChoices,arrangeProjectedClauseChoices,preserveDisclosureChoice} from './formula_layout.mjs?v=20261023-slots-17';
 import {validateWorkspaceOrganization,DEFAULT_WORKSPACE_ORGANIZATION,loadWorkspaceOrganization} from './workspace_organization_model.mjs?v=20261013-canvas-workspace-1&choicesLayout=20261014-4&startupDelivery=20261022-1';
 import {createParticleChoices} from './particle_choices.mjs?v=20261021-particle-clear-2';
 
@@ -50,31 +54,37 @@ export function createWorkspaceOrganization(doc,initialModel=DEFAULT_WORKSPACE_O
     for(const node of sorted)host.insertBefore(node,marker);marker.remove();
   }
   function visibleField(field,host){
-    for(let node=field;node&&node!==host;node=node.parentElement)if(node.hidden||doc.defaultView.getComputedStyle(node).display==='none')return false;
+    for(let node=field;node&&node!==host;node=node.parentElement)if(!node.dataset.buildOwnerSlot&&(node.hidden||doc.defaultView.getComputedStyle(node).display==='none'))return false;
     return true;
   }
   function organizeOwnerChoices(){
     const host=doc.getElementById('classical-capability-operation-choices');if(!host)return;
-    const fields=[...host.children].filter(node=>node.matches('.classical-capability-operation-plan__choice,.classical-whole-canvas-choice,.classical-rule-control')&&node.querySelector('[data-classical-capability-choice-id],[data-classical-clause-relation-decision]'));
-    const ranks=new Map(model.groups.map(group=>[group.id,group.order]));
-    for(const field of fields){
-      field.dataset.workspaceChoiceGroup=fieldGroup(field);
-      const choice=field.querySelector('[data-classical-capability-choice-id]')?.dataset.classicalCapabilityChoiceId;
+    const fields=ownerChoiceRoots(doc).flatMap(root=>[...root.querySelectorAll('.classical-capability-operation-plan__choice,.classical-whole-canvas-choice,.classical-rule-control')]).filter(node=>node.querySelector('[data-classical-capability-choice-id],[data-classical-clause-relation-decision]'));
+    const entries=fields.map(field=>{
+      const group=fieldGroup(field);field.dataset.workspaceChoiceGroup=group;
+      const control=field.querySelector('[data-classical-capability-choice-id],[data-classical-clause-relation-decision]');
+      const choice=control?.dataset.classicalCapabilityChoiceId||control?.dataset.classicalClauseRelationDecision||'';
       if(['pluralConnector','singularConnector'].includes(choice))text(field.querySelector('.classical-capability-operation-plan__choice-label'),'Subject number ending');
-    }
-    orderWithinHost(host,fields,field=>ranks.get(field.dataset.workspaceChoiceGroup));
-    const activeGroups=new Set();
-    for(const group of [...model.groups].sort((a,b)=>a.order-b.order)){
-      const members=fields.filter(field=>field.dataset.workspaceChoiceGroup===group.id);
-      let heading=host.querySelector(`:scope > [data-workspace-choice-heading="${group.id}"]`);
-      if(!members.length){heading?.remove();continue;}
-      activeGroups.add(group.id);
-      if(!heading){heading=doc.createElement('h3');heading.className='workspace-choice-heading';heading.dataset.workspaceChoiceHeading=group.id;heading.id=`workspace-owner-group-${group.id}`;}
-      text(heading,group.label);if(members[0].previousElementSibling!==heading)members[0].before(heading);
-      heading.hidden=!members.some(field=>visibleField(field,host));
-    }
-    for(const heading of host.querySelectorAll(':scope > [data-workspace-choice-heading]'))if(!activeGroups.has(heading.dataset.workspaceChoiceHeading))heading.remove();
+      if(['possessorReduplication','metaphoricalUse'].includes(choice)){
+        text(field.querySelector('.classical-capability-operation-plan__choice-label'),choice==='possessorReduplication'?'Possessor reduplication':'Subject reference');
+        const labels=choice==='possessorReduplication'?{false:'single',true:'reduplicated'}:{false:'ordinary',true:'metaphorical'};
+        for(const option of control.options||[])if(labels[option.value])text(option,labels[option.value]);
+        for(const button of field.querySelectorAll('[data-composition-choice-value]'))if(labels[button.dataset.compositionChoiceValue])text(button,labels[button.dataset.compositionChoiceValue]);
+      }
+      if(doc.getElementById('classical-rule-logic-controls')?.dataset.classicalRuleLogicSurfaceUnit==='nnc'){
+        presentNncBuildOptions(field,control,choice);
+        const label={predicateFormation:'Stem formation',stemFormation:'Stem relation',predicatePluralization:'Stem pluralization'}[choice];
+        if(label){text(field.querySelector('.classical-capability-operation-plan__choice-label'),label);
+          const buttons=field.querySelector('.composition-choice-buttons');if(buttons)buttons.setAttribute('aria-label',label);
+        }
+      }
+      return {field,group,choice,family:doc.getElementById('classical-rule-logic-controls')?.dataset.classicalRuleLogicSurfaceUnit,
+        operation:doc.getElementById('classical-capability-operation-plan')?.dataset.classicalCapabilityOperationId||'',hidden:!visibleField(field,ownerChoiceRoots(doc).find(root=>root.contains(field))||host)};
+    });
+    for(const heading of host.querySelectorAll(':scope > [data-workspace-choice-heading]'))heading.remove();
+    arrangeProjectedFormulaChoices(doc,host,entries);
   }
+
   function organizeNativeSections(){
     for(const family of ['vnc','nnc']){
       const rows=model.nativeSections[family].map((kind,index)=>{
@@ -84,17 +94,31 @@ export function createWorkspaceOrganization(doc,initialModel=DEFAULT_WORKSPACE_O
       }).filter(row=>row.wrapper&&doc.getElementById('classical-rule-logic-controls')?.contains(row.wrapper));
       organizeSentenceChoices(family,rows.find(row=>row.kind==='sentence'));
       const placement=row=>row.placement||row.wrapper;
-      const hosts=new Set(rows.map(row=>placement(row).parentElement));
+      const hosts=new Set(rows.map(row=>placement(row).parentElement).filter(host=>!host?.dataset.buildFormulaPart));
       for(const host of hosts){const members=rows.filter(row=>placement(row).parentElement===host);orderWithinHost(host,members.map(placement),node=>members.find(row=>placement(row)===node).index);}
       for(const row of rows){
         if(family==='vnc'&&row.kind==='verbstem')organizeNativeMaterial(row.section);
         const numberContext=family==='nnc'&&row.kind==='nounstem'?nominalNumberEndingContext(doc,row.section):null;
         const domain=numberContext?.onlyEndings?'participants':sectionDomain[family][row.kind];row.wrapper.dataset.workspaceDomain=domain;
         const summary=row.wrapper.querySelector(':scope > summary');if(!summary)continue;
-        const labels={verbstem:'Verb formation',state:'State and possession',nounstem:'Nounstem formation',predicate:'Predicate formation',
-          subject:family==='vnc'&&doc.getElementById('classical-workbench')?.dataset.compositionTargetSubject==='true' ? 'Result subject' : 'Subject',
+        const labels={verbstem:'Stem',state:'State and possession',nounstem:'Nounstem',predicate:'Predicate choices',
+          subject:family==='vnc'?vncSubjectCaption({
+            isTarget:doc.getElementById('classical-workbench')?.dataset.compositionTargetSubject==='true',
+            derivation:findOwnerChoice(doc,'[data-classical-capability-choice-id="requestedDerivation"]')?.value,
+            voice:findOwnerChoice(doc,'[data-classical-capability-choice-id="requestedVoice"]')?.value,
+            nativeDerivation:doc.querySelector('[data-derivation-type][aria-pressed="true"]')?.dataset.derivationType||'direct',
+            nativeVoice:doc.getElementById('classical-rule-logic-vnc-voice')?.value||'active',
+          }):'Subject',
           valence:'Objects',tense:'Mood and tense',sentence:'Relationships'};
-        if(numberContext?.hasEnding)labels.nounstem=numberContext.onlyEndings?'Subject number endings':'Nounstem and number endings';
+        const role=row.kind==='verbstem'?'stem':row.kind;
+        const related=[...row.section.querySelectorAll('select,input')].some(control=>{
+          const inventoryGroup=CONDITIONAL_NATIVE_FIELDS[control.id]||model.nativeFields[control.id];
+          return inventoryGroup&&visibleField(control,row.section)&&nativeChoiceAddress(control.id,inventoryGroup,row.kind,family)!==role;
+        });
+        if(row.kind==='verbstem')labels.verbstem=stemCollectorCaption(related);
+        if(row.kind==='tense'&&related)labels.tense='Mood, tense and related choices';
+        if(row.kind==='nounstem'&&related)labels.nounstem='Nounstem and related choices';
+        if(numberContext?.onlyEndings)labels.nounstem='Subject number endings';
         const caption=[...summary.childNodes].find(node=>node.nodeType===3);
         if(caption&&caption.textContent.trim()!==labels[row.kind])caption.textContent=labels[row.kind];
       }
@@ -133,8 +157,8 @@ export function createWorkspaceOrganization(doc,initialModel=DEFAULT_WORKSPACE_O
       const key=`${family}-sentence-choices`;
       group.dataset.compositionDisclosure=key;
       group.open=disclosureState.get(key)===true;
-      group.addEventListener('toggle',()=>disclosureState.set(key,group.open));
       const summary=doc.createElement('summary');summary.textContent='Sentence choices';
+      preserveDisclosureChoice(summary,group,disclosureState,key);
       group.append(summary);
       host.insertBefore(group,row.wrapper);
     }
@@ -185,7 +209,12 @@ export function createWorkspaceOrganization(doc,initialModel=DEFAULT_WORKSPACE_O
     text(doc.getElementById('classical-stage-path-heading'),v.history);
     root.querySelector('#classical-path-dialog .path-dialog-close')?.setAttribute('aria-label',`Close ${v.history}`);
     for(const heading of root.querySelectorAll('.panel-block-step'))if(!heading.hasAttribute('data-workspace-step'))heading.dataset.workspaceStep='compatibility';
-    organizeNativeSections();organizeParticles();organizeOwnerChoices();organizeSentenceTask();organizeChoicesLayout();
+    organizeNativeSections();
+    const unit=doc.getElementById('classical-rule-logic-controls')?.dataset.classicalRuleLogicSurfaceUnit;
+    const optative=doc.getElementById('classical-rule-logic-optative-use')?.closest('.classical-rule-control');
+    const sentence=doc.querySelector(`[data-workspace-sentence-choices="${unit}"]`);
+    if(optative&&sentence&&optative.parentElement!==sentence)sentence.append(optative);
+    organizeParticles();organizeOwnerChoices();organizeSentenceTask();organizeChoicesLayout();
   }
   const tool={inspect:()=>({model:validateWorkspaceOrganization(model),grammarAuthority:false,nativePlacement:'same native host',root:'classical-workbench'}),
     preview:next=>({valid:Boolean(validateWorkspaceOrganization(next)),grammarAuthority:false}),
@@ -214,60 +243,54 @@ export function createChoicesLayout(doc,initialModel){
     for(const family of ['vnc','nnc']){
       const organizer=controls.querySelector(family==='vnc'?'[data-classical-vnc-authority-organizer]':'.classical-nnc-grammar-organizer');
       if(!organizer)continue;
-      const sections=family==='vnc'?{verbstem:'formation',subject:'participants',valence:'participants',tense:'clause-settings',sentence:'sentence-relationships'}
-        :{state:'participants',nounstem:'formation',predicate:'formation',subject:'participants',sentence:'sentence-relationships'};
-      if(family==='nnc'&&nominalNumberEndingContext(doc,organizer.querySelector('[data-classical-nnc-grammar-section="nounstem"]')).onlyEndings)sections.nounstem='participants';
-      const sentence=organizer.querySelector(family==='vnc'?'[data-classical-vnc-authority-disclosure="sentence"]':'[data-classical-nnc-grammar-section="sentence"]');
-      // Keep the native sentence collector intact, but place its context under
-      // unit form whenever it carries editable sentence-form decisions.
-      if(sentence&&[...sentence.querySelectorAll('select,input')].some(field=>model.nativeFields?.[field.id]==='clause-settings'&&visible(field.closest('.classical-rule-control,label')||field,controls)))sections.sentence='clause-settings';
-      for(const group of groups){
-        const members=[];
-        for(const [kind,domain] of Object.entries(sections)){
-          if(domain!==group.id)continue;
-          const section=organizer.querySelector(family==='vnc'?`[data-classical-vnc-authority-disclosure="${kind}"]`:`[data-classical-nnc-grammar-section="${kind}"]`);
-          if(!section)continue;
-          const disclosure=section.parentElement?.matches('.composition-disclosure')?section.parentElement:section;
-          const member=kind==='sentence'?organizer.querySelector(`[data-workspace-sentence-choices="${family}"]`)||disclosure:disclosure;
-          members.push(member);
-        }
-        if(!members.length){const oldBucket=organizer.querySelector(`:scope > [data-choices-native-bucket="${group.id}"]`);if(oldBucket)oldBucket.hidden=true;continue;}
-        let bucket=organizer.querySelector(`:scope > [data-choices-native-bucket="${group.id}"]`);
-        if(!bucket){bucket=doc.createElement('section');bucket.dataset.choicesNativeBucket=group.id;
-          const heading=doc.createElement('h3');heading.className='workspace-choice-heading';heading.dataset.choicesBucketHeading=group.id;bucket.append(heading);organizer.append(bucket);}
-        text(bucket.firstElementChild,group.label);
-        for(const member of members)if(member.parentElement!==bucket)bucket.append(member);
-        if(family==='vnc'&&group.id==='participants'){
-          const extra=doc.getElementById('classical-source-object-details');
-          if(extra&&controls.contains(extra)){
-            const valence=organizer.querySelector('[data-classical-vnc-authority-disclosure="valence"]');
-            const objects=valence?.parentElement?.matches('.composition-disclosure')?valence.parentElement:null;
-            // Keep the existing extra-object editor inside Objects, outside the
-            // native collector whose own visibility is independently projected.
-            const home=objects||bucket;
-            if(extra.parentElement!==home)home.append(extra);
-            if(objects){
-              objects.hidden=valence.hidden&&extra.hidden;
-              if(!extra.hidden)objects.classList.remove?.('composition-empty-group');
-            }
-            members.push(extra);
-          }
-        }
-        bucket.hidden=!members.some(member=>visible(member,controls)&&[...member.querySelectorAll('select,input,button')].some(field=>field.type!=='hidden'&&visible(field,controls)));
+      const unit=controls.dataset.classicalRuleLogicSurfaceUnit;
+      // Retained recovery collectors are not pending controls of the other
+      // family. Hidden also keeps them out of native choice capture.
+      if(['vnc','nnc'].includes(unit))organizer.hidden=family!==unit;
+      const entries=model.nativeSections[family].map(kind=>{
+        const section=organizer.querySelector(family==='vnc'?`[data-classical-vnc-authority-disclosure="${kind}"]`:`[data-classical-nnc-grammar-section="${kind}"]`);
+        if(!section)return null;
+        const disclosure=section.parentElement?.matches('.composition-disclosure')?section.parentElement:section;
+        const wrapper=kind==='sentence'?organizer.querySelector(`[data-workspace-sentence-choices="${family}"]`)||disclosure:disclosure;
+        return {kind,section,wrapper,numberOnly:family==='nnc'&&kind==='nounstem'&&nominalNumberEndingContext(doc,section).onlyEndings};
+      }).filter(Boolean);
+      // Keep the additional-object editor beside its own Valence collector.
+      const valence=entries.find(row=>row.kind==='valence');
+      const extra=family==='vnc'&&doc.getElementById('classical-source-object-details');
+      if(extra&&valence&&controls.contains(extra)){
+        if(extra.parentElement!==valence.wrapper)valence.wrapper.append(extra);
+        valence.wrapper.hidden=valence.section.hidden&&extra.hidden;
+        if(!extra.hidden)valence.wrapper.classList.remove?.('composition-empty-group');
       }
-      const buckets=[...organizer.children].filter(node=>node.dataset.choicesNativeBucket);
-      const sorted=[...buckets].sort((a,b)=>ranks.get(a.dataset.choicesNativeBucket)-ranks.get(b.dataset.choicesNativeBucket));
-      if(buckets.some((node,i)=>node!==sorted[i]))for(const node of sorted)organizer.append(node);
+      const clause=arrangeNuclearClauseSlots(doc,organizer,family,entries);
+      // Ignore presentation wrappers when measuring native availability. A
+      // formerly empty slot must reveal itself when its owner offers controls.
+      const available=entry=>[...entry.wrapper.querySelectorAll('select,input,button')].some(field=>{
+        if(field.type==='hidden')return false;
+        for(let n=field;n&&n!==organizer;n=n.parentElement){
+          if(n.dataset.buildFormula!==undefined||n.dataset.buildFormulaPart!==undefined)continue;
+          if(n.hidden||doc.defaultView.getComputedStyle(n).display==='none')return false;
+        }
+        return true;
+      });
+      for(const part of clause.querySelectorAll('[data-build-formula-part]')){
+        const members=entries.filter(entry=>part.contains(entry.wrapper));
+        part.hidden=!members.some(available);
+      }
+      clause.hidden=!entries.filter(row=>row.kind!=='sentence').some(available);
     }
   }
   function nativeGroups(controls){
     const hosts=new Map();
-    for(const field of controls.querySelectorAll('[data-choices-native-field]'))if(!model.nativeFields?.[field.dataset.choicesNativeField]){delete field.dataset.choicesNativeGroup;delete field.dataset.choicesNativeField;}
-    for(const [id,group] of Object.entries(model.nativeFields||{})){
+    for(const field of controls.querySelectorAll('[data-choices-native-field]'))if(!model.nativeFields?.[field.dataset.choicesNativeField]&&!CONDITIONAL_NATIVE_FIELDS[field.dataset.choicesNativeField]){delete field.dataset.choicesNativeGroup;delete field.dataset.choicesNativeField;}
+    for(const [id,inventoryGroup] of Object.entries({...CONDITIONAL_NATIVE_FIELDS,...model.nativeFields})){
       const control=doc.getElementById(id);
       if(!control||!controls.contains(control)||control.type==='hidden')continue;
       const field=control.closest('.classical-rule-control,label');
       if(!field||!field.parentElement)continue;
+      const collector=field.closest('[data-classical-nnc-grammar-section],[data-classical-vnc-authority-disclosure]');
+      const family=controls.dataset.classicalRuleLogicSurfaceUnit;
+      const group=nativeChoiceAddress(id,inventoryGroup,collector?.dataset.classicalNncGrammarSection||collector?.dataset.classicalVncAuthorityDisclosure||'',family);
       field.dataset.choicesNativeGroup=group;field.dataset.choicesNativeField=id;
       if(!hosts.has(field.parentElement))hosts.set(field.parentElement,new Map());
       hosts.get(field.parentElement).set(field,group);
@@ -287,7 +310,7 @@ export function createChoicesLayout(doc,initialModel){
         text(heading,group.label);
         if(members[0].previousElementSibling!==heading)members[0].before(heading);
         const context=host.closest('[data-choices-native-bucket]')?.dataset.choicesNativeBucket;
-        heading.hidden=(!context||context===group.id)&&new Set([...membership.values()]).size<2||!members.some(field=>visible(field,controls));
+        heading.hidden=(!context||context===group.id)&&new Set([...membership].filter(([field])=>visible(field,controls)).map(([,role])=>role)).size<2||!members.some(field=>visible(field,controls));
       }
     }
     // A native section is a structural/context boundary, not a competing set
@@ -303,13 +326,12 @@ export function createChoicesLayout(doc,initialModel){
         const members=[...host.children].filter(n=>n.dataset.choicesNativeGroup===group);
         const available=members.some(field=>visible(field,controls));
         const context=host.closest('[data-choices-native-bucket]')?.dataset.choicesNativeBucket;
-        heading.hidden=(!context||context===group)&&new Set([...host.children].map(n=>n.dataset.choicesNativeGroup).filter(Boolean)).size<2||!available||seenGroups.has(group);
-        if(available)seenGroups.add(group);
+        heading.hidden=(!context||context===group)&&new Set([...host.children].filter(n=>visible(n,controls)).map(n=>n.dataset.choicesNativeGroup).filter(Boolean)).size<2||!available;
       }else if(!heading.hidden&&projected?.contains(heading))seenGroups.add(group);
     }
   }
   return function refresh(){
-    model=readModel();groups=[...model.groups].sort((a,b)=>a.order-b.order);ranks=new Map(groups.map(g=>[g.id,g.order]));
+    model=readModel();groups=BUILD_SLOT_ORDER.map((id,order)=>({id,label:BUILD_SLOT_LABELS[id],order}));ranks=new Map(groups.map(g=>[g.id,g.order]));
     const controls=doc.getElementById('classical-rule-logic-controls');
     const plan=doc.getElementById('classical-capability-operation-plan');
     if(!controls||!plan)return;
@@ -326,6 +348,10 @@ export function createChoicesLayout(doc,initialModel){
     if(grid.getAttribute('aria-labelledby')!=='classical-build-choices-heading')grid.setAttribute('aria-labelledby','classical-build-choices-heading');
     nativeSections(controls);
     nativeGroups(controls);
+    orderVncSubjectFields(controls.querySelector('[data-classical-vnc-authority-disclosure="subject"]'));
+    uniteCoreStemChoices(doc,controls.querySelector('[data-classical-vnc-authority-organizer]'),controls.dataset.classicalRuleLogicSurfaceUnit==='vnc');
+    uniteNounstemChoices(doc,controls.querySelector('.classical-nnc-grammar-organizer'),controls.dataset.classicalRuleLogicSurfaceUnit==='nnc');
+    for(const family of ['vnc','nnc'])arrangeProjectedClauseChoices(doc,controls.querySelector(family==='vnc'?'[data-classical-vnc-authority-organizer]':'.classical-nnc-grammar-organizer'),family,controls.dataset.classicalRuleLogicSurfaceUnit===family);
     const requirements=doc.getElementById('classical-capability-navigator-unavailable');
     const effects=doc.querySelector('[data-composition-disclosure="change-details"]');
     after(requirements,grid);after(effects,requirements||grid);

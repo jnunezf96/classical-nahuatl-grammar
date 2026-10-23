@@ -6,7 +6,7 @@ test('position context and explicit Make feedback share one presentation module 
   const consumers=['../ui/rendering/rendering.mjs','../ui/composition/composition_presentation.mjs',
     '../ui/composition/flow_design.mjs','../ui/composition/structure_design.mjs',
     '../ui/composition/sentence_composition.mjs'];
-  const addresses={choice_design:new Set(),flow_design:new Set()};
+  const addresses={choice_design:new Set(),flow_design:new Set(),structure_design:new Set()};
   for(const path of consumers){
     const file=new URL(path,import.meta.url),source=await readFile(file,'utf8');
     for(const line of source.split('\n').filter(line=>line.startsWith('import ')))
@@ -17,4 +17,13 @@ test('position context and explicit Make feedback share one presentation module 
   }
   for(const [name,urls]of Object.entries(addresses))
     assert.equal(urls.size,1,`${name} must have one WeakMap owner across context setters and renderers: ${[...urls].join(', ')}`);
+});
+
+
+test('portalled Stem choices share one logical host registry across consumers',async()=>{
+  const consumers=['../ui/rendering/rendering.mjs','../ui/composition/formula_layout.mjs','../ui/composition/workspace_organization.mjs','../ui/composition/grammar_presentation.mjs','../ui/composition/choice_design.mjs','../ui/interface/interface_runtime.mjs'];
+  const urls=new Set();
+  for(const path of consumers){const file=new URL(path,import.meta.url),source=await readFile(file,'utf8');
+    const specifier=source.match(/from ['"]([^'"]*owner_choice_roots\.mjs[^'"]*)['"]/u)?.[1];assert(specifier,path);urls.add(new URL(specifier,file).href);}
+  assert.equal(urls.size,1,`Portals need a single registered owner: ${[...urls].join(', ')}`);
 });

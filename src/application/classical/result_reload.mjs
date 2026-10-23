@@ -3,7 +3,7 @@
 const KIND = "classical-grammar-result-reload-recipe";
 const SOURCE_KEYS = ["stem", "sourceClass", "embedStem", "matrixStem", "supportiveInitialI"];
 const NNC_KEYS = ["state", "subject", "metaphoricalUse", "possessor", "includedPossessor", "stemFormation",
-  "predicateFormation", "singularConnector", "nonspecificHumanForm", "pluralConnector",
+  "predicateFormation", "animacy", "singularConnector", "nonspecificHumanForm", "pluralConnector",
   "possessorReduplication", "sentenceType", "polarity"];
 const COMPOUND_SOURCE_KEYS = ["embedStem", "embedClass", "embedSourceClass", "matrixStem", "matrixClass", "matrixSourceClass"];
 const COMPOUND_CHOICE_KEYS = ["structure", "state", "subject", "possessor", "animacy", "embedRole", "possessorOrientation", "bracketing", "reduplication", "reduplicationTarget"];
@@ -47,6 +47,7 @@ export function exportClassicalResultReloadRecipe(r, roots = {}) {
       && !value.sourceFrame.compoundSource && !value.sourceFrame.sourceConstituents?.length) {
       node = { type: "nnc:ordinary", source: pick(value.sourceFrame, SOURCE_KEYS),
         choices: { ...pick(value.operationFrame, NNC_KEYS),
+          animacy: value.operationFrame.referentialAnimacy,
           humanness: value.operationFrame.referentialHumanness } };
     } else if (capture.operationId === "nnc:adverbial"
       && r.isClassicalNahuatlAdverbialNuclearResult?.(value)
@@ -127,8 +128,14 @@ export function replayClassicalResultReloadRecipe(r, recipe) {
       } else if (node?.type === "nnc:ordinary" && exact(node, ["type", "source", "choices"])
         && plain(node.source, SOURCE_KEYS) && plain(node.choices, [...NNC_KEYS, "humanness"])) {
         const source = r.issueCanonicalNncSourceFrame(node.source);
-        const operation = r.issueCanonicalNncOperationFrame(source, node.choices);
-        result = r.requestClassicalOrdinaryNncResult(source, operation);
+        if (Object.hasOwn(node.choices, "animacy")) {
+          const navigator = r.getClassicalGrammarApplicationCapabilityNavigator(source);
+          const binding = r.issueClassicalGrammarTypedSourceOperationBindingFrame(navigator, "nnc:ordinary", node.choices);
+          result = r.executeClassicalGrammarTypedSourceOperationBindingFrame(binding)?.canonicalResult;
+        } else {
+          const operation = r.issueCanonicalNncOperationFrame(source, node.choices);
+          result = r.requestClassicalOrdinaryNncResult(source, operation);
+        }
       } else if (node?.type === "nnc:compound"
         && exact(node, ["type", "source", "choices", "unique", "embed", "matrix"])
         && plain(node.source, COMPOUND_SOURCE_KEYS) && plain(node.choices, COMPOUND_CHOICE_KEYS)
@@ -163,4 +170,46 @@ export function replayClassicalResultReloadRecipe(r, recipe) {
     const roots = Object.fromEntries(Object.entries(recipe.roots).map(([key, id]) => [key, prior(id)]));
     return Object.values(roots).every(Boolean) ? roots : null;
   } catch { return null; }
+}
+
+// Reconstruct an editor over the accepted input, never over its written output.
+// Call only after owner replay. Issuing this binding stages choices; it neither
+// executes Make nor records a new accepted Result/History step.
+export function reissueClassicalAcceptedBuildBinding(r, result, expectedSource = null) {
+  if (!issued(r, result)) return null;
+  let source, operationId, choices;
+  if (r.isClassicalNahuatlOrdinaryNncResult?.(result) === true) {
+    source = result.sourceFrame;
+    operationId = "nnc:ordinary";
+    choices = {...pick(result.operationFrame, NNC_KEYS),
+      animacy: result.operationFrame.referentialAnimacy,
+      humanness: result.operationFrame.referentialHumanness};
+  } else {
+    const application = r.isClassicalNahuatlVncSentenceResultFrame?.(result) === true
+      ? result.vncApplicationFrame : result;
+    if (r.isClassicalNahuatlVncApplicationFrame?.(application) !== true) return null;
+    const recipe = r.exportClassicalNahuatlVncApplicationRecipe?.(application);
+    // A typed derivation may retain its direct input application as a recipe
+    // prefix. Keep that exact machinery, never the completed written stem.
+    if (!recipe?.steps?.length || recipe.steps.some(step => step.operationId)) return null;
+    const request = recipe.steps.at(-1).request;
+    source = application.resultFrame.sourceMachineryFrame;
+    operationId = "vnc:application";
+    choices = pick(request, ["subject", "mood", "tense", "requestedDerivation",
+      "requestedVoice", "derivationOptionId", "nonactiveOptionId", "silentSpecificObject",
+      "tlaFusion", "rareThirdCausativeMeaningSupported", "exceptionalSuffixOrderAuthorized"]);
+    if (request.requestedDerivation === "causative") Object.assign(choices,
+      pick(request, ["causativeObjectKind", "causativeSpecificShuntlineRealization"]));
+    if (request.requestedDerivation === "applicative") Object.assign(choices,
+      pick(request, ["applicativeObjectKind", "applicativeObjectPerson"]));
+    choices.sentenceOptions = request.sentenceOptions;
+  }
+  if (!source || expectedSource && source !== expectedSource) return null;
+  const navigator = r.getClassicalGrammarApplicationCapabilityNavigator?.(source);
+  if (r.isClassicalGrammarApplicationCapabilityNavigator?.(navigator) !== true
+    || navigator.inputRole !== "exact-owner-issued-source" || navigator.exactSource !== source) return null;
+  const binding = r.issueClassicalGrammarTypedSourceOperationBindingFrame?.(navigator, operationId, choices);
+  return r.isClassicalGrammarTypedSourceOperationBindingFrame?.(binding) === true
+    && binding.bindingStatus === "ready" && binding.exactSource === source
+    && binding.navigator === navigator ? binding : null;
 }

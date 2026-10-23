@@ -6,14 +6,20 @@ export function createWorkspacePresentation(doc) {
   let editor;
   let sourceSignature;
   let output;
+  let navigation;
   let queued=false;
   let applyRequested=false;
   let context={action:'',materialSupplied:false};
   const fitResult=()=>{
     if(!output)return;
     const result=output.querySelector('#classical-result-panel');
+    const root=doc.getElementById('classical-workbench');
+    const declaredOffset=root ? parseFloat(win.getComputedStyle(root).getPropertyValue('--composition-nav-offset')) : 0;
+    // The action band can wrap before Flow writes its next offset. Reserve the
+    // larger of its measured clearance and the CSS position used for sticking.
+    const offset=Math.max(declaredOffset||0,navigation ? navigation.getBoundingClientRect().height+12 : 110);
     const fits=Boolean(result && win.innerWidth>1300
-      && result.getBoundingClientRect().height<=win.innerHeight-40);
+      && result.getBoundingClientRect().height<=win.innerHeight-offset-12);
     const value=String(fits);
     if(output.dataset.resultFitsViewport!==value)output.dataset.resultFitsViewport=value;
     if(result && result.dataset.resultFitsViewport!==value)result.dataset.resultFitsViewport=value;
@@ -98,6 +104,12 @@ export function createWorkspacePresentation(doc) {
       if(output)resultSize.unobserve(output.querySelector('#classical-result-panel')||output);
       output=next;
       if(output)resultSize.observe(output.querySelector('#classical-result-panel')||output);
+    }
+    const nextNavigation=doc.querySelector('.classical-four-panel-navigation');
+    if(nextNavigation!==navigation) {
+      if(navigation)resultSize.unobserve(navigation);
+      navigation=nextNavigation;
+      if(navigation)resultSize.observe(navigation);
     }
     fitResult();
   }

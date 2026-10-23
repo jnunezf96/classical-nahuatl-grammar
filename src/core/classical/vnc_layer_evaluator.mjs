@@ -827,6 +827,8 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
           blockReason: "authorized-typed-vnc-slot-frame-required",
           projectionAuthority: "typed-vnc-slots",
           formulaStringAuthority: false,
+          valenceRows: [],
+          derivationMetadataAvailable: false,
           rows: []
         };
         classicalNahuatlIssuedVncDiagrammaticFrames.add(blockedFrame);
@@ -844,9 +846,35 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
       const coreExpression = `${corePrefix}(${predicate.stem})`;
       const tenseExpression = `)${predicate.tns}+`;
       const generalProjection = getClassicalNahuatlVncGeneralFormulaProjection(frame);
-      const section = frame.valenceArity === "vacant" ? "5.1" : frame.valenceArity === "monadic" ? "6.2" : "6.3";
-      const lineStart = frame.valenceArity === "vacant" ? 2449 : frame.valenceArity === "monadic" ? 2716 : 2744;
-      const lineEnd = frame.valenceArity === "vacant" ? 2456 : frame.valenceArity === "monadic" ? 2723 : 2757;
+      // Prefix order comes from the typed slots. Derivational level comes from
+      // the participant owner; Andrews §23.3.4 explicitly distinguishes them.
+      // Compact single-object slots do not supply a derivational history.
+      const valenceRows = prePredicate.flatMap((slot, index) => {
+        if (!["monadic-valence", "dyadic-valence"].includes(slot.kind)) return [];
+        const position = slot.objectPositionFrame || null;
+        const formulaCarrier = slot.formulaCarrier || slot.carrier;
+        return [{
+          slotId: slot.id,
+          prefixOrder: index + 1,
+          valenceArity: slot.kind === "monadic-valence" ? "monadic" : "dyadic",
+          formulaCarrier,
+          expression: `+${formulaCarrier}`,
+          objectId: position?.objectId || "",
+          governor: position?.governor || "",
+          derivationalLevel: Number.isInteger(position?.derivationalLevel)
+            ? position.derivationalLevel : null,
+          prominence: position?.prominence || "",
+          sounded: typeof position?.sounded === "boolean" ? position.sounded : null,
+          silencingRule: position?.silencingRule || ""
+        }];
+      });
+      const derivationMetadataAvailable = valenceRows.length > 0
+        && valenceRows.every(row => row.objectId && row.governor
+          && row.derivationalLevel > 0 && row.prominence);
+      const multipleValence = frame.valenceArity === "multiple";
+      const section = multipleValence ? "23.4" : frame.valenceArity === "vacant" ? "5.1" : frame.valenceArity === "monadic" ? "6.2" : "6.3";
+      const lineStart = multipleValence ? 7562 : frame.valenceArity === "vacant" ? 2449 : frame.valenceArity === "monadic" ? 2716 : 2744;
+      const lineEnd = multipleValence ? 7580 : frame.valenceArity === "vacant" ? 2456 : frame.valenceArity === "monadic" ? 2723 : 2757;
       const diagrammaticFrame = {
         kind: "classical-nahuatl-vnc-diagrammatic-frame",
         sourceAuthority: "Andrews transcription",
@@ -859,6 +887,8 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         generalLinearFormula: generalProjection.linearFormula,
         generalRows: generalProjection.rows,
         valenceArity: frame.valenceArity,
+        valenceRows,
+        derivationMetadataAvailable,
         prePredicateCarriers,
         predicateStem: predicate.stem,
         tenseCarrier: predicate.tns,
@@ -899,8 +929,13 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
           section,
           transcriptionLineStart: lineStart,
           transcriptionLineEnd: lineEnd,
-          exactWitness: frame.valenceArity === "vacant" ? "The intransitive VNC has an implicitly present vacant Valence position in its Core." : frame.valenceArity === "monadic" ? "The monadic transitive VNC diagram places +va(STEM) in the Core and tns in Tense." : "The dyadic transitive VNC diagram places +va1-va2(STEM) in the Core and tns in Tense."
-        }]
+          exactWitness: multipleValence ? "The multiple-valence formula retains every complete Valence position, including silent shuntline positions, within the Core." : frame.valenceArity === "vacant" ? "The intransitive VNC has an implicitly present vacant Valence position in its Core." : frame.valenceArity === "monadic" ? "The monadic transitive VNC diagram places +va(STEM) in the Core and tns in Tense." : "The dyadic transitive VNC diagram places +va1-va2(STEM) in the Core and tns in Tense."
+        }, ...(multipleValence ? [{
+          section: "23.5",
+          transcriptionLineStart: 7583,
+          transcriptionLineEnd: 7596,
+          exactWitness: "Object-pronoun sequence follows carrier ordering priorities and does not reflect the history of derivational suffixes."
+        }] : [])]
       };
       classicalNahuatlIssuedVncDiagrammaticFrames.add(diagrammaticFrame);
       return diagrammaticFrame;

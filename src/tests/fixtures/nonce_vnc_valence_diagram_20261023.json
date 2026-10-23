@@ -1,0 +1,48 @@
+{
+  "generation": "Fresh random orthographic CV construction; saved as invented regression stems, without lexical meaning.",
+  "cases": [
+    {
+      "id": "surface-order-differs-from-history",
+      "sourceStem": "ziyapenāmeza",
+      "objectRequests": [
+        {
+          "objectId": "earlier-human",
+          "objectKind": "nonspecific-human",
+          "governor": "causative",
+          "derivationalLevel": 1
+        },
+        {
+          "objectId": "later-specific",
+          "objectKind": "specific-projective",
+          "objectPerson": "3sg",
+          "governor": "applicative",
+          "derivationalLevel": 2
+        }
+      ]
+    },
+    {
+      "id": "silent-shuntline-remains-present",
+      "sourceStem": "tlāchozētlāpoza",
+      "objectRequests": [
+        {
+          "objectId": "earlier-specific",
+          "objectKind": "specific-projective",
+          "objectPerson": "2sg",
+          "governor": "directive",
+          "derivationalLevel": 1
+        },
+        {
+          "objectId": "later-specific",
+          "objectKind": "specific-projective",
+          "objectPerson": "3sg",
+          "governor": "causative",
+          "derivationalLevel": 2
+        }
+      ]
+    },
+    {
+      "id": "monadic-dyadic-and-vacant",
+      "sourceStem": "mayōxātlocueza"
+    }
+  ]
+}

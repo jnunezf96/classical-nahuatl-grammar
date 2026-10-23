@@ -1,3 +1,5 @@
+import {clearOwnerChoicePortals,findOwnerChoice,ownerChoiceRoots} from '../composition/owner_choice_roots.mjs?v=20261023-core-1';
+import {appendValenceAnalysis} from '../composition/valence_analysis.mjs?v=20261023-slots-16';
 import {previewConstructionPacket} from '../composition/construction_preview.mjs?v=20261022-1';
 import {isIntermediateBuildTaskReset} from '../composition/build_task_menu.mjs?v=20261021-ending-reference-2&writingSource=20261022-2&fixedChoices=20261022-1';
 import { normalizeClassicalNahuatlIntroductoryModifier }
@@ -9,17 +11,17 @@ import {setStructureDesignContext, setStructureComparison, projectCanonicalStruc
 import {setSourceCandidatePresentation, projectSavedSourceCandidate, setRouteChoicePresentation, projectOfferedOperationShapes} from '../composition/candidate_design.mjs?v=20261021-route-shapes-1';
 import {notifyExplicitMakeResult,focusNativeChoice} from '../composition/flow_design.mjs?v=20261022-reset-eligibility-1&writingSource=20261022-1&makePreview=20261022-1&fixedChoices=20261022-1';
 import {getBuildOperationGroup,getBuildOperationOrder,inventoryOptionReference,formatBuildOperationLabel} from '../composition/build_navigation_model.mjs?v=20261021-ending-reference-2';
-import {createConstructionSession} from '../composition/construction_session.mjs?v=20261012-position-12';
-import {projectConstructionValue} from '../composition/construction_position.mjs?v=20261012-position-12';
+import {createConstructionSession} from '../composition/construction_session.mjs?v=20261012-position-12&acceptedBuild=20261023-1';
+import {projectConstructionValue} from '../composition/construction_position.mjs?v=20261012-position-12&acceptedBuild=20261023-1';
 import {executeConstructionPacket, freezeConstructionData, getConstructionPacketOrigin, captureConstructionParents, matchesConstructionWitness, orderConstructionSlots, getConstructionFixedChoices, getConstructionLayerReadiness, getConstructionParticleHostInput} from '../composition/construction_packet.mjs?v=20261021-packet-envelopes-3';
 import {resolveResultEditTarget} from '../composition/result_editing.mjs?v=20261014-result-edit-2';
 import {canRebuildResultEdit,getResultEditReorder} from '../composition/result_edit_rebuild.mjs?v=20261014-result-edit-2';
-import {getNativeGrammarControls, getWritingSourcePresentation, setChoiceDesignContext, setAppliedRoutePresentation} from '../composition/choice_design.mjs?v=20261022-reset-eligibility-1&writingSource=20261022-1&fixedChoices=20261022-1';
+import {getNativeGrammarControls, getWritingSourcePresentation, setChoiceDesignContext, setAppliedRoutePresentation} from '../composition/choice_design.mjs?coreStem=20261023-1&v=20261022-reset-eligibility-1&writingSource=20261022-1&fixedChoices=20261022-1';
 import { readClassicalSourceObjectRows, getClassicalSourceObjectControls,
   restoreClassicalSourceObjectRows, syncClassicalSourceObjectRows }
   from "../composer/source_objects.mjs?v=20261007-panel-source-objects-1";
-import { exportClassicalResultReloadRecipe, replayClassicalResultReloadRecipe }
-  from "../../application/classical/result_reload.mjs?v=20261007-reader-40-2-175";
+import { exportClassicalResultReloadRecipe, replayClassicalResultReloadRecipe, reissueClassicalAcceptedBuildBinding }
+  from "../../application/classical/result_reload.mjs?v=20261007-reader-40-2-175&acceptedBuild=20261023-1";
 import { exportClassicalGrammarWorkspaceHistoryReloadState,
   restoreClassicalGrammarWorkspaceHistoryReloadState }
   from "../../application/classical/grammar_workspace_history.mjs?v=20261006-history-reload-1";
@@ -20354,6 +20356,13 @@ export function createUiRenderingApi(targetObject = globalThis) {
       syncClassicalPurposiveCoordinateControls(null, {restore: true});
       syncClassicalAppliedVncParticipantControls(surfaceFrame.state?.vncApplicationFrame);
       const basalUnit = normalizeClassicalBasalUnitForRendering(surfaceFrame.basalUnit || "");
+      const pendingNnc = basalUnit === "nnc" ? getActiveClassicalGrammarTypedSourceOperationBinding() : null;
+      if (pendingNnc && pendingNnc.exactSource === ActiveClassicalGrammarCapabilityNavigator?.exactSource
+        && (!surfaceFrame.state?.nncTypedSourceFrame
+          || surfaceFrame.state.nncTypedSourceFrame === pendingNnc?.exactSource)) {
+        surfaceFrame = {...surfaceFrame,
+          state: getClassicalTypedNncBindingSurfaceState(pendingNnc, surfaceFrame.state || {})};
+      }
       syncClassicalOptativeSentenceUseControl({
         mood: basalUnit === "vnc" ? surfaceFrame.state?.mood : "",
         tense: surfaceFrame.state?.tense,
@@ -21135,6 +21144,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           secondaryPredicateOption.textContent = secondaryPredicateContract.displayLabel;
         }
         applyClassicalRuleLogicSelectOptionAvailability("classical-rule-logic-nnc-predicate-form", nncOptionContract.predicateOptionValues, nncOptionContract.selectedPredicateOptionId);
+        syncClassicalTypedNncPredicateMirror(pendingNnc, nncOptionContract);
         applyClassicalRuleLogicSelectOptionAvailability("classical-rule-logic-nnc-stem-relation", nncOptionContract.stemRelationValues, nncOptionContract.selectedStemRelation);
         applyClassicalRuleLogicSelectOptionAvailability("classical-rule-logic-nnc-nonspecific-human-form", nncOptionContract.nonspecificHumanFormValues || [], nncOptionContract.selectedNonspecificHumanForm || "");
         if (nncOptionContract.sourceFrame?.generalUseOnly === true
@@ -21490,7 +21500,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
           // typed Source; an accepted ordinary Result does not yet exist.
           if (targetObject.isClassicalGrammarTypedSourceOperationBindingFrame?.(binding) === true) {
             return {basalUnit: "nnc", authorityCapabilityFrame: null,
-              state: {...getClassicalRuleLogicSurfaceState(), nncTypedSourceFrame: binding.exactSource}};
+              state: getClassicalTypedNncBindingSurfaceState(binding, {
+                ...getClassicalRuleLogicSurfaceState(), nncTypedSourceFrame: binding.exactSource,
+              })};
           }
           return null;
         }
@@ -24402,6 +24414,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
     ) => Object.freeze({ nnc, vnc });
     const CLASSICAL_CUSTOM_CONSTRUCTION_GRAMMAR_CONTROL_PLACEMENTS =
       Object.freeze({
+        "classical-deverbal-nnc-action-reference": makeClassicalCustomFormationPlacement("predicate"),
+        "classical-deverbal-nnc-affinity": makeClassicalCustomFormationPlacement("nounstem"),
+        "classical-deverbal-nnc-patientive-embed-orientation": makeClassicalCustomFormationPlacement("", "predicate"),
+        "classical-nominal-incorporated-object": makeClassicalCustomFormationPlacement("", "predicate"),
         "classical-calendar-boundary":
           makeClassicalCustomFormationPlacement("nounstem"),
         // Place and gentilic formation.
@@ -34419,6 +34435,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           frame?.canonicalResult?.proofFrame?.conclusion
             ?.finalTypedVncSlotFrame,
           frame?.resultFrame?.typedSlotFrame,
+          frame?.resultFrame?.finalTypedVncSlotFrame,
         ];
       const builder = resultUnit === "nnc"
         ? targetObject.requestClassicalNncDiagrammaticFrame
@@ -37671,6 +37688,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         "classical-capability-operation-choices"
       ) || null;
       if (!host) return null;
+      clearOwnerChoicePortals(targetObject.document);
       host.replaceChildren();
       const decisions = Array.from(decisionContract?.decisions || []).filter(
         decision => decision?.required === true
@@ -39670,6 +39688,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         writingControls.hidden=true;
         choices.before(writingControls);
       }
+      clearOwnerChoicePortals(targetObject.document);
       choices?.replaceChildren?.();
       if (choices) {
         choices.hidden = true;
@@ -39736,6 +39755,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         writingControls.hidden=true;
         choices.before(writingControls);
       }
+      clearOwnerChoicePortals(targetObject.document);
       choices.replaceChildren();
       const valid = Boolean(
         binding
@@ -41001,6 +41021,14 @@ export function createUiRenderingApi(targetObject = globalThis) {
     function syncClassicalOptativeSentenceUseControl(draft = {}, subject = "") {
       const control = targetObject.document?.getElementById?.("classical-rule-logic-optative-use");
       if (!control) return;
+      const typed = getActiveClassicalGrammarTypedSourceOperationBinding();
+      if (typed?.operationId === "vnc:application"
+        && ActiveClassicalGrammarCapabilityNavigator?.inputRole === "exact-owner-issued-source"
+        && typed.exactSource === ActiveClassicalGrammarCapabilityNavigator.exactSource) {
+        const current = {...typed.callerSelections, ...typed.effectiveSelections};
+        draft = {...draft, mood: current.mood, tense: current.tense};
+        subject = current.subject || subject;
+      }
       const choices = getClassicalOptativeSentenceUseChoices(draft, subject);
       const visible = choices.length > 1;
       for (const option of control.options || []) {
@@ -41016,6 +41044,26 @@ export function createUiRenderingApi(targetObject = globalThis) {
         wrapper.setAttribute?.("aria-hidden", String(!visible));
         wrapper.setAttribute?.("aria-disabled", String(!visible));
       }
+    }
+    function getClassicalTypedVncOptativeUseSelections(binding, selectedUse = "auto") {
+      if (binding?.operationId !== "vnc:application"
+        || targetObject.isClassicalGrammarTypedSourceOperationBindingFrame?.(binding) !== true
+        || ActiveClassicalGrammarCapabilityNavigator?.inputRole !== "exact-owner-issued-source"
+        || binding.exactSource !== ActiveClassicalGrammarCapabilityNavigator.exactSource) return null;
+      const current = {...binding.callerSelections, ...binding.effectiveSelections};
+      if (!getClassicalOptativeSentenceUseChoices(current, current.subject).includes(selectedUse)) return null;
+      const options = {...binding.callerSelections.sentenceOptions};
+      const sentenceType = selectedUse !== "auto" ? selectedUse
+        : targetObject.deriveClassicalNahuatlSentenceTypeFromMood?.({
+          mood: current.mood, tense: current.tense,
+          introductoryParticle: options.introductoryParticle,
+          introductoryModifier: options.introductoryModifier,
+          subjectPersonClass: /^1/u.test(current.subject) ? "first-person"
+            : /^2/u.test(current.subject) ? "second-person" : "third-person",
+        });
+      if (!sentenceType) return null;
+      return {...binding.callerSelections,
+        sentenceOptions: {...options, sentenceType}};
     }
     // Dependent choices belong to the staged edit, not the accepted Source mood.
     function getClassicalVncContinuationDraftMoodSelections() {
@@ -42616,9 +42664,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
         }
         return true;
       };
-      const generated = Array.from(doc?.querySelectorAll?.(
-        '#classical-capability-operation-choices [data-classical-capability-choice-id="adjunctorInMode"]'
-      ) || []).find(control => control.classicalTypedSourceChoiceBinding === binding && visible(control));
+      const generated = ownerChoiceRoots(doc).flatMap(root => Array.from(root.querySelectorAll(
+        '[data-classical-capability-choice-id="adjunctorInMode"]'
+      ))).find(control => control.classicalTypedSourceChoiceBinding === binding && visible(control));
       const native = doc?.getElementById?.("classical-rule-logic-nnc-dependent-clause-in");
       const control = generated || (visible(native) ? native : null);
       // Owner readiness remains a hold even if its editor is temporarily
@@ -45360,9 +45408,54 @@ export function createUiRenderingApi(targetObject = globalThis) {
       return targetObject.isClassicalGrammarApplicationResult?.(completed)
         && completed.authorizationStatus === "authorized" && completed.canonicalResult ? completed : null;
     }
+    function syncClassicalTypedNncPredicateMirror(binding, contract = {}) {
+      if (binding?.operationId !== "nnc:ordinary"
+        || targetObject.isClassicalGrammarTypedSourceOperationBindingFrame?.(binding) !== true
+        || binding.exactSource !== contract.sourceFrame) return false;
+      const selected = binding.callerSelections?.predicateFormation;
+      if (!selected || contract.selectedPredicateOptionId !== selected
+        || !contract.predicateOptionValues?.includes(selected)) return false;
+      const control = targetObject.document?.getElementById?.("classical-rule-logic-nnc-predicate-form");
+      if (!control || !Array.from(control.options || []).some(option => option.value === selected && !option.disabled)) return false;
+      // Availability retains an existing legal value. A mirror must instead
+      // display the exact owner's authored value, including incomplete drafts.
+      control.value = selected;
+      return true;
+    }
+    function getClassicalTypedNncBindingSurfaceState(binding = null, state = {}) {
+      if (!["nnc:ordinary", "nnc:pronominal"].includes(binding?.operationId)
+        || targetObject.isClassicalGrammarTypedSourceOperationBindingFrame?.(binding) !== true
+        || !binding.exactSource || binding.navigator?.exactSource !== binding.exactSource
+        || binding.exactNavigatorInput !== binding.exactSource) return state;
+      const projected = {...state, nncTypedSourceFrame: binding.exactSource};
+      const stateKeys = {
+        subject: "subject", animacy: "nncAnimacy", humanness: "nncHumanness",
+        state: "nncState", possessor: "nncPossessor", includedPossessor: "nncIncludedPossessor",
+        metaphoricalUse: "nncMetaphoricalUse", stemFormation: "nncStemRelation",
+        predicateFormation: "nncPredicateOptionId",
+        possessorReduplication: "nncPossessorReduplication",
+        pluralConnector: "nncNumberForm", numberForm: "nncNumberForm",
+        singularConnector: "nncSingularConnector", nonspecificHumanForm: "nncNonspecificHumanForm",
+        clausePosition: "nncClausePosition", adjunctorInMode: "nncAdjunctorInMode",
+        predicatePluralization: "nncQuantitivePredicatePluralization",
+        doubledFirstPlural: "nncDoubledFirstPlural", specialHumanUse: "nncSpecialHumanUse",
+      };
+      // An incomplete owner binding still retains its authored choices. Later
+      // native repaints cannot replace them with the accepted Result's mirrors.
+      for (const [choiceKey, stateKey] of Object.entries(stateKeys)) {
+        if (Object.hasOwn(binding.callerSelections || {}, choiceKey)) {
+          projected[stateKey] = binding.callerSelections[choiceKey];
+        }
+      }
+      return projected;
+    }
     function getClassicalOrdinaryNncControlProjection(binding = null) {
       const current = getActiveClassicalCapabilityApplicationResult();
       const origin = ClassicalOrdinaryGrammarApplicationBySentence.get(current?.canonicalResult) || current;
+      if (!binding) {
+        const pending = getActiveClassicalGrammarTypedSourceOperationBinding();
+        if (pending?.exactSource === origin?.canonicalResult?.sourceFrame) binding = pending;
+      }
       if (!targetObject.isClassicalGrammarApplicationResult?.(current)
         || !targetObject.isClassicalGrammarApplicationResult?.(origin)
         || origin.operationId !== "nnc:ordinary"
@@ -45375,7 +45468,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
         basalUnit: "nnc", authorityCapabilityFrame: null,
         nncGrammarSurfaceContract: origin.canonicalResult,
         nncGrammarSurfaceContractInspection: inspection,
-        state: {...getClassicalRuleLogicSurfaceState(), nncTypedSourceFrame: origin.canonicalResult.sourceFrame},
+        state: getClassicalTypedNncBindingSurfaceState(binding, {
+          ...getClassicalRuleLogicSurfaceState(), nncTypedSourceFrame: origin.canonicalResult.sourceFrame,
+        }),
       };
     }
     function getCapturedClassicalOrdinaryNncOrigin(current = null) {
@@ -45922,27 +46017,47 @@ export function createUiRenderingApi(targetObject = globalThis) {
             "classical-rule-logic-particle-combination-shortcut"].includes(control.id));
       if (typedNncOrdinaryChoice) {
         if (event) HandledClassicalContinuationChoiceEvents.add(event);
-        const surfaceState = {
-          ...getClassicalRuleLogicSurfaceState(),
-          nncTypedSourceFrame: typedSourceBinding.exactSource,
-        };
-        syncClassicalRuleLogicControlsForSurfaceFrame({
-          basalUnit: "nnc", state: surfaceState,
-        });
+        // Capture this edit before any accepted-context synchronization can
+        // restore the old participant controls. Other controls may still show
+        // the accepted Result, so they cannot replace unrelated staged choices.
         const choices = getClassicalGrammarTypedSourceNncSelections(
           typedSourceBinding.operationId, typedSourceBinding.navigator
         );
-        const nextSelections = choices
+        const nativeChoiceKeys = {
+          "subject-person": ["subject"],
+          "subject-number": ["subject"],
+          "subject-animacy": ["subject", "animacy", "humanness"],
+          "subject-humanness": ["subject", "humanness"],
+          "metaphorical-use": ["metaphoricalUse"],
+          state: ["state"], possessor: ["possessor", "includedPossessor"],
+          "possessor-reduplication": ["possessorReduplication"],
+          "stem-relation": ["stemFormation"],
+          "predicate-form": ["predicateFormation"],
+          "plural-connector": ["pluralConnector", "numberForm"],
+        };
+        const editedKeys = nativeChoiceKeys[
+          String(control.id || "").replace(/^classical-rule-logic-nnc-/u, "")
+        ];
+        const editedChoices = choices && editedKeys
+          ? Object.fromEntries(editedKeys.filter(key => Object.hasOwn(choices, key))
+            .map(key => [key, choices[key]])) : choices;
+        const nextSelections = editedChoices
           ? typedSourceBinding.operationId === "nnc:ordinary"
             ? getClassicalOrdinaryNncActiveCallerSelections(
               typedSourceBinding.exactSource,
-              {...(typedSourceBinding.callerSelections || {}), ...choices}
+              {...(typedSourceBinding.callerSelections || {}), ...editedChoices}
             )
-            : Object.freeze({...(typedSourceBinding.callerSelections || {}), ...choices})
+            : Object.freeze({...(typedSourceBinding.callerSelections || {}), ...editedChoices})
           : null;
         const staged = nextSelections
           ? stageClassicalGrammarTypedSourceOperationBinding(typedSourceBinding.operationId, nextSelections)
           : null;
+        if (staged) {
+          syncClassicalRuleLogicControlsForSurfaceFrame({
+            basalUnit: "nnc",
+            state: getClassicalTypedNncBindingSurfaceState(staged, getClassicalRuleLogicSurfaceState()),
+          });
+        }
         const readiness = syncClassicalCapabilityApplyOperationState();
         const applyReady = readiness?.ready === true
           || readiness?.dataset?.classicalCapabilityApplyState === "ready";
@@ -45975,6 +46090,12 @@ export function createUiRenderingApi(targetObject = globalThis) {
         ].some(choiceId => getClassicalCapabilityBindingControlsForChoice(choiceId).includes(control)));
       if (typedVncApplicationChoice) {
         if (event) HandledClassicalContinuationChoiceEvents.add(event);
+        if (control.id === "classical-rule-logic-optative-use") {
+          const selections = getClassicalTypedVncOptativeUseSelections(typedSourceBinding, control.value);
+          if (selections) stageClassicalGrammarTypedSourceOperationBinding(typedSourceBinding.operationId, selections);
+          syncClassicalCapabilityApplyOperationState();
+          return Boolean(selections);
+        }
         if (["sentenceParticle", "sentenceParticleHonorific", "particleCombination"].some(choiceId =>
           getClassicalCapabilityBindingControlsForChoice(choiceId).includes(control))) {
           syncClassicalSelectedParticleHonorificAvailability();
@@ -48307,10 +48428,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
             "classical-capability-operation-plan"
           ) || null;
           plan?.scrollIntoView?.({ block: "nearest" });
-          targetObject.document?.querySelector?.(
-            "#classical-capability-operation-choices "
-              + "[data-classical-capability-choice-id]"
-          )?.focus?.({ preventScroll: true });
+          findOwnerChoice(targetObject.document,"[data-classical-capability-choice-id]")?.focus?.({ preventScroll: true });
         }
         return selected;
       }
@@ -48336,10 +48454,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
             "classical-capability-operation-plan"
           ) || null;
           plan?.scrollIntoView?.({ block: "nearest" });
-          const firstChoice = targetObject.document?.querySelector?.(
-            "#classical-capability-operation-choices "
-              + "[data-classical-capability-choice-id]"
-          ) || (operationId === "grammar:nominal-construction"
+          const firstChoice = findOwnerChoice(targetObject.document,"[data-classical-capability-choice-id]") || (operationId === "grammar:nominal-construction"
             ? targetObject.document?.getElementById?.(
               "classical-compound-nnc-embed-source-class"
             ) || null
@@ -48800,6 +48915,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
       heading.appendChild(title);
       const rowHost = targetObject.document.createElement("div");
       rowHost.className = "classical-rule-surface__diagram-rows";
+      const memberRoles = new Set(projection.predicateGroup?.memberRoles || []);
+      const predicateMembers = targetObject.document.createElement("div");
+      predicateMembers.className = "classical-rule-surface__diagram-predicate-members";
       rows.forEach((rowFrame, index) => {
         const expressionText = Array.isArray(rowFrame)
           ? rowFrame[0]
@@ -48834,8 +48952,22 @@ export function createUiRenderingApi(targetObject = globalThis) {
         role.className = "classical-rule-surface__diagram-role";
         role.textContent = String(roleText || `Part ${index + 1}`);
         row.append(expression, role);
-        rowHost.appendChild(row);
+        if (memberRoles.has(roleText)) predicateMembers.appendChild(row);
+        else rowHost.appendChild(row);
       });
+      if (predicateMembers.children.length) {
+        const group = targetObject.document.createElement("div");
+        group.className = "classical-rule-surface__diagram-predicate-group";
+        group.dataset.classicalNuclearClauseDiagramGroup = projection.predicateGroup.role;
+        const brace = targetObject.document.createElement("span");
+        brace.className = "classical-rule-surface__diagram-predicate-brace";
+        brace.setAttribute("aria-hidden", "true");brace.textContent = "}";
+        const label = targetObject.document.createElement("span");
+        label.className = "classical-rule-surface__diagram-predicate-role";
+        label.textContent = projection.predicateGroup.role;
+        group.append(predicateMembers, brace, label);rowHost.append(group);
+      }
+      appendValenceAnalysis(targetObject.document, rowHost, projection, {general, history: getClassicalVncDerivationExplanationRenderableProjection(grammarContext)});
       section.append(heading, rowHost);
       return section;
     }
@@ -50642,6 +50774,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
     let classicalVncReloadSavePending = false;
     let classicalVncReloadPersistenceReady = false;
     let classicalVncAcceptedBasalReloadState = null;
+    let classicalRestoredAcceptedBuild = null;
     let classicalUnsupportedResultReloadPending = false;
     function restoreClassicalUnsupportedResultReload(saved, url) {
       if (saved?.version !== 3 || saved.kind !== "unsupported-derived-result"
@@ -51036,6 +51169,48 @@ export function createUiRenderingApi(targetObject = globalThis) {
         if (status) status.textContent = "Sentence restored. The saved next-operation choices could not be restored; choose its next use again.";
       }
     }
+    function restoreClassicalReloadPosition(result) {
+      const position = ClassicalConstructionSession.position;
+      const restored = classicalRestoredAcceptedBuild;
+      // Applied is a presentation receipt for this reissued accepted Result,
+      // not a new Make. Never mark a different pending binding as accepted.
+      const exact = restored?.result === result
+        && restored.binding === getActiveClassicalGrammarTypedSourceOperationBinding()
+        && position.execution?.binding === restored.binding
+        && !position.construction.sourcePending;
+      const receipt = exact ? Object.freeze({construction: position.construction,
+        choices: position.choices, executionSignature: position.execution.signature}) : null;
+      ClassicalConstructionSession.restore(result, receipt);
+    }
+    function restoreClassicalAcceptedBuildChoices(result = null) {
+      // A continued Result has its own pending next operation. This repair
+      // restores the ordinary Build that produced an accepted root Result.
+      if (ActiveClassicalGrammarResultSourceCapture) return false;
+      const restored = reissueClassicalAcceptedBuildBinding(targetObject, result);
+      if (!restored) return false;
+      const source = restored.exactSource;
+      ActiveClassicalCapabilityCommittedTypedSource = source;
+      ActiveClassicalCapabilityCommittedTypedSourceSignature =
+        getClassicalGrammarExactTypedSourceIdentitySignature(source);
+      ActiveClassicalGrammarCapabilityNavigator = restored.navigator;
+      ActiveClassicalGrammarResultBinding = null;
+      syncClassicalCapabilityNavigator(null);
+      const select = targetObject.document?.getElementById?.("classical-capability-navigator-operation");
+      if (select) {
+        select.value = restored.operationId;
+        rememberClassicalTypedSourceCapabilitySelection(select);
+      }
+      const binding = stageClassicalGrammarTypedSourceOperationBinding(
+        restored.operationId, restored.callerSelections);
+      if (binding?.bindingStatus !== "ready" || binding.exactSource !== source) return false;
+      if (restored.operationId === "nnc:ordinary") {
+        const projection = getClassicalOrdinaryNncControlProjection(binding);
+        if (projection) syncClassicalRuleLogicControlsForSurfaceFrame(projection);
+      }
+      syncClassicalCapabilityApplyOperationState();
+      classicalRestoredAcceptedBuild = {result, binding};
+      return true;
+    }
     function restoreClassicalMixedReloadSession(saved) {
       const roots = replayClassicalResultReloadRecipe(targetObject, saved.recipe);
       const reloadStatus = targetObject.document.getElementById("classical-grammar-workspace-history");
@@ -51094,6 +51269,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       renderClassicalCapabilityApplicationResultForReview(resultCapture.applicationResult);
       syncClassicalCapabilityNavigator(null);
       syncClassicalActiveResultBindingChoiceVisibility(ActiveClassicalGrammarResultBinding);
+      if (!roots.source) restoreClassicalAcceptedBuildChoices(roots.result);
       syncClassicalCapabilityApplyOperationState();
       setClassicalWholeCanvasActionStatus("Build restored.");
       if (reloadStatus) reloadStatus.dataset.classicalReloadStatus = "mixed-restored";
@@ -51335,6 +51511,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
       syncClassicalActiveResultBindingChoiceVisibility(ActiveClassicalGrammarResultBinding);
       syncClassicalCapabilityApplyOperationState();
       restoreClassicalVncReloadChoices(saved);
+      if (!sourceResults && !saved.pendingTypedSourceSelections && !saved.pendingResultContinuation)
+        restoreClassicalAcceptedBuildChoices(finalResult.canonicalResult);
       restoreClassicalHistoryReloadState(saved);
       setClassicalWholeCanvasActionStatus("Build restored.");
       return true;
@@ -55894,6 +56072,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
         } else {
           renderPlan.ungroupedRows.forEach(diagramRow => nuclearClauseDiagramRows.appendChild(appendDiagramRow(diagramRow)));
         }
+        appendValenceAnalysis(targetObject.document, nuclearClauseDiagramRows, surfaceFrame.diagrammaticFrame,
+          {general: !diagramUsesSpecificFormula, history: getClassicalVncDerivationExplanationRenderableProjection(surfaceFrame.state?.vncApplicationFrame)});
       };
       renderNuclearClauseDiagramRows(specificDiagramRows);
       const generalStructureAvailable = Boolean(
@@ -59636,10 +59816,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
     api.saveClassicalVncReloadSession = saveClassicalVncReloadSession;
     api.restoreClassicalVncReloadSession = options => {
       ClassicalPositionRestoring = true;
+      classicalRestoredAcceptedBuild = null;
       try {
         const restored = restoreClassicalVncReloadSession(options);
         const accepted = restored ? getClassicalVisibleAcceptedResult() : null;
-        if (accepted?.canonicalResult) ClassicalConstructionSession.restore(accepted.canonicalResult);
+        if (accepted?.canonicalResult) restoreClassicalReloadPosition(accepted.canonicalResult);
         syncClassicalCapabilityApplyOperationState();
         return restored;
       } finally { ClassicalPositionRestoring = false; }

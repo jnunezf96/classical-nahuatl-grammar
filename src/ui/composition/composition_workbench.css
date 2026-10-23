@@ -188,7 +188,7 @@ body.is-language-classical #classical-workbench #classical-path-panel {display:c
 body.is-language-classical #classical-workbench .classical-four-panel-navigation {position:sticky;top:0;z-index:50;box-sizing:border-box;background:#f5f6f4;align-items:center;border-bottom:1px solid #dfe5df;padding:8px 0 14px;margin:16px 0 24px}
 body.is-language-classical #classical-workbench [data-classical-panel-jump="classical-path-panel"] {margin-left:auto;background:#e9eee9!important;color:#354e3e!important}
 body.is-language-classical #classical-workbench .classical-four-panel-navigation .classical-path-navigation-trigger {margin-left:auto!important;background:transparent!important;color:#53645a!important;border:1px solid #dfe5de!important}
-body.is-language-classical #classical-workbench .classical-four-panel-navigation .classical-path-navigation-trigger {font-size:13px!important;min-height:40px!important;padding:7px 11px!important}
+body.is-language-classical #classical-workbench .classical-four-panel-navigation .classical-path-navigation-trigger {font-size:13px!important;min-height:44px!important;padding:8px 12px!important}
 body.is-language-classical #classical-workbench :is(select,input:not([type=checkbox],[type=radio],[type=hidden])) {border:1px solid #d4ddd5!important;background:#fff!important;color:#283a2e!important;border-radius:8px!important;box-shadow:none!important}
 body.is-language-classical #classical-workbench button:not(.classical-formula__derived-annotation):not(.panel-pane-nav-btn) {font-family:var(--font-body)!important;box-shadow:none!important;letter-spacing:normal!important}
 body.is-language-classical #classical-workbench button:not(:disabled):not([aria-pressed="true"]):not(#classical-capability-apply-operation):not(#classical-grammar-workspace-history-continue):not(.classical-formula__derived-annotation):not(.composition-source-slot):not(.composition-candidate-card):not(.composition-offered-route) {background:#f0f3ef!important;color:#354d3d!important;border-color:transparent!important}
@@ -261,7 +261,7 @@ body.is-language-classical #classical-workbench :is(#classical-source-panel,#cla
 body.is-language-classical #classical-workbench .panel-block-title {margin-bottom:12px!important}
 body.is-language-classical #classical-workbench .composition-stage-cue {margin:0 0 24px!important;font:400 14px/1.6 var(--font-body)!important;color:#52645a!important}
 body.is-language-classical #classical-workbench .composition-disclosure {margin-block:20px 0!important;border-color:#e0e6dd!important}
-body.is-language-classical #classical-workbench .composition-disclosure > summary {display:list-item!important;list-style-position:inside!important;min-height:44px;box-sizing:border-box;padding:12px 0!important;font:600 14px/1.5 var(--font-body)!important;color:#354f40!important}
+body.is-language-classical #classical-workbench .composition-disclosure > summary {list-style-position:inside!important;min-height:44px;box-sizing:border-box;padding:12px 0!important;font:600 14px/1.5 var(--font-body)!important;color:#354f40!important}
 body.is-language-classical #classical-workbench .composition-disclosure > summary::marker {color:#52645a}
 body.is-language-classical #classical-workbench .composition-disclosure[open] > :not(summary) {margin-inline:0!important;margin-bottom:16px!important}
 body.is-language-classical #classical-workbench .composition-disclosure :is(.classical-vnc-authority-section,.classical-nnc-grammar-group,.classical-whole-canvas-choice) {border:0!important;background:transparent!important;box-shadow:none!important}
@@ -309,7 +309,7 @@ body.is-language-classical #classical-workbench #classical-authority-panel .comp
 body.is-language-classical #classical-workbench #classical-authority-panel .composition-disclosure > .classical-nnc-grammar-group > .classical-nnc-authority-heading {display:none!important}
 body.is-language-classical #classical-workbench #classical-authority-panel .composition-grammar-section-heading {margin:24px 0 4px!important;font:600 14px/1.5 var(--font-body)!important;color:#354f40}
 body.is-language-classical #classical-workbench #classical-authority-panel :is(#classical-stem-construction-menu,#classical-capability-navigator-unavailable) {grid-column:1/-1;min-width:0;border:0!important;border-top:1px solid #e0e6dd!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;padding:0!important;margin:12px 0 0!important}
-body.is-language-classical #classical-workbench #classical-authority-panel :is(#classical-stem-construction-menu,#classical-capability-navigator-unavailable) > summary {display:list-item!important;list-style-position:inside!important;min-height:44px;box-sizing:border-box;padding:12px 0!important;font:600 14px/1.5 var(--font-body)!important;color:#354f40}
+body.is-language-classical #classical-workbench #classical-authority-panel :is(#classical-stem-construction-menu,#classical-capability-navigator-unavailable) > summary {list-style-position:inside!important;min-height:44px;box-sizing:border-box;padding:12px 0!important;font:600 14px/1.5 var(--font-body)!important;color:#354f40}
 body.is-language-classical #classical-workbench #classical-authority-panel :is(#classical-stem-construction-menu,#classical-capability-navigator-unavailable)[open] > :not(summary) {margin:4px 0 12px!important}
 body.is-language-classical #classical-workbench #classical-authority-panel .classical-capability-operation-plan__actions {margin:4px 0 0!important;display:flex;justify-content:flex-end}
 
@@ -508,16 +508,34 @@ body.is-language-classical #classical-workbench[data-composition-design="path"] 
 body.is-language-classical #classical-workbench[data-composition-design="path"] .composition-route-families button:not(:disabled):active {transform:translateY(1px)}
 body.is-language-classical #classical-workbench[data-composition-design="path"] [data-composition-choice-mirror] {position:absolute!important;width:1px!important;height:1px!important;min-height:0!important;padding:0!important;overflow:hidden!important;clip-path:inset(50%)!important;white-space:nowrap!important;pointer-events:none!important}
 body.is-language-classical #classical-workbench[data-composition-design="path"] .composition-choice-buttons,
+body.is-language-classical #classical-workbench[data-composition-design="path"] #classical-source-panel .classical-source-parts__mode:not([hidden]),
+body.is-language-classical #classical-workbench[data-composition-design="path"] #classical-result-panel .classical-rule-surface [data-classical-result-presentation-axis="specificity"].classical-rule-surface__format-switch:not([hidden]),
+body.is-language-classical #classical-workbench[data-composition-design="path"] #classical-authority-panel .calc-operator-grid--derivation,
 body.is-language-classical #classical-workbench[data-composition-design="path"] #classical-authority-panel [data-classical-control-layout="polarity"] .classical-segmented-control {display:flex;flex-wrap:wrap;gap:6px;min-width:0;margin-top:5px}
 body.is-language-classical #classical-workbench[data-composition-design="path"] .composition-choice-buttons button,
+body.is-language-classical #classical-workbench[data-composition-design="path"] #classical-source-panel button:is(.classical-basal-unit-button,.classical-source-parts__mode-button),
+body.is-language-classical #classical-workbench[data-composition-design="path"] #classical-result-panel .classical-rule-surface [data-classical-result-presentation-axis="specificity"] > button.classical-rule-surface__format-switch-option,
+body.is-language-classical #classical-workbench[data-composition-design="path"] #classical-authority-panel .calc-operator-grid--derivation button.calc-operator-chip[data-derivation-type],
 body.is-language-classical #classical-workbench[data-composition-design="path"] #classical-authority-panel [data-classical-control-layout="polarity"] .classical-segmented-control button {flex:1 1 auto;min-width:0;max-width:100%;min-height:44px!important;padding:8px 10px;white-space:normal;overflow-wrap:anywhere;font:400 13px/1.4 var(--font-body);color:var(--path-text);background:var(--path-panel);border:1px solid var(--path-border);border-radius:7px}
 body.is-language-classical #classical-workbench[data-composition-design="path"] .composition-choice-buttons button[aria-pressed="true"],
+body.is-language-classical #classical-workbench[data-composition-design="path"] #classical-source-panel button:is(.classical-basal-unit-button,.classical-source-parts__mode-button)[aria-pressed="true"],
+body.is-language-classical #classical-workbench[data-composition-design="path"] #classical-result-panel .classical-rule-surface [data-classical-result-presentation-axis="specificity"] > button.classical-rule-surface__format-switch-option[aria-pressed="true"],
+body.is-language-classical #classical-workbench[data-composition-design="path"] #classical-authority-panel .calc-operator-grid--derivation button.calc-operator-chip[data-derivation-type][aria-pressed="true"],
 body.is-language-classical #classical-workbench[data-composition-design="path"] #classical-authority-panel [data-classical-control-layout="polarity"] .classical-segmented-control button[aria-pressed="true"] {color:#fff;background:var(--path-primary);border-color:var(--path-primary)}
 body.is-language-classical #classical-workbench[data-composition-design="path"] .composition-choice-buttons button:not(:disabled):hover,
+body.is-language-classical #classical-workbench[data-composition-design="path"] #classical-source-panel button:is(.classical-basal-unit-button,.classical-source-parts__mode-button):not(:disabled):hover,
+body.is-language-classical #classical-workbench[data-composition-design="path"] #classical-result-panel .classical-rule-surface [data-classical-result-presentation-axis="specificity"] > button.classical-rule-surface__format-switch-option:not(:disabled):hover,
+body.is-language-classical #classical-workbench[data-composition-design="path"] #classical-authority-panel .calc-operator-grid--derivation button.calc-operator-chip[data-derivation-type]:not(:disabled):hover,
 body.is-language-classical #classical-workbench[data-composition-design="path"] #classical-authority-panel [data-classical-control-layout="polarity"] .classical-segmented-control button:not(:disabled):hover {border-color:var(--path-primary)}
 body.is-language-classical #classical-workbench[data-composition-design="path"] .composition-choice-buttons button:not(:disabled):active,
+body.is-language-classical #classical-workbench[data-composition-design="path"] #classical-source-panel button:is(.classical-basal-unit-button,.classical-source-parts__mode-button):not(:disabled):active,
+body.is-language-classical #classical-workbench[data-composition-design="path"] #classical-result-panel .classical-rule-surface [data-classical-result-presentation-axis="specificity"] > button.classical-rule-surface__format-switch-option:not(:disabled):active,
+body.is-language-classical #classical-workbench[data-composition-design="path"] #classical-authority-panel .calc-operator-grid--derivation button.calc-operator-chip[data-derivation-type]:not(:disabled):active,
 body.is-language-classical #classical-workbench[data-composition-design="path"] #classical-authority-panel [data-classical-control-layout="polarity"] .classical-segmented-control button:not(:disabled):active {transform:translateY(1px)}
 body.is-language-classical #classical-workbench[data-composition-design="path"] .composition-choice-buttons button:disabled,
+body.is-language-classical #classical-workbench[data-composition-design="path"] #classical-source-panel button:is(.classical-basal-unit-button,.classical-source-parts__mode-button):disabled,
+body.is-language-classical #classical-workbench[data-composition-design="path"] #classical-result-panel .classical-rule-surface [data-classical-result-presentation-axis="specificity"] > button.classical-rule-surface__format-switch-option:disabled,
+body.is-language-classical #classical-workbench[data-composition-design="path"] #classical-authority-panel .calc-operator-grid--derivation button.calc-operator-chip[data-derivation-type]:disabled,
 body.is-language-classical #classical-workbench[data-composition-design="path"] #classical-authority-panel [data-classical-control-layout="polarity"] .classical-segmented-control button:disabled {opacity:.5;cursor:not-allowed}
 body.is-language-classical #classical-workbench[data-composition-design="path"] .composition-fixed-value {display:inline-flex;align-self:flex-start;width:fit-content!important;max-width:100%;padding:5px 9px;margin-top:5px;border:1px solid var(--path-border);border-radius:6px;background:var(--path-soft);color:var(--path-muted);font:400 13px/1.4 var(--font-body);overflow-wrap:anywhere}
 body.is-language-classical #classical-workbench[data-composition-design="path"] .composition-fixed-value[hidden] {display:none!important}
@@ -723,7 +741,9 @@ body.is-language-classical.is-ui-simple #classical-workbench [data-classical-cho
 /* Shared sentence home; native visibility and choice bindings stay separate. */
 body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] [data-workspace-sentence-choices] {grid-column:auto!important;min-width:0;width:100%;box-sizing:border-box}
 body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-rule-logic-controls [data-workspace-sentence-choices] > [data-workspace-sentence-content] {box-sizing:border-box;margin:0!important;padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important}
-body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] [data-workspace-sentence-content] > summary {display:none!important}
+/* These native sections stay open inside Sentence choices. Only the outer
+   disclosure is interactive; no inner summary, chevron or keyboard stop. */
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-authority-panel [data-workspace-sentence-content] > summary {display:none!important}
 body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-authority-panel #classical-rule-logic-controls [data-workspace-sentence-choices] :is(.classical-vnc-authority-control-group__body,.classical-nnc-grammar-group__body) {grid-template-columns:minmax(0,1fr)!important}
 body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-rule-logic-controls [data-workspace-sentence-choices] #classical-particle-menu > :not(summary) {padding:0!important;margin:0 12px 12px!important}
 body.is-language-classical #classical-workbench .classical-choice-find {display:none!important}
@@ -940,7 +960,7 @@ body.is-language-classical #classical-workbench[data-workspace-organization="can
   font: 600 13px/1.5 var(--font-body) !important;
   color: var(--path-muted) !important;
 }
-body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-authority-panel :is(.composition-choice-buttons,.classical-segmented-control) {
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-authority-panel :is(.composition-choice-buttons,.classical-segmented-control,.calc-operator-grid--derivation) {
   align-items: flex-start;
   align-content: flex-start;
   margin-top: 0;
@@ -1243,3 +1263,174 @@ body.is-language-classical #classical-workbench #classical-authority-panel summa
 }
 
 body.is-language-classical #classical-workbench #classical-authority-panel [data-classical-control-layout="directional"] {--build-category-icon:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.8%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%229%22%2F%3E%3Cpath%20d%3D%22m16%208-2%206-6%202%202-6Z%22%2F%3E%3C%2Fsvg%3E")}
+
+/* Shared choices retain their roles: Source captions and Result view switching. */
+body.is-language-classical #classical-workbench[data-composition-design="path"] #classical-source-panel .classical-basal-unit-button__main {font:inherit}
+body.is-language-classical #classical-workbench[data-composition-design="path"] #classical-result-panel .classical-rule-surface [data-classical-result-presentation-axis="specificity"].classical-rule-surface__format-switch {
+  width:100%;padding:0;border:0;background:transparent;box-shadow:none;
+}
+/* Actions use one text rhythm; color still communicates the explicit commit. */
+body.is-language-classical #classical-workbench[data-composition-design="path"] :is(
+  #verb-entry-apply,#classical-transcription-source-apply,#classical-capability-apply-operation,
+  .classical-source-parts__clear-button,.composition-result-tools button,
+  .composition-result-continuation button,#classical-result-editing button
+) {font:400 14px/1.4 var(--font-body)!important}
+/* A lesson has one left disclosure cue beside its title and description. */
+body.is-language-classical #classical-reader-guidance-dialog .classical-reader-guidance__lesson-summary {
+  display:grid;grid-template-columns:16px minmax(0,1fr);column-gap:8px;row-gap:2px;
+  align-items:center;padding:16px 0;
+}
+body.is-language-classical #classical-reader-guidance-dialog .classical-reader-guidance__lesson-summary::before {
+  grid-column:1;grid-row:1 / span 2;margin:0 4px 0 2px;align-self:center;
+}
+body.is-language-classical #classical-reader-guidance-dialog .classical-reader-guidance__lesson-summary > span {grid-column:2;grid-row:1}
+body.is-language-classical #classical-reader-guidance-dialog .classical-reader-guidance__lesson-summary > small {grid-column:2;grid-row:2}
+body.is-language-classical #classical-reader-guidance-dialog .classical-reader-guidance__lesson-summary::after {content:none!important;display:none}
+
+/* Long vowels are direct input helpers, without a separate writing workflow. */
+body.is-language-classical #classical-workbench #classical-transcription-keyboard {
+  border:0!important;background:transparent!important;padding:0;
+}
+body.is-language-classical #classical-workbench #classical-transcription-keyboard-vowels {
+  display:flex;flex-wrap:wrap;gap:6px;
+}
+
+/* Andrews formula slots: Subject surrounds Predicate; VNC Core precedes tense. */
+body.is-language-classical #classical-workbench [data-build-formula] {grid-column:1/-1;min-width:0;width:100%}
+body.is-language-classical #classical-workbench .composition-slot-pattern {margin:8px 0 12px;padding:10px 12px;border-radius:8px;background:var(--path-subtle,#f1f5f2);font:13px/1.6 var(--font-mono,monospace);overflow-wrap:anywhere;color:var(--path-muted,#496357)}
+body.is-language-classical #classical-workbench .composition-formula-slot {min-width:0;margin:10px 0}
+body.is-language-classical #classical-workbench [data-build-formula-part="predicate"],
+body.is-language-classical #classical-workbench [data-build-formula-part="core"] {border-inline-start:2px solid var(--path-border,#dce5df);padding-inline-start:12px}
+body.is-language-classical #classical-workbench .composition-formula-slot__heading {display:flex;align-items:center;flex-wrap:wrap;gap:7px;margin:14px 0 6px;font:600 14px/1.5 var(--font-body);color:var(--path-text)}
+body.is-language-classical #classical-workbench .composition-formula-slot__heading::before {content:"";width:16px;height:16px;flex:0 0 16px;background:currentColor;mask:var(--build-formation-icon) center/contain no-repeat;-webkit-mask:var(--build-formation-icon) center/contain no-repeat}
+body.is-language-classical #classical-workbench .composition-formula-slot__relation {margin-inline-start:auto;font-weight:400;font-size:12px;color:var(--path-muted,#496357)}
+body.is-language-classical #classical-workbench [data-build-formula] [hidden] {display:none!important}
+body.is-language-classical #classical-workbench .composition-valence-analysis {min-width:0;grid-column:1/-1;overflow-x:auto;margin-block:12px 4px}
+body.is-language-classical #classical-workbench .composition-valence-analysis h4 {font:600 14px/1.5 var(--font-body);margin:0 0 8px}
+body.is-language-classical #classical-workbench .composition-valence-analysis table {border-collapse:collapse;width:100%;font:12px/1.5 var(--font-body);text-align:start}
+body.is-language-classical #classical-workbench .composition-valence-analysis caption {text-align:start;font-weight:400;color:var(--path-muted,#496357);margin-bottom:6px}
+body.is-language-classical #classical-workbench .composition-valence-analysis :is(th,td) {padding:8px 7px;border-bottom:1px solid var(--path-border,#dce5df);text-align:start;vertical-align:top}
+body.is-language-classical #classical-workbench .composition-valence-analysis__carrier {font-family:var(--font-mono,monospace);white-space:nowrap}
+body.is-language-classical #classical-workbench .composition-valence-analysis__silent {display:block;font:11px/1.4 var(--font-body);color:var(--path-muted,#496357)}
+body.is-language-classical #classical-workbench .composition-valence-analysis p {font:12px/1.5 var(--font-body);margin:8px 0;color:var(--path-muted,#496357)}
+
+body.is-language-classical #classical-workbench [data-build-owner-slot] {grid-column:1/-1;min-width:0}
+body.is-language-classical #classical-workbench [data-build-owner-slot] > .composition-formula-slot__heading {margin-top:6px}
+
+/* Visual weight follows Andrews's hierarchy, not the number of UI wrappers. */
+body.is-language-classical #classical-workbench #classical-authority-panel [data-build-formula] .composition-slot-pattern {
+  margin:18px 0 12px;padding:10px 12px;background:#f5f7f2;color:#53645b;border:1px solid #e3e8df;border-radius:9px;font-size:13px;line-height:1.7;
+}
+body.is-language-classical #classical-workbench #classical-authority-panel [data-build-formula-part="subject"] > .composition-disclosure > summary {
+  font:600 15px/1.5 var(--font-body)!important;padding:12px 0!important;
+}
+body.is-language-classical #classical-workbench #classical-authority-panel [data-build-formula-part="predicate"] {
+  margin:12px 0 16px;padding:12px 14px;border:1px solid #dce5dc;border-radius:12px;background:#fafbf8;
+}
+body.is-language-classical #classical-workbench #classical-authority-panel [data-build-formula-part="predicate"] > .composition-formula-slot__heading {
+  font-size:15px;margin:0 0 8px;--slot-heading-icon:var(--build-formation-icon);
+}
+body.is-language-classical #classical-workbench #classical-authority-panel [data-build-formula-part="core"] {
+  margin:10px 0 4px;padding:0 0 0 12px;border-inline-start:2px solid #cad8cc;
+}
+body.is-language-classical #classical-workbench #classical-authority-panel [data-build-formula-part="core"] > .composition-formula-slot__heading {
+  font-size:13px;margin:0 0 2px;color:#4e6356;--slot-heading-icon:var(--build-objects-icon);
+}
+body.is-language-classical #classical-workbench #classical-authority-panel [data-build-formula] .composition-formula-slot > .composition-disclosure {
+  margin:0;border:0!important;
+}
+body.is-language-classical #classical-workbench #classical-authority-panel [data-build-formula-slot="tense"] {
+  margin-top:8px!important;padding-top:4px;border-top:1px solid #e3e9e0!important;
+}
+body.is-language-classical #classical-workbench #classical-authority-panel .composition-formula-slot__heading[hidden] {display:none!important}
+body.is-language-classical #classical-workbench #classical-authority-panel .composition-formula-slot__heading::before {
+  mask-image:var(--slot-heading-icon,var(--build-formation-icon));-webkit-mask-image:var(--slot-heading-icon,var(--build-formation-icon));
+}
+body.is-language-classical #classical-workbench #classical-authority-panel [data-build-owner-slot] {padding:4px 0 10px}
+body.is-language-classical #classical-workbench #classical-authority-panel [data-build-owner-slot="subject"] {--slot-heading-icon:var(--build-subject-icon)}
+body.is-language-classical #classical-workbench #classical-authority-panel [data-build-owner-slot="valence"] {--slot-heading-icon:var(--build-objects-icon)}
+body.is-language-classical #classical-workbench #classical-authority-panel [data-build-owner-slot="state"] {--slot-heading-icon:var(--build-possession-icon)}
+body.is-language-classical #classical-workbench #classical-authority-panel [data-build-owner-slot="tense"] {--slot-heading-icon:var(--build-tense-icon)}
+body.is-language-classical #classical-workbench #classical-authority-panel [data-build-owner-slot="sentence"] {--slot-heading-icon:var(--build-link-icon)}
+body.is-language-classical #classical-workbench #classical-authority-panel [data-build-owner-slot="reference"] {--slot-heading-icon:var(--build-participants-icon)}
+body.is-language-classical #classical-workbench #classical-authority-panel [data-build-owner-slot="material"] {--slot-heading-icon:var(--build-material-icon)}
+
+/* Preserve Andrews's formula-left/function-right diagram on the actual pane. */
+body.is-language-classical #classical-workbench #classical-rule-logic-surface .composition-analysis-structure .classical-rule-surface__diagram-rows {
+  padding:0!important;border:0!important;border-radius:0;background:transparent!important;overflow:visible;gap:14px;
+}
+body.is-language-classical #classical-workbench #classical-rule-logic-surface .composition-analysis-structure .classical-rule-surface__diagram-row {
+  grid-template-columns:minmax(0,1fr) max-content;align-items:center;column-gap:12px;row-gap:0;
+}
+body.is-language-classical #classical-workbench #classical-rule-logic-surface .composition-analysis-structure .classical-rule-surface__diagram-expression {
+  grid-column:1;grid-row:1;padding:10px 12px;background:#f5f8f2;border:1px solid #e1e8dc;border-radius:8px;font-size:14px!important;
+}
+body.is-language-classical #classical-workbench #classical-rule-logic-surface .composition-analysis-structure .classical-rule-surface__diagram-role {
+  grid-column:2;grid-row:1;font:600 12px/1.5 var(--font-body);color:#405849;
+}
+body.is-language-classical #classical-workbench #classical-rule-logic-surface .composition-analysis-structure .classical-rule-surface__diagram-predicate-group {
+  width:100%;min-width:0;margin:0;padding:12px 0 0;border-top:1px solid #dce5d8;grid-template-columns:minmax(0,1fr) 12px max-content;gap:6px;
+}
+body.is-language-classical #classical-workbench #classical-rule-logic-surface .composition-analysis-structure .classical-rule-surface__diagram-predicate-members {gap:10px}
+body.is-language-classical #classical-workbench #classical-rule-logic-surface .composition-analysis-structure .classical-rule-surface__diagram-predicate-role {font:600 12px/1.5 var(--font-body);color:#405849}
+body.is-language-classical #classical-workbench .composition-valence-analysis {margin-top:8px;padding-top:14px;border-top:1px solid #dce5d8}
+body.is-language-classical #classical-workbench .composition-valence-analysis table {font-size:13px}
+body.is-language-classical #classical-workbench .composition-valence-analysis :is(th,td) {padding:10px 8px}
+body.is-language-classical #classical-workbench .composition-valence-analysis th {font-weight:600;color:#405849}
+body.is-language-classical #classical-workbench .composition-valence-analysis tbody td:first-child {font-variant-numeric:tabular-nums}
+body.is-language-classical #classical-workbench .composition-valence-analysis tbody tr:last-child td {border-bottom:0}
+@media(max-width:600px){
+  body.is-language-classical #classical-workbench #classical-authority-panel [data-build-formula-part="predicate"] {padding:10px}
+  body.is-language-classical #classical-workbench #classical-authority-panel .composition-formula-slot__relation {margin-inline-start:0;flex-basis:100%;padding-inline-start:23px}
+  body.is-language-classical #classical-workbench .composition-valence-analysis :is(th,td) {padding:8px 5px;font-size:12px}
+}
+
+/* Stem is the foundation (Andrews §4.4 note, §5.5.1), not a competing clause. */
+body.is-language-classical #classical-workbench #classical-authority-panel :is([data-build-owner-slot="stem"],[data-build-owner-slot="nounstem"]) {
+  --slot-heading-icon:var(--build-formation-icon);
+  margin:4px 0 12px;padding:14px;border:1px solid #dce5dc;border-radius:12px;background:#fafbf8;
+}
+body.is-language-classical #classical-workbench #classical-authority-panel :is([data-build-owner-slot="stem"],[data-build-owner-slot="nounstem"]) > .composition-formula-slot__heading {
+  margin:0 0 12px;font-size:15px;
+}
+body.is-language-classical #classical-workbench #classical-authority-panel :is([data-build-owner-slot="stem"],[data-build-owner-slot="nounstem"]) > label {
+  margin-block:0 12px;
+}
+body.is-language-classical #classical-workbench #classical-authority-panel :is([data-build-owner-slot="stem"],[data-build-owner-slot="nounstem"]) > label:last-child {margin-bottom:0}
+@media(max-width:600px){body.is-language-classical #classical-workbench #classical-authority-panel :is([data-build-owner-slot="stem"],[data-build-owner-slot="nounstem"]){padding:10px}}
+body.is-language-classical #classical-workbench #classical-authority-panel [data-build-owner-slot="direction"] {--slot-heading-icon:var(--build-link-icon)}
+body.is-language-classical #classical-workbench #classical-authority-panel [data-build-owner-slot="reduplication"] {--slot-heading-icon:var(--build-formation-icon)}
+
+/* One Stem surface inside Core, with generated and native controls sharing the
+   same visual enclosure while retaining separate replacement lifetimes. */
+body.is-language-classical #classical-workbench #classical-authority-panel [data-unified-stem-combined] {
+  margin:10px 0 8px;padding:14px;border:1px solid #dfe6dc;border-radius:12px;background:#f8faf5;min-width:0;
+}
+body.is-language-classical #classical-workbench #classical-authority-panel [data-unified-stem-combined] > :is([data-build-owner-slot="stem"],[data-build-owner-slot="nounstem"]) {
+  padding:0;border:0;border-radius:0;background:transparent;
+}
+body.is-language-classical #classical-workbench #classical-authority-panel [data-unified-stem-inline] {
+  margin:0;padding:0;border:0!important;background:transparent;
+}
+body.is-language-classical #classical-workbench #classical-authority-panel [data-unified-stem-inline] > summary {display:none!important}
+body.is-language-classical #classical-workbench #classical-authority-panel [data-unified-stem-inline] > :is([data-classical-vnc-authority-disclosure="verbstem"],[data-classical-nnc-grammar-section="nounstem"]) {
+  padding:0;margin-top:12px;border:0;background:transparent;
+}
+@media(max-width:600px){body.is-language-classical #classical-workbench #classical-authority-panel [data-unified-stem-combined]{padding:10px}}
+/* A conversion may retain both collectors for recovery. Only the current
+   surface unit supplies the public nuclear-clause formula. */
+body.is-language-classical #classical-workbench #classical-rule-logic-controls[data-classical-rule-logic-surface-unit="vnc"] .classical-nnc-grammar-organizer,
+body.is-language-classical #classical-workbench #classical-rule-logic-controls[data-classical-rule-logic-surface-unit="nnc"] .classical-vnc-authority-organizer {display:none!important}
+
+
+/* Icons follow the semantic subgroup even inside a joint native collector. */
+body.is-language-classical #classical-workbench #classical-authority-panel :is([data-choices-native-heading="subject"],[data-choices-native-heading="result-subject"]) {--build-category-icon:var(--build-subject-icon)}
+body.is-language-classical #classical-workbench #classical-authority-panel [data-choices-native-heading="reference"] {--build-category-icon:var(--build-participants-icon)}
+body.is-language-classical #classical-workbench #classical-authority-panel [data-choices-native-heading="state"] {--build-category-icon:var(--build-possession-icon)}
+body.is-language-classical #classical-workbench #classical-authority-panel [data-choices-native-heading="valence"] {--build-category-icon:var(--build-objects-icon)}
+body.is-language-classical #classical-workbench #classical-authority-panel :is([data-choices-native-heading="stem"],[data-choices-native-heading="nounstem"],[data-choices-native-heading="construction"],[data-choices-native-heading="reduplication"]) {--build-category-icon:var(--build-formation-icon)}
+body.is-language-classical #classical-workbench #classical-authority-panel [data-choices-native-heading="tense"] {--build-category-icon:var(--build-tense-icon)}
+body.is-language-classical #classical-workbench #classical-authority-panel [data-choices-native-heading="direction"] {--build-category-icon:var(--build-link-icon)}
+body.is-language-classical #classical-workbench #classical-authority-panel [data-choices-native-heading="sentence"] {--build-category-icon:var(--build-clause-icon)}
+body.is-language-classical #classical-workbench #classical-authority-panel label:has([id$="-connector"]) {--build-category-icon:var(--build-number-icon)}
+body.is-language-classical #classical-workbench #classical-authority-panel label:has([data-classical-capability-choice-id="possessorReduplication"]) {--build-category-icon:var(--build-possession-icon)}

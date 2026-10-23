@@ -1,3 +1,4 @@
+import {ownerChoiceHost} from './owner_choice_roots.mjs?v=20261023-core-1';
 // Presentation keeps exact references only to scope the draft. They cannot
 // authorize grammar; native controls and their existing handlers do that work.
 const contexts=new WeakMap(), appliedRoutes=new WeakMap(), appliedReaders=new WeakMap();
@@ -63,7 +64,7 @@ function grammarControls(doc) {
   const writing=getWritingSourcePresentation(doc);
   const controls=[...doc.querySelectorAll(fieldsSelector)].filter(control=>
     (!writing || writing.choiceIds.has(control.dataset.classicalCapabilityChoiceId)
-      && control.closest('#classical-capability-operation-choices'))
+      && ownerChoiceHost(control,doc))
     && !control.closest('[hidden], [data-composition-duplicate-control], [data-composition-target-subject-agreement], [data-composition-native-choice-mirror], [data-classical-source-identity-controls], #classical-capability-navigator, #classical-capability-required-result-field')
     && !control.hasAttribute('data-classical-choice-group')
     // Compact menus forward to this exact owner control. Make recreates it
@@ -71,7 +72,7 @@ function grammarControls(doc) {
     && (!control.hasAttribute('data-classical-compact-choice-original')
       || Boolean(control.dataset.classicalClauseRelationDecision)
       || (control.dataset.classicalCapabilityOwnerProjection==='exact-binding'
-        && control.closest('#classical-capability-operation-choices')))
+        && ownerChoiceHost(control,doc)))
     && control.id!=='classical-built-in-particle-choices'
     && !/output-scope|classical-construction-operation|source-|filter|search|example/u.test(control.id)
     && ['SELECT','INPUT'].includes(control.tagName));

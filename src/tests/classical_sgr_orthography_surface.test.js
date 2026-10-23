@@ -142,9 +142,7 @@ function createProbeElement(tagName = "div") {
 function collectProbeNodes(root, predicate, output = []) {
     if (!root || typeof root !== "object") return output;
     if (predicate(root)) output.push(root);
-    (root.children || []).forEach(child => (
-        collectProbeNodes(child, predicate, output)
-    ));
+    (root.children || []).forEach(child => collectProbeNodes(child, predicate, output));
     return output;
 }
 
@@ -174,9 +172,6 @@ function run(ctx = {}) {
     const suite = createSuite("classical_sgr_orthography_surface");
     const shell = read("src/ui/shell/classical_shell.mjs");
     const rendering = read("src/ui/rendering/rendering.mjs");
-    const application = read(
-        "src/application/classical/grammar_application.mjs"
-    );
 
     suite.eq(
         "orthography has no generic Grammar facts host or renderer projection",
@@ -197,7 +192,7 @@ function run(ctx = {}) {
     );
 
     suite.eq(
-        "the sound keyboard uses the real Stem fields without a second Source",
+        "long-vowel helpers use the real Stem fields without a separate Writing Source",
         {
             secondSource: countLiteral(
                 shell,
@@ -231,7 +226,7 @@ function run(ctx = {}) {
     );
 
     suite.eq(
-        "the optional sound keyboard is owner-filtered and never limits typed input",
+        "the four long-vowel helpers are owner-filtered and never limit typed input",
         {
             keyboard: countLiteral(
                 shell,
@@ -240,31 +235,13 @@ function run(ctx = {}) {
             unnecessaryHeadingRemoved:
                 !shell.includes("classical-transcription-keyboard__title")
                 && !shell.includes("Click a sound to type it directly"),
-            vowelsExpanded:
-                shell.includes(
-                    '<details class="classical-transcription-keyboard__group" open>\n'
-                    + '                          <summary class="classical-transcription-keyboard__summary">Vowels</summary>'
-                ),
-            consonantsCollapsed:
-                shell.includes(
-                    '<details class="classical-transcription-keyboard__group">\n'
-                    + '                          <summary class="classical-transcription-keyboard__summary">Consonants</summary>'
-                ),
-            vowelKeys: Object.keys(
-                ctx.CLASSICAL_NAHUATL_TRANSCRIPTION_VOWEL_CARRIERS || {}
-            ).length,
-            consonantKeys: Object.keys(
-                ctx.CLASSICAL_NAHUATL_TRANSCRIPTION_CONSONANT_CARRIERS || {}
-            ).length,
-            ownerFiltered:
-                shell.includes(
-                    "CLASSICAL_NAHUATL_TRANSCRIPTION_VOWEL_CARRIERS"
-                )
-                && shell.includes(
-                    "CLASSICAL_NAHUATL_TRANSCRIPTION_CONSONANT_CARRIERS"
-                )
-                && shell.includes("ownerVowels.has(token)")
-                && shell.includes("ownerConsonants.has(token)"),
+            longVowelGroup: shell.includes('role="group" aria-label="Long vowels"'),
+            noSoundAlphabet: !shell.includes('id="classical-transcription-keyboard-consonants"')
+                && !shell.includes('>Sound keyboard<'),
+            availableLongVowels: ["ā", "ē", "ī", "ō"].filter(token => Object.hasOwn(
+                ctx.CLASSICAL_NAHUATL_TRANSCRIPTION_VOWEL_CARRIERS || {}, token
+            )).length,
+            ownerFiltered: shell.includes("ownerVowels.has(token)"),
             insertsAtCaret:
                 shell.includes("input.selectionStart")
                 && shell.includes("input.selectionEnd")
@@ -281,10 +258,9 @@ function run(ctx = {}) {
         {
             keyboard: 1,
             unnecessaryHeadingRemoved: true,
-            vowelsExpanded: true,
-            consonantsCollapsed: true,
-            vowelKeys: 8,
-            consonantKeys: 15,
+            longVowelGroup: true,
+            noSoundAlphabet: true,
+            availableLongVowels: 4,
             ownerFiltered: true,
             insertsAtCaret: true,
             typingRemainsOpen: true,
@@ -296,7 +272,7 @@ function run(ctx = {}) {
             "i/kʷ//s/i"
         );
     suite.eq(
-        "the compact sound keyboard source reaches the Lesson 2 written Result",
+        "an internal compact sound sequence still reaches the canonical written Result",
         {
             status: compactSoundResult?.authorizationStatus,
             formula: compactSoundResult?.formula,
@@ -312,12 +288,18 @@ function run(ctx = {}) {
             typedFrame: true,
         }
     );
+    // Resolve the typed compound boundary through its owner before entering VNC.
+    // A raw hyphenated string is not an owner-issued written Source.
+    const compoundWritten = ctx.writeClassicalNahuatlLesson2Result(
+        ctx.issueClassicalNahuatlLesson2WritingSource({
+            parts: [{role: "embed", value: "tenam"}, {role: "matrix", value: "ca"}],
+            boundaryKind: "compound",
+        })
+    );
     const compoundVncResult = ctx.executeClassicalGrammarApplicationRequest?.({
         operationId: "vnc:application",
         args: [{
-            sourceStem: "tenam-ca",
-            sourceEmbedStem: "tenam",
-            sourceMatrixStem: "ca",
+            sourceStem: compoundWritten.surface,
             verbClass: "A",
             sourceValence: "intransitive",
             subject: "1sg",
@@ -329,7 +311,7 @@ function run(ctx = {}) {
         }],
     });
     suite.eq(
-        "VNC Embed plus Matrix is written by Lesson 2 before the normal Result",
+        "owner-written Embed plus Matrix enters the normal VNC Result",
         {
             status: compoundVncResult?.authorizationStatus,
             writtenStem:
@@ -397,8 +379,7 @@ function run(ctx = {}) {
 
     const keyboard = createProbeElement("div");
     const vowelKeys = createProbeElement("div");
-    const consonantKeys = createProbeElement("div");
-    keyboard.append(vowelKeys, consonantKeys);
+    keyboard.append(vowelKeys);
     const sourceParts = createProbeElement("div");
     sourceParts.dataset.classicalSourcePartsMode = "whole-stem";
     const wholeInput = createProbeElement("input");
@@ -427,7 +408,6 @@ function run(ctx = {}) {
         new Map([
             ["classical-transcription-keyboard", keyboard],
             ["classical-transcription-keyboard-vowels", vowelKeys],
-            ["classical-transcription-keyboard-consonants", consonantKeys],
             ["classical-source-parts", sourceParts],
             ["classical-source-whole", wholeInput],
             ["classical-source-embed", embedInput],
@@ -443,18 +423,18 @@ function run(ctx = {}) {
             });
             sourceParts.dataset.classicalSourcePartsMode = "embed-matrix";
             embedMatrixMode.dispatchEvent({ type: "click" });
-            const tlaKey = consonantKeys.children.find(
-                key => key.textContent === "/λ/"
+            const longOKey = vowelKeys.children.find(
+                key => key.textContent === "ō"
             );
             keyboard.dispatchEvent({
                 type: "click",
-                target: tlaKey,
+                target: longOKey,
                 preventDefault() {},
             });
             matrixInput.dispatchEvent({ type: "focus" });
             keyboard.dispatchEvent({
                 type: "click",
-                target: tlaKey,
+                target: longOKey,
                 preventDefault() {},
             });
             return {
@@ -473,63 +453,13 @@ function run(ctx = {}) {
         {
             installed: true,
             whole: "caā",
-            embed: "/λ/",
-            matrix: "ti/λ/",
+            embed: "ō",
+            matrix: "tiō",
             target: "classical-source-matrix",
             state: "pending",
         }
     );
 
-    const applySlice = functionSlice(
-        rendering,
-        "applyClassicalTranscriptionSource",
-        "renderClassicalRuleLogicSurfaceBlock"
-    );
-    suite.eq(
-        "the renderer admits owner tokens and executes the canonical orthography application",
-        {
-            publicApi:
-                typeof ctx.applyClassicalTranscriptionSource === "function"
-                && /api\.applyClassicalTranscriptionSource\s*=\s*applyClassicalTranscriptionSource/gu
-                    .test(rendering),
-            applicationOwnsSourceConstruction:
-                typeof ctx.issueClassicalTranscriptionSourceFrame ===
-                    "function"
-                && application.includes(
-                    '"buildClassicalNahuatlTranscriptionSourceFrame"'
-                ),
-            rendererPassesParsedConstituents:
-                applySlice.includes(
-                    "issueClassicalTranscriptionSourceFrame"
-                ),
-            rendererCallsNoGrammarConstructor:
-                !applySlice.includes(
-                    "buildClassicalNahuatlTranscriptionSourceFrame"
-                ),
-            canonicalApplication:
-                applySlice.includes(
-                    "executeClassicalGrammarApplicationRequest"
-                )
-                && applySlice.includes('operationId: "orthography:transcription"'),
-            noDirectResultConstruction:
-                !applySlice.includes("buildClassicalNahuatlTranscriptionFrame"),
-            noDisplayCarrierAuthority:
-                !applySlice.includes("formulaStringAuthority: true")
-                && !applySlice.includes("surfaceStringAuthority: true")
-                && !applySlice.includes("displayTextAuthority: true"),
-        },
-        {
-            publicApi: true,
-            applicationOwnsSourceConstruction: true,
-            rendererPassesParsedConstituents: true,
-            rendererCallsNoGrammarConstructor: true,
-            canonicalApplication: true,
-            noDirectResultConstruction: true,
-            noDisplayCarrierAuthority: true,
-        }
-    );
-
-    const resultRoot = createProbeElement("section");
     const canonicalSource =
         ctx.issueClassicalTranscriptionSourceFrame([
             { segments: ["/k/", "a", "/l/"] },
@@ -540,363 +470,33 @@ function run(ctx = {}) {
             args: [canonicalSource],
         });
     const canonicalResult = canonicalApplication.canonicalResult;
-    const synchronized = withProbeDocument(
-        ctx,
-        new Map(),
-        () => ctx.syncClassicalSourceGrammarResultSurface(
-            canonicalResult,
-            resultRoot
-        )
-    );
-    const canonicalOwnerProjection =
-        ctx.getClassicalSgrOwnerIssuedProjection(canonicalResult);
+    const canonicalOwnerProjection = ctx.getClassicalSgrOwnerIssuedProjection(canonicalResult);
     const inventory = ctx.getClassicalSourceGrammarResultSurfaceInventory();
-    const orthographyAxes = inventory.axes.filter(atom => (
-        atom.operationId === "orthography:transcription"
-    ));
-    const analysisSections = collectProbeNodes(
-        resultRoot,
-        node => Boolean(node.dataset?.classicalOutputContractId)
-    );
-    const analysisLines = collectProbeNodes(
-        resultRoot,
-        node => String(node.className || "").split(/\s+/u)
-            .includes("grammar-inspector__line")
-    );
-    suite.eq(
-        "the exact canonical orthography Result keeps three axes private and projects one Result analysis",
-        {
-            synchronized,
-            canonicalApplicationIssued:
-                ctx.isClassicalGrammarApplicationResult(
-                    canonicalApplication
-                ),
-            canonicalIdentity:
-                canonicalApplication.canonicalResult === canonicalResult
-                && canonicalOwnerProjection?.applicationResult
-                    === canonicalApplication
-                && canonicalOwnerProjection?.canonicalResult
-                    === canonicalResult,
-            canonicalResultIssued:
-                ctx.isClassicalNahuatlTranscriptionFrame(
-                    canonicalResult
-                ),
-            canonicalKind: canonicalResult.kind,
-            canonicalAuthorizationStatus:
-                canonicalResult.authorizationStatus,
-            sourceIdentity:
-                canonicalResult.sourceFrame === canonicalSource,
-            formulaProjectionMatches:
-                canonicalResult.formulaProjection?.formula
-                    === canonicalResult.formula,
-            writtenProjectionMatches:
-                canonicalResult.writtenProjection?.surface
-                    === canonicalResult.surface,
-            independentProjections:
-                canonicalResult.formulaProjection
-                    ?.derivedFromWrittenProjection === false
-                && canonicalResult.writtenProjection
-                    ?.derivedFromFormulaProjection === false,
-            privateAxes: orthographyAxes.map(atom => ({
-                atomId: atom.atomId,
-                disposition: atom.disposition,
-                public: atom.binding?.public,
-                proofBoundary: atom.proof?.boundary,
-            })).sort((left, right) => left.atomId.localeCompare(right.atomId)),
-            outputContractIds:
-                resultRoot.dataset.classicalOutputContractIds,
-            resultAuthority:
-                resultRoot.dataset.classicalSgrResultAuthority,
-            analysis: analysisSections.map(section => ({
-                atomId: section.dataset.classicalOutputContractId,
-                operationId: section.dataset.classicalAnalysisOperationId,
-                resultKind: section.dataset.classicalAnalysisResultKind,
-                authorizationStatus:
-                    section.dataset.classicalAnalysisAuthorizationStatus,
-                ownerIssued: section.dataset.classicalAnalysisOwnerIssued,
-                grammarAuthority:
-                    section.dataset.classicalGrammarAuthority,
-            })),
-            analysisLabels: analysisLines.map(
-                line => line.dataset.lineLabel
-            ),
-            analysisValues: analysisLines.map(
-                line => line.children[1]?.textContent
-            ),
-        },
-        {
-            synchronized: true,
-            canonicalApplicationIssued: true,
-            canonicalIdentity: true,
-            canonicalResultIssued: true,
-            canonicalKind: "classical-nahuatl-transcription-frame",
-            canonicalAuthorizationStatus: "authorized",
-            sourceIdentity: true,
-            formulaProjectionMatches: true,
-            writtenProjectionMatches: true,
-            independentProjections: true,
-            privateAxes: [
-                {
-                    atomId:
-                        "CAA-orthography-transcription--orthographic-realization",
-                    disposition: "intentionally-unsurfaced",
-                    public: false,
-                    proofBoundary: "private",
-                },
-                {
-                    atomId:
-                        "CAA-orthography-transcription--phonological-boundary",
-                    disposition: "intentionally-unsurfaced",
-                    public: false,
-                    proofBoundary: "private",
-                },
-                {
-                    atomId:
-                        "CAA-orthography-transcription--transcription-source",
-                    disposition: "intentionally-unsurfaced",
-                    public: false,
-                    proofBoundary: "private",
-                },
-            ],
-            outputContractIds: "CAO-orthography-transcription--scalar",
-            resultAuthority: "canonical-only",
-            analysis: [{
-                atomId: "CAO-orthography-transcription--scalar",
-                operationId: "orthography:transcription",
-                resultKind: "classical-nahuatl-transcription-frame",
-                authorizationStatus: "authorized",
-                ownerIssued: "true",
-                grammarAuthority: "false",
-            }],
-            analysisLabels: [
-                "stem sounds",
-                "contextual realization",
-                "boundary realization",
-            ],
-            analysisValues: [
-                canonicalResult.formula,
-                ctx.formatClassicalClauseRelationValue(
-                    canonicalResult.surface
-                ),
-                ctx.formatClassicalClauseRelationValue("contextual"),
-            ],
-        }
-    );
+    const orthographyAxes = inventory.axes.filter(atom => atom.operationId === "orthography:transcription");
+    suite.eq("internal orthography retains exact canonical identity and private axes", {
+        applicationIssued: ctx.isClassicalGrammarApplicationResult(canonicalApplication),
+        resultIssued: ctx.isClassicalNahuatlTranscriptionFrame(canonicalResult),
+        exactApplication: canonicalOwnerProjection?.applicationResult === canonicalApplication,
+        exactResult: canonicalOwnerProjection?.canonicalResult === canonicalResult,
+        sourceIdentity: canonicalResult.sourceFrame === canonicalSource,
+        formulaProjection: canonicalResult.formulaProjection?.formula === canonicalResult.formula,
+        writtenProjection: canonicalResult.writtenProjection?.surface === canonicalResult.surface,
+        distinctProjections: canonicalResult.formulaProjection !== canonicalResult.writtenProjection
+            && canonicalResult.formulaProjection?.derivedFromWrittenProjection === false
+            && canonicalResult.writtenProjection?.derivedFromFormulaProjection === false,
+        privateAxes: orthographyAxes.map(atom => ({atomId: atom.atomId, disposition: atom.disposition, public: atom.binding?.public, proofBoundary: atom.proof?.boundary})).sort((a,b)=>a.atomId.localeCompare(b.atomId)),
+    }, {
+        applicationIssued: true, resultIssued: true, exactApplication: true, exactResult: true,
+        sourceIdentity: true, formulaProjection: true, writtenProjection: true, distinctProjections: true,
+        privateAxes: ["orthographic-realization", "phonological-boundary", "transcription-source"].map(name=>({atomId: `CAA-orthography-transcription--${name}`, disposition: "intentionally-unsurfaced", public: false, proofBoundary: "private"})),
+    });
+    suite.eq("copied internal orthography Source cannot authorize a result", {
+        copiedSourceIssued: ctx.isClassicalNahuatlTranscriptionSourceFrame({...canonicalSource}),
+        applicationStatus: ctx.executeClassicalGrammarApplicationRequest({operationId: "orthography:transcription", args: [{...canonicalSource}]}).authorizationStatus,
+    }, {copiedSourceIssued: false, applicationStatus: "blocked"});
 
-    const sourceRoot = createProbeElement("details");
-    const sourceInput = createProbeElement("input");
-    const sourceStatus = createProbeElement("p");
-    const authorityPanel = createProbeElement("section");
-    const grammarContinuation = createProbeElement("section");
-    const routeResultRoot = createProbeElement("section");
-    const routeProbe = withProbeDocument(
-        ctx,
-        new Map([
-            ["classical-transcription-source", sourceRoot],
-            ["classical-transcription-source-input", sourceInput],
-            ["classical-transcription-source-status", sourceStatus],
-            ["classical-authority-panel", authorityPanel],
-            ["classical-grammar-continuation", grammarContinuation],
-            ["classical-rule-logic-surface", routeResultRoot],
-        ]),
-        () => {
-            const valid = ctx.applyClassicalTranscriptionSource(
-                "/k/ a /l/"
-            );
-            const validSnapshot = {
-                sourceState:
-                    sourceRoot.dataset.classicalSourceCommitState,
-                committedSource:
-                    sourceRoot.dataset.classicalCommittedSource,
-                sourceActive:
-                    sourceRoot.dataset.classicalSourceActive,
-                ownerTokensOnly:
-                    sourceInput.dataset.classicalOwnerTokensOnly,
-                inputInvalid: sourceInput.getAttribute("aria-invalid"),
-                sourceStatus: sourceStatus.textContent,
-                resultChildren: routeResultRoot.children.slice(),
-            };
-            const hostileDisplayString =
-                ctx.applyClassicalTranscriptionSource("cal");
-            const hostileSnapshot = {
-                sourceState:
-                    sourceRoot.dataset.classicalSourceCommitState,
-                committedSource:
-                    sourceRoot.dataset.classicalCommittedSource,
-                blockReason:
-                    sourceRoot.dataset.classicalBlockReason,
-                ownerTokensOnly:
-                    sourceInput.dataset.classicalOwnerTokensOnly,
-                inputInvalid: sourceInput.getAttribute("aria-invalid"),
-                resultPreserved:
-                    routeResultRoot.children.length
-                        === validSnapshot.resultChildren.length
-                    && routeResultRoot.children.every(
-                        (node, index) => (
-                            node === validSnapshot.resultChildren[index]
-                        )
-                    ),
-            };
-            const empty = ctx.applyClassicalTranscriptionSource("");
-            return {
-                valid,
-                validSnapshot,
-                hostileDisplayString,
-                hostileSnapshot,
-                empty,
-                emptySnapshot: {
-                    committedSource:
-                        sourceRoot.dataset.classicalCommittedSource,
-                    blockReason:
-                        sourceRoot.dataset.classicalBlockReason,
-                    resultPreserved:
-                        routeResultRoot.children.length
-                            === validSnapshot.resultChildren.length
-                        && routeResultRoot.children.every(
-                            (node, index) => (
-                                node === validSnapshot.resultChildren[index]
-                            )
-                        ),
-                },
-            };
-        }
-    );
-    const routeAnswer = collectProbeNodes(
-        routeResultRoot,
-        node => node.dataset?.classicalTranscriptionSurface
-            === "canonical-result"
-    )[0] || null;
-    const routePrimaryAnswer = collectProbeNodes(
-        routeResultRoot,
-        node => node.dataset?.classicalResultPrimaryAnswer === "true"
-    )[0] || null;
-    const routeAnalysis = collectProbeNodes(
-        routeResultRoot,
-        node => node.dataset?.classicalSgrOutputAnalysis === "true"
-    )[0] || null;
-    const routeAnalysisSection = collectProbeNodes(
-        routeResultRoot,
-        node => node.dataset?.classicalOutputContractId
-            === "CAO-orthography-transcription--scalar"
-    )[0] || null;
-    const routeAnalysisLines = collectProbeNodes(
-        routeAnalysisSection,
-        node => String(node.className || "").split(/\s+/u)
-            .includes("grammar-inspector__line")
-    );
-    suite.eq(
-        "the public Source route returns the exact canonical Result and keeps answer before analysis",
-        {
-            resultIssued: ctx.isClassicalGrammarApplicationResult(
-                routeProbe.valid
-            ),
-            operationId: routeProbe.valid?.operationId,
-            outputKind: routeProbe.valid?.outputKind,
-            canonicalKind: routeProbe.valid?.canonicalResult?.kind,
-            canonicalSurface: routeProbe.valid?.canonicalResult?.surface,
-            sourceKind:
-                routeProbe.valid?.canonicalResult?.sourceFrame?.kind,
-            sourceSegments:
-                routeProbe.valid?.canonicalResult?.sourceFrame
-                    ?.constituents?.map(constituent => constituent.segments),
-            committed: {
-                sourceState:
-                    routeProbe.validSnapshot.sourceState,
-                committedSource:
-                    routeProbe.validSnapshot.committedSource,
-                sourceActive:
-                    routeProbe.validSnapshot.sourceActive,
-                ownerTokensOnly:
-                    routeProbe.validSnapshot.ownerTokensOnly,
-                inputInvalid:
-                    routeProbe.validSnapshot.inputInvalid,
-                sourceStatus:
-                    routeProbe.validSnapshot.sourceStatus,
-            },
-            resultOperation:
-                routeResultRoot.dataset.classicalSgrStandaloneOperation,
-            resultAuthority:
-                routeResultRoot.dataset.classicalSgrResultAuthority,
-            outputContractIds:
-                routeResultRoot.dataset.classicalOutputContractIds,
-            answer: routeAnswer?.textContent,
-            primaryAnswer: Boolean(routePrimaryAnswer),
-            analysisOpen: routeAnalysis?.open === true,
-            answerBeforeAnalysis:
-                routeResultRoot.children.indexOf(routePrimaryAnswer)
-                    < routeResultRoot.children.indexOf(routeAnalysis),
-            analysis: {
-                atomId:
-                    routeAnalysisSection?.dataset.classicalOutputContractId,
-                disposition:
-                    routeAnalysisSection?.dataset.classicalOutputDisposition,
-                operationId:
-                    routeAnalysisSection?.dataset
-                        .classicalAnalysisOperationId,
-                resultKind:
-                    routeAnalysisSection?.dataset.classicalAnalysisResultKind,
-                authorizationStatus:
-                    routeAnalysisSection?.dataset
-                        .classicalAnalysisAuthorizationStatus,
-                ownerIssued:
-                    routeAnalysisSection?.dataset.classicalAnalysisOwnerIssued,
-                grammarAuthority:
-                    routeAnalysisSection?.dataset.classicalGrammarAuthority,
-                labels: routeAnalysisLines.map(
-                    line => line.dataset.lineLabel
-                ),
-                values: routeAnalysisLines.map(
-                    line => line.children[1]?.textContent
-                ),
-            },
-        },
-        {
-            resultIssued: true,
-            operationId: "orthography:transcription",
-            outputKind: "scalar",
-            canonicalKind: "classical-nahuatl-transcription-frame",
-            canonicalSurface: "cal",
-            sourceKind: "classical-nahuatl-transcription-source-frame",
-            sourceSegments: [["/k/", "a", "/l/"]],
-            committed: {
-                sourceState: "committed",
-                committedSource: "/k/ a /l/",
-                sourceActive: "true",
-                ownerTokensOnly: "true",
-                inputInvalid: "false",
-                sourceStatus:
-                    "/k/ a /l/ is the sound structure now used by Grammar and Result.",
-            },
-            resultOperation: "orthography:transcription",
-            resultAuthority: "canonical-only",
-            outputContractIds: "CAO-orthography-transcription--scalar",
-            answer: "cal",
-            primaryAnswer: true,
-            analysisOpen: true,
-            answerBeforeAnalysis: true,
-            analysis: {
-                atomId: "CAO-orthography-transcription--scalar",
-                disposition: "analysis-readout",
-                operationId: "orthography:transcription",
-                resultKind: "classical-nahuatl-transcription-frame",
-                authorizationStatus: "authorized",
-                ownerIssued: "true",
-                grammarAuthority: "false",
-                labels: [
-                    "stem sounds",
-                    "contextual realization",
-                    "boundary realization",
-                ],
-                values: [
-                    routeProbe.valid.canonicalResult.formula,
-                    ctx.formatClassicalClauseRelationValue(
-                        routeProbe.valid.canonicalResult.surface
-                    ),
-                    ctx.formatClassicalClauseRelationValue("contextual"),
-                ],
-            },
-        }
-    );
+    // No public Writing Source lane remains. Source staging/field insertion is
+    // covered by long_vowel_input.test.mjs; canonical spelling stays below.
     suite.eq(
         "Lesson 2 writes the whole sound sequence and the same Embed plus Matrix boundary as iucci",
         (() => {
@@ -941,35 +541,6 @@ function run(ctx = {}) {
             },
         }
     );
-    suite.eq(
-        "empty, visible-result, and unknown-token input cannot replace the committed Result",
-        {
-            visibleStringRejected:
-                routeProbe.hostileDisplayString === null,
-            visibleStringState: routeProbe.hostileSnapshot,
-            emptyRejected: routeProbe.empty === null,
-            emptyState: routeProbe.emptySnapshot,
-        },
-        {
-            visibleStringRejected: true,
-            visibleStringState: {
-                sourceState: "invalid",
-                committedSource: "/k/ a /l/",
-                blockReason: "classical-transcription-segment-not-licensed",
-                ownerTokensOnly: "false",
-                inputInvalid: "true",
-                resultPreserved: true,
-            },
-            emptyRejected: true,
-            emptyState: {
-                committedSource: "/k/ a /l/",
-                blockReason:
-                    "classical-transcription-typed-constituents-required",
-                resultPreserved: true,
-            },
-        }
-    );
-
     return suite;
 }
 

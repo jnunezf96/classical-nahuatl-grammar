@@ -1,0 +1,472 @@
+/* Whole-workbench proportion and rhythm. Presentation only: native controls,
+   owner availability, Andrews containment and explicit Make remain intact. */
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] {
+  --composition-whole-line: #dce5dc;
+  --composition-whole-muted: #52665b;
+  max-width: 1360px !important;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] .panel-grid {
+  grid-template-columns: minmax(0, 1.45fr) minmax(360px, 1fr) !important;
+  gap: 24px !important;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] :is(#classical-source-panel, #classical-authority-panel, #classical-result-panel) {
+  padding: 22px !important;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] :is(#classical-source-panel, #classical-authority-panel, #classical-result-panel) .panel-block-title {
+  margin: 0 0 12px !important;
+}
+
+/* One stable action band, with no empty echo of the Source navigation label. */
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] .classical-four-panel-navigation {
+  margin: 8px 0 20px !important;
+  padding: 8px 0 !important;
+  gap: 6px !important;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #composition-current-flow {
+  padding: 0 !important;
+  border: 0 !important;
+  gap: 8px !important;
+  justify-content: flex-end;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] .composition-current-source:not(:has([data-composition-current-source]:not(:empty))) {
+  display: none !important;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-source-commit-status {
+  flex-direction: row !important;
+  align-items: baseline !important;
+  flex-wrap: wrap;
+  gap: 8px 12px !important;
+  padding: 10px 12px !important;
+  margin: 0 0 8px !important;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-source-commit-status .classical-source-commit-status__text {
+  font-size: 16px !important;
+  line-height: 1.5 !important;
+  overflow-wrap: anywhere;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-source-commit-status .classical-source-commit-status__badge {
+  flex: none;
+}
+
+/* Build supplies the heading. Operation and its status introduce the choices;
+   inventory-labelled presentation headings stay in the DOM for their references. */
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-authority-panel #classical-capability-operation-plan {
+  position: relative;
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 12px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] :is(#classical-capability-operation-plan-heading, #classical-build-choices-heading) {
+  display: none !important;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-authority-panel #classical-capability-operation-plan > .composition-route-status {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-end: 0;
+  display: inline-flex;
+  align-items: center;
+  max-width: 45%;
+  padding: 2px 8px !important;
+  border: 0;
+  border-radius: 12px;
+  background: #eef3ec;
+  color: #52665b;
+  font-size: 12px;
+  line-height: 1.5;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-authority-panel #classical-capability-navigator-field > .classical-rule-control__label {
+  padding-inline-end: 110px;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-capability-operation-plan:is([data-classical-capability-operation-plan-status="ready"], [data-classical-capability-operation-plan-status="applied"]) #classical-capability-navigator-status {
+  display: none !important;
+}
+
+/* Visual weight follows linguistic rank, with one Predicate enclosure and a
+   lighter Core guide. The nested Stem needs no competing card of its own. */
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-authority-panel [data-build-formula] .composition-slot-pattern {
+  margin: 8px 0 16px;
+  padding: 12px 14px;
+  border: 0;
+  border-radius: 8px;
+  background: #f1f5ee;
+  color: #405a4c;
+  font-size: 14px;
+  line-height: 1.7;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-authority-panel [data-build-formula-part="predicate"] {
+  margin: 16px 0;
+  padding: 16px;
+  border: 1px solid var(--composition-whole-line);
+  border-radius: 10px;
+  background: #f9fbf7;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-authority-panel [data-build-formula-part="core"] {
+  margin: 12px 0 0;
+  padding-inline-start: 12px;
+  border-inline-start: 2px solid #cbd9cd;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-authority-panel [data-build-unified-stem] {
+  margin: 8px 0 0;
+  padding: 12px 0 0;
+  border: 0;
+  border-top: 1px solid var(--composition-whole-line);
+  border-radius: 0;
+  background: transparent;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-authority-panel :is([data-build-owner-slot="stem"], [data-build-owner-slot="nounstem"]) {
+  border: 0;
+  padding: 0 0 12px;
+  border-radius: 0;
+  background: transparent;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-authority-panel .composition-formula-slot__heading {
+  gap: 8px;
+  line-height: 1.5;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-authority-panel .composition-formula-slot__relation {
+  color: var(--composition-whole-muted);
+}
+@container grammar-panel (min-width: 560px) {
+  body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-authority-panel #classical-rule-logic-controls [data-classical-vnc-authority-stage="subject"] {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 14px 16px !important;
+  }
+  body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-authority-panel #classical-rule-logic-controls [data-classical-vnc-authority-stage="subject"] > .classical-rule-control {
+    grid-column: auto !important;
+  }
+}
+
+/* A single flowing Result: the written sentence leads, editing follows it.
+   Removing the old two-column card grid also removes its empty action track. */
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-result-panel #classical-rule-logic-surface :is(.classical-rule-surface__body:has(.classical-result-continuation-card), .classical-rule-surface__answer) {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-result-panel .classical-result-continuation-card {
+  display: flex !important;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+  padding: 0 !important;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-result-panel .classical-result-continuation-card__content {
+  align-self: stretch;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0;
+  font-size: clamp(24px, 2.1vw, 30px) !important;
+  line-height: 1.45 !important;
+  letter-spacing: -.35px;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-result-panel #classical-result-editing {
+  margin: 0;
+  padding-top: 16px;
+  gap: 8px;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-result-panel #classical-result-editing h3 {
+  padding: 0;
+  border: 0;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-result-panel #classical-result-editing .composition-result-workspace-heading {
+  margin: 0;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-result-panel .composition-fact-chips {
+  gap: 4px;
+  margin: 0;
+  font-size: 12px;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-result-panel .composition-result-tools {
+  margin-top: 8px !important;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-result-panel .composition-result-information {
+  margin-top: 8px !important;
+}
+
+/* Whole-page containment, not a clipped or separately scrolling Build pane. */
+@media (max-width: 900px) {
+  body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] .panel-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 16px !important;
+  }
+}
+@media (max-width: 640px) {
+  body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] :is(#classical-source-panel, #classical-authority-panel, #classical-result-panel) {
+    padding: 16px !important;
+  }
+  body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] .classical-four-panel-navigation {
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] .classical-four-panel-navigation > button {
+    padding-inline: 6px !important;
+    gap: 6px;
+  }
+  body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #composition-current-flow {
+    grid-column: 1 / -1;
+    display: flex !important;
+    flex-wrap: wrap;
+  }
+  body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-authority-panel [data-build-formula-part="predicate"] {
+    padding: 10px;
+  }
+  body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-authority-panel [data-build-formula-part="core"] {
+    padding-inline-start: 8px;
+  }
+  body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-authority-panel .composition-slot-pattern {
+    padding: 10px;
+    font-size: 13px;
+  }
+}
+
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-result-panel .composition-result-continuation {
+  margin: 0;
+}
+
+/* Build reads as one grammatical composition: the clause's two main parts,
+   then the sentence around it. Field detail stays quieter than those parts. */
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-authority-panel [data-build-formula-part="subject"] {
+  margin: 0 0 18px;
+  padding: 0 0 16px;
+  border-bottom: 1px solid var(--composition-whole-line);
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-authority-panel [data-build-formula-part="subject"] > .composition-disclosure > summary {
+  padding-top: 0 !important;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-authority-panel [data-build-owner-slot="reference"] {
+  margin: 12px 0 0;
+  padding: 12px 0 0;
+  border-top: 1px solid #e8ede5;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-authority-panel :is([data-build-formula-part="subject"], [data-build-formula-part="predicate"]) :is(.classical-capability-operation-plan__choice-label,.classical-rule-control__label,.classical-whole-canvas-choice__label) {
+  font-size: 13px !important;
+  font-weight: 600;
+  color: var(--composition-whole-muted);
+  margin-bottom: 6px !important;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-authority-panel [data-build-formula-part="predicate"] > .composition-formula-slot__heading {
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-authority-panel [data-build-unified-stem] > [data-build-owner-slot] > .composition-formula-slot__heading {
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-authority-panel [data-workspace-sentence-choices] {
+  margin-block: 20px 8px !important;
+  padding-block: 8px !important;
+  border-block: 1px solid var(--composition-whole-line) !important;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-authority-panel [data-workspace-sentence-choices] > summary {
+  font-weight: 600;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-authority-panel [data-workspace-sentence-choices] > :is([data-build-owner-slot],.classical-rule-control) {
+  margin-top: 12px;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-authority-panel :is([data-build-owner-slot="state"],[data-build-owner-slot="stem"],[data-build-owner-slot="nounstem"]) {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 14px;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-authority-panel :is([data-build-owner-slot="state"],[data-build-owner-slot="stem"],[data-build-owner-slot="nounstem"]) > :is(label,.composition-formula-slot__heading) {
+  margin-block: 0 !important;
+}
+
+/* Result is one composition: accepted form and its native Copy feedback,
+   selected-part work, continuation, then inspectable grammatical analysis. */
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-result-panel .classical-result-continuation-card {
+  gap: 16px;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-result-panel .classical-result-continuation-card > .composition-result-tools {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  align-items: center;
+  gap: 12px !important;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-result-panel #classical-result-editing {
+  margin: 2px 0 0;
+  padding: 16px;
+  border: 1px solid var(--composition-whole-line);
+  border-radius: 10px;
+  background: #f9fbf7;
+  gap: 12px;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-result-panel #classical-result-editing > h3 {
+  font-size: 15px;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-result-panel #classical-result-editing .composition-result-workspace-heading {
+  margin-top: 4px;
+  padding-top: 14px;
+  border-top: 1px solid var(--composition-whole-line);
+  color: var(--composition-whole-muted);
+  font-size: 12px;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-result-panel [aria-label="Workspace actions"] > button:not(:disabled) {
+  background: transparent !important;
+  border: 1px solid #dce5dc !important;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-result-panel .composition-result-action-limits > summary {
+  font-size: 13px !important;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-result-panel .composition-result-continuation {
+  padding-top: 14px;
+  border-top: 1px solid var(--composition-whole-line);
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-result-panel .composition-fact-chips > span {
+  background: #f3f6f0;
+  border-color: transparent;
+  color: var(--composition-whole-muted);
+  padding: 3px 6px;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-result-panel #classical-rule-logic-surface .composition-information-menu > .composition-result-information {
+  margin-top: 16px !important;
+  padding: 14px 0 0 !important;
+  border: 0 !important;
+  border-top: 1px solid var(--composition-whole-line) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-result-panel :is(.composition-analysis-form,.composition-analysis-structure) {
+  min-width: 0;
+  padding-inline: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-result-panel .composition-analysis-structure > summary .classical-rule-surface__disclosure-meta {
+  display: none;
+}
+@media (max-width: 640px) {
+  body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-result-panel #classical-result-editing {
+    padding: 12px;
+  }
+}
+
+/* Source: one progression from clause family to typed material, its native
+   classification, explicit commitment, and inspectable source details. */
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-source-panel [data-classical-source-outline-section="form"] {
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0;
+  background: transparent !important;
+  gap: 14px;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-source-panel :is(#classical-source-outline-form-heading,#classical-source-path-operation-heading) {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0 !important;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-source-panel #classical-basal-unit-controls {
+  margin: 0 0 18px !important;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-source-panel .classical-source-parts__mode {
+  margin: 0 0 2px !important;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-source-panel .classical-source-parts__grid {
+  gap: 12px;
+  margin: 0 !important;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-source-panel .classical-source-parts__input {
+  font-size: 18px !important;
+  line-height: 1.5;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-source-panel #classical-transcription-keyboard {
+  padding: 0 0 14px !important;
+  margin: 0 !important;
+  border: 0;
+  border-bottom: 1px solid var(--composition-whole-line);
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-source-panel :is(#classical-vnc-source-guide,#classical-nnc-source-guide,#classical-source-identity-controls) {
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0;
+  background: transparent !important;
+  gap: 12px !important;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-source-panel :is(#classical-vnc-source-guide,#classical-nnc-source-guide) > .composition-disclosure {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-source-panel :is(#classical-vnc-source-guide,#classical-nnc-source-guide) > .composition-disclosure > summary {
+  color: var(--composition-whole-muted);
+  font-size: 13px !important;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-source-panel [data-classical-source-path-lane="operation"] {
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-source-panel .classical-source-parts__commit-row {
+  gap: 10px;
+  padding: 16px 0 0 !important;
+  margin: 0 !important;
+  border-top: 1px solid var(--composition-whole-line);
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-source-panel #classical-source-parts #verb-entry-clear {
+  background: transparent !important;
+  border: 1px solid var(--composition-whole-line) !important;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-source-panel :is(.composition-source-details,[data-composition-disclosure="source-context"]) {
+  padding: 12px 0 0 !important;
+  margin: 12px 0 0 !important;
+  border: 0 !important;
+  border-top: 1px solid var(--composition-whole-line) !important;
+  border-radius: 0;
+  background: transparent !important;
+}
+@media (max-width: 560px) {
+  body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-source-panel .classical-source-parts__grid {
+    grid-template-columns: minmax(0,1fr) !important;
+  }
+}
+
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #classical-source-panel .composition-source-details > [data-composition-disclosure="source-details"] {
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+}
+
+/* When Source, pending changes and Preview are all present, preserve their
+   proportions rather than squeezing the Source into a few clipped letters. */
+@media (max-width: 640px) {
+  body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #composition-current-flow {
+    display: grid !important;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 8px 10px !important;
+  }
+  body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #composition-current-flow > .composition-current-source {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    width: 100%;
+  }
+  body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #composition-current-flow > .composition-pending-navigation-wrap {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #composition-current-flow > .composition-make-preview {
+    grid-column: 2;
+    grid-row: 2;
+    max-width: none;
+    justify-content: flex-start;
+  }
+  body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] #composition-current-flow > #classical-capability-apply-operation {
+    grid-column: 3;
+    grid-row: 2;
+  }
+}

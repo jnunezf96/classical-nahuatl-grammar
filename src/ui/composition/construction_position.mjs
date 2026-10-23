@@ -76,7 +76,11 @@ export function createConstructionPosition({isSource,isResult}={}) {
   function restore(result,receipt=null) {
     if(isResult?.(result)!==true)return false;
     if(position.accepted.result===result)return true;
-    return publish({...position,accepted:freezeRecord({result,receipt})},'restore');
+    const baseline=receipt?.construction && sameConstruction(receipt.construction,position.construction)
+      && sameSlots(receipt.construction.slots,position.construction.slots)
+      && equal(receipt.choices,position.choices) ? position.choices : position.baseline;
+    return publish({...position,accepted:freezeRecord({result,receipt}),baseline,
+      pending:pending(position.choices,baseline)},'restore');
   }
   function beginMake(revision) {
     if(activeMake || revision!==position.revision || !position.ready || !position.execution)return null;

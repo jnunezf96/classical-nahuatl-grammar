@@ -10,6 +10,27 @@ const read = relativePath => fs.readFileSync(
     "utf8"
 );
 
+function checkLongVowelInterface(suite, shell, css) {
+    suite.ok("long-vowel helpers and personal build history stay available without a Writing lane",
+        shell.includes('role="group" aria-label="Long vowels"')
+        && shell.includes('id="classical-transcription-keyboard-vowels"')
+        && !shell.includes('id="classical-writing-source-entry"')
+        && !shell.includes('id="classical-transcription-source"')
+        && !shell.includes('id="classical-transcription-keyboard-consonants"')
+        && !shell.includes('>Sound keyboard</summary>')
+        && shell.includes('<details\n        class="classical-grammar-workspace-history"')
+        && shell.includes('>Your builds</summary>')
+        && css.includes(".classical-grammar-workspace-history:not([open])")
+        && css.includes(".classical-grammar-workspace-history__body")
+        && css.includes("#classical-app-root > .classical-grammar-advanced")
+    );
+}
+function runLongVowelInterface() {
+    const suite = createSuite("classical_grammar_toy_long_vowels");
+    checkLongVowelInterface(suite, read("src/ui/shell/classical_shell.mjs"), read("style.css"));
+    return suite;
+}
+
 function run() {
     const suite = createSuite("classical_grammar_toy_interface");
     const index = read("index.html");
@@ -124,16 +145,7 @@ function run() {
             )
     );
 
-    suite.ok(
-        "the sound keyboard and personal build history stay available without filling the play area",
-        shell.includes('<details\n                        id="classical-transcription-keyboard"')
-        && shell.includes(">Sound keyboard</summary>")
-        && shell.includes('<details\n        class="classical-grammar-workspace-history"')
-        && shell.includes(">Your builds</summary>")
-        && css.includes(".classical-grammar-workspace-history:not([open])")
-        && css.includes(".classical-grammar-workspace-history__body")
-        && css.includes("#classical-app-root > .classical-grammar-advanced")
-    );
+    checkLongVowelInterface(suite, shell, css);
 
     suite.ok(
         "the manufacturer witness shares the recorder consent lifecycle and reports only semantic play metrics",
@@ -391,4 +403,4 @@ function run() {
     return suite;
 }
 
-module.exports = { run };
+module.exports = { run, runLongVowelInterface };

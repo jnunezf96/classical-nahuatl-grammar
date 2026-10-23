@@ -1,17 +1,19 @@
-# Grammar OS v1.2.14 release
+# Grammar OS v1.2.15 release
 
-Release name: **Reliable Startup**
+Release name: **NNC and VNC Composition**
 
-Browser build: **20261022-startup-1**
+Browser build: **20261023-composition-1**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Delivers required startup data with the page so pending JSON requests cannot hold the workspace loading screen open.
-- Loads optional fonts without blocking workspace startup.
-- Uses one exact browser entry module identity and checks generated data against its original sources.
-- Derives the footer version from current release metadata and refreshes the current interface inventory.
+- Organizes NNC and VNC Source, Build and Result together around Andrews’ clause, Core, Stem and Tense relationships.
+- Groups conditional nounstem and verbstem choices while retaining their native grammatical restrictions.
+- Unifies control styling, left-aligned icons and progressive disclosure; retains long-vowel input.
+- Presents accepted Results separately from pending previews, with explicit Make as the acceptance boundary.
+- Restores the choices behind accepted Results on supported reload paths, and corrects reviewed number, optative and valence-analysis behavior.
+- Keeps the current Source readable on narrow screens, brings explicit Make to the Result, and pins a desktop Result only when it fits.
 
 ## Review scope and current limits
 
@@ -35,7 +37,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.14/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.15/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.
