@@ -2722,10 +2722,41 @@ export function createClassicalNahuatlNncApplicationModule(
     );
   }
 
+  function getClassicalNahuatlOrdinaryNncReinflectionContext(exact = null) {
+    const sentence = targetObject.isClassicalNahuatlIssuedNncSentenceSurfaceFrame?.(exact) === true
+      ? exact : null;
+    const ordinary = isClassicalNahuatlOrdinaryNncResult(exact) ? exact
+      : sentence ? getClassicalNahuatlOrdinaryNncResultForTypedSlotFrame(sentence.sourceNncSlotFrame) : null;
+    if (!ordinary) return null;
+    const operation = ordinary.operationFrame;
+    const sentenceFrame = sentence || ordinary.sentenceFrame;
+    const selections = Object.fromEntries([...ORDINARY_NNC_OPERATION_SELECTION_KEYS]
+      .filter(key => Object.hasOwn(operation,key)).map(key => [key,operation[key]]));
+    selections.humanness = operation.referentialHumanness;
+    selections.sentenceType = sentenceFrame.requestedSentenceType === "assertion" ? "statement"
+      : sentenceFrame.requestedSentenceType;
+    selections.polarity = sentenceFrame.polarity;
+    return Object.freeze({exactInput:exact, ordinaryResult:ordinary, sourceFrame:ordinary.sourceFrame,
+      operationFrame:operation, sentenceFrame, selections:Object.freeze(selections)});
+  }
+
   function evaluateClassicalNahuatlOrdinaryNnc(
     sourceFrame = null,
     operationFrame = null,
   ) {
+    const reinflection = getClassicalNahuatlOrdinaryNncReinflectionContext(sourceFrame);
+    if (reinflection) {
+      // The current exact Result attests the original nounstem analysis.
+      // Re-inflect it through the ordinary owner, never through its spelling.
+      sourceFrame = reinflection.sourceFrame;
+      const inherited = {...reinflection.selections};
+      if (operationFrame?.state === "absolutive" && inherited.state !== "absolutive") {
+        inherited.possessor = "";
+        inherited.possessorReduplication = false;
+      }
+      operationFrame = buildClassicalNahuatlOrdinaryNncOperationFrame(sourceFrame,
+        {...inherited, ...(operationFrame || {})});
+    }
     const sourceAuthorized =
       isClassicalNahuatlOrdinaryNncSourceFrame(sourceFrame);
     const operationAuthorized =
@@ -2974,6 +3005,13 @@ export function createClassicalNahuatlNncApplicationModule(
             polarity: operationFrame.polarity,
             predicateKind: "equative",
             borrowedNncSourceFrame: sourceFrame,
+            ...(reinflection?.sentenceFrame.discourseFrame
+              ? {discourseFrame:reinflection.sentenceFrame.discourseFrame} : {}),
+            ...(reinflection?.sentenceFrame.negativePrefix
+              && targetObject.getClassicalNahuatlNncSentenceNegativePrefixOptions?.(slotFrame,
+                {sentenceType:operationFrame.sentenceType,polarity:operationFrame.polarity,
+                  borrowedNncSourceFrame:sourceFrame}).includes(reinflection.sentenceFrame.negativePrefix)
+              ? {negativePrefix:reinflection.sentenceFrame.negativePrefix} : {}),
           },
         )
         : null;
@@ -5381,6 +5419,7 @@ export function createClassicalNahuatlNncApplicationModule(
     evaluateClassicalNahuatlOrdinaryNnc,
     isClassicalNahuatlOrdinaryNncResult,
     getClassicalNahuatlOrdinaryNncResultForTypedSlotFrame,
+    getClassicalNahuatlOrdinaryNncReinflectionContext,
     prepareClassicalNahuatlOrdinaryNncParadigmPlan,
     isClassicalNahuatlOrdinaryNncParadigmPlan,
     projectClassicalNahuatlOrdinaryNncParadigmCoordinates,

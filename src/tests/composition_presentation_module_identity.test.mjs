@@ -27,3 +27,14 @@ test('portalled Stem choices share one logical host registry across consumers',a
     const specifier=source.match(/from ['"]([^'"]*owner_choice_roots\.mjs[^'"]*)['"]/u)?.[1];assert(specifier,path);urls.add(new URL(specifier,file).href);}
   assert.equal(urls.size,1,`Portals need a single registered owner: ${[...urls].join(', ')}`);
 });
+
+test('native and composed actions share one feedback gate and one task menu module',async()=>{
+ const groups={action_feedback:['../ui/events/events.mjs','../ui/rendering/rendering.mjs','../ui/state.mjs','../ui/composer/composer.mjs','../ui/composition/choice_design.mjs','../ui/composition/result_actions.mjs'],
+  build_task_menu:['../ui/rendering/rendering.mjs','../ui/composition/build_navigation.mjs']};
+ for(const [name,consumers]of Object.entries(groups)){
+  const urls=new Set();
+  for(const path of consumers){const file=new URL(path,import.meta.url),source=await readFile(file,'utf8');
+   const specifier=source.match(new RegExp(`from ['"]([^'"]*${name}\\.mjs[^'"]*)['"]`))?.[1];assert(specifier,path);urls.add(new URL(specifier,file).href);}
+  assert.equal(urls.size,1,`${name} must use a single module identity: ${[...urls].join(', ')}`);
+ }
+});

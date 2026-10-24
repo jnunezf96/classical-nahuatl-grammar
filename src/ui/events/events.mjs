@@ -1,3 +1,4 @@
+import {runCompositionAction} from '../composition/action_feedback.mjs?v=20261023-1';
 // Canonical modern ESM module.
 
 export function installClassicalSourceApplyPointerGuard(button, documentObject) {
@@ -162,10 +163,10 @@ export function createUiEventsApi(targetObject = globalThis) {
           return;
         }
         if (activeElement && typeof targetObject.commitClassicalSourcePartsEvaluation === "function" && activeElement.matches?.(".classical-source-parts__input")) {
-          targetObject.commitClassicalSourcePartsEvaluation({
+          runSourceApply(() => targetObject.commitClassicalSourcePartsEvaluation({
             force: true,
             source: "enter"
-          });
+          }));
           event.preventDefault();
           return;
         }
@@ -181,6 +182,15 @@ export function createUiEventsApi(targetObject = globalThis) {
         targetObject.LastComposerSpaceTs = 0;
       }
     });
+    function runSourceApply(action) {
+      const doc = targetObject.document;
+      const signature = () => JSON.stringify(Array.from(doc.querySelectorAll(
+        "#classical-source-panel input, #classical-source-panel select"
+      )).map(control => [control.id, control.value, control.checked]));
+      const before = signature();
+      return runCompositionAction(doc, doc.getElementById("verb-entry-apply"), action,
+        {label: "Applying Source…", isCurrent: () => signature() === before});
+    }
     function applyVerbEntryInputNow() {
       const verbEl = targetObject.document.getElementById("verb");
       if (!verbEl) {
@@ -333,7 +343,7 @@ export function createUiEventsApi(targetObject = globalThis) {
           installClassicalSourceApplyPointerGuard(verbEntryApplyButton, targetObject.document);
           verbEntryApplyButton.addEventListener("click", event => {
             event.preventDefault();
-            applyVerbEntryInputNow();
+            runSourceApply(applyVerbEntryInputNow);
           });
         }
         const verbEntryClearButton = targetObject.document.getElementById("verb-entry-clear");

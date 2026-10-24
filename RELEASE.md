@@ -1,26 +1,25 @@
-# Grammar OS v1.2.15 release
+# Grammar OS v1.2.16 release
 
-Release name: **NNC and VNC Composition**
+Release name: **Whole Result Editing**
 
-Browser build: **20261023-composition-1**
+Browser build: **20261024-composition-35**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Organizes NNC and VNC Source, Build and Result together around Andrews’ clause, Core, Stem and Tense relationships.
-- Groups conditional nounstem and verbstem choices while retaining their native grammatical restrictions.
-- Unifies control styling, left-aligned icons and progressive disclosure; retains long-vowel input.
-- Presents accepted Results separately from pending previews, with explicit Make as the acceptance boundary.
-- Restores the choices behind accepted Results on supported reload paths, and corrects reviewed number, optative and valence-analysis behavior.
-- Keeps the current Source readable on narrow screens, brings explicit Make to the Result, and pins a desktop Result only when it fits.
+- Changes an individual constituent inside mixed conjunction and supplementation while retaining the whole Result.
+- Checks the complete pending preview before Make; only explicit Make accepts changes.
+- Preserves untouched clauses, relation choices, participant references, contexts and original finite Sources.
+- Retains the selected inner occurrence through repeated edits and supported same-tab reload.
+- Includes the reviewed clause/particle interaction and expanded whole-Result reload improvements since v1.2.15.
 
 ## Review scope and current limits
 
 This build is available for independent review against Andrews. Automated and browser verification cover the recorded supported paths; they do not certify every lexical Source or grammatical combination.
 
 - Conditional lexical readings and irregular formations require the corresponding genuine Source analysis.
-- Writing editing and History work within the open session; durable Writing reload is not supported.
+- Same-tab reload supports the documented NNC/VNC and conjunction/supplementation input graphs, including original NNC writing context. Cross-device saving is unclaimed.
 - Reload of the complete quin sentence-adverbial outer layer is deliberately unsupported and shows a recovery notice.
 - Optional writing coverage and the simple-compound Writing adapter have explicit supported-context limits.
 - Accumulated-session performance and some historical inventory provenance remain open qualifications.
@@ -37,7 +36,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.15/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.16/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.

@@ -606,8 +606,8 @@ body.is-language-classical #classical-workbench[data-composition-design="path"] 
 body.is-language-classical #classical-workbench[data-composition-design="path"] .composition-contact-link[data-composition-contact-link-state="pending"] {border-top-style:dashed}
 body.is-language-classical #classical-workbench[data-composition-design="path"] .composition-operation-shape {display:flex;flex-wrap:wrap;align-items:center;gap:7px;min-width:0;padding:8px 0;font:400 12px/1.5 var(--font-body)}
 body.is-language-classical #classical-workbench[data-composition-design="path"] .composition-shape-piece {padding:4px 9px;border:1px solid var(--path-primary);background:var(--path-soft);color:var(--path-primary);border-radius:5px}
-body.is-language-classical #classical-workbench[data-composition-design="path"] .composition-shape-noun {border-radius:20px}
-body.is-language-classical #classical-workbench[data-composition-design="path"] .composition-shape-clause {border-width:2px}
+body.is-language-classical #classical-workbench[data-composition-design="path"] :is(.composition-shape-noun,.composition-shape-noun-stem,.composition-shape-noun-clause) {border-radius:20px}
+body.is-language-classical #classical-workbench[data-composition-design="path"] :is(.composition-shape-clause,.composition-shape-noun-clause,.composition-shape-verb-clause) {border-width:2px}
 body.is-language-classical #classical-workbench[data-composition-design="path"] .composition-shape-particle {border-radius:2px}
 body.is-language-classical #classical-workbench[data-composition-design="path"] .composition-shape-target {border-style:dashed;background:transparent}
 body.is-language-classical #classical-workbench[data-composition-design="path"] .composition-choice-summary {margin-left:auto;font:400 12px/1.5 var(--font-body);color:var(--path-muted);overflow-wrap:anywhere;min-width:0;text-align:right;max-width:65%}
@@ -1434,3 +1434,56 @@ body.is-language-classical #classical-workbench #classical-authority-panel [data
 body.is-language-classical #classical-workbench #classical-authority-panel [data-choices-native-heading="sentence"] {--build-category-icon:var(--build-clause-icon)}
 body.is-language-classical #classical-workbench #classical-authority-panel label:has([id$="-connector"]) {--build-category-icon:var(--build-number-icon)}
 body.is-language-classical #classical-workbench #classical-authority-panel label:has([data-classical-capability-choice-id="possessorReduplication"]) {--build-category-icon:var(--build-possession-icon)}
+
+/* A click has one quiet rhythm: press, working, then the native outcome.
+   Do not move targets or recolor the owner's selected grammar choices. */
+body.is-language-classical #classical-workbench :is(button,select,summary) {
+  -webkit-tap-highlight-color:transparent;
+  transition:background-color 100ms ease,border-color 100ms ease,box-shadow 100ms ease;
+}
+body.is-language-classical #classical-workbench[data-composition-design="path"] button:not(:disabled):active {
+  transform:none!important;
+  box-shadow:inset 0 0 0 2px #315f5059;
+}
+body.is-language-classical #classical-workbench button[data-composition-working="true"] {
+  position:relative;cursor:progress!important;box-shadow:inset 0 0 0 2px #789b8c!important;
+}
+body.is-language-classical #classical-workbench button[data-composition-working="true"]:is(
+  #verb-entry-apply,#classical-capability-apply-operation,
+  #classical-result-action-change,#classical-result-action-add,#classical-result-action-reorder,
+  #classical-result-action-remove,#classical-result-action-undo,#classical-result-action-clear
+)::before {
+  content:"";display:inline-block;flex:0 0 16px;box-sizing:border-box;
+  width:16px;height:16px;margin-inline:0 7px;vertical-align:-0.18em;
+  background:transparent!important;-webkit-mask:none!important;mask:none!important;
+  border:2px solid currentColor!important;border-inline-end-color:transparent!important;border-radius:50%;
+  animation:classical-bootstrap-spin 900ms linear infinite;
+}
+#classical-workbench .composition-action-status {
+  position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+  clip-path:inset(50%);white-space:nowrap;border:0;
+}
+@media(prefers-reduced-motion:reduce){
+  body.is-language-classical #classical-workbench button[data-composition-working="true"]::before {animation:none!important}
+}
+@media(forced-colors:active){
+  body.is-language-classical #classical-workbench button[data-composition-working="true"] {outline:2px solid Highlight!important;outline-offset:-2px}
+}
+
+/* Clause composition: parts, relationship, then the whole; native owners remain. */
+body.is-language-classical #classical-workbench .composition-clause-section {min-width:0;margin-block:14px;padding-block:4px 14px;border-bottom:1px solid var(--path-border,#dce5df)}
+body.is-language-classical #classical-workbench .composition-clause-section > .composition-formula-slot__heading {margin:0 0 10px}
+body.is-language-classical #classical-workbench .composition-clause-section [data-classical-clause-relation-captures] {margin-top:10px}
+body.is-language-classical #classical-workbench .composition-clause-structure {margin-block:14px 0}
+body.is-language-classical #classical-workbench .composition-clause-structure > [data-classical-clause-relation-derived] {padding:0 12px 12px}
+body.is-language-classical #classical-workbench #classical-authority-panel [data-build-owner-slot^="clause-"] {padding-block:10px 14px;border-bottom:1px solid var(--path-border,#dce5df)}
+body.is-language-classical #classical-workbench #classical-authority-panel [data-build-owner-slot^="clause-"] > .composition-formula-slot__heading {--slot-heading-icon:var(--build-link-icon);margin-block:0 10px}
+body.is-language-classical #classical-workbench #classical-authority-panel [data-build-owner-slot="clause-reference"] > .composition-formula-slot__heading {--slot-heading-icon:var(--build-participants-icon)}
+body.is-language-classical #classical-workbench #classical-authority-panel [data-build-owner-slot="clause-order"] > .composition-formula-slot__heading {--slot-heading-icon:var(--build-material-icon)}
+
+/* Choose the operation before its editors. This owns presentation only; native
+   fields and their canonical availability remain intact behind the gate. */
+body.is-language-classical #classical-workbench[data-composition-operation-selected="false"] #classical-authority-panel [data-composition-operation-gated],
+body.is-language-classical #classical-workbench[data-composition-operation-selected="false"] #classical-authority-panel #classical-capability-operation-plan [data-composition-operation-gated] {
+  display:none!important;
+}

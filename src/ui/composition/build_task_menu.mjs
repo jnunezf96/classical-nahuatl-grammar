@@ -1,4 +1,4 @@
-import {getWritingSourcePresentation} from './choice_design.mjs?coreStem=20261023-1&v=20261022-reset-eligibility-1&writingSource=20261022-1&fixedChoices=20261022-1';
+import {getWritingSourcePresentation} from './choice_design.mjs?clickFeedback=20261023-1&coreStem=20261023-1&v=20261022-reset-eligibility-1&writingSource=20261022-1&fixedChoices=20261022-1';
 import {getBuildOperationGroup, getBuildOperationOrder, inventoryOptionReference} from './build_navigation_model.mjs?v=20261021-ending-reference-2';
 
 const navigatorId = 'classical-capability-navigator-operation';
@@ -41,7 +41,9 @@ export function getBuildTaskRoutes(doc) {
       order: getBuildOperationOrder(operationId)});
   }
   const neutral = Array.from(construction?.options || []).find(option => option.value === 'none');
-  if (!writingMode && available(construction, neutral)) {
+  const exactResultInput = doc.getElementById('classical-capability-navigator')?.dataset.classicalCapabilitySourceRole === 'exact-owner-issued-result';
+  if (!writingMode && available(construction, neutral)
+    && (!exactResultInput || routes.some(route=>route.control===navigator && route.operationId===directId(construction)))) {
     // The reviewed neutral route is direct formation, not a competing task.
     const direct = routes.find(route => route.control === navigator && route.operationId === directId(construction));
     if (direct) direct.aliasRefs.push(address(construction, neutral));
@@ -141,7 +143,7 @@ export function createBuildTaskMenu(doc) {
     if (remembered?.control === construction && construction.value === remembered.option.value
       && (!navigator?.value || navigator.value === remembered.operationId)) return remembered;
     return routes.find(route => route.control === navigator && route.option.value === navigator.value)
-      || routes.find(route => route.control === construction && route.option.value === construction.value) || null;
+      || routes.find(route => route.control === construction && route.option.value !== 'none' && route.option.value === construction.value) || null;
   };
   return function refresh() {
     const field = doc.getElementById('classical-capability-navigator-field');

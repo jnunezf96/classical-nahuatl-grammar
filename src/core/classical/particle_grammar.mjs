@@ -1946,6 +1946,7 @@ l50-ma-nel|although; although in fact|concessive collocation without optional ad
         issued,
         Object.freeze({
           sourceFrame,
+          reloadOptions: Object.freeze({...options}),
           authorizationStatus: "authorized",
           formulaRecord: issued.formulaRecord,
           formulaRealizationRecord: issued.formulaRealizationRecord,
@@ -1961,6 +1962,11 @@ l50-ma-nel|although; although in fact|concessive collocation without optional ad
         })
       );
       return issued;
+    }
+    function getClassicalNahuatlParticleReloadInputs(frame = null) {
+      return isClassicalNahuatlParticleResultFrame(frame)
+        ? Object.freeze({sourceFrame: frame.sourceFrame,
+          options: issuedParticleResultFrames.get(frame).reloadOptions}) : null;
     }
     function isClassicalNahuatlParticleResultFrame(frame = null) {
       const receipt = frame && typeof frame === "object"
@@ -3673,6 +3679,7 @@ l50-ma-nel|although; although in fact|concessive collocation without optional ad
         getClassicalNahuatlClauseRelationMarkerOptions,
         getClassicalNahuatlParticleClauseRelationMarkerOptions,
         buildClassicalNahuatlParticleResultFrame,
+        getClassicalNahuatlParticleReloadInputs,
         isClassicalNahuatlParticleResultFrame,
         isClassicalNahuatlParticleStructuralRoleFrame,
         selectClassicalNahuatlNegativeParticleFrame,
@@ -3779,6 +3786,7 @@ l50-ma-nel|although; although in fact|concessive collocation without optional ad
     api.getClassicalNahuatlClauseRelationMarkerOptions = getClassicalNahuatlClauseRelationMarkerOptions;
     api.getClassicalNahuatlParticleClauseRelationMarkerOptions = getClassicalNahuatlParticleClauseRelationMarkerOptions;
     api.buildClassicalNahuatlParticleResultFrame = buildClassicalNahuatlParticleResultFrame;
+    api.getClassicalNahuatlParticleReloadInputs = getClassicalNahuatlParticleReloadInputs;
     api.isClassicalNahuatlParticleResultFrame = isClassicalNahuatlParticleResultFrame;
     api.isClassicalNahuatlParticleStructuralRoleFrame = isClassicalNahuatlParticleStructuralRoleFrame;
     api.selectClassicalNahuatlNegativeParticleFrame = selectClassicalNahuatlNegativeParticleFrame;

@@ -464,6 +464,7 @@ export function createClassicalNahuatlSupplementationApi(
 
   const issuedImpersonalSubjectDomains = new WeakSet();
   const issuedSupplementationFrames = new WeakSet();
+  const supplementationReloadInputs = new WeakMap();
   const issuedVocativeFrames = new WeakSet();
   const issuedRumoredReportFrames = new WeakSet();
   const issuedDeletedPrincipalFrames = new WeakSet();
@@ -5559,10 +5560,61 @@ export function createClassicalNahuatlSupplementationApi(
       surfaceStringAuthority: false,
       callerSuppliedSurfaceAccepted: false,
     };
-    return issueFrame(issuedSupplementationFrames, {
+    const frame = issueFrame(issuedSupplementationFrames, {
       ...projection,
       canonicalSignature: signValue(projection, "supplementation-frame"),
     });
+    const snapshot = value => {
+      if (!value || typeof value !== "object" || Object.isFrozen(value)) return value;
+      return Object.freeze(Array.isArray(value) ? value.map(snapshot)
+        : Object.fromEntries(Object.entries(value).map(([key, child]) => [key, snapshot(child)])));
+    };
+    supplementationReloadInputs.set(frame, Object.freeze({principalClause, supplementClause,
+      options: snapshot({...options})}));
+    return frame;
+  }
+
+  function getClassicalNahuatlSupplementationReloadInputs(frame = null) {
+    return isClassicalNahuatlSupplementationFrame(frame)
+      ? supplementationReloadInputs.get(frame) || null : null;
+  }
+
+  // Retain original relation inputs when replacing one authenticated child.
+  // This issues no Result: preview and explicit Make evaluate the same request.
+  function buildClassicalNahuatlSupplementationReplacementRequest(parent, role, replacement) {
+    const inputs = getClassicalNahuatlSupplementationReloadInputs(parent);
+    if (!inputs || !["principal", "adjoined"].includes(role)) return null;
+    const key = role === "principal" ? "principalClause" : "supplementClause";
+    const continuationKey = role === "principal" ? "principalContinuationFrames" : "supplementContinuationFrames";
+    const previous = inputs[key];
+    const continuations = inputs.options[continuationKey] || [];
+    // Multiple independent continuations need a separate occurrence contract.
+    if (continuations.length > 1) return null;
+    const oldSource = continuations[0] || clauseEnvelopeSources.get(previous);
+    if (!oldSource || !replacement) return null;
+    let next = previous;
+    let options = inputs.options;
+    if (replacement !== oldSource) {
+      next = buildClassicalNahuatlSupplementationClauseEnvelope(replacement, {
+        ...previous.callerDerivedFacts,
+        referenceId: previous.referenceId,
+        subjectReferenceId: previous.subject?.referenceId || "",
+        objectReferenceIds: Object.fromEntries(previous.objects.map(object => [object.id, object.referenceId])),
+        possessorReferenceId: previous.possessor?.referenceId || "",
+        contextRecords: previous.contextRecords,
+      });
+      if (!isClassicalNahuatlSupplementationClauseEnvelope(next)) return null;
+      if (continuations.length) {
+        if (!isClassicalNahuatlSupplementationFrame(replacement)) return null;
+        // A continued relation's exact principal envelope is its contact.
+        next = replacement.principalClause;
+        options = {...options, [continuationKey]: [replacement]};
+      }
+    }
+    return buildClassicalNahuatlSupplementationOperationRequest({operationKind: "relation",
+      principalClause: key === "principalClause" ? next : inputs.principalClause,
+      supplementClause: key === "supplementClause" ? next : inputs.supplementClause,
+      options});
   }
 
   function isClassicalNahuatlSupplementationFrame(frame = null) {
@@ -7195,6 +7247,8 @@ export function createClassicalNahuatlSupplementationApi(
     buildClassicalNahuatlSupplementationClauseEnvelope,
     isClassicalNahuatlSupplementationClauseEnvelope,
     isClassicalNahuatlSupplementationFrame,
+    getClassicalNahuatlSupplementationReloadInputs,
+    buildClassicalNahuatlSupplementationReplacementRequest,
     buildClassicalNahuatlContextualFirstPersonRealizationFrame,
     buildClassicalNahuatlExclamatoryUtteranceFrame,
     buildClassicalNahuatlSuchThatAdjunctionFrame,

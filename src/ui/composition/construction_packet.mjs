@@ -1,5 +1,8 @@
-import {resolveResultEditTarget,projectResultForEditing} from './result_editing.mjs?v=20261014-result-edit-2';
-import {rebuildResultEdit} from './result_edit_rebuild.mjs?v=20261014-result-edit-2';
+import {previewConstructionPacket} from './construction_preview.mjs?mixedInner=20261024-1&v=20261023-conjunct-edit-1';
+import {getConstructionLayerReadiness as getLayerReadiness,getConstructionParticleHostInput} from './construction_layers.mjs?v=20261023-conjunct-edit-1';
+export {getConstructionParticleHostInput} from './construction_layers.mjs?v=20261023-conjunct-edit-1';
+import {resolveResultEditTarget,projectResultForEditing} from './result_editing.mjs?v=20261023-conjunction-1';
+import {rebuildResultEdit,isConjunctResultEdit,canRebuildResultEdit} from './result_edit_rebuild.mjs?mixedInner=20261024-1&v=20261023-conjunct-edit-1';
 
 // Freeze request containers while retaining the exact opaque owner frames.
 export function freezeConstructionData(value) {
@@ -30,47 +33,15 @@ export function orderConstructionSlots(structure) {
 export const getConstructionFixedChoices=binding=>binding?.operationId==='nnc:ordinary'
   && !binding.choiceOptionProjection?.humanness && binding.effectiveSelections?.humanness
   ? [{choiceId:'humanness',value:binding.effectiveSelections.humanness}] : [];
-// Read-only owner projection: staging never executes or publishes the packet.
 export function getConstructionLayerReadiness(runtime,packet) {
-  if(packet?.kind==='result-edit')return getConstructionLayerReadiness(runtime,packet.inner);
-  if(packet?.operation==='nnc:personal-name' && packet?.request?.operationId==='nnc:personal-name'
-    && Object.hasOwn(packet.request.args?.[0] || {},'canonicalSourceResult')) {
-    const request=packet.request.args?.[0];
-    const resolution=runtime.resolvePersonalNameNncExactSource?.(request);
-    const valid=runtime.isPersonalNameNncExactSourceResolution?.(resolution)===true
-      && resolution.authorizationStatus==='authorized'
-      && resolution.canonicalSourceResult===packet.source
-      && request?.canonicalSourceResult===packet.source
-      && resolution.requiredChoiceIds.length===0;
-    const plan=valid ? runtime.preparePersonalNameNncParadigmPlan?.({sourceFrame:resolution.sourceFrame,
-      affectiveScope:request.affectiveScope,affectiveMatrix:request.affectiveMatrix}) : null;
-    if(!valid || runtime.isPersonalNameNncParadigmPlan?.(plan)!==true)return {ready:false,
-      blockReason:resolution?.blockReason || plan?.blockReason || 'personal-name-compatible-affective-operation-required',
-      recoveryKind:'personal-name-affective'};
-  }
-  const tense=packet?.choices?.tense || packet?.request?.args?.[0]?.tense || '';
-  for(const layer of packet?.layers || []) {
-    if(layer.operationId==='sentence:particle-adjunction') {
-      const availability=runtime.getClassicalNahuatlSentenceParticleSpeakerAvailability?.(layer.particleId,layer.speakerGender);
-      if(availability?.ready!==true)return {ready:false,
-        blockReason:availability?.blockReason || 'classical-sentence-particle-speaker-availability-required',
-        recoveryKind:availability?.recoveryKind || ''};
-    }
-    if(layer.operationId!=='sentence:adverbial-adjunction')continue;
-    const availability=runtime.getClassicalNahuatlSentenceAdverbialAvailability?.(layer.particleId,tense);
-    if(availability?.ready!==true)return {ready:false,blockReason:availability?.blockReason || 'classical-sentence-adverbial-availability-required'};
-  }
-  return {ready:true,blockReason:''};
-}
-// The particle owner classifies its exact current host. A nuclear Result
-// and an already composed particle sentence use different input contracts.
-export function getConstructionParticleHostInput(runtime,operation,host) {
-  const binding=runtime.issueClassicalNahuatlParticleSentenceBindingFrame?.(operation,host);
-  if(runtime.isClassicalNahuatlParticleSentenceBindingFrame?.(binding)!==true
-    || binding.authorizationStatus!=='authorized' || binding.operationId!==operation
-    || binding.exactResult!==host || binding.exactHostClause!==host)return null;
-  return binding.inputRole==='host-clause' ? Object.freeze({nuclearResultFrame:host})
-    : binding.inputRole==='consumed-sentence' ? Object.freeze({consumedSentenceFrame:host}) : null;
+  const layers=getLayerReadiness(runtime,packet);
+  if (!layers.ready || packet?.kind!=='result-edit' || packet.edit?.root===packet.edit?.target) return layers;
+  const edit=packet.edit,project=exact=>projectResultForEditing(runtime,exact);
+  if (!canRebuildResultEdit(runtime,edit.root,edit.target,project,edit.path))
+    return {ready:false,blockReason:'result-edit-path-unavailable',recoveryKind:'result-edit'};
+  if (!isConjunctResultEdit(runtime,edit.root,edit.target,project,edit.path)) return layers;
+  return previewConstructionPacket(runtime,packet)?.isCurrent?.()
+    ? layers : {ready:false,blockReason:'conjunct-change-incompatible-with-retained-whole',recoveryKind:'result-edit'};
 }
 export function executeConstructionPacket(runtime,packet) {
   let application;
@@ -83,11 +54,14 @@ export function executeConstructionPacket(runtime,packet) {
       if(!target.removableTo || target.removableTo!==edit.remaining)return null;
       return runtime.captureClassicalGrammarApplicationResult?.(edit.remaining,'result-edit-make')?.applicationResult || null;
     }
-    if(!packet.inner || packet.inner.kind==='result-edit')return null;
+    if(!packet.inner || packet.inner.kind==='result-edit'
+      || !canRebuildResultEdit(runtime,edit.root,edit.target,project,edit.path))return null;
+    if(isConjunctResultEdit(runtime,edit.root,edit.target,project,edit.path)
+      && !previewConstructionPacket(runtime,packet)?.isCurrent?.())return null;
     application=executeConstructionPacket(runtime,packet.inner);
     if(application?.authorizationStatus!=='authorized')return application;
     if(edit.root===edit.target)return application;
-    return rebuildResultEdit(runtime,edit.root,edit.target,application.canonicalResult,project);
+    return rebuildResultEdit(runtime,edit.root,edit.target,application.canonicalResult,project,edit.path);
   }
   if(packet.kind==='clause') {
     if(packet.captures.some(slot=>packet.controller.getCapturedCanonicalResult(slot.role)!==slot.exact))return null;

@@ -159,7 +159,7 @@ export function createRouteDesign(doc) {
           const button=doc.createElement('button');button.type='button';button.className='composition-offered-route';button.dataset.compositionOfferedRoute=option.value;
           const name=doc.createElement('span');name.textContent=option.textContent;button.append(name);
           if(shape) {const diagram=doc.createElement('span');diagram.className='composition-operation-shape';diagram.setAttribute('role','img');diagram.setAttribute('aria-label',`${shape.inputs[0]} → ${shape.outputs[0]}`);
-            for(const [type,klass] of [[shape.inputs[0],`composition-shape-piece composition-shape-${shape.inputs[0].toLowerCase()}`],['→','composition-shape-operator'],[shape.outputs[0],`composition-shape-piece composition-shape-${shape.outputs[0].toLowerCase()} composition-shape-target`]]){const piece=doc.createElement('span');piece.className=klass;piece.textContent=type;diagram.append(piece);}button.append(diagram);}
+            for(const [type,klass] of [[shape.inputs[0],`composition-shape-piece composition-shape-${shape.inputs[0].toLowerCase().replace(/ /gu,'-')}`],['→','composition-shape-operator'],[shape.outputs[0],`composition-shape-piece composition-shape-${shape.outputs[0].toLowerCase().replace(/ /gu,'-')} composition-shape-target`]]){const piece=doc.createElement('span');piece.className=klass;piece.textContent=type;diagram.append(piece);}button.append(diagram);}
           button.addEventListener('click',()=>{
             const live=readRouteChoicePresentation(root),mirror=doc.getElementById('classical-capability-navigator-operation-choices');
             const active=mirror&&!mirror.closest('[hidden]')?mirror:operation;

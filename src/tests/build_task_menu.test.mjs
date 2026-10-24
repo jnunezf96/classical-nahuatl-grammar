@@ -132,3 +132,9 @@ test('Writing task menu projects only live exact Writing Source owner options an
  nav.options.find(o=>o.value==='orthography:transcription').disabled=true;assert.deepEqual(tasks.getBuildTaskRoutes(doc),[],'native withdrawal remains authoritative');
  workbench.dataset.classicalWritingSourceMode='false';assert(tasks.getBuildTaskRoutes(doc).some(route=>route.control===stem&&route.option.value==='deverbal-nnc'));
 });
+test('an exact Result without an offered direct clause owner cannot select a phantom basal clause task',()=>{
+ const {doc,nav,stem}=fixture();nav.value='';nav.options=[{value:'particle:result',textContent:'Make a particle',dataset:{}}];stem.dataset.classicalSourceUnit='nnc';
+ const get=doc.getElementById;doc.getElementById=id=>id==='classical-capability-navigator'?{dataset:{classicalCapabilitySourceRole:'exact-owner-issued-result'}}:get(id);
+ assert.equal(tasks.getBuildTaskRoutes(doc).some(route=>route.operationId==='nnc:ordinary'),false);
+ assert.equal(tasks.getBuildTaskRoutes(doc).some(route=>route.operationId==='particle:result'),true);
+});

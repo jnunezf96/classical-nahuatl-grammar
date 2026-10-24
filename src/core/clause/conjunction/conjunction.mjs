@@ -5,6 +5,7 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
     const grammarFrameOwnerCapability = installationContext?.grammarFrameOwnerCapability || null;
     const CONJUNCTION_CLAUSE_BOUNDARY_VERSION = 1;
     const issuedClassicalNahuatlClauseConjunctionResults = new WeakSet();
+    const conjunctionSourceRequests = new WeakMap();
     const classicalNahuatlConjunctionSignatureCertificates = new WeakMap();
     const classicalNahuatlConjunctionSignatureIntrinsics = [
       [Array.prototype, "map"], [Array.prototype, "filter"],
@@ -1972,6 +1973,45 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
     }
     function evaluateClassicalNahuatlClauseConjunction(request = {}) {
       const operationRequest = isClassicalNahuatlClauseConjunctionOperationRequest(request)
+        ? request : buildClassicalNahuatlClauseConjunctionOperationRequest(request);
+      const result = evaluateClassicalNahuatlClauseConjunctionRequest(operationRequest);
+      if (result.authorizationStatus === "authorized") conjunctionSourceRequests.set(result, operationRequest);
+      return result;
+    }
+    // A replacement keeps the original owner's complete request and exact
+    // sibling nodes. No display formula or serialized recipe supplies grammar.
+    function buildClassicalNahuatlConjunctReplacementRequest(parent, index, replacement) {
+      const original = conjunctionSourceRequests.get(parent);
+      if (!original || !isClassicalNahuatlClauseConjunctionResultFrame(parent)
+        || !Number.isInteger(index) || index < 0 || index >= parent.conjuncts.length) return null;
+      const previous = parent.conjuncts[index];
+      const sourceNode = targetObject.isClassicalNahuatlClauseCompositionSourceFrame?.(previous) === true;
+      const oldSource = sourceNode
+        ? targetObject.getClassicalNahuatlSupplementationClauseSourceFrame?.(previous.envelope) : previous;
+      let next = replacement === oldSource ? previous : replacement;
+      if (next !== previous && !isClassicalNahuatlClauseConjunctionResultFrame(next)
+        && targetObject.isClassicalNahuatlClauseComplementationResultFrame?.(next) !== true) {
+        if (!sourceNode) return null;
+        next = targetObject.buildClassicalNahuatlClauseCompositionSourceFrame?.(replacement, {
+          ...previous.envelope.callerDerivedFacts,
+          referenceId: previous.referenceId,
+          subjectReferenceId: previous.subject?.referenceId || "",
+          objectReferenceIds: Object.fromEntries(previous.objects.map(object => [object.id, object.referenceId])),
+          possessorReferenceId: previous.possessor?.referenceId || "",
+          contextRecords: previous.envelope.contextRecords,
+        });
+      }
+      if (!isClassicalNahuatlClauseCompositionNode(next)) return null;
+      return buildClassicalNahuatlClauseConjunctionOperationRequest({
+        operationKind: original.operationKind,
+        conjuncts: original.conjuncts.map((node, position) => position === index ? next : node),
+        sharedSupplement: original.sharedSupplement,
+        ...(original.conjunctorResult ? {conjunctorResult: original.conjunctorResult} : {}),
+        options: original.options,
+      });
+    }
+    function evaluateClassicalNahuatlClauseConjunctionRequest(request = {}) {
+      const operationRequest = isClassicalNahuatlClauseConjunctionOperationRequest(request)
         ? request
         : buildClassicalNahuatlClauseConjunctionOperationRequest(request);
       const operationKind = operationRequest.operationKind;
@@ -2616,6 +2656,7 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
     api.isClassicalNahuatlClauseCompositionNode = isClassicalNahuatlClauseCompositionNode;
     api.buildClassicalNahuatlClauseConjunctionOperationRequest = buildClassicalNahuatlClauseConjunctionOperationRequest;
     api.isClassicalNahuatlClauseConjunctionOperationRequest = isClassicalNahuatlClauseConjunctionOperationRequest;
+    api.buildClassicalNahuatlConjunctReplacementRequest = buildClassicalNahuatlConjunctReplacementRequest;
     api.evaluateClassicalNahuatlClauseConjunction = evaluateClassicalNahuatlClauseConjunction;
     api.isClassicalNahuatlClauseConjunctionResultFrame = isClassicalNahuatlClauseConjunctionResultFrame;
     api.evaluateClassicalNahuatlClauseConjunctionParadigm = evaluateClassicalNahuatlClauseConjunctionParadigm;

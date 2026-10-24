@@ -1,3 +1,4 @@
+import {runCompositionAction} from '../composition/action_feedback.mjs?v=20261023-1';
 import { installClassicalSourceObjectRows, syncClassicalSourceObjectRows } from "./source_objects.mjs?v=20261007-panel-source-objects-1";
 import { getSourceClassRequirement } from "./source_admission.mjs?v=20261014-source-admission-3";
 // Canonical modern ESM module.
@@ -12658,6 +12659,8 @@ export function createUiComposerRuntime(targetObject = globalThis) {
           if (option.disabled) {
             return;
           }
+          const before = targetObject.getClassicalConstructionPosition?.();
+          runCompositionAction(targetObject.document, option, () => {
           const control = targetObject.document.getElementById(option.dataset.classicalSegmentControl || "");
           const value = String(option.dataset.classicalSegmentValue || "");
           const intentionalReset = option.dataset.classicalSegmentReset === "true";
@@ -12668,6 +12671,15 @@ export function createUiComposerRuntime(targetObject = globalThis) {
           control.dispatchEvent(new targetObject.Event("change", {
             bubbles: true
           }));
+          // Staged handlers deliberately skip a full accepted-Result render.
+          // Reflect the owner's settled native value without accepting it.
+          targetObject.document.querySelectorAll("[data-classical-segment-control]").forEach(button => {
+            if (button.dataset.classicalSegmentControl !== control.id) return;
+            const selected = button.dataset.classicalSegmentValue === control.value;
+            button.classList.toggle("is-active", selected);
+            button.setAttribute("aria-pressed", String(selected));
+          });
+          }, {label: "Updating Build…", isCurrent: () => targetObject.getClassicalConstructionPosition?.() === before});
         });
       });
       renderInitialClassicalPanelContractSurface();

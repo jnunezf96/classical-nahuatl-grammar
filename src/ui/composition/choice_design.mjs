@@ -1,3 +1,4 @@
+import {runCompositionAction} from './action_feedback.mjs?v=20261023-1';
 import {ownerChoiceHost} from './owner_choice_roots.mjs?v=20261023-core-1';
 // Presentation keeps exact references only to scope the draft. They cannot
 // authorize grammar; native controls and their existing handlers do that work.
@@ -198,6 +199,8 @@ export function createChoiceDesign(doc) {
         const button=doc.createElement('button');button.type='button';button.textContent=option.label;
         button.dataset.compositionChoiceValue=option.value;button.disabled=option.disabled;
         if(kind==='buttons')button.addEventListener('click',()=>{
+          const before=doc.defaultView.getClassicalConstructionPosition?.();
+          runCompositionAction(doc,button,()=>{
           const native=findControl(doc,controlKey(control));
           const offered=[...native?.options || []].find(item=>item.value===option.value);
           if(!native || native.disabled || !offered || offered.disabled || offered.hidden
@@ -211,6 +214,7 @@ export function createChoiceDesign(doc) {
           }
           refresh();
           [...(mirrors.get(controlKey(control))?.children || [])].find(item=>item.dataset.compositionChoiceValue===native.value)?.focus({preventScroll:true});
+          },{label:'Updating Build…',isCurrent:()=>doc.defaultView.getClassicalConstructionPosition?.()===before});
         });mirror.append(button);
       }
     }

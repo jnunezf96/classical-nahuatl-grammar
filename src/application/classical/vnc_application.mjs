@@ -10216,6 +10216,37 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       }
       return classicalNahuatlVncApplicationSharedService;
     }
+    // Editing replaces the current operation over its original typed Source.
+    // Continuation is different: it applies a new operation to the made stem.
+    function getClassicalNahuatlVncApplicationEditContext(exact = null) {
+      const sentence = isClassicalNahuatlVncSentenceResultFrame(exact) ? exact : null;
+      const application = sentence ? sentence.vncApplicationFrame
+        : isClassicalNahuatlVncApplicationIssuedFrame(exact) ? exact
+        : classicalNahuatlVncApplicationFrameByResultFrame.get(exact);
+      if (!isClassicalNahuatlVncApplicationIssuedFrame(application)
+        || classicalNahuatlVncApplicationFrameByResultFrame.get(application.resultFrame) !== application
+        || (!sentence && exact !== application && exact !== application.resultFrame)) return null;
+      const sourceFrame = application.resultFrame.sourceMachineryFrame;
+      if (!classicalNahuatlVncTypedSourceApplicationProvenanceBySource.has(sourceFrame)) return null;
+      const normalized = application.normalizedRequest;
+      const selections = Object.fromEntries(CLASSICAL_NAHUATL_VNC_TYPED_SOURCE_APPLICATION_SELECTION_FIELDS
+        .filter(key => Object.hasOwn(normalized, key)).map(key => [key, normalized[key]]));
+      // Normalization contains defaults for inactive operations. They are not
+      // choices authored for this operation and must not become new requests.
+      if (normalized.requestedDerivation !== "causative") {
+        delete selections.causativeObjectKind; delete selections.causativeSpecificShuntlineRealization;
+      }
+      if (normalized.requestedDerivation !== "applicative") {
+        delete selections.applicativeObjectKind; delete selections.applicativeObjectPerson;
+      }
+      if (normalized.requestedDerivation === "direct") delete selections.derivationOptionId;
+      if (normalized.requestedVoice !== "active") selections.subject = application.resultFrame.participantProjection.targetSubject.agreement;
+      const envelope = sentence && classicalNahuatlVncSentenceEnvelopeReceipts.get(sentence);
+      if (envelope) selections.sentenceOptions = {...selections.sentenceOptions, ...envelope};
+      return Object.freeze({exactInput: exact, applicationFrame: application, sourceFrame,
+        sourceSubject: classicalNahuatlVncTypedSourceApplicationProvenanceBySource.get(sourceFrame).sourceDescriptor.sourceSubject,
+        selections: deepFreezeClassicalNahuatlVncApplicationValue(cloneClassicalNahuatlVncApplicationCompactValue(selections))});
+    }
     function getClassicalNahuatlVncContinuationSourceConstituents(
       sourceResultFrame = null,
     ) {
@@ -13621,6 +13652,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       prepareClassicalNahuatlVncApplicationRecipeReplay;
     api.getClassicalNahuatlVncRecipeStepExecutionRequest =
       getClassicalNahuatlVncRecipeStepExecutionRequest;
+    api.getClassicalNahuatlVncApplicationEditContext = getClassicalNahuatlVncApplicationEditContext;
     api.getClassicalNahuatlVncContinuationSourceConstituents =
       getClassicalNahuatlVncContinuationSourceConstituents;
     api.resolveClassicalNahuatlImperfectiveVncSourceFrame = resolveClassicalNahuatlImperfectiveVncSourceFrame;

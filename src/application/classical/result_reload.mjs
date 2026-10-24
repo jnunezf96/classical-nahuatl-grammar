@@ -1,3 +1,5 @@
+import {exportNncContextReloadNode, replayNncContextReloadNode, isNncReloadEvidence} from "./reload_nnc_context.mjs";
+import {exportClauseContextReloadNode, replayClauseContextReloadNode, isClauseReloadEvidence} from "./reload_clause_context.mjs";
 // Reload inputs are recipes, never persisted grammar frames or written answers.
 // Each node is reissued by its existing owner in the new runtime.
 const KIND = "classical-grammar-result-reload-recipe";
@@ -17,6 +19,13 @@ const ADJUNCTION_KEYS = ["semanticRelation", "adverbializationDegree", "structur
   "adjoinedUnitType", "order", "recursion", "marking", "contrast", "timeProfile",
   "conditionType", "purposeType", "concessionType", "explicitAdverbialIndicator",
   "principalCorroboratingAdverbial", "conditionalCuePresent"];
+const CONJUNCTION_FACT_KEYS = ["semanticGroup", "shortPronominal", "collectiveReference", "namedPartnerEligible",
+  "maleBondingStem", "demonstrativeKind", "interrogativeKind", "antecessiveOrder", "mood", "tense", "sentenceKind"];
+const CONJUNCTION_OPTION_KEYS = ["relation", "coordinationType", "level", "polarity", "rightwardModifier",
+  "modifierAdjunctor", "sharedModifierScope", "sharedModifier", "leftContextAbsent", "markedAdjoinedException",
+  "adjoinedFunction", "identicalAdjoinedClauseEllipsis", "boundaryPunctuation", "correlationType", "pattern",
+  "lexicalType", "adjunctorDistribution", "stateRealization", "parallelType", "rephraseAxis", "appositiveType"];
+const NNC_SENTENCE_KEYS = ["sentenceType", "polarity", "negativePrefix", "predicateKind"];
 const pick = (value, keys) => Object.fromEntries(keys.filter(key =>
   ["string", "boolean", "number"].includes(typeof value?.[key])).map(key => [key, value[key]]));
 const plain = (value, keys) => value && typeof value === "object" && !Array.isArray(value)
@@ -36,12 +45,31 @@ export function exportClassicalResultReloadRecipe(r, roots = {}) {
     if (indices.has(value)) return indices.get(value);
     if (!value || depth > 32 || nodes.length >= 128 || visiting.has(value)) throw new Error("unsupported reload graph");
     const capture = issued(r, value);
-    if (!capture) throw new Error("issued reload Result required");
+    if (!capture && !isNncReloadEvidence(r,value) && !isClauseReloadEvidence(r,value)) throw new Error("issued reload Result required");
     visiting.add(value);
-    let node;
+    let node = exportNncContextReloadNode(r,value,child=>visit(child,depth+1))
+      ?? exportClauseContextReloadNode(r,value,child=>visit(child,depth+1));
     const vnc = r.exportClassicalNahuatlVncApplicationRecipe?.(value);
-    if (vnc) node = { type: "vnc", recipe: vnc };
-    else if (capture.operationId === "nnc:ordinary"
+    if (node) {}
+    else if (vnc) node = { type: "vnc", recipe: vnc };
+    else if (r.isClassicalNahuatlClauseConjunctionResultFrame?.(value) === true) {
+      const first = value.conjuncts?.[0];
+      const originalChild = r.isClassicalNahuatlClauseCompositionSourceFrame?.(first) === true
+        ? r.getClassicalNahuatlSupplementationClauseSourceFrame(first.envelope) : first;
+      const request = r.buildClassicalNahuatlConjunctReplacementRequest(value, 0, originalChild);
+      if (!request || !plain(request.options, CONJUNCTION_OPTION_KEYS)) throw new Error("unsupported conjunction reload context");
+      node = {type: "clause:conjunction", operationKind: request.operationKind,
+        conjuncts: request.conjuncts.map(child => ({result: visit(child,depth+1)})),
+        options: {...request.options},
+        ...(request.sharedSupplement ? {sharedSupplement: visit(request.sharedSupplement,depth+1)} : {}),
+        ...(request.conjunctorResult ? {conjunctorResult: visit(request.conjunctorResult,depth+1)} : {})};
+    } else if (r.isClassicalNahuatlIssuedNncSentenceSurfaceFrame?.(value) === true) {
+      const context = r.getClassicalNahuatlOrdinaryNncReinflectionContext?.(value);
+      if (!context || value.discourseFrame || value.canonicalNuclearWrittenResult
+        || value.contextualFlawedSubjectSourceFrame) throw new Error("unsupported NNC sentence context");
+      node = {type: "nnc:sentence", source: visit(context.ordinaryResult, depth + 1),
+        choices: pick({...value, sentenceType: value.requestedSentenceType}, NNC_SENTENCE_KEYS)};
+    } else if (capture.operationId === "nnc:ordinary"
       && r.isClassicalNahuatlOrdinaryNncResult?.(value)
       && !r.getClassicalNahuatlLexicalizedPresentNncSourceParent?.(value.sourceFrame)
       && !value.sourceFrame.compoundSource && !value.sourceFrame.sourceConstituents?.length) {
@@ -113,8 +141,10 @@ export function replayClassicalResultReloadRecipe(r, recipe) {
   const prior = id => Number.isInteger(id) && id >= 0 && id < results.length ? results[id] : null;
   try {
     for (const node of recipe.nodes) {
-      let result;
-      if (node?.type === "vnc" && exact(node, ["type", "recipe"])) {
+      let result = replayNncContextReloadNode(r,node,prior);
+      if (result === undefined) result = replayClauseContextReloadNode(r,node,prior);
+      if (result !== undefined) { if (!result) return null; }
+      else if (node?.type === "vnc" && exact(node, ["type", "recipe"])) {
         const v = node.recipe;
         if (v?.kind !== "classical-nahuatl-vnc-application-reload-recipe" || v.version !== 1
           || !Array.isArray(v.steps) || !v.steps.length || v.steps.length > 512) return null;
@@ -125,6 +155,36 @@ export function replayClassicalResultReloadRecipe(r, recipe) {
           if (!r.isClassicalGrammarApplicationResult(application) || application.authorizationStatus !== "authorized") return null;
           result = application.canonicalResult;
         }
+      } else if (node?.type === "clause:conjunction"
+        && exact(node, ["type", "operationKind", "conjuncts", "options", "sharedSupplement", "conjunctorResult"])
+        && typeof node.operationKind === "string" && plain(node.options, CONJUNCTION_OPTION_KEYS)
+        && Array.isArray(node.conjuncts) && node.conjuncts.length > 0 && node.conjuncts.length <= 32) {
+        if (["sharedSupplement", "conjunctorResult"].some(key => node[key] !== undefined && !prior(node[key]))) return null;
+        const conjuncts = node.conjuncts.map(child => {
+          if (exact(child, ["result"]) && prior(child.result)) return prior(child.result);
+          if (!exact(child, ["source", "facts", "referenceId", "subjectReferenceId", "objectReferenceIds", "possessorReferenceId"])
+            || !prior(child.source) || !plain(child.facts, CONJUNCTION_FACT_KEYS)
+            || !["referenceId", "subjectReferenceId", "possessorReferenceId"].every(key => typeof child[key] === "string")
+            || !child.objectReferenceIds || typeof child.objectReferenceIds !== "object" || Array.isArray(child.objectReferenceIds)
+            || !Object.values(child.objectReferenceIds).every(value => typeof value === "string")) throw new Error("invalid conjunct inputs");
+          const source = r.buildClassicalNahuatlClauseCompositionSourceFrame(prior(child.source), {
+            ...child.facts, referenceId: child.referenceId, subjectReferenceId: child.subjectReferenceId,
+            objectReferenceIds: child.objectReferenceIds, possessorReferenceId: child.possessorReferenceId});
+          if (r.isClassicalNahuatlClauseCompositionSourceFrame?.(source) !== true) throw new Error("conjunct source rejected");
+          return source;
+        });
+        const application = r.executeClassicalGrammarApplicationRequest({operationId: "clause:composition",
+          args: [{operationKind: node.operationKind, conjuncts, options: node.options,
+            ...(node.sharedSupplement === undefined ? {} : {sharedSupplement: prior(node.sharedSupplement)}),
+            ...(node.conjunctorResult === undefined ? {} : {conjunctorResult: prior(node.conjunctorResult)})}]});
+        result = application?.canonicalResult;
+      } else if (node?.type === "nnc:sentence"
+        && exact(node, ["type", "source", "choices"]) && prior(node.source)
+        && r.isClassicalNahuatlOrdinaryNncResult?.(prior(node.source)) === true
+        && plain(node.choices, NNC_SENTENCE_KEYS)) {
+        const application = r.executeClassicalGrammarApplicationRequest({operationId: "nnc:sentence-surface",
+          args: [prior(node.source).typedSlotFrame, node.choices]});
+        result = application?.canonicalResult;
       } else if (node?.type === "nnc:ordinary" && exact(node, ["type", "source", "choices"])
         && plain(node.source, SOURCE_KEYS) && plain(node.choices, [...NNC_KEYS, "humanness"])) {
         const source = r.issueCanonicalNncSourceFrame(node.source);
@@ -164,7 +224,7 @@ export function replayClassicalResultReloadRecipe(r, recipe) {
           principalClause: prior(node.principal), adjoinedUnit: prior(node.adjoined),
           ...(node.marker === undefined ? {} : { markerUnit: prior(node.marker) }) });
       } else return null;
-      if (!issued(r, result)) return null;
+      if (!issued(r, result) && !isNncReloadEvidence(r,result) && !isClauseReloadEvidence(r,result)) return null;
       results.push(result);
     }
     const roots = Object.fromEntries(Object.entries(recipe.roots).map(([key, id]) => [key, prior(id)]));

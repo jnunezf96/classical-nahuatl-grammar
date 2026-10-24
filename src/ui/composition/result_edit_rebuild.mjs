@@ -60,9 +60,34 @@ function supplementation(runtime, exact, project) {
     children:[{role:'principal',exact:principal},{role:'adjoined',exact:adjoined}]};
 }
 
+function supplementationChange(runtime, exact, project) {
+  const inputs = runtime.getClassicalNahuatlSupplementationReloadInputs?.(exact);
+  if (!inputs || typeof runtime.buildClassicalNahuatlSupplementationReplacementRequest !== 'function') return null;
+  const children = [['principal','principalClause','principalContinuationFrames'],
+    ['adjoined','supplementClause','supplementContinuationFrames']].map(([role,key,continuations]) => ({role,
+      exact: inputs.options[continuations]?.at(-1)
+        || runtime.getClassicalNahuatlSupplementationClauseSourceFrame?.(inputs[key])}));
+  if (!children.every(child => capture(runtime,child.exact,project)
+    && runtime.buildClassicalNahuatlSupplementationReplacementRequest(exact,child.role,child.exact))) return null;
+  return {kind:'supplementation',exact,children,requestOwner:true};
+}
+
+function conjunction(runtime, exact, project) {
+  if (runtime.isClassicalNahuatlClauseConjunctionResultFrame?.(exact) !== true
+    || typeof runtime.buildClassicalNahuatlConjunctReplacementRequest !== 'function') return null;
+  const children = exact.conjuncts.map((node,index) => ({role:String(index),exact:
+    runtime.isClassicalNahuatlClauseCompositionSourceFrame?.(node) === true
+      ? runtime.getClassicalNahuatlSupplementationClauseSourceFrame?.(node.envelope) : node}));
+  if (!children.every(child => capture(runtime,child.exact,project))
+    || !runtime.buildClassicalNahuatlConjunctReplacementRequest(exact,0,children[0]?.exact)) return null;
+  return {kind:'conjunction',exact,children};
+}
+
 function recipe(runtime, exact, project) {
   if (!capture(runtime, exact, project)) return null;
-  const relation = supplementation(runtime, exact, project);
+  const conjoined = conjunction(runtime, exact, project);
+  if (conjoined) return conjoined;
+  const relation = supplementationChange(runtime, exact, project);
   if (relation) return relation;
   if (runtime.isClassicalNahuatlIssuedParticleSentenceLayerFrame?.(exact) !== true
     || !capture(runtime, exact.canonicalInputFrame, project)) return null;
@@ -91,23 +116,28 @@ function controllerFor(runtime, entry, replacements = new Map()) {
   return {controller,contract};
 }
 
-function pathTo(runtime, root, target, project) {
+function pathTo(runtime, root, target, project, occurrence = null) {
   if (!capture(runtime, root, project) || !capture(runtime, target, project)) return null;
+  if (occurrence !== null && (!Array.isArray(occurrence) || occurrence.length % 2
+    || occurrence.some((value,index) => index % 2 ? !Number.isInteger(value) || value < 0 : value !== 'children'))) return null;
   const paths = [];
-  function visit(exact, path, seen) {
+  function visit(exact, path, seen, address = []) {
     if (paths.length > 1 || path.length > 32 || seen.has(exact)) return;
-    if (exact === target) { paths.push(path); return; }
+    if (exact === target && (occurrence === null || address.length === occurrence.length)) { paths.push(path); return; }
     const entry = recipe(runtime, exact, project);
-    if (!entry || entry.kind === 'supplementation' && !controllerFor(runtime, entry)) return;
+    if (!entry) return;
     const next = new Set(seen).add(exact);
-    for (const child of entry.children) visit(child.exact, [...path,{entry,role:child.role}], next);
+    for (const [index,child] of entry.children.entries()) {
+      if (occurrence !== null && (occurrence[address.length] !== 'children' || occurrence[address.length+1] !== index)) continue;
+      visit(child.exact, [...path,{entry,role:child.role}], next, [...address,'children',index]);
+    }
   }
   visit(root, [], new Set());
-  return paths.length === 1 ? paths[0] : null;
+  return paths.length===1?paths[0]:null;
 }
 
-export function canRebuildResultEdit(runtime, root, target, project) {
-  try { return pathTo(runtime, root, target, project) !== null; }
+export function canRebuildResultEdit(runtime, root, target, project, occurrence = null) {
+  try { return pathTo(runtime, root, target, project, occurrence) !== null; }
   catch { return false; }
 }
 
@@ -128,10 +158,16 @@ export function getResultEditReorder(runtime, target, project) {
 }
 
 function reissue(runtime, entry, role, replacement) {
+  if (entry.kind === 'conjunction') {
+    const request = runtime.buildClassicalNahuatlConjunctReplacementRequest(entry.exact,Number(role),replacement);
+    if (!request) return null;
+    const application = runtime.executeClassicalGrammarApplicationRequest?.({operationId:'clause:composition',args:[request]});
+    return application?.authorizationStatus === 'authorized' ? application.canonicalResult : null;
+  }
   if (entry.kind === 'supplementation') {
-    const prepared = controllerFor(runtime, entry, new Map([[role,replacement]]));
-    if (!prepared) return null;
-    const result = prepared.controller.compose(entry.choices);
+    const request=runtime.buildClassicalNahuatlSupplementationReplacementRequest(entry.exact,role,replacement);
+    if (!request) return null;
+    const result=runtime.executeClassicalGrammarApplicationRequest?.({operationId:'sentence:supplementation',args:[request]});
     return result?.authorizationStatus === 'authorized' ? result.canonicalResult : null;
   }
   const exact = entry.exact;
@@ -149,9 +185,9 @@ function reissue(runtime, entry, role, replacement) {
 
 // Execution helper only: callers stage a frozen packet and invoke this from
 // explicit Make. The returned application is the rebuilt whole, not the child.
-export function rebuildResultEdit(runtime, root, target, replacement, project) {
+export function rebuildResultEdit(runtime, root, target, replacement, project, occurrence = null) {
   try {
-    const path = pathTo(runtime, root, target, project);
+    const path = pathTo(runtime, root, target, project, occurrence);
     if (!path || !capture(runtime, replacement, project)) return null;
     if (replacement === target) return capture(runtime, root, project)?.applicationResult || null;
     let next = replacement;
@@ -161,4 +197,42 @@ export function rebuildResultEdit(runtime, root, target, replacement, project) {
     }
     return capture(runtime, next, project)?.applicationResult || null;
   } catch { return null; }
+}
+
+// Preview leases never become accepted captures. The path itself is rebuilt
+// from the accepted root, while replacement authority comes from its lease.
+export function previewRebuiltResultEdit(runtime, root, target, childPreview, project, occurrence) {
+  try {
+    const path = pathTo(runtime,root,target,project,occurrence);
+    if (!path || !childPreview?.isCurrent?.()) return null;
+    let next = childPreview.canonicalResult;
+    const leases = [];
+    for (const {entry,role} of [...path].reverse()) {
+      let operation, options;
+      if (entry.kind === 'conjunction') {
+        operation = 'clause:composition';
+        options = runtime.buildClassicalNahuatlConjunctReplacementRequest(entry.exact,Number(role),next);
+      } else if (entry.kind === 'supplementation') {
+        operation = 'sentence:supplementation';
+        options = runtime.buildClassicalNahuatlSupplementationReplacementRequest(entry.exact,role,next);
+      } else if (entry.kind === 'particle') {
+        operation = entry.operation;
+        const exact=entry.exact;
+        options={...(exact.inputParticleResultFrame?{particleResultFrame:exact.inputParticleResultFrame}:{particleSourceFrame:exact.particleSourceFrame}),
+          ...(runtime.isClassicalNahuatlIssuedParticleSentenceLayerFrame?.(next)?{consumedSentenceFrame:next}:{nuclearResultFrame:next}),
+          ...(operation==='sentence:particle-adjunction'?{honorificized:exact.honorificizedRequested===true,speakerGender:exact.speakerGender}:{})};
+      } else return null;
+      if (!options) return null;
+      const preview=runtime.previewClassicalGrammarApplicationRequest?.({operationId:operation,args:[options]});
+      if (runtime.isClassicalGrammarApplicationPreview?.(preview)!==true) return null;
+      leases.push(preview);next=preview.canonicalResult;
+    }
+    const final=leases.at(-1);
+    return final?{surface:final.surface,canonicalResult:next,isCurrent:()=>childPreview.isCurrent()
+      && pathTo(runtime,root,target,project,occurrence)!==null
+      && leases.every(lease=>runtime.isClassicalGrammarApplicationPreview?.(lease)===true)}:null;
+  } catch {return null;}
+}
+export function isConjunctResultEdit(runtime,root,target,project,occurrence) {
+  try {return pathTo(runtime,root,target,project,occurrence)?.some(step=>step.entry.kind==='conjunction')===true;}catch{return false;}
 }

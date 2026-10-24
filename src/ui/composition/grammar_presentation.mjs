@@ -6,6 +6,10 @@ export function isGrammarOwnerVisible(doc,node){
     for(let current=node;current;current=current.parentElement) {
       // Derived layout visibility cannot decide whether an exact projection
       // replaces a native mirror. Its own owner field/collector still can.
+      if(current.dataset.compositionOperationGated!==undefined) {
+        if(current.hidden)return false;
+        if(doc.getElementById?.('classical-workbench')?.dataset.compositionOperationSelected==='false')continue;
+      }
       if(current.dataset.buildOwnerSlot!==undefined||current.dataset.buildFormulaPart!==undefined
         ||current.dataset.buildFormula!==undefined||current.dataset.buildFormulaSlot!==undefined
         ||current.id==='classical-capability-operation-choices')continue;

@@ -1,7 +1,7 @@
 import {orderVncSubjectFields,presentNncBuildOptions} from './build_composition.mjs?v=20261023-1';
 import {nativeChoiceAddress,BUILD_SLOT_LABELS,BUILD_SLOT_ORDER,CONDITIONAL_NATIVE_FIELDS} from './build_choice_catalog.mjs?v=20261023-all-build-2';
 import {ownerChoiceRoots,findOwnerChoice} from './owner_choice_roots.mjs?v=20261023-core-1';
-import {arrangeNuclearClauseSlots,arrangeProjectedFormulaChoices,stemCollectorCaption,vncSubjectCaption,uniteCoreStemChoices,uniteNounstemChoices,arrangeProjectedClauseChoices,preserveDisclosureChoice} from './formula_layout.mjs?v=20261023-slots-17';
+import {arrangeNuclearClauseSlots,arrangeProjectedFormulaChoices,stemCollectorCaption,vncSubjectCaption,uniteCoreStemChoices,uniteNounstemChoices,arrangeProjectedClauseChoices,preserveDisclosureChoice} from './formula_layout.mjs?clauseHarmony=20261023-5&v=20261023-slots-17';
 import {validateWorkspaceOrganization,DEFAULT_WORKSPACE_ORGANIZATION,loadWorkspaceOrganization} from './workspace_organization_model.mjs?v=20261013-canvas-workspace-1&choicesLayout=20261014-4&startupDelivery=20261022-1';
 import {createParticleChoices} from './particle_choices.mjs?v=20261021-particle-clear-2';
 
@@ -78,7 +78,7 @@ export function createWorkspaceOrganization(doc,initialModel=DEFAULT_WORKSPACE_O
           const buttons=field.querySelector('.composition-choice-buttons');if(buttons)buttons.setAttribute('aria-label',label);
         }
       }
-      return {field,group,choice,family:doc.getElementById('classical-rule-logic-controls')?.dataset.classicalRuleLogicSurfaceUnit,
+      return {field,group,choice,clause:Boolean(control?.dataset.classicalClauseRelationDecision),family:doc.getElementById('classical-rule-logic-controls')?.dataset.classicalRuleLogicSurfaceUnit,
         operation:doc.getElementById('classical-capability-operation-plan')?.dataset.classicalCapabilityOperationId||'',hidden:!visibleField(field,ownerChoiceRoots(doc).find(root=>root.contains(field))||host)};
     });
     for(const heading of host.querySelectorAll(':scope > [data-workspace-choice-heading]'))heading.remove();

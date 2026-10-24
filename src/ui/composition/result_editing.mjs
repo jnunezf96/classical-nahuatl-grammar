@@ -1,4 +1,4 @@
-import {projectCanonicalStructure} from './structure_design.mjs';
+import {projectCanonicalStructure} from './structure_design.mjs?clauseHarmony=20261023-5&v=20261011-structure-15&routeShapes=20261021-1&clauseCoordinate=20261021-1&resetEligibility=20261022-1&writingSource=20261022-1&makePreview=20261022-1&fixedChoices=20261022-1';
 
 export function projectResultForEditing(runtime={},exact=null){
   if(!exact||typeof exact!=='object')return null;

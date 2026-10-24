@@ -44,6 +44,9 @@ export function createWorkspacePresentation(doc) {
       schedule();
     }
   },true);
+  doc.addEventListener('classical:interaction-settled',event=>{
+    if(event.detail?.controlId==='verb-entry-apply'){applyRequested=true;schedule();}
+  });
   doc.addEventListener('classical:composition-action-change',event=>{
     // Reveal required Source material before the existing composing action
     // focuses its original input. Keep that native focus destination intact.

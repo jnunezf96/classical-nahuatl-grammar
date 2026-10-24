@@ -1,5 +1,6 @@
-import {getResultEditTargets,projectResultForEditing} from './result_editing.mjs?v=20261014-result-edit-3';
-import {canRebuildResultEdit,getResultEditReorder} from './result_edit_rebuild.mjs?v=20261014-result-edit-3';
+import {runCompositionAction} from './action_feedback.mjs?v=20261023-1';
+import {getResultEditTargets,projectResultForEditing} from './result_editing.mjs?v=20261023-conjunction-1';
+import {canRebuildResultEdit,getResultEditReorder} from './result_edit_rebuild.mjs?mixedInner=20261024-1&v=20261023-conjunct-edit-1';
 import {inventoryOptionReference} from './build_navigation_model.mjs';
 
 const ORDER_FIELD='clause-choice:sentence:supplementation:supplementation-order';
@@ -52,7 +53,7 @@ export function createResultActions(doc,{selection,onSelect,onAction,onAdd,sched
   function capability(detail){
     if(!detail)return {change:false,add:false,reorder:null,remove:false,undo:false,clear:false};
     const {root,target,record}=detail;
-    const rebuild=canRebuildResultEdit(runtime,root,target,project);
+    const rebuild=canRebuildResultEdit(runtime,root,target,project,record.path);
     let navigator=null,binding=null,reorder=null;
     let change=false;
     if(rebuild && typeof runtime.hasClassicalGrammarApplicationAvailableOperation==='function') {
@@ -88,7 +89,12 @@ export function createResultActions(doc,{selection,onSelect,onAction,onAdd,sched
     button.textContent=actionLabel(action);button.dataset.inventoryFieldRef=`id:${button.id}`;
     if(action==='undo')button.dataset.inventoryMirrorsFieldRef='id:classical-grammar-workspace-history-undo';
     if(action==='clear')button.dataset.inventoryMirrorsFieldRef='id:verb-entry-clear';
-    button.addEventListener('click',()=>{if(!button.disabled)emit(action);});
+    button.addEventListener('click',()=>{
+      const before=runtime.getClassicalConstructionPosition?.(),part=context();
+      runCompositionAction(doc,button,()=>emit(action),{label:`${actionLabel(action)}…`,
+        isCurrent:()=>runtime.getClassicalConstructionPosition?.()===before && context()?.root===part?.root && context()?.target===part?.target
+          && JSON.stringify(context()?.path)===JSON.stringify(part?.path)});
+    });
     (['undo','clear'].includes(action)?workspaceButtons:buttons).append(button);controls.set(action,button);
   }
   targetSelect.addEventListener('change',()=>{

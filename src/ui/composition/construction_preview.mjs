@@ -1,5 +1,6 @@
-import {getConstructionParticleHostInput,getConstructionLayerReadiness} from './construction_packet.mjs?v=20261021-packet-envelopes-3';
-import {resolveResultEditTarget,projectResultForEditing} from './result_editing.mjs?v=20261014-result-edit-2';
+import {previewRebuiltResultEdit} from './result_edit_rebuild.mjs?mixedInner=20261024-1&v=20261023-conjunct-edit-1';
+import {getConstructionParticleHostInput,getConstructionLayerReadiness} from './construction_layers.mjs?v=20261023-conjunct-edit-1';
+import {resolveResultEditTarget,projectResultForEditing} from './result_editing.mjs?v=20261023-conjunction-1';
 
 // Owner evaluation only. No application receipt, History write or acceptance.
 export function previewConstructionPacket(runtime,packet) {
@@ -20,8 +21,8 @@ export function previewConstructionPacket(runtime,packet) {
       const projection=project(edit.remaining);
       return projection?{surface:projection.surface,canonicalResult:edit.remaining,isCurrent:()=>resolveResultEditTarget(runtime,edit.root,edit.path,project)?.removableTo===edit.remaining}:null;
     }
-    if(edit.root!==edit.target)return null; // Never present a child as the whole.
-    return previewConstructionPacket(runtime,packet.inner);
+    const child=previewConstructionPacket(runtime,packet.inner);
+    return edit.root===edit.target?child:previewRebuiltResultEdit(runtime,edit.root,edit.target,child,project,edit.path);
   }
   if(packet.kind==='clause') {
     if(packet.captures.some(slot=>packet.controller.getCapturedCanonicalResult(slot.role)!==slot.exact))return null;

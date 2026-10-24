@@ -1552,6 +1552,7 @@ export function createClassicalClauseRelationControllerGlobals(
     const captures = new Map();
     const discourseSourceContextFrames = new Map();
     let conjunctionEllipsisPreview = null;
+    let conjunctionReadinessPreview = null;
     const issuedRelationAvailabilityContracts = new WeakSet();
     let captureRevision = 0;
 
@@ -2475,7 +2476,15 @@ export function createClassicalClauseRelationControllerGlobals(
           id: "left-context",
           values: ["present", "absent"],
           selectedValue: leftContext,
-          reason: "sentence-initial auh is licensed only with absent left context",
+          reason: "the leftward conjunct may be absent in the sentence-initial Auh construction (§52.3)",
+          optionAvailability: [
+            {value: "present", status: RELATION_AVAILABILITY.AVAILABLE},
+            {value: "absent", status: coordinationRelation === "marked" && level === "principal"
+              ? RELATION_AVAILABILITY.AVAILABLE : RELATION_AVAILABILITY.INCOMPATIBLE,
+            reasonCode: coordinationRelation === "marked" && level === "principal" ? ""
+              : "absent-left-conjunct-requires-marked-principal-conjunction",
+            recovery: "Choose marked conjunction at principal rank for sentence-initial Auh, or retain the leftward conjunct."},
+          ],
         }));
         requireCapturedSource("principal", diagnostics, {
           diagnosticPrefix: "classical-conjunction",
@@ -2604,7 +2613,8 @@ export function createClassicalClauseRelationControllerGlobals(
         if (!diagnostics.length && decisions.every(decision => decision.resolved)) {
           const previewKey = `${captureRevision}:${JSON.stringify(operationSelections)}`;
           if (conjunctionEllipsisPreview?.key !== previewKey) {
-            const conjuncts = ["principal", "adjoined", "dependent"]
+            const conjuncts = (operationSelections.leftContextAbsent
+              ? ["principal"] : ["principal", "adjoined", "dependent"])
               .filter(role => getValidatedCapture(role))
               .map((role, index) => getCapturedCompositionNode(role, `conjunct-${index + 1}`));
             conjunctionEllipsisPreview = {
@@ -2830,11 +2840,9 @@ export function createClassicalClauseRelationControllerGlobals(
         derived: {
           operationFamily: "conjunction",
           operationKind: relation,
-          conjunctCount: [
-            "principal",
-            "adjoined",
-            "dependent",
-          ].filter(role => getValidatedCapture(role)).length,
+          conjunctCount: (relation === "conjunction" && operationSelections.leftContextAbsent
+            ? ["principal"] : ["principal", "adjoined", "dependent"])
+            .filter(role => getValidatedCapture(role)).length,
           sharedSupplementPresent: Boolean(
             getValidatedCapture("supplement"),
           ),
@@ -5379,6 +5387,26 @@ export function createClassicalClauseRelationControllerGlobals(
           });
         }
       }
+      // Ask the same canonical owner used by preview and Make about coupled
+      // options. Completing each field alone is not grammatical readiness.
+      if (contract.relation === "conjunction" && contract.authorizationStatus === "authorized") {
+        const key = `${captureRevision}:${JSON.stringify(contract.operationSelections)}`;
+        let failure = "classical-conjunction-preflight-capability-required";
+        try {
+          if (typeof targetObject.evaluateClassicalNahuatlClauseConjunction === "function") {
+            if (conjunctionReadinessPreview?.key !== key) {
+              conjunctionReadinessPreview = {key,
+                result: targetObject.evaluateClassicalNahuatlClauseConjunction(buildConjunctionRequest(contract))};
+            }
+            const result = conjunctionReadinessPreview.result;
+            failure = result?.authorizationStatus === "authorized"
+              && targetObject.isClassicalNahuatlClauseConjunctionResultFrame?.(result) === true
+              ? "" : result?.blockReason || "classical-conjunction-preflight-blocked";
+          }
+        } catch { failure = "classical-conjunction-preflight-threw"; }
+        if (failure) contract = Object.freeze({...contract, authorizationStatus: "blocked",
+          blockReason: failure, diagnostics: freezeArray(unique([...contract.diagnostics, failure]))});
+      }
       const diagnostics = Array.isArray(contract?.diagnostics)
         ? contract.diagnostics
         : [];
@@ -5396,6 +5424,39 @@ export function createClassicalClauseRelationControllerGlobals(
         ...contract,
         missingCaptureRoles: freezeArray(missingCaptureRoles),
       });
+    }
+
+    function buildConjunctionRequest(contract) {
+      const sharedReference = contract.relation === "lexical-conjunction"
+        ? "lexical-conjunction-shared-referent"
+        : "";
+      const conjunctRoles = contract.relation === "conjunction"
+        && contract.operationSelections.leftContextAbsent === true
+        ? ["principal"]
+        : ["principal", "adjoined", "dependent"];
+      const conjuncts = conjunctRoles
+        .filter(role => Boolean(getValidatedCapture(role)))
+        .map((role, index) => getCapturedCompositionNode(
+          role,
+          sharedReference || `conjunct-${index + 1}`,
+        ));
+      const sharedSupplement = getValidatedCapture("supplement")
+        ? getCapturedCompositionNode(
+            "supplement",
+            sharedReference || "shared-supplement",
+          )
+        : null;
+      const request = {
+        operationKind: contract.relation,
+        conjuncts,
+        ...(contract.relation === "conjunction" && getValidatedCapture("marker")
+          ? {conjunctorResult: getValidatedCapture("marker").canonicalResult} : {}),
+        sharedSupplement,
+        options: {
+          ...contract.operationSelections,
+        },
+      };
+      return request;
     }
 
     function buildCapturedClauseCompositionSourceFrame(
@@ -6317,35 +6378,9 @@ export function createClassicalClauseRelationControllerGlobals(
               "classical-conjunction-application-capability-required",
           });
         }
-        const sharedReference = contract.relation === "lexical-conjunction"
-          ? "lexical-conjunction-shared-referent"
-          : "";
-        const conjunctRoles = contract.relation === "conjunction"
-          && contract.operationSelections.leftContextAbsent === true
-          ? ["principal"]
-          : ["principal", "adjoined", "dependent"];
-        const conjuncts = conjunctRoles
-          .filter(role => Boolean(getValidatedCapture(role)))
-          .map((role, index) => getCapturedCompositionNode(
-            role,
-            sharedReference || `conjunct-${index + 1}`,
-          ));
-        const sharedSupplement = getValidatedCapture("supplement")
-          ? getCapturedCompositionNode(
-              "supplement",
-              sharedReference || "shared-supplement",
-            )
-          : null;
-        const request = {
-          operationKind: contract.relation,
-          conjuncts,
-          ...(contract.relation === "conjunction" && getValidatedCapture("marker")
-            ? {conjunctorResult: getValidatedCapture("marker").canonicalResult} : {}),
-          sharedSupplement,
-          options: {
-            ...contract.operationSelections,
-          },
-        };
+        const request = buildConjunctionRequest(contract);
+        const conjuncts = request.conjuncts;
+        const sharedSupplement = request.sharedSupplement;
         const canonicalResult =
           requestPreviewOwner("clause:composition", request);
         const authorized = Boolean(

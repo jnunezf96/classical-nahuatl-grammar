@@ -2,6 +2,16 @@
 
 User-facing release notes for Classical Nahuatl Grammar.
 
+## Version 1.2.16 — Whole Result Editing
+
+Released October 23, 2026.
+
+- Changes individual constituents inside mixed conjunction and supplementation while retaining the whole Result.
+- Previews every affected ancestor and keeps acceptance exclusive to explicit Make.
+- Preserves untouched clauses, references, context and original NNC/VNC Sources during repeated edits.
+- Expands supported same-tab whole-Result reload to context records, shared supplements, composite particle links and NNC sentence inputs.
+- Includes the reviewed clause and particle interaction refinements since v1.2.15.
+
 ## Version 1.2.15 — NNC and VNC Composition
 
 Released October 23, 2026.

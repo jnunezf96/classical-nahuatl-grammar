@@ -2997,20 +2997,6 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
       return Object.freeze(/^[aāeēiīoō]/iu.test(surface) ? ["ah", "ay"] : ["ah"]);
     }
     function buildClassicalNahuatlNncSentenceSurfaceFrame(nncSlotFrame = null, options = {}) {
-      const contextualRequirement = targetObject.getClassicalNahuatlNominalNncSentenceContext?.(nncSlotFrame) || null;
-      if (contextualRequirement?.authorizationStatus === "blocked") {
-        return Object.freeze({kind: "classical-nahuatl-nnc-sentence-surface-frame",
-          authorizationStatus: "blocked", blockReason: contextualRequirement.blockReason,
-          sourceNncSlotFrame: nncSlotFrame, sentenceSurface: "", sentenceSurfaceApplies: false,
-          formulaStringAuthority: false, surfaceStringAuthority: false});
-      }
-      if (targetObject.isClassicalNahuatlBoundCustomaryAgentiveNncMaterial?.(nncSlotFrame) === true) {
-        return Object.freeze({kind: "classical-nahuatl-nnc-sentence-surface-frame",
-          authorizationStatus: "blocked", blockReason: "bound-customary-agentive-requires-consuming-boundary",
-          sourceNncSlotFrame: nncSlotFrame, sentenceSurface: "", sentenceSurfaceApplies: false,
-          formulaStringAuthority: false, surfaceStringAuthority: false});
-      }
-      const sentenceTypeKey = normalizeClassicalNahuatlNncToken(options.sentenceType || "assertion").toLowerCase().replace(/[\s_]/gu, "-");
       const sentenceTypeAliases = {
         assertion: "assertion",
         exclamation: "exclamation",
@@ -3025,7 +3011,38 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
         emphatic: "emphatic",
         wish: "wish"
       };
-      const requestedSentenceType = sentenceTypeAliases[sentenceTypeKey] || "";
+      const normalizeSentenceType = value => sentenceTypeAliases[
+        normalizeClassicalNahuatlNncToken(value || "assertion").toLowerCase().replace(/[\s_]/gu, "-")
+      ] || "";
+      // Recompose an exact issued sentence from its retained nucleus. The
+      // sentence surface is never fed back as a new nounstem or negative layer.
+      if (isClassicalNahuatlIssuedNncSentenceSurfaceFrame(nncSlotFrame)) {
+        const sentence = nncSlotFrame;
+        const retained = issuedNncSentenceSurfaceFrames.get(sentence).sentenceOptions;
+        const sameForce = !Object.hasOwn(options, "sentenceType")
+          || normalizeSentenceType(options.sentenceType) === sentence.requestedSentenceType;
+        const samePolarity = !Object.hasOwn(options, "polarity") || normalizeClassicalNahuatlNncToken(options.polarity).toLowerCase() === sentence.polarity;
+        const inherited = {...retained};
+        // A prefix choice belongs to the previous force/polarity. Let the
+        // existing owner choose its licensed form when either is changed.
+        if (!sameForce || !samePolarity) delete inherited.negativePrefix;
+        options = {...inherited, ...options};
+        nncSlotFrame = sentence.sourceNncSlotFrame;
+      }
+      const contextualRequirement = targetObject.getClassicalNahuatlNominalNncSentenceContext?.(nncSlotFrame) || null;
+      if (contextualRequirement?.authorizationStatus === "blocked") {
+        return Object.freeze({kind: "classical-nahuatl-nnc-sentence-surface-frame",
+          authorizationStatus: "blocked", blockReason: contextualRequirement.blockReason,
+          sourceNncSlotFrame: nncSlotFrame, sentenceSurface: "", sentenceSurfaceApplies: false,
+          formulaStringAuthority: false, surfaceStringAuthority: false});
+      }
+      if (targetObject.isClassicalNahuatlBoundCustomaryAgentiveNncMaterial?.(nncSlotFrame) === true) {
+        return Object.freeze({kind: "classical-nahuatl-nnc-sentence-surface-frame",
+          authorizationStatus: "blocked", blockReason: "bound-customary-agentive-requires-consuming-boundary",
+          sourceNncSlotFrame: nncSlotFrame, sentenceSurface: "", sentenceSurfaceApplies: false,
+          formulaStringAuthority: false, surfaceStringAuthority: false});
+      }
+      const requestedSentenceType = normalizeSentenceType(options.sentenceType);
       const polarity = normalizeClassicalNahuatlNncToken(options.polarity || "positive").toLowerCase();
       if (contextualRequirement && (requestedSentenceType !== contextualRequirement.requiredSentenceType
         || polarity !== contextualRequirement.requiredPolarity
@@ -3216,6 +3233,7 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
       });
       if (authorized) {
         issuedNncSentenceSurfaceFrames.set(frame, Object.freeze({
+          sentenceOptions: Object.freeze({...options}),
           sourceNncSlotFrame: frame.sourceNncSlotFrame,
           baseNncFormula: frame.baseNncFormula,
           canonicalNuclearWrittenResult:
@@ -3256,6 +3274,14 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
         && frame.sentenceType === receipt.sentenceType
         && frame.polarity === receipt.polarity
       );
+    }
+    // Reload may retain only the inputs of an exact owner-issued sentence.
+    // Never recover these inputs from the displayed written answer.
+    function getClassicalNahuatlNncSentenceReloadContext(frame = null) {
+      if (!isClassicalNahuatlIssuedNncSentenceSurfaceFrame(frame)) return null;
+      const receipt = issuedNncSentenceSurfaceFrames.get(frame);
+      return Object.freeze({sourceNncSlotFrame: receipt.sourceNncSlotFrame,
+        sentenceOptions: receipt.sentenceOptions});
     }
     function buildClassicalNahuatlExotlInterpretationSource(
       sentenceSurfaceFrame = null,
@@ -8530,6 +8556,7 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
         renderClassicalNahuatlNncSlotFrameFormula,
         buildClassicalNahuatlNncSentenceSurfaceFrame,
         isClassicalNahuatlIssuedNncSentenceSurfaceFrame,
+        getClassicalNahuatlNncSentenceReloadContext,
         buildClassicalNahuatlNncDiagrammaticFrame,
         isClassicalNahuatlNncDiagrammaticFrame,
         buildClassicalNahuatlNncOperationEvaluationFrame,
@@ -8596,6 +8623,7 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
         renderClassicalNahuatlNncSlotFrameFormula,
         buildClassicalNahuatlNncSentenceSurfaceFrame,
         isClassicalNahuatlIssuedNncSentenceSurfaceFrame,
+        getClassicalNahuatlNncSentenceReloadContext,
         buildClassicalNahuatlNncDiagrammaticFrame,
         isClassicalNahuatlNncDiagrammaticFrame,
         buildClassicalNahuatlNncOperationEvaluationFrame,
@@ -8729,6 +8757,7 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
     api.buildClassicalNahuatlNncSentenceSurfaceFrame = buildClassicalNahuatlNncSentenceSurfaceFrame;
     api.getClassicalNahuatlNncSentenceNegativePrefixOptions = getClassicalNahuatlNncSentenceNegativePrefixOptions;
     api.isClassicalNahuatlIssuedNncSentenceSurfaceFrame = isClassicalNahuatlIssuedNncSentenceSurfaceFrame;
+    api.getClassicalNahuatlNncSentenceReloadContext = getClassicalNahuatlNncSentenceReloadContext;
     api.buildClassicalNahuatlExotlInterpretationSource = buildClassicalNahuatlExotlInterpretationSource;
     api.isClassicalNahuatlExotlInterpretationSource = isClassicalNahuatlExotlInterpretationSource;
     api.evaluateClassicalNahuatlExotlInterpretation = evaluateClassicalNahuatlExotlInterpretation;

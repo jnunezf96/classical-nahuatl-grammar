@@ -1447,7 +1447,7 @@ const CLASSICAL_GRAMMAR_APPLICATION_CONTINUATION_TYPE_CONTRACTS =
     "clause:attested-collocation": Object.freeze({inputUnitKinds:Object.freeze([]),outputUnitKinds:Object.freeze(["clause-result"])}),
     "nnc:quantitative-predicate": Object.freeze({inputUnitKinds:Object.freeze([]),outputUnitKinds:Object.freeze(["nnc-result"])}),
     "nnc:ordinary": Object.freeze({
-      inputUnitKinds: Object.freeze([]),
+      inputUnitKinds: Object.freeze(["nnc-result", "clause-result"]),
       outputUnitKinds: Object.freeze([
         "nnc-result",
         "nnc-diagram-slot-frame",
@@ -1456,7 +1456,9 @@ const CLASSICAL_GRAMMAR_APPLICATION_CONTINUATION_TYPE_CONTRACTS =
       ]),
     }),
     "nnc:sentence-surface": Object.freeze({
-      inputUnitKinds: Object.freeze(["nnc-sentence-slot-frame"]),
+      // The NNC sentence owner can recompose its exact issued sentence.
+      // Other clauses remain subject to that owner's rejection.
+      inputUnitKinds: Object.freeze(["nnc-sentence-slot-frame", "clause-result"]),
       outputUnitKinds: Object.freeze(["clause-result"]),
     }),
     "nnc:diagram": Object.freeze({
@@ -1798,6 +1800,7 @@ const CLASSICAL_GRAMMAR_TYPED_SOURCE_OPERATION_BINDING_CONTRACTS =
 // or supplies selections on an owner's behalf.
 const CLASSICAL_GRAMMAR_APPLICATION_DIRECT_RESULT_PROBE_OPERATION_IDS =
   Object.freeze([
+    "nnc:ordinary",
     "vnc:diagram",
     "nnc:sentence-surface",
     "nnc:diagram",

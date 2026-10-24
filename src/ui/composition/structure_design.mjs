@@ -1,5 +1,5 @@
 import {resolveDecisionFocus,resolveSourceSlotFocus,focusNativeChoice,highlightSourceDecision} from './flow_design.mjs?v=20261022-reset-eligibility-1&writingSource=20261022-1&makePreview=20261022-1&fixedChoices=20261022-1';
-import {getNativeGrammarControls} from './choice_design.mjs?coreStem=20261023-1&v=20261022-reset-eligibility-1&writingSource=20261022-1&fixedChoices=20261022-1';
+import {getNativeGrammarControls} from './choice_design.mjs?clickFeedback=20261023-1&coreStem=20261023-1&v=20261022-reset-eligibility-1&writingSource=20261022-1&fixedChoices=20261022-1';
 import {createCandidateDesign} from './candidate_design.mjs?v=20261021-route-shapes-1';
 // Owner-issued structures are read only. No diagram, label or DOM value is an input.
 const readers=new WeakMap(), comparisons=new WeakMap();
@@ -7,11 +7,19 @@ export const setStructureDesignContext=(root,reader)=>{if(root)readers.set(root,
 export const readStructureDesignContext=root=>readers.get(root)?.() || null;
 export const setStructureComparison=(root,value)=>{if(root)comparisons.set(root,value);};
 const title=value=>String(value||'').replace(/-/gu,' ').replace(/^./u,c=>c.toUpperCase());
-const typeLabels=values=>[...new Set((values||[]).map(value=>/^nnc-/u.test(value)?'Noun':/^vnc-/u.test(value)?'Verb':value==='particle'?'Particle':/clause|sentence/u.test(value)?'Clause':'').filter(Boolean))];
+const typeLabels=values=>[...new Set((values||[]).map(value=>/^nnc-/u.test(value)?(/source|stem/u.test(value)?'Noun stem':'Noun clause'):/^vnc-/u.test(value)?(/source|stem/u.test(value)?'Verb stem':'Verb clause'):value==='particle'?'Particle':/clause|sentence/u.test(value)?'Clause':'').filter(Boolean))];
 
+const conjunctLabel=(index,rightOnly=false)=>rightOnly?'Right conjunct':`${['First','Second','Third'][index]||`Conjunct ${index+1}`}${index<3?' conjunct':''}`;
+function conjunctionChild(r,node) {
+  if(r.isClassicalNahuatlClauseCompositionSourceFrame?.(node))return r.getClassicalNahuatlSupplementationClauseSourceFrame?.(node.envelope)||null;
+  return r.isClassicalNahuatlClauseConjunctionResultFrame?.(node)||r.isClassicalNahuatlClauseComplementationResultFrame?.(node)?node:null;
+}
 function semanticChildren(r,exact) {
   const children=[];
-  if(r.isClassicalNahuatlSupplementationFrame?.(exact)) {
+  if(r.isClassicalNahuatlClauseConjunctionResultFrame?.(exact)) {
+    for(const [index,node] of exact.conjuncts.entries()) {const child=conjunctionChild(r,node);if(child)children.push({role:conjunctLabel(index,exact.relationFrame?.leftContextAbsent===true),exact:child});}
+    const supplement=conjunctionChild(r,exact.sharedSupplement);if(supplement)children.push({role:'Shared supplement',exact:supplement});
+  } else if(r.isClassicalNahuatlSupplementationFrame?.(exact)) {
     for(const [role,key,list] of [['Principal','principalClause','principalContinuationFrames'],['Adjunct','supplementClause','supplementContinuationFrames']]) {
       const owned=exact[list]||[];
       if(owned.length)children.push({role,exact:owned.at(-1)});
@@ -42,7 +50,7 @@ function objectLane(r,exact,id) {
 function endpointsFor(r,exact,project) {
   const envelope=envelopeFor(r,exact);if(!envelope)return [];
   const endpoints=[];
-  if(envelope.subject?.id)endpoints.push({id:envelope.subject.id,label:envelope.unitKind==='vnc'?'Actor':'Subject',category:envelope.subject.category,lane:'',selected:false});
+  if(envelope.subject?.id)endpoints.push({id:envelope.subject.id,label:'Subject',category:envelope.subject.category,lane:'',selected:false});
   for(const object of envelope.objects||[]) {
     const nested=object.nestedObjectContactFrame;
     const origin=nested?.exactModifierResult;
@@ -54,6 +62,7 @@ function endpointsFor(r,exact,project) {
   return endpoints;
 }
 function structureFacts(r,exact) {
+  if(r.isClassicalNahuatlClauseConjunctionResultFrame?.(exact))return [['Relationship','Conjunction'],['Rank',title(exact.relationFrame?.level)],['Head',exact.balancedRelation?.noHead?'None':''],['Conjuncts',String(exact.conjuncts.length)]];
   if(r.isClassicalNahuatlSupplementationFrame?.(exact)) {
     if(exact.operationKind==='contextual-first-person-realization') {
       const contextual=envelopeFor(r,exact)?.canonicalContextualFirstPersonFrame;
@@ -134,7 +143,7 @@ function navigationFor(contract,role,endpoint) {
 export function projectCanonicalStructure(r,exact,project,role='Source',seen=new Set()) {
   const projection=project(exact);if(!projection || projection.canonicalResult!==exact || seen.has(exact))return null;
   const nextSeen=new Set(seen).add(exact), envelope=envelopeFor(r,exact);
-  const unit=r.isClassicalNahuatlSupplementationFrame?.(exact) || r.isClassicalNahuatlIssuedParticleSentenceLayerFrame?.(exact) || r.isAdverbialAdjunctionResult?.(exact) ? 'Clause' : envelope?.unitKind==='nnc'?'Noun':envelope?.unitKind==='vnc'?'Verb':envelope?.unitKind==='particle'?'Particle':envelope?'Clause':'';
+  const unit=r.isClassicalNahuatlClauseConjunctionResultFrame?.(exact) || r.isClassicalNahuatlSupplementationFrame?.(exact) || r.isClassicalNahuatlIssuedParticleSentenceLayerFrame?.(exact) || r.isAdverbialAdjunctionResult?.(exact) ? 'Clause' : envelope?.unitKind==='nnc'?'Noun clause':envelope?.unitKind==='vnc'?'Verb clause':envelope?.unitKind==='particle'?'Particle':envelope?'Clause':'';
   const children=semanticChildren(r,exact).map(child=>{
     const captured=projectCanonicalStructure(r,child.exact,project,child.role,nextSeen);if(captured)return {...captured,selectedClause:child.selectedClause};
     // An issued particle layer can attest its signed NNC nucleus even when
@@ -157,7 +166,11 @@ export function projectClauseStructure(r,controller,selections,project) {
       Object.hasOwn(derived,`${role}SourceKind`) || (contract.missingCaptureRoles||[]).includes(role)));
   if(contract.relation==='intensification' && derived.order==='modifier-head')
     roles=[...roles.filter(role=>role==='adjoined'),...roles.filter(role=>role!=='adjoined')];
+  const conjunction=derived.operationFamily==='conjunction';
+  const rightOnly=contract.relation==='conjunction' && contract.operationSelections?.leftContextAbsent===true;
+  if(rightOnly)roles=roles.filter(role=>!['adjoined','dependent'].includes(role));
   const sources=roles.map(role=>projectCanonicalStructure(r,controller.getCapturedCanonicalResult(role),project,role)).filter(Boolean);
+  if(conjunction)for(const source of sources) {const index=['principal','adjoined','dependent'].indexOf(source.role);if(index>=0)source.label=conjunctLabel(index,rightOnly);else if(source.role==='supplement')source.label='Shared supplement';}
   for(const source of sources)for(const endpoint of source.endpoints)endpoint.navigation=navigationFor(contract,source.role,endpoint);
   const native=contract.operationSelections||{}, unresolved=new Set(contract.unresolvedDecisionIds||[]);
   let link=null;
@@ -208,7 +221,7 @@ export function compareCanonicalStructures(r,left,right,project) {
 const structureIds=new WeakMap();let structureId=0;
 const identity=exact=>{if(!structureIds.has(exact))structureIds.set(exact,++structureId);return structureIds.get(exact);};
 export function structurePresentationSignature(state) {
-  const serialize=tree=>({identity:identity(tree.exact),role:tree.role,surface:tree.surface,unit:tree.unit,operation:tree.operation,facts:tree.facts,spatial:tree.spatial && {pending:tree.spatial.pending,pieces:tree.spatial.pieces.map(p=>({...p,source:p.source?identity(p.source):null}))},
+  const serialize=tree=>({identity:identity(tree.exact),role:tree.role,label:tree.label,surface:tree.surface,unit:tree.unit,operation:tree.operation,facts:tree.facts,spatial:tree.spatial && {pending:tree.spatial.pending,pieces:tree.spatial.pieces.map(p=>({...p,source:p.source?identity(p.source):null}))},
     endpoints:tree.endpoints.map(endpoint=>({...endpoint,origin:Boolean(endpoint.origin)})),children:tree.children.map(serialize)});
   return JSON.stringify({sources:(state?.sources||[]).map(serialize),missing:state?.missingSources || [],scope:state?.sourceScope?identity(state.sourceScope):null,binding:state?.bindingScope?identity(state.bindingScope):null,operation:state?.operation,bindingId:state?.bindingId,links:(state?.links||[]).map(link=>[link.left.id,link.right.id,link.state]),spatial:state?.spatial && {pending:state.spatial.pending,pieces:state.spatial.pieces.map(p=>({...p,source:p.source?identity(p.source):null}))}});
 }
@@ -230,7 +243,7 @@ export function createStructureDesign(doc) {
   const renderTree=(tree,links,depth=0)=>{
     const card=element('div','composition-structure-node');card.dataset.compositionStructureRole=tree.role;
     card.dataset.compositionStructureDepth=String(depth);card.dataset.compositionStructureWhole=String(Boolean(tree.children.length));
-    card.append(element('span','composition-source-card__role',title(tree.role)),element('span','composition-source-card__form',tree.surface));
+    card.append(element('span','composition-source-card__role',title(tree.label||tree.role)),element('span','composition-source-card__form',tree.surface));
     if(tree.endpoints.length) {
       const ends=element('div','composition-contact-endpoints');
       for(const endpoint of tree.endpoints) {
@@ -238,7 +251,7 @@ export function createStructureDesign(doc) {
         const selected=numbers.length>0;
         const target=resolveDecisionFocus(doc,endpoint.navigation||[]);
         const badge=element(target?'button':'span','composition-contact-endpoint',`${numbers.map(n=>['①','②','③'][n-1]||String(n)).join(' ')}${selected?' ':''}${endpointText(endpoint)}`);
-        badge.dataset.compositionFocusDecisions=JSON.stringify(endpoint.navigation||[]);badge.dataset.compositionContactId=endpoint.id;badge.dataset.compositionContactSelected=String(selected);if(target){badge.type='button';badge.setAttribute('aria-label',`${title(tree.role)} · ${endpointText(endpoint)}`);badge.addEventListener('click',()=>{
+        badge.dataset.compositionFocusDecisions=JSON.stringify(endpoint.navigation||[]);badge.dataset.compositionContactId=endpoint.id;badge.dataset.compositionContactSelected=String(selected);if(target){badge.type='button';badge.setAttribute('aria-label',`${title(tree.label||tree.role)} · ${endpointText(endpoint)}`);badge.addEventListener('click',()=>{
           const root=doc.getElementById('classical-workbench'),state=readers.get(root)?.();
           const current=state?.sources.find(source=>source.exact===tree.exact && source.role===tree.role)?.endpoints.find(e=>e.id===endpoint.id);
           const next=resolveDecisionFocus(doc,current?.navigation||[]);if(next)focusNativeChoice(next);
@@ -294,8 +307,8 @@ export function createStructureDesign(doc) {
       const shape=state?.diagram;diagram.hidden=!shape;
       const signature=JSON.stringify(shape);if(diagram.dataset.signature!==signature) {
         diagram.dataset.signature=signature;diagram.replaceChildren();
-        if(shape) {for(const [index,type] of shape.inputs.entries()){if(index)diagram.append(element('span','composition-shape-operator','+'));diagram.append(element('span',`composition-shape-piece composition-shape-${type.toLowerCase()}`,type));}
-          diagram.append(element('span','composition-shape-operator','→'));for(const type of shape.outputs)diagram.append(element('span',`composition-shape-piece composition-shape-${type.toLowerCase()} composition-shape-target`,type));
+        if(shape) {for(const [index,type] of shape.inputs.entries()){if(index)diagram.append(element('span','composition-shape-operator','+'));diagram.append(element('span',`composition-shape-piece composition-shape-${type.toLowerCase().replace(/ /gu,'-')}`,type));}
+          diagram.append(element('span','composition-shape-operator','→'));for(const type of shape.outputs)diagram.append(element('span',`composition-shape-piece composition-shape-${type.toLowerCase().replace(/ /gu,'-')} composition-shape-target`,type));
           diagram.setAttribute('aria-label',`${shape.inputs.join(' + ')} → ${shape.outputs.join(' / ')} · Route target`);}
       }
     }

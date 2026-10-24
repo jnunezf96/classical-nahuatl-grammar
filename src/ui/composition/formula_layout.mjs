@@ -1,3 +1,4 @@
+import {clauseDecisionSlot,CLAUSE_CHOICE_LABELS,CLAUSE_CHOICE_ORDER} from './clause_composition.mjs?v=20261023-4';
 import {declaredChoiceAddress,BUILD_SLOT_LABELS,BUILD_SLOT_ORDER} from './build_choice_catalog.mjs?v=20261023-all-build-2';
 import {ownerChoiceRoots,registerOwnerChoicePortal,releaseOwnerChoicePortal} from './owner_choice_roots.mjs?v=20261023-core-1';
 // Andrews §§4.3–4.5. This is a layout of existing native collectors, never a
@@ -95,10 +96,10 @@ export function formulaChoiceSlot(choice,group,family='',operation=''){
 // Group their presentation by linguistic role; registered portals preserve the
 // logical owner host when a generated bucket joins its native disclosure.
 export function arrangeProjectedFormulaChoices(doc,host,entries){
-  const labels=BUILD_SLOT_LABELS;
-  const order=BUILD_SLOT_ORDER;
+  const labels={...BUILD_SLOT_LABELS,...CLAUSE_CHOICE_LABELS};
+  const order=[...BUILD_SLOT_ORDER,...CLAUSE_CHOICE_ORDER];
   for(const slot of order){
-    const members=entries.filter(entry=>formulaChoiceSlot(entry.choice,entry.group,entry.family,entry.operation)===slot);
+    const members=entries.filter(entry=>(entry.clause?clauseDecisionSlot(entry.choice):formulaChoiceSlot(entry.choice,entry.group,entry.family,entry.operation))===slot);
     if(slot==='stem')members.sort((a,b)=>{
       const rank=id=>{const index=STEM_CHOICE_ORDER.indexOf(id);return index<0?STEM_CHOICE_ORDER.length:index;};
       return rank(a.choice)-rank(b.choice);

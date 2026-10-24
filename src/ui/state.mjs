@@ -1,3 +1,4 @@
+import {runCompositionAction} from './composition/action_feedback.mjs?v=20261023-1';
 // Canonical modern ESM module.
 
 const CLASSICAL_SOURCE_GRAMMAR_RESULT_AUTHORITY = Object.freeze({
@@ -3194,6 +3195,8 @@ export function createUiStateModule(targetObject = globalThis) {
       if (buttons.length) {
         buttons.forEach(button => {
           button.addEventListener("click", event => {
+            const before = targetObject.getClassicalConstructionPosition?.();
+            runCompositionAction(targetObject.document, button, () => {
             const type = button.getAttribute("data-derivation-type");
             if (!type) {
               return;
@@ -3216,6 +3219,7 @@ export function createUiStateModule(targetObject = globalThis) {
                 objectPrefix: targetObject.getCurrentObjectPrefix()
               });
             });
+            }, {label: "Updating Build…", isCurrent: () => targetObject.getClassicalConstructionPosition?.() === before});
           });
         });
       }
