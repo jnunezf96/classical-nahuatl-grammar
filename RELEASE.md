@@ -1,18 +1,18 @@
-# Grammar OS v1.2.30 release
+# Grammar OS v1.2.31 release
 
-Release name: **Repeated Nucleus Sources**
+Release name: **Andrews Interface Corrections**
 
-Browser build: **20261024-composition-49**
+Browser build: **20261024-composition-50-r3**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Verifies repeated Source nounstem and explicit class replacement for either nucleus through the existing Result Part → Change → Source workflow.
-- Retains the whole accepted Result, the untouched nucleus and compatible Build choices while staging a replacement. Only explicit Make accepts it.
-- Restores supported committed replacement Sources separately from further pending Source drafts after same-tab reload.
-- Saves fresh invented-stem regressions for both roles, class-only replacement, full-Result preview, owner restrictions and invalid/stale-input recovery.
-- Reuses the existing authenticated Source, supplementation and ownerhood paths; this verification release introduces no new grammatical rule or Source-class inference.
+- Preserves the selected passive-action possessor by following the canonical passive promotion of the mainline object, including sources with multiple specific objects.
+- Allows the shared supplement in a conjunction to be changed while retaining the whole Result, untouched conjuncts and original context, including repeated edits and supported reload.
+- Shows future-embed nonactive scope accurately: Embed applies; incompatible alternatives remain disabled. Ordinary compound scope choices retain their existing domains.
+- Keeps previews and pending edits separate from the accepted Result; only explicit Make accepts changes.
+- Saves focused regressions with short and medium invented Nahuatl stems, exact occurrence custody, Source dependencies and copied/stale rejection.
 
 ## Review scope and current limits
 
@@ -39,7 +39,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.30/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.31/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.

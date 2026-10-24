@@ -1983,8 +1983,9 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
     function buildClassicalNahuatlConjunctReplacementRequest(parent, index, replacement) {
       const original = conjunctionSourceRequests.get(parent);
       if (!original || !isClassicalNahuatlClauseConjunctionResultFrame(parent)
-        || !Number.isInteger(index) || index < 0 || index >= parent.conjuncts.length) return null;
-      const previous = parent.conjuncts[index];
+        || (index !== "sharedSupplement" && (!Number.isInteger(index) || index < 0 || index >= parent.conjuncts.length))) return null;
+      const previous = index === "sharedSupplement" ? original.sharedSupplement : parent.conjuncts[index];
+      if (!previous) return null;
       const sourceNode = targetObject.isClassicalNahuatlClauseCompositionSourceFrame?.(previous) === true;
       const oldSource = sourceNode
         ? targetObject.getClassicalNahuatlSupplementationClauseSourceFrame?.(previous.envelope) : previous;
@@ -2005,7 +2006,7 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
       return buildClassicalNahuatlClauseConjunctionOperationRequest({
         operationKind: original.operationKind,
         conjuncts: original.conjuncts.map((node, position) => position === index ? next : node),
-        sharedSupplement: original.sharedSupplement,
+        sharedSupplement: index === "sharedSupplement" ? next : original.sharedSupplement,
         ...(original.conjunctorResult ? {conjunctorResult: original.conjunctorResult} : {}),
         options: original.options,
       });

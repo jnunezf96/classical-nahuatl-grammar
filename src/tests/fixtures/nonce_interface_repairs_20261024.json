@@ -1,0 +1,26 @@
+{
+  "verbStems": {
+    "short": [
+      "tlātloza",
+      "zēxeza"
+    ],
+    "medium": [
+      "mitzochazaza",
+      "tātzitzozāza"
+    ]
+  },
+  "nounStems": {
+    "short": [
+      "nātē",
+      "zītzā",
+      "nāchī"
+    ],
+    "medium": [
+      "huōcuitotlō",
+      "zēhuatzechē",
+      "petzētāxa"
+    ]
+  },
+  "meaningClaimed": false,
+  "lexicalAttestationClaimed": false
+}

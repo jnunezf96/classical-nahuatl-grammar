@@ -1,5 +1,5 @@
 import {getConstructionParticleHostInput} from './construction_layers.mjs?v=20261023-conjunct-edit-1';
-import {getDoubleNucleusEditChildren,isDoubleNucleusContinuationCapture,buildDoubleNucleusEditRequest} from '../../application/classical/double_nucleus_edit.mjs?nucleusEdit=20261024-6';
+import {getDoubleNucleusEditChildren,isDoubleNucleusContinuationCapture,buildDoubleNucleusEditRequest} from '../../application/classical/double_nucleus_edit.mjs?nucleusEdit=20261024-9';
 // Editing is an owner reissue along one authenticated occurrence path. The
 // untouched siblings stay exact objects; no saved recipe or written form is an
 // execution input. Unsupported ancestor families remain unavailable.
@@ -81,8 +81,20 @@ function conjunction(runtime, exact, project) {
   const children = exact.conjuncts.map((node,index) => ({role:String(index),exact:
     runtime.isClassicalNahuatlClauseCompositionSourceFrame?.(node) === true
       ? runtime.getClassicalNahuatlSupplementationClauseSourceFrame?.(node.envelope) : node}));
-  if (!children.every(child => capture(runtime,child.exact,project))
-    || !runtime.buildClassicalNahuatlConjunctReplacementRequest(exact,0,children[0]?.exact)) return null;
+  if (exact.sharedSupplement) {
+    const node = exact.sharedSupplement;
+    const shared = runtime.isClassicalNahuatlClauseCompositionSourceFrame?.(node) === true
+      ? runtime.getClassicalNahuatlSupplementationClauseSourceFrame?.(node.envelope) : node;
+    // An owner-valid shared clause need not be independently application-captured.
+    // Keep it untouched while editing conjuncts; expose its own edit only when
+    // both the application capture and exact parent replacement support it.
+    if (capture(runtime,shared,project)
+      && runtime.buildClassicalNahuatlConjunctReplacementRequest(exact,'sharedSupplement',shared))
+      children.push({role:'sharedSupplement',exact:shared});
+  }
+  if (!children.every(child => capture(runtime,child.exact,project)
+    && runtime.buildClassicalNahuatlConjunctReplacementRequest(exact,
+      child.role === 'sharedSupplement' ? child.role : Number(child.role),child.exact))) return null;
   return {kind:'conjunction',exact,children};
 }
 
@@ -197,7 +209,7 @@ function reissue(runtime, entry, role, replacement) {
     return application?.authorizationStatus==='authorized'?application.canonicalResult:null;
   }
   if (entry.kind === 'conjunction') {
-    const request = runtime.buildClassicalNahuatlConjunctReplacementRequest(entry.exact,Number(role),replacement);
+    const request = runtime.buildClassicalNahuatlConjunctReplacementRequest(entry.exact,role === 'sharedSupplement' ? role : Number(role),replacement);
     if (!request) return null;
     const application = runtime.executeClassicalGrammarApplicationRequest?.({operationId:'clause:composition',args:[request]});
     return application?.authorizationStatus === 'authorized' ? application.canonicalResult : null;
@@ -245,7 +257,7 @@ export function previewRebuiltResultEdit(runtime, root, target, childPreview, pr
         options=buildDoubleNucleusEditRequest(runtime,entry.exact,role,next);
       } else if (entry.kind === 'conjunction') {
         operation = 'clause:composition';
-        options = runtime.buildClassicalNahuatlConjunctReplacementRequest(entry.exact,Number(role),next);
+        options = runtime.buildClassicalNahuatlConjunctReplacementRequest(entry.exact,role === 'sharedSupplement' ? role : Number(role),next);
       } else if (entry.kind === 'supplementation') {
         operation = 'sentence:supplementation';
         options = runtime.buildClassicalNahuatlSupplementationReplacementRequest(entry.exact,role,next);

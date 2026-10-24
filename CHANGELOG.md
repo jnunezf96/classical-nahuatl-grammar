@@ -1,5 +1,12 @@
 # Version History
 
+## v1.2.31 — Andrews Interface Corrections
+
+- Corrects passive-action possessor selection for multiple specific source objects using the passive promotion owner.
+- Enables whole-preserving shared-supplement editing and supported replay while retaining exact conjuncts and context.
+- Aligns future-embed nonactive scope availability with Andrews; incompatible alternatives remain disabled.
+- Preserves Make-only acceptance and saves short/medium invented-stem focused regressions.
+
 ## v1.2.30 — Repeated Nucleus Sources
 
 - Verifies repeated nounstem and explicit class replacement for either nucleus, before and after supported reload.

@@ -1,29 +1,29 @@
 import {syncFutureObjectChoices} from '../composition/future_object_choices.mjs?futureObject=20261024-3';
-import {getDoubleNucleusEditChildren} from '../../application/classical/double_nucleus_edit.mjs?nucleusEdit=20261024-6';
+import {getDoubleNucleusEditChildren} from '../../application/classical/double_nucleus_edit.mjs?nucleusEdit=20261024-9';
 import {syncStemLayerChoices} from '../composition/stem_layer_choices.mjs?stemNominal=20261024-2';
 import {syncNounstemOperationChoices,groupDeverbalFamilyOptions} from '../composition/nounstem_operation_choices.mjs?v=20261024-1&nominalReload=20261024-4';
-import {snapshotResultEditReload,restoreResultEditReload} from '../composition/result_edit_reload.mjs?nucleusEdit=20261024-6&innerSource=20261024-1&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-1';
+import {snapshotResultEditReload,restoreResultEditReload} from '../composition/result_edit_reload.mjs?nucleusEdit=20261024-9&innerSource=20261024-1&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-1';
 import {getVncChoiceEditContext, getVncVoiceEditSubject, projectVncChoiceEditControls} from '../composition/vnc_choice_edit.mjs?v=20261023-3';
 import {runCompositionAction} from '../composition/action_feedback.mjs?v=20261023-1';
 import {getAuthorityControl, projectAuthoredChoice} from '../composition/authority_control.mjs?v=20261023-2';
 import {clearOwnerChoicePortals,findOwnerChoice,ownerChoiceRoots} from '../composition/owner_choice_roots.mjs?v=20261023-core-1';
 import {appendValenceAnalysis} from '../composition/valence_analysis.mjs?v=20261023-slots-16';
-import {previewConstructionPacket} from '../composition/construction_preview.mjs?nucleusEdit=20261024-6&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1';
+import {previewConstructionPacket} from '../composition/construction_preview.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1';
 import {isIntermediateBuildTaskReset} from '../composition/build_task_menu.mjs?deverbalReload=20261024-8&operationFirst=20261023-2&clickFeedback=20261023-1&v=20261021-ending-reference-2&writingSource=20261022-2&fixedChoices=20261022-1';
 import { normalizeClassicalNahuatlIntroductoryModifier }
   from "../../core/classical/verbstem_classes.mjs?v=20261008-reader-40-9-190&modifier=canonical-20261009-1&quantityClass=20261022-1";
 import {createClassicalWorkspaceProvenanceProjector}
   from '../composer/result_provenance.mjs?v=20261012-position-provenance-7';
 import {resolvePathTargets, setPathHistoryPresentation} from '../composition/path_presentation.mjs?v=20261011-path-targets-7&routeShapes=20261021-1&writtenPreview=20261022-1&writingSource=20261022-1';
-import {setStructureDesignContext, setStructureComparison, projectCanonicalStructure, projectClauseStructure, projectOperationShape, compareCanonicalStructures} from '../composition/structure_design.mjs?nucleusEdit=20261024-6&clauseHarmony=20261023-5&v=20261011-structure-15&routeShapes=20261021-1&clauseCoordinate=20261021-1&resetEligibility=20261022-1&writingSource=20261022-1&makePreview=20261022-1&fixedChoices=20261022-1';
+import {setStructureDesignContext, setStructureComparison, projectCanonicalStructure, projectClauseStructure, projectOperationShape, compareCanonicalStructures} from '../composition/structure_design.mjs?nucleusEdit=20261024-9&clauseHarmony=20261023-5&v=20261011-structure-15&routeShapes=20261021-1&clauseCoordinate=20261021-1&resetEligibility=20261022-1&writingSource=20261022-1&makePreview=20261022-1&fixedChoices=20261022-1';
 import {setSourceCandidatePresentation, projectSavedSourceCandidate, setRouteChoicePresentation, projectOfferedOperationShapes} from '../composition/candidate_design.mjs?v=20261021-route-shapes-1';
 import {notifyExplicitMakeResult,focusNativeChoice} from '../composition/flow_design.mjs?v=20261022-reset-eligibility-1&writingSource=20261022-1&makePreview=20261022-1&fixedChoices=20261022-1';
 import {getBuildOperationGroup,getBuildOperationOrder,inventoryOptionReference,formatBuildOperationLabel} from '../composition/build_navigation_model.mjs?v=20261021-ending-reference-2&nominalReload=20261024-4';
 import {createConstructionSession} from '../composition/construction_session.mjs?stemReload=20261024-2&v=20261012-position-12&acceptedBuild=20261023-1';
 import {projectConstructionValue} from '../composition/construction_position.mjs?stemReload=20261024-2&v=20261012-position-12&acceptedBuild=20261023-1';
-import {executeConstructionPacket, freezeConstructionData, getConstructionPacketOrigin, captureConstructionParents, matchesConstructionWitness, orderConstructionSlots, getConstructionFixedChoices, getConstructionLayerReadiness, getConstructionParticleHostInput} from '../composition/construction_packet.mjs?nucleusEdit=20261024-6&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1';
-import {resolveResultEditTarget} from '../composition/result_editing.mjs?nucleusEdit=20261024-6&innerParticle=20261024-1&v=20261023-conjunction-1';
-import {canRebuildResultEdit,getResultEditReorder} from '../composition/result_edit_rebuild.mjs?nucleusEdit=20261024-6&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1';
+import {executeConstructionPacket, freezeConstructionData, getConstructionPacketOrigin, captureConstructionParents, matchesConstructionWitness, orderConstructionSlots, getConstructionFixedChoices, getConstructionLayerReadiness, getConstructionParticleHostInput} from '../composition/construction_packet.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1';
+import {resolveResultEditTarget} from '../composition/result_editing.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&v=20261023-conjunction-1';
+import {canRebuildResultEdit,getResultEditReorder} from '../composition/result_edit_rebuild.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1';
 import {getNativeGrammarControls, getWritingSourcePresentation, setChoiceDesignContext, setAppliedRoutePresentation} from '../composition/choice_design.mjs?clickFeedback=20261023-1&coreStem=20261023-1&v=20261022-reset-eligibility-1&writingSource=20261022-1&fixedChoices=20261022-1';
 import { readClassicalSourceObjectRows, getClassicalSourceObjectControls,
   restoreClassicalSourceObjectRows, syncClassicalSourceObjectRows }
@@ -2574,6 +2574,19 @@ export function createUiRenderingApi(targetObject = globalThis) {
     function isClassicalStandardNncSurfaceResultFrame(frame = null) {
       return Boolean(getClassicalStandardNncSurfaceResultFamily(frame));
     }
+    function getClassicalCompoundNonactiveScopeValues(voiceOperation, voice, variant = "") {
+      const values = voiceOperation === "passive"
+        ? ["embed", "both"]
+        : voice === "impersonal"
+          ? voiceOperation === "tla-impersonal"
+            ? ["embed", "both"]
+            : ["embed", "matrix", "both"]
+          : ["none"];
+      // Project the existing §28.11 owner's embed-only restriction; the
+      // canonical compound owner still validates every requested operation.
+      return variant === "future-embed" && values.includes("embed")
+        ? ["embed"] : values;
+    }
     function getClassicalRuleLogicSurfaceState(overrides = {}) {
       const basalUnit = normalizeClassicalBasalUnitForRendering(overrides.basalUnit || getClassicalBasalUnitFromSurfaceForRendering("vnc"));
       const exactCapabilityNncResultFrame = (() => {
@@ -3243,13 +3256,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
         ? requestedCompoundEventOrder
         : "iconic";
       const requestedCompoundNonactiveScope = String(overrides.compoundNonactiveScope || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-compound-nonactive-scope", "none") || "none").trim();
-      const licensedCompoundNonactiveScopes = vncVoiceOperation === "passive"
-        ? ["embed", "both"]
-        : vncVoice === "impersonal"
-          ? vncVoiceOperation === "tla-impersonal"
-            ? ["embed", "both"]
-            : ["embed", "matrix", "both"]
-          : ["none"];
+      const licensedCompoundNonactiveScopes = getClassicalCompoundNonactiveScopeValues(
+        vncVoiceOperation, vncVoice, lateVariant
+      );
       const compoundNonactiveScope = licensedCompoundNonactiveScopes.includes(
         requestedCompoundNonactiveScope
       )
@@ -19103,16 +19112,16 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const compoundNonactiveScopeControl = targetObject.document.getElementById(
         "classical-rule-logic-compound-nonactive-scope"
       );
-      const licensedNonactiveScopes = compoundVoiceOperation === "passive"
-        ? ["embed", "both"]
-        : compoundVoiceOperation === "tla-impersonal"
-          ? ["embed", "both"]
-          : String(surfaceFrame?.state?.vncVoice || "active") === "impersonal"
-            ? ["embed", "matrix", "both"]
-            : ["none"];
+      const licensedNonactiveScopes = getClassicalCompoundNonactiveScopeValues(
+        compoundVoiceOperation,
+        String(surfaceFrame?.state?.vncVoice || "active"),
+        variant
+      );
+      const fixedFutureEmbedScope = variant === "future-embed"
+        && licensedNonactiveScopes[0] === "embed";
       Array.from(compoundNonactiveScopeControl?.options || []).forEach(option => {
         const licensed = licensedNonactiveScopes.includes(option.value);
-        option.hidden = !licensed;
+        option.hidden = fixedFutureEmbedScope ? false : !licensed;
         option.disabled = !licensed;
       });
       if (compoundNonactiveScopeControl
@@ -19151,7 +19160,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           && ["passive", "impersonal"].includes(
             String(surfaceFrame?.state?.vncVoice || "active")
           )
-          && licensedNonactiveScopes.length > 1,
+          && (licensedNonactiveScopes.length > 1 || fixedFutureEmbedScope),
         "classical-rule-logic-compound-subject-animacy": false,
         "classical-rule-logic-compound-possessive-stem": operation === "compound" && variant === "accompanying-possession",
         "classical-rule-logic-compound-possessor": operation === "compound" && variant === "accompanying-possession",
@@ -24446,6 +24455,24 @@ export function createUiRenderingApi(targetObject = globalThis) {
       }
       return application;
     }
+    function evaluateClassicalNominalPassiveSourceVncWitness(request, selectedPatient) {
+      const application = evaluateClassicalNominalSourceVncWitness(request);
+      if (application?.authorizationStatus !== "authorized") return application;
+      // Ask the passive owner which participant it promoted. With multiple
+      // specific objects this differs from the one-specific+nonspecific case;
+      // neither array order nor a UI-side prominence rule selects the patient.
+      const promotedId = application.resultFrame?.participantProjection
+        ?.targetSubject?.referenceId;
+      const objects = request.sourceObjectRequests;
+      const patient = objects.find(object => object.objectId === promotedId);
+      if (!patient) return Object.freeze({authorizationStatus: "blocked",
+        blockReason: "owner-issued-passive-patient-required-for-derived-possessor"});
+      if (patient.objectKind !== "specific-projective"
+        || patient.objectPerson === selectedPatient) return application;
+      return evaluateClassicalNominalSourceVncWitness({...request,
+        sourceObjectRequests: objects.map(object => object === patient
+          ? {...object, objectPerson: selectedPatient} : object)});
+    }
     const ClassicalNominalConstructionPendingFrameKeys = new Set();
     const CLASSICAL_SOURCE_OPERATION_APPLICATION_IDS = Object.freeze({
       "deverbal-nnc": "nnc:deverbal-construction",
@@ -26515,6 +26542,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
       }
       if (targetObject.isClassicalNahuatlDeverbalNncGrammarFrame?.(frame) !== true
         || !Array.isArray(frame.operationFrame?.allowedStates)) return;
+      // A previous preview may still supply the structural domain while a
+      // raw Source's next participant is being edited. Do not project its old
+      // singleton possessor over that currently editable native selection.
+      const editablePossessors = getClassicalDeverbalEditablePossessorValues(frame);
       applyClassicalRuleLogicSelectOptionAvailability(
         "classical-rule-logic-nnc-state",
         frame.operationFrame.allowedStates,
@@ -26557,7 +26588,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           ["subject-animacy", participant.targetAnimacy],
           ["subject-humanness", "nonhuman"],
           ["subject-number", "common"],
-          ...(participant.sourceSubjectBecomesPossessor
+          ...(participant.sourceSubjectBecomesPossessor && !editablePossessors.length
             ? [["possessor", participant.transformedPossessor]] : []),
         ]) applyClassicalRuleLogicSelectOptionAvailability(
           `classical-rule-logic-nnc-${control}`, [value], value
@@ -26576,6 +26607,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
             ["subject-animacy", "nonanimate"], ["subject-humanness", "nonhuman"],
           ] : []),
           ...(frame.canonicalResult?.state === "possessive" && operation.possessorFixedBySourceSubject
+            && !editablePossessors.length
             ? [["possessor", operation.transformedPossessor]] : []),
         ]) applyClassicalRuleLogicSelectOptionAvailability(
           `classical-rule-logic-nnc-${control}`, [value], value
@@ -26610,7 +26642,6 @@ export function createUiRenderingApi(targetObject = globalThis) {
             `classical-rule-logic-nnc-${control}`, values, selected);
         }
       }
-      const editablePossessors = getClassicalDeverbalEditablePossessorValues(frame);
       if (editablePossessors.length) applyClassicalRuleLogicSelectOptionAvailability(
         "classical-rule-logic-nnc-possessor", editablePossessors,
         frame.operationFrame?.transformedPossessor || frame.canonicalResult?.possessor || "3sg"
@@ -31754,15 +31785,14 @@ export function createUiRenderingApi(targetObject = globalThis) {
             tense,
             voice,
             sourceSubject,
-          }) => sourceSubjectBecomesPossessor && !exactBinding?.exactResult
-            && !/^[123](?:sg|pl)$/u.test(sourceSubject)
-            ? Object.freeze({authorizationStatus: "blocked",
-              blockReason: "finite-source-subject-required-for-derived-possessor"})
-            : tense
-            && baseSource.sourceStem
-            && typeof targetObject
-              .evaluateClassicalNahuatlVncApplication === "function"
-            ? evaluateClassicalNominalSourceVncWitness({
+          }) => {
+            if (sourceSubjectBecomesPossessor && !exactBinding?.exactResult
+              && !/^[123](?:sg|pl)$/u.test(sourceSubject)) return Object.freeze({
+                authorizationStatus: "blocked",
+                blockReason: "finite-source-subject-required-for-derived-possessor"});
+            if (!tense || !baseSource.sourceStem
+              || typeof targetObject.evaluateClassicalNahuatlVncApplication !== "function") return null;
+            const sourceRequest = {
               sourceStem: baseSource.sourceStem,
               ...(baseSource.sourceEmbedStem && baseSource.sourceMatrixStem
                 ? {
@@ -31774,15 +31804,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
               sourceValence: valence === "shuntline-reflexive"
                 ? "shuntline-reflexive" : canonicalVncSourceValence,
               sourceInitialISelection: baseSource.sourceInitialISelection,
-              sourceObjectRequests: (() => {
-                const requests = readClassicalSourceObjectRows(targetObject.document, valence,
-                  sourceSubject === "3common" ? "3sg" : sourceSubject);
-                if (!(sourceSubjectBecomesPossessor && !exactBinding?.exactResult && voice === "passive")) return requests;
-                // Passive possession refers to the promoted patient, not the
-                // retired active actor. Keep other valence positions intact.
-                const patient = requests.find(item => item.objectKind === "specific-projective");
-                return requests.map(item => item === patient ? {...item, objectPerson: sourceSubject} : item);
-              })(),
+              sourceObjectRequests: readClassicalSourceObjectRows(targetObject.document, valence,
+                sourceSubject === "3common" ? "3sg" : sourceSubject),
               ...(sourceSubjectBecomesPossessor && !exactBinding?.exactResult && voice === "passive"
                 ? {sourceSubject: "3sg"} : {}),
               // NNC common number has no separate VNC subject coordinate.
@@ -31804,8 +31827,12 @@ export function createUiRenderingApi(targetObject = globalThis) {
                       ? { objectPerson: sourceSubjectBecomesPossessor && voice === "passive" ? sourceSubject : subject }
                       : {}),
                   }),
-            })
-            : null;
+            };
+            return sourceSubjectBecomesPossessor && !exactBinding?.exactResult
+              && voice === "passive" && sourceRequest.sourceObjectRequests.length > 1
+              ? evaluateClassicalNominalPassiveSourceVncWitness(sourceRequest, sourceSubject)
+              : evaluateClassicalNominalSourceVncWitness(sourceRequest);
+          };
           const resultFrameOf = application => (
             application?.authorizationStatus === "authorized"
             && application.resultFrame?.authorizationStatus === "authorized"

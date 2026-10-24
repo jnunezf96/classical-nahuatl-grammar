@@ -1,8 +1,8 @@
-import {previewConstructionPacket} from './construction_preview.mjs?nucleusEdit=20261024-6&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1';
+import {previewConstructionPacket} from './construction_preview.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1';
 import {getConstructionLayerReadiness as getLayerReadiness,getConstructionParticleHostInput} from './construction_layers.mjs?v=20261023-conjunct-edit-1';
 export {getConstructionParticleHostInput} from './construction_layers.mjs?v=20261023-conjunct-edit-1';
-import {resolveResultEditTarget,projectResultForEditing} from './result_editing.mjs?nucleusEdit=20261024-6&innerParticle=20261024-1&v=20261023-conjunction-1';
-import {rebuildResultEdit,requiresResultEditPreview,canRebuildResultEdit} from './result_edit_rebuild.mjs?nucleusEdit=20261024-6&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1';
+import {resolveResultEditTarget,projectResultForEditing} from './result_editing.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&v=20261023-conjunction-1';
+import {rebuildResultEdit,requiresResultEditPreview,canRebuildResultEdit} from './result_edit_rebuild.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1';
 
 // Freeze request containers while retaining the exact opaque owner frames.
 export function freezeConstructionData(value) {

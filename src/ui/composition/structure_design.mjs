@@ -1,7 +1,7 @@
 import {resolveDecisionFocus,resolveSourceSlotFocus,focusNativeChoice,highlightSourceDecision} from './flow_design.mjs?v=20261022-reset-eligibility-1&writingSource=20261022-1&makePreview=20261022-1&fixedChoices=20261022-1';
 import {getNativeGrammarControls} from './choice_design.mjs?clickFeedback=20261023-1&coreStem=20261023-1&v=20261022-reset-eligibility-1&writingSource=20261022-1&fixedChoices=20261022-1';
 import {createCandidateDesign} from './candidate_design.mjs?v=20261021-route-shapes-1';
-import {getDoubleNucleusEditChildren} from '../../application/classical/double_nucleus_edit.mjs?nucleusEdit=20261024-6';
+import {getDoubleNucleusEditChildren} from '../../application/classical/double_nucleus_edit.mjs?nucleusEdit=20261024-9';
 // Owner-issued structures are read only. No diagram, label or DOM value is an input.
 const readers=new WeakMap(), comparisons=new WeakMap();
 export const setStructureDesignContext=(root,reader)=>{if(root)readers.set(root,reader);};
