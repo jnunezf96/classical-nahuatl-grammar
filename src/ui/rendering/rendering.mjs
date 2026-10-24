@@ -51486,6 +51486,12 @@ export function createUiRenderingApi(targetObject = globalThis) {
             if (projection) syncClassicalRuleLogicControlsForSurfaceFrame(projection);
           }
         }
+        // Native reload mirrors may describe the separate Source editor.
+        // Repaint this exact VNC's accepted choices after those mirrors when
+        // there is no pending owner selection packet to project instead.
+        if (vnc && saved.operationId === "vnc:application" && !saved.pendingTypedSourceSelections) {
+          enterClassicalVncChoiceEdit({selectOperation:true});
+        }
       }
       if (draftRejected) ActiveClassicalNncReinflectionDraft = null;
       syncClassicalCapabilityApplyOperationState();

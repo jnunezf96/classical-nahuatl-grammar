@@ -1,17 +1,17 @@
-# Grammar OS v1.2.17 release
+# Grammar OS v1.2.18 release
 
-Release name: **Repeated NNC Editing**
+Release name: **Repeated VNC Editing**
 
-Browser build: **20261024-composition-36**
+Browser build: **20261024-composition-37**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Reopens the current inner NNC subject, state and possessor choices after Make and supported reload.
-- Restores the accepted NNC editor before applying saved pending choices; keeps acceptance exclusive to Make.
-- Clears rejected saved drafts so the next editing attempt can recover from the accepted constituent.
-- Retains the whole mixed construction, untouched siblings, reference restrictions and the original nounstem Source.
+- Reopens the same inner VNC's finite, derivation, voice, Object and sentence choices after Make and supported reload.
+- Restores the accepted VNC choices after saved native controls, while preserving valid pending edits.
+- Keeps acceptance exclusive to Make and retains the whole mixed construction, untouched siblings and original verbstem Source.
+- Preserves Andrews' participant, voice and reference restrictions through canonical owners.
 
 ## Review scope and current limits
 
@@ -35,7 +35,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.17/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.18/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.

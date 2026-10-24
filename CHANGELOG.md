@@ -2,6 +2,15 @@
 
 User-facing release notes for Classical Nahuatl Grammar.
 
+## Version 1.2.18 — Repeated VNC Editing
+
+Released October 23, 2026.
+
+- Restores the accepted inner VNC's visible verb choices after supported reload, including when no pending choices were saved.
+- Allows repeated edits on the same inner VNC while retaining the whole conjunction and supplementation Result.
+- Keeps pending choices separate from accepted Results, with explicit Make as the acceptance boundary.
+- Preserves original verbstem Sources and Andrews' participant, voice and reference restrictions.
+
 ## Version 1.2.17 — Repeated NNC Editing
 
 Released October 23, 2026.
