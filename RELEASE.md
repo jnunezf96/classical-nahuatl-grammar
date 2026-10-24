@@ -1,17 +1,17 @@
-# Grammar OS v1.2.21 release
+# Grammar OS v1.2.22 release
 
-Release name: **Hosting Maintenance**
+Release name: **Repeated Source Editing**
 
-Browser build: **20261024-composition-40**
+Browser build: **20261024-composition-41**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Updates Pages build, configuration, upload and deployment actions to their Node24 runtime releases.
-- Pins both hosted jobs to Ubuntu24.04 so runner-label migration cannot silently change the build environment.
-- Preserves the Node22 application builder, exact-version tag guard, locked dependencies, runtime-only site artifact and deployment permissions.
-- Keeps the page and composition bootstrap import on one release identity; grammar and interface behavior are unchanged.
+- Repeatedly replaces the Source of a selected inner NNC or VNC while retaining the whole mixed Result.
+- Keeps raw Source edits, Use this Source and preview pending; only Make accepts the changed whole.
+- Restores the accepted occurrence, committed replacement Source and any further raw draft separately after supported same-tab reload.
+- Retains untouched clauses and canonical relationship restrictions; invalid or stale replacements cannot fall back to making a standalone child.
 
 ## Review scope and current limits
 
@@ -35,7 +35,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.21/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.22/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.

@@ -2,6 +2,14 @@
 
 User-facing release notes for Classical Nahuatl Grammar.
 
+## Version 1.2.22 — Repeated Source Editing
+
+Released October 24, 2026.
+
+- Keeps the accepted whole when Source is replaced for a selected inner constituent, including repeated NNC/VNC changes after Make and supported reload.
+- Restores committed replacement Source inputs separately from a further raw draft; only explicit Make accepts the rebuilt whole.
+- Rejects stale targets, invalid saved Source coordinates and grammatically incompatible replacements while retaining the whole and allowing correction.
+
 ## Version 1.2.21 — Hosting Maintenance
 
 Released October 24, 2026.

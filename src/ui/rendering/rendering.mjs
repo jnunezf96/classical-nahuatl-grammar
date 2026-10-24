@@ -1,4 +1,4 @@
-import {snapshotResultEditReload,restoreResultEditReload} from '../composition/result_edit_reload.mjs?innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-1';
+import {snapshotResultEditReload,restoreResultEditReload} from '../composition/result_edit_reload.mjs?innerSource=20261024-1&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-1';
 import {getVncChoiceEditContext, getVncVoiceEditSubject, projectVncChoiceEditControls} from '../composition/vnc_choice_edit.mjs?v=20261023-3';
 import {runCompositionAction} from '../composition/action_feedback.mjs?v=20261023-1';
 import {getAuthorityControl, projectAuthoredChoice} from '../composition/authority_control.mjs?v=20261023-2';
@@ -41977,8 +41977,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
         else if (getNativeGrammarControls(doc).some(item => item === control || item === eventControl)) move = {type: "choice", id: getClassicalPositionChoiceId(control),
           value: control.type === "checkbox" ? control.checked : value};
         if (!move) return;
-        if (["source-edit", "source", "clear"].includes(move.type)
-          && PendingClassicalResultEdit?.intent !== "add") PendingClassicalResultEdit = null;
+        if (PendingClassicalResultEdit && ["source-edit", "source", "clear"].includes(move.type)
+          && PendingClassicalResultEdit?.intent !== "add"
+          && !retainClassicalResultEditForSourceMove(move, control)) PendingClassicalResultEdit = null;
         if (move.type === "choice") reconcileClassicalNewNativeChoiceOffer(control, move.value);
         const position = ClassicalConstructionSession.position;
         if (compactMirror && move.type === "choice"
@@ -42274,6 +42275,37 @@ export function createUiRenderingApi(targetObject = globalThis) {
       });
     }
 
+    function retainClassicalResultEditForSourceMove(move, control) {
+      const edit = PendingClassicalResultEdit;
+      if (!edit || edit.action !== "change" || edit.intent !== "change" || !edit.path?.length
+        || !["source-edit", "source"].includes(move.type)
+        || move.type === "source" && control.closest?.("button")?.id !== "verb-entry-apply"
+        || edit.root !== ClassicalConstructionSession.position.accepted.result) return false;
+      const target = resolveResultEditTarget(targetObject, edit.root, edit.path, getClassicalOwnerIssuedResultProjection);
+      if (target?.node !== edit.target
+        || !canRebuildResultEdit(targetObject, edit.root, edit.target, getClassicalOwnerIssuedResultProjection, edit.path)) return false;
+      PendingClassicalResultEdit = Object.freeze({...edit, sourceReplacement:true});
+      return true;
+    }
+
+    function getClassicalResultEditSourceReplacement(source) {
+      const edit = PendingClassicalResultEdit;
+      if (!edit?.sourceReplacement || edit.intent !== "change" || !edit.path?.length
+        || edit.root !== ClassicalConstructionSession.position.accepted.result
+        || !isClassicalGrammarExactTypedSource(source)
+        || ActiveClassicalGrammarCapabilityNavigator?.exactSource !== source
+        || targetObject.document?.getElementById?.("classical-source-parts")?.dataset?.classicalSourceCommitState === "pending") return null;
+      const target = resolveResultEditTarget(targetObject, edit.root, edit.path, getClassicalOwnerIssuedResultProjection);
+      if (target?.node !== edit.target
+        || !canRebuildResultEdit(targetObject, edit.root, edit.target, getClassicalOwnerIssuedResultProjection, edit.path)) return null;
+      const editor = snapshotClassicalVncReloadSourceEditorState();
+      if (!editor || editor.committedSignature !== editor.draftSignature) return null;
+      // Persist the committed replacement inputs separately from later typing.
+      // The old exact target remains the occurrence replaced only by Make.
+      PendingClassicalResultEdit = Object.freeze({...edit, replacementSourceEditor:freezeConstructionData(editor)});
+      return PendingClassicalResultEdit;
+    }
+
     function getClassicalResultEditProposal() {
       const edit = PendingClassicalResultEdit;
       if (!edit || !["remove", "reorder"].includes(edit.action)) return null;
@@ -42426,6 +42458,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
       if (source) ClassicalPositionSources.add(source);
       if (ordinary && targetObject.isClassicalGrammarTypedSourceOperationBindingFrame?.(ordinary) && ordinary.operationId === operation) source = ordinary.exactSource;
       if (source) ClassicalPositionSources.add(source);
+      const replacementEdit = PendingClassicalResultEdit?.sourceReplacement
+        ? getClassicalResultEditSourceReplacement(source) : null;
       let ready = readiness?.ready === true || readiness?.disabled === false && readiness?.dataset?.classicalCapabilityApplyState === "ready";
       let packet = null;
       if (ready) { try { packet = captureClassicalConstructionPacket(operation, source, binding, typed); } catch { packet = null; } }
@@ -42437,12 +42471,18 @@ export function createUiRenderingApi(targetObject = globalThis) {
       if (packet && PendingClassicalResultEdit?.action === "change"
         && (PendingClassicalResultEdit.root === ClassicalConstructionSession.position.accepted.result
           || PendingClassicalResultEdit.intent === "add")
-        && (ActiveClassicalGrammarResultSourceCapture?.canonicalResult === PendingClassicalResultEdit.target
+        && (replacementEdit || !PendingClassicalResultEdit.sourceReplacement
+          && ActiveClassicalGrammarResultSourceCapture?.canonicalResult === PendingClassicalResultEdit.target
           || PendingClassicalResultEdit.intent === "add" && packet.kind === "clause"
             && packet.captures?.some(slot => slot.role === "principal" && slot.exact === PendingClassicalResultEdit.target))) {
         packet = Object.freeze({kind: "result-edit", operation: packet.operation,
           signature: `${packet.signature}:edit:${getClassicalPositionIdentity(PendingClassicalResultEdit.root)}:${PendingClassicalResultEdit.path.join("/")}`,
           edit: PendingClassicalResultEdit, inner: packet});
+      }
+      // A stale/invalid replacement may never fall back to making a standalone
+      // child in place of the accepted whole.
+      if (PendingClassicalResultEdit?.sourceReplacement && packet?.kind !== "result-edit") {
+        packet = null; ready = false;
       }
       if (packet?.kind === "result-edit") {
         layerReadiness = getConstructionLayerReadiness(targetObject, packet);
@@ -51459,6 +51499,68 @@ export function createUiRenderingApi(targetObject = globalThis) {
       classicalRestoredAcceptedBuild = {result, binding};
       return true;
     }
+    function restoreClassicalResultEditReplacementSource(saved) {
+      const select = targetObject.document.getElementById("classical-capability-navigator-operation");
+      let restored = false;
+      try {
+        const editor = saved.replacementSourceEditor;
+        if (!editor) {
+          // Typing before the first Use Source is a legitimate pending draft.
+          // Missing committed input must never reopen the old operation as a
+          // substitute replacement, even if a saved operation is present.
+          const unit = JSON.parse(saved.sourceEditorState?.draftSignature || "null")?.unit;
+          if (["nnc", "vnc"].includes(unit)) {
+            targetObject.syncClassicalBasalUnitControls?.(unit);
+            restoreClassicalVncReloadSourceEditorState(saved.sourceEditorState);
+          }
+          targetObject.setClassicalSourcePartsPendingState?.(true);
+          return false;
+        }
+        if (Object.keys(editor).some(key => !["version", "mode", "committedSignature", "draftSignature", "committedMirror", "controls"].includes(key))) return false;
+        const unit = JSON.parse(editor?.committedSignature || "null")?.unit;
+        if (!["nnc", "vnc"].includes(unit) || editor.draftSignature !== editor.committedSignature) return false;
+        targetObject.syncClassicalBasalUnitControls?.(unit);
+        if (!restoreClassicalVncReloadSourceEditorState(editor)
+          || targetObject.commitClassicalSourcePartsEvaluation?.({force:true, source:"manual-entry"}) !== true) return false;
+        const source = ActiveClassicalGrammarCapabilityNavigator?.exactSource;
+        if (!getClassicalResultEditSourceReplacement(source)) return false;
+        // Reissue only caller selections against the newly admitted Source.
+        // In particular, never use the old constituent's reinflection context.
+        if (saved.operationId) {
+          if (!select || !Array.from(select.options || []).some(option =>
+            option.value === saved.operationId && !option.disabled)) return false;
+          select.value = saved.operationId;
+          updateClassicalCapabilityNavigatorSelection(select, {navigate:false, execute:false, stageBinding:true});
+          if (saved.pendingTypedSourceSelections) {
+            const selections = saved.operationId === "vnc:application"
+              ? validateClassicalVncReloadApplicationSelections(saved.pendingTypedSourceSelections)
+              : getClassicalTypedSourceSelectionSignature(saved.pendingTypedSourceSelections) !== null
+                ? saved.pendingTypedSourceSelections : null;
+            if (!selections) return false;
+            const binding = stageClassicalGrammarTypedSourceOperationBinding(saved.operationId, selections);
+            if (!["ready", "choices-required"].includes(binding?.bindingStatus)
+              || binding.exactSource !== source) return false;
+            if (saved.operationId === "nnc:ordinary") {
+              const projection = getClassicalOrdinaryNncControlProjection(binding);
+              if (projection) syncClassicalRuleLogicControlsForSurfaceFrame(projection);
+            }
+          }
+        } else if (select) select.value = "";
+        restored = true;
+        return true;
+      } catch { return false; }
+      finally {
+        // The current editor may contain a further, uncommitted Source change.
+        // Its coordinates never replace the admitted replacement machinery.
+        if (restored) restoreClassicalVncReloadSourceEditorState(saved.sourceEditorState);
+        else {
+          if (select) select.value = "";
+          ActiveClassicalGrammarResultBinding = null;
+          clearClassicalGrammarTypedSourceOperationBinding("inner-source-reload-rejected");
+        }
+      }
+    }
+
     function restoreClassicalConjunctEditReload(roots, saved, resultCapture) {
       const edit = restoreResultEditReload(targetObject, roots, saved.edit);
       let draftRejected = false;
@@ -51480,6 +51582,15 @@ export function createUiRenderingApi(targetObject = globalThis) {
       if (!targetObject.isClassicalGrammarApplicationResultCapture(capture, "result-edit-change")) return false;
       PendingClassicalResultEdit = edit;
       if (!activateClassicalGrammarWorkspaceCapture(capture)) return false;
+      if (edit.sourceReplacement) {
+        const restored = restoreClassicalResultEditReplacementSource(saved);
+        renderClassicalCapabilityApplicationResultForReview(resultCapture.applicationResult);
+        syncClassicalCapabilityApplyOperationState();
+        setClassicalWholeCanvasActionStatus(restored
+          ? "Whole Result and replacement Source restored. Changes remain pending until Make Result."
+          : "Whole Result restored. Choose the replacement Source and operation again.");
+        return true;
+      }
       const vnc = targetObject.getClassicalNahuatlVncApplicationEditContext?.(edit.target);
       if (vnc) enterClassicalVncChoiceEdit();
       const particle=targetObject.isClassicalNahuatlParticleResultFrame?.(edit.target)===true
@@ -51677,7 +51788,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
         const basal = !current ? classicalVncAcceptedBasalReloadState : null;
         const recipe = basal?.recipe
           || targetObject.exportClassicalNahuatlVncApplicationRecipe?.(current);
-        const source = ActiveClassicalGrammarResultSourceCapture?.canonicalResult || null;
+        const source = PendingClassicalResultEdit?.sourceReplacement
+          && PendingClassicalResultEdit.intent === "change" && PendingClassicalResultEdit.root === current
+          ? PendingClassicalResultEdit.target : ActiveClassicalGrammarResultSourceCapture?.canonicalResult || null;
         const edit = snapshotResultEditReload(targetObject, PendingClassicalResultEdit, current, source);
         const controller = edit ? null : ActiveClassicalClauseRelationController;
         const captures = Object.fromEntries(["principal", "adjoined", "dependent", "supplement", "marker"]
@@ -51688,6 +51801,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
             browserWindow?.sessionStorage?.setItem(CLASSICAL_VNC_RELOAD_SESSION_KEY,
               JSON.stringify({ version: 2, url: browserWindow.location.href, recipe: mixedRecipe, history, historySelection,
                 edit, pendingTypedSourceSelections: edit ? snapshotClassicalConjunctEditChoices() : null,
+                replacementSourceEditor: edit?.sourceReplacement ? PendingClassicalResultEdit.replacementSourceEditor || null : null,
                 sourceEditorState: snapshotClassicalVncReloadSourceEditorState(),
                 selections: ClassicalClauseRelationSelections,
                 operationId: targetObject.document.getElementById("classical-capability-navigator-operation")?.value || "",
