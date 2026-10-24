@@ -1,18 +1,16 @@
-# Grammar OS v1.2.31 release
+# Grammar OS v1.2.32 release
 
-Release name: **Andrews Interface Corrections**
+Release name: **Reload Fixture Alignment**
 
-Browser build: **20261024-composition-50-r3**
+Browser build: **20261024-composition-51**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Preserves the selected passive-action possessor by following the canonical passive promotion of the mainline object, including sources with multiple specific objects.
-- Allows the shared supplement in a conjunction to be changed while retaining the whole Result, untouched conjuncts and original context, including repeated edits and supported reload.
-- Shows future-embed nonactive scope accurately: Embed applies; incompatible alternatives remain disabled. Ordinary compound scope choices retain their existing domains.
-- Keeps previews and pending edits separate from the accepted Result; only explicit Make accepts changes.
-- Saves focused regressions with short and medium invented Nahuatl stems, exact occurrence custody, Source dependencies and copied/stale rejection.
+- Aligns the whole-Result reload save-test fixture with the production saver's neutral additional-Result binding state.
+- Checks accepted-whole and selected-child restoration with short and medium invented Nahuatl Sources, including saving without Make or a History mutation.
+- Preserves the reviewed v1.2.31 grammar and interface behavior; this verification release changes no grammatical owner or persistence format.
 
 ## Review scope and current limits
 
@@ -39,7 +37,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.31/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.32/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.

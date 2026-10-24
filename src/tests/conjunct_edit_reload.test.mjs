@@ -10,6 +10,7 @@ import {previewConstructionPacket} from '../ui/composition/construction_preview.
 import {createConstructionSession} from '../ui/composition/construction_session.mjs';
 const editReload=await import('../ui/composition/result_edit_reload.mjs').catch(()=>null);
 const f=JSON.parse(readFileSync(new URL('./fixtures/nonce_conjunct_reload_20261023.json',import.meta.url)));
+const saveFixture=JSON.parse(readFileSync(new URL('./fixtures/nonce_interface_repairs_20261024.json',import.meta.url)));
 const runtime=async()=>(await createRuntimeInstance({documentObject:{getElementById:()=>null,addEventListener(){}}})).runtimeObject;
 const r=await runtime(),fresh=await runtime();
 const options={relation:'marked',coordinationType:'additive',level:'principal',polarity:'positive',rightwardModifier:'oc',modifierAdjunctor:'none',sharedModifierScope:'none',sharedModifier:'none',leftContextAbsent:false,adjoinedFunction:'none',identicalAdjoinedClauseEllipsis:'none',boundaryPunctuation:'none'};
@@ -43,16 +44,21 @@ test('a changed NNC sentence survives as a constituent with its retained ordinar
  assert.equal(target,roots.source);assert.equal(target.requestedSentenceType,'yes-no-cuix');assert.equal(target.polarity,'negative');assert.equal(target.negativePrefix,'ah');
  assert.equal(fresh.getClassicalNahuatlOrdinaryNncReinflectionContext(target).sourceFrame.stem,f.stems[2]);
 });
-test('the public save adapter persists the accepted whole separately from an active child',()=>{
- const root=group(r,[noun1,verb1]);let saved;
+for (const [size,nounStem,verbStem] of [
+ ['short',saveFixture.nounStems.short[0],saveFixture.verbStems.short[0]],
+ ['medium',saveFixture.nounStems.medium[0],saveFixture.verbStems.medium[0]],
+]) test(`the public save adapter persists the accepted whole separately from an active child (${size} invented Sources)`,()=>{
+ const selected=verb(r,verbStem),root=group(r,[noun(r,nounStem),selected]);let saved;
+ const before=r.getClassicalGrammarWorkspaceHistorySnapshot();
  const doc={getElementById:()=>null,defaultView:{location:{href:'http://local/edit'},sessionStorage:{setItem(_k,v){saved=JSON.parse(v);},removeItem(){}}}};
  const context=vm.createContext({targetObject:{...r,document:doc},classicalVncReloadPersistenceReady:true,classicalUnsupportedResultReloadPending:false,
  exportClassicalGrammarWorkspaceHistoryReloadState:()=>null,getClassicalHistoryReloadSelection:()=>({}),
- getActiveClassicalCapabilityApplicationResult:()=>r.captureClassicalGrammarApplicationResult(verb1,'reload-inputs').applicationResult,
+ getActiveClassicalCapabilityApplicationResult:()=>r.captureClassicalGrammarApplicationResult(selected,'reload-inputs').applicationResult,
  getClassicalSgrOwnerIssuedProjection:()=>null,ActiveClassicalRuleLogicSurfaceFrame:null,
  getClassicalVisibleAcceptedResult:()=>({canonicalResult:root}),ClassicalConstructionSession:{position:{accepted:{result:root}}},
- ActiveClassicalGrammarResultSourceCapture:{canonicalResult:verb1},ActiveClassicalClauseRelationController:null,
- PendingClassicalResultEdit:{action:'change',intent:'change',root,target:verb1,path:['children',1]},
+ ActiveClassicalGrammarResultSourceCapture:{canonicalResult:selected},ActiveClassicalClauseRelationController:null,
+ ActiveClassicalGrammarResultBinding:null, // This fixture has no active additional-Result binding.
+ PendingClassicalResultEdit:{action:'change',intent:'change',root,target:selected,path:['children',1]},
  classicalVncAcceptedBasalReloadState:null,exportClassicalResultReloadRecipe:reload.exportClassicalResultReloadRecipe,
  snapshotResultEditReload:editReload?.snapshotResultEditReload,
  snapshotClassicalVncReloadSourceEditorState:()=>null,ClassicalClauseRelationSelections:{},
@@ -60,7 +66,11 @@ test('the public save adapter persists the accepted whole separately from an act
  snapshotClassicalVncPendingResultContinuation:()=>null,CLASSICAL_VNC_RELOAD_SESSION_KEY:'test',showClassicalHistoryReloadNotice(){},
  });
  const code=readFileSync(new URL('../ui/rendering/rendering.mjs',import.meta.url),'utf8'),a=code.indexOf('    function saveClassicalVncReloadSession()'),z=code.indexOf('\n    function ',a+1);vm.runInContext(code.slice(a,z),context);
- assert.equal(context.saveClassicalVncReloadSession(),true);assert.equal(saved.version,2);const roots=reload.replayClassicalResultReloadRecipe(fresh,saved.recipe);assert.equal(fresh.isClassicalNahuatlClauseConjunctionResultFrame(roots.result),true);assert.equal(resolveResultEditTarget(fresh,roots.result,['children',1]).node,roots.source);assert.deepEqual(saved.edit.path,['children',1]);
+ assert.equal(context.saveClassicalVncReloadSession(),true);
+ assert.equal(context.ClassicalConstructionSession.position.accepted.result,root);
+ assert.equal(context.PendingClassicalResultEdit.target,selected);
+ assert.deepEqual(r.getClassicalGrammarWorkspaceHistorySnapshot(),before,'saving cannot Make or insert History');
+ assert.equal(saved.version,2);assert.deepEqual(saved.bindingOperands,[]);assert.equal(saved.selectedBindingId,'');const roots=reload.replayClassicalResultReloadRecipe(fresh,saved.recipe);assert.equal(fresh.isClassicalNahuatlClauseConjunctionResultFrame(roots.result),true);assert.equal(resolveResultEditTarget(fresh,roots.result,['children',1]).node,roots.source);assert.deepEqual(saved.edit.path,['children',1]);
 });
 
 test('saved edit addresses an exact replayed occurrence and rejects stale or forged coordinates',()=>{

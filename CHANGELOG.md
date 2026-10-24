@@ -1,5 +1,11 @@
 # Version History
 
+## v1.2.32 — Reload Fixture Alignment
+
+- Corrects the outdated public save-adapter fixture by supplying the actual neutral binding state.
+- Verifies whole-Result and selected-child restoration with short and medium invented Sources, without acceptance or History changes during saving.
+- Retains the v1.2.31 grammar and interface behavior.
+
 ## v1.2.31 — Andrews Interface Corrections
 
 - Corrects passive-action possessor selection for multiple specific source objects using the passive promotion owner.
