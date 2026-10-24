@@ -4415,7 +4415,10 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
       const whole = outerApplicationResult.canonicalResult;
       const recaptured = args[0]?.sourceApplicationFrame;
       const projection = targetObject.getClassicalNahuatlVncContinuationSourceConstituents?.(recaptured);
-      const exactInnerResult = projection?.canonicalContinuationSourceResultFrame;
+      const nominalWhole = projection?.canonicalNominalSourceResultFrame;
+      const nominalParent = targetObject.isClassicalNahuatlNominalConstructionResult?.(nominalWhole) === true
+        && nominalWhole.constructionKind === "nominal-embed-vnc";
+      const exactInnerResult = nominalParent ? nominalWhole : projection?.canonicalContinuationSourceResultFrame;
       const sourceProvenance = getIssuedResultProvenance(exactInnerResult);
       const sourceApplicationResult = sourceProvenance?.applicationResult;
       const sourceApplication = sourceApplicationResult?.canonicalResult;
@@ -4453,20 +4456,21 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
       const lateParent = targetObject.isClassicalNahuatlClosureFrame?.(exactInnerResult) === true;
       const sourceMachinery = denominalParent
         ? exactInnerResult.canonicalVncFrame.resultFrame.selectedMachineryFrame
-        : lateParent ? exactInnerResult.selectedMachineryFrame : null;
+        : lateParent ? exactInnerResult.selectedMachineryFrame
+        : nominalParent ? exactInnerResult.canonicalResult?.resultFrame?.selectedMachineryFrame : null;
       // The late owner consumes its privately issued finite recapture. Observe
       // the exact registered denominal/late whole behind that recapture, rather
       // than relabel its finite child or infer ancestry from matching stems.
       if (targetObject.isClassicalNahuatlClosureFrame?.(whole) === true
         && whole.baseApplicationFrame === recaptured
         && projection?.canonicalApplicationFrame === recaptured
-        && (denominalParent || lateParent)
+        && (denominalParent || lateParent || nominalParent)
         && recaptured.resultFrame?.sourceMachineryFrame === sourceMachinery) {
         const provenance = getIssuedResultProvenance(exactInnerResult);
         const innerApplicationResult = provenance?.applicationResult;
         if (isClassicalGrammarApplicationResult(innerApplicationResult)
           && innerApplicationResult.authorizationStatus === "authorized"
-          && innerApplicationResult.operationId === (denominalParent ? "vnc:denominal" : "vnc:derivational-operation")
+          && innerApplicationResult.operationId === (nominalParent ? "grammar:nominal-construction" : denominalParent ? "vnc:denominal" : "vnc:derivational-operation")
           && innerApplicationResult.canonicalResult === exactInnerResult
           && innerApplicationResult !== outerApplicationResult
           && provenance.resultRole === "canonical-result") return Object.freeze([Object.freeze({

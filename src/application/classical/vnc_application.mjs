@@ -10171,6 +10171,22 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         steps: Object.freeze(steps),
       });
     }
+    // Expose only an authenticated input edge and semantic coordinates. The
+    // graph serializer must retain this parent instead of flattening its stem.
+    function getClassicalNahuatlVncContinuationReloadInputs(value = null) {
+      if (isClassicalNahuatlVncSentenceResultFrame(value)) return Object.freeze({
+        parent: value.vncApplicationFrame || value.lateOperationClosureFrame,
+        step: Object.freeze({operationId: "vnc:sentence-result"}),
+      });
+      const frame = classicalNahuatlVncApplicationFrameByResultFrame.get(value)
+        || (isClassicalNahuatlVncApplicationFrame(value) ? value : null);
+      if (!frame || frame.authorizationStatus !== "authorized") return null;
+      const context = classicalNahuatlVncContinuationSourceByApplicationFrame.get(frame);
+      const parent = context?.canonicalNominalSourceResultFrame || context?.sourceResultFrame;
+      if (!parent) return null;
+      const step = exportClassicalNahuatlVncApplicationRecipe(frame)?.steps?.at(-1);
+      return step && Object.freeze({parent, step});
+    }
     function getClassicalNahuatlVncRecipeStepExecutionRequest(step = null, parent = null) {
       if (!step || typeof step !== "object" || Array.isArray(step)
         || Object.keys(step).some(key => !["operationId", "request"].includes(key))) return null;
@@ -10321,9 +10337,9 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
           canonicalContinuationSourceResultFrame,
         }) : null;
       return exactProjection && nominalApplication
-        && (!isClassicalNahuatlVncApplicationFrame(nominalApplication)
-          || nucleus.constructionKind === "cardinal-numeral-nnc")
-        ? Object.freeze({...exactProjection, canonicalResultFrame: nucleus}) : exactProjection;
+        ? Object.freeze({...exactProjection, canonicalResultFrame: nucleus,
+          canonicalNominalSourceResultFrame: nucleus,
+          canonicalNominalConstructionResultFrame: nucleus}) : exactProjection;
     }
     function getClassicalNahuatlVncTypedSourceApplicationInventory(
       provenance = null,
@@ -12065,7 +12081,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
           : exactInputResult;
       // A nominal compound can receive a sentence envelope over its exact
       // issued nucleus. This does not admit its spelling as a new stem Source.
-      const nominalSentenceApplication = ["vnc:sentence-result", "vnc:application"].includes(operationId)
+      const nominalSentenceApplication = ["vnc:sentence-result", "vnc:application", "vnc:derivational-operation", "vnc:ordered-voice-application"].includes(operationId)
         ? getClassicalNahuatlIssuedNominalSentenceApplication(continuationInputResult)
           || (operationId === "vnc:sentence-result"
             ? getClassicalNahuatlIssuedDenominalSentenceApplication(continuationInputResult) : null)
@@ -12137,6 +12153,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       return Object.freeze({
         exactInputResult,
         continuationInputResult,
+        nominalApplicationFrame: nominalSentenceApplication,
         // Sentence consumes the authenticated nominal finite whole. A stem
         // recapture projection is not a prerequisite of that separate port.
         continuationSourceProjection: nominalSentenceSource ? null : continuationSourceProjection,
@@ -12174,6 +12191,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       if (!projection) return null;
       const sourceCoordinate =
         sourceRecord.outerVncApplicationFrame?.normalizedRequest
+        || sourceRecord.nominalApplicationFrame?.normalizedRequest
         || sourceRecord.continuationInputResult?.normalizedRequest
         || sourceRecord.continuationInputResult?.baseApplicationFrame
           ?.normalizedRequest
@@ -12239,7 +12257,9 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       const recaptureRequest =
         buildClassicalNahuatlVncContinuationRecaptureRequest(sourceRecord);
       const recaptured = recaptureRequest
-        ? getClassicalNahuatlVncApplicationSharedService()
+        ? sourceRecord.nominalApplicationFrame
+          ? evaluateClassicalNahuatlVncApplication(recaptureRequest, sourceRecord.continuationInputResult)
+          : getClassicalNahuatlVncApplicationSharedService()
           .continueFromResult(
             sourceRecord.continuationInputResult,
             recaptureRequest,
@@ -13674,6 +13694,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       exportClassicalNahuatlVncApplicationRecipe;
     api.prepareClassicalNahuatlVncApplicationRecipeReplay =
       prepareClassicalNahuatlVncApplicationRecipeReplay;
+    api.getClassicalNahuatlVncContinuationReloadInputs = getClassicalNahuatlVncContinuationReloadInputs;
     api.getClassicalNahuatlVncRecipeStepExecutionRequest =
       getClassicalNahuatlVncRecipeStepExecutionRequest;
     api.getClassicalNahuatlVncApplicationEditContext = getClassicalNahuatlVncApplicationEditContext;

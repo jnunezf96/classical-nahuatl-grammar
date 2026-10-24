@@ -1,3 +1,5 @@
+import {exportNominalCompoundReloadNode, replayNominalCompoundReloadNode, supportsNominalCompoundResultReload} from "./reload_nominal_compound.mjs?nominalReload=20261024-4";
+export {supportsNominalCompoundResultReload};
 import {exportNncContextReloadNode, replayNncContextReloadNode, isNncReloadEvidence} from "./reload_nnc_context.mjs";
 import {exportClauseContextReloadNode, replayClauseContextReloadNode, isClauseReloadEvidence} from "./reload_clause_context.mjs?innerParticle=20261024-1";
 // Reload inputs are recipes, never persisted grammar frames or written answers.
@@ -61,11 +63,15 @@ const sameInputs = (a,b) => a === b || Boolean(a && b && typeof a === "object" &
 // Result, exact parent and current owner packet before comparing input choices.
 // No surface string, persisted receipt or equal-looking Source proves identity.
 export function matchesAcceptedVncContinuationBuild(r, result, binding, position) {
-  if (!issued(r,result) || !futureObjectReloadStep(r,result)
+  const nominal = supportsNominalCompoundResultReload(r,result);
+  const retainedWhole = nominal && r.getClassicalNahuatlVncContinuationSourceConstituents?.(result.baseApplicationFrame)?.canonicalNominalSourceResultFrame;
+  if (!issued(r,result) || !(futureObjectReloadStep(r,result) || nominal)
     || r.isClassicalNahuatlVncContinuationBindingFrame?.(binding) !== true
     || binding.bindingStatus !== "ready" || binding.operationId !== "vnc:derivational-operation"
-    || binding.outerVncApplicationFrame !== result.baseApplicationFrame
-    || binding.ownerRequest?.sourceApplicationFrame !== result.baseApplicationFrame
+    || (nominal ? retainedWhole !== binding.exactInputResult
+      || r.getClassicalNahuatlVncContinuationSourceConstituents?.(binding.outerVncApplicationFrame)?.canonicalNominalSourceResultFrame !== retainedWhole
+      : binding.outerVncApplicationFrame !== result.baseApplicationFrame
+        || binding.ownerRequest?.sourceApplicationFrame !== result.baseApplicationFrame)
     || position?.construction?.sourcePending
     || position?.construction?.source !== binding.exactInputResult
     || position.construction.route?.operation !== binding.operationId) return false;
@@ -76,11 +82,30 @@ export function matchesAcceptedVncContinuationBuild(r, result, binding, position
     || packet.request.args?.length !== binding.executionArgs.length
     || !packet.request.args.every((arg,i) => arg === binding.executionArgs[i])
     || r.isClassicalNahuatlClosureFrame?.(pending) !== true
-    || pending.baseApplicationFrame !== result.baseApplicationFrame) return false;
+    || (nominal
+      ? r.getClassicalNahuatlVncContinuationSourceConstituents?.(pending.baseApplicationFrame)?.canonicalNominalSourceResultFrame !== retainedWhole
+      : pending.baseApplicationFrame !== result.baseApplicationFrame)) return false;
   return sameInputs(result.normalizedRequest,pending.normalizedRequest)
     && sameInputs(result.finalTypedVncSlotFrame,pending.finalTypedVncSlotFrame)
     && sameInputs(r.exportClassicalNahuatlVncApplicationRecipe(result),
       r.exportClassicalNahuatlVncApplicationRecipe(pending));
+}
+
+export function matchesAcceptedNominalCompoundBuild(r, result, position) {
+  if (!issued(r,result) || position?.construction?.sourcePending) return false;
+  const original = r.getClassicalNahuatlNominalCompoundReloadInputs?.(result);
+  const packet = position.execution;
+  if (!original || packet?.kind !== "request" || packet.operation !== "grammar:nominal-construction"
+    || packet.source !== position.construction.source || packet.request?.operationId !== packet.operation
+    || packet.request.args?.length !== 1 || packet.layers?.length || packet.sentenceOptions) return false;
+  function same(a,b,depth=0) {
+    if (a===b) return true;
+    if (depth>24 || !a || !b || typeof a!=="object" || typeof b!=="object") return false;
+    if (issued(r,a) || issued(r,b)) return false;
+    const keys=Object.keys(a).filter(key=>a[key]!==undefined), other=Object.keys(b).filter(key=>b[key]!==undefined);
+    return keys.length===other.length && keys.every(key=>other.includes(key) && same(a[key],b[key],depth+1));
+  }
+  return same(original,packet.request.args[0]);
 }
 
 export function exportClassicalResultReloadRecipe(r, roots = {}) {
@@ -91,7 +116,8 @@ export function exportClassicalResultReloadRecipe(r, roots = {}) {
     const capture = issued(r, value);
     if (!capture && !isNncReloadEvidence(r,value) && !isClauseReloadEvidence(r,value)) throw new Error("issued reload Result required");
     visiting.add(value);
-    let node = exportNncContextReloadNode(r,value,child=>visit(child,depth+1))
+    let node = exportNominalCompoundReloadNode(r,value,child=>visit(child,depth+1))
+      ?? exportNncContextReloadNode(r,value,child=>visit(child,depth+1))
       ?? exportClauseContextReloadNode(r,value,child=>visit(child,depth+1));
     const vnc = r.exportClassicalNahuatlVncApplicationRecipe?.(value);
     if (node) {}
@@ -187,7 +213,8 @@ export function replayClassicalResultReloadRecipe(r, recipe) {
   const prior = id => Number.isInteger(id) && id >= 0 && id < results.length ? results[id] : null;
   try {
     for (const node of recipe.nodes) {
-      let result = replayNncContextReloadNode(r,node,prior);
+      let result = replayNominalCompoundReloadNode(r,node,prior);
+      if (result === undefined) result = replayNncContextReloadNode(r,node,prior);
       if (result === undefined) result = replayClauseContextReloadNode(r,node,prior);
       if (result !== undefined) { if (!result) return null; }
       else if (node?.type === "vnc:future-object" && exact(node,["type","source","step"])

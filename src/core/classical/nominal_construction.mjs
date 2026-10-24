@@ -14690,6 +14690,10 @@ export function installClassicalNahuatlNominalConstructionGlobals(targetObject =
       getClassicalNahuatlAdjectivalNncSourceConstituent(parent, options, target),
     isClassicalNahuatlAdjectivalNncSourceConstituentFrame,
     isClassicalNahuatlNominalConstructionResult,
+    getClassicalNahuatlNominalCompoundReloadInputs: result =>
+      isClassicalNahuatlNominalConstructionResult(result)
+      && ["compound-nnc", "nominal-embed-vnc"].includes(result.constructionKind)
+        ? NOMINAL_CONSTRUCTION_REQUESTS.get(result) || null : null,
     isClassicalNahuatlIssuedNominalConstructionNncSlotFrame:
       frame => ISSUED_NOMINAL_NNC_SLOTS.has(frame),
     getClassicalNahuatlNominalConstructionSlotExternalObject:

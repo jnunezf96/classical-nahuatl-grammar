@@ -1,17 +1,17 @@
-# Grammar OS v1.2.25 release
+# Grammar OS v1.2.26 release
 
-Release name: **Noun and Possession Stem Paths**
+Release name: **Whole Compounds and Operation Harmony**
 
-Browser build: **20261024-composition-44**
+Browser build: **20261024-composition-45**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Adds nominal incorporation within Change the verb stem, delegating to the existing exact-Result noun-incorporation owner and its required noun Result picker.
-- Exposes accompanying possession under verbal compound, with the existing possessed predicate and possessor choices. Andrews's suppletive ye embed and possessive NNC conditions remain authoritative.
-- Retains accepted Results throughout staging and preview; only explicit Make accepts the new construction.
-- Corrects the stale NNC Build layout when returning to a saved VNC after making its required noun. Saves fresh invented-stem regressions and focused browser proof.
+- Retains the exact whole NNC+VNC compound when entering later verb-stem operations, rather than substituting its inner verb.
+- Reissues nominal compound inputs and exact operand links after reload, including supported continuations, pending choices, accepted Build and history. Only explicit Make accepts a changed Result.
+- Places existing compound, affective and quality actions under a contextual Nounstem chooser; groups existing deverbal families by their grammatical transformation.
+- Uses consistent adverbial-clause naming and fixes an irrelevant supplement-object requirement on ordinary object incorporation.
 
 ## Review scope and current limits
 
@@ -21,7 +21,7 @@ This build is available for independent review against Andrews. Automated and br
 - Same-tab reload supports the documented NNC/VNC and conjunction/supplementation input graphs, including original NNC writing context. Cross-device saving is unclaimed.
 - Sentence particle/adverbial layers, including quin, now reload over supported host graphs. Source-only internally generated particle outputs remain unclaimed as separate editable application Results.
 - Optional writing coverage and the simple-compound Writing adapter have explicit supported-context limits.
-- Repeating continuation from every nominal-compound wrapper and full history persistence for that family remain unclaimed; the interface reports unsupported saved histories.
+- Nominal compound graphs with replayable operands, finite continuations and supported frequentative/future-object layers now persist in the same tab. Independent operand families retain their own persistence limits; opaque lexical/derived bridge recipes and universal cross-device saving remain unclaimed.
 - Accumulated-session performance and some historical inventory provenance remain open qualifications.
 
 See [Version History](CHANGELOG.md) for earlier releases.
@@ -36,7 +36,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.25/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.26/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.

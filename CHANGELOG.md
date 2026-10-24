@@ -1,5 +1,12 @@
 # Version History
 
+## v1.2.26 — Whole Compounds and Operation Harmony
+
+- Keeps exact whole nominal-compound parents through later stem continuation and reload, with shared operand links, pending Build, Applied restoration and supported history.
+- Adds contextual Nounstem actions through existing owners and semantic groups over the existing deverbal choices.
+- Aligns adverbial-clause captions and removes an unrelated supplement-object gate from incorporated-object constructions.
+- Preserves Make-only acceptance, with fresh invented-stem focused regressions and public workflow proof.
+
 ## v1.2.25 — Noun and Possession Stem Paths
 
 - Adds nominal incorporation to Change the verb stem through the existing exact VNC + NNC formation owner.

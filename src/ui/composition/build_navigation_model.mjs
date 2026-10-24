@@ -210,7 +210,7 @@ export function formatBuildOperationLabel(operationId = "") {
     "nnc:personal-name": "Form a personal name",
     "nnc:place-gentilic": "Form a place or inhabitant name",
     "nnc:relational": "Build a relational noun",
-    "nnc:adverbial": "Make an adverb",
+    "nnc:adverbial": "Form an adverbial clause",
     "vnc:derivational-operation": "Change the verb stem",
     "vnc:ordered-voice-application": "Change voice",
   };

@@ -1,5 +1,5 @@
 import { exportClassicalResultReloadRecipe, replayClassicalResultReloadRecipe }
-  from "./result_reload.mjs?innerParticle=20261024-1&remainingReload=20261024-1&conjunctReload=20261023-1";
+  from "./result_reload.mjs?innerParticle=20261024-1&remainingReload=20261024-1&conjunctReload=20261023-1&nominalReload=20261024-4";
 
 const CLASSICAL_GRAMMAR_WORKSPACE_HISTORY_KIND =
   "classical-grammar-workspace-history";

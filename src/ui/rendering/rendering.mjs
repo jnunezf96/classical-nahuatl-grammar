@@ -1,5 +1,6 @@
 import {syncFutureObjectChoices} from '../composition/future_object_choices.mjs?futureObject=20261024-3';
 import {syncStemLayerChoices} from '../composition/stem_layer_choices.mjs?stemNominal=20261024-2';
+import {syncNounstemOperationChoices,groupDeverbalFamilyOptions} from '../composition/nounstem_operation_choices.mjs?v=20261024-1&nominalReload=20261024-4';
 import {snapshotResultEditReload,restoreResultEditReload} from '../composition/result_edit_reload.mjs?innerSource=20261024-1&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-1';
 import {getVncChoiceEditContext, getVncVoiceEditSubject, projectVncChoiceEditControls} from '../composition/vnc_choice_edit.mjs?v=20261023-3';
 import {runCompositionAction} from '../composition/action_feedback.mjs?v=20261023-1';
@@ -16,7 +17,7 @@ import {resolvePathTargets, setPathHistoryPresentation} from '../composition/pat
 import {setStructureDesignContext, setStructureComparison, projectCanonicalStructure, projectClauseStructure, projectOperationShape, compareCanonicalStructures} from '../composition/structure_design.mjs?clauseHarmony=20261023-5&v=20261011-structure-15&routeShapes=20261021-1&clauseCoordinate=20261021-1&resetEligibility=20261022-1&writingSource=20261022-1&makePreview=20261022-1&fixedChoices=20261022-1';
 import {setSourceCandidatePresentation, projectSavedSourceCandidate, setRouteChoicePresentation, projectOfferedOperationShapes} from '../composition/candidate_design.mjs?v=20261021-route-shapes-1';
 import {notifyExplicitMakeResult,focusNativeChoice} from '../composition/flow_design.mjs?v=20261022-reset-eligibility-1&writingSource=20261022-1&makePreview=20261022-1&fixedChoices=20261022-1';
-import {getBuildOperationGroup,getBuildOperationOrder,inventoryOptionReference,formatBuildOperationLabel} from '../composition/build_navigation_model.mjs?v=20261021-ending-reference-2';
+import {getBuildOperationGroup,getBuildOperationOrder,inventoryOptionReference,formatBuildOperationLabel} from '../composition/build_navigation_model.mjs?v=20261021-ending-reference-2&nominalReload=20261024-4';
 import {createConstructionSession} from '../composition/construction_session.mjs?stemReload=20261024-2&v=20261012-position-12&acceptedBuild=20261023-1';
 import {projectConstructionValue} from '../composition/construction_position.mjs?stemReload=20261024-2&v=20261012-position-12&acceptedBuild=20261023-1';
 import {executeConstructionPacket, freezeConstructionData, getConstructionPacketOrigin, captureConstructionParents, matchesConstructionWitness, orderConstructionSlots, getConstructionFixedChoices, getConstructionLayerReadiness, getConstructionParticleHostInput} from '../composition/construction_packet.mjs?innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1';
@@ -26,11 +27,11 @@ import {getNativeGrammarControls, getWritingSourcePresentation, setChoiceDesignC
 import { readClassicalSourceObjectRows, getClassicalSourceObjectControls,
   restoreClassicalSourceObjectRows, syncClassicalSourceObjectRows }
   from "../composer/source_objects.mjs?v=20261007-panel-source-objects-1";
-import { exportClassicalResultReloadRecipe, replayClassicalResultReloadRecipe, reissueClassicalAcceptedBuildBinding, matchesAcceptedVncContinuationBuild, supportsFutureObjectResultReload }
-  from "../../application/classical/result_reload.mjs?stemReload=20261024-2&innerParticle=20261024-1&remainingReload=20261024-1&conjunctReload=20261023-1&v=20261007-reader-40-2-175&acceptedBuild=20261023-1";
+import { exportClassicalResultReloadRecipe, replayClassicalResultReloadRecipe, reissueClassicalAcceptedBuildBinding, matchesAcceptedVncContinuationBuild, matchesAcceptedNominalCompoundBuild, supportsFutureObjectResultReload, supportsNominalCompoundResultReload }
+  from "../../application/classical/result_reload.mjs?stemReload=20261024-2&innerParticle=20261024-1&remainingReload=20261024-1&conjunctReload=20261023-1&v=20261007-reader-40-2-175&acceptedBuild=20261023-1&nominalReload=20261024-4";
 import { exportClassicalGrammarWorkspaceHistoryReloadState,
   restoreClassicalGrammarWorkspaceHistoryReloadState }
-  from "../../application/classical/grammar_workspace_history.mjs?innerParticle=20261024-1&remainingReload=20261024-1&conjunctReload=20261023-1&v=20261006-history-reload-1";
+  from "../../application/classical/grammar_workspace_history.mjs?innerParticle=20261024-1&remainingReload=20261024-1&conjunctReload=20261023-1&v=20261006-history-reload-1&nominalReload=20261024-4";
 // Canonical modern ESM module.
 
 import {
@@ -19299,6 +19300,59 @@ export function createUiRenderingApi(targetObject = globalThis) {
           ? enterClassicalGrammarResultBindingChoice("nominal-embed:matrix-vnc-result", {allowExecution: false}) : false;
       }});
     }
+    function getClassicalNounstemOperationOwner() {
+      const navigator = ActiveClassicalGrammarCapabilityNavigator;
+      const operation = navigator?.operations?.find(item => item.operationId === "grammar:nominal-construction");
+      const owner = operation?.ownerBindingFrame;
+      if (navigator?.inputRole !== "exact-owner-issued-result"
+        || targetObject.isClassicalGrammarApplicationCapabilityNavigator?.(navigator) !== true
+        || operation?.availabilityStatus !== "available"
+        || operation.ownerBindingFrameValidated !== true
+        || targetObject.isClassicalNahuatlFormationResultBindingFrame?.(owner) !== true
+        || owner.authorizationStatus !== "authorized"
+        || owner.exactResult !== operation.ownerBindingInputResult
+        || owner.exactResult !== navigator.exactResult) return null;
+      return {owner, exactResult: owner.exactResult};
+    }
+    function syncClassicalNounstemOperationChoices(surfaceFrame = null) {
+      const document = targetObject.document;
+      if (!document) return null;
+      const basalUnit = surfaceFrame?.basalUnit || getClassicalBasalUnitFromSurfaceForRendering();
+      const available = basalUnit === "nnc" ? getClassicalNounstemOperationOwner() : null;
+      const presentation = available ? getClassicalNncGrammarPresentation() : null;
+      const host = presentation?.groups?.nounstem?.body || null;
+      const current = getActiveClassicalGrammarResultBinding("grammar:nominal-construction");
+      const options = available ? [
+        "compound-nnc:embed-result", "compound-nnc:matrix-result",
+        "affective-nnc:embed-result", "adjectival-nnc:source-result",
+      ].filter(bindingId => available.owner.bindingIds.includes(bindingId)).map(bindingId => ({
+        bindingId, available: true,
+        optionRef: `option:id%3Aclassical-capability-navigator-binding:${encodeURIComponent(bindingId)}`,
+      })) : [];
+      return syncNounstemOperationChoices(document, {
+        host: options.length ? host : null, options,
+        selectedBindingId: current?.exactResult === available?.exactResult ? current?.selectedBindingId : "",
+        onSelect: bindingId => {
+          // Resolve again at the user action boundary. A stale display never
+          // changes the input lane or reconstructs material from its Result.
+          const live = getClassicalNounstemOperationOwner();
+          if (!live || live.exactResult !== available?.exactResult
+            || !live.owner.bindingIds.includes(bindingId)) return false;
+          const selector = document.getElementById("classical-capability-navigator-operation");
+          const option = Array.from(selector?.options || []).find(item => item.value === "grammar:nominal-construction");
+          if (!selector || selector.disabled || !option || option.disabled || option.hidden
+            || option.parentElement?.disabled || option.parentElement?.hidden) return false;
+          selector.value = option.value;
+          selector.dispatchEvent(new document.defaultView.Event("change", {bubbles: true}));
+          const binding = getActiveClassicalGrammarResultBinding("grammar:nominal-construction");
+          if (binding?.exactResult !== live.exactResult
+            || targetObject.isClassicalNahuatlFormationResultBindingFrame?.(binding.ownerBindingFrame) !== true
+            || binding.ownerBindingFrame.exactResult !== live.exactResult
+            || !binding.bindingIds.includes(bindingId)) return false;
+          return Boolean(enterClassicalGrammarResultBindingChoice(bindingId, {allowExecution: false}));
+        },
+      });
+    }
     function syncClassicalNncGrammarSurfaceContract(surfaceFrame = null) {
       if (typeof targetObject.document === "undefined") {
         return null;
@@ -19377,6 +19431,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
           if (wrapper.hidden !== true) visibleGroups.add("sentence");
         });
       }
+      const nounstemOperations = syncClassicalNounstemOperationChoices(surfaceFrame);
+      if (nncActive && nounstemOperations && !nounstemOperations.disabled
+        && nounstemOperations.closest?.("label")?.hidden !== true) visibleGroups.add("nounstem");
       targetObject.document.querySelectorAll(
         "[data-classical-nnc-authority-heading]"
       ).forEach(heading => {
@@ -28348,6 +28405,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       frame = null
     ) {
       if (typeof targetObject.document === "undefined") return;
+      groupDeverbalFamilyOptions(targetObject.document);
       restoreClassicalTypedCompoundClassOptionPresentation();
       if (selectedConstruction !== "denominal-vnc") syncClassicalIncludedPossessorSourceControls();
       if (!["", "none"].includes(String(selectedConstruction || ""))) {
@@ -43232,6 +43290,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
       }
       const head = targetObject.document?.getElementById?.("classical-nominal-embed-supplement-object");
       const missingSupplementHead = binding?.operationId === "grammar:nominal-construction"
+        && getClassicalNominalConstructionControlValue("classical-nominal-embed-role", "") === "adverb"
+        && getClassicalNominalConstructionControlValue("classical-nominal-embed-adverbial-route", "") === "supplement-object"
         && getClassicalNominalEmbedOperands(binding)
         && head?.disabled === false
         && head.closest?.("[data-nominal-embed-supplement-head-choice]")?.hidden === false
@@ -44700,6 +44760,25 @@ export function createUiRenderingApi(targetObject = globalThis) {
           }
           const agreement = document.getElementById("classical-rule-logic-subject");
           if (agreement) agreement.value = subject.agreement;
+        }
+      }
+      const retainedObjects = owner.continuationSourceProjection?.sourceObjectRequests;
+      if (Array.isArray(retainedObjects) && retainedObjects.length === 0) {
+        const object = document.getElementById("classical-rule-logic-object");
+        const wrapper = object?.closest?.("label, .classical-rule-control");
+        if (wrapper?.closest?.("#classical-rule-logic-controls")
+          && !object.closest?.("[data-classical-source-identity-controls]")) {
+          // Incorporation can vacate the current VNC's object position. The
+          // earlier Source editor retains its own value; it is not an object
+          // choice for this exact retained whole. New causee/applicative fields
+          // belong to their prospective owner and remain independently visible.
+          wrapper.hidden = true;
+          wrapper.setAttribute("aria-hidden", "true");
+          wrapper.setAttribute("aria-disabled", "true");
+          wrapper.dataset.classicalControlAvailability = "hidden";
+          wrapper.dataset.classicalRuleLogicGate = "retained-owner-vacant-object-position";
+          object.disabled = true;
+          object.setAttribute("aria-disabled", "true");
         }
       }
       syncClassicalVncAuthorityProgressivePresentation({basalUnit: "vnc",
@@ -46635,6 +46714,19 @@ export function createUiRenderingApi(targetObject = globalThis) {
       });
     }
 
+    function syncClassicalSelectedResultBindingRole(binding, bindingId) {
+      if (!binding?.bindingIds?.includes(bindingId)) return false;
+      const select = targetObject.document?.getElementById?.("classical-capability-navigator-binding");
+      const option = Array.from(select?.options || []).find(item => item.value === bindingId
+        && !item.disabled && !item.hidden
+        && !(item.parentElement?.tagName === "OPTGROUP"
+          && (item.parentElement.disabled || item.parentElement.hidden)));
+      if (!select || !option) return false;
+      // Programmatic handoffs and reload restore use this same entry point.
+      // Reflect its selected role without dispatching another native action.
+      select.value = bindingId;
+      return true;
+    }
     function enterClassicalGrammarResultBindingChoice(
       bindingId = "",
       { allowExecution = true } = {}
@@ -46646,6 +46738,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         || !normalizedBindingId
         || !current.bindingIds.includes(normalizedBindingId)
       ) return false;
+      syncClassicalSelectedResultBindingRole(current, normalizedBindingId);
       // Capture the draft before visibility restoration reprojects the accepted owner choices.
       const stagedVncSelections = ["vnc:sentence-result", "vnc:application", "vnc:derivational-operation"].includes(current.operationId)
         ? getClassicalVncContinuationBindingSelections(current) : null;
@@ -51019,6 +51112,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       disableClassicalNncChoicesUntilOperationSelected(
         getActiveClassicalRuleLogicSurfaceFrame()
       );
+      syncClassicalNounstemOperationChoices();
       return frame;
     }
 
@@ -51429,7 +51523,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
     function getClassicalMixedReloadControls() {
       return [...new Set([...getClassicalVncReloadChoiceControls(),
         ...targetObject.document.querySelectorAll(
-          'select[id^="classical-adverbial-"], select[id^="classical-rule-logic-nnc-"]')])];
+          'select[id^="classical-adverbial-"], select[id^="classical-rule-logic-nnc-"], select[id^="classical-nominal-"], input[id^="classical-nominal-"]')])];
     }
     function snapshotClassicalConjunctEditChoices() {
       const noun = getClassicalNncReinflectionDraft();
@@ -51517,7 +51611,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
         && !position.construction.sourcePending;
       const continuation = !exact && matchesAcceptedVncContinuationBuild(targetObject, result,
         getActiveClassicalGrammarResultBinding(position.construction.route?.operation)?.ownerBindingFrame, position);
-      const receipt = exact || continuation ? Object.freeze({construction: position.construction,
+      const nominal = !exact && !continuation && matchesAcceptedNominalCompoundBuild(targetObject,result,position);
+      const receipt = exact || continuation || nominal ? Object.freeze({construction: position.construction,
         choices: position.choices, executionSignature: position.execution.signature}) : null;
       ClassicalConstructionSession.restore(result, receipt);
     }
@@ -51747,15 +51842,26 @@ export function createUiRenderingApi(targetObject = globalThis) {
           updateClassicalCapabilityNavigatorSelection(select, { navigate: false, execute: false, stageBinding: true });
         }
         for (let pass = 0; pass < 2; pass += 1) {
-          const allowed = new Map(getClassicalMixedReloadControls().map(control => [control.id, control]));
+          const allowed = new Map([...getClassicalMixedReloadControls(), ...getClassicalVncBasalReloadControls()].map(control => [control.id, control]));
           for (const choice of Array.isArray(saved.controls) ? saved.controls : []) {
             const control = allowed.get(choice.id);
             if (control && typeof choice.value === "string" && Array.from(control.options || [])
               .some(option => option.value === choice.value && !option.disabled)) control.value = choice.value;
           }
-          const bindingId = ActiveClassicalGrammarResultBinding?.bindingIds?.[0];
+          const ids=ActiveClassicalGrammarResultBinding?.bindingIds || [];
+          const bindingId = ids.includes(saved.selectedBindingId) ? saved.selectedBindingId : ids[0];
           if (bindingId) enterClassicalGrammarResultBindingChoice(bindingId, { allowExecution: false });
         }
+      }
+      // Operands share the same replay graph as the accepted Result. Re-supply
+      // them through the normal owner, never through persisted completion frames.
+      for (const item of Array.isArray(saved.bindingOperands) ? saved.bindingOperands : []) {
+        const binding=ActiveClassicalGrammarResultBinding;
+        if (!item || typeof item.role!=="string" || !binding?.requiredResultRoles?.includes(item.role)
+          || !roots[item.root]) continue;
+        const capture=targetObject.captureClassicalGrammarApplicationResult(roots[item.root],"reload-inputs");
+        if (targetObject.isClassicalGrammarApplicationResultCapture(capture,"reload-inputs"))
+          supplyClassicalGrammarWorkspaceResultToBinding(capture);
       }
       if (roots.source) restoreClassicalVncReloadObjectInputs(
         targetObject.captureClassicalGrammarApplicationResult(roots.source,"reload-inputs")?.applicationResult,saved.controls,true);
@@ -51779,7 +51885,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
       syncClassicalCapabilityNavigator(null);
       syncClassicalActiveResultBindingChoiceVisibility(ActiveClassicalGrammarResultBinding);
       if (!roots.source) restoreClassicalAcceptedBuildChoices(roots.result);
-      else if (supportsFutureObjectResultReload(targetObject,roots.result)) restoreClassicalVncReloadChoices(saved);
+      else if (supportsFutureObjectResultReload(targetObject,roots.result)
+        || supportsNominalCompoundResultReload(targetObject,roots.result)) restoreClassicalVncReloadChoices(saved);
       syncClassicalCapabilityApplyOperationState();
       setClassicalWholeCanvasActionStatus("Build restored.");
       if (reloadStatus) reloadStatus.dataset.classicalReloadStatus = "mixed-restored";
@@ -51847,18 +51954,24 @@ export function createUiRenderingApi(targetObject = globalThis) {
         const controller = edit ? null : ActiveClassicalClauseRelationController;
         const captures = Object.fromEntries(["principal", "adjoined", "dependent", "supplement", "marker"]
           .map(role => [role, controller?.getCapturedCanonicalResult(role)]).filter(([, value]) => value));
-        if (current && (edit || !recipe || Object.keys(captures).length
-          || supportsFutureObjectResultReload(targetObject,current))) {
-          const mixedRecipe = exportClassicalResultReloadRecipe(targetObject, { result: current, source, ...captures });
+        const bindingOperands = Object.entries(ActiveClassicalGrammarResultBinding?.additionalResults || {})
+          .map(([role,result],i)=>({role,result,root:`bindingOperand${i}`}));
+        const operandRoots=Object.fromEntries(bindingOperands.map(item=>[item.root,item.result]));
+        if (current && (edit || !recipe || Object.keys(captures).length || bindingOperands.length
+          || supportsFutureObjectResultReload(targetObject,current)
+          || supportsNominalCompoundResultReload(targetObject,current))) {
+          const mixedRecipe = exportClassicalResultReloadRecipe(targetObject, { result: current, source, ...captures, ...operandRoots });
           if (mixedRecipe) {
             browserWindow?.sessionStorage?.setItem(CLASSICAL_VNC_RELOAD_SESSION_KEY,
               JSON.stringify({ version: 2, url: browserWindow.location.href, recipe: mixedRecipe, history, historySelection,
+                bindingOperands: bindingOperands.map(({role,root})=>({role,root})),
+                selectedBindingId: ActiveClassicalGrammarResultBinding?.selectedBindingId || "",
                 edit, pendingTypedSourceSelections: edit ? snapshotClassicalConjunctEditChoices() : null,
                 replacementSourceEditor: edit?.sourceReplacement ? PendingClassicalResultEdit.replacementSourceEditor || null : null,
                 sourceEditorState: snapshotClassicalVncReloadSourceEditorState(),
                 selections: ClassicalClauseRelationSelections,
                 operationId: targetObject.document.getElementById("classical-capability-navigator-operation")?.value || "",
-                controls: snapshotClassicalVncReloadControls(edit || supportsFutureObjectResultReload(targetObject,current)
+                controls: snapshotClassicalVncReloadControls(edit || supportsFutureObjectResultReload(targetObject,current) || supportsNominalCompoundResultReload(targetObject,current)
                   ? [...new Set([...getClassicalMixedReloadControls(), ...getClassicalVncBasalReloadControls()])]
                   : getClassicalMixedReloadControls()) }));
             const reloadStatus = targetObject.document.getElementById("classical-grammar-workspace-history");
