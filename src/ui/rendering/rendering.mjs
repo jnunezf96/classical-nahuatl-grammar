@@ -1,28 +1,29 @@
 import {syncFutureObjectChoices} from '../composition/future_object_choices.mjs?futureObject=20261024-3';
+import {getDoubleNucleusEditChildren} from '../../application/classical/double_nucleus_edit.mjs?nucleusEdit=20261024-6';
 import {syncStemLayerChoices} from '../composition/stem_layer_choices.mjs?stemNominal=20261024-2';
 import {syncNounstemOperationChoices,groupDeverbalFamilyOptions} from '../composition/nounstem_operation_choices.mjs?v=20261024-1&nominalReload=20261024-4';
-import {snapshotResultEditReload,restoreResultEditReload} from '../composition/result_edit_reload.mjs?innerSource=20261024-1&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-1';
+import {snapshotResultEditReload,restoreResultEditReload} from '../composition/result_edit_reload.mjs?nucleusEdit=20261024-6&innerSource=20261024-1&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-1';
 import {getVncChoiceEditContext, getVncVoiceEditSubject, projectVncChoiceEditControls} from '../composition/vnc_choice_edit.mjs?v=20261023-3';
 import {runCompositionAction} from '../composition/action_feedback.mjs?v=20261023-1';
 import {getAuthorityControl, projectAuthoredChoice} from '../composition/authority_control.mjs?v=20261023-2';
 import {clearOwnerChoicePortals,findOwnerChoice,ownerChoiceRoots} from '../composition/owner_choice_roots.mjs?v=20261023-core-1';
 import {appendValenceAnalysis} from '../composition/valence_analysis.mjs?v=20261023-slots-16';
-import {previewConstructionPacket} from '../composition/construction_preview.mjs?innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1';
+import {previewConstructionPacket} from '../composition/construction_preview.mjs?nucleusEdit=20261024-6&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1';
 import {isIntermediateBuildTaskReset} from '../composition/build_task_menu.mjs?deverbalReload=20261024-8&operationFirst=20261023-2&clickFeedback=20261023-1&v=20261021-ending-reference-2&writingSource=20261022-2&fixedChoices=20261022-1';
 import { normalizeClassicalNahuatlIntroductoryModifier }
   from "../../core/classical/verbstem_classes.mjs?v=20261008-reader-40-9-190&modifier=canonical-20261009-1&quantityClass=20261022-1";
 import {createClassicalWorkspaceProvenanceProjector}
   from '../composer/result_provenance.mjs?v=20261012-position-provenance-7';
 import {resolvePathTargets, setPathHistoryPresentation} from '../composition/path_presentation.mjs?v=20261011-path-targets-7&routeShapes=20261021-1&writtenPreview=20261022-1&writingSource=20261022-1';
-import {setStructureDesignContext, setStructureComparison, projectCanonicalStructure, projectClauseStructure, projectOperationShape, compareCanonicalStructures} from '../composition/structure_design.mjs?clauseHarmony=20261023-5&v=20261011-structure-15&routeShapes=20261021-1&clauseCoordinate=20261021-1&resetEligibility=20261022-1&writingSource=20261022-1&makePreview=20261022-1&fixedChoices=20261022-1';
+import {setStructureDesignContext, setStructureComparison, projectCanonicalStructure, projectClauseStructure, projectOperationShape, compareCanonicalStructures} from '../composition/structure_design.mjs?nucleusEdit=20261024-6&clauseHarmony=20261023-5&v=20261011-structure-15&routeShapes=20261021-1&clauseCoordinate=20261021-1&resetEligibility=20261022-1&writingSource=20261022-1&makePreview=20261022-1&fixedChoices=20261022-1';
 import {setSourceCandidatePresentation, projectSavedSourceCandidate, setRouteChoicePresentation, projectOfferedOperationShapes} from '../composition/candidate_design.mjs?v=20261021-route-shapes-1';
 import {notifyExplicitMakeResult,focusNativeChoice} from '../composition/flow_design.mjs?v=20261022-reset-eligibility-1&writingSource=20261022-1&makePreview=20261022-1&fixedChoices=20261022-1';
 import {getBuildOperationGroup,getBuildOperationOrder,inventoryOptionReference,formatBuildOperationLabel} from '../composition/build_navigation_model.mjs?v=20261021-ending-reference-2&nominalReload=20261024-4';
 import {createConstructionSession} from '../composition/construction_session.mjs?stemReload=20261024-2&v=20261012-position-12&acceptedBuild=20261023-1';
 import {projectConstructionValue} from '../composition/construction_position.mjs?stemReload=20261024-2&v=20261012-position-12&acceptedBuild=20261023-1';
-import {executeConstructionPacket, freezeConstructionData, getConstructionPacketOrigin, captureConstructionParents, matchesConstructionWitness, orderConstructionSlots, getConstructionFixedChoices, getConstructionLayerReadiness, getConstructionParticleHostInput} from '../composition/construction_packet.mjs?innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1';
-import {resolveResultEditTarget} from '../composition/result_editing.mjs?innerParticle=20261024-1&v=20261023-conjunction-1';
-import {canRebuildResultEdit,getResultEditReorder} from '../composition/result_edit_rebuild.mjs?innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1';
+import {executeConstructionPacket, freezeConstructionData, getConstructionPacketOrigin, captureConstructionParents, matchesConstructionWitness, orderConstructionSlots, getConstructionFixedChoices, getConstructionLayerReadiness, getConstructionParticleHostInput} from '../composition/construction_packet.mjs?nucleusEdit=20261024-6&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1';
+import {resolveResultEditTarget} from '../composition/result_editing.mjs?nucleusEdit=20261024-6&innerParticle=20261024-1&v=20261023-conjunction-1';
+import {canRebuildResultEdit,getResultEditReorder} from '../composition/result_edit_rebuild.mjs?nucleusEdit=20261024-6&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1';
 import {getNativeGrammarControls, getWritingSourcePresentation, setChoiceDesignContext, setAppliedRoutePresentation} from '../composition/choice_design.mjs?clickFeedback=20261023-1&coreStem=20261023-1&v=20261022-reset-eligibility-1&writingSource=20261022-1&fixedChoices=20261022-1';
 import { readClassicalSourceObjectRows, getClassicalSourceObjectControls,
   restoreClassicalSourceObjectRows, syncClassicalSourceObjectRows }
@@ -42629,6 +42630,26 @@ export function createUiRenderingApi(targetObject = globalThis) {
       return true;
     }
 
+    function enterClassicalDoubleNucleusChoiceEdit(record) {
+      if (!getDoubleNucleusEditChildren(targetObject, record?.parent)
+        .some(child => child.exact === record.node)) return false;
+      const select = targetObject.document?.getElementById?.("classical-capability-navigator-operation");
+      if (!Array.from(select?.options || []).some(option => option.value === "nnc:ordinary"
+        && !option.disabled && !option.hidden)) return false;
+      reconcileClassicalCompositionOperationControls("", {clearAll: true});
+      syncClassicalNominalConstructionControlVisibility("none");
+      const use = targetObject.document?.getElementById?.("classical-rule-logic-nnc-source-use");
+      const sourceUse = ["tl", "tli"].includes(record.node.sourceFrame.sourceClass) ? "general-use" : "nounstem";
+      if (Array.from(use?.options || []).some(option => option.value === sourceUse)) use.value = sourceUse;
+      // Change explicitly chooses this retained nucleus as the editor Source.
+      // Restore its typed input, never its inflected output or the other nucleus.
+      restoreClassicalOrdinaryNncCaptureSourceMirror(ActiveClassicalGrammarResultSourceCapture,
+        {replacePendingEditor: true});
+      select.value = "nnc:ordinary";
+      updateClassicalCapabilityNavigatorSelection(select, {navigate: true, execute: false});
+      return getClassicalNncReinflectionDraft()?.exact === record.node;
+    }
+
     function handleClassicalResultAction(detail = {}) {
       const doc = targetObject.document;
       if (detail.action === "clear") {
@@ -42694,7 +42715,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           PendingClassicalResultEdit = null; return false;
         }
         if (detail.action === "change") {
-          enterClassicalVncChoiceEdit();
+          if (!enterClassicalDoubleNucleusChoiceEdit(target)) enterClassicalVncChoiceEdit();
           if (targetObject.isClassicalNahuatlParticleResultFrame?.(target.node)===true) enterClassicalParticleChoiceEdit();
         }
       } else if (detail.action === "cancel") {
@@ -52025,6 +52046,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
         // restores navigation; the separate reinflection draft owns edits.
         if (saved.operationId === "nnc:ordinary"
           && targetObject.getClassicalNahuatlOrdinaryNncReinflectionContext?.(edit.target)) {
+          const record = resolveResultEditTarget(targetObject, roots.result, edit.path,
+            getClassicalOwnerIssuedResultProjection);
+          if (record && getDoubleNucleusEditChildren(targetObject, record.parent)
+            .some(child => child.exact === record.node)) enterClassicalDoubleNucleusChoiceEdit(record);
           const baseline = stageClassicalNncReinflection();
           const projection = baseline && getClassicalOrdinaryNncControlProjection(baseline.binding);
           if (projection) syncClassicalRuleLogicControlsForSurfaceFrame(projection);
@@ -53064,6 +53089,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
     }
 
     function getClassicalVisibleAcceptedResult() {
+      // Replaying an edit activates its child as an editor Source. That child
+      // is never the accepted Result, including during restoration callbacks.
+      if (ClassicalPositionRestoring && typeof classicalRestoredEditRoot !== "undefined" && classicalRestoredEditRoot)
+        return getClassicalOwnerIssuedResultProjection(classicalRestoredEditRoot);
       const accepted = typeof ClassicalConstructionSession !== "undefined" ? ClassicalConstructionSession.position.accepted.result : null;
       if (typeof ClassicalConstructionSession !== "undefined" && !ClassicalPositionExecuting && !ClassicalPositionRestoring)
         return accepted ? getClassicalOwnerIssuedResultProjection(accepted) : null;
@@ -53075,6 +53104,15 @@ export function createUiRenderingApi(targetObject = globalThis) {
       );
       const exact = card ? ClassicalResultContinuationIdentities.get(card) : null;
       return exact ? getClassicalOwnerIssuedResultProjection(exact) : null;
+    }
+
+    function finishClassicalResultEditReloadPresentation() {
+      const root = classicalRestoredEditRoot;
+      classicalRestoredEditRoot = null;
+      if (!root || root !== ClassicalConstructionSession.position.accepted.result) return false;
+      const projection = getClassicalOwnerIssuedResultProjection(root);
+      return Boolean(projection?.applicationResult
+        && renderClassicalCapabilityApplicationResultForReview(projection.applicationResult));
     }
 
     function syncClassicalManagedResultSurfaceVisibility(resultRoot = null) {
@@ -60734,7 +60772,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
         if (accepted?.canonicalResult) restoreClassicalReloadPosition(accepted.canonicalResult);
         syncClassicalCapabilityApplyOperationState();
         return restored;
-      } finally { ClassicalPositionRestoring = false; }
+      } finally {
+        ClassicalPositionRestoring = false;
+        finishClassicalResultEditReloadPresentation();
+      }
     };
     api.clearClassicalUnsupportedResultReload = clearClassicalUnsupportedResultReload;
     api.activateClassicalGrammarWorkspaceCapture =

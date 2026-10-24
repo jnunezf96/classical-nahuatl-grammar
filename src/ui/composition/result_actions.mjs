@@ -1,6 +1,6 @@
 import {runCompositionAction} from './action_feedback.mjs?v=20261023-1';
-import {getResultEditTargets,projectResultForEditing} from './result_editing.mjs?innerParticle=20261024-1&v=20261023-conjunction-1';
-import {canRebuildResultEdit,getResultEditReorder} from './result_edit_rebuild.mjs?innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1';
+import {getResultEditTargets,projectResultForEditing} from './result_editing.mjs?nucleusEdit=20261024-6&innerParticle=20261024-1&v=20261023-conjunction-1';
+import {canRebuildResultEdit,getResultEditReorder} from './result_edit_rebuild.mjs?nucleusEdit=20261024-6&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1';
 import {inventoryOptionReference} from './build_navigation_model.mjs';
 
 const ORDER_FIELD='clause-choice:sentence:supplementation:supplementation-order';

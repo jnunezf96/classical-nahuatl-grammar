@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
+import {getDoubleNucleusEditChildren} from '../application/classical/double_nucleus_edit.mjs';
 import {createRuntimeInstance} from '../runtime/create_runtime.mjs';
 import {resolveResultEditTarget,projectResultForEditing} from '../ui/composition/result_editing.mjs';
 import {previewConstructionPacket} from '../ui/composition/construction_preview.mjs';
@@ -19,7 +20,7 @@ function editPacket(root,exact,choices){return {kind:'result-edit',operation:'nn
 function relation(r,root){return r.getClassicalNahuatlSupplementationClauseSourceFrame(root.conjuncts[0].envelope);}
 const rendering=readFileSync(new URL('../ui/rendering/rendering.mjs',import.meta.url),'utf8');
 function loadFunction(ctx,name){const a=rendering.indexOf('    function '+name+'(');assert(a>=0,name);const z=rendering.indexOf('\n    function ',a+1);vm.runInContext(rendering.slice(a,z),ctx);}
-function editor(r,exact,session){const select={value:'nnc:ordinary',options:[{value:'nnc:ordinary'}]},ctx=vm.createContext({Object,targetObject:{...r,document:{getElementById:()=>select}},ActiveClassicalGrammarResultSourceCapture:{canonicalResult:exact},ActiveClassicalGrammarCapabilityNavigator:r.getClassicalGrammarApplicationCapabilityNavigator(exact),ActiveClassicalNncReinflectionDraft:null,ClassicalConstructionSession:session});for(const n of ['getClassicalNncReinflectionDraft','stageClassicalNncReinflection'])loadFunction(ctx,n);return {ctx,select};}
+function editor(r,exact,session){const select={value:'nnc:ordinary',options:[{value:'nnc:ordinary'}]},ctx=vm.createContext({Object,resolveResultEditTarget,getDoubleNucleusEditChildren,getClassicalOwnerIssuedResultProjection:value=>projectResultForEditing(r,value),targetObject:{...r,document:{getElementById:()=>select}},ActiveClassicalGrammarResultSourceCapture:{canonicalResult:exact},ActiveClassicalGrammarCapabilityNavigator:r.getClassicalGrammarApplicationCapabilityNavigator(exact),ActiveClassicalNncReinflectionDraft:null,ClassicalConstructionSession:session});for(const n of ['getClassicalNncReinflectionDraft','stageClassicalNncReinflection'])loadFunction(ctx,n);return {ctx,select};}
 test('same inner NNC repeatedly changes subject, state and possessor through exact Result reentry before and after reload',async()=>{
  let runtimeNow=r,root=whole(r),original=target(r,root),source=original.sourceFrame;
  const steps=[{subject:'1sg'},{state:'possessive',possessor:'1sg'},{possessor:'2sg'},{subject:'2sg'},{state:'absolutive'},{subject:'3sg'},{state:'possessive',possessor:'3sg'}];

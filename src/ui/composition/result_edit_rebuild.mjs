@@ -1,4 +1,5 @@
 import {getConstructionParticleHostInput} from './construction_layers.mjs?v=20261023-conjunct-edit-1';
+import {getDoubleNucleusEditChildren,isDoubleNucleusContinuationCapture,buildDoubleNucleusEditRequest} from '../../application/classical/double_nucleus_edit.mjs?nucleusEdit=20261024-6';
 // Editing is an owner reissue along one authenticated occurrence path. The
 // untouched siblings stay exact objects; no saved recipe or written form is an
 // execution input. Unsupported ancestor families remain unavailable.
@@ -18,7 +19,8 @@ function capture(runtime, exact, project) {
     return runtime.isClassicalGrammarApplicationResultCapture?.(value, SLOT) === true
       && value.canonicalResult === exact
       && value.applicationResult?.authorizationStatus === 'authorized'
-      && value.applicationResult.canonicalResult === exact ? value : null;
+      && (value.applicationResult.canonicalResult === exact
+        ||isDoubleNucleusContinuationCapture(runtime,value,exact)) ? value : null;
   } catch { return null; }
 }
 
@@ -86,6 +88,9 @@ function conjunction(runtime, exact, project) {
 
 function recipe(runtime, exact, project) {
   if (!capture(runtime, exact, project)) return null;
+  const nuclei=getDoubleNucleusEditChildren(runtime,exact);
+  if(nuclei.length && nuclei.every(child=>capture(runtime,child.exact,project)))
+    return {kind:'double-nucleus',exact,children:nuclei.map(child=>({role:child.key,exact:child.exact}))};
   const conjoined = conjunction(runtime, exact, project);
   if (conjoined) return conjoined;
   const relation = supplementationChange(runtime, exact, project);
@@ -185,6 +190,12 @@ function particleReplacementOptions(runtime,entry,role,replacement) {
 }
 
 function reissue(runtime, entry, role, replacement) {
+  if(entry.kind==='double-nucleus'){
+    const request=buildDoubleNucleusEditRequest(runtime,entry.exact,role,replacement);
+    if(!request)return null;
+    const application=runtime.executeClassicalGrammarApplicationRequest?.({operationId:'nnc:deverbal-construction',args:[request]});
+    return application?.authorizationStatus==='authorized'?application.canonicalResult:null;
+  }
   if (entry.kind === 'conjunction') {
     const request = runtime.buildClassicalNahuatlConjunctReplacementRequest(entry.exact,Number(role),replacement);
     if (!request) return null;
@@ -229,7 +240,10 @@ export function previewRebuiltResultEdit(runtime, root, target, childPreview, pr
     const leases = [];
     for (const {entry,role} of [...path].reverse()) {
       let operation, options;
-      if (entry.kind === 'conjunction') {
+      if(entry.kind==='double-nucleus'){
+        operation='nnc:deverbal-construction';
+        options=buildDoubleNucleusEditRequest(runtime,entry.exact,role,next);
+      } else if (entry.kind === 'conjunction') {
         operation = 'clause:composition';
         options = runtime.buildClassicalNahuatlConjunctReplacementRequest(entry.exact,Number(role),next);
       } else if (entry.kind === 'supplementation') {
@@ -256,5 +270,5 @@ export function isConjunctResultEdit(runtime,root,target,project,occurrence) {
 
 export function requiresResultEditPreview(runtime,root,target,project,occurrence) {
   try {return pathTo(runtime,root,target,project,occurrence)?.some(step=>
-    step.entry.kind==='conjunction' || step.entry.kind==='particle' && step.role==='particle')===true;}catch{return false;}
+    step.entry.kind==='conjunction' || step.entry.kind==='double-nucleus' || step.entry.kind==='particle' && step.role==='particle')===true;}catch{return false;}
 }

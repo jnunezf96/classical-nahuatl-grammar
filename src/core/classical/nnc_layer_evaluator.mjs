@@ -2947,8 +2947,11 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
         : [];
       const predicateCarrier = getClassicalNahuatlNncPredicateBoundaryCarrier(slots);
       const borrowedSource = getIssuedBorrowedNncSource(borrowedNncSourceFrame, predicateCarrier);
+      const doubleNucleus = targetObject.isClassicalNahuatlIssuedDeverbalNncSlotFrame?.(nncSlotFrame) === true
+        && nncSlotFrame.nncFamily === "double-nucleus-abundant-ownerhood";
       const carriers = [slots.subject?.pers1, slots.subject?.pers2,
-        ...participantCarriers, ...stateCarriers, predicateCarrier,
+        ...participantCarriers, ...stateCarriers,
+        ...(doubleNucleus ? String(predicateCarrier || "").split("-") : [predicateCarrier]),
         slots.number?.num1, slots.number?.num2];
       const typedSurface = borrowedSource?.boundaryFacts.borrowedOrthographyRetained
         ? targetObject.writeClassicalNahuatlLesson2Result(
@@ -2964,7 +2967,7 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
             boundaryKind: targetObject.isClassicalNahuatlIssuedDeverbalNncSlotFrame?.(nncSlotFrame)
               === true && ["preterit-agentive", "preterit-patientive"].includes(nncSlotFrame.nncFamily)
                 ? "typed-ordered-morphemes"
-                : targetObject.isClassicalNahuatlIssuedNominalConstructionNncSlotFrame?.(nncSlotFrame) === true
+                : doubleNucleus || targetObject.isClassicalNahuatlIssuedNominalConstructionNncSlotFrame?.(nncSlotFrame) === true
                   ? "typed-nnc-slots"
                 : nncSlotFrame?.nncFamily === "ordinary" ? "ordinary-nnc-slots" : "",
           });

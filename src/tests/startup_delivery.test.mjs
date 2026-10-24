@@ -22,6 +22,11 @@ test('cache-current presentation installers deliver the same deverbal repair as 
   assert.equal(key(bootstrap),key(runtime),`${path} bootstrap override must not restore an older editor`);
  }
 });
+test('both browser installer paths deliver the repeated-nucleus editor',()=>{
+ const bootstrap=readFileSync(new URL('src/bootstrap/bootstrap.mjs',root),'utf8'),runtime=readFileSync(new URL('src/runtime/create_runtime.mjs',root),'utf8');
+ const key=code=>new URL(code.split('\n').find(line=>line.includes('from "../ui/rendering/rendering.mjs?')).match(/from "([^"]+)"/)[1],'https://example.invalid/').searchParams.get('nucleusEdit');
+ assert(key(runtime));assert.equal(key(bootstrap),key(runtime));
+});
 test('the page contains exact authoritative startup data, including presentation models',()=>{
  const raw=index.match(/<script id="classical-startup-data" type="application\/json">([\s\S]*?)<\/script>/)?.[1];assert(raw,'startup data must travel with HTML');
  const payload=JSON.parse(raw);assert.equal(payload.version,1);assert.deepEqual(payload.files,files);

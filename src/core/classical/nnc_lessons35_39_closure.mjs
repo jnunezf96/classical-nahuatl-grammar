@@ -6484,10 +6484,11 @@ function buildNncTarget(target, sourceFrame, operationFrame, request = {}) {
       nncSlotFrame.slots.subject.pers2,
       ...nncSlotFrame.slots.participant.slots.map(slot => slot.carrier),
       ...nncSlotFrame.slots.state.slots.map(slot => slot.carrier),
-      // Nominal continuation introduces declared internal morph contacts.
+      // Nominal continuation and the entire double-nucleus embed introduce
+      // declared internal contacts, including the junction between nuclei.
       // Keep their underlying stem in the slots, but let Lesson 2 realize
       // those contacts before the carrier realizer erases the separators.
-      ...(operationFrame.constructionKind === "nominal-continuation"
+      ...(["nominal-continuation", "double-nucleus-ownerhood"].includes(operationFrame.constructionKind)
         ? nncSlotFrame.slots.predicate.stem.split("-")
         : [nncSlotFrame.slots.predicate.stem]),
       nncSlotFrame.slots.number.num1,
@@ -6501,7 +6502,7 @@ function buildNncTarget(target, sourceFrame, operationFrame, request = {}) {
     ? target.realizeClassicalNahuatlNncSurfaceCarriers(carriers, {
         boundaryKind: ["preterit-agentive", "preterit-patientive"].includes(operationFrame.nominalizationKind)
           ? "typed-ordered-morphemes"
-          : operationFrame.constructionKind === "nominal-continuation" ? "typed-nnc-slots" : "",
+          : ["nominal-continuation", "double-nucleus-ownerhood"].includes(operationFrame.constructionKind) ? "typed-nnc-slots" : "",
       })
     : carriers.map(realize).join("");
   const boundMaterialOnly = operationFrame.boundMaterialOnly === true;

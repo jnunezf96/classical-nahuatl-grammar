@@ -1,5 +1,13 @@
 # Version History
 
+## v1.2.29 — Repeated Nucleus Editing
+
+- Exposes the actual principal and supplement nuclei as individual Result parts.
+- Allows repeated inner noun-clause Subject, State and possessor edits before and after supported reload, retaining the full ownerhood Result.
+- Revalidates supplementation and preserves the untouched nucleus and outer choices; only Make accepts changes.
+- Realizes newly internal double-nucleus contacts through the existing writing owner without changing underlying slots.
+- Saves fresh invented-stem focused regressions and whole-Result preview/custody checks.
+
 ## v1.2.28 — Deverbal Reload and Two-Clause Sources
 
 - Restores supported deverbal nouns and their exact shared Source graph, accepted Build and pending choices after reload.

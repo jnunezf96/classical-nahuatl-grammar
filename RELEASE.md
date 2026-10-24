@@ -1,18 +1,19 @@
-# Grammar OS v1.2.28 release
+# Grammar OS v1.2.29 release
 
-Release name: **Deverbal Reload and Two-Clause Sources**
+Release name: **Repeated Nucleus Editing**
 
-Browser build: **20261024-composition-47**
+Browser build: **20261024-composition-48**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Restores supported deverbal Results, exact shared Source operands and accepted Build choices after same-tab reload. Further edits remain pending until Make.
-- Retains whole conjunction and supplementation graphs containing supported deverbal nouns instead of flattening the edited constituent.
-- Adds a two-clause nominal Source entry with independent principal and supplement choices and explicit fixed-order subject or possessor supplementation analysis.
-- Preserves the supplement's full clause and the principal's person and State while removing only the principal's number position in §35.14 ownerhood.
-- Replays saved inputs through existing canonical owners; copied, forged or incompatible grammatical frames cannot authorize reload or Make.
+- Adds Principal nucleus and Supplement nucleus to the Result Part chooser for two-clause ownerhood.
+- Reuses the noun-clause editor for repeated inner Subject, State and possessor changes, retaining the other nucleus and outer choices.
+- Previews and rebuilds the full Result through the existing supplementation and ownerhood owners. Incompatible shared references hold without changing the accepted Result.
+- Restores supported selected-nucleus editing and pending choices after reload. Only explicit Make accepts a change.
+- Routes newly internal compound contacts through the existing Lesson2 writer, retaining underlying morphs and strict writing checks.
+- Saves fresh invented-stem regressions for both nuclei, repeated edits/reload, exact sibling custody and forged/stale rejection.
 
 ## Review scope and current limits
 
@@ -39,7 +40,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.28/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.29/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.
