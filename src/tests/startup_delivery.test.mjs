@@ -13,6 +13,15 @@ test('page and composition use exactly one main module identity',()=>{
  const imported=new URL(code.match(/import\s*\{bootstrapPromise\}\s*from\s*['"]([^'"]+)['"]/)[1],composition);
  assert.equal(imported.href,page.href);
 });
+test('cache-current presentation installers deliver the same deverbal repair as the runtime manifest',()=>{
+ const bootstrap=readFileSync(new URL('src/bootstrap/bootstrap.mjs',root),'utf8');
+ const runtime=readFileSync(new URL('src/runtime/create_runtime.mjs',root),'utf8');
+ for(const path of ['../ui/composer/composer.mjs','../ui/rendering/rendering.mjs','../ui/shell/classical_shell.mjs']){
+  const key=code=>{const line=code.split('\n').find(line=>line.includes(`from "${path}?`));assert(line,path);return new URL(line.match(/from "([^"]+)"/)[1],'https://example.invalid/').searchParams.get('deverbalReload');};
+  assert(key(runtime),`${path} must carry the repaired Source/reload delivery`);
+  assert.equal(key(bootstrap),key(runtime),`${path} bootstrap override must not restore an older editor`);
+ }
+});
 test('the page contains exact authoritative startup data, including presentation models',()=>{
  const raw=index.match(/<script id="classical-startup-data" type="application\/json">([\s\S]*?)<\/script>/)?.[1];assert(raw,'startup data must travel with HTML');
  const payload=JSON.parse(raw);assert.equal(payload.version,1);assert.deepEqual(payload.files,files);

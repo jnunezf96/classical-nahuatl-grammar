@@ -1487,3 +1487,13 @@ body.is-language-classical #classical-workbench[data-composition-operation-selec
 body.is-language-classical #classical-workbench[data-composition-operation-selected="false"] #classical-authority-panel #classical-capability-operation-plan [data-composition-operation-gated] {
   display:none!important;
 }
+
+/* Independent nuclei stay together in Source; the outer clause remains in Build. */
+.classical-double-nucleus-source {grid-column:1/-1;min-width:0}
+#classical-source-panel .classical-source-parts__grid[hidden],
+#classical-source-panel .classical-source-parts__mode[hidden] {display:none!important}
+.classical-double-nucleus-source__nuclei {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:12px 0}
+.classical-double-nucleus-source__nuclei fieldset {min-width:0;margin:0;padding:12px;border:1px solid #ccd7ce;border-radius:9px;background:var(--surface,#fff)}
+.classical-double-nucleus-source__nuclei legend {padding:0 6px;font-weight:600;color:#173e34}
+.classical-double-nucleus-source__nuclei .classical-rule-control {display:flex;flex-direction:column;gap:6px;margin:8px 0}
+@media(max-width:700px) {.classical-double-nucleus-source__nuclei {grid-template-columns:1fr}}

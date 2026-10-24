@@ -12,6 +12,16 @@ export function installClassicalSourceApplyPointerGuard(button, documentObject) 
   });
 }
 
+export function runClassicalSourceApplyAction(targetObject, action) {
+  const doc = targetObject.document;
+  const signature = () => JSON.stringify(Array.from(doc.querySelectorAll(
+    "#classical-source-panel input, #classical-source-panel select"
+  )).map(control => [control.id, control.value, control.checked]));
+  const before = signature();
+  return runCompositionAction(doc, doc.getElementById("verb-entry-apply"), action,
+    {label: "Applying Source…", isCurrent: () => signature() === before});
+}
+
 export function createUiEventsApi(targetObject = globalThis) {
     // === Event Wiring ===
     // Keyboard navigation (kept minimal now that radios are removed)
@@ -183,13 +193,7 @@ export function createUiEventsApi(targetObject = globalThis) {
       }
     });
     function runSourceApply(action) {
-      const doc = targetObject.document;
-      const signature = () => JSON.stringify(Array.from(doc.querySelectorAll(
-        "#classical-source-panel input, #classical-source-panel select"
-      )).map(control => [control.id, control.value, control.checked]));
-      const before = signature();
-      return runCompositionAction(doc, doc.getElementById("verb-entry-apply"), action,
-        {label: "Applying Source…", isCurrent: () => signature() === before});
+      return runClassicalSourceApplyAction(targetObject, action);
     }
     function applyVerbEntryInputNow() {
       const verbEl = targetObject.document.getElementById("verb");
@@ -201,7 +205,8 @@ export function createUiEventsApi(targetObject = globalThis) {
           force: true,
           source: "manual-entry"
         });
-        const sourceInput = targetObject.document.querySelector(".classical-source-parts__input:not(:disabled)");
+        const sourceInput = targetObject.document.querySelector(targetObject.getClassicalDoubleNucleusSourceDraft?.()
+          ? "#classical-double-nucleus-source input:not(:disabled)" : ".classical-source-parts__input:not(:disabled)");
         if (sourceInput && typeof sourceInput.focus === "function") {
           sourceInput.focus();
         }

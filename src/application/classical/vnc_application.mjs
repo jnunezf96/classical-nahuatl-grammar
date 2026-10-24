@@ -13692,6 +13692,12 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       getClassicalNahuatlVncApplicationSharedService().deriveObsoleteRootFromResult(whole);
     api.exportClassicalNahuatlVncApplicationRecipe =
       exportClassicalNahuatlVncApplicationRecipe;
+    api.getClassicalNahuatlVncApplicationReloadParent = result => {
+      const parent = classicalNahuatlVncApplicationFrameByResultFrame.get(result);
+      return isClassicalNahuatlVncApplicationIssuedResultFrame(result)
+        && isClassicalNahuatlVncApplicationIssuedFrame(parent)
+        && parent.resultFrame === result ? parent : null;
+    };
     api.prepareClassicalNahuatlVncApplicationRecipeReplay =
       prepareClassicalNahuatlVncApplicationRecipeReplay;
     api.getClassicalNahuatlVncContinuationReloadInputs = getClassicalNahuatlVncContinuationReloadInputs;

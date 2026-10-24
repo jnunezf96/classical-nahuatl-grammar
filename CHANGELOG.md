@@ -1,5 +1,13 @@
 # Version History
 
+## v1.2.28 — Deverbal Reload and Two-Clause Sources
+
+- Restores supported deverbal nouns and their exact shared Source graph, accepted Build and pending choices after reload.
+- Retains whole supported conjunction/supplementation Results during repeated constituent edits; only Make accepts changes.
+- Adds independent two-clause Sources with explicit fixed-order supplementation analysis through existing owners.
+- Follows §35.14 by retaining the full supplement and the principal's person and State, removing only principal Number.
+- Saves invented-stem regressions for owner replay, Source delivery, whole-parent retention and copied/forged rejection.
+
 ## v1.2.27 — Deverbal Possession and Source Fidelity
 
 - Preserves selected action-noun and patientive-compound possessors through their existing owners.

@@ -8,7 +8,7 @@ import {getAuthorityControl, projectAuthoredChoice} from '../composition/authori
 import {clearOwnerChoicePortals,findOwnerChoice,ownerChoiceRoots} from '../composition/owner_choice_roots.mjs?v=20261023-core-1';
 import {appendValenceAnalysis} from '../composition/valence_analysis.mjs?v=20261023-slots-16';
 import {previewConstructionPacket} from '../composition/construction_preview.mjs?innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1';
-import {isIntermediateBuildTaskReset} from '../composition/build_task_menu.mjs?operationFirst=20261023-2&clickFeedback=20261023-1&v=20261021-ending-reference-2&writingSource=20261022-2&fixedChoices=20261022-1';
+import {isIntermediateBuildTaskReset} from '../composition/build_task_menu.mjs?deverbalReload=20261024-8&operationFirst=20261023-2&clickFeedback=20261023-1&v=20261021-ending-reference-2&writingSource=20261022-2&fixedChoices=20261022-1';
 import { normalizeClassicalNahuatlIntroductoryModifier }
   from "../../core/classical/verbstem_classes.mjs?v=20261008-reader-40-9-190&modifier=canonical-20261009-1&quantityClass=20261022-1";
 import {createClassicalWorkspaceProvenanceProjector}
@@ -27,8 +27,8 @@ import {getNativeGrammarControls, getWritingSourcePresentation, setChoiceDesignC
 import { readClassicalSourceObjectRows, getClassicalSourceObjectControls,
   restoreClassicalSourceObjectRows, syncClassicalSourceObjectRows }
   from "../composer/source_objects.mjs?v=20261007-panel-source-objects-1";
-import { exportClassicalResultReloadRecipe, replayClassicalResultReloadRecipe, reissueClassicalAcceptedBuildBinding, matchesAcceptedVncContinuationBuild, matchesAcceptedNominalCompoundBuild, supportsFutureObjectResultReload, supportsNominalCompoundResultReload }
-  from "../../application/classical/result_reload.mjs?stemReload=20261024-2&innerParticle=20261024-1&remainingReload=20261024-1&conjunctReload=20261023-1&v=20261007-reader-40-2-175&acceptedBuild=20261023-1&nominalReload=20261024-4";
+import { exportClassicalResultReloadRecipe, replayClassicalResultReloadRecipe, reissueClassicalAcceptedBuildBinding, matchesAcceptedVncContinuationBuild, matchesAcceptedNominalCompoundBuild, matchesAcceptedDeverbalBuild, supportsFutureObjectResultReload, supportsNominalCompoundResultReload }
+  from "../../application/classical/result_reload.mjs?deverbalReload=20261024-8&stemReload=20261024-2&innerParticle=20261024-1&remainingReload=20261024-1&conjunctReload=20261023-1&v=20261007-reader-40-2-175&acceptedBuild=20261023-1&nominalReload=20261024-4";
 import { exportClassicalGrammarWorkspaceHistoryReloadState,
   restoreClassicalGrammarWorkspaceHistoryReloadState }
   from "../../application/classical/grammar_workspace_history.mjs?innerParticle=20261024-1&remainingReload=20261024-1&conjunctReload=20261023-1&v=20261006-history-reload-1&nominalReload=20261024-4";
@@ -232,6 +232,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
     var PendingClassicalRawDenominalRequest = null;
     var PendingClassicalRawAffectiveRequest = null;
     var PendingClassicalRawRootStockRequest = null;
+    var classicalRestoredDeverbalBuild = null;
     var PendingClassicalRawAttitudeRequest = null;
     var PendingClassicalPreparedAttitudeResult = null;
     function clearClassicalPreparedAttitudeResult() {
@@ -969,6 +970,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
     }
     function syncClassicalPendingSourceIdentity({force = false} = {}) {
       const doc = targetObject.document;
+      if (getClassicalNominalConstructionControlValue("classical-construction-operation", "none") === "deverbal-nnc"
+        && getClassicalNominalConstructionControlValue("classical-deverbal-nnc-family", "") === "double-nucleus-ownerhood") {
+        syncClassicalDoubleNucleusSourcePresentation(true);
+        return;
+      }
       if (!force && doc?.getElementById?.("classical-source-parts")?.dataset.classicalSourceCommitState !== "pending") return;
       const unit = targetObject.getClassicalBasalUnitFromRuntime?.();
       if (unit === "nnc") {
@@ -18286,6 +18292,15 @@ export function createUiRenderingApi(targetObject = globalThis) {
           ? {state:"ready",message:""}
           : {state:"pending",message:"Use this Writing Source."});
       }
+      const double = getClassicalDoubleNucleusSourceDraft();
+      if (double) {
+        const committed = targetObject.document.getElementById("classical-source-parts")
+          ?.dataset?.classicalSourceCommitState === "committed";
+        const current = double.ready && committed
+          && targetObject.getClassicalSourcePartsEvaluationSignature?.() === targetObject.ClassicalSourcePartsCommittedSignature;
+        return Object.freeze(current ? {state: "ready", message: ""}
+          : {state: "pending", message: "Apply the two-nucleus Source before changing Build."});
+      }
       const sourceRoot =
         targetObject.document.getElementById("classical-source-parts");
       const sourceMode = String(
@@ -26620,6 +26635,126 @@ export function createUiRenderingApi(targetObject = globalThis) {
       control.setAttribute("aria-disabled", String(!visible));
     }
 
+    let ClassicalDoubleNucleusSourceDraftCache = null;
+    const ClassicalDoubleNucleusSourceHiddenNodes = new WeakMap();
+    function getClassicalDoubleNucleusSourceDraft() {
+      const value = id => targetObject.document?.getElementById?.(id)?.value || "";
+      if (value("classical-construction-operation") !== "deverbal-nnc"
+        || value("classical-deverbal-nnc-family") !== "double-nucleus-ownerhood") return null;
+      const selections = {analysis: value("classical-double-nucleus-analysis")};
+      for (const role of ["principal", "supplement"]) {
+        const field = key => value(`classical-double-nucleus-${role}-${key}`);
+        const subject = field("subject"), state = field("state");
+        selections[role] = {stem: field("stem"), sourceClass: field("class"), subject, state,
+          humanness: subject === "3common" ? "nonhuman" : field("humanness"),
+          possessor: state === "possessive" ? field("possessor") : "",
+          pluralConnector: state === "absolutive" && subject.endsWith("pl") ? field("plural") : ""};
+      }
+      const key = JSON.stringify(selections);
+      if (ClassicalDoubleNucleusSourceDraftCache?.key === key) return ClassicalDoubleNucleusSourceDraftCache;
+      const request = buildClassicalNominalConstructionUiRequest();
+      const source = request?.source;
+      const ready = targetObject.isClassicalNahuatlOrdinaryNncResult?.(source?.principalNncResult) === true
+        && targetObject.isClassicalNahuatlOrdinaryNncResult?.(source?.supplementNncResult) === true
+        && targetObject.isClassicalNahuatlSupplementationFrame?.(source?.canonicalSupplementationResult) === true;
+      return ClassicalDoubleNucleusSourceDraftCache = {key, selections, source, ready,
+        hasMaterial: Boolean(selections.principal.stem || selections.supplement.stem),
+        caption: ready ? source.canonicalSupplementationResult.embeddedSurface : ""};
+    }
+    function applyClassicalDoubleNucleusSourceDraft() {
+      const draft = getClassicalDoubleNucleusSourceDraft();
+      if (!draft?.ready) return false;
+      const accepted = ActiveClassicalCapabilityApplicationResult;
+      clearClassicalGrammarResultSourceContinuation("two-nucleus-source-committed");
+      ActiveClassicalCapabilityApplicationResult = accepted;
+      syncClassicalNominalConstructionControlVisibility("deverbal-nnc");
+      PendingClassicalRawConstructionRequest = {construction: "deverbal-nnc",
+        operationId: "nnc:deverbal-construction", request: buildClassicalNominalConstructionUiRequest()};
+      return true;
+    }
+    function syncClassicalDoubleNucleusSourcePresentation(active = false) {
+      const doc = targetObject.document;
+      const group = doc?.getElementById?.("classical-double-nucleus-source");
+      const root = doc?.getElementById?.("classical-source-parts");
+      const row = doc?.getElementById?.("verb-entry-apply")?.closest?.(".classical-source-parts__commit-row");
+      const keyboard = doc?.getElementById?.("classical-transcription-keyboard");
+      const parent = row?.parentElement || root;
+      if (group && parent) {
+        // The existing Source outline may have reparented its action row.
+        // Follow that real row, keeping the actual inputs before their Apply.
+        if (row && keyboard?.parentElement === parent && keyboard.nextElementSibling !== row) parent.insertBefore(keyboard, row);
+        const anchor = row && keyboard?.parentElement === parent ? keyboard : row;
+        if (group.parentElement !== parent || anchor && group.nextElementSibling !== anchor) {
+          if (anchor) parent.insertBefore(group, anchor);
+          else parent.appendChild(group);
+        }
+      }
+      const guide = doc?.getElementById?.("classical-nnc-source-guide");
+      const use = doc?.getElementById?.("classical-rule-logic-nnc-source-use");
+      if (active && use) use.value = "two-nucleus-nnc";
+      for (const node of [guide, ...Array.from(guide?.children || [])].filter(Boolean)) {
+        if (active) {
+          if (!ClassicalDoubleNucleusSourceHiddenNodes.has(node)) ClassicalDoubleNucleusSourceHiddenNodes.set(node, node.hidden);
+          node.hidden = node !== guide && !node.contains?.(use);
+        } else if (ClassicalDoubleNucleusSourceHiddenNodes.has(node)) {
+          node.hidden = ClassicalDoubleNucleusSourceHiddenNodes.get(node);
+          ClassicalDoubleNucleusSourceHiddenNodes.delete(node);
+        }
+      }
+      for (const selector of ["[data-classical-source-parts-grid]", ".classical-source-parts__mode",
+        "#classical-vnc-source-guide", "#classical-source-identity-controls"]) {
+        for (const node of Array.from(doc?.querySelectorAll?.(selector) || [])) {
+          if (active) {
+            if (!ClassicalDoubleNucleusSourceHiddenNodes.has(node)) ClassicalDoubleNucleusSourceHiddenNodes.set(node, node.hidden);
+            node.hidden = true;
+          } else if (ClassicalDoubleNucleusSourceHiddenNodes.has(node)) {
+            node.hidden = ClassicalDoubleNucleusSourceHiddenNodes.get(node);
+            ClassicalDoubleNucleusSourceHiddenNodes.delete(node);
+          }
+        }
+      }
+    }
+
+    function syncClassicalDoubleNucleusSourceControls(active = false) {
+      if (!active) return;
+      for (const role of ["principal", "supplement"]) {
+        const control = field => targetObject.document?.getElementById(`classical-double-nucleus-${role}-${field}`);
+        const subject = control("subject")?.value || "3sg";
+        const state = control("state")?.value || "absolutive";
+        const possessor = control("possessor");
+        const reference = control("humanness");
+        const plural = control("plural");
+        if (possessor) possessor.disabled = state !== "possessive";
+        if (reference) {
+          reference.disabled = subject === "3common";
+          if (subject === "3common") reference.value = "nonhuman";
+        }
+        const source = targetObject.buildClassicalNahuatlOrdinaryNncSourceFrame?.({
+          stem: control("stem")?.value || "", sourceClass: control("class")?.value || "",
+        });
+        const choices = source?.authorizationStatus === "authorized"
+          ? targetObject.getCanonicalNncOperationSelectionFrame?.(source, {
+            subject, state, possessor: possessor?.value || "3sg",
+            humanness: reference?.value || "human",
+            animacy: subject === "3common" ? "nonanimate" : "animate",
+            pluralConnector: plural?.value || "",
+          }) : null;
+        for (const [node, values] of [[reference, choices?.humannessValues], [possessor, choices?.possessorValues]]) {
+          if (!node || !values?.length) continue;
+          for (const option of Array.from(node.options || [])) option.disabled = !values.includes(option.value);
+          if (!values.includes(node.value)) node.value = values[0];
+        }
+        if (plural) {
+          const values = choices?.pluralConnectorValues || [];
+          for (const option of Array.from(plural.options || [])) {
+            option.disabled = Boolean(option.value && !values.includes(option.value));
+          }
+          plural.disabled = state !== "absolutive" || !subject.endsWith("pl");
+          if (!plural.disabled && values.length === 1) plural.value = values[0];
+        }
+      }
+    }
+
     function syncClassicalDeverbalNncControls(
       selectedConstruction = "",
       frame = null
@@ -26818,7 +26953,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
           ? ["predicate-citation"]
         : retainedNominalSource?.selectedBindingId === "continuation:action-nnc"
           ? ["nominal-continuation", "verbal-continuation"]
-        : ["patientive", "ownerhood"];
+        : !retainedNominalSource && getClassicalNominalConstructionControlValue("classical-rule-logic-nnc-source-use", "nounstem") === "two-nucleus-nnc"
+          ? ["double-nucleus-ownerhood"] : ["patientive", "ownerhood"];
       if (familyControl) {
         Array.from(familyControl.options || []).forEach(option => {
           const allowed = activeSourceUnit !== "nnc"
@@ -26928,6 +27064,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
           control.disabled = !visible;
         });
       });
+      syncClassicalDoubleNucleusSourcePresentation(active && selectedFamily === "double-nucleus-ownerhood");
+      syncClassicalDoubleNucleusSourceControls(active && selectedFamily === "double-nucleus-ownerhood");
       const retainedPatientiveEmbedCapture = active
         && retainedPatientiveContinuation
         && selectedFamily === "patientive-embed-continuation"
@@ -32771,31 +32909,54 @@ export function createUiRenderingApi(targetObject = globalThis) {
               : {}),
           };
         }
-        const buildNucleus = stem => (
-          typeof targetObject.requestClassicalDeverbalNncResult === "function"
-            ? targetObject.requestClassicalDeverbalNncResult({
-              constructionKind: "predicate-nominalization",
-              nominalizationKind: "preterit-agentive",
-              source: {
-                ...baseSource,
-                sourceStage: "preterit-predicate",
-                sourceStem: stem,
-                sourceVoice: "active",
-              },
-              subject,
-              state: "absolutive",
-              animacy: "animate",
-            })
-            : null
-        );
-        const principal = buildNucleus(matrixStem);
-        const supplement = buildNucleus(embedStem);
+        const buildNucleus = role => {
+          const value = (field, fallback = "") => getClassicalNominalConstructionControlValue(
+            `classical-double-nucleus-${role}-${field}`, fallback);
+          const nounSource = targetObject.buildClassicalNahuatlOrdinaryNncSourceFrame?.({
+            stem: value("stem"), sourceClass: value("class"),
+          });
+          if (nounSource?.authorizationStatus !== "authorized") return null;
+          const innerSubject = value("subject", "3sg");
+          const innerState = value("state", "absolutive");
+          const innerOperation = targetObject.buildClassicalNahuatlOrdinaryNncOperationFrame?.(nounSource, {
+            subject: innerSubject, state: innerState,
+            possessor: innerState === "possessive" ? value("possessor", "3sg") : "",
+            pluralConnector: innerState === "absolutive" && innerSubject.endsWith("pl") ? value("plural") : "",
+            humanness: innerSubject === "3common" ? "nonhuman" : value("humanness", "human"),
+            predicateFormation: "source-stem", stemFormation: "plain",
+            sentenceType: "statement", polarity: "positive",
+          });
+          return innerOperation?.authorizationStatus === "authorized"
+            ? targetObject.evaluateClassicalNahuatlOrdinaryNnc?.(nounSource, innerOperation) : null;
+        };
+        const principal = buildNucleus("principal");
+        const supplement = buildNucleus("supplement");
+        const supplementationAnalysis = getClassicalNominalConstructionControlValue(
+          "classical-double-nucleus-analysis", "");
+        const headRole = ({"fixed-order-possessor-supplementation": "possessor",
+          "fixed-order-subject-supplementation": "subject"})[supplementationAnalysis];
+        const principalClause = headRole && principal?.authorizationStatus === "authorized"
+          ? targetObject.buildClassicalNahuatlSupplementationClauseEnvelope?.(principal, {
+            referenceId: "double-nucleus-principal",
+            subjectReferenceId: headRole === "subject" ? "double-nucleus-contact" : "double-nucleus-principal-subject",
+            ...(headRole === "possessor" ? {possessorReferenceId: "double-nucleus-contact"} : {}),
+          }) : null;
+        const supplementClause = headRole && supplement?.authorizationStatus === "authorized"
+          ? targetObject.buildClassicalNahuatlSupplementationClauseEnvelope?.(supplement, {
+            referenceId: "double-nucleus-supplement", subjectReferenceId: "double-nucleus-contact",
+          }) : null;
+        const relation = principalClause && supplementClause
+          ? targetObject.evaluateClassicalNahuatlSupplementationOperation?.({
+            operationKind: "relation", principalClause, supplementClause,
+            options: {referenceMode: "shared", headRole, supplementContactRole: "subject",
+              order: "supplement-first", adjunctor: "none"},
+          }) : null;
         return {
           constructionKind: "double-nucleus-ownerhood",
           source: {
-            principalNncFrame: principal?.canonicalResult?.nncSlotFrame || null,
-            supplementNncFrame:
-              supplement?.canonicalResult?.nncSlotFrame || null,
+            principalNncResult: principal, supplementNncResult: supplement, supplementationAnalysis,
+            ...(targetObject.isClassicalNahuatlSupplementationFrame?.(relation) === true
+              ? {canonicalSupplementationResult: relation} : {}),
           },
           subject,
           state,
@@ -46045,6 +46206,27 @@ export function createUiRenderingApi(targetObject = globalThis) {
       event = null
     ) {
       if (event && HandledClassicalContinuationChoiceEvents.has(event)) return true;
+      if (control?.id === "classical-rule-logic-nnc-source-use"
+        && (control.value === "two-nucleus-nnc"
+          || getClassicalNominalConstructionControlValue("classical-deverbal-nnc-family", "") === "double-nucleus-ownerhood")) {
+        const entering = control.value === "two-nucleus-nnc";
+        const option = Array.from(control.options || []).find(item => item.value === control.value);
+        if (control.disabled || !option || option.disabled || option.hidden) return true;
+        if (event) HandledClassicalContinuationChoiceEvents.add(event);
+        const accepted = ActiveClassicalCapabilityApplicationResult;
+        clearClassicalGrammarResultSourceContinuation("two-nucleus-source-entry");
+        ActiveClassicalCapabilityApplicationResult = accepted;
+        const operation = targetObject.document.getElementById("classical-construction-operation");
+        const family = targetObject.document.getElementById("classical-deverbal-nnc-family");
+        if (operation) operation.value = entering ? "deverbal-nnc" : "none";
+        if (family) family.value = entering ? "double-nucleus-ownerhood" : "predicate-nominalization";
+        targetObject.syncClassicalConstructionSourceUnitAvailability?.();
+        syncClassicalNominalConstructionControlVisibility(entering ? "deverbal-nnc" : "none");
+        targetObject.setClassicalSourcePartsPendingState?.(true);
+        targetObject.syncClassicalSourceCommitPresentation?.();
+        syncClassicalCapabilityApplyOperationState();
+        return true;
+      }
       if (stageClassicalSentenceRelationalMarkerRoute(control)) {
         if (event) HandledClassicalContinuationChoiceEvents.add(event);
         return true;
@@ -46084,6 +46266,14 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const selectedConstruction = getClassicalNominalConstructionControlValue(
         "classical-construction-operation", "none"
       );
+      const doubleSourceChoice = String(control?.id || "").startsWith("classical-double-nucleus-");
+      if (doubleSourceChoice || control?.id === "classical-deverbal-nnc-family") {
+        const draft = getClassicalDoubleNucleusSourceDraft();
+        let priorDouble = false;
+        try { priorDouble = JSON.parse(targetObject.ClassicalSourcePartsCommittedSignature || "null")?.mode === "two-nucleus-nnc"; } catch {}
+        if (draft || priorDouble) targetObject.setClassicalSourcePartsPendingState?.(
+          targetObject.getClassicalSourcePartsEvaluationSignature?.() !== targetObject.ClassicalSourcePartsCommittedSignature);
+      }
       const constructionAnalysisChoice = CLASSICAL_CUSTOM_CONSTRUCTION_SOURCE_ANALYSIS_CONTROL_IDS.includes(control?.id);
       const analysisOwner = String(control?.id || "").startsWith("classical-compound-nnc-") ? "compound-nnc"
         : String(control?.id || "").startsWith("classical-affective-") ? "affective-nnc"
@@ -46135,7 +46325,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           && getActiveClassicalGrammarTypedSourceOperationBinding()?.operationId === "nnc:place-gentilic")
         && !ActiveClassicalGrammarResultBinding && !ActiveClassicalGrammarResultSourceCapture;
       if (rawConstruction && (control?.id === "classical-construction-operation"
-        || control?.closest?.("#classical-rule-logic-controls, .classical-construction-source-controls"))) {
+        || doubleSourceChoice || control?.closest?.("#classical-rule-logic-controls, .classical-construction-source-controls"))) {
         if (event) HandledClassicalContinuationChoiceEvents.add(event);
         syncClassicalNominalConstructionControlVisibility(selectedConstruction);
         syncClassicalRawConstructionChoices(selectedConstruction);
@@ -51278,6 +51468,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const document = targetObject.document;
       return [...new Set([
         ...getClassicalSourceObjectControls(document),
+        ...document.querySelectorAll?.('select[id^="classical-double-nucleus-"], input[id^="classical-double-nucleus-"]') || [],
         ...["classical-source-whole", "classical-source-embed", "classical-source-matrix",
           "classical-rule-logic-class", "classical-rule-logic-valence",
           "classical-rule-logic-nnc-class", "classical-rule-logic-nnc-initial-i",
@@ -51541,8 +51732,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
     }
     function getClassicalMixedReloadControls() {
       return [...new Set([...getClassicalVncReloadChoiceControls(),
+        targetObject.document.getElementById("classical-construction-operation"),
         ...targetObject.document.querySelectorAll(
-          'select[id^="classical-adverbial-"], select[id^="classical-rule-logic-nnc-"], select[id^="classical-nominal-"], input[id^="classical-nominal-"]')])];
+          'select[id^="classical-adverbial-"], select[id^="classical-rule-logic-nnc-"], select[id^="classical-nominal-"], input[id^="classical-nominal-"], select[id^="classical-deverbal-"], input[id^="classical-deverbal-"], select[id^="classical-double-nucleus-"], input[id^="classical-double-nucleus-"]')])].filter(Boolean);
     }
     function snapshotClassicalConjunctEditChoices() {
       const noun = getClassicalNncReinflectionDraft();
@@ -51631,9 +51823,58 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const continuation = !exact && matchesAcceptedVncContinuationBuild(targetObject, result,
         getActiveClassicalGrammarResultBinding(position.construction.route?.operation)?.ownerBindingFrame, position);
       const nominal = !exact && !continuation && matchesAcceptedNominalCompoundBuild(targetObject,result,position);
-      const receipt = exact || continuation || nominal ? Object.freeze({construction: position.construction,
+      let deverbal = false;
+      if (!exact && !continuation && !nominal
+        && targetObject.getClassicalNahuatlDeverbalNncReloadInputs?.(result)) {
+        const rawDeverbal = classicalRestoredDeverbalBuild?.result === result
+          && classicalRestoredDeverbalBuild.source === position.construction.source
+          && classicalRestoredDeverbalBuild.committedSignature === targetObject.ClassicalSourcePartsCommittedSignature
+          && !ActiveClassicalGrammarResultSourceCapture;
+        const exactDeverbal = ActiveClassicalGrammarResultSourceCapture?.canonicalResult === position.construction.source;
+        deverbal = (rawDeverbal || exactDeverbal)
+          && matchesAcceptedDeverbalBuild(targetObject,result,position,rawDeverbal);
+      }
+      const receipt = exact || continuation || nominal || deverbal ? Object.freeze({construction: position.construction,
         choices: position.choices, executionSignature: position.execution.signature}) : null;
       ClassicalConstructionSession.restore(result, receipt);
+    }
+    function restoreClassicalDeverbalBuildChoices(result, saved) {
+      const original = targetObject.getClassicalNahuatlDeverbalNncReloadInputs?.(result);
+      if (!original || ActiveClassicalGrammarResultSourceCapture) return false;
+      const control = targetObject.document.getElementById("classical-construction-operation");
+      if (!control) return false;
+      ActiveClassicalGrammarResultBinding = null;
+      control.value = "deverbal-nnc";
+      const allowed = new Map(getClassicalMixedReloadControls().map(item => [item.id,item]));
+      const restore = () => {
+        for (const choice of Array.isArray(saved.controls) ? saved.controls : []) {
+          const item = allowed.get(choice.id);
+          if (!item || choice.id === control.id || typeof choice.value !== "string") continue;
+          if (item.tagName !== "SELECT" || Array.from(item.options || []).some(option => option.value === choice.value)) item.value = choice.value;
+          if (typeof choice.checked === "boolean") item.checked = choice.checked;
+        }
+      };
+      restore();
+      syncClassicalNominalConstructionControlVisibility("deverbal-nnc");
+      restore();
+      if (!restoreClassicalVncReloadSourceEditorState(saved.sourceEditorState)) return false;
+      const pending = buildClassicalNominalConstructionUiRequest();
+      // Reconstruct the accepted receipt from its own private inputs first.
+      // Then stage actual saved controls, so an unmade edit stays pending.
+      PendingClassicalRawRootStockRequest = original;
+      syncClassicalConstructionMenuPresentation();
+      syncClassicalCapabilityApplyOperationState();
+      classicalRestoredDeverbalBuild = {result,source:ClassicalConstructionSession.position.construction.source,
+        committedSignature:targetObject.ClassicalSourcePartsCommittedSignature};
+      restoreClassicalReloadPosition(result);
+      PendingClassicalRawRootStockRequest = pending;
+      syncClassicalCapabilityApplyOperationState();
+      if (matchesAcceptedDeverbalBuild(targetObject,result,ClassicalConstructionSession.position,true)) {
+        PendingClassicalRawRootStockRequest = original;
+        syncClassicalCapabilityApplyOperationState();
+        restoreClassicalReloadPosition(result);
+      }
+      return true;
     }
     function restoreClassicalAcceptedBuildChoices(result = null) {
       // A continued Result has its own pending next operation. This repair
@@ -51903,7 +52144,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
       renderClassicalCapabilityApplicationResultForReview(resultCapture.applicationResult);
       syncClassicalCapabilityNavigator(null);
       syncClassicalActiveResultBindingChoiceVisibility(ActiveClassicalGrammarResultBinding);
-      if (!roots.source) restoreClassicalAcceptedBuildChoices(roots.result);
+      if (!roots.source) {
+        if (!restoreClassicalDeverbalBuildChoices(roots.result,saved)) restoreClassicalAcceptedBuildChoices(roots.result);
+      }
       else if (supportsFutureObjectResultReload(targetObject,roots.result)
         || supportsNominalCompoundResultReload(targetObject,roots.result)) restoreClassicalVncReloadChoices(saved);
       syncClassicalCapabilityApplyOperationState();
@@ -52861,6 +53104,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
     }
 
     function getClassicalCommittedSourcePresentation() {
+      try {
+        const committed = JSON.parse(targetObject.ClassicalSourcePartsCommittedSignature || "null");
+        if (committed?.mode === "two-nucleus-nnc") return committed.caption || "";
+      } catch {}
+
       const retained = ActiveClassicalGrammarResultSourceCapture;
       const navigator = ActiveClassicalGrammarCapabilityNavigator;
       const exact = targetObject.isClassicalGrammarApplicationResultCapture?.(retained) === true
@@ -60467,6 +60715,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
       syncClassicalGrammarResultBindingChoices;
     api.enterClassicalGrammarResultBindingChoice =
       enterClassicalGrammarResultBindingChoice;
+    api.getClassicalDoubleNucleusSourceDraft = getClassicalDoubleNucleusSourceDraft;
+    api.applyClassicalDoubleNucleusSourceDraft = applyClassicalDoubleNucleusSourceDraft;
     api.buildClassicalNominalConstructionUiRequest = buildClassicalNominalConstructionUiRequest;
     api.isClassicalCoarseNominalSourceAvailable = isClassicalCoarseNominalSourceAvailable;
     api.syncClassicalDeverbalNncStateOptions = syncClassicalDeverbalNncStateOptions;

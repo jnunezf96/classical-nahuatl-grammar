@@ -1,5 +1,5 @@
 // Canonical modern ESM module.
-import { getSourceClassRequirement } from "../composer/source_admission.mjs?v=20261014-source-admission-3";
+import { getSourceClassRequirement } from "../composer/source_admission.mjs?deverbalReload=20261024-8&v=20261014-source-admission-3";
 
 import { CLASSICAL_RESULT_OUTPUT_SCOPE_CONTROL_CONTRACTS } from "../../core/output/scope.mjs?v=20260726-lessons2-58-one-system-094";
 import { PLACE_GENTILIC_NNC_UI_CONTROL_CONTRACTS } from "../../core/nnc/place_gentilic/ui_contract.mjs?v=20260726-lessons2-58-one-system-094";
@@ -754,6 +754,7 @@ export function createClassicalShellModule(targetObject = globalThis) {
                         <span class="classical-nnc-source-guide__label">Source analysis</span>
                         <select id="classical-rule-logic-nnc-source-use" class="classical-nnc-source-guide__select" data-classical-rule-logic-control="nnc-source-use">
                           <option value="nounstem">Nounstem</option>
+                          <option value="two-nucleus-nnc">Two nuclear clauses</option>
                           <option value="general-use">General-use stem</option>
                           <option value="quantitative-predicate">Whole quantity predicate</option>
                           <option value="lexicalized-nnc">Lexicalized whole NNC</option>
@@ -1322,6 +1323,30 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
                             <option value="double-nucleus-ownerhood">two-nucleus ownerhood</option>
                           </select>
                         </label>
+                        <section id="classical-double-nucleus-source" class="classical-rule-control classical-double-nucleus-source" data-construction-for="deverbal-nnc" data-deverbal-nnc-family="double-nucleus-ownerhood" aria-label="Two-nucleus Source analysis" hidden>
+                          <h4 class="classical-rule-control__label">Two-nucleus Source</h4>
+                          <div class="classical-double-nucleus-source__nuclei">
+                            <fieldset><legend>Supplement · first</legend>
+                              <label class="classical-rule-control"><span class="classical-rule-control__label">Nounstem</span><input id="classical-double-nucleus-supplement-stem" class="classical-source-parts__input" type="text" data-classical-rule-logic-control="double-nucleus-supplement-stem" autocomplete="off" autocapitalize="none" spellcheck="false" /></label>
+                              <label class="classical-rule-control"><span class="classical-rule-control__label">Class</span><select id="classical-double-nucleus-supplement-class" data-classical-rule-logic-control="double-nucleus-supplement-class"><option value="">Choose class</option><option value="zero">0</option><option value="borrowed-name">Borrowed name · 0</option><option value="in">in</option><option value="tli-1">tli 1</option><option value="tli-2">tli 2</option><option value="tl-1-a">tl 1-A</option><option value="tl-1-b">tl 1-B</option><option value="tl-2-a">tl 2-A</option><option value="tl-2-b-a">tl 2-B (final a)</option><option value="tl-2-b-i">tl 2-B (final i)</option><option value="tl-2-c">tl 2-C</option></select></label>
+                              <label class="classical-rule-control"><span class="classical-rule-control__label">Subject</span><select id="classical-double-nucleus-supplement-subject" data-classical-rule-logic-control="double-nucleus-supplement-subject"><option value="3sg">third singular</option><option value="3common">third common · nonanimate</option><option value="1sg">first singular</option><option value="2sg">second singular</option><option value="1pl">first plural</option><option value="2pl">second plural</option><option value="3pl">third plural</option></select></label>
+                              <label class="classical-rule-control"><span class="classical-rule-control__label">Reference</span><select id="classical-double-nucleus-supplement-humanness" data-classical-rule-logic-control="double-nucleus-supplement-humanness"><option value="human">human</option><option value="nonhuman">nonhuman</option></select></label>
+                              <label class="classical-rule-control"><span class="classical-rule-control__label">State</span><select id="classical-double-nucleus-supplement-state" data-classical-rule-logic-control="double-nucleus-supplement-state"><option value="absolutive">absolutive</option><option value="possessive">possessive</option></select></label>
+                              <label class="classical-rule-control"><span class="classical-rule-control__label">Possessor</span><select id="classical-double-nucleus-supplement-possessor" data-classical-rule-logic-control="double-nucleus-supplement-possessor"><option value="3sg">third singular</option><option value="3common">third common</option><option value="1sg">first singular</option><option value="2sg">second singular</option><option value="1pl">first plural</option><option value="2pl">second plural</option><option value="3pl">third plural</option><option value="nonspecific-human">someone</option><option value="nonspecific-nonhuman">something</option><option value="reciprocal">each other</option></select></label>
+                              <label class="classical-rule-control"><span class="classical-rule-control__label">Plural connector</span><select id="classical-double-nucleus-supplement-plural" data-classical-rule-logic-control="double-nucleus-supplement-plural"><option value="">Choose ending</option><option value="sounded">sounded ending</option><option value="t-in">-tin</option><option value="silent-silent">silent ending</option><option value="silent">silent inherited ending</option><option value="m-eh">-meh</option><option value="0-h">-h</option><option value="hu-ān">-huān (automatic)</option></select></label>
+                            </fieldset>
+                            <fieldset><legend>Principal · second</legend>
+                              <label class="classical-rule-control"><span class="classical-rule-control__label">Nounstem</span><input id="classical-double-nucleus-principal-stem" class="classical-source-parts__input" type="text" data-classical-rule-logic-control="double-nucleus-principal-stem" autocomplete="off" autocapitalize="none" spellcheck="false" /></label>
+                              <label class="classical-rule-control"><span class="classical-rule-control__label">Class</span><select id="classical-double-nucleus-principal-class" data-classical-rule-logic-control="double-nucleus-principal-class"><option value="">Choose class</option><option value="zero">0</option><option value="borrowed-name">Borrowed name · 0</option><option value="in">in</option><option value="tli-1">tli 1</option><option value="tli-2">tli 2</option><option value="tl-1-a">tl 1-A</option><option value="tl-1-b">tl 1-B</option><option value="tl-2-a">tl 2-A</option><option value="tl-2-b-a">tl 2-B (final a)</option><option value="tl-2-b-i">tl 2-B (final i)</option><option value="tl-2-c">tl 2-C</option></select></label>
+                              <label class="classical-rule-control"><span class="classical-rule-control__label">Subject</span><select id="classical-double-nucleus-principal-subject" data-classical-rule-logic-control="double-nucleus-principal-subject"><option value="3sg">third singular</option><option value="3common">third common · nonanimate</option><option value="1sg">first singular</option><option value="2sg">second singular</option><option value="1pl">first plural</option><option value="2pl">second plural</option><option value="3pl">third plural</option></select></label>
+                              <label class="classical-rule-control"><span class="classical-rule-control__label">Reference</span><select id="classical-double-nucleus-principal-humanness" data-classical-rule-logic-control="double-nucleus-principal-humanness"><option value="human">human</option><option value="nonhuman">nonhuman</option></select></label>
+                              <label class="classical-rule-control"><span class="classical-rule-control__label">State</span><select id="classical-double-nucleus-principal-state" data-classical-rule-logic-control="double-nucleus-principal-state"><option value="absolutive">absolutive</option><option value="possessive">possessive</option></select></label>
+                              <label class="classical-rule-control"><span class="classical-rule-control__label">Possessor</span><select id="classical-double-nucleus-principal-possessor" data-classical-rule-logic-control="double-nucleus-principal-possessor"><option value="3sg">third singular</option><option value="3common">third common</option><option value="1sg">first singular</option><option value="2sg">second singular</option><option value="1pl">first plural</option><option value="2pl">second plural</option><option value="3pl">third plural</option><option value="nonspecific-human">someone</option><option value="nonspecific-nonhuman">something</option><option value="reciprocal">each other</option></select></label>
+                              <label class="classical-rule-control"><span class="classical-rule-control__label">Plural connector</span><select id="classical-double-nucleus-principal-plural" data-classical-rule-logic-control="double-nucleus-principal-plural"><option value="">Choose ending</option><option value="sounded">sounded ending</option><option value="t-in">-tin</option><option value="silent-silent">silent ending</option><option value="silent">silent inherited ending</option><option value="m-eh">-meh</option><option value="0-h">-h</option><option value="hu-ān">-huān (automatic)</option></select></label>
+                            </fieldset>
+                          </div>
+                          <label class="classical-rule-control"><span class="classical-rule-control__label">Source analysis</span><select id="classical-double-nucleus-analysis" data-classical-rule-logic-control="double-nucleus-analysis"><option value="" selected>Choose analysis</option><option value="fixed-order-possessor-supplementation">Fixed order · supplementary possessor</option><option value="fixed-order-subject-supplementation">Fixed order · supplementary subject</option></select></label>
+                        </section>
                         <label class="classical-rule-control" data-construction-for="deverbal-nnc" data-deverbal-nnc-family="predicate-nominalization" hidden>
                           <span class="classical-rule-control__label">Nominalization</span>
                           <select id="classical-deverbal-nnc-nominalization-kind" data-classical-rule-logic-control="deverbal-nnc-nominalization-kind">
@@ -5323,6 +5348,29 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
         if(applyButton)applyButton.disabled=true;
         return state;
       }
+      const double = targetObject.getClassicalDoubleNucleusSourceDraft?.();
+      if (double) {
+        const state = root.dataset.classicalSourceCommitState === "pending" ? "pending" : "committed";
+        let committed = null;
+        try { committed = JSON.parse(targetObject.ClassicalSourcePartsCommittedSignature || "null"); } catch {}
+        const caption = committed?.mode === "two-nucleus-nnc" ? committed.caption || "" : "";
+        status.dataset.classicalSourceCommitStatus = state;
+        status.classList.toggle("is-pending", state === "pending");
+        badge.textContent = state === "committed" && caption ? "Applied" : "Not applied";
+        message.textContent = state === "committed" && caption ? `Using ${caption}`
+          : double.ready ? `Use this two-nucleus Source.${caption ? ` Using ${caption}` : ""}`
+          : `Complete both nuclei and choose their Source analysis.${caption ? ` Using ${caption}` : ""}`;
+        if (applyButton) {
+          applyButton.disabled = !double.ready;
+          applyButton.setAttribute("aria-label", double.ready ? "Use this two-nucleus Source" : "Complete the two-nucleus Source first");
+        }
+        if (clearButton) clearButton.disabled = !double.hasMaterial && !caption;
+        for (const id of ["classical-rule-logic-class", "classical-rule-logic-nnc-class"]) {
+          const control = documentObject.getElementById(id);
+          if (control) {control.required = false; control.removeAttribute?.("aria-required");}
+        }
+        return state;
+      }
       let state = root.dataset.classicalSourceCommitState === "pending"
         ? "pending"
         : "committed";
@@ -5508,13 +5556,18 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
       const matrixInput = documentObject?.getElementById?.(
         "classical-source-matrix"
       ) || null;
-      const sourceInputs = [wholeInput, embedInput, matrixInput].filter(Boolean);
-      if (!keyboard || !sourceParts || sourceInputs.length !== 3) return false;
+      const doubleInputs = ["supplement", "principal"].map(role =>
+        documentObject.getElementById(`classical-double-nucleus-${role}-stem`)).filter(Boolean);
+      const sourceInputs = [wholeInput, embedInput, matrixInput, ...doubleInputs].filter(Boolean);
+      if (!keyboard || !sourceParts || !wholeInput || !embedInput || !matrixInput) return false;
       if (keyboard.dataset.classicalTranscriptionKeyboardBound === "true") {
         return true;
       }
       let activeInput = wholeInput;
       const getActiveInput = () => {
+        if (targetObject.getClassicalDoubleNucleusSourceDraft?.() && doubleInputs.length) {
+          return doubleInputs.includes(activeInput) ? activeInput : doubleInputs[0];
+        }
         if (sourceParts.dataset.classicalSourcePartsMode !== "embed-matrix") {
           return wholeInput;
         }

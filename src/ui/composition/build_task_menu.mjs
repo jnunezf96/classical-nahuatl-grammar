@@ -37,7 +37,8 @@ export function getBuildTaskRoutes(doc) {
     const group = native && ['nominal-embed-vnc', 'compound-nnc'].includes(option.value)
       ? 'Modification and combination' : getBuildOperationGroup(operationId);
     routes.push({control, option, optionRef: address(control, option), aliasRefs: [], operationId, group,
-      label: native ? constructionTasks[option.value] || option.textContent : option.textContent,
+      label: native ? option.value === 'deverbal-nnc' && doc.getElementById('classical-deverbal-nnc-family')?.value === 'double-nucleus-ownerhood'
+        ? 'Form two-nucleus ownerhood' : constructionTasks[option.value] || option.textContent : option.textContent,
       order: getBuildOperationOrder(operationId)});
   }
   const neutral = Array.from(construction?.options || []).find(option => option.value === 'none');

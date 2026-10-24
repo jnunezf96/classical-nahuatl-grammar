@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {createClassicalShellModule} from '../ui/shell/classical_shell.mjs';
 
-function fixture() {
+function fixture(doubleSource = false) {
   class Element {
     constructor(tag='div'){this.tagName=tag.toUpperCase();this.dataset={};this.children=[];this.listeners={};this.value='';this.selectionStart=0;this.selectionEnd=0;this.disabled=false;this.readOnly=false;}
     append(...nodes){for(const n of nodes){this.children.push(n);n.parentElement=this;}}
@@ -19,10 +19,13 @@ function fixture() {
   }
   const ids=new Map();
   for(const id of ['classical-transcription-keyboard','classical-transcription-keyboard-vowels','classical-transcription-keyboard-consonants','classical-source-parts','classical-source-whole','classical-source-embed','classical-source-matrix']){const e=new Element(id.startsWith('classical-source-')&&!id.endsWith('parts')?'input':'div');e.id=id;ids.set(id,e);}
+  if (doubleSource) for (const role of ['principal','supplement']) {
+    const id = `classical-double-nucleus-${role}-stem`, input = new Element('input'); input.id = id; ids.set(id, input);
+  }
   const get=id=>ids.get(id)||null,keyboard=get('classical-transcription-keyboard');keyboard.append(get('classical-transcription-keyboard-vowels'),get('classical-transcription-keyboard-consonants'));
   get('classical-source-parts').dataset.classicalSourcePartsMode='whole-stem';
   const document={getElementById:get,addEventListener(){},createElement:tag=>new Element(tag)};
-  const api=createClassicalShellModule({document,Event:class{constructor(type,options){this.type=type;Object.assign(this,options);}},CLASSICAL_NAHUATL_TRANSCRIPTION_VOWEL_CARRIERS:Object.fromEntries(['a','ā','e','ē','i','ī','o','ō'].map(k=>[k,{}])),CLASSICAL_NAHUATL_TRANSCRIPTION_CONSONANT_CARRIERS:{'/λ/':{}}});
+  const api=createClassicalShellModule({document,getClassicalDoubleNucleusSourceDraft:()=>doubleSource?{ready:false}:null,Event:class{constructor(type,options){this.type=type;Object.assign(this,options);}},CLASSICAL_NAHUATL_TRANSCRIPTION_VOWEL_CARRIERS:Object.fromEntries(['a','ā','e','ē','i','ī','o','ō'].map(k=>[k,{}])),CLASSICAL_NAHUATL_TRANSCRIPTION_CONSONANT_CARRIERS:{'/λ/':{}}});
   assert.equal(api.installClassicalTranscriptionSourcePresentation(),true);
   const click=token=>keyboard.dispatchEvent({type:'click',target:get('classical-transcription-keyboard-vowels').children.find(e=>e.dataset.classicalTranscriptionToken===token),preventDefault(){}});
   return {get,api,click,keyboard};
@@ -56,4 +59,13 @@ test('fresh invented Source vowel edits use the existing public helper and leave
   assert.equal(whole.value,input.stem.slice(0,offset)+'ā'+input.stem.slice(offset+1));assert.equal(parts.dataset.classicalSourceCommitState,'pending');
   const panel=api.ClassicalSourcePanel();assert.equal(panel.includes('id="classical-writing-source-kind"'),false);assert.equal(panel.includes('id="classical-transcription-source-apply"'),false);
   assert.deepEqual(get('classical-transcription-keyboard-vowels').children.map(node=>node.textContent),['ā','ē','ī','ō']);
+});
+
+test('long vowels target the focused actual nucleus and never the hidden main stem',()=>{
+  const {get,click}=fixture(true),principal=get('classical-double-nucleus-principal-stem'),supplement=get('classical-double-nucleus-supplement-stem');
+  const old=get('classical-source-whole');old.value='old-source';
+  principal.value='cuatzotōcuichōx';principal.setSelectionRange(2,3);principal.focus();click('ā');
+  assert.equal(principal.value,'cuātzotōcuichōx');assert.equal(old.value,'old-source');
+  supplement.focus();click('ē');assert.equal(supplement.value,'ē');assert.equal(old.value,'old-source');
+  assert.equal(get('classical-source-parts').dataset.classicalSourceCommitState,'pending');
 });

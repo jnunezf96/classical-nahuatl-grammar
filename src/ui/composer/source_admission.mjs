@@ -35,6 +35,10 @@ export function getVncSourceClassRequirement(runtime, state = null) {
 }
 
 export function getSourceClassRequirement(runtime, state = null) {
+  const double = runtime.getClassicalDoubleNucleusSourceDraft?.();
+  if (double) return double.ready ? null : {
+    fieldId: "classical-double-nucleus-analysis", stemKind: "two-nucleus Source", sourceAnalysis: true,
+  };
   const unit = runtime.getClassicalBasalUnitFromRuntime?.();
   if (unit === "vnc") return getVncSourceClassRequirement(runtime, state);
   if (unit !== "nnc" || runtime.document?.body?.dataset.classicalRelationalNncMode === "true") return null;

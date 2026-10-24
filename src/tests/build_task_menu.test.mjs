@@ -138,3 +138,11 @@ test('an exact Result without an offered direct clause owner cannot select a pha
  assert.equal(tasks.getBuildTaskRoutes(doc).some(route=>route.operationId==='nnc:ordinary'),false);
  assert.equal(tasks.getBuildTaskRoutes(doc).some(route=>route.operationId==='particle:result'),true);
 });
+
+test('two-nucleus Source exposes its actual ownerhood task caption without changing ordinary nominalization',()=>{
+  const {doc}=fixture(),get=doc.getElementById,family={value:'double-nucleus-ownerhood'};
+  doc.getElementById=id=>id==='classical-deverbal-nnc-family'?family:get(id);
+  assert.equal(tasks.getBuildTaskRoutes(doc).find(route=>route.optionRef===ref(stemId,'deverbal-nnc')).label,'Form two-nucleus ownerhood');
+  family.value='predicate-nominalization';
+  assert.equal(tasks.getBuildTaskRoutes(doc).find(route=>route.optionRef===ref(stemId,'deverbal-nnc')).label,'Make a noun from a verb');
+});

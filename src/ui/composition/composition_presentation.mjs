@@ -14,7 +14,7 @@ import {createStructureDesign,readStructureDesignContext} from './structure_desi
 import {createChoiceDesign} from './choice_design.mjs?clickFeedback=20261023-1&coreStem=20261023-1&v=20261022-reset-eligibility-1&writingSource=20261022-1&fixedChoices=20261022-1';
 import {createWorkspaceOrganization} from './workspace_organization.mjs?clauseHarmony=20261023-5&formulaSlots=20261023-22&v=20261014-task-menu-1&choicesLayout=20261014-4&objectsPlacement=20261014-1&ownerOrganization=20261021-4&startupDelivery=20261022-1';
 import {createBuildConstructionPresentation} from './build_constructions.mjs?v=20261014-construction-click-1&choicesLayout=20261014-4';
-import {createBuildNavigation} from './build_navigation.mjs?operationFirst=20261023-4&clickFeedback=20261023-1&v=20261021-ending-reference-2&writingSource=20261022-2&fixedChoices=20261022-1';
+import {createBuildNavigation} from './build_navigation.mjs?deverbalReload=20261024-8&operationFirst=20261023-4&clickFeedback=20261023-1&v=20261021-ending-reference-2&writingSource=20261022-2&fixedChoices=20261022-1';
 import {presentParticleComposition} from './particle_composition.mjs?v=20261023-particle-composition-2';
 
 export function hasVisibleCompositionControls(node,disclosure){

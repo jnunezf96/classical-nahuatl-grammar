@@ -17,6 +17,7 @@ import { projectClassicalNahuatlRetainedReflexiveShuntline }
 const VERSION = 1;
 const ISSUED_SOURCE_FRAMES = new WeakSet();
 const ISSUED_PATIENTIVE_CORE_SOURCES = new WeakSet();
+const PATIENTIVE_CORE_RELOAD_INPUTS = new WeakMap();
 const ISSUED_ADVERBIAL_NOMINAL_CORES = new WeakSet();
 const ISSUED_ADVERBIAL_NOMINAL_PREDICATES = new WeakSet();
 const ISSUED_CHARACTERISTIC_NOUN_SOURCES = new WeakSet();
@@ -43,6 +44,24 @@ const ISSUED_NNC_EXTERNAL_OBJECTS = new WeakMap();
 const PRETERIT_NNC_SLOT_PARENTS = new WeakMap();
 const CUSTOMARY_NNC_SLOT_PARENTS = new WeakMap();
 const ISSUED_GRAMMAR_FRAMES = new WeakSet();
+const DEVERBAL_RELOAD_INPUTS = new WeakMap();
+const DEVERBAL_RELOAD_NNC_PARENTS = new WeakMap();
+function cloneDeverbalReloadInputs(value, target = null) {
+  // Frozen caller containers are not issued grammar. Copy them too, retaining
+  // identity only for objects authenticated by their actual canonical owner.
+  if (!value || typeof value !== "object") return value;
+  if (ISSUED_GRAMMAR_FRAMES.has(value) || ISSUED_PATIENTIVE_CORE_SOURCES.has(value)
+    || ISSUED_NNC_SLOT_FRAMES.has(value)
+    || ["isClassicalNahuatlVncApplicationFrame", "isClassicalNahuatlVncApplicationResultFrame",
+      "isClassicalNahuatlVncSentenceResultFrame", "isClassicalNahuatlClosureFrame",
+      "isClassicalNahuatlNominalConstructionResult", "isClassicalNahuatlOrdinaryNncResult",
+      "isClassicalNahuatlOrdinaryNncSourceFrame", "isClassicalNahuatlSupplementationFrame",
+      "isClassicalNahuatlIssuedNncSentenceSurfaceFrame", "isClassicalNahuatlDenominalVncGrammarFrame"]
+      .some(name => target?.[name]?.(value) === true)) return value;
+  if (Array.isArray(value)) return value.map(item => cloneDeverbalReloadInputs(item,target));
+  return Object.fromEntries(Object.entries(value).map(([key, item]) =>
+    [key, cloneDeverbalReloadInputs(item,target)]));
+}
 const ISSUED_PARADIGM_PLANS = new WeakSet();
 const ISSUED_PARADIGM_COORDINATES = new WeakSet();
 const PARADIGM_PLAN_CONTEXTS = new WeakMap();
@@ -5595,7 +5614,9 @@ function buildPatientiveCoreSource(request = {}, target = globalThis) {
     sourceIsCompound:false,compoundVncSourceFrame:null,
     finiteSubjectAsserted:false,grammarAuthority:false,callerSuppliedAuthorityAccepted:false,
     formulaStringAuthority:false,surfaceStringAuthority:false});
-  ISSUED_PATIENTIVE_CORE_SOURCES.add(frame); return frame;
+  ISSUED_PATIENTIVE_CORE_SOURCES.add(frame);
+  PATIENTIVE_CORE_RELOAD_INPUTS.set(frame, deepFreeze(cloneDeverbalReloadInputs(request)));
+  return frame;
 }
 
 function buildSourceFrame(
@@ -11141,9 +11162,9 @@ function isClassicalNahuatlCharacteristicPatientiveNncCaptureFrame(
   );
 }
 
-function assimilateCharacteristicYō(embedStem = "", matrixVowel = "ō") {
+function assimilateCharacteristicYō(embedStem = "", matrixVowel = "ō", boundaryFinal = "") {
   const stem = normalizeStem(embedStem);
-  const final = finalUnit(stem);
+  const final = boundaryFinal || finalUnit(stem);
   const assimilated = ({
     l: `l${matrixVowel}`,
     z: `z${matrixVowel}`,
@@ -13496,6 +13517,33 @@ function ownerhoodMatrixForSource(source = {}, analysisFrame = null) {
   return "";
 }
 
+function buildAbundantOwnerhoodBoundary(sourceStem, boundaryVariant, target) {
+  // Null inner morphemes remain in the typed Source; they do not intervene
+  // in the actual consonant contact with the abundant-ownerhood matrix.
+  const edgeStem = normalizeStem(sourceStem).replace(/(?:-(?:0|Ø|⎕))+$/u, "");
+  const final = finalUnit(edgeStem);
+  let incorporated = assimilateCharacteristicYō(sourceStem, "o", final);
+  const boundaryPhoneFrames = [];
+  if (["l", "z", "x", "ch", "tz"].includes(final)) {
+    const assimilation = target.buildClassicalNahuatlAssimilationFrame?.({
+      leftConsonant: final, rightConsonant: "y", grammaticalConstruction: true,
+      sourceLeftMorpheme: edgeStem, sourceRightMorpheme: "yo",
+    });
+    const length = target.buildClassicalNahuatlConsonantalLengthFrame?.({
+      leftConsonant: final, rightConsonant: final, grammaticalConstruction: true,
+    });
+    if (![assimilation, length].every(frame =>
+      target.isClassicalNahuatlTranscriptionAnalysisFrame?.(frame)
+      && frame.authorizationStatus === "authorized")) return {
+        authorizationStatus: "blocked", blockReason: "35.10-assimilation-owner-required",
+      };
+    boundaryPhoneFrames.push(assimilation, length);
+    if (boundaryVariant === "single-writing") incorporated = joinMorphs([sourceStem, "o"]);
+  }
+  return {authorizationStatus: "authorized", blockReason: "",
+    restrictedUse: joinMorphs([incorporated, "h", "0"]), boundaryPhoneFrames};
+}
+
 function buildOwnerhoodOperation(request = {}, preparedSourceFrame = null, target = globalThis) {
   const declaredSource = request.source && typeof request.source === "object" ? request.source : request;
   const hasExactParent = Object.prototype.hasOwnProperty.call(request, "canonicalNncResult");
@@ -13665,25 +13713,12 @@ function buildOwnerhoodOperation(request = {}, preparedSourceFrame = null, targe
     }
     restrictedUse = joinMorphs([stem, "huah", "0"]);
   } else {
-    const final = finalUnit(sourceFrame.sourceStem);
-    let incorporated = assimilateCharacteristicYō(sourceFrame.sourceStem, "o");
-    if (["l", "z", "x", "ch", "tz"].includes(final)) {
-      const assimilation = target.buildClassicalNahuatlAssimilationFrame?.({
-        leftConsonant: final, rightConsonant: "y", grammaticalConstruction: true,
-        sourceLeftMorpheme: sourceFrame.sourceStem, sourceRightMorpheme: "yo",
-      });
-      const length = target.buildClassicalNahuatlConsonantalLengthFrame?.({
-        leftConsonant: final, rightConsonant: final, grammaticalConstruction: true,
-      });
-      if (!boundaryAuthorized(assimilation) || !boundaryAuthorized(length)) return {
-        sourceFrame, operationFrame: null, blockReason: "35.10-assimilation-owner-required",
-      };
-      boundaryPhoneFrames.push(assimilation, length);
-      // Andrews permits single writing of the long consonant; the phonological
-      // contact and both canonical witnesses remain unchanged.
-      if (boundaryVariant === "single-writing") incorporated = joinMorphs([sourceFrame.sourceStem, "o"]);
-    }
-    restrictedUse = joinMorphs([incorporated, "h", "0"]);
+    const boundary = buildAbundantOwnerhoodBoundary(sourceFrame.sourceStem, boundaryVariant, target);
+    if (boundary.authorizationStatus !== "authorized") return {
+      sourceFrame, operationFrame: null, blockReason: boundary.blockReason,
+    };
+    restrictedUse = boundary.restrictedUse;
+    boundaryPhoneFrames.push(...boundary.boundaryPhoneFrames);
   }
   const generalUse = joinMorphs([restrictedUse, "cā"]);
   const operationFrame = deepFreeze({
@@ -16090,76 +16125,121 @@ function buildVocativeOperation(
   return { sourceFrame, operationFrame, blockReason: "" };
 }
 
-function buildDoubleNucleusOwnerhoodOperation(request = {}) {
+function captureDoubleNucleusResult(result, legacySlots, target) {
+  const whole = result || (legacySlots && (
+    target.getClassicalNahuatlDeverbalNncReloadParent?.(legacySlots)
+    || PRETERIT_NNC_SLOT_PARENTS.get(legacySlots)
+    || CUSTOMARY_NNC_SLOT_PARENTS.get(legacySlots)
+  ));
+  const issued = isClassicalNahuatlDeverbalNncGrammarFrame(whole)
+    || target.isClassicalNahuatlOrdinaryNncResult?.(whole) === true
+    || target.isClassicalNahuatlNominalConstructionResult?.(whole) === true;
+  const slots = whole?.typedSlotFrame || whole?.nncSlotFrame || whole?.canonicalResult?.nncSlotFrame;
+  return issued && whole.authorizationStatus === "authorized"
+    && target.isClassicalNahuatlNncSlotFrame?.(slots) === true
+    && (!legacySlots || legacySlots === slots)
+    ? {whole, slots} : null;
+}
+
+function buildDoubleNucleusOwnerhoodOperation(request = {}, target = globalThis) {
   const source = request.source && typeof request.source === "object" ? request.source : request;
-  const principalFrame = source.principalNncFrame;
-  const supplementFrame = source.supplementNncFrame;
-  const typedPrincipal = ISSUED_NNC_SLOT_FRAMES.has(principalFrame);
-  const typedSupplement = ISSUED_NNC_SLOT_FRAMES.has(supplementFrame);
-  if (
-    !typedPrincipal
-    || !typedSupplement
-    || source.lexicalizedFixedOrder !== true
-  ) {
-    return {
-      sourceFrame: null,
-      operationFrame: null,
-      blockReason: "35.14-typed-fixed-order-double-nucleus-source-required",
+  const principal = captureDoubleNucleusResult(source.principalNncResult, source.principalNncFrame, target);
+  const supplement = captureDoubleNucleusResult(source.supplementNncResult, source.supplementNncFrame, target);
+  const suppliedRelation = source.canonicalSupplementationResult;
+  const declaredAnalysis = normalizeKey(source.supplementationAnalysis);
+  const legacy = !declaredAnalysis && source.lexicalizedFixedOrder === true;
+  const headRole = declaredAnalysis === "fixed-order-possessor-supplementation" ? "possessor"
+    : declaredAnalysis === "fixed-order-subject-supplementation" ? "subject"
+    : legacy ? principal?.whole?.operationFrame?.state === "possessive" ? "possessor" : "subject"
+    : suppliedRelation?.referenceFrame?.headRole;
+  if (!principal || !supplement || !["subject", "possessor"].includes(headRole)
+    || !(legacy || ["fixed-order-possessor-supplementation", "fixed-order-subject-supplementation"].includes(declaredAnalysis)
+      || suppliedRelation && declaredAnalysis === "fixed-order-supplementation")) return {
+    sourceFrame: null, operationFrame: null,
+    blockReason: "35.14-typed-fixed-order-double-nucleus-source-required",
+  };
+  const analysis = declaredAnalysis || "fixed-order-supplementation";
+  const principalClause = !suppliedRelation && target.buildClassicalNahuatlSupplementationClauseEnvelope?.(principal.whole, {
+    referenceId: "double-nucleus-principal",
+    subjectReferenceId: headRole === "subject" ? "double-nucleus-contact" : "double-nucleus-principal-subject",
+    ...(headRole === "possessor" ? {possessorReferenceId: "double-nucleus-contact"} : {}),
+  });
+  const supplementClause = !suppliedRelation && target.buildClassicalNahuatlSupplementationClauseEnvelope?.(supplement.whole, {
+    referenceId: "double-nucleus-supplement", subjectReferenceId: "double-nucleus-contact",
+  });
+  const relation = suppliedRelation || target.evaluateClassicalNahuatlSupplementationOperation?.({
+    operationKind: "relation", principalClause, supplementClause,
+    options: {referenceMode: "shared", headRole, supplementContactRole: "subject",
+      order: "supplement-first", adjunctor: "none"},
+  });
+  if (target.isClassicalNahuatlSupplementationFrame?.(relation) !== true
+    || relation.referenceFrame.referenceMode !== "shared"
+    || relation.referenceFrame.headRole !== headRole
+    || relation.referenceFrame.supplementContactRole !== "subject"
+    || relation.linearizationFrame.order !== "supplement-first"
+    || relation.principalContinuationFrames.length || relation.supplementContinuationFrames.length
+    || relation.interveningClauses.length || relation.linearizationFrame.tokens.length !== 2
+    || target.getClassicalNahuatlSupplementationClauseSourceFrame?.(relation.principalClause) !== principal.whole
+    || target.getClassicalNahuatlSupplementationClauseSourceFrame?.(relation.supplementClause) !== supplement.whole) return {
+      sourceFrame: null, operationFrame: null,
+      blockReason: relation?.blockReason || "35.14-exact-compatible-supplementation-source-required",
     };
-  }
-  const principalStem = normalizeStem(principalFrame.slots?.predicate?.stem);
-  const supplementStem = normalizeStem(supplementFrame.slots?.predicate?.stem);
-  const sourceStem = joinMorphs([supplementStem, principalStem]);
+  const innerMorphs = (frame, keepNumber) => {
+    const slots = frame.slots;
+    return [slots.subject.pers1, slots.subject.pers2,
+      ...slots.participant.slots.map(slot => slot.carrier),
+      ...slots.state.slots.map(slot => slot.carrier), slots.predicate.stem,
+      ...(keepNumber ? [slots.number.num1, slots.number.num2] : [])];
+  };
+  const supplementMorphs = innerMorphs(supplement.slots, true);
+  const principalMorphs = innerMorphs(principal.slots, false);
+  const sourceStem = joinMorphs([...supplementMorphs, ...principalMorphs]);
+  const boundary = buildAbundantOwnerhoodBoundary(sourceStem, "ordinary", target);
+  if (boundary.authorizationStatus !== "authorized") return {
+    sourceFrame: null, operationFrame: null, blockReason: boundary.blockReason,
+  };
   const lexicalAuthorizationFrame = buildLexicalAuthorizationFrame({
-    sourceUnit: "double-nucleus-nnc",
-    sourceStage: "lexicalized-supplementation",
-    sourceStem,
+    sourceUnit: "double-nucleus-nnc", sourceStage: "fixed-order-supplementation", sourceStem,
   });
   const sourceFrame = deepFreeze({
-    kind: "classical-nahuatl-deverbal-nnc-source-frame",
-    version: VERSION,
-    authorizationStatus: "authorized",
-    sourceUnit: "double-nucleus-nnc",
-    sourceStage: "lexicalized-supplementation",
-    sourceStem,
-    principalNncFrame: principalFrame,
-    supplementNncFrame: supplementFrame,
-    fixedOrder: true,
-    supplementationRelation: "lexicalized-fixed-order-double-nucleus",
-    internalPersonPositionsPreserved: true,
+    kind: "classical-nahuatl-deverbal-nnc-source-frame", version: VERSION,
+    authorizationStatus: "authorized", sourceUnit: "double-nucleus-nnc",
+    sourceStage: "fixed-order-supplementation", sourceStem,
+    principalNncResult: principal.whole, supplementNncResult: supplement.whole,
+    canonicalSupplementationResult: relation,
+    principalNncFrame: principal.slots, supplementNncFrame: supplement.slots,
+    fixedOrder: true, supplementationRelation: analysis,
+    orderedInnerMorphs: {supplement: supplementMorphs, principal: principalMorphs},
+    supplementNumberPreserved: true, principalNumberRemoved: true,
+    internalPersonPositionsPreserved: true, internalStatePositionsPreserved: true,
     outerSubjectMayOverwriteInternalPersonPositions: false,
-    lexicalAuthorizationFrame,
-    lexicalFactsReadOnly: true,
-    typedSourceAuthority: true,
-    formulaStringAuthority: false,
-    surfaceStringAuthority: false,
+    lexicalAttestationClaimed: false, lexicalAuthorizationFrame,
+    lexicalFactsReadOnly: true, typedSourceAuthority: true,
+    formulaStringAuthority: false, surfaceStringAuthority: false,
   });
   ISSUED_SOURCE_FRAMES.add(sourceFrame);
-  const targetStem = joinMorphs([sourceStem, "yō", "h", "0"]);
+  const targetStem = boundary.restrictedUse;
   const operationFrame = deepFreeze({
-    kind: "classical-nahuatl-deverbal-nnc-operation-frame",
-    version: VERSION,
-    authorizationStatus: "authorized",
-    operationId: "double-nucleus-ownerhood:yō-ā",
+    kind: "classical-nahuatl-deverbal-nnc-operation-frame", version: VERSION,
+    authorizationStatus: "authorized", operationId: "double-nucleus-ownerhood:yō-ā",
     constructionKind: "double-nucleus-ownerhood",
-    targetStems: { restrictedUse: targetStem, generalUse: joinMorphs([targetStem, "cā"]) },
-    nounClass: "zero",
-    nncFamily: "double-nucleus-abundant-ownerhood",
-    connectorProfile: "preterit-agentive",
-    singularConnectorChoice: "silent",
-    pluralConnector: "qu-eh",
-    possessiveSingularConnector: "uh",
-    allowedStates: ["absolutive", "possessive"],
-    defaultState: "absolutive",
-    defaultAnimacy: "animate",
-    transformedPossessor: "",
+    targetStems: {restrictedUse: targetStem, generalUse: joinMorphs([targetStem, "cā"])},
+    nounClass: "zero", nncFamily: "double-nucleus-abundant-ownerhood",
+    connectorProfile: "preterit-agentive", singularConnectorChoice: "silent",
+    pluralConnector: "qu-eh", possessiveSingularConnector: "uh",
+    allowedStates: ["absolutive", "possessive"], defaultState: "absolutive",
+    defaultAnimacy: "animate", transformedPossessor: "",
+    ownerhoodBoundaryFrame: {boundaryVariant: "ordinary", boundaryPhoneFrames: boundary.boundaryPhoneFrames,
+      underlyingMatrix: "yo-ā", realizedPreteritMatrix: "yo-h", finalPreteritMorph: "0"},
     appliedSemanticRules: ["35.14-double-nucleus-ownerhood"],
-    typedOperationAuthority: true,
-    callerSuppliedDerivedAuthorityAccepted: false,
-    formulaStringAuthority: false,
-    surfaceStringAuthority: false,
+    typedOperationAuthority: true, callerSuppliedDerivedAuthorityAccepted: false,
+    formulaStringAuthority: false, surfaceStringAuthority: false,
   });
-  return { sourceFrame, operationFrame, blockReason: "" };
+  const normalizedRequest = {...request, source: {
+    principalNncResult: principal.whole, supplementNncResult: supplement.whole,
+    supplementationAnalysis: analysis, canonicalSupplementationResult: relation,
+  }};
+  return {sourceFrame, operationFrame, normalizedRequest, blockReason: ""};
 }
 
 function evaluateGrammar(request = {}, target = globalThis, internalContext = null) {
@@ -16211,7 +16291,7 @@ function evaluateGrammar(request = {}, target = globalThis, internalContext = nu
   } else if (constructionKind === "vocative") {
     built = buildVocativeOperation(request, preparedSourceFrame, target);
   } else {
-    built = buildDoubleNucleusOwnerhoodOperation(request);
+    built = buildDoubleNucleusOwnerhoodOperation(request, target);
   }
   if (!built?.operationFrame || built.blockReason) {
     return buildBlockedFrame(
@@ -16350,6 +16430,12 @@ function evaluateGrammar(request = {}, target = globalThis, internalContext = nu
   });
   ISSUED_GRAMMAR_FRAMES.add(result);
   if (authorized && operationFrame.boundMaterialOnly === true) BOUND_CUSTOMARY_AGENTIVE_NNC_MATERIAL.add(result);
+  if (authorized) {
+    DEVERBAL_RELOAD_INPUTS.set(result, deepFreeze(cloneDeverbalReloadInputs(
+      built.normalizedRequest || request,target)));
+    if (canonicalResult) DEVERBAL_RELOAD_NNC_PARENTS.set(canonicalResult, result);
+    if (canonicalResult?.nncSlotFrame) DEVERBAL_RELOAD_NNC_PARENTS.set(canonicalResult.nncSlotFrame, result);
+  }
   if (authorized && operationFrame.nominalizationKind === "preterit-agentive"
     && canonicalResult?.nncSlotFrame) {
     PRETERIT_NNC_SLOT_PARENTS.set(canonicalResult.nncSlotFrame, result);
@@ -16746,6 +16832,11 @@ export function installClassicalNahuatlDeverbalNncGlobals(
       getRootStockPatientiveInventory,
     evaluateClassicalNahuatlDeverbalNnc:
       request => evaluateGrammar(request, semanticTarget),
+    getClassicalNahuatlDeverbalNncReloadInputs: result =>
+      ISSUED_GRAMMAR_FRAMES.has(result) && result.authorizationStatus === "authorized"
+        ? DEVERBAL_RELOAD_INPUTS.get(result) || null : null,
+    getClassicalNahuatlDeverbalNncReloadParent: result =>
+      DEVERBAL_RELOAD_NNC_PARENTS.get(result) || null,
     buildClassicalNahuatlPatientiveCoreSourceFrame:
       request => buildPatientiveCoreSource(request, semanticTarget),
     buildClassicalNahuatlAdverbialNominalPredicateSourceFrame:
@@ -16754,6 +16845,8 @@ export function installClassicalNahuatlDeverbalNncGlobals(
       isAdverbialNominalPredicateSource,
     isClassicalNahuatlPatientiveCoreSourceFrame:
       frame => ISSUED_PATIENTIVE_CORE_SOURCES.has(frame),
+    getClassicalNahuatlPatientiveCoreSourceReloadInputs: frame =>
+      ISSUED_PATIENTIVE_CORE_SOURCES.has(frame) ? PATIENTIVE_CORE_RELOAD_INPUTS.get(frame) || null : null,
     buildClassicalNahuatlCharacteristicNounSourceFrame: buildCharacteristicNounSource,
     isClassicalNahuatlCharacteristicNounSourceFrame: isCharacteristicNounSource,
     captureClassicalNahuatlInstrumentiveNncForCitation:

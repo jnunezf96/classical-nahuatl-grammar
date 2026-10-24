@@ -2,6 +2,7 @@ import {exportNominalCompoundReloadNode, replayNominalCompoundReloadNode, suppor
 export {supportsNominalCompoundResultReload};
 import {exportNncContextReloadNode, replayNncContextReloadNode, isNncReloadEvidence} from "./reload_nnc_context.mjs";
 import {exportClauseContextReloadNode, replayClauseContextReloadNode, isClauseReloadEvidence} from "./reload_clause_context.mjs?innerParticle=20261024-1";
+import {exportDeverbalReloadNode, replayDeverbalReloadNode, isDeverbalReloadEvidence, exportDeverbalRequestInputs} from "./reload_deverbal.mjs?deverbalReload=20261024-8";
 // Reload inputs are recipes, never persisted grammar frames or written answers.
 // Each node is reissued by its existing owner in the new runtime.
 const KIND = "classical-grammar-result-reload-recipe";
@@ -108,15 +109,28 @@ export function matchesAcceptedNominalCompoundBuild(r, result, position) {
   return same(original,packet.request.args[0]);
 }
 
-export function exportClassicalResultReloadRecipe(r, roots = {}) {
+export function exportClassicalResultReloadRecipe(r, roots = {}, normalizePrimitiveNnc = false) {
   const nodes = [], indices = new Map(), visiting = new Set();
   function visit(value, depth = 0) {
     if (indices.has(value)) return indices.get(value);
     if (!value || depth > 32 || nodes.length >= 128 || visiting.has(value)) throw new Error("unsupported reload graph");
     const capture = issued(r, value);
-    if (!capture && !isNncReloadEvidence(r,value) && !isClauseReloadEvidence(r,value)) throw new Error("issued reload Result required");
+    if (!capture && !isNncReloadEvidence(r,value) && !isClauseReloadEvidence(r,value)
+      && !isDeverbalReloadEvidence(r,value)) throw new Error("issued reload Result required");
     visiting.add(value);
-    let node = exportNominalCompoundReloadNode(r,value,child=>visit(child,depth+1))
+    // An ordinary nucleus can be issued directly by Source analysis or have
+    // its own application receipt after replay. For primitive-input receipt
+    // comparison, use the same owner inputs for these two genuine origins.
+    const primitiveNnc = normalizePrimitiveNnc
+      && r.isClassicalNahuatlOrdinaryNncResult?.(value) === true
+      && r.isClassicalNahuatlOrdinaryNncSourceFrame?.(value.sourceFrame) === true
+      && !r.getClassicalNahuatlLexicalizedPresentNncSourceParent?.(value.sourceFrame)
+      && !value.sourceFrame.compoundSource && !value.sourceFrame.sourceConstituents?.length;
+    let node = primitiveNnc ? {type:"nnc:ordinary",source:pick(value.sourceFrame,SOURCE_KEYS),
+      choices:{...pick(value.operationFrame,NNC_KEYS),animacy:value.operationFrame.referentialAnimacy,
+        humanness:value.operationFrame.referentialHumanness}}
+      : exportDeverbalReloadNode(r,value,child=>visit(child,depth+1))
+      ?? exportNominalCompoundReloadNode(r,value,child=>visit(child,depth+1))
       ?? exportNncContextReloadNode(r,value,child=>visit(child,depth+1))
       ?? exportClauseContextReloadNode(r,value,child=>visit(child,depth+1));
     const vnc = r.exportClassicalNahuatlVncApplicationRecipe?.(value);
@@ -213,7 +227,8 @@ export function replayClassicalResultReloadRecipe(r, recipe) {
   const prior = id => Number.isInteger(id) && id >= 0 && id < results.length ? results[id] : null;
   try {
     for (const node of recipe.nodes) {
-      let result = replayNominalCompoundReloadNode(r,node,prior);
+      let result = replayDeverbalReloadNode(r,node,prior);
+      if (result === undefined) result = replayNominalCompoundReloadNode(r,node,prior);
       if (result === undefined) result = replayNncContextReloadNode(r,node,prior);
       if (result === undefined) result = replayClauseContextReloadNode(r,node,prior);
       if (result !== undefined) { if (!result) return null; }
@@ -307,12 +322,42 @@ export function replayClassicalResultReloadRecipe(r, recipe) {
           principalClause: prior(node.principal), adjoinedUnit: prior(node.adjoined),
           ...(node.marker === undefined ? {} : { markerUnit: prior(node.marker) }) });
       } else return null;
-      if (!issued(r, result) && !isNncReloadEvidence(r,result) && !isClauseReloadEvidence(r,result)) return null;
+      if (!issued(r, result) && !isNncReloadEvidence(r,result) && !isClauseReloadEvidence(r,result) && !isDeverbalReloadEvidence(r,result)) return null;
       results.push(result);
     }
     const roots = Object.fromEntries(Object.entries(recipe.roots).map(([key, id]) => [key, prior(id)]));
     return Object.values(roots).every(Boolean) ? roots : null;
   } catch { return null; }
+}
+
+// A raw editor may reissue an equivalent primitive witness on repaint. Compare
+// its owner inputs, never its answer. Retained exact operand edits must instead
+// use the strict identity path (allowPrimitiveReissue=false).
+export function matchesAcceptedDeverbalBuild(r, result, position, allowPrimitiveReissue=false) {
+  const original=r.getClassicalNahuatlDeverbalNncReloadInputs?.(result),packet=position?.execution;
+  if(!original||position.construction?.sourcePending||position.construction?.route?.operation!=="nnc:deverbal-construction"
+    ||packet?.kind!=="request"||packet.operation!=="nnc:deverbal-construction"||packet.source!==position.construction.source
+    ||packet.layers?.length||packet.sentenceOptions||packet.request?.operationId!==packet.operation||packet.request.args?.length!==1)return false;
+  const request=packet.request.args[0];
+  if(request===original)return true;
+  if(!allowPrimitiveReissue){
+    const ids=new WeakMap();let next=0;
+    const encode=value=>JSON.stringify(exportDeverbalRequestInputs(value,operand=>{
+      if(!operand||typeof operand!=="object")throw Error("invalid exact operand");
+      if(!ids.has(operand))ids.set(operand,++next);return ids.get(operand);
+    }));
+    try{return encode(original)===encode(request);}catch{return false;}
+  }
+  try{
+    if(r.evaluateClassicalNahuatlDeverbalNnc(request)?.authorizationStatus!=="authorized")return false;
+    const stable=value=>Array.isArray(value)?value.map(stable):value&&typeof value==="object"
+      ?Object.fromEntries(Object.keys(value).sort().map(key=>[key,stable(value[key])])):value;
+    const signature=value=>JSON.stringify(stable(exportDeverbalRequestInputs(value,operand=>{
+      const recipe=exportClassicalResultReloadRecipe(r,{source:operand},true);
+      if(!recipe)throw Error("unreplayable operand");return recipe;
+    })));
+    return signature(original)===signature(request);
+  }catch{return false;}
 }
 
 // Reconstruct an editor over the accepted input, never over its written output.

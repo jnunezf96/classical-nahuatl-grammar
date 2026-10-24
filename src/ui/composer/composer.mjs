@@ -1,6 +1,6 @@
 import {runCompositionAction} from '../composition/action_feedback.mjs?v=20261023-1';
 import { installClassicalSourceObjectRows, syncClassicalSourceObjectRows } from "./source_objects.mjs?v=20261007-panel-source-objects-1";
-import { getSourceClassRequirement } from "./source_admission.mjs?v=20261014-source-admission-3";
+import { getSourceClassRequirement } from "./source_admission.mjs?deverbalReload=20261024-8&v=20261014-source-admission-3";
 // Canonical modern ESM module.
 
 import {
@@ -4719,10 +4719,10 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       next.sentence.antecessive = normalizeEntradaUrlBoolean(sentenceSource.antecessive);
       next.sentence.invalidFields = sentenceInvalidFields;
       next.classicalNnc.active = normalizeEntradaUrlBoolean(classicalSource.active);
-      next.classicalNnc.sourceUse = normalizeChoice(classicalSource.sourceUse, ["nounstem", "general-use", "lexicalized-nnc", "attested-cell", "attested-place", "attested-collocation"], "nounstem");
+      next.classicalNnc.sourceUse = normalizeChoice(classicalSource.sourceUse, ["nounstem", "two-nucleus-nnc", "general-use", "lexicalized-nnc", "attested-cell", "attested-place", "attested-collocation"], "nounstem");
       const requestedNncSourceClass = normalizeChoice(
         classicalSource.sourceClass,
-        ["lexicalized-nnc", "attested-cell", "attested-place", "attested-collocation"].includes(next.classicalNnc.sourceUse) ? [""] : next.classicalNnc.sourceUse === "general-use" ? ["", "tl", "tli"] : ["", "tl", "tli", "tl-1-a", "tl-1-b", "tl-2-a", "tl-2-a-to-1-a", "tl-2-b-a", "tl-2-b-i", "tl-2-c", "tli-1", "tli-2", "in", "zero", "borrowed-name"],
+        ["two-nucleus-nnc", "lexicalized-nnc", "attested-cell", "attested-place", "attested-collocation"].includes(next.classicalNnc.sourceUse) ? [""] : next.classicalNnc.sourceUse === "general-use" ? ["", "tl", "tli"] : ["", "tl", "tli", "tl-1-a", "tl-1-b", "tl-2-a", "tl-2-a-to-1-a", "tl-2-b-a", "tl-2-b-i", "tl-2-c", "tli-1", "tli-2", "in", "zero", "borrowed-name"],
         ""
       );
       next.classicalNnc.sourceClass = requestedNncSourceClass
@@ -4949,7 +4949,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         classicalNnc: {
           active: nncActive,
           sourceClass: targetObject.document.getElementById("classical-rule-logic-nnc-class")?.value || "",
-          sourceUse: ["general-use", "lexicalized-nnc", "attested-cell", "attested-place", "attested-collocation"].includes(targetObject.document.getElementById("classical-rule-logic-nnc-source-use")?.value) ? targetObject.document.getElementById("classical-rule-logic-nnc-source-use").value : "nounstem",
+          sourceUse: ["two-nucleus-nnc", "general-use", "lexicalized-nnc", "attested-cell", "attested-place", "attested-collocation"].includes(targetObject.document.getElementById("classical-rule-logic-nnc-source-use")?.value) ? targetObject.document.getElementById("classical-rule-logic-nnc-source-use").value : "nounstem",
           initialI: targetObject.document.getElementById("classical-rule-logic-nnc-initial-i")?.value || "real",
           tl2ARealization: targetObject.document.getElementById("classical-rule-logic-nnc-tl2a-realization")?.value || "retain-2a",
           subject: targetObject.document.getElementById("classical-rule-logic-subject")?.value || "3common",
@@ -8158,6 +8158,9 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       if (!construction) {
         return activeUnit;
       }
+      const doubleSource = construction.value === "deverbal-nnc"
+        && targetObject.document?.getElementById?.("classical-deverbal-nnc-family")?.value === "double-nucleus-ownerhood";
+      if (doubleSource) activeUnit = CLASSICAL_BASAL_UNIT.nnc;
       const exactContinuationActive =
         construction.dataset?.classicalCapabilityContinuationActive
           === "true";
@@ -8171,6 +8174,19 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         ).split("|").map(value => value.trim()).filter(Boolean)
       );
       Array.from(construction.options || []).forEach(option => {
+        if (option.value === "deverbal-nnc") {
+          if (doubleSource) {
+            if (!option.dataset.classicalDoubleSourceOriginalText) option.dataset.classicalDoubleSourceOriginalText = option.textContent;
+            if (!option.dataset.classicalDoubleSourceOriginalUnit) option.dataset.classicalDoubleSourceOriginalUnit = option.dataset.classicalSourceUnit || "vnc";
+            option.textContent = "Form two-nucleus ownerhood";
+            option.dataset.classicalSourceUnit = "nnc";
+          } else if (option.dataset.classicalDoubleSourceOriginalText) {
+            option.textContent = option.dataset.classicalDoubleSourceOriginalText;
+            option.dataset.classicalSourceUnit = option.dataset.classicalDoubleSourceOriginalUnit;
+            delete option.dataset.classicalDoubleSourceOriginalText;
+            delete option.dataset.classicalDoubleSourceOriginalUnit;
+          }
+        }
         // The same numeral owner builds an NNC or incorporates a quantity
         // into the actual VNC Source. Keep its menu in that Source family.
         if (option.value === "cardinal-numeral-nnc") {
@@ -9966,7 +9982,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         input: builtSourceFrame?.displaySource || currentSnapshot?.input || "",
         classicalNnc: {
           ...(currentSnapshot?.classicalNnc || {}),
-          sourceUse: ["general-use", "lexicalized-nnc", "attested-cell", "attested-place", "attested-collocation"].includes(targetObject.document.getElementById("classical-rule-logic-nnc-source-use")?.value) ? targetObject.document.getElementById("classical-rule-logic-nnc-source-use").value : "nounstem",
+          sourceUse: ["two-nucleus-nnc", "general-use", "lexicalized-nnc", "attested-cell", "attested-place", "attested-collocation"].includes(targetObject.document.getElementById("classical-rule-logic-nnc-source-use")?.value) ? targetObject.document.getElementById("classical-rule-logic-nnc-source-use").value : "nounstem",
           ...(targetObject.document.getElementById("classical-rule-logic-nnc-source-use")?.value === "general-use"
             ? {sourceClass: targetObject.document.getElementById("classical-rule-logic-nnc-class")?.value || ""} : {}),
         },
@@ -9995,6 +10011,9 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       return nextHash;
     }
     function getClassicalSourcePartsEvaluationSignature() {
+      const double = targetObject.getClassicalDoubleNucleusSourceDraft?.();
+      if (double) return JSON.stringify({unit: "nnc", mode: "two-nucleus-nnc",
+        sourceAnalysisChoices: double.selections, caption: double.caption});
       const state = getClassicalSourcePartControlState();
       return JSON.stringify({
         unit: getClassicalBasalUnitFromRuntime(),
@@ -10039,6 +10058,8 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       });
     }
     function hasCommittableClassicalSourceParts(state = null) {
+      const double = targetObject.getClassicalDoubleNucleusSourceDraft?.();
+      if (double) return double.ready;
       const sourceState = state || getClassicalSourcePartControlState();
       if (sourceState.mode === CLASSICAL_SOURCE_PARTS_MODE.embedMatrix) {
         return Boolean(sourceState.sourceEmbedStem || sourceState.sourceMatrixStem);
@@ -10101,6 +10122,20 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       });
     }
     function commitClassicalSourcePartsEvaluation(options = {}) {
+      const double = targetObject.getClassicalDoubleNucleusSourceDraft?.();
+      if (double) {
+        if (!double.ready || targetObject.applyClassicalDoubleNucleusSourceDraft?.() !== true) {
+          setClassicalSourcePartsPendingState(true);
+          targetObject.syncClassicalSourceCommitPresentation?.();
+          return false;
+        }
+        targetObject.clearClassicalUnsupportedResultReload?.();
+        ClassicalSourcePartsCommittedSignature = getClassicalSourcePartsEvaluationSignature();
+        setClassicalSourcePartsPendingState(false);
+        targetObject.syncClassicalSourceCommitPresentation?.();
+        targetObject.syncClassicalCapabilityApplyOperationState?.();
+        return true;
+      }
       let sourceState = getClassicalSourcePartControlState();
       if (!hasCommittableClassicalSourceParts(sourceState)) {
         const root = targetObject.document?.getElementById?.("classical-source-parts") || null;
@@ -10243,7 +10278,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
             .map(id => targetObject.document?.getElementById?.(id)).filter(Boolean)
             .map(control => [control.id, control.value])
           : [];
-        if (nextSource.unit === CLASSICAL_BASAL_UNIT.nnc && ["general-use", "lexicalized-nnc", "attested-cell", "attested-place", "attested-collocation"].includes(nextSource.sourceNncUse)) {
+        if (nextSource.unit === CLASSICAL_BASAL_UNIT.nnc && ["two-nucleus-nnc", "general-use", "lexicalized-nnc", "attested-cell", "attested-place", "attested-collocation"].includes(nextSource.sourceNncUse)) {
           sourceDeclarations.push(["classical-rule-logic-nnc-source-use", nextSource.sourceNncUse]);
         }
         const coarseNncClass = nextSource.unit === CLASSICAL_BASAL_UNIT.nnc
@@ -10803,6 +10838,11 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       };
     }
     function syncClassicalSourceReadout(unit = "") {
+      if (targetObject.getClassicalDoubleNucleusSourceDraft?.()) {
+        const readout = targetObject.document?.getElementById?.("classical-source-readout");
+        if (readout) readout.hidden = true;
+        return;
+      }
       if (typeof targetObject.document === "undefined") {
         return null;
       }
@@ -12473,6 +12513,10 @@ export function createUiComposerRuntime(targetObject = globalThis) {
           return;
         }
         control.addEventListener("change", event => {
+          if (control.id === "classical-rule-logic-nnc-source-use"
+            && (control.value === "two-nucleus-nnc"
+              || targetObject.document?.getElementById?.("classical-deverbal-nnc-family")?.value === "double-nucleus-ownerhood")
+            && targetObject.handleClassicalCapabilityStagedGrammarControlChange?.(control, event) === true) return;
           if (control.id === "classical-rule-logic-valence" && control.dataset) {
             if (control.dataset.classicalBuiltInDefaultDispatch === "true") {
               delete control.dataset.classicalBuiltInDefaultDispatch;

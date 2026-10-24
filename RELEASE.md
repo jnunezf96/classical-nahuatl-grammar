@@ -1,18 +1,18 @@
-# Grammar OS v1.2.27 release
+# Grammar OS v1.2.28 release
 
-Release name: **Deverbal Possession and Source Fidelity**
+Release name: **Deverbal Reload and Two-Clause Sources**
 
-Browser build: **20261024-composition-46**
+Browser build: **20261024-composition-47**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Preserves selected possessors through active/passive action nominalization and patientive nominal compounds, instead of silently substituting third-person singular.
-- Uses the current promoted passive subject when a genuine passive predicate becomes a nominal Source, retaining its exact parent and separate ancestry.
-- Keeps all nine nominal possessors for primitive Core-derived action nouns; finite-predicate routes offer their six person/number participants. Family changes reconcile dependent choices without accepting a Result.
-- Keeps a classified characteristic nounstem independent of its future outer plural, using its existing Source owner.
-- Aligns obsolete Writing fixtures with the public long-vowel-only interface while retaining internal Writing owner contracts and Make-only regressions.
+- Restores supported deverbal Results, exact shared Source operands and accepted Build choices after same-tab reload. Further edits remain pending until Make.
+- Retains whole conjunction and supplementation graphs containing supported deverbal nouns instead of flattening the edited constituent.
+- Adds a two-clause nominal Source entry with independent principal and supplement choices and explicit fixed-order subject or possessor supplementation analysis.
+- Preserves the supplement's full clause and the principal's person and State while removing only the principal's number position in §35.14 ownerhood.
+- Replays saved inputs through existing canonical owners; copied, forged or incompatible grammatical frames cannot authorize reload or Make.
 
 ## Review scope and current limits
 
@@ -22,8 +22,8 @@ This build is available for independent review against Andrews. Automated and br
 - Same-tab reload supports the documented NNC/VNC and conjunction/supplementation input graphs, including original NNC writing context. Cross-device saving is unclaimed.
 - Sentence particle/adverbial layers, including quin, now reload over supported host graphs. Source-only internally generated particle outputs remain unclaimed as separate editable application Results.
 - The public writing controls are the four long-vowel insertions. Internal Writing owners retain their supported-context limits; this release adds no public Writing lane.
-- Deverbal nominalization Results still have no same-tab reload recipe. Their recovery notice remains explicit; this release does not extend that family's persistence.
-- The raw two-nucleus ownerhood chooser still lacks explicit fixed-order Source analysis. Canonical typed support is distinct; arbitrary invented pairs are never automatically declared lexicalized.
+- Supported deverbal families now reload through bounded input recipes, including genuine finite predicates, primitive Core Sources, patientive/characteristic continuations and independent nominal operands. Each operand must have a supported recipe; arbitrary opaque grammar objects and cross-device saving remain unclaimed.
+- Two-clause ownerhood supports explicit fixed-order subject or possessor supplementation validated by the existing relation owner. Invented Sources are hypothetical analyses, not attested lexical units. Other readings retain their own Source requirements.
 - Nominal compound graphs with replayable operands, finite continuations and supported frequentative/future-object layers now persist in the same tab. Independent operand families retain their own persistence limits; opaque lexical/derived bridge recipes and universal cross-device saving remain unclaimed.
 - Accumulated-session performance and some historical inventory provenance remain open qualifications.
 
@@ -39,7 +39,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.27/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.28/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.
