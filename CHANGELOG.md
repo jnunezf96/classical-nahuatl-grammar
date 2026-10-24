@@ -1,5 +1,13 @@
 # Version History
 
+## v1.2.24 — Accepted Stem Builds
+
+- Restores an Applied baseline for the supported future-predicate object compound after reload, preserving the exact future parent and accepted Result.
+- Keeps real changed matrix/finite choices pending through reload and accepts only via explicit Make.
+- Saves fresh invented-stem regressions for graph identity, matching acknowledgement, repeated reload and forged/copied/unrelated rejection.
+- Records a bounded Andrews-led audit of stem choices and their conditional/separate construction routes; no new grammar family is claimed.
+
+
 ## v1.2.23 — Future Predicate Incorporation
 
 - Exposes nequi and imperfect-only qui for §28.11 future-predicate object incorporation; finite choices identify their matrix scope and no spurious class choice is offered.

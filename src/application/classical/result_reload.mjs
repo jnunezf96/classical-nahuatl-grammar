@@ -39,6 +39,50 @@ const issued = (r, value) => {
     && capture.applicationResult.authorizationStatus === "authorized" ? capture : null;
 };
 
+// This supported late family retains a real input edge rather than embedding
+// another independent copy of its entire parent's recipe.
+function futureObjectReloadStep(r, result) {
+  if (r.isClassicalNahuatlClosureFrame?.(result) !== true
+    || result.authorizationStatus !== "authorized"
+    || result.operationFrame?.operation !== "compound"
+    || result.operationFrame.variant !== "future-embed") return null;
+  const step = r.exportClassicalNahuatlVncApplicationRecipe?.(result)?.steps?.at(-1);
+  return step?.operationId === "vnc:derivational-operation"
+    && step.request?.lateOperation === "compound"
+    && step.request.lateVariant === "future-embed" ? step : null;
+}
+export const supportsFutureObjectResultReload = (r, result) => Boolean(
+  issued(r, result) && futureObjectReloadStep(r, result));
+const sameInputs = (a,b) => a === b || Boolean(a && b && typeof a === "object" && typeof b === "object"
+  && Array.isArray(a) === Array.isArray(b) && Object.keys(a).length === Object.keys(b).length
+  && Object.keys(a).every(key => Object.hasOwn(b,key) && sameInputs(a[key],b[key])));
+
+// A restoration acknowledgement is presentation only. Authenticate the made
+// Result, exact parent and current owner packet before comparing input choices.
+// No surface string, persisted receipt or equal-looking Source proves identity.
+export function matchesAcceptedVncContinuationBuild(r, result, binding, position) {
+  if (!issued(r,result) || !futureObjectReloadStep(r,result)
+    || r.isClassicalNahuatlVncContinuationBindingFrame?.(binding) !== true
+    || binding.bindingStatus !== "ready" || binding.operationId !== "vnc:derivational-operation"
+    || binding.outerVncApplicationFrame !== result.baseApplicationFrame
+    || binding.ownerRequest?.sourceApplicationFrame !== result.baseApplicationFrame
+    || position?.construction?.sourcePending
+    || position?.construction?.source !== binding.exactInputResult
+    || position.construction.route?.operation !== binding.operationId) return false;
+  const packet = position.execution, pending = binding.ownerPreflightResult;
+  if (packet?.kind !== "request" || packet.source !== binding.exactInputResult
+    || packet.operation !== binding.operationId || packet.layers?.length || packet.sentenceOptions
+    || packet.request?.operationId !== binding.operationId
+    || packet.request.args?.length !== binding.executionArgs.length
+    || !packet.request.args.every((arg,i) => arg === binding.executionArgs[i])
+    || r.isClassicalNahuatlClosureFrame?.(pending) !== true
+    || pending.baseApplicationFrame !== result.baseApplicationFrame) return false;
+  return sameInputs(result.normalizedRequest,pending.normalizedRequest)
+    && sameInputs(result.finalTypedVncSlotFrame,pending.finalTypedVncSlotFrame)
+    && sameInputs(r.exportClassicalNahuatlVncApplicationRecipe(result),
+      r.exportClassicalNahuatlVncApplicationRecipe(pending));
+}
+
 export function exportClassicalResultReloadRecipe(r, roots = {}) {
   const nodes = [], indices = new Map(), visiting = new Set();
   function visit(value, depth = 0) {
@@ -51,6 +95,8 @@ export function exportClassicalResultReloadRecipe(r, roots = {}) {
       ?? exportClauseContextReloadNode(r,value,child=>visit(child,depth+1));
     const vnc = r.exportClassicalNahuatlVncApplicationRecipe?.(value);
     if (node) {}
+    else if (futureObjectReloadStep(r,value)) node = {type: "vnc:future-object",
+      source: visit(value.baseApplicationFrame,depth+1), step: futureObjectReloadStep(r,value)};
     else if (vnc) node = { type: "vnc", recipe: vnc };
     else if (r.isClassicalNahuatlClauseConjunctionResultFrame?.(value) === true) {
       const first = value.conjuncts?.[0];
@@ -144,7 +190,17 @@ export function replayClassicalResultReloadRecipe(r, recipe) {
       let result = replayNncContextReloadNode(r,node,prior);
       if (result === undefined) result = replayClauseContextReloadNode(r,node,prior);
       if (result !== undefined) { if (!result) return null; }
-      else if (node?.type === "vnc" && exact(node, ["type", "recipe"])) {
+      else if (node?.type === "vnc:future-object" && exact(node,["type","source","step"])
+        && prior(node.source) && node.step?.operationId === "vnc:derivational-operation"
+        && node.step.request?.lateOperation === "compound" && node.step.request.lateVariant === "future-embed") {
+        const request = r.getClassicalNahuatlVncRecipeStepExecutionRequest(node.step,prior(node.source));
+        if (!request) return null;
+        const application = r.executeClassicalGrammarApplicationRequest(request);
+        if (!r.isClassicalGrammarApplicationResult?.(application)
+          || application.authorizationStatus !== "authorized"
+          || !futureObjectReloadStep(r,application.canonicalResult)) return null;
+        result = application.canonicalResult;
+      } else if (node?.type === "vnc" && exact(node, ["type", "recipe"])) {
         const v = node.recipe;
         if (v?.kind !== "classical-nahuatl-vnc-application-reload-recipe" || v.version !== 1
           || !Array.isArray(v.steps) || !v.steps.length || v.steps.length > 512) return null;

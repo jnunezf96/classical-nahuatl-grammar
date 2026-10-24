@@ -1,17 +1,17 @@
-# Grammar OS v1.2.23 release
+# Grammar OS v1.2.24 release
 
-Release name: **Future Predicate Incorporation**
+Release name: **Accepted Stem Builds**
 
-Browser build: **20261024-composition-42**
+Browser build: **20261024-composition-43**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Makes the §28.11 matrix choices nequi and qui visible beside the captured future predicate.
-- Uses the matrix owner's finite stem and fixed class, including nequi → nec in the preterit.
-- Keeps the embedded future and its objects, requires matching subject coordinates, and accepts only through explicit Make.
-- Restores this supported future-object compound family after same-tab reload by reissuing its inputs through the canonical owners.
+- Restores the supported future-object compound Build as Applied after reload, without a false pending indicator or an enabled Make for unchanged choices.
+- Retains the accepted Result, exact shared future parent and matrix choices. Real subsequent edits remain pending until explicit Make, including after reload.
+- Rejects copied, unrelated, stale or forged restoration acknowledgements; reload does not accept a new construction.
+- Audits Change the verb stem against Andrews: the six added-layer families fit; nominal incorporation and accompanying possession are related existing construction paths, not new grammar inferred from menu gaps.
 
 ## Review scope and current limits
 
@@ -35,7 +35,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.23/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.24/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.

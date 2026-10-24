@@ -75,10 +75,13 @@ export function createConstructionPosition({isSource,isResult}={}) {
   }
   function restore(result,receipt=null) {
     if(isResult?.(result)!==true)return false;
-    if(position.accepted.result===result)return true;
-    const baseline=receipt?.construction && sameConstruction(receipt.construction,position.construction)
+    const matchingReceipt=receipt?.construction && sameConstruction(receipt.construction,position.construction)
       && sameSlots(receipt.construction.slots,position.construction.slots)
-      && equal(receipt.choices,position.choices) ? position.choices : position.baseline;
+      && equal(receipt.choices,position.choices);
+    // Reload may restore the accepted Result before reconnecting its editor.
+    // Attach that editor's validated acknowledgement without accepting anew.
+    if(position.accepted.result===result && (!matchingReceipt || position.accepted.receipt===receipt))return true;
+    const baseline=matchingReceipt ? position.choices : position.baseline;
     return publish({...position,accepted:freezeRecord({result,receipt}),baseline,
       pending:pending(position.choices,baseline)},'restore');
   }

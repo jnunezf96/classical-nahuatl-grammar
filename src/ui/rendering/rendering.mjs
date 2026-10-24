@@ -16,8 +16,8 @@ import {setStructureDesignContext, setStructureComparison, projectCanonicalStruc
 import {setSourceCandidatePresentation, projectSavedSourceCandidate, setRouteChoicePresentation, projectOfferedOperationShapes} from '../composition/candidate_design.mjs?v=20261021-route-shapes-1';
 import {notifyExplicitMakeResult,focusNativeChoice} from '../composition/flow_design.mjs?v=20261022-reset-eligibility-1&writingSource=20261022-1&makePreview=20261022-1&fixedChoices=20261022-1';
 import {getBuildOperationGroup,getBuildOperationOrder,inventoryOptionReference,formatBuildOperationLabel} from '../composition/build_navigation_model.mjs?v=20261021-ending-reference-2';
-import {createConstructionSession} from '../composition/construction_session.mjs?v=20261012-position-12&acceptedBuild=20261023-1';
-import {projectConstructionValue} from '../composition/construction_position.mjs?v=20261012-position-12&acceptedBuild=20261023-1';
+import {createConstructionSession} from '../composition/construction_session.mjs?stemReload=20261024-2&v=20261012-position-12&acceptedBuild=20261023-1';
+import {projectConstructionValue} from '../composition/construction_position.mjs?stemReload=20261024-2&v=20261012-position-12&acceptedBuild=20261023-1';
 import {executeConstructionPacket, freezeConstructionData, getConstructionPacketOrigin, captureConstructionParents, matchesConstructionWitness, orderConstructionSlots, getConstructionFixedChoices, getConstructionLayerReadiness, getConstructionParticleHostInput} from '../composition/construction_packet.mjs?innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1';
 import {resolveResultEditTarget} from '../composition/result_editing.mjs?innerParticle=20261024-1&v=20261023-conjunction-1';
 import {canRebuildResultEdit,getResultEditReorder} from '../composition/result_edit_rebuild.mjs?innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1';
@@ -25,8 +25,8 @@ import {getNativeGrammarControls, getWritingSourcePresentation, setChoiceDesignC
 import { readClassicalSourceObjectRows, getClassicalSourceObjectControls,
   restoreClassicalSourceObjectRows, syncClassicalSourceObjectRows }
   from "../composer/source_objects.mjs?v=20261007-panel-source-objects-1";
-import { exportClassicalResultReloadRecipe, replayClassicalResultReloadRecipe, reissueClassicalAcceptedBuildBinding }
-  from "../../application/classical/result_reload.mjs?innerParticle=20261024-1&remainingReload=20261024-1&conjunctReload=20261023-1&v=20261007-reader-40-2-175&acceptedBuild=20261023-1";
+import { exportClassicalResultReloadRecipe, replayClassicalResultReloadRecipe, reissueClassicalAcceptedBuildBinding, matchesAcceptedVncContinuationBuild, supportsFutureObjectResultReload }
+  from "../../application/classical/result_reload.mjs?stemReload=20261024-2&innerParticle=20261024-1&remainingReload=20261024-1&conjunctReload=20261023-1&v=20261007-reader-40-2-175&acceptedBuild=20261023-1";
 import { exportClassicalGrammarWorkspaceHistoryReloadState,
   restoreClassicalGrammarWorkspaceHistoryReloadState }
   from "../../application/classical/grammar_workspace_history.mjs?innerParticle=20261024-1&remainingReload=20261024-1&conjunctReload=20261023-1&v=20261006-history-reload-1";
@@ -51483,7 +51483,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
         && restored.binding === getActiveClassicalGrammarTypedSourceOperationBinding()
         && position.execution?.binding === restored.binding
         && !position.construction.sourcePending;
-      const receipt = exact ? Object.freeze({construction: position.construction,
+      const continuation = !exact && matchesAcceptedVncContinuationBuild(targetObject, result,
+        getActiveClassicalGrammarResultBinding(position.construction.route?.operation)?.ownerBindingFrame, position);
+      const receipt = exact || continuation ? Object.freeze({construction: position.construction,
         choices: position.choices, executionSignature: position.execution.signature}) : null;
       ClassicalConstructionSession.restore(result, receipt);
     }
@@ -51745,6 +51747,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       syncClassicalCapabilityNavigator(null);
       syncClassicalActiveResultBindingChoiceVisibility(ActiveClassicalGrammarResultBinding);
       if (!roots.source) restoreClassicalAcceptedBuildChoices(roots.result);
+      else if (supportsFutureObjectResultReload(targetObject,roots.result)) restoreClassicalVncReloadChoices(saved);
       syncClassicalCapabilityApplyOperationState();
       setClassicalWholeCanvasActionStatus("Build restored.");
       if (reloadStatus) reloadStatus.dataset.classicalReloadStatus = "mixed-restored";
@@ -51812,7 +51815,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
         const controller = edit ? null : ActiveClassicalClauseRelationController;
         const captures = Object.fromEntries(["principal", "adjoined", "dependent", "supplement", "marker"]
           .map(role => [role, controller?.getCapturedCanonicalResult(role)]).filter(([, value]) => value));
-        if (current && (edit || !recipe || Object.keys(captures).length)) {
+        if (current && (edit || !recipe || Object.keys(captures).length
+          || supportsFutureObjectResultReload(targetObject,current))) {
           const mixedRecipe = exportClassicalResultReloadRecipe(targetObject, { result: current, source, ...captures });
           if (mixedRecipe) {
             browserWindow?.sessionStorage?.setItem(CLASSICAL_VNC_RELOAD_SESSION_KEY,
@@ -51822,7 +51826,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
                 sourceEditorState: snapshotClassicalVncReloadSourceEditorState(),
                 selections: ClassicalClauseRelationSelections,
                 operationId: targetObject.document.getElementById("classical-capability-navigator-operation")?.value || "",
-                controls: snapshotClassicalVncReloadControls(edit
+                controls: snapshotClassicalVncReloadControls(edit || supportsFutureObjectResultReload(targetObject,current)
                   ? [...new Set([...getClassicalMixedReloadControls(), ...getClassicalVncBasalReloadControls()])]
                   : getClassicalMixedReloadControls()) }));
             const reloadStatus = targetObject.document.getElementById("classical-grammar-workspace-history");
