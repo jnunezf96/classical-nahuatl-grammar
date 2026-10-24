@@ -1,5 +1,12 @@
 # Version History
 
+## v1.2.30 — Repeated Nucleus Sources
+
+- Verifies repeated nounstem and explicit class replacement for either nucleus, before and after supported reload.
+- Retains compatible choices, the sibling and whole Result; only Make accepts a replacement.
+- Saves invented-stem regressions for class-only changes, pending versus committed Source restoration, owner restrictions and stale/copied rejection.
+- Reuses the existing grammatical owners without adding a parallel formation path.
+
 ## v1.2.29 — Repeated Nucleus Editing
 
 - Exposes the actual principal and supplement nuclei as individual Result parts.

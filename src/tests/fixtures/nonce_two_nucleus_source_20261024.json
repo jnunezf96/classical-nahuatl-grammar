@@ -1,0 +1,30 @@
+{
+  "initial": {
+    "principal": "nōmītzēpāmōhua",
+    "supplement": "nātahuoxicēhua",
+    "sourceClass": "tl-1-a"
+  },
+  "replacements": [
+    {
+      "stem": "catecuatīmix",
+      "sourceClass": "tli-1"
+    },
+    {
+      "stem": "chixīmāpōpihua",
+      "sourceClass": "tl-1-a"
+    },
+    {
+      "stem": "nēmechēxōtzach",
+      "sourceClass": "in"
+    },
+    {
+      "stem": "mētayācopīt",
+      "sourceClass": "zero"
+    },
+    {
+      "stem": "cuomochīceyax",
+      "sourceClass": "tli-1"
+    }
+  ],
+  "meaningClaimed": false
+}
