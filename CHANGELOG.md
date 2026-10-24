@@ -2,6 +2,15 @@
 
 User-facing release notes for Classical Nahuatl Grammar.
 
+## Version 1.2.17 — Repeated NNC Editing
+
+Released October 23, 2026.
+
+- Restores the current inner NNC editing draft after Make and supported reload, including when no pending choices were saved.
+- Keeps subject, state and possessor edits pending until explicit Make while retaining the whole Result.
+- Clears rejected saved drafts so editing can recover from the accepted constituent.
+- Preserves Andrews’ reference restrictions and the original nounstem Source.
+
 ## Version 1.2.16 — Whole Result Editing
 
 Released October 23, 2026.

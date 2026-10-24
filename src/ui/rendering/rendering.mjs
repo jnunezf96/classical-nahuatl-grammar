@@ -51451,6 +51451,15 @@ export function createUiRenderingApi(targetObject = globalThis) {
           const bindingId = ActiveClassicalGrammarResultBinding?.bindingIds?.[0];
           if (bindingId) enterClassicalGrammarResultBindingChoice(bindingId, {allowExecution:false});
         }
+        // Selecting NNC reentry must restore its accepted baseline even when
+        // no edited choices were saved. The generic selection above only
+        // restores navigation; the separate reinflection draft owns edits.
+        if (saved.operationId === "nnc:ordinary"
+          && targetObject.getClassicalNahuatlOrdinaryNncReinflectionContext?.(edit.target)) {
+          const baseline = stageClassicalNncReinflection();
+          const projection = baseline && getClassicalOrdinaryNncControlProjection(baseline.binding);
+          if (projection) syncClassicalRuleLogicControlsForSurfaceFrame(projection);
+        }
         const selections = saved.operationId === "vnc:application"
           ? validateClassicalVncReloadApplicationSelections(saved.pendingTypedSourceSelections)
           : getClassicalTypedSourceSelectionSignature(saved.pendingTypedSourceSelections) !== null
@@ -51478,6 +51487,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           }
         }
       }
+      if (draftRejected) ActiveClassicalNncReinflectionDraft = null;
       syncClassicalCapabilityApplyOperationState();
       setClassicalWholeCanvasActionStatus(draftRejected
         ? "Whole Result restored. The saved choices could not be restored; choose the conjunct operation again."

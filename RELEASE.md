@@ -1,18 +1,17 @@
-# Grammar OS v1.2.16 release
+# Grammar OS v1.2.17 release
 
-Release name: **Whole Result Editing**
+Release name: **Repeated NNC Editing**
 
-Browser build: **20261024-composition-35**
+Browser build: **20261024-composition-36**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Changes an individual constituent inside mixed conjunction and supplementation while retaining the whole Result.
-- Checks the complete pending preview before Make; only explicit Make accepts changes.
-- Preserves untouched clauses, relation choices, participant references, contexts and original finite Sources.
-- Retains the selected inner occurrence through repeated edits and supported same-tab reload.
-- Includes the reviewed clause/particle interaction and expanded whole-Result reload improvements since v1.2.15.
+- Reopens the current inner NNC subject, state and possessor choices after Make and supported reload.
+- Restores the accepted NNC editor before applying saved pending choices; keeps acceptance exclusive to Make.
+- Clears rejected saved drafts so the next editing attempt can recover from the accepted constituent.
+- Retains the whole mixed construction, untouched siblings, reference restrictions and the original nounstem Source.
 
 ## Review scope and current limits
 
@@ -36,7 +35,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.16/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.17/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.
