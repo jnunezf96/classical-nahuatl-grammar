@@ -1,19 +1,17 @@
-# Grammar OS v1.2.20 release
+# Grammar OS v1.2.21 release
 
-Release name: **Particle Verification**
+Release name: **Hosting Maintenance**
 
-Browser build: **20261024-composition-39**
+Browser build: **20261024-composition-40**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Reconciles five legacy particle checks with Andrews and the current canonical owners; no grammar behavior changes were required.
-- Verifies ahmō through its negative NNC analysis, rather than an invented lexical particle identity.
-- Distinguishes honorific base formulas from their written realization and requires source-supported markers, including temporal in.
-- Supplies the missing scalar-rendering test container and saves fresh invented-host regressions for rendering, honorific attachment and temporal composition/reload.
-
-- Aligns the page and composition startup import to one module identity.
+- Updates Pages build, configuration, upload and deployment actions to their Node24 runtime releases.
+- Pins both hosted jobs to Ubuntu24.04 so runner-label migration cannot silently change the build environment.
+- Preserves the Node22 application builder, exact-version tag guard, locked dependencies, runtime-only site artifact and deployment permissions.
+- Keeps the page and composition bootstrap import on one release identity; grammar and interface behavior are unchanged.
 
 ## Review scope and current limits
 
@@ -37,7 +35,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.20/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.21/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.

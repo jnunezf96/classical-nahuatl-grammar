@@ -2,6 +2,14 @@
 
 User-facing release notes for Classical Nahuatl Grammar.
 
+## Version 1.2.21 — Hosting Maintenance
+
+Released October 24, 2026.
+
+- Replaces deprecated Node20 hosting actions with Node24 versions, including the nested artifact uploader and deployment step.
+- Pins build and deployment to Ubuntu24.04 while retaining the Node22 application builder and existing publishing protections.
+- Preserves grammar and interface behavior.
+
 ## Version 1.2.20 — Particle Verification
 
 Released October 23, 2026.
