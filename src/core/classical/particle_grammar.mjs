@@ -3631,6 +3631,7 @@ l50-ma-nel|although; although in fact|concessive collocation without optional ad
           ? "particle-attached-to-nucleus-on-right"
           : "separate-before-nucleus",
         gloss: selectedEntry?.gloss || "",
+        tense: canonicalInput.tense || "",
         nuclearClauseKind,
         canonicalInputKind: canonicalInput.canonicalInputKind,
         canonicalInputFrame: authorized ? canonicalInput.canonicalInputFrame : null,

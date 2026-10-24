@@ -1,10 +1,10 @@
-import {snapshotResultEditReload,restoreResultEditReload} from '../composition/result_edit_reload.mjs?mixedInner=20261024-1&v=20261023-1';
+import {snapshotResultEditReload,restoreResultEditReload} from '../composition/result_edit_reload.mjs?innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-1';
 import {getVncChoiceEditContext, getVncVoiceEditSubject, projectVncChoiceEditControls} from '../composition/vnc_choice_edit.mjs?v=20261023-3';
 import {runCompositionAction} from '../composition/action_feedback.mjs?v=20261023-1';
 import {getAuthorityControl, projectAuthoredChoice} from '../composition/authority_control.mjs?v=20261023-2';
 import {clearOwnerChoicePortals,findOwnerChoice,ownerChoiceRoots} from '../composition/owner_choice_roots.mjs?v=20261023-core-1';
 import {appendValenceAnalysis} from '../composition/valence_analysis.mjs?v=20261023-slots-16';
-import {previewConstructionPacket} from '../composition/construction_preview.mjs?mixedInner=20261024-1&v=20261023-conjunct-edit-1';
+import {previewConstructionPacket} from '../composition/construction_preview.mjs?innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1';
 import {isIntermediateBuildTaskReset} from '../composition/build_task_menu.mjs?operationFirst=20261023-2&clickFeedback=20261023-1&v=20261021-ending-reference-2&writingSource=20261022-2&fixedChoices=20261022-1';
 import { normalizeClassicalNahuatlIntroductoryModifier }
   from "../../core/classical/verbstem_classes.mjs?v=20261008-reader-40-9-190&modifier=canonical-20261009-1&quantityClass=20261022-1";
@@ -17,18 +17,18 @@ import {notifyExplicitMakeResult,focusNativeChoice} from '../composition/flow_de
 import {getBuildOperationGroup,getBuildOperationOrder,inventoryOptionReference,formatBuildOperationLabel} from '../composition/build_navigation_model.mjs?v=20261021-ending-reference-2';
 import {createConstructionSession} from '../composition/construction_session.mjs?v=20261012-position-12&acceptedBuild=20261023-1';
 import {projectConstructionValue} from '../composition/construction_position.mjs?v=20261012-position-12&acceptedBuild=20261023-1';
-import {executeConstructionPacket, freezeConstructionData, getConstructionPacketOrigin, captureConstructionParents, matchesConstructionWitness, orderConstructionSlots, getConstructionFixedChoices, getConstructionLayerReadiness, getConstructionParticleHostInput} from '../composition/construction_packet.mjs?mixedInner=20261024-1&v=20261023-conjunct-edit-1';
-import {resolveResultEditTarget} from '../composition/result_editing.mjs?v=20261023-conjunction-1';
-import {canRebuildResultEdit,getResultEditReorder} from '../composition/result_edit_rebuild.mjs?mixedInner=20261024-1&v=20261023-conjunct-edit-1';
+import {executeConstructionPacket, freezeConstructionData, getConstructionPacketOrigin, captureConstructionParents, matchesConstructionWitness, orderConstructionSlots, getConstructionFixedChoices, getConstructionLayerReadiness, getConstructionParticleHostInput} from '../composition/construction_packet.mjs?innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1';
+import {resolveResultEditTarget} from '../composition/result_editing.mjs?innerParticle=20261024-1&v=20261023-conjunction-1';
+import {canRebuildResultEdit,getResultEditReorder} from '../composition/result_edit_rebuild.mjs?innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1';
 import {getNativeGrammarControls, getWritingSourcePresentation, setChoiceDesignContext, setAppliedRoutePresentation} from '../composition/choice_design.mjs?clickFeedback=20261023-1&coreStem=20261023-1&v=20261022-reset-eligibility-1&writingSource=20261022-1&fixedChoices=20261022-1';
 import { readClassicalSourceObjectRows, getClassicalSourceObjectControls,
   restoreClassicalSourceObjectRows, syncClassicalSourceObjectRows }
   from "../composer/source_objects.mjs?v=20261007-panel-source-objects-1";
 import { exportClassicalResultReloadRecipe, replayClassicalResultReloadRecipe, reissueClassicalAcceptedBuildBinding }
-  from "../../application/classical/result_reload.mjs?remainingReload=20261024-1&conjunctReload=20261023-1&v=20261007-reader-40-2-175&acceptedBuild=20261023-1";
+  from "../../application/classical/result_reload.mjs?innerParticle=20261024-1&remainingReload=20261024-1&conjunctReload=20261023-1&v=20261007-reader-40-2-175&acceptedBuild=20261023-1";
 import { exportClassicalGrammarWorkspaceHistoryReloadState,
   restoreClassicalGrammarWorkspaceHistoryReloadState }
-  from "../../application/classical/grammar_workspace_history.mjs?remainingReload=20261024-1&conjunctReload=20261023-1&v=20261006-history-reload-1";
+  from "../../application/classical/grammar_workspace_history.mjs?innerParticle=20261024-1&remainingReload=20261024-1&conjunctReload=20261023-1&v=20261006-history-reload-1";
 // Canonical modern ESM module.
 
 import {
@@ -42197,6 +42197,18 @@ export function createUiRenderingApi(targetObject = globalThis) {
           if (operationId === "nnc:sentence-surface") packet.layers = layers;
         }
       }
+      const particleEdit=operationId==="particle:result" && getClassicalParticleChoiceEditContext();
+      if (particleEdit) {
+        if (targetObject.isClassicalGrammarTypedSourceOperationBindingFrame?.(typed)!==true
+          || typed.operationId!==operationId || typed.bindingStatus!=="ready"
+          || typed.exactNavigatorInput!==particleEdit.exact) return null;
+        // The public particle selector changes lexical material. Hidden role,
+        // preceding-particle and speaker inputs stay with their canonical owner.
+        packet.kind="request";
+        packet.source=particleEdit.exact;
+        packet.binding=null;
+        packet.request={operationId,args:[typed.ownerBindingFrame.exactParticleSourceFrame,particleEdit.inputs.options]};
+      }
       const seen = new WeakMap();
       let nextLocalReference = 1;
       const signatureValue = value => {
@@ -42386,7 +42398,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
         if (!activateClassicalGrammarWorkspaceCapture(capture, "Selected Result retained. Choose its change.")) {
           PendingClassicalResultEdit = null; return false;
         }
-        if (detail.action === "change") enterClassicalVncChoiceEdit();
+        if (detail.action === "change") {
+          enterClassicalVncChoiceEdit();
+          if (targetObject.isClassicalNahuatlParticleResultFrame?.(target.node)===true) enterClassicalParticleChoiceEdit();
+        }
       } else if (detail.action === "cancel") {
         PendingClassicalResultEdit = null;
       } else return false;
@@ -48338,6 +48353,36 @@ export function createUiRenderingApi(targetObject = globalThis) {
       return true;
     }
 
+    function getClassicalParticleChoiceEditContext() {
+      const edit=PendingClassicalResultEdit;
+      if (edit?.action!=="change" || edit.intent==="add"
+        || edit.target!==ActiveClassicalGrammarResultSourceCapture?.canonicalResult
+        || targetObject.isClassicalNahuatlParticleResultFrame?.(edit.target)!==true) return null;
+      const inputs=targetObject.getClassicalNahuatlParticleReloadInputs?.(edit.target);
+      return inputs ? {exact:edit.target,inputs,selections:{particleId:inputs.sourceFrame.particleId}} : null;
+    }
+
+    function enterClassicalParticleChoiceEdit({selectOperation=false,selections=null} = {}) {
+      const context=getClassicalParticleChoiceEditContext();
+      const select=targetObject.document.getElementById("classical-capability-navigator-operation");
+      if (!context || !select) return false;
+      const navigator=targetObject.getClassicalGrammarApplicationCapabilityNavigator?.(context.exact);
+      if (navigator?.exactResult!==context.exact
+        || !targetObject.isClassicalGrammarApplicationCapabilityNavigator?.(navigator)) return false;
+      ActiveClassicalGrammarResultBinding=null;
+      ActiveClassicalGrammarCapabilityNavigator=navigator;
+      syncClassicalCapabilityNavigator(null);
+      if (!selectOperation) {
+        select.value="";
+        clearClassicalGrammarTypedSourceOperationBinding("operation-required");
+      } else {
+        select.value="particle:result";
+        if (!stageClassicalGrammarTypedSourceOperationBinding("particle:result",selections || context.selections)) return false;
+      }
+      syncClassicalCapabilityApplyOperationState(select);
+      return true;
+    }
+
     function enterClassicalVncChoiceEdit({selectOperation = false, selections = null} = {}) {
       const context = getVncChoiceEditContext(targetObject, PendingClassicalResultEdit, ActiveClassicalGrammarResultSourceCapture);
       const select = targetObject.document.getElementById("classical-capability-navigator-operation");
@@ -48378,6 +48423,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
       { navigate = false, execute = false, stageBinding = false } = {}
     ) {
       if (!select) return null;
+      if (navigate && !execute && !stageBinding && select.value === "particle:result"
+        && getActiveClassicalGrammarTypedSourceOperationBinding()?.operationId !== "particle:result"
+        && enterClassicalParticleChoiceEdit({selectOperation:true})) return select.selectedOptions?.[0] || null;
       if (navigate && !execute && !stageBinding && select.value === "vnc:application"
         && getActiveClassicalGrammarTypedSourceOperationBinding()?.operationId !== "vnc:application") {
         const context = getVncChoiceEditContext(targetObject, PendingClassicalResultEdit, ActiveClassicalGrammarResultSourceCapture);
@@ -51434,12 +51482,16 @@ export function createUiRenderingApi(targetObject = globalThis) {
       if (!activateClassicalGrammarWorkspaceCapture(capture)) return false;
       const vnc = targetObject.getClassicalNahuatlVncApplicationEditContext?.(edit.target);
       if (vnc) enterClassicalVncChoiceEdit();
+      const particle=targetObject.isClassicalNahuatlParticleResultFrame?.(edit.target)===true
+        ? getClassicalParticleChoiceEditContext():null;
+      if (particle) enterClassicalParticleChoiceEdit();
       // An empty saved Operation remains empty. A saved selected operation only
       // stages its owner binding; execution still belongs to explicit Make.
       if (select && saved.operationId && Array.from(select.options || []).some(option =>
         option.value === saved.operationId && !option.disabled)) {
         select.value = saved.operationId;
         if (vnc && saved.operationId === "vnc:application") enterClassicalVncChoiceEdit({selectOperation:true});
+        else if (particle && saved.operationId === "particle:result") enterClassicalParticleChoiceEdit({selectOperation:true});
         else updateClassicalCapabilityNavigatorSelection(select, {navigate:false, execute:false, stageBinding:true});
         for (let pass = 0; pass < 2; pass += 1) {
           const allowed = new Map([...getClassicalMixedReloadControls(), ...getClassicalVncBasalReloadControls()].map(control => [control.id, control]));
@@ -51473,6 +51525,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
         if (saved.pendingTypedSourceSelections && selections) {
           const binding = vnc && saved.operationId === "vnc:application"
             ? enterClassicalVncChoiceEdit({selectOperation:true, selections}) && getActiveClassicalGrammarTypedSourceOperationBinding()
+            : particle && saved.operationId === "particle:result"
+              ? enterClassicalParticleChoiceEdit({selectOperation:true,selections}) && getActiveClassicalGrammarTypedSourceOperationBinding()
             : saved.operationId === "nnc:ordinary" && targetObject.getClassicalNahuatlOrdinaryNncReinflectionContext?.(edit.target)
               ? stageClassicalNncReinflection(selections)?.binding
               : stageClassicalGrammarTypedSourceOperationBinding(saved.operationId, selections);
@@ -51491,6 +51545,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
         // there is no pending owner selection packet to project instead.
         if (vnc && saved.operationId === "vnc:application" && !saved.pendingTypedSourceSelections) {
           enterClassicalVncChoiceEdit({selectOperation:true});
+        }
+        if (particle && saved.operationId === "particle:result" && !saved.pendingTypedSourceSelections) {
+          enterClassicalParticleChoiceEdit({selectOperation:true});
         }
       }
       if (draftRejected) ActiveClassicalNncReinflectionDraft = null;

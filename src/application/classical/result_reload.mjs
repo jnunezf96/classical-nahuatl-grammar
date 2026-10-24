@@ -1,5 +1,5 @@
 import {exportNncContextReloadNode, replayNncContextReloadNode, isNncReloadEvidence} from "./reload_nnc_context.mjs";
-import {exportClauseContextReloadNode, replayClauseContextReloadNode, isClauseReloadEvidence} from "./reload_clause_context.mjs";
+import {exportClauseContextReloadNode, replayClauseContextReloadNode, isClauseReloadEvidence} from "./reload_clause_context.mjs?innerParticle=20261024-1";
 // Reload inputs are recipes, never persisted grammar frames or written answers.
 // Each node is reissued by its existing owner in the new runtime.
 const KIND = "classical-grammar-result-reload-recipe";

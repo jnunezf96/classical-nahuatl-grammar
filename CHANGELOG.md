@@ -2,6 +2,16 @@
 
 User-facing release notes for Classical Nahuatl Grammar.
 
+## Version 1.2.19 — Repeated Particle Editing
+
+Released October 23, 2026.
+
+- Changes the same issued inner particle or particle sequence repeatedly after Make and supported same-tab reload, retaining the whole mixed Result.
+- Restores accepted choices and valid pending edits separately; acceptance remains exclusive to Make.
+- Preserves exact hosts, original attachment operations, honorific inputs and speaker context.
+- Adds input-based reload of sentence particle/adverbial layers and retains derived tense through intervening particles, including supported quin constructions.
+- Keeps Andrews' lexical, contextual and participant restrictions with the canonical owners.
+
 ## Version 1.2.18 — Repeated VNC Editing
 
 Released October 23, 2026.

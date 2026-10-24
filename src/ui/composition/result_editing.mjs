@@ -48,7 +48,8 @@ export function getResultEditTargets(runtime={},result=null,project){
     // The structural tree treats this particle as a marker. Editing requires
     // its actual owner-issued Result, separately from the retained nucleus.
     if(runtime.isClassicalNahuatlIssuedParticleSentenceLayerFrame?.(node)===true){
-      const particle=node.particleResultFrame;
+      // Edit the original particle input; its honorific output is derived.
+      const particle=node.inputParticleResultFrame || node.particleResultFrame;
       if(!nextSeen.has(particle)&&runtime.isClassicalNahuatlParticleResultFrame?.(particle)===true&&read(particle)){
         const attachment={node:particle,path:Object.freeze([...path,'particleResultFrame']),label:'Particle',role:'Particle',parent:node};
         if(node===result&&node.canonicalInputFrame!==node&&read(node.canonicalInputFrame))attachment.removableTo=node.canonicalInputFrame;

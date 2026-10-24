@@ -1,17 +1,18 @@
-# Grammar OS v1.2.18 release
+# Grammar OS v1.2.19 release
 
-Release name: **Repeated VNC Editing**
+Release name: **Repeated Particle Editing**
 
-Browser build: **20261024-composition-37**
+Browser build: **20261024-composition-38**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Reopens the same inner VNC's finite, derivation, voice, Object and sentence choices after Make and supported reload.
-- Restores the accepted VNC choices after saved native controls, while preserving valid pending edits.
-- Keeps acceptance exclusive to Make and retains the whole mixed construction, untouched siblings and original verbstem Source.
-- Preserves Andrews' participant, voice and reference restrictions through canonical owners.
+- Repeatedly changes an issued inner particle or particle sequence after Make and supported same-tab reload while retaining the whole Result.
+- Restores the accepted particle choice before applying valid pending edits; only explicit Make accepts the change.
+- Preserves exact hosts, untouched clauses, honorific inputs, speaker context and the original attachment operation.
+- Replays sentence particle/adverbial attachment graphs, including supported quin layers; retains derived tense through intervening particles.
+- Keeps lexical identity, speaker, contextual and tense restrictions with Andrews' canonical owners.
 
 ## Review scope and current limits
 
@@ -19,7 +20,7 @@ This build is available for independent review against Andrews. Automated and br
 
 - Conditional lexical readings and irregular formations require the corresponding genuine Source analysis.
 - Same-tab reload supports the documented NNC/VNC and conjunction/supplementation input graphs, including original NNC writing context. Cross-device saving is unclaimed.
-- Reload of the complete quin sentence-adverbial outer layer is deliberately unsupported and shows a recovery notice.
+- Sentence particle/adverbial layers, including quin, now reload over supported host graphs. Source-only internally generated particle outputs remain unclaimed as separate editable application Results.
 - Optional writing coverage and the simple-compound Writing adapter have explicit supported-context limits.
 - Accumulated-session performance and some historical inventory provenance remain open qualifications.
 
@@ -35,7 +36,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.18/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.19/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.

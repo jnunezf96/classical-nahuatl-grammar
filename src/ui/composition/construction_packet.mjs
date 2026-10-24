@@ -1,8 +1,8 @@
-import {previewConstructionPacket} from './construction_preview.mjs?mixedInner=20261024-1&v=20261023-conjunct-edit-1';
+import {previewConstructionPacket} from './construction_preview.mjs?innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1';
 import {getConstructionLayerReadiness as getLayerReadiness,getConstructionParticleHostInput} from './construction_layers.mjs?v=20261023-conjunct-edit-1';
 export {getConstructionParticleHostInput} from './construction_layers.mjs?v=20261023-conjunct-edit-1';
-import {resolveResultEditTarget,projectResultForEditing} from './result_editing.mjs?v=20261023-conjunction-1';
-import {rebuildResultEdit,isConjunctResultEdit,canRebuildResultEdit} from './result_edit_rebuild.mjs?mixedInner=20261024-1&v=20261023-conjunct-edit-1';
+import {resolveResultEditTarget,projectResultForEditing} from './result_editing.mjs?innerParticle=20261024-1&v=20261023-conjunction-1';
+import {rebuildResultEdit,requiresResultEditPreview,canRebuildResultEdit} from './result_edit_rebuild.mjs?innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1';
 
 // Freeze request containers while retaining the exact opaque owner frames.
 export function freezeConstructionData(value) {
@@ -39,7 +39,7 @@ export function getConstructionLayerReadiness(runtime,packet) {
   const edit=packet.edit,project=exact=>projectResultForEditing(runtime,exact);
   if (!canRebuildResultEdit(runtime,edit.root,edit.target,project,edit.path))
     return {ready:false,blockReason:'result-edit-path-unavailable',recoveryKind:'result-edit'};
-  if (!isConjunctResultEdit(runtime,edit.root,edit.target,project,edit.path)) return layers;
+  if (!requiresResultEditPreview(runtime,edit.root,edit.target,project,edit.path)) return layers;
   return previewConstructionPacket(runtime,packet)?.isCurrent?.()
     ? layers : {ready:false,blockReason:'conjunct-change-incompatible-with-retained-whole',recoveryKind:'result-edit'};
 }
@@ -56,7 +56,7 @@ export function executeConstructionPacket(runtime,packet) {
     }
     if(!packet.inner || packet.inner.kind==='result-edit'
       || !canRebuildResultEdit(runtime,edit.root,edit.target,project,edit.path))return null;
-    if(isConjunctResultEdit(runtime,edit.root,edit.target,project,edit.path)
+    if(requiresResultEditPreview(runtime,edit.root,edit.target,project,edit.path)
       && !previewConstructionPacket(runtime,packet)?.isCurrent?.())return null;
     application=executeConstructionPacket(runtime,packet.inner);
     if(application?.authorizationStatus!=='authorized')return application;

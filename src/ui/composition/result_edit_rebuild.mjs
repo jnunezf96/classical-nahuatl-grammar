@@ -1,3 +1,4 @@
+import {getConstructionParticleHostInput} from './construction_layers.mjs?v=20261023-conjunct-edit-1';
 // Editing is an owner reissue along one authenticated occurrence path. The
 // untouched siblings stay exact objects; no saved recipe or written form is an
 // execution input. Unsupported ancestor families remain unavailable.
@@ -96,8 +97,11 @@ function recipe(runtime, exact, project) {
     : exact.kind === 'classical-nahuatl-sentence-adverbial-layer-frame'
       ? 'sentence:adverbial-adjunction' : '';
   if (!operation) return null;
+  const particle=exact.inputParticleResultFrame || exact.particleResultFrame;
   return {kind:'particle',exact,operation,
-    children:[{role:'host',exact:exact.canonicalInputFrame}]};
+    children:[{role:'host',exact:exact.canonicalInputFrame},
+      ...(runtime.isClassicalNahuatlParticleResultFrame?.(particle)===true && capture(runtime,particle,project)
+        ? [{role:'particle',exact:particle,address:['particleResultFrame']}] : [])]};
 }
 
 function controllerFor(runtime, entry, replacements = new Map()) {
@@ -116,10 +120,21 @@ function controllerFor(runtime, entry, replacements = new Map()) {
   return {controller,contract};
 }
 
+// Logical occurrence syntax, never arbitrary property access. Attachments are
+// terminal edges of the same authenticated presentation tree as Part.
+export function isResultEditOccurrencePath(path) {
+  if (!Array.isArray(path) || path.length > 32) return false;
+  for (let i=0;i<path.length;) {
+    if (path[i]==='particleResultFrame') return i===path.length-1;
+    if (path[i]!=='children' || !Number.isInteger(path[i+1]) || path[i+1]<0) return false;
+    i+=2;
+  }
+  return true;
+}
+
 function pathTo(runtime, root, target, project, occurrence = null) {
   if (!capture(runtime, root, project) || !capture(runtime, target, project)) return null;
-  if (occurrence !== null && (!Array.isArray(occurrence) || occurrence.length % 2
-    || occurrence.some((value,index) => index % 2 ? !Number.isInteger(value) || value < 0 : value !== 'children'))) return null;
+  if (occurrence !== null && !isResultEditOccurrencePath(occurrence)) return null;
   const paths = [];
   function visit(exact, path, seen, address = []) {
     if (paths.length > 1 || path.length > 32 || seen.has(exact)) return;
@@ -128,8 +143,9 @@ function pathTo(runtime, root, target, project, occurrence = null) {
     if (!entry) return;
     const next = new Set(seen).add(exact);
     for (const [index,child] of entry.children.entries()) {
-      if (occurrence !== null && (occurrence[address.length] !== 'children' || occurrence[address.length+1] !== index)) continue;
-      visit(child.exact, [...path,{entry,role:child.role}], next, [...address,'children',index]);
+      const edge=child.address || ['children',index];
+      if (occurrence !== null && !edge.every((key,i)=>occurrence[address.length+i]===key)) continue;
+      visit(child.exact, [...path,{entry,role:child.role}], next, [...address,...edge]);
     }
   }
   visit(root, [], new Set());
@@ -157,6 +173,17 @@ export function getResultEditReorder(runtime, target, project) {
   } catch { return null; }
 }
 
+function particleReplacementOptions(runtime,entry,role,replacement) {
+  const exact=entry.exact,marker=role==='particle';
+  if (marker && runtime.isClassicalNahuatlParticleResultFrame?.(replacement)!==true) return null;
+  const host=getConstructionParticleHostInput(runtime,entry.operation,marker?exact.canonicalInputFrame:replacement);
+  if (!host) return null;
+  return {...(marker?{particleResultFrame:replacement}:exact.inputParticleResultFrame
+    ? {particleResultFrame:exact.inputParticleResultFrame}:{particleSourceFrame:exact.particleSourceFrame}),
+    ...host,...(entry.operation==='sentence:particle-adjunction'
+      ? {honorificized:exact.honorificizedRequested===true,speakerGender:exact.speakerGender}:{})};
+}
+
 function reissue(runtime, entry, role, replacement) {
   if (entry.kind === 'conjunction') {
     const request = runtime.buildClassicalNahuatlConjunctReplacementRequest(entry.exact,Number(role),replacement);
@@ -170,15 +197,8 @@ function reissue(runtime, entry, role, replacement) {
     const result=runtime.executeClassicalGrammarApplicationRequest?.({operationId:'sentence:supplementation',args:[request]});
     return result?.authorizationStatus === 'authorized' ? result.canonicalResult : null;
   }
-  const exact = entry.exact;
-  const particle = exact.inputParticleResultFrame
-    ? {particleResultFrame:exact.inputParticleResultFrame}
-    : {particleSourceFrame:exact.particleSourceFrame};
-  const host = runtime.isClassicalNahuatlIssuedParticleSentenceLayerFrame?.(replacement) === true
-    ? {consumedSentenceFrame:replacement} : {nuclearResultFrame:replacement};
-  const options = {...particle,...host,
-    ...(entry.operation === 'sentence:particle-adjunction'
-      ? {honorificized:exact.honorificizedRequested === true,speakerGender:exact.speakerGender} : {})};
+  const options=particleReplacementOptions(runtime,entry,role,replacement);
+  if (!options) return null;
   const application = runtime.executeClassicalGrammarApplicationRequest?.({operationId:entry.operation,args:[options]});
   return application?.authorizationStatus === 'authorized' ? application.canonicalResult : null;
 }
@@ -217,10 +237,7 @@ export function previewRebuiltResultEdit(runtime, root, target, childPreview, pr
         options = runtime.buildClassicalNahuatlSupplementationReplacementRequest(entry.exact,role,next);
       } else if (entry.kind === 'particle') {
         operation = entry.operation;
-        const exact=entry.exact;
-        options={...(exact.inputParticleResultFrame?{particleResultFrame:exact.inputParticleResultFrame}:{particleSourceFrame:exact.particleSourceFrame}),
-          ...(runtime.isClassicalNahuatlIssuedParticleSentenceLayerFrame?.(next)?{consumedSentenceFrame:next}:{nuclearResultFrame:next}),
-          ...(operation==='sentence:particle-adjunction'?{honorificized:exact.honorificizedRequested===true,speakerGender:exact.speakerGender}:{})};
+        options=particleReplacementOptions(runtime,entry,role,next);
       } else return null;
       if (!options) return null;
       const preview=runtime.previewClassicalGrammarApplicationRequest?.({operationId:operation,args:[options]});
@@ -235,4 +252,9 @@ export function previewRebuiltResultEdit(runtime, root, target, childPreview, pr
 }
 export function isConjunctResultEdit(runtime,root,target,project,occurrence) {
   try {return pathTo(runtime,root,target,project,occurrence)?.some(step=>step.entry.kind==='conjunction')===true;}catch{return false;}
+}
+
+export function requiresResultEditPreview(runtime,root,target,project,occurrence) {
+  try {return pathTo(runtime,root,target,project,occurrence)?.some(step=>
+    step.entry.kind==='conjunction' || step.entry.kind==='particle' && step.role==='particle')===true;}catch{return false;}
 }

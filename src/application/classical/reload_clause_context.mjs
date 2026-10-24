@@ -65,6 +65,14 @@ export function exportClauseContextReloadNode(r,v,visit) {
     return {type:'clause:supplementation',principal:visit(inputs.principalClause),supplement:visit(inputs.supplementClause),
       options:Object.fromEntries(Object.entries(inputs.options).map(([k,x])=>[k,pack(r,x,visit)]))};
   }
+  if(r.isClassicalNahuatlIssuedParticleSentenceLayerFrame?.(v)===true) {
+    const operation=v.kind==='classical-nahuatl-sentence-particle-layer-frame'
+      ? 'sentence:particle-adjunction':'sentence:adverbial-adjunction';
+    return {type:'particle:sentence-layer',operation,host:visit(v.canonicalInputFrame),
+      ...(v.inputParticleResultFrame?{particle:visit(v.inputParticleResultFrame)}:{source:visit(v.particleSourceFrame)}),
+      options:operation==='sentence:particle-adjunction'
+        ? {honorificized:v.honorificizedRequested===true,speakerGender:v.speakerGender}: {}};
+  }
   if(r.isClassicalNahuatlParticleSourceFrame?.(v)===true)return {type:'particle:source',particleId:v.particleId};
   if(r.isClassicalNahuatlNegativeParticleSelectionFrame?.(v)===true&&v.authorizationStatus==='authorized') {
     return {type:'particle:negative-selection',polarity:v.polarity,sentenceKind:v.sentenceKind,
@@ -117,6 +125,20 @@ export function replayClauseContextReloadNode(r,n,prior) {
       const options=Object.fromEntries(Object.entries(n.options).map(([k,x])=>[k,unpack(x,prior)]));
       const request={operationKind:'relation',principalClause:prior(n.principal),supplementClause:prior(n.supplement),options};
       return r.executeClassicalGrammarApplicationRequest({operationId:'sentence:supplementation',args:[request]})?.canonicalResult;
+    }
+    if(n?.type==='particle:sentence-layer') {
+      need(exact(n,['type','operation','host','particle','source','options'])
+        && ['sentence:particle-adjunction','sentence:adverbial-adjunction'].includes(n.operation)
+        && (n.particle!==undefined)!==(n.source!==undefined)
+        && plain(n.options,n.operation==='sentence:particle-adjunction'?['honorificized','speakerGender']:[]));
+      const host=prior(n.host),binding=r.issueClassicalNahuatlParticleSentenceBindingFrame(n.operation,host);
+      need(r.isClassicalNahuatlParticleSentenceBindingFrame(binding) && binding.authorizationStatus==='authorized'
+        && binding.exactHostClause===host);
+      const particle=n.particle!==undefined?prior(n.particle):prior(n.source);
+      need(n.particle!==undefined?r.isClassicalNahuatlParticleResultFrame(particle):r.isClassicalNahuatlParticleSourceFrame(particle));
+      const options={...n.options,...(n.particle!==undefined?{particleResultFrame:particle}:{particleSourceFrame:particle}),
+        ...(binding.inputRole==='consumed-sentence'?{consumedSentenceFrame:host}:{nuclearResultFrame:host})};
+      return r.executeClassicalGrammarApplicationRequest({operationId:n.operation,args:[options]})?.canonicalResult;
     }
     if(n?.type==='particle:source') {need(exact(n,['type','particleId'])&&typeof n.particleId==='string');return r.buildClassicalNahuatlParticleSourceFrame(n.particleId);}
     if(n?.type==='particle:result') {

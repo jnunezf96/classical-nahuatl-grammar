@@ -28,7 +28,7 @@ function harness({stem,sourceClass}){
   HandledClassicalContinuationChoiceEvents:new WeakSet(),CLASSICAL_CUSTOM_CONSTRUCTION_SOURCE_ANALYSIS_CONTROL_IDS:[],CLASSICAL_CAPABILITY_BINDING_CONTROL_IDS:{},
   stageClassicalSentenceRelationalMarkerRoute:()=>false,stageClassicalSentenceConjunctorRoute:()=>false,stageClassicalInactiveFiniteChoiceForParticleRoot:()=>false,
   getClassicalNominalConstructionControlValue:()=> 'none',handleClassicalIntermediateBuildTaskReset:()=>false,clearClassicalPreparedAttitudeResult(){},
-  getActiveClassicalGrammarTypedSourceOperationBinding:()=>ctx.ActiveClassicalGrammarTypedSourceOperationBinding,getClassicalRuleLogicSurfaceState:state,
+  getActiveClassicalGrammarTypedSourceOperationBinding:()=>ctx.ActiveClassicalGrammarTypedSourceOperationBinding,getClassicalNncReinflectionDraft:()=>null,getClassicalRuleLogicSurfaceState:state,
   getActiveClassicalCapabilityApplicationResult:()=>accepted,ClassicalOrdinaryGrammarApplicationBySentence:new WeakMap(),
   normalizeClassicalOrdinaryNncApplicationPossessor:value=>value,syncClassicalRuleLogicControlsForSurfaceFrame(){},
   syncClassicalSourceFiniteStage:()=>false,syncClassicalGrammarTypedSourceOperationChoices(){},clearClassicalGrammarTypedSourceOperationBinding(){throw Error('unexpected unavailable Source');},
