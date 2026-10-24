@@ -2160,6 +2160,31 @@ function getExactVncResultSourceProjection(result = null, target = globalThis) {
   });
 }
 
+// Nominalization consumes the current finite predicate. In a passive, its
+// subject is the promoted patient; the active actor remains only in ancestry.
+function getNominalizedPredicateSubject(result, projection, target) {
+  if (normalizeKey(result?.selectedVoice || projection?.sourceVoice) !== "passive")
+    return normalizeSubject(projection?.sourceSubject || "");
+  const slots = result?.finalTypedVncSlotFrame;
+  if (target?.isClassicalNahuatlVncSlotFrame?.(slots) !== true) return "";
+  const subject = slots.slots?.subject;
+  if (subject?.participantFrame?.impersonal === true) return "";
+  const current = normalizeSubject(subject?.participantFrame?.category
+    || subject?.subjectCategory || subject?.subject || "");
+  if (current) return current;
+  const participant = result?.participantProjection?.targetSubject;
+  if (participant?.impersonal !== true) {
+    const projected = normalizeSubject(participant?.category || participant?.agreement || "");
+    if (projected) return projected;
+  }
+  // Older issued zero-person slots have no participant annotation. The exact
+  // selected voice owner still records its promoted subject; never substitute
+  // the ancestral active subject or an invented default.
+  const voice = result?.selectedMachineryFrame?.voiceTransformationFrame;
+  return voice?.promotedObjectBecomesSubject === true
+    ? normalizeSubject(voice.targetSubject || "") : "";
+}
+
 function captureRootStockPatientiveVncResult(result = null, target = globalThis) {
   const wholeParent = result;
   if (target.isClassicalNahuatlVncSentenceResultFrame?.(result) === true) {
@@ -2418,6 +2443,9 @@ function capturePreteritVncResult(result = null, target = globalThis, sourceAnal
     denominalParent && !obsoleteRootPreteritAnalysis ? denominalParent : result, target
   );
   const typedSlotFrame = result?.finalTypedVncSlotFrame || null;
+  if (projection && normalizeKey(result?.selectedVoice) === "passive"
+    && !getNominalizedPredicateSubject(result, projection, target))
+    return buildBlockedFrameForObsoleteRoot("owner-issued-passive-subject-required");
   const predicateStem = normalizeStem(typedSlotFrame?.slots?.predicate?.stem);
   const tense = getVncResultTense(result);
   if (!projection || !predicateStem || tense !== "preterit") {
@@ -2473,7 +2501,7 @@ function capturePreteritVncResult(result = null, target = globalThis, sourceAnal
     ),
     sourceValence,
     sourceObjectPattern,
-    sourceSubject: normalizeSubject(projection.sourceSubject || "3sg"),
+    sourceSubject: getNominalizedPredicateSubject(result, projection, target),
     sourceObjectRequests: projection.sourceObjectRequests || [],
     morphologicalTense: tense,
     projectionRole: "read-only-preterit-vnc-result-to-nnc-source",
@@ -3027,9 +3055,7 @@ function buildPredicateNominalizationVncCaptureContext(result, target) {
   if (target?.isClassicalNahuatlVncSentenceResultFrame?.(result) === true) {
     result = result.canonicalResultFrame;
   }
-  if (target?.isClassicalNahuatlVncApplicationFrame?.(result) === true
-    && target.getClassicalNahuatlVncContinuationSourceConstituents?.(result)
-      ?.canonicalApplicationFrame === result) {
+  if (target?.isClassicalNahuatlVncApplicationFrame?.(result) === true) {
     result = result.resultFrame;
   }
   // An issued nominal compound retains its whole parent in a sentence. Its
@@ -3047,7 +3073,7 @@ function buildPredicateNominalizationVncCaptureContext(result, target) {
   const sourceObjectPattern = sourceObjectPatternFromVncProjection(projection);
   const sourceValence = nominalValenceFromVncProjection(projection);
   return {exactInputResult, result, projection, typedSlotFrame, predicateStem,
-    tense, sourceObjectPattern, sourceValence, activationComputed: false,
+    tense, sourceObjectPattern, sourceValence, sourceSubject: getNominalizedPredicateSubject(result, projection, target), activationComputed: false,
     incorporatedComplementActivationFrame: null};
 }
 
@@ -3055,7 +3081,7 @@ function capturePredicateNominalizationVncResultFromContext(
   context, nominalizationKind, state, target,
 ) {
   const {exactInputResult, result, projection, typedSlotFrame, predicateStem,
-    tense, sourceObjectPattern, sourceValence} = context;
+    tense, sourceObjectPattern, sourceValence, sourceSubject} = context;
   const spec = predicateNominalizationCaptureSpec(
     nominalizationKind,
     state
@@ -3074,6 +3100,7 @@ function capturePredicateNominalizationVncResultFromContext(
     && tense === spec.tense
     && fullInstrumentiveVoiceAllowed
     && !actionSourceBlock
+    && sourceSubject
   );
   if (!authorized) {
     return deepFreeze({
@@ -3091,6 +3118,7 @@ function capturePredicateNominalizationVncResultFromContext(
               ? "full-instrumentive-requires-customary-impersonal-source"
             : actionSourceBlock
               ? actionSourceBlock
+              : !sourceSubject ? "owner-issued-predicate-subject-required"
             : "typed-vnc-predicate-stem-required",
       formulaStringAuthority: false,
       surfaceStringAuthority: false,
@@ -3121,7 +3149,7 @@ function capturePredicateNominalizationVncResultFromContext(
     ),
     sourceValence,
     sourceObjectPattern,
-    sourceSubject: normalizeSubject(projection.sourceSubject || "3sg"),
+    sourceSubject,
     sourceObjectRequests: projection.sourceObjectRequests || [],
     incorporatedComplementActivationFrame:
       context.incorporatedComplementActivationFrame,
@@ -14294,7 +14322,7 @@ function buildPatientiveMatrixContinuationOperation(
     possessorOrientation: "matrix",
     subject: normalizeSubject(request.subject || "3sg"),
     state: normalizeKey(request.state || "absolutive"),
-    possessor: normalizeSubject(request.possessor),
+    possessor: normalizeKey(request.possessor),
     animacy: normalizeKey(request.animacy || "nonanimate"),
   });
   if (canonicalResult?.authorizationStatus !== "authorized") {
@@ -14673,7 +14701,7 @@ function buildPatientiveEmbedContinuationOperation(
       ),
       subject: normalizeSubject(request.subject || "3sg"),
       state: normalizeKey(request.state || "absolutive"),
-      possessor: normalizeSubject(request.possessor || "3sg"),
+      possessor: normalizeKey(request.possessor || "3sg"),
       animacy: normalizeKey(request.animacy || "nonanimate"),
     })
     : target.evaluateClassicalNahuatlNominalConstruction({

@@ -26466,7 +26466,37 @@ export function createUiRenderingApi(targetObject = globalThis) {
     }
     let currentClassicalDeverbalLexicalAuthorizationFrame = null;
     let currentClassicalDeverbalLexicalSourceStem = "";
+    function getClassicalDeverbalEditablePossessorValues(frame = null) {
+      if (targetObject.isClassicalNahuatlDeverbalNncGrammarFrame?.(frame) !== true
+        || frame.authorizationStatus !== "authorized" || frame.canonicalResult?.state !== "possessive") return [];
+      const control = targetObject.document?.getElementById?.("classical-rule-logic-nnc-possessor");
+      const values = Array.from(control?.options || [], option => option.value);
+      if (frame.operationFrame?.possessorFixedBySourceSubject !== true) return values;
+      // A retained finite Source already has its participant. A primitive stem
+      // has no finite participant yet, so Build can select that input before Make.
+      if (getActiveClassicalGrammarResultBinding("nnc:deverbal-construction")?.exactResult
+        || getClassicalNominalConstructionControlValue("classical-construction-operation", "") !== "deverbal-nnc") return [];
+      // §37 derives a new nounstem from a Core, not a relabeled finite
+      // predicate (§37.1). Its responsible-party possessor has the nominal
+      // domain, including ne/tē/tla, already admitted by that owner.
+      if (frame.operationFrame?.constructionKind === "deverbal-action") return values;
+      return values.filter(value => /^[123](?:sg|pl)$/u.test(value));
+    }
     function syncClassicalDeverbalNncStateOptions(frame = null) {
+      // A family change may leave an imported nominal possessor in a route
+      // whose possessor comes from a finite Source subject. Ask that same
+      // owner for its domain before a valid target preview can exist.
+      if (frame?.authorizationStatus === "blocked"
+        && !getActiveClassicalGrammarResultBinding("nnc:deverbal-construction")?.exactResult
+        && getClassicalNominalConstructionControlValue("classical-construction-operation", "") === "deverbal-nnc"
+        && getClassicalNominalConstructionControlValue("classical-rule-logic-nnc-state", "") === "possessive"
+        && !/^[123](?:sg|pl)$/u.test(getClassicalNominalConstructionControlValue("classical-rule-logic-nnc-possessor", ""))) {
+        const probe = targetObject.evaluateClassicalNahuatlDeverbalNnc?.(
+          buildClassicalNominalConstructionUiRequest(null, {possessor: "3sg"}));
+        if (targetObject.isClassicalNahuatlDeverbalNncGrammarFrame?.(probe) === true
+          && probe.authorizationStatus === "authorized"
+          && probe.operationFrame?.possessorFixedBySourceSubject === true) frame = probe;
+      }
       if (targetObject.isClassicalNahuatlDeverbalNncGrammarFrame?.(frame) !== true
         || !Array.isArray(frame.operationFrame?.allowedStates)) return;
       applyClassicalRuleLogicSelectOptionAvailability(
@@ -26564,6 +26594,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
             `classical-rule-logic-nnc-${control}`, values, selected);
         }
       }
+      const editablePossessors = getClassicalDeverbalEditablePossessorValues(frame);
+      if (editablePossessors.length) applyClassicalRuleLogicSelectOptionAvailability(
+        "classical-rule-logic-nnc-possessor", editablePossessors,
+        frame.operationFrame?.transformedPossessor || frame.canonicalResult?.possessor || "3sg"
+      );
     }
     function syncClassicalDeverbalNominalSpellingControl(frame, active = false) {
       const control = targetObject.document?.getElementById("classical-deverbal-nnc-nominal-spelling");
@@ -26634,14 +26669,15 @@ export function createUiRenderingApi(targetObject = globalThis) {
         );
       } else if (active && !frame
         && (getClassicalNominalConstructionControlValue("classical-deverbal-nnc-family", "") === "ownerhood"
-          || getClassicalNominalConstructionControlValue("classical-deverbal-nnc-family", "") === "predicate-nominalization"
+          || ["predicate-nominalization", "deverbal-action"].includes(
+            getClassicalNominalConstructionControlValue("classical-deverbal-nnc-family", ""))
             && !ActiveClassicalGrammarResultBinding
             && !ActiveClassicalGrammarResultSourceCapture)
         && typeof targetObject.evaluateClassicalNahuatlDeverbalNnc === "function") {
         // Raw targets need their own current participant domain too. Reuse
         // the issued target projection without accepting or displaying it.
         const pendingRequest = buildClassicalNominalConstructionUiRequest();
-        if (["ownerhood", "predicate-nominalization"].includes(pendingRequest?.constructionKind)) {
+        if (["ownerhood", "predicate-nominalization", "deverbal-action"].includes(pendingRequest?.constructionKind)) {
           frame = targetObject.evaluateClassicalNahuatlDeverbalNnc(pendingRequest);
         }
       }
@@ -31017,7 +31053,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
           ? action : null;
     }
     function buildClassicalNominalConstructionUiRequest(
-      exactResultBinding = null
+      exactResultBinding = null,
+      visibilitySelections = {}
     ) {
       const constructionKind = getClassicalNominalConstructionControlValue("classical-construction-operation", "none");
       if (!Object.prototype.hasOwnProperty.call(
@@ -31202,7 +31239,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
         canonicalNncLexicalSource?.authorizationStatus === "authorized"
           ? canonicalNncLexicalSource.pluralConnectorOptions?.[0] || ""
           : "";
-      const possessor = getClassicalNominalConstructionControlValue("classical-rule-logic-nnc-possessor", "3sg");
+      const possessor = visibilitySelections.possessor
+        || getClassicalNominalConstructionControlValue("classical-rule-logic-nnc-possessor", "3sg");
       const vncOutputScope = getClassicalNominalConstructionControlValue("classical-rule-logic-vnc-output-scope", "single");
       const nncOutputScope = getClassicalNominalConstructionControlValue("classical-rule-logic-nnc-output-scope", "single");
       const valence = getClassicalNominalConstructionControlValue("classical-rule-logic-valence", "intransitive");
@@ -31505,10 +31543,16 @@ export function createUiRenderingApi(targetObject = globalThis) {
           "specific-projective": "specific-projective",
           "mainline-reflexive": "reflexive",
         })[valence] || sourceObjectPattern;
-        const instrumentiveSourceSubject = nominalizationKind
-          === "instrumentive" && state === "possessive"
-          ? possessor
-          : subject;
+        // These nominal possessors transform the generated finite Source's
+        // participant (§§36.6,36.10–11,37.2). An imported NNC common-number
+        // subject is a separate coordinate and is not a finite VNC subject.
+        const sourceSubjectBecomesPossessor = state === "possessive" && (
+          constructionFamily === "predicate-nominalization"
+            && ["instrumentive", "passive-action", "active-action"].includes(nominalizationKind)
+          || constructionFamily === "deverbal-action" && actionKind === "active-action"
+        );
+        const finiteSourceSubject = sourceSubjectBecomesPossessor && !exactBinding?.exactResult
+          ? possessor : subject === "3common" ? "3sg" : subject;
         const typedVncSourceStem = wholeStem
           || [embedStem, matrixStem].filter(Boolean).join("-");
         const baseSource = {
@@ -31523,7 +31567,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           sourceVoice,
           sourceValence,
           sourceObjectPattern,
-          sourceSubject: instrumentiveSourceSubject,
+          sourceSubject: finiteSourceSubject,
           sourceInitialISelection:
             getClassicalNominalConstructionControlValue(
               "classical-vnc-source-initial-i-choice",
@@ -31571,7 +31615,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
             tense,
             voice,
             sourceSubject,
-          }) => tense
+          }) => sourceSubjectBecomesPossessor && !exactBinding?.exactResult
+            && !/^[123](?:sg|pl)$/u.test(sourceSubject)
+            ? Object.freeze({authorizationStatus: "blocked",
+              blockReason: "finite-source-subject-required-for-derived-possessor"})
+            : tense
             && baseSource.sourceStem
             && typeof targetObject
               .evaluateClassicalNahuatlVncApplication === "function"
@@ -31587,10 +31635,17 @@ export function createUiRenderingApi(targetObject = globalThis) {
               sourceValence: valence === "shuntline-reflexive"
                 ? "shuntline-reflexive" : canonicalVncSourceValence,
               sourceInitialISelection: baseSource.sourceInitialISelection,
-              sourceObjectRequests: readClassicalSourceObjectRows(
-                targetObject.document, valence,
-                sourceSubject === "3common" ? "3sg" : sourceSubject
-              ),
+              sourceObjectRequests: (() => {
+                const requests = readClassicalSourceObjectRows(targetObject.document, valence,
+                  sourceSubject === "3common" ? "3sg" : sourceSubject);
+                if (!(sourceSubjectBecomesPossessor && !exactBinding?.exactResult && voice === "passive")) return requests;
+                // Passive possession refers to the promoted patient, not the
+                // retired active actor. Keep other valence positions intact.
+                const patient = requests.find(item => item.objectKind === "specific-projective");
+                return requests.map(item => item === patient ? {...item, objectPerson: sourceSubject} : item);
+              })(),
+              ...(sourceSubjectBecomesPossessor && !exactBinding?.exactResult && voice === "passive"
+                ? {sourceSubject: "3sg"} : {}),
               // NNC common number has no separate VNC subject coordinate.
               subject: sourceSubject === "3common" ? "3sg" : sourceSubject,
               mood: "indicative",
@@ -31607,7 +31662,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
                 : {
                     objectKind: canonicalVncObjectKind,
                     ...(canonicalVncObjectKind === "specific-projective"
-                      ? { objectPerson: subject }
+                      ? { objectPerson: sourceSubjectBecomesPossessor && voice === "passive" ? sourceSubject : subject }
                       : {}),
                   }),
             })
@@ -32040,51 +32095,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
                     : {}),
                 })
               : null;
-            const characteristicSourceState =
-              characteristicNncSource?.allowedStateValues?.includes(
-                "absolutive"
-              )
-                ? "absolutive"
-                : "possessive";
-            const characteristicNncOperation =
-              characteristicNncSource?.authorizationStatus === "authorized"
-              && typeof targetObject
-                .buildClassicalNahuatlOrdinaryNncOperationFrame === "function"
-                ? targetObject.buildClassicalNahuatlOrdinaryNncOperationFrame(
-                    characteristicNncSource,
-                    {
-                      state: characteristicSourceState,
-                      subject:
-                        characteristicNncSource.referentialAnimacy
-                          === "nonanimate"
-                          ? "3common"
-                          : subject,
-                      humanness:
-                        characteristicNncSource.referentialAnimacy
-                          === "nonanimate"
-                          ? "nonhuman"
-                          : "",
-                      possessor: characteristicSourceState === "possessive"
-                        ? possessor
-                        : "",
-                      predicateFormation: "source-stem",
-                      stemFormation: "plain",
-                      sentenceType: "statement",
-                      polarity: "positive",
-                    }
-                  )
-                : null;
             const canonicalNncResult = exactBinding?.exactResult
               && exactBindingId === "patientive:characteristic-property"
               ? exactBinding.exactResult
-              : characteristicNncOperation?.authorizationStatus === "authorized"
-              && typeof targetObject
-                .evaluateClassicalNahuatlOrdinaryNnc === "function"
-                ? targetObject.evaluateClassicalNahuatlOrdinaryNnc(
-                    characteristicNncSource,
-                    characteristicNncOperation
-                  )
-                : null;
+              : null;
             const characteristicReading =
               getClassicalNominalConstructionControlValue(
                 "classical-deverbal-nnc-characteristic-reading",
@@ -32093,9 +32107,14 @@ export function createUiRenderingApi(targetObject = globalThis) {
             const patientiveRequest = {
               constructionKind: constructionFamily,
               patientiveKind: "characteristic-property",
-              ...(canonicalNncResult?.authorizationStatus === "authorized"
+              // §39.3 incorporates the classified nounstem. Outer Number
+              // belongs to the patientive, not to a fabricated source NNC.
+              // An exact Result binding keeps its own identity and admission.
+              ...(canonicalNncResult
                 ? { canonicalNncResult }
-                : {}),
+                : characteristicNncSource
+                  ? { canonicalNncSourceFrame: characteristicNncSource }
+                  : {}),
               characteristicReading,
               subject,
               state: characteristicReading === "organic-possession"

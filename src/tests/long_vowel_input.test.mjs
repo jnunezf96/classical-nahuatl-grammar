@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
 import {createClassicalShellModule} from '../ui/shell/classical_shell.mjs';
 
 function fixture() {
@@ -45,4 +46,14 @@ test('long vowels replace selected text in Stem, Embed and Matrix and only stage
 test('read-only source fields keep all four helpers disabled and reject insertion',()=>{
   const {get,click}=fixture(),whole=get('classical-source-whole');whole.value='pā';whole.readOnly=true;whole.focus();
   assert(get('classical-transcription-keyboard-vowels').children.every(e=>e.disabled));click('ē');assert.equal(whole.value,'pā');
+});
+
+
+test('fresh invented Source vowel edits use the existing public helper and leave Source pending',()=>{
+  const corpus=JSON.parse(readFileSync(new URL('./fixtures/nonce_writing_long_vowel_fixture.json',import.meta.url),'utf8'));
+  const {get,click,api}=fixture(),whole=get('classical-source-whole'),parts=get('classical-source-parts');
+  const input=corpus.words[0],offset=input.firstVowelIndex;whole.value=input.stem;whole.setSelectionRange(offset,offset+1);click('ā');
+  assert.equal(whole.value,input.stem.slice(0,offset)+'ā'+input.stem.slice(offset+1));assert.equal(parts.dataset.classicalSourceCommitState,'pending');
+  const panel=api.ClassicalSourcePanel();assert.equal(panel.includes('id="classical-writing-source-kind"'),false);assert.equal(panel.includes('id="classical-transcription-source-apply"'),false);
+  assert.deepEqual(get('classical-transcription-keyboard-vowels').children.map(node=>node.textContent),['ā','ē','ī','ō']);
 });

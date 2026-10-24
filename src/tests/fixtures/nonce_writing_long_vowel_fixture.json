@@ -1,0 +1,42 @@
+{
+  "seed": 1345949807,
+  "generatedAt": "2026-10-24T18:25:11.058523+00:00",
+  "beforeGrammarOutcomes": true,
+  "purpose": "Focused current public long-vowel input and retained internal Writing session/History contracts; hypothetical orthographic nonces, no lexical meaning claimed.",
+  "shape": "Five randomized CV syllables per word; original vowels short; no example-word dependency.",
+  "exclusions": "Four existing local Writing nonce fixture payloads; no claim of exhaustive lexical lookup.",
+  "words": [
+    {
+      "stem": "nonetimimo",
+      "segments": [
+        "/n/",
+        "o",
+        "/n/",
+        "e",
+        "/t/",
+        "i",
+        "/m/",
+        "i",
+        "/m/",
+        "o"
+      ],
+      "firstVowelIndex": 1
+    },
+    {
+      "stem": "mipamilopi",
+      "segments": [
+        "/m/",
+        "i",
+        "/p/",
+        "a",
+        "/m/",
+        "i",
+        "/l/",
+        "o",
+        "/p/",
+        "i"
+      ],
+      "firstVowelIndex": 1
+    }
+  ]
+}

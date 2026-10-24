@@ -8,6 +8,7 @@ import {createConstructionSession} from '../ui/composition/construction_session.
 import {executeConstructionPacket} from '../ui/composition/construction_packet.mjs';
 import {Element} from './helpers/organization_dom.mjs';
 
+// Canonical/internal Writing owners remain installed; this suite does not claim a public Writing Source lane.
 const fixture=JSON.parse(readFileSync(new URL('./fixtures/nonce_writing_source_fixture.json',import.meta.url),'utf8'));
 const r=(await createRuntimeInstance({documentObject:{getElementById:()=>null,addEventListener(){}}})).runtimeObject;
 const app=r.executeClassicalGrammarApplicationRequest({operationId:'grammar:nominal-construction',args:[fixture.request]});
@@ -104,7 +105,7 @@ test('genuine typed Source/navigation/packet preserves accepted receipt until Ma
  assert.equal(elided.surface,'zāc');assert.equal(stage(issue('ordinary')),true);assert(session.position.accepted.result===elided);assert.equal(executions,2);assert.equal(session.make(),true);assert.equal(session.position.accepted.result.surface,'zā oc');assert.equal(executions,3);
 });
 
-test('actual retained Source Apply must stage an authentic Source without executing or displaying a Result',()=>{
+test('internal retained transcription parser stages an authentic Source without executing or displaying a Result',()=>{
  const rendering=readFileSync(new URL('../ui/rendering/rendering.mjs',import.meta.url),'utf8');
  const page=new Element('main'),root=new Element('section');root.id='classical-transcription-source';const input=new Element('input');input.id='classical-transcription-source-input';root.append(input);page.append(root);
  const target=Object.create(r);Object.defineProperty(target,'document',{value:{getElementById:id=>page.querySelector('#'+id)}});

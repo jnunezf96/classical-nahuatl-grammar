@@ -1,17 +1,18 @@
-# Grammar OS v1.2.26 release
+# Grammar OS v1.2.27 release
 
-Release name: **Whole Compounds and Operation Harmony**
+Release name: **Deverbal Possession and Source Fidelity**
 
-Browser build: **20261024-composition-45**
+Browser build: **20261024-composition-46**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Retains the exact whole NNC+VNC compound when entering later verb-stem operations, rather than substituting its inner verb.
-- Reissues nominal compound inputs and exact operand links after reload, including supported continuations, pending choices, accepted Build and history. Only explicit Make accepts a changed Result.
-- Places existing compound, affective and quality actions under a contextual Nounstem chooser; groups existing deverbal families by their grammatical transformation.
-- Uses consistent adverbial-clause naming and fixes an irrelevant supplement-object requirement on ordinary object incorporation.
+- Preserves selected possessors through active/passive action nominalization and patientive nominal compounds, instead of silently substituting third-person singular.
+- Uses the current promoted passive subject when a genuine passive predicate becomes a nominal Source, retaining its exact parent and separate ancestry.
+- Keeps all nine nominal possessors for primitive Core-derived action nouns; finite-predicate routes offer their six person/number participants. Family changes reconcile dependent choices without accepting a Result.
+- Keeps a classified characteristic nounstem independent of its future outer plural, using its existing Source owner.
+- Aligns obsolete Writing fixtures with the public long-vowel-only interface while retaining internal Writing owner contracts and Make-only regressions.
 
 ## Review scope and current limits
 
@@ -20,7 +21,9 @@ This build is available for independent review against Andrews. Automated and br
 - Conditional lexical readings and irregular formations require the corresponding genuine Source analysis.
 - Same-tab reload supports the documented NNC/VNC and conjunction/supplementation input graphs, including original NNC writing context. Cross-device saving is unclaimed.
 - Sentence particle/adverbial layers, including quin, now reload over supported host graphs. Source-only internally generated particle outputs remain unclaimed as separate editable application Results.
-- Optional writing coverage and the simple-compound Writing adapter have explicit supported-context limits.
+- The public writing controls are the four long-vowel insertions. Internal Writing owners retain their supported-context limits; this release adds no public Writing lane.
+- Deverbal nominalization Results still have no same-tab reload recipe. Their recovery notice remains explicit; this release does not extend that family's persistence.
+- The raw two-nucleus ownerhood chooser still lacks explicit fixed-order Source analysis. Canonical typed support is distinct; arbitrary invented pairs are never automatically declared lexicalized.
 - Nominal compound graphs with replayable operands, finite continuations and supported frequentative/future-object layers now persist in the same tab. Independent operand families retain their own persistence limits; opaque lexical/derived bridge recipes and universal cross-device saving remain unclaimed.
 - Accumulated-session performance and some historical inventory provenance remain open qualifications.
 
@@ -36,7 +39,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.26/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.27/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.

@@ -4,7 +4,7 @@ import {focusNativeChoice} from './flow_design.mjs?v=20261022-reset-eligibility-
 import {installInterfaceTool} from '../interface/interface_runtime.mjs?coreStem=20261023-1&v=20261012-interface-tool-3&startupDelivery=20261022-1';
 import {createCompositionPresentation} from './composition_presentation.mjs?operationFirst=20261023-4&clauseHarmony=20261023-5&clickFeedback=20261023-3&formulaSlots=20261023-27&v=20261014-task-menu-1&choicesLayout=20261014-4&objectsPlacement=20261014-1&journeyOrganization=20261019-1&presentation=20261019-1&routeShapes=20261021-1&ownerPresentation=20261021-12&makePreview=20261022-1&fixedChoices=20261022-1&startupDelivery=20261022-1';
 import {loadWorkspaceOrganization,DEFAULT_WORKSPACE_ORGANIZATION} from './workspace_organization_model.mjs?v=20261013-canvas-workspace-1&choicesLayout=20261014-4&startupDelivery=20261022-1';
-import {bootstrapPromise} from '../../browser/main.mjs?v=20261024-composition-45';
+import {bootstrapPromise} from '../../browser/main.mjs?v=20261024-composition-46';
 // Main workbench presentation. Native handlers and exact owner-issued identities
 // remain authoritative; this module never generates grammatical forms.
 async function initializeCompositionWorkbench() {

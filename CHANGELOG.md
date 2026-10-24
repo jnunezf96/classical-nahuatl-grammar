@@ -1,5 +1,13 @@
 # Version History
 
+## v1.2.27 — Deverbal Possession and Source Fidelity
+
+- Preserves selected action-noun and patientive-compound possessors through their existing owners.
+- Captures a passive predicate's current subject while retaining exact Source identity and ancestry.
+- Reconciles dependent possession choices across finite-predicate and Core-based routes, preserving their different domains and explicit Make.
+- Repairs characteristic nounstem Source delivery at plural and updates obsolete Writing fixtures to the long-vowel-only interface.
+- Saves focused regressions and prerequisite-aware coverage for all native deverbal operation/nominalization domains; existing unsupported reload and Source-analysis paths remain qualified.
+
 ## v1.2.26 — Whole Compounds and Operation Harmony
 
 - Keeps exact whole nominal-compound parents through later stem continuation and reload, with shared operand links, pending Build, Applied restoration and supported history.
