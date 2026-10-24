@@ -1,5 +1,13 @@
 # Version History
 
+## v1.2.23 — Future Predicate Incorporation
+
+- Exposes nequi and imperfect-only qui for §28.11 future-predicate object incorporation; finite choices identify their matrix scope and no spurious class choice is offered.
+- Fixes nequi class B and finite matrix-stem integration, preserves embedded objects, and rejects changed-subject capture.
+- Adds owner-replayed reload for this compound family and restores its conditional Build choices. Preview remains pending until Make.
+- Saves fresh invented-stem regressions and focused browser evidence.
+
+
 User-facing release notes for Classical Nahuatl Grammar.
 
 ## Version 1.2.22 — Repeated Source Editing

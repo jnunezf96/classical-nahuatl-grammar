@@ -1,17 +1,17 @@
-# Grammar OS v1.2.22 release
+# Grammar OS v1.2.23 release
 
-Release name: **Repeated Source Editing**
+Release name: **Future Predicate Incorporation**
 
-Browser build: **20261024-composition-41**
+Browser build: **20261024-composition-42**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Repeatedly replaces the Source of a selected inner NNC or VNC while retaining the whole mixed Result.
-- Keeps raw Source edits, Use this Source and preview pending; only Make accepts the changed whole.
-- Restores the accepted occurrence, committed replacement Source and any further raw draft separately after supported same-tab reload.
-- Retains untouched clauses and canonical relationship restrictions; invalid or stale replacements cannot fall back to making a standalone child.
+- Makes the §28.11 matrix choices nequi and qui visible beside the captured future predicate.
+- Uses the matrix owner's finite stem and fixed class, including nequi → nec in the preterit.
+- Keeps the embedded future and its objects, requires matching subject coordinates, and accepts only through explicit Make.
+- Restores this supported future-object compound family after same-tab reload by reissuing its inputs through the canonical owners.
 
 ## Review scope and current limits
 
@@ -35,7 +35,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.22/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.23/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.

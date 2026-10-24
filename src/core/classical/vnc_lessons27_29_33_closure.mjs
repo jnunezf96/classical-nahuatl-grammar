@@ -1914,6 +1914,7 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
       suppliedStem,
       canonicalConstructionStem: `tla-${lexicalStem}`,
       lexicalStem,
+      fixedMatrixClass: lexicalStem === "nequi" ? "B" : "",
       analysisId: lexicalStem === "qui"
         ? "qui-volition-imperfect"
         : "nequi-desire",
@@ -3598,6 +3599,12 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
           };
         }
       } else if (variant === "future-embed") {
+        // A shared reference label cannot erase the captured predicate's
+        // actual person/number coordinate (§19.4, §28.11).
+        if (baseApplicationFrame?.normalizedRequest?.subject
+          !== internalContext.matrixApplicationFrame?.normalizedRequest?.subject) {
+          return blockedOperation(request, "future-embed-subject-coreference-required", "compound-future-embed");
+        }
         const futureSupplementationFrame =
           internalContext.futureSupplementationFrame || null;
         const futureSupplementationAuthorized = Boolean(
@@ -3644,7 +3651,9 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
           ),
           request.subject,
         );
-        const integratedMatrixStem = futureMatrixAnalysis.lexicalStem;
+        // The matrix owner supplies its finite stem (nequi → nec in the
+        // perfective). The captured predicate remains future.
+        const integratedMatrixStem = realizedMatrixStem;
         targetStem = `${futurePredicateStem}-z-${integratedMatrixStem}`;
         predicateTns = matrixTyped?.slots?.predicate?.tns;
         numberDyad = matrixTyped?.slots?.number;
@@ -6689,15 +6698,16 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
       : null;
     const matrixStem = reflexiveMatrixAnalysis?.canonicalStem
       || requestedMatrixStem;
-    const derivedMatrixClass = recursiveMatrixClosureFrame
+    const futureMatrixAnalysis = lateVariant === "future-embed"
+      ? analyzeFutureEmbedMatrix(matrixStem)
+      : null;
+    const derivedMatrixClass = futureMatrixAnalysis?.fixedMatrixClass
+      || (recursiveMatrixClosureFrame
       ? text(recursiveMatrixClosureFrame.operationFrame?.targetClass)
       : nominalMatrixProjection?.verbClass || deriveCompoundMatrixClass(
           reflexiveMatrixAnalysis?.coreStem || matrixStem,
           request.compoundMatrixClass
-        );
-    const futureMatrixAnalysis = lateVariant === "future-embed"
-      ? analyzeFutureEmbedMatrix(matrixStem)
-      : null;
+        ));
     const matrixApplicationSourceStem = lateVariant === "future-embed"
       ? futureMatrixAnalysis?.lexicalStem || matrixStem
       : matrixStem === "ca"

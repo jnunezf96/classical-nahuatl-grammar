@@ -1,3 +1,4 @@
+import {syncFutureObjectChoices} from '../composition/future_object_choices.mjs?futureObject=20261024-3';
 import {snapshotResultEditReload,restoreResultEditReload} from '../composition/result_edit_reload.mjs?innerSource=20261024-1&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-1';
 import {getVncChoiceEditContext, getVncVoiceEditSubject, projectVncChoiceEditControls} from '../composition/vnc_choice_edit.mjs?v=20261023-3';
 import {runCompositionAction} from '../composition/action_feedback.mjs?v=20261023-1';
@@ -19113,7 +19114,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         "classical-rule-logic-compound-matrix-initial-i":
           operation === "compound" && /^i/u.test(compoundMatrixStem),
         "classical-rule-logic-compound-matrix-class":
-          operation === "compound"
+          operation === "compound" && variant !== "future-embed"
           && Boolean(compoundMatrixStem)
           && (
             matrixClassProfile
@@ -19270,6 +19271,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
             ? "mainline-reflexive"
             : "lexical-stem";
       }
+      syncFutureObjectChoices(targetObject.document, surfaceFrame?.state);
       syncClassicalCompoundMatrixFormation(surfaceFrame, ActiveClassicalGrammarResultBinding);
       syncClassicalPurposiveCoordinateControls(surfaceFrame);
       return { active };
@@ -51103,7 +51105,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       return [...new Set([...["subject", "mood", "tense", "requestedDerivation",
         "requestedVoice", "derivationOptionId", "nonactiveOptionId",
         "applicativeObjectKind", "causativeObjectKind",
-        "causativeSpecificShuntlineRealization", "lateOperation", "lateVariant",
+        "causativeSpecificShuntlineRealization", "lateOperation", "lateVariant", "compoundMatrixStem",
         "frequentativeRepetitions", "frequentativeScope", "frequentativeTarget", "frequentativeInitialITreatment"].flatMap(
           getClassicalCapabilityBindingControlsForChoice),
         ...getClassicalSourceObjectControls(targetObject.document)])].filter(control => control?.id);
@@ -51420,6 +51422,16 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const allowed=new Map(getClassicalVncBasalReloadControls().map(control=>[control.id,control]));
       const choices=[...(Array.isArray(saved.controls)?saved.controls:[]),
         ...(Array.isArray(saved.pendingControls)?saved.pendingControls:[])];
+      // Restore the parent choice before checking disabled dependent options.
+      // Otherwise a saved compound's formation is silently discarded as though
+      // it still belonged to the initial "no added layer" menu.
+      const late = allowed.get("classical-rule-logic-late-operation");
+      const selectedLate = choices.findLast(choice => choice.id === late?.id)?.value;
+      if (late && Array.from(late.options || []).some(option =>
+        option.value === selectedLate && !option.disabled)) {
+        late.value = selectedLate;
+        syncClassicalLateVariantControlForOperation(selectedLate);
+      }
       for (const choice of choices) {
         const control=allowed.get(choice.id);
         if (!control) continue;
@@ -51451,6 +51463,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
         syncClassicalActiveResultBindingChoiceVisibility(null);
       }
       restoreClassicalVncReloadSourceEditorState(saved.sourceEditorState);
+      if (!nextRejected && late?.value === "compound"
+        && allowed.get("classical-rule-logic-late-variant")?.value === "future-embed") {
+        syncClassicalLessons27282933Closure({basalUnit: "vnc",
+          state: getClassicalRuleLogicSurfaceState()});
+      }
       syncClassicalCapabilityApplyOperationState();
       if (nextRejected) {
         const status = targetObject.document.getElementById("classical-capability-navigator-status");

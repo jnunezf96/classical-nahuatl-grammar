@@ -10085,14 +10085,30 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         }
         if (owner.isClassicalNahuatlClosureFrame?.(value)) {
           const operation = value.operationFrame;
+          const futureObject = operation?.operation === "compound"
+            && operation.variant === "future-embed";
           if (value.authorizationStatus !== "authorized" || visiting.has(value)
-            || operation?.operation !== "frequentative"
-            || !["frequentative-prefix-shape", "frequentative-tla"].includes(operation.ruleFamily)) return false;
+            || !(futureObject || operation?.operation === "frequentative"
+              && ["frequentative-prefix-shape", "frequentative-tla"].includes(operation.ruleFamily))) return false;
           visiting.add(value);
           if (!visit(value.baseApplicationFrame)) return false;
           const baseRequest = steps.at(-1)?.request;
           if (!baseRequest) return false;
-          steps.push(Object.freeze({operationId: "vnc:derivational-operation",
+          if (futureObject) {
+            // Store inputs, not a flattened finite compound. Replay captures the
+            // freshly reissued future parent through the continuation owner.
+            const matrix = value.matrixApplicationFrame;
+            const sentence = buildClassicalNahuatlVncApplicationScalarCoordinateRequest(
+              matrix, {}, Object.fromEntries(Object.entries(matrix.normalizedRequest.sentenceOptions || {})
+                .filter(([key]) => !isForbiddenClassicalGrammarAuthorityKey(key))),
+            );
+            steps.push(Object.freeze({operationId: "vnc:derivational-operation",
+              request: Object.freeze({subject: sentence.subject, mood: sentence.mood,
+                tense: sentence.tense, sentenceOptions: sentence.sentenceOptions,
+                lateOperation: "compound", lateVariant: "future-embed",
+                compoundMatrixStem: operation.operationFacts.futureMatrixLexicalStem,
+              })}));
+          } else steps.push(Object.freeze({operationId: "vnc:derivational-operation",
             request: Object.freeze({...baseRequest,
               lateOperation: operation.operation, lateVariant: operation.variant,
               frequentativeRepetitions: operation.operationFacts.repetitions,
@@ -10168,7 +10184,15 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       if (operationId === "vnc:derivational-operation") {
         if (!isClassicalNahuatlVncApplicationFrame(parent) || !step.request
           || typeof step.request !== "object" || Array.isArray(step.request)
-          || step.request.lateOperation !== "frequentative") return null;
+          || !["frequentative", "compound"].includes(step.request.lateOperation)) return null;
+        if (step.request.lateOperation === "compound") {
+          if (step.request.lateVariant !== "future-embed") return null;
+          const binding = issueClassicalNahuatlVncContinuationBindingFrame(
+            operationId, parent, step.request,
+          );
+          return binding?.bindingStatus === "ready"
+            ? Object.freeze({operationId, args: binding.executionArgs}) : null;
+        }
         // The recipe contains the underlying Source inputs. The late owner
         // reissues its finite base and prefix operation; a direct base is not
         // a continuation-derived SourceApplicationFrame.
