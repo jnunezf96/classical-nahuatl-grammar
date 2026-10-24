@@ -1,5 +1,12 @@
 # Version History
 
+## v1.2.25 — Noun and Possession Stem Paths
+
+- Adds nominal incorporation to Change the verb stem through the existing exact VNC + NNC formation owner.
+- Exposes the existing accompanying-possession formation and its possessed noun/possessor inputs, retaining Andrews28.8 conditions.
+- Preserves the accepted Result while staging; accepts only through Make.
+- Restores VNC Build layout after returning from a made noun, with fresh invented-stem regressions and focused browser proof.
+
 ## v1.2.24 — Accepted Stem Builds
 
 - Restores an Applied baseline for the supported future-predicate object compound after reload, preserving the exact future parent and accepted Result.

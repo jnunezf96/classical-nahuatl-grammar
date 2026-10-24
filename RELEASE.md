@@ -1,17 +1,17 @@
-# Grammar OS v1.2.24 release
+# Grammar OS v1.2.25 release
 
-Release name: **Accepted Stem Builds**
+Release name: **Noun and Possession Stem Paths**
 
-Browser build: **20261024-composition-43**
+Browser build: **20261024-composition-44**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Restores the supported future-object compound Build as Applied after reload, without a false pending indicator or an enabled Make for unchanged choices.
-- Retains the accepted Result, exact shared future parent and matrix choices. Real subsequent edits remain pending until explicit Make, including after reload.
-- Rejects copied, unrelated, stale or forged restoration acknowledgements; reload does not accept a new construction.
-- Audits Change the verb stem against Andrews: the six added-layer families fit; nominal incorporation and accompanying possession are related existing construction paths, not new grammar inferred from menu gaps.
+- Adds nominal incorporation within Change the verb stem, delegating to the existing exact-Result noun-incorporation owner and its required noun Result picker.
+- Exposes accompanying possession under verbal compound, with the existing possessed predicate and possessor choices. Andrews's suppletive ye embed and possessive NNC conditions remain authoritative.
+- Retains accepted Results throughout staging and preview; only explicit Make accepts the new construction.
+- Corrects the stale NNC Build layout when returning to a saved VNC after making its required noun. Saves fresh invented-stem regressions and focused browser proof.
 
 ## Review scope and current limits
 
@@ -21,6 +21,7 @@ This build is available for independent review against Andrews. Automated and br
 - Same-tab reload supports the documented NNC/VNC and conjunction/supplementation input graphs, including original NNC writing context. Cross-device saving is unclaimed.
 - Sentence particle/adverbial layers, including quin, now reload over supported host graphs. Source-only internally generated particle outputs remain unclaimed as separate editable application Results.
 - Optional writing coverage and the simple-compound Writing adapter have explicit supported-context limits.
+- Repeating continuation from every nominal-compound wrapper and full history persistence for that family remain unclaimed; the interface reports unsupported saved histories.
 - Accumulated-session performance and some historical inventory provenance remain open qualifications.
 
 See [Version History](CHANGELOG.md) for earlier releases.
@@ -35,7 +36,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.24/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.25/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.

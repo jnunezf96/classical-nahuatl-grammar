@@ -1,4 +1,5 @@
 import {syncFutureObjectChoices} from '../composition/future_object_choices.mjs?futureObject=20261024-3';
+import {syncStemLayerChoices} from '../composition/stem_layer_choices.mjs?stemNominal=20261024-2';
 import {snapshotResultEditReload,restoreResultEditReload} from '../composition/result_edit_reload.mjs?innerSource=20261024-1&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-1';
 import {getVncChoiceEditContext, getVncVoiceEditSubject, projectVncChoiceEditControls} from '../composition/vnc_choice_edit.mjs?v=20261023-3';
 import {runCompositionAction} from '../composition/action_feedback.mjs?v=20261023-1';
@@ -18831,7 +18832,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       ]),
       compound: Object.freeze([
         "connective-t", "reflexive-matrix", "shared-object",
-        "huītz-carry", "future-embed"
+        "huītz-carry", "future-embed", "accompanying-possession"
       ]),
       honorific: Object.freeze([
         "causative", "applicative", "preterit-embed"
@@ -19135,8 +19136,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
           )
           && licensedNonactiveScopes.length > 1,
         "classical-rule-logic-compound-subject-animacy": false,
-        "classical-rule-logic-compound-possessive-stem": false,
-        "classical-rule-logic-compound-possessor": false,
+        "classical-rule-logic-compound-possessive-stem": operation === "compound" && variant === "accompanying-possession",
+        "classical-rule-logic-compound-possessor": operation === "compound" && variant === "accompanying-possession",
         "classical-rule-logic-frequentative-repetitions":
           operation === "frequentative"
           && [
@@ -19272,9 +19273,31 @@ export function createUiRenderingApi(targetObject = globalThis) {
             : "lexical-stem";
       }
       syncFutureObjectChoices(targetObject.document, surfaceFrame?.state);
+      syncClassicalStemLayerChoices();
       syncClassicalCompoundMatrixFormation(surfaceFrame, ActiveClassicalGrammarResultBinding);
       syncClassicalPurposiveCoordinateControls(surfaceFrame);
       return { active };
+    }
+    function syncClassicalStemLayerChoices() {
+      const nominalOperation = ActiveClassicalGrammarCapabilityNavigator?.operations?.find(item => item.operationId === "grammar:nominal-construction");
+      const nominalOwner = nominalOperation?.ownerBindingFrame;
+      const nominalAvailable = targetObject.isClassicalNahuatlFormationResultBindingFrame?.(nominalOwner) === true
+        && nominalOwner.authorizationStatus === "authorized"
+        && nominalOwner.exactResult === nominalOperation.ownerBindingInputResult
+        && nominalOwner.bindingIds.includes("nominal-embed:matrix-vnc-result");
+      const nominalActive = getActiveClassicalGrammarResultBinding("grammar:nominal-construction")?.selectedBindingId === "nominal-embed:matrix-vnc-result";
+      syncStemLayerChoices(targetObject.document, {nominalAvailable, nominalActive, onNominal: () => {
+        // Re-resolve through the native navigator. Its exact Result and owner
+        // validation, rather than this display choice, authorize the handoff.
+        const selector = targetObject.document.getElementById("classical-capability-navigator-operation");
+        const option = Array.from(selector?.options || []).find(item => item.value === "grammar:nominal-construction");
+        if (!selector || selector.disabled || !option || option.disabled || option.hidden) return false;
+        selector.value = option.value;
+        selector.dispatchEvent(new targetObject.document.defaultView.Event("change", {bubbles: true}));
+        const binding = getActiveClassicalGrammarResultBinding("grammar:nominal-construction");
+        return binding?.ownerBindingFrame?.bindingIds?.includes("nominal-embed:matrix-vnc-result")
+          ? enterClassicalGrammarResultBindingChoice("nominal-embed:matrix-vnc-result", {allowExecution: false}) : false;
+      }});
     }
     function syncClassicalNncGrammarSurfaceContract(surfaceFrame = null) {
       if (typeof targetObject.document === "undefined") {
@@ -44652,6 +44675,14 @@ export function createUiRenderingApi(targetObject = globalThis) {
         || owner.ownerInputAcceptanceProven !== true) return false;
       // The next Grammar task follows its exact VNC, while the accepted NNC
       // and the Source editor keep their own identity and state.
+      const controls = document.getElementById("classical-rule-logic-controls");
+      if (controls?.dataset) controls.dataset.classicalRuleLogicSurfaceUnit = "vnc";
+      document.querySelectorAll?.("#classical-rule-logic-controls [data-classical-nnc-authority-control], #classical-rule-logic-controls [data-construction-for]").forEach(wrapper => {
+        wrapper.hidden = true;
+        wrapper.setAttribute("aria-hidden", "true");
+        const control = wrapper.querySelector?.("select, input, button");
+        if (control) control.disabled = true;
+      });
       const nominal = document.querySelector?.("[data-classical-nnc-grammar-organizer]");
       if (nominal) { nominal.hidden = true; nominal.setAttribute("aria-hidden", "true"); }
       if (issuedDenominalInput && owner.ownerPreflightValidated === true) {
@@ -44921,6 +44952,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       syncClassicalFixedSequenceSourceChoice(binding);
       syncClassicalPurposiveCoordinateControls();
       syncClassicalSentenceConjunctorPicker(binding);
+      syncClassicalStemLayerChoices();
       return true;
     }
 
