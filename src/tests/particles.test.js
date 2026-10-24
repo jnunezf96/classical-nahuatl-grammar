@@ -80,7 +80,8 @@ function run(ctx = {}) {
             ["l3-cuix", "authorized", "cuix", "cuix", ["cuix"], false, true, false, false],
             ["l3-in", "authorized", "in", "in", ["in"], false, true, false, false],
             ["l3-mah", "authorized", "mah", "mah", ["mah"], false, true, false, false],
-            ["l58-ahmo", "authorized", "ahmō", "ahmō", ["ahmō"], false, true, false, false],
+            // Andrews §44.5.4: ahmō is a negative NNC, not a particle identity.
+            ["", "blocked", "", "", undefined, false, true, false, false],
             ["l58-mah-ca", "authorized", "mah ca", "mah ca#", ["mah", "ca#"], false, true, false, false],
             ["l58-quemahca", "authorized", "quemahca", "quē mah ca#", ["quē", "mah", "ca#"], false, true, false, false],
             [
@@ -259,7 +260,8 @@ function run(ctx = {}) {
                 targetId: "l3-otzin",
                 status: "authorized",
                 bases: ["l3-o-behold"],
-                formula: "ōtzin",
+                // Analytic lexical bases and tzin remain separate in the formula.
+                formula: "ō tzin",
                 surface: "ōtzin",
                 scope: "single-particle",
                 issued: true,
@@ -269,7 +271,7 @@ function run(ctx = {}) {
                 targetId: "l3-auhtzin",
                 status: "authorized",
                 bases: ["l3-auh-interjection"],
-                formula: "āuhtzin",
+                formula: "āuh tzin",
                 surface: "āuhtzin",
                 scope: "single-particle",
                 issued: true,
@@ -279,7 +281,7 @@ function run(ctx = {}) {
                 targetId: "l3-ca-no-zotzin",
                 status: "authorized",
                 bases: ["l3-ca", "l3-no-adverbial", "l3-zo"],
-                formula: "ca no zotzin",
+                formula: "ca nō zo tzin",
                 surface: "ca no zotzin",
                 scope: "entire-collocation",
                 issued: true,

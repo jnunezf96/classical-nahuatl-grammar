@@ -1,18 +1,19 @@
-# Grammar OS v1.2.19 release
+# Grammar OS v1.2.20 release
 
-Release name: **Repeated Particle Editing**
+Release name: **Particle Verification**
 
-Browser build: **20261024-composition-38**
+Browser build: **20261024-composition-39**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Repeatedly changes an issued inner particle or particle sequence after Make and supported same-tab reload while retaining the whole Result.
-- Restores the accepted particle choice before applying valid pending edits; only explicit Make accepts the change.
-- Preserves exact hosts, untouched clauses, honorific inputs, speaker context and the original attachment operation.
-- Replays sentence particle/adverbial attachment graphs, including supported quin layers; retains derived tense through intervening particles.
-- Keeps lexical identity, speaker, contextual and tense restrictions with Andrews' canonical owners.
+- Reconciles five legacy particle checks with Andrews and the current canonical owners; no grammar behavior changes were required.
+- Verifies ahmō through its negative NNC analysis, rather than an invented lexical particle identity.
+- Distinguishes honorific base formulas from their written realization and requires source-supported markers, including temporal in.
+- Supplies the missing scalar-rendering test container and saves fresh invented-host regressions for rendering, honorific attachment and temporal composition/reload.
+
+- Aligns the page and composition startup import to one module identity.
 
 ## Review scope and current limits
 
@@ -36,7 +37,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.19/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.20/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.

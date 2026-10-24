@@ -145,7 +145,59 @@ function composeMarkedScenario(ctx, {
 
 function run(ctx) {
     const s = createSuite("classical_clause_relation_particle_result");
-
+    // Andrews §§3.3–3.4,50.8,58: required markers, not a closed inventory snapshot.
+    const requiredMarkerOptions = [
+        ["l3-ca", "ca", "ca"],
+        ["l3-cuix", "cuix", "cuix?"],
+        ["l3-tla", "tla", "tlā"],
+        ["l3-ma", "ma", "mā"],
+        ["l3-e-vocative", "vocative-e", "#e"],
+        ["l3-in", "in", "in"],
+        ["l3-mah", "mah", "mah"],
+        ["l3-ahzo", "ahzo", "ahzo"],
+        ["l3-in-tla", "in-tla", "in tlā"],
+        ["l3-in-tla-zan", "in-tla", "in tlā zan"],
+        ["l3-in-tla-za", "in-tla", "in tlā zā"],
+        ["l3-in-tla-no-zo", "in-tla", "in tlā no zo"],
+        ["l3-in-tla-ca", "in-tla", "in tlā ca#"],
+        ["l50-in-tla-nel", "in-tla-nel", "in tlā nel"],
+        ["l50-in-ma-nel", "in-ma-nel", "in mā nel"],
+        ["l50-ma-nel", "ma-nel", "mā nel"],
+        ["l3-ma-zo", "ma-zo", "mā zo"],
+        ["l3-ma-zo-tel", "ma-zo-tel", "mā zo tēl"],
+        ["l58-mah-ca", "mah-ca", "mah ca#"],
+        ["l58-quemah", "frozen-quemah", "quēmah"],
+        ["l58-quemahca", "frozen-quemahca", "quemahca"],
+        ["l58-oc-eh", "haste-collocation", "oc eh"],
+        ["l58-tia-oc-eh", "haste-collocation", "tiā oc eh"],
+        ["l58-ma-oc-eh", "haste-collocation", "mā oc eh"],
+        ["l58-tia-cuel", "haste-collocation", "tiā cuēl"],
+        ["l58-tia-cuel-eh", "haste-collocation", "tiā cuēl eh"],
+        [
+            "l58-tia-cuel-ehhuatl",
+            "haste-collocation",
+            "tiā cuēl ehhuātl",
+        ],
+        ["l58-ma-cuel", "haste-collocation", "mā cuēl"],
+        ["l58-ma-cuel-eh", "haste-collocation", "mā cuēl eh"],
+        [
+            "l58-ma-cuel-ehhuatl",
+            "haste-collocation",
+            "mā cuēl ehhuātl",
+        ],
+        ["l58-ma-ye-cuel", "haste-collocation", "mā ye cuēl"],
+        [
+            "l58-ma-ye-cuel-eh",
+            "haste-collocation",
+            "mā ye cuēl eh",
+        ],
+        ["l58-tia-ye-cuel", "haste-collocation", "tiā ye cuēl"],
+        [
+            "l58-tia-ye-cuel-eh",
+            "haste-collocation",
+            "tiā ye cuēl eh",
+        ],
+            ];
     s.eq(
         "a copied application owner cannot authorize a Lesson 4-shaped fake without an owner-issued frame",
         (() => {
@@ -317,11 +369,14 @@ function run(ctx) {
                 sources: sources.map(sourceFrame => (
                     ctx.isClassicalNahuatlParticleSourceFrame(sourceFrame)
                 )),
-                optionIds: options.map(option => [
-                    option.particleId,
-                    option.semanticMarker,
-                    option.sourceForm,
-                ]),
+                // Explicit source-backed requirements permit later productive
+                // additions; the inventory itself is not its own test oracle.
+                optionIds: requiredMarkerOptions.map(([id]) => {
+                    const option = options.find(value => value.particleId === id);
+                    return option ? [option.particleId, option.semanticMarker, option.sourceForm] : null;
+                }),
+                optionIdsUnique: new Set(options.map(option => option.particleId)).size === options.length,
+                negativeNncExcluded: !options.some(option => option.particleId === "l58-ahmo"),
                 results: [inTla, maZo, ca].map(result => ({
                     authorized: result.authorizationStatus,
                     canonical:
@@ -355,52 +410,9 @@ function run(ctx) {
         })(),
         {
             sources: [true, true, true],
-            optionIds: [
-                ["l3-ca", "ca", "ca"],
-                ["l3-cuix", "cuix", "cuix?"],
-                ["l3-tla", "tla", "tlā"],
-                ["l3-ma", "ma", "mā"],
-                ["l3-e-vocative", "vocative-e", "#e"],
-                ["l3-in", "in", "in"],
-                ["l3-mah", "mah", "mah"],
-                ["l3-ahzo", "ahzo", "ahzo"],
-                ["l3-in-tla", "in-tla", "in tlā"],
-                ["l3-ma-zo", "ma-zo", "mā zo"],
-                ["l3-ma-zo-tel", "ma-zo-tel", "mā zo tēl"],
-                ["l58-ahmo", "ahmo", "ahmō"],
-                ["l58-mah-ca", "mah-ca", "mah ca#"],
-                ["l58-quemah", "frozen-quemah", "quēmah"],
-                ["l58-quemahca", "frozen-quemahca", "quemahca"],
-                ["l58-oc-eh", "haste-collocation", "oc eh"],
-                ["l58-tia-oc-eh", "haste-collocation", "tiā oc eh"],
-                ["l58-ma-oc-eh", "haste-collocation", "mā oc eh"],
-                ["l58-tia-cuel", "haste-collocation", "tiā cuēl"],
-                ["l58-tia-cuel-eh", "haste-collocation", "tiā cuēl eh"],
-                [
-                    "l58-tia-cuel-ehhuatl",
-                    "haste-collocation",
-                    "tiā cuēl ehhuātl",
-                ],
-                ["l58-ma-cuel", "haste-collocation", "mā cuēl"],
-                ["l58-ma-cuel-eh", "haste-collocation", "mā cuēl eh"],
-                [
-                    "l58-ma-cuel-ehhuatl",
-                    "haste-collocation",
-                    "mā cuēl ehhuātl",
-                ],
-                ["l58-ma-ye-cuel", "haste-collocation", "mā ye cuēl"],
-                [
-                    "l58-ma-ye-cuel-eh",
-                    "haste-collocation",
-                    "mā ye cuēl eh",
-                ],
-                ["l58-tia-ye-cuel", "haste-collocation", "tiā ye cuēl"],
-                [
-                    "l58-tia-ye-cuel-eh",
-                    "haste-collocation",
-                    "tiā ye cuēl eh",
-                ],
-            ],
+            optionIds: requiredMarkerOptions,
+            optionIdsUnique: true,
+            negativeNncExcluded: true,
             results: [
                 {
                     authorized: "authorized",
@@ -461,7 +473,8 @@ function run(ctx) {
                 "ma-zo-tel",
             ],
             reason: ["ca"],
-            time: [],
+            // Andrews §50.2 explicitly introduces temporal adjuncts with in.
+            time: ["in"],
         }
     );
 

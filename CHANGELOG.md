@@ -2,6 +2,15 @@
 
 User-facing release notes for Classical Nahuatl Grammar.
 
+## Version 1.2.20 — Particle Verification
+
+Released October 23, 2026.
+
+- Corrects five outdated legacy expectations or test-fixture assumptions using Andrews §§3.3–3.5,44.5.4,50.2 and50.8.
+- Preserves the existing negative NNC classification, honorific base analysis, productive marker inventory and temporal in.
+- Adds a runnable adapter for both legacy suites and four focused behavior regressions using fresh invented hosts or candidates.
+- Aligns the page and composition startup import to one module identity; preserves the reviewed v1.2.19 grammar.
+
 ## Version 1.2.19 — Repeated Particle Editing
 
 Released October 23, 2026.

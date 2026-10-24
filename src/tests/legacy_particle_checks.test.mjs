@@ -1,0 +1,39 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import particles from './particles.test.js';
+import relation from './classical_clause_relation_particle_result.test.js';
+import {createParticleLegacyRuntime} from './helpers/particle_legacy_runtime.mjs';
+const fixture=await createParticleLegacyRuntime();
+for(const [name,legacy] of [['particle owner contract',particles],['particle marker and scalar rendering contract',relation]]) {
+  test(name,()=>{const result=legacy.run(fixture.inspection).summarize();assert.equal(result.failed,0,`${result.name}: ${result.passed}/${result.total}`);});
+}
+
+import {readFileSync} from 'node:fs';
+import {exportClassicalResultReloadRecipe,replayClassicalResultReloadRecipe} from '../application/classical/result_reload.mjs';
+const nonces=JSON.parse(readFileSync(new URL('./fixtures/nonce_legacy_particle_checks_20261024.json',import.meta.url)));
+const r=fixture.runtime;
+function verb(stem){const a=r.executeClassicalGrammarApplicationRequest({operationId:'vnc:application',args:[{sourceStem:stem+'za',verbClass:'A',sourceValence:'intransitive',subject:'3sg',mood:'indicative',tense:'present',requestedVoice:'active',requestedDerivation:'direct'}]});assert.equal(a.authorizationStatus,'authorized',a.blockReason);return a.canonicalResult;}
+test('the rejected ahmō particle identity remains available through its genuine negative NNC analysis',async()=>{
+ // Andrews §44.5.4 supplies lexical mō, so invent only surrounding hosts.
+ const source=r.buildClassicalNahuatlOrdinaryNncSourceFrame({stem:'mō',sourceClass:'zero'}),ordinary=r.requestClassicalOrdinaryNncResult(source,r.buildClassicalNahuatlOrdinaryNncOperationFrame(source,{subject:'3common',state:'absolutive'})),negative=r.requestClassicalAdverbialNncResult({canonicalSourceResult:ordinary,context:{negativeParticle:'ah'}});
+ assert.equal(r.isClassicalNahuatlAdverbialNuclearResult(negative),true);assert.equal(negative.authorizationStatus,'authorized');assert.equal(negative.canonicalSourceResult,ordinary);assert.equal(negative.operationFrame.contextFrame.realizedSurface,'ahmō');assert.equal(r.isClassicalNahuatlParticleSourceFrame(r.buildClassicalNahuatlParticleSourceFrame('l58-ahmo')),false);assert.equal(r.isClassicalNahuatlParticleResultFrame(negative),false);
+ const recipe=exportClassicalResultReloadRecipe(r,{result:negative,source:ordinary}),fresh=(await createParticleLegacyRuntime()).runtime,restored=replayClassicalResultReloadRecipe(fresh,JSON.parse(JSON.stringify(recipe)));assert(restored);assert.equal(restored.result.canonicalSourceResult,restored.source);assert.equal(restored.result.operationFrame.contextFrame.realizedSurface,'ahmō');assert.equal(fresh.isClassicalNahuatlAdverbialNuclearResult({...restored.result}),false);
+});
+test('both honorific Source analyses retain their base formula and realize the entire sequence before a fresh invented host',()=>{
+ const named=fixture.inspection.evaluateClassicalNahuatlParticleHonorificFormation(r.buildClassicalNahuatlParticleHonorificSourceFrame({targetId:'l3-ca-no-zotzin'})),source=r.buildClassicalNahuatlParticleSourceFrame('l3-ca-no-zo'),typed=fixture.inspection.evaluateClassicalNahuatlParticleHonorificFormation(r.buildClassicalNahuatlParticleHonorificSourceFrame({particleSourceFrame:source}));
+ assert.deepEqual(named.baseParticleResultFrames.map(v=>v.particleId),['l3-ca','l3-no-adverbial','l3-zo']);assert.deepEqual(typed.baseParticleResultFrames.map(v=>v.particleId),['l3-ca-no-zo']);assert.equal(named.formula,'ca nō zo tzin');assert.equal(typed.formula,'ca no zo tzin');
+ for(const result of [named,typed]){assert.equal(fixture.inspection.isClassicalNahuatlParticleHonorificResultFrame(result),true);assert.equal(result.surface,'ca no zotzin');assert.equal(result.collocationScope,'entire-collocation');assert.equal(result.attachmentTarget,'final-particle-member');assert.equal(fixture.inspection.isClassicalNahuatlParticleHonorificResultFrame({...result}),false);}
+ const host=r.executeClassicalGrammarApplicationRequest({operationId:'vnc:sentence-result',args:[verb(nonces.stems[2])]}).canonicalResult,request={operationId:'sentence:particle-adjunction',args:[{particleSourceFrame:source,nuclearResultFrame:host,honorificized:true}]},before=r.getClassicalGrammarWorkspaceHistorySnapshot(),preview=r.previewClassicalGrammarApplicationRequest(request);assert(r.isClassicalGrammarApplicationPreview(preview));assert.deepEqual(r.getClassicalGrammarWorkspaceHistorySnapshot(),before);const made=r.executeClassicalGrammarApplicationRequest(request);assert.equal(made.authorizationStatus,'authorized');assert.equal(made.canonicalResult.canonicalInputFrame,host);assert.equal(made.canonicalResult.particleResultFrame.surface,'ca no zotzin');assert.equal(made.canonicalResult.sentenceSurfaceDisplay,preview.surface);
+});
+test('the scalar renderer mounts the canonical row and rejects fresh invented particle candidates',()=>{
+ const result=fixture.inspection.renderParticleModeConjugations({candidate:'mā zo'});assert.equal(r.isClassicalNahuatlParticleResultFrame(result),true);const row=fixture.container.querySelector('[data-particle-row="l3-ma-zo"]');assert(row,'a returned owner Result must actually reach its output container');assert.equal(row.querySelector('.particle-row__form').textContent,'mā zo');assert.equal(row.querySelector('.particle-row__source').textContent,'mā zo');assert.equal(row.dataset.particleIdentity,result.particleId);
+ for(const word of nonces.stems){assert.equal(fixture.inspection.renderParticleModeConjugations({candidate:word+'za'}),null);assert.equal(fixture.container.querySelector('[data-particle-row]'),null);assert.equal(r.isClassicalNahuatlParticleSourceFrame(r.buildClassicalNahuatlParticleSourceFrame(word+'za')),false);}
+ // A missing output target has no rendered Result; it does not revoke grammar.
+ assert.equal(fixture.inspection.renderParticleModeConjugations({candidate:'mā zo',containerId:'absent-target'}),null);assert.equal(r.requestClassicalParticleResult('mā zo').authorizationStatus,'authorized');
+});
+test('temporal in composes exact invented VNC clauses and survives owner replay',async()=>{
+ const principal=verb(nonces.stems[0]),adjoined=verb(nonces.stems[1]),marker=r.requestClassicalParticleResult('l3-in'),controller=r.createClassicalClauseRelationController();
+ for(const [role,result] of [['principal',principal],['adjoined',adjoined],['marker',marker]])assert.equal(controller.captureCurrentResult(role,result).authorizationStatus,'authorized');
+ const choices={relation:'time',relationProfile:'implicit',order:'modifier-head'},before=r.getClassicalGrammarWorkspaceHistorySnapshot(),preview=controller.preview(choices);assert(preview?.isCurrent(),controller.buildDecisionContract(choices).blockReason);assert.deepEqual(r.getClassicalGrammarWorkspaceHistorySnapshot(),before);const made=controller.compose(choices);assert.equal(made.authorizationStatus,'authorized',made.blockReason);assert.equal(made.canonicalResult.ruleProfile.marking,'in');assert.equal(made.canonicalResult.ruleProfile.relation,'time');assert.equal(made.canonicalResult.sourceContract.principal.issuedResult,principal);assert.equal(made.canonicalResult.sourceContract.adjoined.issuedResult,adjoined);assert.equal(made.canonicalResult.sourceContract.marker.issuedResult,marker);assert.equal(made.canonicalResult.surface,preview.surface);
+ const recipe=exportClassicalResultReloadRecipe(r,{result:made.canonicalResult,marker}),fresh=(await createParticleLegacyRuntime()).runtime,restored=replayClassicalResultReloadRecipe(fresh,JSON.parse(JSON.stringify(recipe)));assert(restored);assert.equal(restored.result.sourceContract.marker.issuedResult,restored.marker);assert.equal(restored.result.ruleProfile.marking,'in');assert.equal(restored.result.surface,made.canonicalResult.surface);assert.equal(r.captureClassicalGrammarApplicationResult({...made.canonicalResult},'copied-time').authorizationStatus,'blocked');
+});
