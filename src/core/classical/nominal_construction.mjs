@@ -8366,6 +8366,14 @@ function evaluateAffectiveNominalConstruction(request, target, sourceAuthorizati
     );
   }
 
+  // Andrews §32.6.1b requires an affective matrix for singular child
+  // readings; simple singular pil belongs to the noble reading (§32.6.2a).
+  if (pilLexemeReading === "child" && pilChildFormation === "simple"
+    && subject.endsWith("sg")) {
+    return buildBlockedFrame("affective-nnc",
+      "pil-child-singular-requires-affective-matrix", request);
+  }
+
   let matrixStem = ({ pil: "pīl" })[matrix] || matrix;
   let nounClass = embedClass;
   let compoundStem = embedStem;

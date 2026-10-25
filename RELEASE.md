@@ -1,19 +1,16 @@
-# Grammar OS v1.2.36 release
+# Grammar OS v1.2.37 release
 
-Release name: **Andrews Interface Harmony**
+Release name: **Andrews Pil Child Correction**
 
-Browser build: **20261025-interface-harmony-55**
+Browser build: **20261025-pil-singular-56**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Organizes choices within the existing Source, Build and Result panels, with no separate Decisions panel.
-- Keeps source, participant, voice and formation choices aligned with Andrews and their canonical owners; staged changes preserve the accepted Result until explicit Make.
-- Corrects exact-parent continuation across patientive, demonstrative affective, adjective-group, comparison and incorporated-complement paths.
-- Preserves selected irregular verb endings and displays the chosen denominal sentence punctuation in Preview and Result.
-
-Focused local verification and independent review are recorded in the recovered interface overview. Release checks cover package integrity and selected affected live paths; prior completed grammar checks are retained. One separately unapproved local pil-child restriction is excluded from this release.
+- Rejects simple pil with an explicitly singular child reading, following Andrews §32.6.1b.
+- Preserves plural child, singular affective child and noble readings.
+- Gives a clear recovery instruction while keeping the accepted Result unchanged during staging.
 
 ## Review scope and current limits
 
@@ -40,7 +37,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.36/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.37/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.

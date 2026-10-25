@@ -1,5 +1,10 @@
 # Version History
 
+## v1.2.37 — Andrews Pil Child Correction
+
+- Restricts singular child/simple pil and explains the valid affective route; preserves plural-child and noble readings.
+
+
 ## v1.2.36 — Andrews Interface Harmony
 
 - Harmonizes existing Source, Build and Result controls and removes the separate Decisions panel.

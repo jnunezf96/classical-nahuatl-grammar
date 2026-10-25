@@ -5,7 +5,7 @@ import { createClassicalNahuatlVncApplicationModule } from "../../application/cl
 import { createClassicalNahuatlSourceStemInventoryApi } from "./source_stem_inventory.mjs?interfaceRelease=1.2.36";
 import { createClassicalNahuatlSupplementationApi } from "../sentence/supplementation.mjs?andrewsRelease=20261024-1";
 import { createClassicalNahuatlDenominalVncGrammarApi } from "./denominal_vnc_grammar.mjs?v=20260826-relational-role-340&andrewsRelease=20261024-1&interfaceRelease=1.2.36";
-import { installClassicalNahuatlNominalConstructionGlobals } from "./nominal_construction.mjs?interfaceRelease=1.2.36";
+import { installClassicalNahuatlNominalConstructionGlobals } from "./nominal_construction.mjs?interfaceRelease=1.2.37";
 
 const ISSUED_VALIDATION_FRAMES = new WeakSet();
 

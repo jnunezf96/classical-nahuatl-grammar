@@ -37461,6 +37461,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
     });
     function formatClassicalClauseRelationValue(value = "", decisionId = "") {
       const normalized = String(value || "").trim();
+      if (normalized === "pil-child-singular-requires-affective-matrix") {
+        return "For a singular child, choose matrix-bearing affective formation. Simple pil with a singular subject has the noble reading.";
+      }
       if (!normalized) return "—";
       if (normalized.endsWith("ordinary-nnc-predicate-embed-source-use-analysis-required")) {
         return "Choose a noun Source with an established general-use stem.";
