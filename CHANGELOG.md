@@ -1,5 +1,12 @@
 # Version History
 
+## v1.2.35 — Andrews Semantic Corrections
+
+- Corrects shared subject/object reference identity and the impersonal-tla analysis shown with Results.
+- Enables the two longer how-much-more choices with a genuine īc-point clause, preserving exact Source ownership and copy rejection.
+- Verifies only these repairs and their immediate shared-state boundaries; prior unrelated proof remains retained.
+
+
 ## v1.2.34 — Conditional Cue Choice
 
 - Repairs AD-102: issued conditional cues permit omitting tlā through the canonical owner and public relation controller.

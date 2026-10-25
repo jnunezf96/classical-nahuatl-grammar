@@ -1,16 +1,17 @@
-# Grammar OS v1.2.34 release
+# Grammar OS v1.2.35 release
 
-Release name: **Conditional Cue Choice**
+Release name: **Andrews Semantic Corrections**
 
-Browser build: **20261024-conditional-cue-53**
+Browser build: **20261024-andrews-semantics-54**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Allows omission of tlā when an owner-issued at/ahzo clause supplies the conditional cue, following Andrews 50.7.2.b.
-- Preserves the cue and the underlying clause analysis through manner and sentence-particle attachment. Ordinary clauses still require a marker.
-- Keeps overt tlā available and rejects copied Results and caller-supplied cue flags.
+- Keeps the supplementary subject separate when an object is selected as the shared reference, following Andrews 17.4.4 and 42.8.2.
+- Treats reduplicated impersonal tla as a stem constituent and an impersonal event, preserving the separate fused-object interpretation and correct Result explanation (Andrews 27.2.1).
+- Accepts the authenticated īc-point clause in the two longer how-much-more comparison choices (Andrews 53.6), while copied or forged compositions remain rejected.
+- Preserves explicit Make, accepted Results while staging, and existing supported reload boundaries. Comparison Results remain deliberately unsupported for reload; the existing recovery message is retained.
 
 ## Review scope and current limits
 
@@ -37,7 +38,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.34/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.35/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.

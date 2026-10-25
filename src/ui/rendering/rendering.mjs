@@ -11512,6 +11512,13 @@ export function createUiRenderingApi(targetObject = globalThis) {
             `${lesson27Facts.shape === "long" ? "long-vowel continuous formation" : lesson27Facts.shape === "short" ? "short-vowel formation" : "short-glottal formation"} · initial i ${initialI}${lesson27Facts.supportiveIDeleted ? ` deleted before ${lesson27Facts.sourceStemAfterSupportiveIDeletion || "the retained Source"}` : initialI === "real" ? " retained" : ""} · copied prefix ${lesson27Facts.copiedPrefix || "derived automatically"} · ${lesson27Facts.repetitions || 1} reduplication layer${Number(lesson27Facts.repetitions || 1) === 1 ? "" : "s"} · extra layers are chosen only for intended emphasis`,
           );
         }
+        if (lesson27Facts.impersonalStemPrefixReduplicated === true) {
+          addLesson27Cue(
+            "lesson27-tla-impersonal-reduplication",
+            `impersonal tla is reduplicated within the stem · copied prefix ${lesson27Facts.copiedPrefix} · ${lesson27Facts.eventScope} · no object is introduced`,
+            "lesson27-short-glottal-ordinary-frequentatives",
+          );
+        }
         if (
           lesson27Facts.objectPronounReduplicated === true
           || lesson27Facts.reduplicationTarget === "mainline-reflexive"
@@ -11585,7 +11592,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         if (lesson27Facts.nonactiveSourceRecaptured === true) {
           addLesson27Cue(
             "lesson27-frequentative-nonactive",
-            `owner-issued ${lesson27Facts.sourceVoice || "nonactive"} Result recaptured as Source · participant topology remains unchanged · frequentative formation distributes separate individual acts within the collective action · impersonal subject denotes people in general or the relevant group · ${lesson27Facts.finiteMood || "selected Mood"} and ${lesson27Facts.finiteTense || "selected Tense"} are realized by the ordinary finite boundary`,
+            `owner-issued ${lesson27Facts.sourceVoice || "nonactive"} Result recaptured as Source · participant topology remains unchanged · ${lesson27Facts.impersonalGroupReading ? "frequentative formation distributes separate individual acts within the collective action · impersonal subject denotes people in general or the relevant group" : "frequentative formation applies to the impersonal event without adding participants"} · ${lesson27Facts.finiteMood || "selected Mood"} and ${lesson27Facts.finiteTense || "selected Tense"} are realized by the ordinary finite boundary`,
           );
         }
       }

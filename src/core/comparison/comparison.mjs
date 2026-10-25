@@ -946,7 +946,8 @@ export function createComparisonApi(targetObject = globalThis, installationConte
       const nncSlotFrame = getComparisonNncSlotFrame(canonicalResult);
       const vncSlotFrame = getComparisonVncSlotFrame(canonicalResult);
       const compositionResultAuthorized = Boolean(
-        targetObject.isClassicalNahuatlSupplementationFrame?.(canonicalResult) === true
+        targetObject.isAdverbialAdjunctionResult?.(canonicalResult) === true
+        || targetObject.isClassicalNahuatlSupplementationFrame?.(canonicalResult) === true
         || (
           typeof targetObject
             .isClassicalNahuatlClauseComplementationResultFrame === "function"

@@ -2372,6 +2372,8 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
       || "active"
     );
     const baseIsNonactive = selectedBaseVoice !== "active";
+    const baseIsTlaImpersonal = selectedBaseVoice === "tla-impersonal"
+      && baseTyped.valenceArity === "vacant";
 
     if (operation === "frequentative") {
       ruleFamily = "frequentative-prefix-shape";
@@ -2637,15 +2639,23 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
           copiedInitialITreatment,
           supportiveIDeleted: deleteSupportiveI,
           sourceStemAfterSupportiveIDeletion: reduplicationParts.retainedStem,
-          objectPronounReduplicated: fusedTlaSelected,
+          // Andrews 27.2.1: impersonal tla belongs to the derived stem;
+          // unlike fused object tla, copying it introduces no object reading.
+          ...(baseIsTlaImpersonal && fusedTlaSelected ? {
+            copiedConsonant: "tl",
+            copiedVowel: shape === "long" ? "ā" : "a",
+            copiedPrefix: shape === "long" ? "tlā" : "tlah",
+          } : {}),
+          objectPronounReduplicated: fusedTlaSelected && !baseIsTlaImpersonal,
+          impersonalStemPrefixReduplicated: fusedTlaSelected && baseIsTlaImpersonal,
           lexicalStemAlsoReduplicated:
             requestedTarget === "fused-tla-and-lexical-stem",
-          objectScope: fusedTlaSelected ? "nonspecific-nonhuman objects" : "unchanged",
-          eventScope: requestedTarget === "fused-tla"
-            ? "unchanged"
-            : "frequentative event",
+          objectScope: baseIsTlaImpersonal ? "no object"
+            : fusedTlaSelected ? "nonspecific-nonhuman objects" : "unchanged",
+          eventScope: baseIsTlaImpersonal ? "frequentative impersonal event"
+            : requestedTarget === "fused-tla" ? "unchanged" : "frequentative event",
           independentObjectAndEventScopes:
-            requestedTarget === "fused-tla-and-lexical-stem",
+            !baseIsTlaImpersonal && requestedTarget === "fused-tla-and-lexical-stem",
           ...(inheritedIrregularPrefixCoordinate ? {
             irregularCoordinateInherited: true,
             coordinateSelectedSourceStem: frequentativeSourceStem,
@@ -5396,8 +5406,8 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
         ...operationFacts,
         nonactiveSourceRecaptured: true,
         sourceVoice: selectedBaseVoice,
-        impersonalGroupReading: true,
-        separateIndividualActsWithinCollectiveAction: true,
+        impersonalGroupReading: !baseIsTlaImpersonal,
+        separateIndividualActsWithinCollectiveAction: !baseIsTlaImpersonal,
         participantTopologyPreserved: true,
         sourceParticipantTopology: participantTopology,
         finiteMood: text(request.mood),

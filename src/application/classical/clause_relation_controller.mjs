@@ -5911,7 +5911,8 @@ export function createClassicalClauseRelationControllerGlobals(
           ? "supplementation-same-subject-future"
           : selected.supplementationContactRole === "subject"
             ? supplementContactReference
-            : supplementReference;
+            // Object or possessor contact must not also bind the subject.
+            : `${supplementReference}-subject`;
         const principalObjectReferenceIds = Object.fromEntries(
           (principalPreview?.objects || []).map(object => [
             object.id,
