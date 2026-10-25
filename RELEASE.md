@@ -1,16 +1,16 @@
-# Grammar OS v1.2.33 release
+# Grammar OS v1.2.34 release
 
-Release name: **Andrews Decision Choices**
+Release name: **Conditional Cue Choice**
 
-Browser build: **20261024-andrews-decisions-52**
+Browser build: **20261024-conditional-cue-53**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Adds Andrews-governed optional comparison in, archaic finite singular qui, personal-name inner ending shortening, and contextual first-person silence.
-- Organizes existing decisions into Source and readings, Formation, Participants, Clause form and Relationships within the current formula layout.
-- Preserves newer live editing, reload, exact Source, and explicit Make behavior. No research inventory or private evidence is shipped.
+- Allows omission of tlā when an owner-issued at/ahzo clause supplies the conditional cue, following Andrews 50.7.2.b.
+- Preserves the cue and the underlying clause analysis through manner and sentence-particle attachment. Ordinary clauses still require a marker.
+- Keeps overt tlā available and rejects copied Results and caller-supplied cue flags.
 
 ## Review scope and current limits
 
@@ -37,7 +37,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.33/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.34/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.

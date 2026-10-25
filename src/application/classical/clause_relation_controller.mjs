@@ -4369,10 +4369,7 @@ export function createClassicalClauseRelationControllerGlobals(
           && !capturedRoles.has("marker")
           && !(
             relation === "condition"
-            && getTypedBoolean(
-              getValidatedCapture("adjoined")?.canonicalResult,
-              ["conditionalCuePresent"],
-            )
+            && getSourceUnit("adjoined")?.features?.conditionalCue === true
           )
         ) {
           return buildRelationAvailabilityOption({
@@ -5292,9 +5289,7 @@ export function createClassicalClauseRelationControllerGlobals(
         && !markerCapture
         && !(
           relation === "condition"
-          && getTypedBoolean(adjoinedCapture?.canonicalResult, [
-            "conditionalCuePresent",
-          ])
+          && adjoinedSource?.features?.conditionalCue === true
         )
       ) {
         diagnostics.push("classical-clause-relation-issued-marker-capture-required");
@@ -6597,9 +6592,7 @@ export function createClassicalClauseRelationControllerGlobals(
       } else if (contract.relation === "condition") {
         request.conditionType = contract.relationProfile;
         request.conditionalCuePresent = !markerCapture
-          && getTypedBoolean(adjoinedCapture.canonicalResult, [
-            "conditionalCuePresent",
-          ]);
+          && getSourceUnit("adjoined")?.features?.conditionalCue === true;
       } else if (contract.relation === "purpose") {
         request.purposeType = contract.relationProfile;
       } else if (contract.relation === "concession") {

@@ -4,12 +4,12 @@ import { installClassicalGrammarApplicationGlobals } from "../application/classi
 import { installClassicalNahuatlFormationResultBindingGlobals } from "../application/classical/formation_result_binding.mjs?v=20261011-reader-42-8-272&repair=position-model-20261011-9";
 import { installClassicalGrammarWorkspaceHistoryGlobals } from "../application/classical/grammar_workspace_history.mjs?deverbalReload=20261024-8&innerSource=20261024-1&innerParticle=20261024-1&remainingReload=20261024-1&v=20260826-interface-repairs-341&resultEditing=20261014-2&nominalReload=20261024-4";
 import { installClassicalCapabilityClosureAtlasGlobals } from "../ui/diagnostics/classical_capability_closure_atlas.mjs?v=20260920-atlas-input-count-533";
-import { installClassicalClauseRelationControllerGlobals } from "../application/classical/clause_relation_controller.mjs?conjunction=20261023-2&v=20261011-reader-42-8-273&remaining=20261013-inventory-1&comparisonCapture=20261021-3&formalAxes=20261022-1&temporalProfiles=20261022-1&makePreview=20261022-1&andrewsRelease=20261024-1";
+import { installClassicalClauseRelationControllerGlobals } from "../application/classical/clause_relation_controller.mjs?conjunction=20261023-2&v=20261011-reader-42-8-273&remaining=20261013-inventory-1&comparisonCapture=20261021-3&formalAxes=20261022-1&temporalProfiles=20261022-1&makePreview=20261022-1&andrewsRelease=20261024-1&ad102=20261024-1";
 import { installScriptRuntimeGlobals } from "../bootstrap/script_runtime.mjs?v=20260904-ni-stock-ocr-corrections-414&startupDelivery=20261022-1";
 import { installAgreementGlobals } from "../core/agreement/agreement.mjs?v=20260818-lesson29-groups10-12-357";
 import { installAgreementDisplayGlobals } from "../core/agreement/display.mjs?v=20260818-lesson29-groups10-12-357";
 import { installComboValidationGlobals } from "../core/agreement/combo_validation.mjs?v=20260818-lesson29-groups10-12-357";
-import { installAdverbialAdjunctionGlobals } from "../core/clause/adjunction/adjunction.mjs?v=20261009-reader-42-6-224&temporalProfiles=20261022-1";
+import { installAdverbialAdjunctionGlobals } from "../core/clause/adjunction/adjunction.mjs?v=20261009-reader-42-6-224&temporalProfiles=20261022-1&ad102=20261024-1";
 import { installClassicalNahuatlProfileWallGlobals } from "../core/classical/profile_wall.mjs?v=20260818-lesson29-groups10-12-357";
 import { installClassicalNahuatlSourceStemInventoryGlobals } from "../core/classical/source_stem_inventory.mjs?v=20261011-reader-42-8-270";
 import { installClassicalNahuatlTranscriptionGlobals } from "../core/classical/transcription.mjs?v=20260928-reader-evidence-cache-774&writingSource=20261022-2";

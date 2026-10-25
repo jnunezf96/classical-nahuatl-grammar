@@ -1,5 +1,11 @@
 # Version History
 
+## v1.2.34 — Conditional Cue Choice
+
+- Repairs AD-102: issued conditional cues permit omitting tlā through the canonical owner and public relation controller.
+- Preserves exact clause parents, overt marking, preview and reload boundaries.
+
+
 ## v1.2.33 — Andrews Decision Choices
 
 - Publishes the four reviewed Andrews choice groups and five-group interface organization on the v1.2.32 live baseline.

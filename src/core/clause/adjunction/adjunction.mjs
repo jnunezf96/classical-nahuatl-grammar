@@ -682,6 +682,11 @@ export function createAdverbialAdjunctionGlobals(targetObject = globalThis, inst
         return Object.freeze({
           ...principal,
           features: Object.freeze({...principal.features,
+            // Andrews 50.7.2.b: the exact issued clause retains its conditional
+            // cue when a manner adjunct supplies it; caller flags are not evidence.
+            conditionalCue: principal.features?.conditionalCue === true
+              || (input.ruleProfile?.relation === "manner"
+                && input.sourceContract.adjoined?.features?.conditionalCue === true),
             sentencePunctuation: input.sentencePunctuation || principal.features.sentencePunctuation,
             ...(exactIuh ? {adverbialCenter: "iuh", canonicalAdverbialResultFrame: exactIuh} : {})}),
           role,
@@ -724,7 +729,8 @@ export function createAdverbialAdjunctionGlobals(targetObject = globalThis, inst
           surface, surfaceForms: Object.freeze([surface]),
           formulaRealizationRecordId: input.sentenceFormulaDisplay,
           formulaRecordId: input.consumedNuclearFormula, astKind: "",
-          features: Object.freeze({ unitKind: input.nuclearClauseKind, mood: "", tense: input.tense || "", antecessive: false, futureEmbed: false, sentenceType: "particle-sentence", sentencePunctuation: String(input.sentenceSurfaceDisplay || "").trim().match(/[.?!]$/u)?.[0] || "", adverbialCenter: "", negativizedParticle }),
+          features: Object.freeze({ ...innerClauseSource.features, unitKind: input.nuclearClauseKind, sentenceType: "particle-sentence", conditionalCue: actualParticleSource.ok && actualParticleSource.features?.conditionalCue === true
+            || innerClauseSource.ok && innerClauseSource.features?.conditionalCue === true, sentencePunctuation: String(input.sentenceSurfaceDisplay || "").trim().match(/[.?!]$/u)?.[0] || "", adverbialCenter: "", negativizedParticle }),
           grammarFrame: null, issuedResult: input,
         });
       }
