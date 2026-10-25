@@ -3087,7 +3087,8 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
         targetObject.isClassicalNahuatlIssuedDeverbalNncSlotFrame?.(nncSlotFrame)
           === true
         || targetObject.isClassicalNahuatlIssuedNominalConstructionNncSlotFrame?.(nncSlotFrame)
-          === true);
+          === true
+        || targetObject.isClassicalNahuatlContextualFirstPersonNncSlotFrame?.(nncSlotFrame) === true);
       const compositionOperationIds = issuedDeverbalNnc
         ? ["nnc-clause-shell", "nnc-sentence-composition"]
         : typedNnc

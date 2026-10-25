@@ -12,7 +12,7 @@ import {
 } from "./participant_frame.mjs?v=20260823-passive-formation-continuity-238";
 
 import { projectClassicalNahuatlRetainedReflexiveShuntline }
-  from "./vnc_derivation_evaluator.mjs?v=20261008-reader-40-9-190";
+  from "./vnc_derivation_evaluator.mjs?v=20261008-reader-40-9-190&andrewsRelease=20261024-1";
 
 const VERSION = 1;
 const ISSUED_SOURCE_FRAMES = new WeakSet();

@@ -1,16 +1,16 @@
-# Grammar OS v1.2.32 release
+# Grammar OS v1.2.33 release
 
-Release name: **Reload Fixture Alignment**
+Release name: **Andrews Decision Choices**
 
-Browser build: **20261024-composition-51**
+Browser build: **20261024-andrews-decisions-52**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Aligns the whole-Result reload save-test fixture with the production saver's neutral additional-Result binding state.
-- Checks accepted-whole and selected-child restoration with short and medium invented Nahuatl Sources, including saving without Make or a History mutation.
-- Preserves the reviewed v1.2.31 grammar and interface behavior; this verification release changes no grammatical owner or persistence format.
+- Adds Andrews-governed optional comparison in, archaic finite singular qui, personal-name inner ending shortening, and contextual first-person silence.
+- Organizes existing decisions into Source and readings, Formation, Participants, Clause form and Relationships within the current formula layout.
+- Preserves newer live editing, reload, exact Source, and explicit Make behavior. No research inventory or private evidence is shipped.
 
 ## Review scope and current limits
 
@@ -37,7 +37,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.32/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.33/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.

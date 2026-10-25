@@ -1246,7 +1246,7 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
                             <option value="passive-preterit-patientive">passive preterit patientive NNC</option>
                             <option value="impersonal-preterit-agentive">impersonal preterit agentive NNC</option>
                             <option value="absolutive-state-nnc">absolutive-state NNC</option>
-                            <option value="absolutive-state-truncated-inner-number">absolutive-state NNC · truncated inner number</option>
+                            <option value="absolutive-state-truncated-inner-number">already shortened absolutive NNC</option>
                             <option value="possessive-state-nnc">possessive-state NNC</option>
                             <option value="subject-supplementation">subject-supplementation unit</option>
                             <option value="possessor-supplementation">possessor-supplementation unit</option>
@@ -3947,6 +3947,13 @@ ${ClassicalCapabilityOperationPlan()}
                         <select id="classical-rule-logic-admonitive-plural-ending" data-classical-rule-logic-control="admonitive-plural-ending">
                           <option value="in" selected>-tin</option>
                           <option value="ih">-tih</option>
+                        </select>
+                      </label>
+                      <label class="classical-rule-control" data-classical-vnc-authority-order="predicate-tense" hidden>
+                        <span class="classical-rule-control__label">Singular connector</span>
+                        <select id="classical-rule-logic-finite-singular-connector" data-classical-rule-logic-control="finite-singular-connector">
+                          <option value="silent" selected>Silent · usual</option>
+                          <option value="qui">qui · archaic</option>
                         </select>
                       </label>
                       <label class="classical-rule-control" data-classical-vnc-authority-order="predicate-tense" hidden>

@@ -2,7 +2,7 @@
 // prerequisites or licences. An exact owner still supplies every visible option.
 const groups={
  material:['adjectival-source-spelling','adjectival-source-use','compoundLexicalizationAnalysis','compoundMatrixClass','compoundMatrixInitialISelection','compoundMatrixStem','continuation-matrix-noun-class','continuation-matrix-stem','embedSourceClass','embedUse','fixed-sequence-analysis','honorificFormationAnalysis','relational-matrix','root-stock-source-analysis','source-family'],
- subject:['subject','subjectAnimacy','subjectHumanness','numberForm','pluralConnector','singularConnector','doubledFirstPlural','metaphoricalUse','admonitivePluralEnding','purposiveIrregularPluralN'],
+ subject:['finiteSingularConnector','subject','subjectAnimacy','subjectHumanness','numberForm','pluralConnector','singularConnector','doubledFirstPlural','metaphoricalUse','admonitivePluralEnding','purposiveIrregularPluralN'],
  'result-subject':['causativeResultSubject'],
  state:['state','possessor','includedPossessor','possessorReduplication'],
  valence:['applicativeObjectKind','applicativeObjectPerson','causativeObjectKind','causativeSpecificShuntlineRealization','objectSelection'],

@@ -348,6 +348,7 @@ export function createClassicalNahuatlLaterLayersRuntime(targetObject = globalTh
           sentenceType: canonicalActiveSentenceFrame.sentenceType || "",
           punctuationMode: canonicalActiveSentenceFrame.punctuationMode || "",
           admonitivePluralEnding: canonicalActiveSentenceFrame.admonitivePluralEnding || "",
+          finiteSingularConnector: canonicalActiveSentenceFrame.finiteSingularConnector || "",
           defectiveANegativeVariant: canonicalActiveSentenceFrame.defectiveANegativeVariant || "",
           negative: canonicalSentenceNegative,
           questionMode: canonicalActiveSentenceFrame.questionMode || "",

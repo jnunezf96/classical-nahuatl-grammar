@@ -1461,8 +1461,8 @@ import { CLASSICAL_NAHUATL_VNC_FACT_RECORDS } from "./vnc_fact_catalog.mjs";
 import { createClassicalVncValidationSemanticOperationsApi } from "./vnc_lessons9_11_semantic_operations.mjs?v=20260806-class-c-claim-172";
 import { createClassicalNncValidationSemanticOperationsApi } from "./nnc_lessons12_13_semantic_operations.mjs";
 import { createClassicalNounstemValidationSemanticOperationsApi } from "./nnc_nounstem_semantic_operations.mjs";
-import { createClassicalHigherPronominalNncValidationSemanticOperationsApi } from "./nnc_higher_pronominal_semantic_operations.mjs";
-import { createClassicalSupplementationValidationSemanticOperationsApi } from "../sentence/supplementation_validation_semantic_operations.mjs?v=20260816-lesson29-groups1-3-012";
+import { createClassicalHigherPronominalNncValidationSemanticOperationsApi } from "./nnc_higher_pronominal_semantic_operations.mjs?andrewsRelease=20261024-1";
+import { createClassicalSupplementationValidationSemanticOperationsApi } from "../sentence/supplementation_validation_semantic_operations.mjs?v=20260816-lesson29-groups1-3-012&andrewsRelease=20261024-1";
 import { createClassicalNonactiveVoiceObjectValidationSemanticOperationsApi } from "./nonactive_voice_object_validation_semantic_operations.mjs?v=20260904-ni-stock-ocr-corrections-414";
 import { createClassicalObjectRelationshipValidationSemanticOperationsApi } from "./object_relationship_validation_semantic_operations.mjs?v=20260902-result-partition-375";
 import { createClassicalVncDerivationValidationSemanticOperationsApi } from "./vnc_derivation_validation_semantic_operations.mjs?v=20261001-reader-24-8-subject-1";
@@ -1478,7 +1478,7 @@ import { createClassicalCardinalNumeralValidationSemanticOperationsApi } from ".
 import { createClassicalDeverbalNncValidationSemanticOperationsApi } from "./deverbal_nnc_validation_semantic_operations.mjs";
 import { createClassicalDeverbalPatientiveValidationSemanticOperationsApi } from "./deverbal_patientive_validation_semantic_operations.mjs";
 import { createClassicalAdjectivalModificationValidationSemanticOperationsApi } from "./adjectival_modification_validation_semantic_operations.mjs";
-import { createClassicalAdverbialNuclearValidationSemanticOperationsApi } from "./adverbial_nuclear_validation_semantic_operations.mjs?v=20260826-relational-role-340";
+import { createClassicalAdverbialNuclearValidationSemanticOperationsApi } from "./adverbial_nuclear_validation_semantic_operations.mjs?v=20260826-relational-role-340&andrewsRelease=20261024-1";
 import { createClassicalRelationalNncValidationSemanticOperationsApi } from "./relational_nnc_validation_semantic_operations.mjs?v=20260902-result-partition-375";
 import { createClassicalLocativeRelationalNncValidationSemanticOperationsApi } from "./locative_relational_nnc_validation_semantic_operations.mjs?v=20260902-result-partition-375";
 import { createClassicalRelationalContinuationValidationSemanticOperationsApi } from "./relational_continuation_validation_semantic_operations.mjs?v=20260902-result-partition-375";
@@ -1487,7 +1487,7 @@ import { createClassicalAdverbialAdjunctionValidationSemanticOperationsApi } fro
 import { createClassicalClauseComplementValidationSemanticOperationsApi } from "./clause_complement_validation_semantic_operations.mjs";
 import { createClassicalClauseConjunctionValidationSemanticOperationsApi } from "./clause_conjunction_validation_semantic_operations.mjs";
 import { createClassicalComparisonValidationSemanticOperationsApi } from "./comparison_validation_semantic_operations.mjs";
-import { createClassicalDenominalVncValidationSemanticOperationsApi } from "./denominal_vnc_validation_semantic_operations.mjs?v=20260826-relational-role-340";
+import { createClassicalDenominalVncValidationSemanticOperationsApi } from "./denominal_vnc_validation_semantic_operations.mjs?v=20260826-relational-role-340&andrewsRelease=20261024-1";
 import { createRoutineSemanticOwnerMechanicsApi } from "./transcription_owner_mechanics.mjs?v=20260904-ni-stock-ocr-corrections-414";
 const OWNER_SPECS = Object.freeze([
   classical_absolutive_nnc_formula_formation,

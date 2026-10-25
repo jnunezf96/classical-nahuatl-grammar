@@ -2,7 +2,7 @@
 // results. It owns presentation decisions only; the clause engine remains the
 // sole owner of relation validation, formulas, realization, and surfaces.
 
-import { installClassicalLateValidationOwnersGlobals } from "../../core/classical/late_validation_owner_catalog.mjs?v=20260826-relational-role-340";
+import { installClassicalLateValidationOwnersGlobals } from "../../core/classical/late_validation_owner_catalog.mjs?v=20260826-relational-role-340&andrewsRelease=20261024-1";
 
 const CONTROLLER_KIND = "classical-clause-relation-controller";
 const CONTROLLER_RESULT_KIND = "classical-clause-relation-controller-result";
@@ -556,6 +556,7 @@ const ALLOWED_SELECTION_KEYS = Object.freeze([
   "sentenceType",
   "sameAsMarker",
   "negativeIntroducer",
+  "negativeStandardIn",
   "degreeMarker",
   "adversativeMarker",
   "questionCollocation",
@@ -2017,7 +2018,7 @@ export function createClassicalClauseRelationControllerGlobals(
           ]);
         }
       }
-      if (["adjunctorIn", "icRelation", "copula"].includes(field)) {
+      if (["adjunctorIn", "negativeStandardIn", "icRelation", "copula"].includes(field)) {
         return COMPARISON_CHOICE_VALUES.boolean;
       }
       return freezeArray(COMPARISON_CHOICE_VALUES[field] || []);
@@ -2040,7 +2041,7 @@ export function createClassicalClauseRelationControllerGlobals(
       if (field === "principalNnc") return "tachcauh";
       if (field === "continuationFamily") return "bare";
       if (field === "position") return "preposed";
-      if (field === "adjunctorIn") return "yes";
+      if (["adjunctorIn", "negativeStandardIn"].includes(field)) return "yes";
       if (field === "icRelation") {
         return Object.values(layout).includes("dimension") ? "yes" : "no";
       }
@@ -2604,6 +2605,22 @@ export function createClassicalClauseRelationControllerGlobals(
             coordinationRelation === "marked" && level === "adjoined",
           adjoinedFunction,
         });
+        const contextRoles = ["principal", "adjoined", "dependent"].filter(role => getValidatedCapture(role));
+        const contextEnvelopes = contextRoles.map(role => buildCapturedSupplementationEnvelope(role,
+          {referenceId: "conjunction-first-person", subjectReferenceId: "conjunction-first-person"}, true));
+        const contextualFirstPersonAvailable = leftContext === "present" && contextEnvelopes.length > 1
+          && contextEnvelopes.every(envelope => envelope?.unitKind === "vnc")
+          && contextEnvelopes.slice(1).every(envelope =>
+            targetObject.buildClassicalNahuatlConcatenatedFirstPersonProjection?.(contextEnvelopes[0], envelope));
+        const requestedFirstPerson = normalizeToken(selectionObject.contextualSilentFirstPerson || "absent");
+        if (!["absent", "present"].includes(requestedFirstPerson)
+          || requestedFirstPerson === "present" && !contextualFirstPersonAvailable) {
+          diagnostics.push("conjunction-contextual-first-person-not-licensed");
+        }
+        if (contextualFirstPersonAvailable) decisions.push(buildDecision({
+          id: "contextual-silent-first-person", values: ["absent", "present"], selectedValue: requestedFirstPerson,
+          reason: "later VNCs with the same first-person referent may silence pers1 after the sounded first VNC"}));
+        operationSelections.contextualSilentFirstPerson = requestedFirstPerson === "present";
         const ellipsis = normalizeToken(
           selectionObject.identicalAdjoinedClauseEllipsis || "none",
         );
@@ -3377,13 +3394,11 @@ export function createClassicalClauseRelationControllerGlobals(
           reason:
             "the typed antecessive boundary can remain on its VNC or take the licensed integrated carrier",
         });
-        const contextualSilentEligible = Boolean(
-          referenceMode === "shared"
-          && principalPreview?.unitKind === "vnc"
-          && supplementPreview?.unitKind === "vnc"
-          && principalPreview?.subject?.features?.person === "1"
-          && supplementPreview?.subject?.features?.person === "1",
-        );
+        const contextualPair = ["principal", "adjoined"].map(role => buildCapturedSupplementationEnvelope(role,
+          {referenceId: "first-person-context", subjectReferenceId: "first-person-context"}, true));
+        if (operationSelections.supplementationOrder === "supplement-first") contextualPair.reverse();
+        const contextualSilentEligible = referenceMode === "shared" && Boolean(
+          targetObject.buildClassicalNahuatlConcatenatedFirstPersonProjection?.(...contextualPair));
         resolveChoice({
           id: "contextual-silent-first-person",
           key: "contextualSilentFirstPerson",
@@ -5429,7 +5444,8 @@ export function createClassicalClauseRelationControllerGlobals(
     function buildConjunctionRequest(contract) {
       const sharedReference = contract.relation === "lexical-conjunction"
         ? "lexical-conjunction-shared-referent"
-        : "";
+        : contract.relation === "conjunction" && contract.operationSelections.contextualSilentFirstPerson === true
+          ? "conjunction-first-person" : "";
       const conjunctRoles = contract.relation === "conjunction"
         && contract.operationSelections.leftContextAbsent === true
         ? ["principal"]
@@ -5618,7 +5634,7 @@ export function createClassicalClauseRelationControllerGlobals(
         Object.entries(contract?.operationSelections || {})
           .filter(([field]) => field !== "comparisonRoute")
           .map(([field, value]) => [field,
-            ["adjunctorIn", "icRelation", "copula"].includes(field)
+            ["adjunctorIn", "negativeStandardIn", "icRelation", "copula"].includes(field)
               ? value === "yes" : value,
           ])
       );

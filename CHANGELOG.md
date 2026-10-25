@@ -1,5 +1,11 @@
 # Version History
 
+## v1.2.33 — Andrews Decision Choices
+
+- Publishes the four reviewed Andrews choice groups and five-group interface organization on the v1.2.32 live baseline.
+- Retains current formula collectors and newer editing/reload behavior; groups decisions within those collectors without replacing controls.
+
+
 ## v1.2.32 — Reload Fixture Alignment
 
 - Corrects the outdated public save-adapter fixture by supplying the actual neutral binding state.

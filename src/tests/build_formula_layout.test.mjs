@@ -302,3 +302,33 @@ test('NNC State precedes its projected possession detail in one native disclosur
   const removals=bucket.removals;arrangeProjectedFormulaChoices(f.doc,f.host,fields);arrangeProjectedClauseChoices(f.doc,f.organizer,'nnc');
   assert.equal(bucket.removals,removals);assert.equal(native.control.parentElement,native.section);assert.equal(ownerChoiceHost(fields[0].control,f.doc),f.host);
 });
+
+test('decision groups remain contiguous inside retained formula slots without moving settled controls',()=>{
+ const {doc}=fixture('vnc');const host=new Element('section');
+ const entries=[['subject','participants'],['numberForm','formation'],['subjectHumanness','participants']].map(([choice,group])=>{
+  const field=new Element('label');field.append(new Element('select'));host.append(field);return {field,choice,group};
+ });
+ const groups=[{id:'formation',order:0},{id:'participants',order:1}];
+ arrangeProjectedFormulaChoices(doc,host,entries,groups);
+ const bucket=entries[0].field.parentElement;
+ assert.deepEqual(bucket.children.slice(1),[entries[1].field,entries[0].field,entries[2].field]);
+ const heading=new Element('h3');heading.dataset.workspaceChoiceHeading='participants';entries[0].field.before(heading);
+ const moves=entries.map(entry=>entry.field.removals||0);
+ arrangeProjectedFormulaChoices(doc,host,entries,groups);
+ assert.deepEqual(entries.map(entry=>entry.field.removals||0),moves);
+ assert.ok(entries.every(entry=>entry.field.parentElement===bucket));
+});
+
+
+test('decision heading precedes the first structurally ordered field, independent of caller order',async()=>{
+ const {organizeWorkspaceDecisionHeadings}=await import('../ui/composition/workspace_organization.mjs');
+ const {doc}=fixture('vnc');const host=new Element('section');
+ const entries=['possessor','state'].map(choice=>{const field=new Element('label');field.append(new Element('select'));host.append(field);return {field,choice,group:'participants'};});
+ const groups=[{id:'participants',label:'Participants',order:0}];
+ arrangeProjectedFormulaChoices(doc,host,entries,groups);organizeWorkspaceDecisionHeadings(doc,entries,groups);
+ const bucket=entries[0].field.parentElement;const heading=bucket.querySelector('[data-workspace-choice-heading]');
+ assert.equal(heading.nextElementSibling,entries[1].field);
+ const moves=entries.map(entry=>entry.field.removals||0);
+ arrangeProjectedFormulaChoices(doc,host,entries,groups);organizeWorkspaceDecisionHeadings(doc,entries,groups);
+ assert.deepEqual(entries.map(entry=>entry.field.removals||0),moves);assert.equal(heading.nextElementSibling,entries[1].field);
+});

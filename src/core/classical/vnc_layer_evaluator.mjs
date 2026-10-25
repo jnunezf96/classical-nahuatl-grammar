@@ -717,6 +717,8 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
           number: {
             num1,
             num2,
+            finiteSingularConnector: numberDyad?.finiteSingularConnector || "",
+            ...(numberDyad?.rule ? {rule: numberDyad.rule} : {}),
             variantRule: numberDyad?.num1VariantRule || "",
             condition: numberDyad?.condition || "",
             supportiveRuleRefs: cloneClassicalNahuatlVncSlotValue(numberDyad?.num1SupportiveVowelFrame?.ruleRefs || [])
@@ -1527,7 +1529,7 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
       const num1LeftCarrierSource = !isClassicalNahuatlVncSilentCarrier(realizedFrame.slots.predicate.tns) ? "tns" : "stem";
       const num1LeftCarrier = num1LeftCarrierSource === "tns" ? realizedFrame.slots.predicate.tns : realizedFrame.slots.predicate.stem;
       const num1LeftSound = getClassicalNahuatlVncSlotLastSound(num1LeftCarrier);
-      const num1KContext = isClassicalNahuatlVncNum1KContext(number);
+      const num1KContext = !number.rule && isClassicalNahuatlVncNum1KContext(number);
       const lesson11Num1Override = String(realizedFrame.lesson11Alternative?.num1Override || realizedFrame.lesson11Plan?.num1Override || "");
       const lesson11DeletesPostStemK = realizedFrame.lesson11Alternative?.deletePostStemK === true || realizedFrame.lesson11Plan?.deletePostStemK === true || realizedFrame.lesson11Plan?.kDeletionAfterStem === true;
       let num1SupportiveVowelAction = "not-supportive";
@@ -1546,9 +1548,9 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
             number.num1 = "c";
             num1SupportiveVowelAction = "not-needed-after-vowel";
           } else {
-            number.num1 = CLASSICAL_NAHUATL_VNC_SLOT_SQUARE_ZERO;
-            num1SupportiveVowelAction = "suppress-supportive-qui-with-square-zero";
-            num1SquareZeroReplacesQui = true;
+            number.num1 = number.finiteSingularConnector === "qui" ? "qui" : CLASSICAL_NAHUATL_VNC_SLOT_SQUARE_ZERO;
+            num1SupportiveVowelAction = number.num1 === "qui" ? "retain-selected-archaic-supportive-qui" : "suppress-supportive-qui-with-square-zero";
+            num1SquareZeroReplacesQui = number.num1 !== "qui";
           }
         }
         actions.push("realize-num1-k-connector-after-final-predicate");

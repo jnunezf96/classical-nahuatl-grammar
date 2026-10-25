@@ -1,5 +1,5 @@
 import {reduplicate} from "./reduplicative_realization.mjs";
-import {CLASSICAL_NAHUATL_VNC_SEMANTIC_MOODS, CLASSICAL_NAHUATL_VNC_SEMANTIC_TENSES_BY_MOOD} from "./vnc_layer_evaluator.mjs";
+import {CLASSICAL_NAHUATL_VNC_SEMANTIC_MOODS, CLASSICAL_NAHUATL_VNC_SEMANTIC_TENSES_BY_MOOD} from "./vnc_layer_evaluator.mjs?andrewsRelease=20261024-1";
 
 // Canonical Andrews-only denominal VNC grammar.
 //

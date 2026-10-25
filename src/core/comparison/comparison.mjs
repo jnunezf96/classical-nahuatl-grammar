@@ -118,6 +118,14 @@ export function createComparisonApi(targetObject = globalThis, installationConte
       "in-ahmo-mach-iuh": "in ahmō mach iuh",
       "in-ahmo-mach-iuhqui": "in ahmō mach iuhqui"
     });
+    // Andrews 53.5.2: the standard's adjunctor is independent of the īc adjunct.
+    const NEGATIVE_STANDARD_WITHOUT_IN = freeze({
+      inahmo: {surface: "ahmō", formula: "ahmō"},
+      "in-ahmo-iuh": {surface: "ahmō iuh", formula: "ahmō + iuh"},
+      "in-ahmo-iuhqui": {surface: "ahmō iuhqui", formula: "ahmō + #0-0(iuh-Ø-qui)0-0#"},
+      "in-ahmo-mach-iuh": {surface: "ahmō mach iuh", formula: "ahmō + mach + iuh"},
+      "in-ahmo-mach-iuhqui": {surface: "ahmō mach iuhqui", formula: "ahmō + mach + #0-0(iuh-Ø-qui)0-0#"}
+    });
     const COMPARATIVE_DEGREE_MARKERS = freeze({
       "oc-achi": "oc achi",
       "oc-cencah": "oc cencah",
@@ -364,9 +372,9 @@ export function createComparisonApi(targetObject = globalThis, installationConte
       route("size-quezqui-no-izqui", COMPARISON_RELATION.size, "compose-quezqui-no-izqui-correlative", ["leftClause", "rightClause"], "in+quēzquipa+LEFT+no+izquipa+RIGHT", ["sentenceType"], ["size", "quantity", "correlative"]),
       route("size-more-more-correlative", COMPARISON_RELATION.size, "compose-more-more-correlative", ["leftClause", "rightClause"], "in+īc+cencah+LEFT+oc+cencah+RIGHT", ["sentenceType"], ["proportional", "more-more", "correlative"]),
       route("comparative-adversative", COMPARISON_RELATION.comparativeDegree, "compose-two-affirmative-adversative-comparison", ["baseClause", "superiorClause"], "AFFIRMATIVE+ADVERSATIVE+DEGREE+AFFIRMATIVE", ["adversativeMarker", "degreeMarker", "sentenceType"], ["inequality", "two-conjunct", "adversative", "affirmative"]),
-      route("comparative-negative-adverbial", COMPARISON_RELATION.comparativeDegree, "compose-affirmative-negative-adverbial-comparison", ["principal", "standard"], "TOPIC+DEGREE+PRINCIPAL+NEGATIVE_INTRODUCER+STANDARD", ["degreeMarker", "negativeIntroducer", "sentenceType"], ["inequality", "affirmative-negative", "adverbial-collocation"]),
-      route("comparative-tachcauh-hualcah", COMPARISON_RELATION.comparativeDegree, "compose-principal-nnc-ic-comparison", ["point", "standard"], "TOPIC+COPULA+DEGREE+PRINCIPAL_NNC+(in)+īc+POINT+NEGATIVE_INTRODUCER+STANDARD", ["principalNnc", "degreeMarker", "negativeIntroducer", "copula", "adjunctorIn", "sentenceType"], ["inequality", "principal-nnc", "ic-adjunct", "topic"]),
-      route("comparative-panahuia-unspecified", COMPARISON_RELATION.comparativeDegree, "compose-unspecified-object-panahuia-comparison", ["principal", "point"], "TOPIC+DEGREE+PANAHUIA_UNSPECIFIED+(in)+īc+POINT+NEGATIVE_STANDARD", ["degreeMarker", "negativeIntroducer", "adjunctorIn", "sentenceType"], ["inequality", "applicative", "unspecified-object", "ic-adjunct"]),
+      route("comparative-negative-adverbial", COMPARISON_RELATION.comparativeDegree, "compose-affirmative-negative-adverbial-comparison", ["principal", "standard"], "TOPIC+DEGREE+PRINCIPAL+NEGATIVE_INTRODUCER+STANDARD", ["degreeMarker", "negativeIntroducer", "negativeStandardIn", "sentenceType"], ["inequality", "affirmative-negative", "adverbial-collocation"]),
+      route("comparative-tachcauh-hualcah", COMPARISON_RELATION.comparativeDegree, "compose-principal-nnc-ic-comparison", ["point", "standard"], "TOPIC+COPULA+DEGREE+PRINCIPAL_NNC+(in)+īc+POINT+NEGATIVE_INTRODUCER+STANDARD", ["principalNnc", "degreeMarker", "negativeIntroducer", "negativeStandardIn", "copula", "adjunctorIn", "sentenceType"], ["inequality", "principal-nnc", "ic-adjunct", "topic"]),
+      route("comparative-panahuia-unspecified", COMPARISON_RELATION.comparativeDegree, "compose-unspecified-object-panahuia-comparison", ["principal", "point"], "TOPIC+DEGREE+PANAHUIA_UNSPECIFIED+(in)+īc+POINT+NEGATIVE_STANDARD", ["degreeMarker", "negativeIntroducer", "negativeStandardIn", "adjunctorIn", "sentenceType"], ["inequality", "applicative", "unspecified-object", "ic-adjunct"]),
       route("comparative-panahuia-specified", COMPARISON_RELATION.comparativeDegree, "compose-specified-object-panahuia-comparison", ["principal", "point"], "COMPARAND+DEGREE+PANAHUIA_SPECIFIED+STANDARD+(in)+īc+POINT", ["degreeMarker", "adjunctorIn", "sentenceType"], ["inequality", "applicative", "specified-object", "ic-adjunct"]),
       route("question-how-much-more", COMPARISON_RELATION.comparisonQuestion, "insert-quen-before-comparative-collocation", ["baseClause", "degreeClause"], "BASE+quēn+COMPARATIVE_COLLOCATION+DEGREE_CLAUSE", ["questionCollocation", "sentenceType"], ["question", "how-much-more", "comparative-collocation"]),
       route("superlative-adverbial", COMPARISON_RELATION.superlativeDegree, "compose-superlative-adverbial", ["topic", "predicate"], "TOPIC+(ca)+SUPERLATIVE_ADVERBIAL+PREDICATE", ["superlativeAdverbial", "copula", "sentenceType"], ["superlative", "negative-contrast-deletion", "adverbial"]),
@@ -1198,7 +1206,17 @@ export function createComparisonApi(targetObject = globalThis, installationConte
         choices[field] = choice;
       };
       if (routeSpec.choiceFields.includes("sameAsMarker")) addChoice("sameAsMarker", SAME_AS_MARKERS, "zan-no-yehhuatl");
-      if (routeSpec.choiceFields.includes("negativeIntroducer")) addChoice("negativeIntroducer", NEGATIVE_STANDARD_INTRODUCERS, "in-ahmo-iuhqui");
+      const requestedStandardIn = operationRequest.choices?.negativeStandardIn ?? operationRequest.negativeStandardIn;
+      if (requestedStandardIn !== undefined && (
+        !routeSpec.choiceFields.includes("negativeStandardIn") || typeof requestedStandardIn !== "boolean"
+      )) diagnostics.push("comparison-negative-standard-in-not-licensed");
+      if (routeSpec.choiceFields.includes("negativeIntroducer")) {
+        choices.negativeStandardIn = normalizeBooleanChoice(operationRequest, "negativeStandardIn", true);
+        addChoice("negativeIntroducer", choices.negativeStandardIn
+          ? NEGATIVE_STANDARD_INTRODUCERS
+          : Object.fromEntries(Object.entries(NEGATIVE_STANDARD_WITHOUT_IN).map(([id, entry]) => [id, entry.surface])),
+        "in-ahmo-iuhqui");
+      }
       if (routeSpec.choiceFields.includes("degreeMarker")) {
         const degreeInventory = ["similarity-tloc-relational-nnc", "similarity-incorporated-nehnequi"].includes(routeId)
           ? SIMILARITY_DEGREE_MARKERS
@@ -1964,6 +1982,9 @@ export function createComparisonApi(targetObject = globalThis, installationConte
     }
     function choiceFormula(operationFrame, field) {
       const choiceId = key(operationFrame.choices?.[field]?.id);
+      if (field === "negativeIntroducer" && operationFrame.choices?.negativeStandardIn === false) {
+        return text(NEGATIVE_STANDARD_WITHOUT_IN[choiceId]?.formula);
+      }
       return text(COMPARISON_CHOICE_FORMULAS[field]?.[choiceId]);
     }
     function slotFormula(operationFrame, slotId) {

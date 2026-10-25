@@ -11,7 +11,7 @@ import {appendValenceAnalysis} from '../composition/valence_analysis.mjs?v=20261
 import {previewConstructionPacket} from '../composition/construction_preview.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1';
 import {isIntermediateBuildTaskReset} from '../composition/build_task_menu.mjs?deverbalReload=20261024-8&operationFirst=20261023-2&clickFeedback=20261023-1&v=20261021-ending-reference-2&writingSource=20261022-2&fixedChoices=20261022-1';
 import { normalizeClassicalNahuatlIntroductoryModifier }
-  from "../../core/classical/verbstem_classes.mjs?v=20261008-reader-40-9-190&modifier=canonical-20261009-1&quantityClass=20261022-1";
+  from "../../core/classical/verbstem_classes.mjs?v=20261008-reader-40-9-190&modifier=canonical-20261009-1&quantityClass=20261022-1&andrewsRelease=20261024-1";
 import {createClassicalWorkspaceProvenanceProjector}
   from '../composer/result_provenance.mjs?v=20261012-position-provenance-7';
 import {resolvePathTargets, setPathHistoryPresentation} from '../composition/path_presentation.mjs?v=20261011-path-targets-7&routeShapes=20261021-1&writtenPreview=20261022-1&writingSource=20261022-1';
@@ -45,11 +45,11 @@ import {
   normalizeClassicalNahuatlVncSemanticMood,
   normalizeClassicalNahuatlVncParadigmTense,
   validateClassicalNahuatlVncSemanticSelection,
-} from "../../core/classical/vnc_layer_evaluator.mjs?v=20260824-lesson58-final-278";
+} from "../../core/classical/vnc_layer_evaluator.mjs?v=20260824-lesson58-final-278&andrewsRelease=20261024-1";
 import {
   CLASSICAL_NAHUATL_VNC_DERIVATION_TYPES,
   validateClassicalNahuatlVncDerivationTypeSelection,
-} from "../../core/classical/vnc_derivation_evaluator.mjs?v=20261008-reader-40-9-190";
+} from "../../core/classical/vnc_derivation_evaluator.mjs?v=20261008-reader-40-9-190&andrewsRelease=20261024-1";
 import {
   normalizeGenerationSourceTransitivity,
   validateGenerationSourceTransitivitySelection,
@@ -22570,6 +22570,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
         controlId: "classical-rule-logic-tense",
         label: "Tense"
       }, {
+        controlId: "classical-rule-logic-finite-singular-connector",
+        label: "Singular connector"
+      }, {
         controlId: "classical-rule-logic-admonitive-plural-ending",
         label: "Admonitive plural ending"
       }, {
@@ -28264,6 +28267,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const exactFamilies = Array.isArray(
         exactResolution?.compatibleSourceFamilyIds
       ) ? exactResolution.compatibleSourceFamilyIds : [];
+      const shortNameOption = Array.from(sourceFamilyControl?.options || []).find(
+        option => option.value === "absolutive-state-truncated-inner-number");
+      if (shortNameOption) shortNameOption.textContent = exactBinding?.exactResult
+        ? "absolutive NNC · shorten inner ending" : "already shortened absolutive NNC";
       if (active && exactBinding?.exactResult && sourceFamilyControl) {
         Array.from(sourceFamilyControl.options || []).forEach(option => {
           const allowed = exactFamilies.includes(option.value);
@@ -36938,6 +36945,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       "sentence-type": "sentenceType",
       "same-as-marker": "sameAsMarker",
       "negative-introducer": "negativeIntroducer",
+      "negative-standard-in": "negativeStandardIn",
       "degree-marker": "degreeMarker",
       "adversative-marker": "adversativeMarker",
       "question-collocation": "questionCollocation",
@@ -37022,6 +37030,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       "sentence-type": "Sentence type",
       "same-as-marker": "Sameness marker",
       "negative-introducer": "Negative standard",
+      "negative-standard-in": "Use in before the negative standard",
       "degree-marker": "Degree marker",
       "adversative-marker": "Adversative marker",
       "question-collocation": "Comparative collocation",
@@ -39887,6 +39896,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
     ]);
 
     const CLASSICAL_CAPABILITY_TYPED_SOURCE_CHOICE_LABELS = Object.freeze({
+      finiteSingularConnector: "Singular connector",
       patientReferenceId: "Patient",
       requestedDerivation: "Derivation",
       derivationOptionId: "Formation",
@@ -40299,9 +40309,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
           option => option.availabilityStatus === "available").length > 1
         ? ["applicativeObjectKind"] : [];
       const optionalVncNumberChoiceIds = binding.operationId === "vnc:application"
-        && choiceOptionProjection.admonitivePluralEnding?.some(option =>
-          option.availabilityStatus === "available")
-        ? ["admonitivePluralEnding"] : [];
+        ? ["admonitivePluralEnding", "finiteSingularConnector"].filter(id =>
+          choiceOptionProjection[id]?.some(option => option.availabilityStatus === "available")) : [];
       const optionalNominalChoiceIds = binding.operationId === "grammar:nominal-construction"
         ? binding.exactSource?.kind === "classical-nahuatl-cardinal-numeric-source-frame"
           ? Object.keys(choiceOptionProjection).filter(choiceId=>Array.isArray(choiceOptionProjection[choiceId])
@@ -40470,7 +40479,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         const acceptedSelection = String(
           binding.callerSelections?.[choiceId]
           ?? (["nnc:ordinary", "nnc:pronominal"].includes(binding.operationId)
-            || binding.operationId === "vnc:application" && choiceId === "admonitivePluralEnding"
+            || binding.operationId === "vnc:application" && ["admonitivePluralEnding", "finiteSingularConnector"].includes(choiceId)
             ? binding.effectiveSelections?.[choiceId] : "")
           ?? ""
         );
@@ -40493,6 +40502,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
               ? selectedValue === "true"
               : selectedValue;
           } else delete nextSelections[choiceId];
+          if (active.operationId === "vnc:application" && ["subject", "mood", "tense", "requestedVoice", "requestedDerivation", "nonactiveOptionId", "derivationOptionId", "applicativeObjectKind", "applicativeObjectPerson"].includes(choiceId)) {
+            delete nextSelections.finiteSingularConnector;
+            if (nextSelections.sentenceOptions) nextSelections.sentenceOptions = {...nextSelections.sentenceOptions, finiteSingularConnector: ""};
+          }
           if (choiceId === "compoundMatrix") {
             delete nextSelections.numberForm;
             delete nextSelections.predicatePluralization;
@@ -41126,6 +41139,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       sentenceAntecessive: "classical-rule-logic-prefix-stack",
       tense: "classical-rule-logic-tense",
       admonitivePluralEnding: "classical-rule-logic-admonitive-plural-ending",
+      finiteSingularConnector: "classical-rule-logic-finite-singular-connector",
       tlaFusion: "classical-rule-logic-tla-fusion",
       introductoryParticle: "classical-rule-logic-introductory-particle",
       introductoryModifier: "classical-rule-logic-introductory-modifier",
@@ -41540,6 +41554,19 @@ export function createUiRenderingApi(targetObject = globalThis) {
         const resultEnding = numberControl?.disabled !== true && numberControl?.readOnly !== true
           && numberOptions.some(option => option.availabilityStatus === "available"
             && option.optionId === numberControl?.value) ? numberControl.value : "";
+        const connectorDomain = resultBinding?.family === "vnc-continuation"
+          ? resultOwner?.ownerChoiceOptionProjection?.finiteSingularConnector : binding?.choiceOptionProjection?.finiteSingularConnector;
+        const connectorControl = resultBinding?.family === "vnc-continuation"
+          ? targetObject.document?.getElementById?.("classical-rule-logic-finite-singular-connector")
+          : targetObject.document?.querySelector?.('select[data-classical-capability-choice-id="finiteSingularConnector"]');
+        const connectorCoordinate = resultBinding?.family === "vnc-continuation"
+          ? resultOwner?.ownerPreflightResult?.normalizedRequest : binding?.effectiveSelections;
+        const sameConnectorCoordinate = connectorCoordinate?.subject === subject
+          && connectorCoordinate.mood === draft.mood && connectorCoordinate.tense === draft.tense
+          && (connectorCoordinate.requestedDerivation || connectorCoordinate.derivationType || "direct") === requestedDerivation
+          && (connectorCoordinate.requestedVoice || "active") === value("classical-rule-logic-vnc-voice", "active");
+        const connector = sameConnectorCoordinate && connectorDomain?.length > 1
+          ? connectorControl?.value || resultOwner?.selectedOwnerChoices?.finiteSingularConnector || binding?.effectiveSelections?.finiteSingularConnector || "silent" : "";
         return Object.freeze({
           ...(requestedDerivation === "causative"
             && continuationControls?.causativeObjectKindChoiceEligible === true ? {
@@ -41556,6 +41583,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
             applicativeObjectPerson: addedObject.objectKind === "specific-projective"
               ? addedObject.objectPerson : "",
           } : {}),
+          ...(connector ? {finiteSingularConnector: connector} : {}),
           subject,
           mood: draft.mood,
           tense: draft.tense,
@@ -43617,7 +43645,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       }
       if (binding?.operationId === "vnc:application") {
         ["subject", "mood", "tense", "requestedDerivation", "requestedVoice",
-          "derivationOptionId", "nonactiveOptionId", "applicativeObjectKind", "admonitivePluralEnding",
+          "derivationOptionId", "nonactiveOptionId", "applicativeObjectKind", "admonitivePluralEnding", "finiteSingularConnector",
           "causativeObjectKind", "causativeSpecificShuntlineRealization",
           "sentenceType", "negative", "sentenceAntecessive",
           "introductoryParticle", "introductoryModifier", "prefaceParticle", "directionalPrefix", "tlaFusion"]
@@ -44411,6 +44439,36 @@ export function createUiRenderingApi(targetObject = globalThis) {
       compactClassicalChoiceMenu(control);
       return available;
     }
+    function syncClassicalVncContinuationFiniteSingularConnector(binding = null) {
+      const control = targetObject.document?.getElementById?.(
+        "classical-rule-logic-finite-singular-connector");
+      if (!control || binding?.family !== "vnc-continuation"
+        || binding.operationId !== "vnc:application") return false;
+      const owner = binding.ownerBindingFrame;
+      const current = binding === ActiveClassicalGrammarResultBinding
+        && targetObject.isClassicalNahuatlVncContinuationBindingFrame?.(owner) === true
+        && owner.exactInputResult === binding.exactResult
+        && owner.ownerInputAcceptanceProven === true;
+      const options = current ? owner.ownerChoiceOptionProjection?.finiteSingularConnector || [] : [];
+      const values = options.filter(option => option.availabilityStatus === "available")
+        .map(option => option.optionId);
+      const available = values.length > 1;
+      const wrapper = control.closest?.("label, [data-classical-rule-control]");
+      if (wrapper) {
+        wrapper.hidden = !available;
+        wrapper.setAttribute("aria-hidden", String(!available));
+        wrapper.setAttribute("aria-disabled", String(!available));
+      }
+      control.disabled = !available;
+      control.setAttribute?.("aria-disabled", String(!available));
+      for (const option of Array.from(control.options || [])) {
+        option.disabled = !values.includes(option.value);
+        option.hidden = option.disabled;
+      }
+      control.value = available ? owner.selectedOwnerChoices.finiteSingularConnector : "";
+      compactClassicalChoiceMenu(control);
+      return available;
+    }
     function syncClassicalVncContinuationApplicationSentenceChoices(binding = null) {
       if (binding?.operationId !== "vnc:application"
         && !(binding?.operationId === "vnc:sentence-result"
@@ -44441,6 +44499,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         }
       }
       syncClassicalVncContinuationAdmonitivePluralEnding(binding);
+      syncClassicalVncContinuationFiniteSingularConnector(binding);
       // Recount the existing groups after changing their child visibility.
       syncClassicalVncAuthorityProgressivePresentation({
         basalUnit: "vnc",
@@ -46635,7 +46694,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           && (targetObject.isClassicalNahuatlImperfectiveVncSourceFrame?.(typedSourceBinding.exactSource) === true
             && typedSourceBinding.exactSource.sourceValence === "specific-projective"
             || targetObject.isClassicalNahuatlAnalyticalVncSourceFrame?.(typedSourceBinding.exactSource) === true) || [
-          "subject", "mood", "tense", "admonitivePluralEnding", "irregularStemChoice", "requestedDerivation", "requestedVoice",
+          "subject", "mood", "tense", "admonitivePluralEnding", "finiteSingularConnector", "irregularStemChoice", "requestedDerivation", "requestedVoice",
           "derivationOptionId", "nonactiveOptionId", "applicativeObjectKind",
           "causativeObjectKind", "causativeSpecificShuntlineRealization",
           "sentenceType", "negative", "sentenceAntecessive", "tlaFusion",
@@ -46667,7 +46726,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         const nextSelections = { ...(typedSourceBinding.callerSelections || {}) };
         // The existing Result can still display the former derivation. An edit
         // changes its own coordinate, not every field in that old presentation.
-        const editedChoiceIds = ["subject", "mood", "tense", "admonitivePluralEnding", "irregularStemChoice", "requestedDerivation", "requestedVoice",
+        const editedChoiceIds = ["subject", "mood", "tense", "admonitivePluralEnding", "finiteSingularConnector", "irregularStemChoice", "requestedDerivation", "requestedVoice",
           "derivationOptionId", "nonactiveOptionId", "applicativeObjectKind", "applicativeObjectPerson", "objectSelection",
           "causativeObjectKind", "causativeSpecificShuntlineRealization", "sentenceType", "negative",
           "sentenceAntecessive", "tlaFusion", "introductoryParticle", "introductoryModifier",
@@ -46683,6 +46742,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
             continue;
           }
           if (choiceId === "objectSelection") {nextSelections.objectSelection = String(control.value || "");continue;}
+          if (choiceId === "finiteSingularConnector") {nextSelections.finiteSingularConnector = String(control.value || "");continue;}
           if (choiceId === "admonitivePluralEnding") {nextSelections.admonitivePluralEnding = String(control.value || "");continue;}
           if (Object.prototype.hasOwnProperty.call(visibleSelections, choiceId)) {
             // The accepted derivation can still be Direct while its next
@@ -46697,6 +46757,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
           "introductoryParticle", "introductoryModifier", "prefaceParticle", "directionalPrefix",
           "sentenceParticle", "sentenceParticleHonorific", "particleCombination", "sentence-adverbial-id"].includes(id))
           && visibleSelections.sentenceOptions) nextSelections.sentenceOptions = visibleSelections.sentenceOptions;
+        if (editedChoiceIds.some(id => ["requestedVoice", "requestedDerivation", "nonactiveOptionId", "derivationOptionId", "objectSelection", "applicativeObjectKind", "applicativeObjectPerson"].includes(id))) {
+          delete nextSelections.finiteSingularConnector;
+          if (nextSelections.sentenceOptions) nextSelections.sentenceOptions = {...nextSelections.sentenceOptions, finiteSingularConnector: ""};
+        }
         if (editedChoiceIds.includes("requestedDerivation")) {
           delete nextSelections.derivationOptionId;
           delete nextSelections.nonactiveOptionId;
@@ -46719,6 +46783,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
           nextSelections.mood = projectedSelections.mood;
           nextSelections.tense = projectedSelections.tense;
           nextSelections.sentenceOptions = projectedSelections.sentenceOptions;
+          if (projectedSelections.finiteSingularConnector) nextSelections.finiteSingularConnector = projectedSelections.finiteSingularConnector;
+          else delete nextSelections.finiteSingularConnector;
           if (projectedSelections.admonitivePluralEnding) {
             nextSelections.admonitivePluralEnding = projectedSelections.admonitivePluralEnding;
           } else delete nextSelections.admonitivePluralEnding;
@@ -46786,7 +46852,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           ? Object.keys(CLASSICAL_CAPABILITY_BINDING_CONTROL_IDS)
           : [
           "subject", "mood", "tense", "requestedDerivation", "requestedVoice",
-          "derivationOptionId", "nonactiveOptionId", "applicativeObjectKind", "admonitivePluralEnding",
+          "derivationOptionId", "nonactiveOptionId", "applicativeObjectKind", "admonitivePluralEnding", "finiteSingularConnector",
           "causativeObjectKind", "causativeSpecificShuntlineRealization",
           "sentenceType", "negative", "sentenceAntecessive",
           "introductoryParticle", "introductoryModifier", "prefaceParticle", "directionalPrefix",
@@ -51485,7 +51551,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       });
     }
     function getClassicalVncReloadChoiceControls() {
-      return [...new Set([...["subject", "mood", "tense", "requestedDerivation",
+      return [...new Set([...["subject", "mood", "tense", "finiteSingularConnector", "requestedDerivation",
         "requestedVoice", "derivationOptionId", "nonactiveOptionId",
         "applicativeObjectKind", "causativeObjectKind",
         "causativeSpecificShuntlineRealization", "lateOperation", "lateVariant", "compoundMatrixStem",
@@ -51612,13 +51678,13 @@ export function createUiRenderingApi(targetObject = globalThis) {
     }
     function validateClassicalVncReloadApplicationSelections(selections) {
       if (!selections || typeof selections !== "object" || Array.isArray(selections)) return null;
-      const strings = new Set(["subject", "mood", "tense", "requestedDerivation", "requestedVoice",
+      const strings = new Set(["subject", "mood", "tense", "finiteSingularConnector", "requestedDerivation", "requestedVoice",
         "derivationOptionId", "nonactiveOptionId", "applicativeObjectKind", "applicativeObjectPerson",
         "causativeObjectKind", "causativeSpecificShuntlineRealization", "admonitivePluralEnding",
         "requestedImpersonalDerivationPath", "objectInterpretation", "directionalIttaContraction",
         "incorporatedAdverb", "adverbPosition"]);
       const booleans = new Set(["tlaFusion", "silentSpecificObject", "rareThirdCausativeMeaningSupported", "exceptionalSuffixOrderAuthorized"]);
-      const sentenceStrings = new Set(["sentenceType", "punctuationMode", "introductoryParticle",
+      const sentenceStrings = new Set(["finiteSingularConnector", "sentenceType", "punctuationMode", "introductoryParticle",
         "introductoryModifier", "prefaceParticle", "directionalPrefix", "directionalIttaContraction",
         "incorporatedAdverb", "adverbPosition", "admonitivePluralEnding", "defectiveANegativeVariant",
         "questionMode", "lesson9PrefaceParticle", "lesson9IntroductoryModifier", "admonitiveTranslationReading",
@@ -51688,6 +51754,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           || value === "" && Array.from(control.options || []).some(option => option.value === ""))) control.value = value;
       };
       for (const [key, id] of Object.entries({ subject: "subject", mood: "mood", tense: "tense",
+        finiteSingularConnector: "finite-singular-connector",
         requestedVoice: "vnc-voice", derivationOptionId: "derivation-option", nonactiveOptionId: "nonactive-family",
         causativeObjectKind: "causative-causee-valence",
         causativeSpecificShuntlineRealization: "causative-specific-shuntline-realization", tlaFusion: "tla-fusion" })) {

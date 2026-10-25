@@ -1,4 +1,4 @@
-import { capitalizeClassicalNahuatlNncSentenceInitial } from "./nnc_layer_evaluator.mjs?v=20260928-reader-evidence-cache-790";
+import { capitalizeClassicalNahuatlNncSentenceInitial } from "./nnc_layer_evaluator.mjs?v=20260928-reader-evidence-cache-790&andrewsRelease=20261024-1";
 
 // Canonical Lesson 44 adverbial-nuclear grammar contribution.
 // Grammar and lexical records in this module come only from

@@ -389,6 +389,7 @@ export function createClassicalNahuatlSupplementationApi(
   const issuedAdverbialModifierFrames = new WeakSet();
   const issuedClauseEnvelopes = new WeakSet();
   const clauseEnvelopeSources = new WeakMap();
+  const contextualFirstPersonNncSlots = new WeakSet();
   const deeplyImmutableGraphs = new WeakSet();
   const validatedImmutableClauseEnvelopes = new WeakSet();
   const immutableSourceEnvelopes = new WeakMap();
@@ -3890,77 +3891,67 @@ export function createClassicalNahuatlSupplementationApi(
     return getNncSlotFrame(sourceFrame) ? { surface: 0, formula: 0 } : null;
   }
 
-  function buildContextualSilentFirstPersonProjection(
-    clauseEnvelope = null
-  ) {
-    const sourceFrame = clauseEnvelopeSources.get(clauseEnvelope) || null;
-    const sourceTypedSlotFrame = getVncSlotFrame(sourceFrame);
-    if (
-      !isClassicalNahuatlSupplementationClauseEnvelope(clauseEnvelope)
-      || clauseEnvelope.unitKind !== "vnc"
-      || clauseEnvelope.subject?.features?.person !== "1"
-      || !sourceTypedSlotFrame
-      || typeof targetObject.isClassicalNahuatlVncSlotFrame !== "function"
-      || !targetObject.isClassicalNahuatlVncSlotFrame(sourceTypedSlotFrame)
-      || ["", "0", "⎕"].includes(
-        String(sourceTypedSlotFrame.slots?.subject?.pers1 || "")
-      )
-    ) {
-      return null;
-    }
-    const contextualTypedSlotFrame = clone(sourceTypedSlotFrame);
-    contextualTypedSlotFrame.sourceFrameKind =
-      "classical-nahuatl-contextual-silent-first-person-operation";
+  function getContextualFirstPersonSlots(clauseEnvelope) {
+    if (!isClassicalNahuatlSupplementationClauseEnvelope(clauseEnvelope)) return null;
+    const source = clauseEnvelopeSources.get(clauseEnvelope);
+    if (clauseEnvelope.unitKind === "vnc") return getVncSlotFrame(source);
+    // §57.6's nominal supplement is a nominalized VNC, not an arbitrary noun.
+    if (clauseEnvelope.unitKind === "nnc"
+      && targetObject.isClassicalNahuatlDeverbalNncGrammarFrame?.(source) === true
+      && source.constructionKind === "predicate-nominalization") return getNncSlotFrame(source);
+    return null;
+  }
+
+  function buildContextualSilentFirstPersonProjection(clauseEnvelope = null) {
+    const sourceTypedSlotFrame = getContextualFirstPersonSlots(clauseEnvelope);
+    const unitKind = clauseEnvelope?.unitKind;
+    if (!sourceTypedSlotFrame || clauseEnvelope.subject?.features?.person !== "1"
+      || ["", "0", "Ø", "⎕", "□"].includes(String(sourceTypedSlotFrame.slots?.subject?.pers1 || ""))) return null;
+    const validate = unitKind === "vnc" ? targetObject.isClassicalNahuatlVncSlotFrame : targetObject.isClassicalNahuatlNncSlotFrame;
+    if (validate?.(sourceTypedSlotFrame) !== true) return null;
+    let contextualTypedSlotFrame = clone(sourceTypedSlotFrame);
+    contextualTypedSlotFrame.sourceFrameKind = "classical-nahuatl-contextual-silent-first-person-operation";
     contextualTypedSlotFrame.slots.subject.pers1 = "0";
     contextualTypedSlotFrame.slots.subject.baseMorph = "0";
-    contextualTypedSlotFrame.semanticIdentity = [
-      "0",
-      contextualTypedSlotFrame.slots.subject.pers2,
-      ...contextualTypedSlotFrame.slots.prePredicate.map(
-        slot => slot.carrier
-      ),
-      contextualTypedSlotFrame.slots.predicate.stem,
-      contextualTypedSlotFrame.slots.predicate.tns,
-      contextualTypedSlotFrame.slots.number.num1,
-      contextualTypedSlotFrame.slots.number.num2,
-    ].join("|");
-    if (
-      !targetObject.isClassicalNahuatlVncSlotFrame(
-        contextualTypedSlotFrame
-      )
-      || typeof targetObject.renderClassicalNahuatlVncSlotFrameFormula
-        !== "function"
-      || typeof targetObject.realizeClassicalNahuatlLesson25TypedVncWord
-        !== "function"
-    ) {
-      return null;
-    }
-    const formulaRealization = String(
-      targetObject.renderClassicalNahuatlVncSlotFrameFormula(
-        contextualTypedSlotFrame
-      ) || ""
-    ).trim();
-    const surfaceRealization = String(
-      targetObject.realizeClassicalNahuatlLesson25TypedVncWord(
-        contextualTypedSlotFrame
-      ) || ""
-    ).trim();
+    const slots = contextualTypedSlotFrame.slots;
+    contextualTypedSlotFrame.semanticIdentity = unitKind === "vnc"
+      ? ["0", slots.subject.pers2, ...slots.prePredicate.map(slot => slot.carrier),
+          slots.predicate.stem, slots.predicate.tns, slots.number.num1, slots.number.num2].join("|")
+      : ["0", slots.subject.pers2, slots.participant.arity, ...slots.participant.slots.map(slot => slot.carrier),
+          slots.state.arity, ...slots.state.slots.map(slot => slot.carrier), slots.predicate.stem,
+          slots.number.num1, slots.number.num2].join("|");
+    if (!validate(contextualTypedSlotFrame)) return null;
+    contextualTypedSlotFrame = freezeDeep(contextualTypedSlotFrame);
+    if (unitKind === "nnc") contextualFirstPersonNncSlots.add(contextualTypedSlotFrame);
+    const nuclearFormula = getTypedClauseFormula(unitKind, contextualTypedSlotFrame);
+    const nuclearSurface = getTypedClauseSurface(unitKind, contextualTypedSlotFrame);
+    const oldFormula = getTypedClauseFormula(unitKind, sourceTypedSlotFrame);
+    const oldSurface = getTypedClauseSurface(unitKind, sourceTypedSlotFrame);
+    // Retain outside particles/antecessive material, replacing only the authenticated nucleus.
+    const retainOutside = (whole, previous, next) => {
+      const value = String(whole || "").replace(/[.?!]+$/u, "");
+      if (!previous || !next || !value.toLowerCase().endsWith(previous.toLowerCase())) return "";
+      return value.slice(0, value.length - previous.length) + next;
+    };
+    const formulaRealization = retainOutside(clauseEnvelope.formulaRealization, oldFormula, nuclearFormula);
+    const surfaceRealization = retainOutside(clauseEnvelope.surface, oldSurface, nuclearSurface);
     if (!formulaRealization || !surfaceRealization) return null;
-    return freezeDeep({
-      kind:
-        "classical-nahuatl-contextual-silent-first-person-projection-frame",
-      sourceSection: "57.6",
-      authorizationStatus: "authorized",
-      sourceTypedSlotFrame,
-      contextualTypedSlotFrame,
-      formulaRealization,
-      surfaceRealization,
-      formulaDerivedFromContextualTypedSlots: true,
-      writtenDerivedFromContextualTypedSlots: true,
-      formulaAndWrittenGeneratedIndependently: true,
-      formulaStringAuthority: false,
-      surfaceStringAuthority: false,
-    });
+    return freezeDeep({kind: "classical-nahuatl-contextual-silent-first-person-projection-frame",
+      sourceSection: "57.6", authorizationStatus: "authorized", sourceTypedSlotFrame, contextualTypedSlotFrame,
+      formulaRealization, surfaceRealization, formulaDerivedFromContextualTypedSlots: true,
+      writtenDerivedFromContextualTypedSlots: true, formulaAndWrittenGeneratedIndependently: true,
+      formulaStringAuthority: false, surfaceStringAuthority: false});
+  }
+
+  function buildClassicalNahuatlConcatenatedFirstPersonProjection(earlier = null, later = null) {
+    if (!isClassicalNahuatlSupplementationClauseEnvelope(earlier)
+      || !isClassicalNahuatlSupplementationClauseEnvelope(later)
+      || earlier.unitKind !== "vnc"
+      || earlier.subject?.features?.person !== "1" || later.subject?.features?.person !== "1"
+      || earlier.subject.features.number !== later.subject.features.number
+      || !earlier.subject.referenceId || earlier.subject.referenceId !== later.subject.referenceId
+      || ["", "0", "Ø", "⎕", "□"].includes(String(getContextualFirstPersonSlots(earlier)?.slots.subject.pers1 || ""))) return null;
+    return buildContextualSilentFirstPersonProjection(later);
   }
 
   function buildClassicalNahuatlContextualFirstPersonRealizationFrame(
@@ -4410,23 +4401,9 @@ export function createClassicalNahuatlSupplementationApi(
     const laterFirstPersonClause = order === "principal-first"
       ? supplementClause
       : principalClause;
-    const earlierPers1 = String(
-      earlierFirstPersonClause.personDyad?.pers1 || ""
-    );
-    const laterPers1 = String(
-      laterFirstPersonClause.personDyad?.pers1 || ""
-    );
-    const contextualSilentFirstPersonEligible = Boolean(
-      referenceMode === "shared"
-      && principalClause.unitKind === "vnc"
-      && supplementClause.unitKind === "vnc"
-      && earlierFirstPersonClause.subject?.features?.person === "1"
-      && laterFirstPersonClause.subject?.features?.person === "1"
-      && earlierFirstPersonClause.subject.referenceId
-        === laterFirstPersonClause.subject.referenceId
-      && !["", "0", "⎕"].includes(earlierPers1)
-      && !["", "0", "⎕"].includes(laterPers1)
-    );
+    const contextualProjectionCandidate = buildClassicalNahuatlConcatenatedFirstPersonProjection(
+      earlierFirstPersonClause, laterFirstPersonClause);
+    const contextualSilentFirstPersonEligible = referenceMode === "shared" && Boolean(contextualProjectionCandidate);
     const silentFirstPersonThirdFallbackAttempt = Boolean(
       contextualSilentFirstPersonRequested
       && earlierFirstPersonClause.unitKind === "vnc"
@@ -4453,10 +4430,7 @@ export function createClassicalNahuatlSupplementationApi(
     }
     const contextualSilentFirstPersonProjection =
       contextualSilentFirstPersonRequested
-        ? buildContextualSilentFirstPersonProjection(
-            laterFirstPersonClause
-          )
-        : null;
+        ? contextualProjectionCandidate : null;
     if (
       contextualSilentFirstPersonRequested
       && !contextualSilentFirstPersonProjection
@@ -7250,6 +7224,10 @@ export function createClassicalNahuatlSupplementationApi(
     getClassicalNahuatlSupplementationReloadInputs,
     buildClassicalNahuatlSupplementationReplacementRequest,
     buildClassicalNahuatlContextualFirstPersonRealizationFrame,
+    buildClassicalNahuatlConcatenatedFirstPersonProjection,
+    isClassicalNahuatlContextualFirstPersonNncSlotFrame(frame) {
+      return Boolean(frame && contextualFirstPersonNncSlots.has(frame));
+    },
     buildClassicalNahuatlExclamatoryUtteranceFrame,
     buildClassicalNahuatlSuchThatAdjunctionFrame,
     buildClassicalNahuatlSupplementationParadigm,

@@ -555,7 +555,8 @@ export function createClassicalNahuatlTransitiveVncObjectRuntime(targetObject = 
       tense = "present",
       stem = "",
       verbClass = "",
-      admonitivePluralEnding = ""
+      admonitivePluralEnding = "",
+      finiteSingularConnector = ""
     } = {}) {
       const builder = getClassicalNahuatlTransitiveVncRuntimeTarget()?.getClassicalNahuatlFiniteSubjectNumberDyad;
       if (typeof builder === "function") {
@@ -565,7 +566,8 @@ export function createClassicalNahuatlTransitiveVncObjectRuntime(targetObject = 
           tense,
           stem,
           verbClass,
-          admonitivePluralEnding
+          admonitivePluralEnding,
+          finiteSingularConnector
         });
       }
       return null;
@@ -1557,7 +1559,8 @@ export function createClassicalNahuatlTransitiveVncObjectRuntime(targetObject = 
         tense,
         stem: normalizedStem,
         verbClass: options.verbClass || options.perfectiveClass || "",
-        admonitivePluralEnding: options.admonitivePluralEnding || ""
+        admonitivePluralEnding: options.admonitivePluralEnding || "",
+        finiteSingularConnector: options.finiteSingularConnector || ""
       });
       const objectFrame = getClassicalNahuatlObjectValenceFrame({
         ...options,

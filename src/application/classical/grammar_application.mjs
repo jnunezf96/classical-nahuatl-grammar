@@ -1,5 +1,5 @@
 import { getClassicalNahuatlNncPredicateBoundaryCarrier } from "../../core/classical/nnc_predicate_boundary.mjs";
-import { capitalizeClassicalNahuatlNncSentenceInitial } from "../../core/classical/nnc_layer_evaluator.mjs";
+import { capitalizeClassicalNahuatlNncSentenceInitial } from "../../core/classical/nnc_layer_evaluator.mjs?andrewsRelease=20261024-1";
 // Canonical application boundary for Classical Nahuatl grammar projections.
 //
 // The renderer supplies genuine selections and already-issued grammar frames.

@@ -1,7 +1,7 @@
 import {orderVncSubjectFields,presentNncBuildOptions} from './build_composition.mjs?v=20261023-1';
-import {nativeChoiceAddress,BUILD_SLOT_LABELS,BUILD_SLOT_ORDER,CONDITIONAL_NATIVE_FIELDS} from './build_choice_catalog.mjs?v=20261023-all-build-2';
+import {nativeChoiceAddress,CONDITIONAL_NATIVE_FIELDS} from './build_choice_catalog.mjs?v=20261023-all-build-2&andrewsRelease=20261024-1';
 import {ownerChoiceRoots,findOwnerChoice} from './owner_choice_roots.mjs?v=20261023-core-1';
-import {arrangeNuclearClauseSlots,arrangeProjectedFormulaChoices,stemCollectorCaption,vncSubjectCaption,uniteCoreStemChoices,uniteNounstemChoices,arrangeProjectedClauseChoices,preserveDisclosureChoice} from './formula_layout.mjs?clauseHarmony=20261023-5&v=20261023-slots-17';
+import {arrangeNuclearClauseSlots,arrangeProjectedFormulaChoices,stemCollectorCaption,vncSubjectCaption,uniteCoreStemChoices,uniteNounstemChoices,arrangeProjectedClauseChoices,preserveDisclosureChoice} from './formula_layout.mjs?clauseHarmony=20261023-5&v=20261023-slots-17&andrewsRelease=20261024-1';
 import {validateWorkspaceOrganization,DEFAULT_WORKSPACE_ORGANIZATION,loadWorkspaceOrganization} from './workspace_organization_model.mjs?v=20261013-canvas-workspace-1&choicesLayout=20261014-4&startupDelivery=20261022-1';
 import {createParticleChoices} from './particle_choices.mjs?v=20261021-particle-clear-2';
 
@@ -82,7 +82,8 @@ export function createWorkspaceOrganization(doc,initialModel=DEFAULT_WORKSPACE_O
         operation:doc.getElementById('classical-capability-operation-plan')?.dataset.classicalCapabilityOperationId||'',hidden:!visibleField(field,ownerChoiceRoots(doc).find(root=>root.contains(field))||host)};
     });
     for(const heading of host.querySelectorAll(':scope > [data-workspace-choice-heading]'))heading.remove();
-    arrangeProjectedFormulaChoices(doc,host,entries);
+    arrangeProjectedFormulaChoices(doc,host,entries,model.groups);
+    organizeWorkspaceDecisionHeadings(doc,entries,model.groups);
   }
 
   function organizeNativeSections(){
@@ -288,9 +289,7 @@ export function createChoicesLayout(doc,initialModel){
       if(!control||!controls.contains(control)||control.type==='hidden')continue;
       const field=control.closest('.classical-rule-control,label');
       if(!field||!field.parentElement)continue;
-      const collector=field.closest('[data-classical-nnc-grammar-section],[data-classical-vnc-authority-disclosure]');
-      const family=controls.dataset.classicalRuleLogicSurfaceUnit;
-      const group=nativeChoiceAddress(id,inventoryGroup,collector?.dataset.classicalNncGrammarSection||collector?.dataset.classicalVncAuthorityDisclosure||'',family);
+      const group=inventoryGroup;
       field.dataset.choicesNativeGroup=group;field.dataset.choicesNativeField=id;
       if(!hosts.has(field.parentElement))hosts.set(field.parentElement,new Map());
       hosts.get(field.parentElement).set(field,group);
@@ -326,12 +325,12 @@ export function createChoicesLayout(doc,initialModel){
         const members=[...host.children].filter(n=>n.dataset.choicesNativeGroup===group);
         const available=members.some(field=>visible(field,controls));
         const context=host.closest('[data-choices-native-bucket]')?.dataset.choicesNativeBucket;
-        heading.hidden=(!context||context===group)&&new Set([...host.children].filter(n=>visible(n,controls)).map(n=>n.dataset.choicesNativeGroup).filter(Boolean)).size<2||!available;
+        heading.hidden=(context===group)&&new Set([...host.children].filter(n=>visible(n,controls)).map(n=>n.dataset.choicesNativeGroup).filter(Boolean)).size<2||!available;
       }else if(!heading.hidden&&projected?.contains(heading))seenGroups.add(group);
     }
   }
   return function refresh(){
-    model=readModel();groups=BUILD_SLOT_ORDER.map((id,order)=>({id,label:BUILD_SLOT_LABELS[id],order}));ranks=new Map(groups.map(g=>[g.id,g.order]));
+    model=readModel();groups=[...model.groups].sort((a,b)=>a.order-b.order);ranks=new Map(groups.map(g=>[g.id,g.order]));
     const controls=doc.getElementById('classical-rule-logic-controls');
     const plan=doc.getElementById('classical-capability-operation-plan');
     if(!controls||!plan)return;
@@ -357,4 +356,20 @@ export function createChoicesLayout(doc,initialModel){
     after(requirements,grid);after(effects,requirements||grid);
     const ids=doc.querySelector('[data-build-inventory-inspector]');after(ids,effects||requirements||grid);
   };
+}
+
+export function organizeWorkspaceDecisionHeadings(doc,entries,groups){
+  const parents=new Set(entries.map(entry=>entry.field.parentElement));
+    for(const parent of parents){
+      const local=[...parent.children].map(field=>entries.find(entry=>entry.field===field)).filter(Boolean);
+      for(const group of [...groups].sort((a,b)=>a.order-b.order)){
+        const members=local.filter(entry=>entry.group===group.id);
+        let heading=parent.querySelector(`:scope > [data-workspace-choice-heading="${group.id}"]`);
+        if(!members.length){heading?.remove();continue;}
+        if(!heading){heading=doc.createElement('h3');heading.className='workspace-choice-heading';heading.dataset.workspaceChoiceHeading=group.id;}
+        if(heading.textContent!==group.label)heading.textContent=group.label;
+        if(members[0].field.previousElementSibling!==heading)members[0].field.before(heading);
+        heading.hidden=!members.some(entry=>!entry.hidden);
+      }
+    }
 }

@@ -1,5 +1,5 @@
-import {clauseDecisionSlot,CLAUSE_CHOICE_LABELS,CLAUSE_CHOICE_ORDER} from './clause_composition.mjs?v=20261023-4';
-import {declaredChoiceAddress,BUILD_SLOT_LABELS,BUILD_SLOT_ORDER} from './build_choice_catalog.mjs?v=20261023-all-build-2';
+import {clauseDecisionSlot,CLAUSE_CHOICE_LABELS,CLAUSE_CHOICE_ORDER} from './clause_composition.mjs?v=20261023-4&andrewsRelease=20261024-1';
+import {declaredChoiceAddress,BUILD_SLOT_LABELS,BUILD_SLOT_ORDER} from './build_choice_catalog.mjs?v=20261023-all-build-2&andrewsRelease=20261024-1';
 import {ownerChoiceRoots,registerOwnerChoicePortal,releaseOwnerChoicePortal} from './owner_choice_roots.mjs?v=20261023-core-1';
 // Andrews §§4.3–4.5. This is a layout of existing native collectors, never a
 // formula for execution. Each collector retains its controls and closures.
@@ -95,7 +95,7 @@ export function formulaChoiceSlot(choice,group,family='',operation=''){
 // Owner-projected fields have a separate lifetime from native collectors.
 // Group their presentation by linguistic role; registered portals preserve the
 // logical owner host when a generated bucket joins its native disclosure.
-export function arrangeProjectedFormulaChoices(doc,host,entries){
+export function arrangeProjectedFormulaChoices(doc,host,entries,decisionGroups=[]){
   const labels={...BUILD_SLOT_LABELS,...CLAUSE_CHOICE_LABELS};
   const order=[...BUILD_SLOT_ORDER,...CLAUSE_CHOICE_ORDER];
   for(const slot of order){
@@ -108,12 +108,14 @@ export function arrangeProjectedFormulaChoices(doc,host,entries){
       members.sort((a,b)=>(order.includes(a.choice)?order.indexOf(a.choice):order.length)-(order.includes(b.choice)?order.indexOf(b.choice):order.length));}
     if(slot==='nounstem'){const order=['predicateFormation','stemFormation','predicatePluralization'];
       members.sort((a,b)=>(order.includes(a.choice)?order.indexOf(a.choice):order.length)-(order.includes(b.choice)?order.indexOf(b.choice):order.length));}
+    if(decisionGroups.length){const ranks=new Map(decisionGroups.map(group=>[group.id,group.order]));
+      members.sort((a,b)=>(ranks.get(a.group)??ranks.size)-(ranks.get(b.group)??ranks.size));}
     let bucket=host.querySelector(`:scope > [data-build-owner-slot="${slot}"]`)
       ||ownerChoiceRoots(doc).find(root=>root.dataset.buildOwnerSlot===slot);
     if(!members.length){bucket?.remove();continue;}
     if(!bucket){bucket=doc.createElement('section');bucket.dataset.buildOwnerSlot=slot;
       const heading=doc.createElement('h3');heading.className='composition-formula-slot__heading';heading.textContent=labels[slot];bucket.append(heading);host.append(bucket);}
-    const current=[...bucket.children].slice(1);
+    const current=[...bucket.children].slice(1).filter(node=>!node.dataset.workspaceChoiceHeading);
     if(current.length!==members.length||members.some((entry,index)=>current[index]!==entry.field))
       for(const entry of members)bucket.append(entry.field);
     bucket.hidden=members.every(entry=>entry.hidden);

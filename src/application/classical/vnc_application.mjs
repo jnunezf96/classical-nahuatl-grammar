@@ -5,12 +5,12 @@ import {
   CLASSICAL_NAHUATL_VNC_DERIVATION_TYPES,
   normalizeClassicalNahuatlVncDerivationType,
   validateClassicalNahuatlVncDerivationTypeSelection,
-} from "../../core/classical/vnc_derivation_evaluator.mjs?v=20261008-reader-40-9-190";
+} from "../../core/classical/vnc_derivation_evaluator.mjs?v=20261008-reader-40-9-190&andrewsRelease=20261024-1";
 import {
   CLASSICAL_NAHUATL_VNC_CAUSATIVE_SOURCE_VOICES,
   CLASSICAL_NAHUATL_VNC_TARGET_VOICES,
   validateClassicalNahuatlVncVoiceSelection,
-} from "../../core/classical/vnc_layer_evaluator.mjs?v=20261001-reader-26-4-optional-weather-2";
+} from "../../core/classical/vnc_layer_evaluator.mjs?v=20261001-reader-26-4-optional-weather-2&andrewsRelease=20261024-1";
 import {
   buildClassicalResultOutputScopeSelectionFrame,
 } from "../../core/output/scope.mjs?v=20260726-lessons2-58-one-system-094";
@@ -76,6 +76,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         "mood",
         "tense",
         "admonitivePluralEnding",
+        "finiteSingularConnector",
         "requestedDerivation",
         "derivationOptionId",
         "causativeObjectKind",
@@ -760,6 +761,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         sentenceType: getToken("sentenceType"),
         punctuationMode: getToken("punctuationMode"),
         admonitivePluralEnding: getToken("admonitivePluralEnding"),
+        finiteSingularConnector: getToken("finiteSingularConnector"),
         defectiveANegativeVariant: getToken("defectiveANegativeVariant"),
         negative: getClassicalNahuatlVncApplicationRequestValue(request, "negative") === true,
         questionMode: getToken("questionMode"),
@@ -1595,6 +1597,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         sentenceType: sentenceOptions.sentenceType,
         punctuationMode: sentenceOptions.punctuationMode,
         admonitivePluralEnding: sentenceOptions.admonitivePluralEnding,
+        finiteSingularConnector: sentenceOptions.finiteSingularConnector,
         defectiveANegativeVariant: sentenceOptions.defectiveANegativeVariant,
         negative: sentenceOptions.negative,
         questionMode: sentenceOptions.questionMode,
@@ -2441,6 +2444,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         sentenceType: sentenceFrame.sentenceType || "",
         punctuationMode: sentenceFrame.punctuationMode || "",
         admonitivePluralEnding: sentenceFrame.admonitivePluralEnding || "",
+        finiteSingularConnector: sentenceFrame.finiteSingularConnector || "",
         defectiveANegativeVariant: sentenceFrame.defectiveANegativeVariant || "",
         negative,
         questionMode: sentenceFrame.questionMode || "",
@@ -7538,6 +7542,14 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       directActiveRecoordinate = null,
       runtimeTarget = null
     } = {}) {
+      const connector = normalizedRequest?.sentenceOptions?.finiteSingularConnector || "";
+      const finalTyped = getClassicalNahuatlVncApplicationFinalTypedFrame(selectedMachineryFrame);
+      const finalNumber = finalTyped?.slots?.number;
+      if (connector && (!["silent", "qui"].includes(connector)
+        || !isClassicalNahuatlOptionalFiniteConnectorFrame(finalTyped, normalizedRequest)
+        || connector === "qui" && finalNumber.num1 !== "qui")) {
+        forcedBlockReason = "classical-vnc-finite-singular-connector-not-licensed";
+      }
       const selectedAuthorizationStatus = normalizeClassicalNahuatlVncApplicationToken(selectedMachineryFrame?.authorizationStatus || selectedMachineryFrame?.proofFrame?.authorizationStatus);
       const machineryAuthorized = !forcedBlockReason && selectedAuthorizationStatus === "authorized";
       const applicationRuntimeTarget = runtimeTarget && typeof runtimeTarget === "object"
@@ -9302,6 +9314,12 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
             getClassicalNahuatlVncApplicationRequestValue(request, key) !== undefined
           )).map(key => [key, getClassicalNahuatlVncApplicationRequestValue(request, key)]),
         );
+        // The optional connector belongs to the target finite coordinate. An
+        // omitted target selection uses its default rather than inheriting qui
+        // from an accepted Source whose new tense/person may forbid it.
+        if (getClassicalNahuatlVncApplicationRequestValue(request, "finiteSingularConnector") === undefined) {
+          selectedSentenceOptions.finiteSingularConnector = "";
+        }
         const continuationRequest =
           buildClassicalNahuatlVncContinuationRequest(
             { ...request, sentenceOptions: { ...inheritedSentenceOptions, ...selectedSentenceOptions } },
@@ -10410,6 +10428,21 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         surfaceStringAuthority: false,
       });
     }
+    // Inspect the final canonical number cell, after lexical and object/voice overrides.
+    function isClassicalNahuatlOptionalFiniteConnectorFrame(typed, request) {
+      const number = typed?.slots?.number;
+      const plans = [typed?.lesson11Alternative, typed?.lesson11Plan];
+      return request?.mood === "indicative" && ["future", "preterit"].includes(request.tense)
+        && number?.condition === "future-preterit-indicative"
+        && ["⎕", "qui"].includes(number.num1) && number.num2 === "0"
+        && !number.rule && !plans.some(plan => plan?.num1Override || plan?.deletePostStemK || plan?.kDeletionAfterStem);
+    }
+    function projectClassicalNahuatlFiniteConnectorOptions(available) {
+      return available ? Object.freeze(["silent", "qui"].map(optionId =>
+        projectClassicalNahuatlVncTypedSourceApplicationOption("finiteSingularConnector", {
+          optionId, label: optionId === "qui" ? "qui · archaic" : "Silent · usual",
+        }))) : null;
+    }
     function getClassicalNahuatlVncAdmonitiveNumberChoiceFrame(request = {}) {
       if (request.mood !== "admonitive" || request.tense !== "nonpast"
         || !String(request.subject || "").endsWith("pl")) return null;
@@ -10437,6 +10470,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       allowedVoices = ["active"],
       nonactiveOptionInventory = null,
       admonitiveNumberFrame = null,
+      finiteConnectorOptions = null,
     } = {}) {
       const requestedDerivation = Object.freeze([
         projectClassicalNahuatlVncTypedSourceApplicationOption(
@@ -10540,6 +10574,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         applicativeObjectPerson,
         requestedVoice,
         nonactiveOptionId,
+        ...(finiteConnectorOptions ? {finiteSingularConnector: finiteConnectorOptions} : {}),
         ...(admonitiveNumberFrame ? {
           admonitivePluralEnding: Object.freeze(admonitiveNumberFrame.num2Variants.map(optionId => (
             projectClassicalNahuatlVncTypedSourceApplicationOption(
@@ -11684,6 +11719,25 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
           }
         }
       }
+      let finiteConnectorOptions = null;
+      if (provenance && !initialBlockReason && bindingStatus !== "rejected" && !requiredChoiceIds.length
+        && (buildClassicalNahuatlVncApplicationSentenceOptions(effectiveSelections).finiteSingularConnector
+          || effectiveSelections.mood === "indicative" && ["future", "preterit"].includes(effectiveSelections.tense)
+            && !String(effectiveSelections.subject).endsWith("pl"))) {
+        // A preview calls the same finite owner as Make; it never accepts a Result.
+        const request = buildClassicalNahuatlVncTypedSourceApplicationOwnerRequest(evaluationProvenance, effectiveSelections);
+        const preview = evaluateClassicalNahuatlVncApplication(request);
+        if (preview?.authorizationStatus === "authorized") {
+          finiteConnectorOptions = projectClassicalNahuatlFiniteConnectorOptions(
+            isClassicalNahuatlOptionalFiniteConnectorFrame(preview.resultFrame?.finalTypedVncSlotFrame, preview.normalizedRequest));
+          if (finiteConnectorOptions) effectiveSelections = deepFreezeClassicalNahuatlVncApplicationValue({
+            ...effectiveSelections, finiteSingularConnector: request.finiteSingularConnector || request.sentenceOptions?.finiteSingularConnector || "silent",
+          });
+        } else if (buildClassicalNahuatlVncApplicationSentenceOptions(effectiveSelections).finiteSingularConnector) {
+          bindingStatus = "rejected";
+          blockReason = preview?.blockReason || "classical-vnc-finite-singular-connector-not-licensed";
+        }
+      }
       let admonitiveNumberFrame = null;
       const pluralAdmonitive = effectiveSelections.mood === "admonitive"
         && effectiveSelections.tense === "nonpast"
@@ -11727,6 +11781,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
           allowedVoices,
           nonactiveOptionInventory,
           admonitiveNumberFrame,
+          finiteConnectorOptions,
         });
       const sourceAccepted = Boolean(provenance);
       const authorizationStatus = bindingStatus === "rejected"
@@ -13103,6 +13158,8 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       const numberRequest = normalizedOperationId === "vnc:application"
         && ownerPreflightValidated && ownerPreflightAuthorized
         ? ownerPreflightResult.normalizedRequest : null;
+      const finiteConnectorOptions = projectClassicalNahuatlFiniteConnectorOptions(numberRequest
+        && isClassicalNahuatlOptionalFiniteConnectorFrame(ownerPreflightResult.resultFrame?.finalTypedVncSlotFrame, numberRequest));
       const admonitiveNumberFrame = numberRequest
         ? getClassicalNahuatlVncAdmonitiveNumberChoiceFrame(numberRequest) : null;
       const pluralAdmonitive = numberRequest?.mood === "admonitive"
@@ -13135,6 +13192,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         ? [`${normalizedOperationId}:source-result`]
         : []);
       const ownerChoiceOptionProjection = deepFreezeClassicalNahuatlVncApplicationValue({
+        ...(finiteConnectorOptions ? {finiteSingularConnector: finiteConnectorOptions} : {}),
         ...(admonitiveNumberFrame ? {
           admonitivePluralEnding: admonitiveNumberFrame.num2Variants.map(optionId => (
             projectClassicalNahuatlVncTypedSourceApplicationOption(
@@ -13143,10 +13201,13 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
           )),
         } : {}),
       });
-      const selectedOwnerChoices = Object.freeze(admonitiveNumberFrame ? {
+      const selectedOwnerChoices = Object.freeze({
+        ...(finiteConnectorOptions ? {finiteSingularConnector: numberRequest.sentenceOptions.finiteSingularConnector || "silent"} : {}),
+        ...(admonitiveNumberFrame ? {
         admonitivePluralEnding: numberRequest.sentenceOptions.admonitivePluralEnding
           || admonitiveNumberFrame.num2,
-      } : {});
+      } : {}),
+      });
       const frame = Object.freeze({
         kind: CLASSICAL_NAHUATL_VNC_CONTINUATION_BINDING_FRAME_KIND,
         version: 1,

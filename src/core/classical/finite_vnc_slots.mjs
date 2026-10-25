@@ -435,6 +435,7 @@ export function createClassicalNahuatlFiniteVncRuntime(
     stem = "",
     verbClass = "",
     admonitivePluralEnding = "",
+    finiteSingularConnector = "",
   } = {}) {
     const normalizedSubject = normalizeSubject(subject);
     const normalizedMood = normalizeMood(mood);
@@ -537,6 +538,14 @@ export function createClassicalNahuatlFiniteVncRuntime(
       realizationCondition = "past-optative-zero";
     }
 
+    const selectedConnector = normalizeToken(finiteSingularConnector);
+    if (selectedConnector && (!["silent", "qui"].includes(selectedConnector) || !num1Variants.includes("qui"))) throw new Error(SOURCE_INVALID);
+    if (selectedConnector === "qui") {
+      num1 = "qui";
+      realizationCondition = "archaic-supportive-qui-after-consonant";
+      alternateNumberDyads = [`${SQUARE_ZERO}-0`];
+    }
+
     const inKFamily =
       normalizedMood === "indicative"
       && ["future", "preterit"].includes(normalizedTense);
@@ -548,6 +557,7 @@ export function createClassicalNahuatlFiniteVncRuntime(
       version: VERSION,
       subject: normalizedSubject,
       verbClass: normalizedVerbClass || "not-specified",
+      finiteSingularConnector: selectedConnector,
       conditioningStem: normalizedStem,
       stemFinalSound: lastSound,
       stemFinalSoundKind,
@@ -643,6 +653,7 @@ export function createClassicalNahuatlFiniteVncRuntime(
       verbClass,
       transitivity: "intransitive",
       admonitivePluralEnding: normalizeToken(options.admonitivePluralEnding),
+      finiteSingularConnector: normalizeToken(options.finiteSingularConnector),
     });
     issuedSources.add(source);
     return source;
@@ -712,6 +723,7 @@ export function createClassicalNahuatlFiniteVncRuntime(
       stem: source.stem,
       verbClass: source.verbClass,
       admonitivePluralEnding: source.admonitivePluralEnding,
+      finiteSingularConnector: source.finiteSingularConnector,
     });
     const result = {
       kind: RESULT_KIND,

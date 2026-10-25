@@ -958,6 +958,7 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
     ]);
     const CLASSICAL_NAHUATL_CLAUSE_CONJUNCTION_OPERATION_OPTION_FIELDS = Object.freeze({
       conjunction: Object.freeze([
+        "contextualSilentFirstPerson",
         "relation",
         "coordinationType",
         "level",
@@ -1883,9 +1884,11 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
       modifierAdjunctor,
       sharedModifier,
       sharedModifierScope,
-      leftContextAbsent
+      leftContextAbsent,
+      contextualFirstPersonProjections = []
     }) {
-      const surfaces = conjuncts.map(getClassicalNahuatlClauseCompositionNodeSurface);
+      const surfaces = conjuncts.map((node, index) => contextualFirstPersonProjections[index]?.surfaceRealization
+        || getClassicalNahuatlClauseCompositionNodeSurface(node));
       const modifier = CLASSICAL_NAHUATL_CLAUSE_CONJUNCTION_MODIFIERS[coordinationType]?.[rightwardModifier] || "";
       const modifierPrefix = modifier
         ? `${modifierAdjunctor === "in" ? "in " : ""}${modifier}`
@@ -1915,11 +1918,11 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
       modifierAdjunctor,
       sharedModifier,
       sharedModifierScope,
-      leftContextAbsent
+      leftContextAbsent,
+      contextualFirstPersonProjections = []
     }) {
-      const formulas = conjuncts.map(
-        getClassicalNahuatlClauseCompositionNodeFormula
-      );
+      const formulas = conjuncts.map((node, index) => contextualFirstPersonProjections[index]?.formulaRealization
+        || getClassicalNahuatlClauseCompositionNodeFormula(node));
       const modifier =
         CLASSICAL_NAHUATL_CLAUSE_CONJUNCTION_MODIFIERS[coordinationType]?.[
           rightwardModifier
@@ -2114,7 +2117,19 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
         if (sharedSupplement && !isClassicalNahuatlClauseCompositionNode(sharedSupplement)) {
           return buildClassicalNahuatlClauseConjunctionBlockedResultFrame(operationKind, "shared-supplement-must-be-a-signed-clause-node");
         }
+        const silentFirstPerson = options.contextualSilentFirstPerson === true;
+        if (options.contextualSilentFirstPerson !== undefined && typeof options.contextualSilentFirstPerson !== "boolean") {
+          return buildClassicalNahuatlClauseConjunctionBlockedResultFrame(operationKind, "contextual-first-person-selection-must-be-boolean");
+        }
+        const contextualFirstPersonProjections = silentFirstPerson ? conjuncts.map((node, index) => index === 0 ? null
+          : targetObject.buildClassicalNahuatlConcatenatedFirstPersonProjection?.(conjuncts[0].envelope, node.envelope)) : [];
+        if (silentFirstPerson && (leftContextAbsent || conjuncts.length < 2
+          || conjuncts.some(node => node.envelope?.unitKind !== "vnc")
+          || contextualFirstPersonProjections.slice(1).some(projection => !projection))) {
+          return buildClassicalNahuatlClauseConjunctionBlockedResultFrame(operationKind, "contextual-silence-requires-coreferential-first-person-vncs-after-sounded-anchor");
+        }
         const sequence = buildClassicalNahuatlClauseConjunctionGeneralSequence(conjuncts, {
+          contextualFirstPersonProjections,
           relation,
           coordinationType,
           rightwardModifier,
@@ -2125,6 +2140,7 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
         });
         const formulaSequence =
           buildClassicalNahuatlClauseConjunctionGeneralFormulaSequence(conjuncts, {
+            contextualFirstPersonProjections,
             relation,
             coordinationType,
             rightwardModifier,
@@ -2205,6 +2221,7 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
           markedAdjoinedException: relation === "marked" && level === "adjoined",
           boundaryPunctuation
         }, {
+          contextualFirstPersonProjections,
           ...(identicalAdjoinedClauseEllipsisFrame ? {identicalAdjoinedClauseEllipsisFrame} : {}),
           ...(compositeConjunctorRole ? {conjunctorResult: operationRequest.conjunctorResult,
             compositeConjunctorRole} : {}),

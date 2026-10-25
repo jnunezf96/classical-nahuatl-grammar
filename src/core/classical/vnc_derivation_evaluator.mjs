@@ -7,7 +7,7 @@ import {
 import {
   normalizeClassicalNahuatlVncParadigmTense,
   normalizeClassicalNahuatlVncSemanticTense,
-} from "./vnc_layer_evaluator.mjs?v=20261001-reader-26-4-optional-weather-2";
+} from "./vnc_layer_evaluator.mjs?v=20261001-reader-26-4-optional-weather-2&andrewsRelease=20261024-1";
 import {
   getClassicalNahuatlPhoneRepertoryRelation,
 } from "../concepts/phone_repertory_facts.mjs?v=20260810-atom099-001";
@@ -2847,6 +2847,7 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
       // Reconstruct the selected input, including an omitted ending. The
       // sentence frame supplies the resolved default, whereas the finite
       // Source retains whether that default was explicitly requested.
+      if (Object.hasOwn(priorVncFrame.source || {}, "finiteSingularConnector")) sourceOptions.finiteSingularConnector = priorVncFrame.source.finiteSingularConnector;
       if (Object.hasOwn(priorVncFrame.source || {}, "admonitivePluralEnding")) {
         sourceOptions.admonitivePluralEnding =
           priorVncFrame.source.admonitivePluralEnding;
@@ -8199,7 +8200,7 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
     }
     function getClassicalNahuatlVncDerivationSafeSentenceOptions(options = {}) {
       const source = options?.sentenceOptions && typeof options.sentenceOptions === "object" ? options.sentenceOptions : options;
-      const keys = ["directionalPrefix", "directionalIttaContraction", "incorporatedAdverb", "adverbPosition", "sentenceType", "punctuationMode", "admonitivePluralEnding", "defectiveANegativeVariant", "negative", "questionMode", "introductoryParticle", "prefaceParticle", "lesson9PrefaceParticle", "introductoryModifier", "lesson9IntroductoryModifier", "admonitiveTranslationReading", "translationReading", "requestedTranslationReading", "admonitiveContrastReading", "contrastReading", "requestedContrastReading", "sentenceAntecessive", "antecessive", "requestedNegativePrefix", "negativePrefix", "outsidePrefixes", "construction", "lesson11LexicalReading"];
+      const keys = ["directionalPrefix", "directionalIttaContraction", "incorporatedAdverb", "adverbPosition", "sentenceType", "punctuationMode", "admonitivePluralEnding", "finiteSingularConnector", "defectiveANegativeVariant", "negative", "questionMode", "introductoryParticle", "prefaceParticle", "lesson9PrefaceParticle", "introductoryModifier", "lesson9IntroductoryModifier", "admonitiveTranslationReading", "translationReading", "requestedTranslationReading", "admonitiveContrastReading", "contrastReading", "requestedContrastReading", "sentenceAntecessive", "antecessive", "requestedNegativePrefix", "negativePrefix", "outsidePrefixes", "construction", "lesson11LexicalReading"];
       return Object.fromEntries(keys.filter(key => Object.prototype.hasOwnProperty.call(source || {}, key)).map(key => [key, Array.isArray(source[key]) ? [...source[key]] : source[key]]));
     }
     function buildBlockedClassicalNahuatlDerivedVncMachineryFrame(sourceMachineryFrame = null, operationFrame = null, blockReason = "classical-vnc-derived-machinery-not-authorized") {
@@ -8258,6 +8259,7 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
         sentenceType: sentenceFrame.sentenceType || "",
         punctuationMode: sentenceFrame.punctuationMode || "",
         admonitivePluralEnding: sentenceFrame.admonitivePluralEnding || "",
+        finiteSingularConnector: sentenceFrame.finiteSingularConnector || "",
         defectiveANegativeVariant: sentenceFrame.defectiveANegativeVariant || "",
         negative,
         questionMode: sentenceFrame.questionMode || "",

@@ -826,9 +826,15 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
         "preterit-patientive": "passive-preterit-patientive",
       })[nominalization] || "";
       if (nominalizationFamily) return [nominalizationFamily];
-      return slotFrame?.slots?.state?.arity === "vacant"
-        ? ["absolutive-state-nnc"]
-        : ["possessive-state-nnc"];
+      if (slotFrame?.slots?.state?.arity !== "vacant") return ["possessive-state-nnc"];
+      const number = slotFrame.slots.number || {};
+      // §56.2.2.a: shorten the inner singular number dyad, never the stem.
+      // An already silent source has no full ending to recover or to omit.
+      const fullSingular = ["0", "Ø", "⎕", "□"].includes(String(number.num2))
+        && ["tl", "tli", "li", "in"].includes(String(number.num1));
+      return fullSingular
+        ? ["absolutive-state-nnc", "absolutive-state-truncated-inner-number"]
+        : ["absolutive-state-nnc"];
     }
     const voice = getPersonalNameExactVncFeature(result, [
       "selectedVoiceOperation",
@@ -912,9 +918,9 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
       predicateMorphs,
       // An issued NNC is downgraded whole (§56.2.2). Its number dyad is
       // inside the name predicate, independently of the outer zero dyad.
-      numberPrefix: sourceType === "nnc"
+      numberPrefix: sourceType === "nnc" && sourceFamily !== "absolutive-state-truncated-inner-number"
         ? slotFrame.slots.number?.num1 ?? functionalSlots.numberPrefix : functionalSlots.numberPrefix,
-      numberSuffix: sourceType === "nnc"
+      numberSuffix: sourceType === "nnc" && sourceFamily !== "absolutive-state-truncated-inner-number"
         ? slotFrame.slots.number?.num2 ?? functionalSlots.numberSuffix : functionalSlots.numberSuffix,
       subjectReference: functionalSlots.subjectReference,
     });
@@ -1085,6 +1091,7 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
     }
     const sourceFamily = !blockReason
       ? selectedSourceFamily
+        || (compatibleSourceFamilyIds.includes("absolutive-state-nnc") ? "absolutive-state-nnc" : "")
         || (compatibleSourceFamilyIds.length === 1
           ? compatibleSourceFamilyIds[0]
           : "")
@@ -1098,6 +1105,7 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
         sourceFamily,
         sourceType,
         slotFrame,
+        sourceType === "nnc",
       )
       : null;
     const sourceFrame = innerClauseFrame || innerClauseFrames.length

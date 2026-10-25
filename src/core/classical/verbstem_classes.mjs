@@ -5073,9 +5073,9 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
           finalNum1 = "c";
           supportiveAction = "not-needed-after-vowel";
         } else {
-          finalNum1 = CLASSICAL_NAHUATL_LESSON7_SQUARE_ZERO;
-          supportiveAction = "suppress-supportive-qui-with-square-zero";
-          squareZeroReplacesQui = true;
+          finalNum1 = numberDyadFrame?.finiteSingularConnector === "qui" ? "qui" : CLASSICAL_NAHUATL_LESSON7_SQUARE_ZERO;
+          supportiveAction = finalNum1 === "qui" ? "retain-selected-archaic-supportive-qui" : "suppress-supportive-qui-with-square-zero";
+          squareZeroReplacesQui = finalNum1 !== "qui";
         }
       }
       const realized = replaceClassicalNahuatlLesson81FinalNumberDyad(sourceFormula, finalNum1, parsed.num2);
@@ -6281,6 +6281,7 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
         admonitiveRequestedContrastReadingAuthorized: lesson10ContrastReadingAuthorized,
         admonitiveNumberDyad: lesson10CurrentNumberDyad,
         admonitivePluralEnding: lesson10Applies && lesson10NumberDyad.num1 === "t" ? lesson10NumberDyad.num2 : "",
+        finiteSingularConnector: options.finiteSingularConnector || "",
         admonitiveNumberDyadKind: lesson10NumberDyad.condition || "",
         admonitiveNum1Morpheme: lesson10Applies ? "/ti" : "",
         admonitiveNum1RegularMorphCondition: lesson10Applies ? "only-with-plural-num2" : "",
@@ -6392,6 +6393,7 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
             tense: options.tense || options.tenseKey || "",
             verbClass: options.verbClass || options.perfectiveClass || "",
             admonitivePluralEnding: options.admonitivePluralEnding || "",
+            finiteSingularConnector: options.finiteSingularConnector || "",
           }) : null;
         }
         const builder = runtimeTarget?.buildClassicalNahuatlTransitiveVncObjectFrame;
