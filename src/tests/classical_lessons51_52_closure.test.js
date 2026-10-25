@@ -542,13 +542,30 @@ function run(ctx = {}) {
                 }),
                 options: { semanticCategory: "state", contactKind },
             }));
+            const iyohSource = ctx.evaluateClassicalNahuatlVncApplication({
+                sourceStem: "iyo-ā",
+                verbClass: "C",
+                sourceValence: "intransitive",
+                sourceInitialISelection: "supportive",
+                subject: "1sg",
+                mood: "indicative",
+                tense: "preterit",
+                requestedVoice: "active",
+            });
+            const iyohNominal = ctx.requestClassicalDeverbalNncResult({
+                constructionKind: "predicate-nominalization",
+                nominalizationKind: "preterit-agentive",
+                canonicalVncResult: iyohSource.resultFrame,
+                subject: "1sg",
+                state: "absolutive",
+                numberConnector: "silent",
+            });
             const iyoh = ctx.evaluateClassicalNahuatlClauseComplementation({
                 operationKind: "subject-complement",
                 principalClause: principal,
-                complementClause: buildNnc(ctx, "iyoh", {
-                    subject: "1sg",
+                complementClause: ctx.buildClassicalNahuatlClauseCompositionSourceFrame(iyohNominal, {
                     referenceId: "speaker",
-                    animacy: "animate",
+                    subjectReferenceId: "speaker",
                 }),
                 options: {
                     semanticCategory: "state",

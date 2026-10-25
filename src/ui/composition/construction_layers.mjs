@@ -14,7 +14,8 @@ export function getConstructionLayerReadiness(runtime,packet) {
       affectiveScope:request.affectiveScope,affectiveMatrix:request.affectiveMatrix}) : null;
     if(!valid || runtime.isPersonalNameNncParadigmPlan?.(plan)!==true)return {ready:false,
       blockReason:resolution?.blockReason || plan?.blockReason || 'personal-name-compatible-affective-operation-required',
-      recoveryKind:'personal-name-affective'};
+      recoveryKind:plan?.blockReason === 'ordinary-nnc-embed-source-use-analysis-required'
+        ? 'personal-name-compound-source' : 'personal-name-affective'};
   }
   const tense=packet?.choices?.tense || packet?.request?.args?.[0]?.tense || '';
   for(const layer of packet?.layers || []) {

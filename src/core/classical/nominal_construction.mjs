@@ -1825,6 +1825,16 @@ function issueClassicalNahuatlNominalConstructionSourceAuthorization(
       && (includedPredicateAuthorized || (!suppliedResult.sourceFrame.adjectivalProfile?.includesPossessor
         && normalizeStem(suppliedResult.sourceFrame?.stem) === constituentStem))
     );
+    // Andrews §32.3.1: the demonstrative stem is retained in the tzin compound.
+    const demonstrativePronominalAuthorized = Boolean(
+      constructionKind === "affective-nnc"
+      && constituentKind === "demonstrative-pronominal-nnc"
+      && target.isClassicalNahuatlPronominalNncResult?.(suppliedResult) === true
+      && ["demonstrative-this", "demonstrative-that"].includes(suppliedResult.sourceFrame?.familyId)
+      && suppliedResult.sourceFrame?.nounClass === "zero"
+      && normalizeStem(suppliedResult.sourceFrame?.stem) === constituentStem
+      && normalizeNounClass(source.embedClass) === "zero"
+    );
     const quantitivePronominalAuthorized = Boolean(
       constructionKind === "affective-nnc"
       && constituentKind === "quantitive-pronominal-nnc"
@@ -1980,6 +1990,7 @@ function issueClassicalNahuatlNominalConstructionSourceAuthorization(
       || futureAgentiveAuthorized
       || futureRestrictedAuthorized
       || ordinaryNncAuthorized
+      || demonstrativePronominalAuthorized
       || quantitivePronominalAuthorized
       || ordinaryNncPredicateAuthorized
       || cardinalNncAuthorized
@@ -1996,6 +2007,7 @@ function issueClassicalNahuatlNominalConstructionSourceAuthorization(
         "obsolete-general-use-nnc",
         "adjectival-root-nnc", "adjectival-general-use-nnc", "adjectival-quality-nnc",
         "action-nnc",
+        "demonstrative-pronominal-nnc",
         "quantitive-pronominal-nnc",
         "ordinary-nnc-predicate",
         "cardinal-nnc",
@@ -6445,6 +6457,9 @@ function evaluateNominalEmbedConstruction(request, target, sourceAuthorizationFr
           || authenticatedOrdinaryInherentMatrix && targetVoice === "impersonal"
             && vncRequest.nonactiveOptionId === matrixApplication.resultFrame.selectedNonactiveOptionId)
         ? matrixApplication : null;
+      // The application service takes a canonical nucleus as continuation;
+      // an application envelope in that argument is interpreted as dependencies.
+      // Keep the whole issued envelope as exactMatrix in the signed receipt.
       const matrixCoordinate = inheritedMatrixCoordinate || target.evaluateClassicalNahuatlVncApplication?.({
         ...coordinateSource, ...(retainedAlternative ? {irregularStemChoice: retainedAlternative} : {}),
         subject: matrixCoordinateSubject, mood: vncRequest.mood,
@@ -6452,7 +6467,9 @@ function evaluateNominalEmbedConstruction(request, target, sourceAuthorizationFr
         ...(request.nonactiveOptionId ? {nonactiveOptionId: request.nonactiveOptionId} : {}),
         tense: vncRequest.tense, requestedVoice: targetVoice,
         requestedDerivation: "direct", incorporatedAdverb: false,
-      }, retainedPreVoiceApplication ? null : exactMatrix);
+      }, retainedPreVoiceApplication ? null
+        : target.isClassicalNahuatlVncApplicationIssuedFrame?.(exactMatrix) === true
+          ? exactMatrix.resultFrame : exactMatrix);
       if (target.isClassicalNahuatlVncApplicationFrame?.(matrixCoordinate) === true
         && matrixCoordinate.authorizationStatus === "authorized") {
         const frame = deepFreeze({

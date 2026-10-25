@@ -528,6 +528,22 @@ function buildClassicalLesson2OwnedWriting(
         : null
     )
     || candidateResult;
+  if (targetObject.isClassicalComparisonResultFrame?.(writingCandidate) === true
+    && writingCandidate.authorizationStatus === "authorized"
+    && writingCandidate.routeId === "similarity-ihui-vnc"
+    && !writingCandidate.operationFrame.sourceSlots.topic) {
+    // Without a separate topic, the whole written clause is the exact VNC.
+    // Its canonical slots, not the comparison's symbolic layout labels,
+    // supply the word boundary to the same writing owner.
+    const principal = targetObject.getClassicalComparisonCanonicalSourceResult?.(
+      writingCandidate.operationFrame.sourceSlots.principal,
+    );
+    if (targetObject.isClassicalNahuatlVncApplicationFrame?.(principal) === true) {
+      return buildClassicalLesson2OwnedWriting(
+        principal, expectedOutput, targetObject, writingConstituents,
+      );
+    }
+  }
   if (targetObject.isClassicalNahuatlAttestedPrincipalCollocationResult?.(writingCandidate) === true
     && expectedOutput?.role === "word" && writingCandidate.writingProjection?.mandatoryElision === true) {
     return buildClassicalLesson2WritingFromParts(writingCandidate.writingProjection.parts,
@@ -9430,7 +9446,13 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
       const pass = buildClassicalLesson2WritingPass(writing);
       if (pass.required && !pass.entered) return null;
       const nested = exact.resultFrame || {};
-      const surface = [exact.sentenceSurfaceDisplay, exact.sentenceSurface, exact.surface, exact.surfaceRealization,
+      const denominalSentence = targetObject.isClassicalNahuatlDenominalVncResultFrame?.(exact) === true
+        ? targetObject.buildClassicalNahuatlVncSentenceResultFrame?.(exact) : null;
+      const issuedSentence = denominalSentence?.authorizationStatus === "authorized"
+        && denominalSentence.canonicalSourceFrame === exact
+        && targetObject.isClassicalNahuatlVncSentenceResultFrame?.(denominalSentence) === true
+          ? denominalSentence : null;
+      const surface = [issuedSentence?.sentenceSurfaceDisplay, exact.sentenceSurfaceDisplay, exact.sentenceSurface, exact.surface, exact.surfaceRealization,
         exact.wordSurface, exact.wordRealization, exact.canonicalNuclearSurface, exact.nuclearSurface,
         nested.sentenceSurfaceDisplay, nested.sentenceSurface, nested.surface, nested.surfaceRealization,
         nested.wordSurface, nested.wordRealization, writing.find(output => output.writtenResult)?.writtenResult?.surface]
@@ -9511,6 +9533,13 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
         outputKind,
         args,
       );
+    // Publishing one prepared attitude Result again must retain its original
+    // producer receipt: cached exact-Result navigators depend on that custody.
+    if (!outputPrerequisiteBlockReason && preparation?.publishedResult
+      && requiredCapabilityResolution
+      && isClassicalGrammarApplicationResult(preparation.publishedResult)) {
+      return preparation.publishedResult;
+    }
     const candidateResult = (
       !canonicalRuntimeInstallation
       || !canonicalCapabilityIdentity
@@ -9865,6 +9894,9 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
         evaluationOrderFrame,
       );
       issueClassicalGrammarApplicationAtlasObservation(result);
+    }
+    if (preparation && preparedRequestMatches && authorizationStatus === "authorized") {
+      preparation.publishedResult = result;
     }
     return result;
   }

@@ -25,6 +25,7 @@ export function createClassicalNahuatlParticlesApi(
       "l3-cuix": "cuix",
       "l3-tla": "tla",
       "l3-ma": "ma",
+      "l50-in-ma": "in-ma",
       "l3-e-vocative": "vocative-e",
       "l3-in": "in",
       "l3-mah": "mah",
@@ -36,6 +37,12 @@ export function createClassicalNahuatlParticlesApi(
       "l50-in-tla-nel": "in-tla-nel",
       "l50-in-ma-nel": "in-ma-nel",
       "l50-ma-nel": "ma-nel",
+      "l50-ma-nel-zan": "ma-nel-zan",
+      "l50-ma-zan-nel": "ma-zan-nel",
+      "l50-ma-nel-za": "ma-nel-za",
+      "l50-ma-za-nel": "ma-za-nel",
+      "l50-ma-tel-za": "ma-tel-za",
+      "l50-ma-tel-za-yeh": "ma-tel-za-yeh",
       "l3-in-tla-ca": "in-tla",
       "l3-ma-zo": "ma-zo",
       "l3-ma-zo-tel": "ma-zo-tel",
@@ -59,6 +66,56 @@ export function createClassicalNahuatlParticlesApi(
     // Andrews §3.4/§50.7–8 supply these dependent-clause uses. These are lexical
     // Source facts, not a permission inferred from a gloss or written prefix.
     const CLASSICAL_NAHUATL_PARTICLE_RELATIONAL_USES_BY_ID = Object.freeze({
+      "l50-in-ma": Object.freeze({
+        relation: "purpose", relationProfile: "",
+        hostRole: "adjoined", markerRole: "marker", degree: "nonadverbialized",
+        selectedExternalUse: "dependent-clause-introduction", sourceSection: "50.6.2",
+      }),
+      "l50-in-tla-nel": Object.freeze({
+        relation: "concession", relationProfile: "in-tla-nel",
+        hostRole: "adjoined", markerRole: "marker", degree: "nonadverbialized",
+        selectedExternalUse: "dependent-clause-introduction", sourceSection: "50.8",
+      }),
+      "l50-in-ma-nel": Object.freeze({
+        relation: "concession", relationProfile: "in-ma-nel",
+        hostRole: "adjoined", markerRole: "marker", degree: "nonadverbialized",
+        selectedExternalUse: "dependent-clause-introduction", sourceSection: "50.8",
+      }),
+      "l50-ma-nel": Object.freeze({
+        relation: "concession", relationProfile: "in-ma-nel",
+        hostRole: "adjoined", markerRole: "marker", degree: "nonadverbialized",
+        selectedExternalUse: "dependent-clause-introduction", sourceSection: "50.8",
+      }),
+      "l50-ma-nel-zan": Object.freeze({
+        relation: "concession", relationProfile: "at-least",
+        hostRole: "adjoined", markerRole: "marker", degree: "nonadverbialized",
+        selectedExternalUse: "dependent-clause-introduction", sourceSection: "50.8",
+      }),
+      "l50-ma-zan-nel": Object.freeze({
+        relation: "concession", relationProfile: "at-least",
+        hostRole: "adjoined", markerRole: "marker", degree: "nonadverbialized",
+        selectedExternalUse: "dependent-clause-introduction", sourceSection: "50.8",
+      }),
+      "l50-ma-nel-za": Object.freeze({
+        relation: "concession", relationProfile: "at-least",
+        hostRole: "adjoined", markerRole: "marker", degree: "nonadverbialized",
+        selectedExternalUse: "dependent-clause-introduction", sourceSection: "50.8",
+      }),
+      "l50-ma-za-nel": Object.freeze({
+        relation: "concession", relationProfile: "at-least",
+        hostRole: "adjoined", markerRole: "marker", degree: "nonadverbialized",
+        selectedExternalUse: "dependent-clause-introduction", sourceSection: "50.8",
+      }),
+      "l50-ma-tel-za": Object.freeze({
+        relation: "concession", relationProfile: "at-least",
+        hostRole: "adjoined", markerRole: "marker", degree: "nonadverbialized",
+        selectedExternalUse: "dependent-clause-introduction", sourceSection: "50.8",
+      }),
+      "l50-ma-tel-za-yeh": Object.freeze({
+        relation: "concession", relationProfile: "at-least",
+        hostRole: "adjoined", markerRole: "marker", degree: "nonadverbialized",
+        selectedExternalUse: "dependent-clause-introduction", sourceSection: "50.8",
+      }),
       "l3-in-tla-zan": Object.freeze({
         relation: "condition", relationProfile: "",
         hostRole: "adjoined", markerRole: "marker", degree: "nonadverbialized",
@@ -630,9 +687,16 @@ l3-ca-no-zo|ca no zo|collocation|collocation-sequence|3.5
 l3-otzin|ōtzin|honorificized|floating|3.5
 l3-auhtzin|āuhtzin|honorificized|floating|3.5
 l3-ca-no-zotzin|ca no zotzin|honorificized|collocation-sequence|3.5
+l50-in-ma|in mā|collocation|clause-initial|50.6.2
 l50-in-tla-nel|in tlā nel|collocation|clause-initial|50.8
 l50-in-ma-nel|in mā nel|collocation|clause-initial|50.8
 l50-ma-nel|mā nel|collocation|clause-initial|50.8
+l50-ma-nel-zan|mā nel zan|collocation|clause-initial|50.8
+l50-ma-zan-nel|mā zan nel|collocation|clause-initial|50.8
+l50-ma-nel-za|mā nel zā|collocation|clause-initial|50.8
+l50-ma-za-nel|mā zā nel|collocation|clause-initial|50.8
+l50-ma-tel-za|mā tēl zā|collocation|clause-initial|50.8
+l50-ma-tel-za-yeh|mā tēl zā yeh|collocation|clause-initial|50.8
 l58-mah-ca|mah ca#|adjunctor|bound-to-following|58.4
 l58-quemah|quēmah|collocation|independent-utterance|58.4
 l58-quemahca|quemahca|collocation|independent-utterance|58.4
@@ -747,8 +811,15 @@ l3-otzin|behold|honorificized single particle
 l3-auhtzin|good; good|honorificized single particle
 l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its final member
 l50-in-tla-nel|if in truth; even if|concessive introductory collocation
+l50-in-ma|in order that; lest|adjunctor plus mā; purpose with optative or admonitive VNC
 l50-in-ma-nel|although; although in fact|concessive collocation with usual adjunctor in
 l50-ma-nel|although; although in fact|concessive collocation without optional adjunctor in
+l50-ma-nel-zan|although it may be only; at least|restrictive concession; unconditioned only
+l50-ma-zan-nel|although it may be only; at least|restrictive concession; unconditioned only
+l50-ma-nel-za|although it may be only; at least|restrictive concession; formerly more, now only
+l50-ma-za-nel|although it may be only; at least|restrictive concession; formerly more, now only
+l50-ma-tel-za|although it may be only; at least|restrictive concession; formerly more, now only
+l50-ma-tel-za-yeh|although it may be only; at least|restrictive concession; formerly more, now only; intensified by yeh
 `.trim().split("\n").map(row => Object.freeze(row.split("|"))));
     const CLASSICAL_NAHUATL_PARTICLE_LEXICAL_FACTS_BY_ID =
       Object.freeze(Object.fromEntries(
@@ -2889,6 +2960,12 @@ l50-ma-nel|although; although in fact|concessive collocation without optional ad
         inputRole,
         bindingIds: Object.freeze(accepted ? [inputRole] : []),
         requiredChoiceIds: Object.freeze(requiredChoiceIds),
+        // §3.3: ca# follows mā/tlā only in wishes or commands; admonition
+        // retains ah#. These are context choices, not punctuation variants.
+        sentenceKindOptions: Object.freeze(accepted
+          && normalizedOperationId === "particle:negative-selection"
+          ? ["statement", "question", "exclamation", "wish", "command", "admonition"]
+          : []),
         requiredResultRoles: Object.freeze(requiredResultRoles),
         ownerChoicesRequired: Boolean(
           requiredChoiceIds.length || requiredResultRoles.length

@@ -493,7 +493,7 @@ const VNC_DERIVED_SOURCE_FORMATIONS = freeze({
   },
   "imperfect-impersonal": {
     tense: "imperfect",
-    voiceOperations: ["impersonal", "inherent-impersonal"],
+    voiceOperations: ["impersonal", "inherent-impersonal", "tla-impersonal"],
   },
   "present-yohua": {
     tense: "present",
@@ -1383,7 +1383,7 @@ function buildDerivedPredicate(sourceFrame) {
   return { error: "derived-construction-kind-invalid" };
 }
 
-function buildFormulaAndSurface(targetObject, sourceFrame, predicateRecord) {
+function buildFormulaAndSurface(targetObject, sourceFrame, predicateRecord, normalNumberFrame = null) {
   const state = sourceFrame.state;
   const formulaPredicate = predicateRecord.formulaPredicate;
   const writtenPredicate = predicateRecord.writtenPredicate;
@@ -1403,12 +1403,16 @@ function buildFormulaAndSurface(targetObject, sourceFrame, predicateRecord) {
   const normalSubject = sourceFrame.subjectMode === "normal";
   const subjectClassical = normalSubject ? SUBJECT_PREFIXES[sourceFrame.subjectId] || "" : "";
   const subjectSurface = realizeClassicalTranscription(subjectClassical);
-  const nounConnector = sourceFrame.adverbializationDegree === "second"
+  const nounConnector = normalNumberFrame
+    ? normalNumberFrame.num1 === "0" ? "" : normalNumberFrame.num1
+    : sourceFrame.adverbializationDegree === "second"
     ? "⎕"
     : sourceFrame.nounConnector || predicateRecord.nounConnector || "";
   const nounConnectorSurface = nounConnector === "⎕"
     ? "" : realizeClassicalTranscription(nounConnector);
-  const pluralConnector = sourceFrame.numberConnector || "";
+  const pluralConnector = normalNumberFrame
+    ? normalNumberFrame.num2 === "0" ? "" : normalNumberFrame.num2
+    : sourceFrame.numberConnector || "";
   const pluralConnectorSurface = realizeClassicalTranscription(pluralConnector);
   const formula = state === STATE.POSSESSIVE
     ? `#${normalSubject ? subjectClassical || "Ø" : "Ø"}-Ø+${canonicalPossessorDyad ? canonicalPossessorDyad.map(slot => slot.carrier || "Ø").join("-") : `${possessorClassical || "Ø"}-Ø`}(${formulaPredicate})${nounConnector || "Ø"}-${pluralConnector || "Ø"}#`
@@ -2001,20 +2005,23 @@ function resolveOwnerIssuedDerivedSourceCarrier(
     } else {
       sourceKind = "imperfect-predicate";
     }
-    // Andrews 46.5: ordinary active perfective yan transforms the current
+    // Andrews 46.4–46.5: ordinary imperfect n and active perfective yan transform the current
     // Source VNC subject into its possessor; this is not a target chooser.
     // Incorporated-adverb and impersonal-tla sources retain their absolutive
     // state and never enter this ordinary possessive mapping.
-    if (normalized.stemId === "yan-locative"
+    if ((normalized.stemId === "yan-locative"
       && normalized.formationId === "perfective-active"
-      && sourceKind === "perfective-core") {
+      && sourceKind === "perfective-core")
+      || (normalized.stemId === "n-locative"
+        && ["imperfect-active", "imperfect-passive"].includes(normalized.formationId)
+        && sourceKind === "imperfect-predicate")) {
       const participant = vncResult?.participantProjection?.targetSubject;
       if (!participant || !Object.isFrozen(participant)
         || participant.kind !== "classical-nahuatl-participant-frame"
         || participant.role !== "subject" || participant.hasReferent !== true
         || participant.impersonal !== false
         || !["1sg", "2sg", "3sg", "1pl", "2pl", "3pl", "3common"].includes(participant.category)) {
-        return {diagnostics: ["yan-perfective-source-referential-subject-required"], carrier: null, normalized};
+        return {diagnostics: ["relational-derived-source-referential-subject-required"], carrier: null, normalized};
       }
       sourceSubjectFrame = participant;
       sourcePossessor = participant.category;
@@ -2038,6 +2045,7 @@ function resolveOwnerIssuedDerivedSourceCarrier(
       normalized.sourceVoiceSupplied
       && normalized.sourceVoice !== sourceVoice
     )
+    || (normalized.sourceEmbedStem && normalized.sourceEmbedStem !== sourceStem)
     || (
       normalized.sourceStemSupplied
       && normalized.sourceStem !== sourceStem
@@ -2574,7 +2582,25 @@ function buildOperationFrame(targetObject, sourceFrame) {
       return { diagnostics: ["relational-number-connector-dyad-incompatible"] };
     }
   }
-  const formulaAndSurface = buildFormulaAndSurface(targetObject, sourceFrame, predicateRecord);
+  let normalNumberFrame = null;
+  if (sourceFrame.subjectMode === "normal" && sourceFrame.subjectId.endsWith("pl")
+    && !sourceFrame.huanYolquiAbsolutiveLexicalization) {
+    const numberRequest = {subject: sourceFrame.subjectId, stem: predicateRecord.writtenPredicate};
+    if (sourceFrame.state === STATE.POSSESSIVE) {
+      normalNumberFrame = targetObject.resolveClassicalNahuatlLesson13PossessiveNumberDyad?.(numberRequest);
+      if (!normalNumberFrame) return {diagnostics: ["lesson-13-possessive-number-owner-required"]};
+    } else if (sourceFrame.constructionKind === "associated-entity") {
+      // §47.4: the ca-tl matrix has animate Ø-h plural (timīllahcah).
+      // Common-number nonanimate reference remains its separate subject value.
+      normalNumberFrame = targetObject.resolveClassicalNahuatlLesson12AbsolutiveNumberDyad?.({
+        ...numberRequest, nounClass: "tl", pluralConnector: "0-h", animacy: "animate",
+      });
+      if (!normalNumberFrame) return {diagnostics: ["lesson-12-absolutive-number-owner-required"]};
+    }
+    if (normalNumberFrame && normalNumberFrame.authorizationStatus !== "authorized")
+      return {diagnostics: [normalNumberFrame.blockReason || "relational-normal-number-not-authorized"]};
+  }
+  const formulaAndSurface = buildFormulaAndSurface(targetObject, sourceFrame, predicateRecord, normalNumberFrame);
   const predicateStemFrame = freeze({
     kind: "classical-nahuatl-relational-nnc-predicate-stem-frame",
     contractKind: "classical-nahuatl-relational-nnc-predicate-stem-frame",
@@ -2633,6 +2659,7 @@ function buildOperationFrame(targetObject, sourceFrame) {
       sourceFrame,
       predicateStemFrame,
       predicateRecord: freeze(predicateRecord),
+      normalNumberFrame: normalNumberFrame ? freeze(normalNumberFrame) : null,
       formulaAndSurface: freeze(formulaAndSurface),
       contextualFacts: freeze(contextualFacts),
       typedOperationAuthority: true,
@@ -2922,7 +2949,7 @@ export function createClassicalNahuatlNncClosureApi(targetObject = globalThis) {
       pers1: formulaSlots.subject || "Ø",
       pers2: "Ø",
     };
-    const numberFrame = {
+    const numberFrame = operationFrame.normalNumberFrame || {
       authorizationStatus: "authorized",
       subject: sourceFrame.subjectId,
       subjectNumber: sourceFrame.subjectId.endsWith("pl")
@@ -3076,7 +3103,12 @@ export function createClassicalNahuatlNncClosureApi(targetObject = globalThis) {
     const allowedSourceKinds = stem
       ? stem.stemId === "n-locative" && sourceFormation === "plain-nounstem"
         ? ["nounstem"]
-        : [...stem.allowedSourceKinds]
+        : stem.allowedSourceKinds.filter(kind =>
+          // §45.2: options two/three require an embedded source. The
+          // possessor-only source belongs to option one, as final validation
+          // already enforces; do not offer an impossible compound choice.
+          ![OPTION.TWO, OPTION.THREE].includes(normalizeToken(request.formation))
+          || kind !== "possessor")
       : [];
     const diagnostics = [];
     if (!stem) diagnostics.push("relational-stem-license-required");

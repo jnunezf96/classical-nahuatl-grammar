@@ -1,0 +1,34 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {createPossessiveFixture} from './helpers/deverbal_possessive_fixture.mjs';
+
+test('temporal iuh and captured iuhqui use the executed preterit, not citation machinery',async()=>{
+ const {r}=await createPossessiveFixture('');
+ const q={sourceStem:'ihui',verbClass:'B',sourceInitialISelection:'real',sourceValence:'intransitive',subject:'3sg',mood:'indicative',tense:'preterit',requestedDerivation:'direct',requestedVoice:'active'};
+ const source=r.requestClassicalVncApplicationResult({...q,tense:'present'});
+ const binding=r.issueClassicalGrammarTypedSourceOperationBindingFrame(r.getClassicalGrammarApplicationCapabilityNavigator(source.resultFrame.sourceMachineryFrame),'vnc:application',{requestedDerivation:'direct',requestedVoice:'active',mood:'indicative',tense:'preterit',subject:'3sg'});
+ assert.equal(binding.bindingStatus,'ready',binding.blockReason);
+ const application=r.executeClassicalGrammarTypedSourceOperationBindingFrame(binding);
+ assert.equal(application.authorizationStatus,'authorized',application.blockReason);
+ const iuh=application.canonicalResult;
+ assert.equal(iuh.authorizationStatus,'authorized',iuh.blockReason);
+ assert.equal(iuh.resultFrame.sourceMachineryFrame.predicateTableCell,'B:indicative:present');
+ assert.equal(iuh.resultFrame.selectedMachineryFrame.predicateTableCell,'B:indicative:preterit');
+ const principal=r.requestClassicalVncApplicationResult({sourceStem:'cuīca',verbClass:'A',sourceValence:'intransitive',subject:'1sg',mood:'indicative',tense:'present',requestedVoice:'active'});
+ const request={principalClause:principal,adjoinedUnit:iuh,semanticRelation:'time',timeProfile:'iuh-state',adverbializationDegree:'nonadverbialized',structureKind:'complex',adjoinedUnitType:'vnc',order:'modifier-head',recursion:'none',marking:'unmarked'};
+ const result=r.evaluateAdverbialAdjunction(request);
+ assert.equal(result.ok,true,JSON.stringify(result.diagnostics));
+ assert.equal(result.sourceContract.adjoined.issuedResult,iuh);
+ assert.equal(result.surface,'iuh nicuīca');
+ const present=r.requestClassicalVncApplicationResult({...q,tense:'present'});
+ assert.notEqual(r.evaluateAdverbialAdjunction({...request,adjoinedUnit:present}).ok,true);
+ assert.notEqual(r.evaluateAdverbialAdjunction({...request,adjoinedUnit:JSON.parse(JSON.stringify(iuh))}).ok,true);
+ const noun=r.requestClassicalDeverbalNncResult({constructionKind:'predicate-nominalization',nominalizationKind:'preterit-agentive',canonicalVncResult:iuh,state:'absolutive',subject:'3sg',numberConnector:'qui'});
+ assert.equal(noun.authorizationStatus,'authorized',noun.blockReason);
+ assert.equal(noun.wordSurface,'iuhqui');
+ const nominal=r.evaluateAdverbialAdjunction({...request,adjoinedUnit:noun,adjoinedUnitType:'nnc',timeProfile:'iuhqui'});
+ assert.equal(nominal.ok,true,JSON.stringify(nominal.diagnostics));
+ assert.equal(nominal.sourceContract.adjoined.issuedResult,noun);
+ assert.equal(noun.sourceFrame.canonicalVncResult,iuh);
+ assert.notEqual(r.evaluateAdverbialAdjunction({...request,adjoinedUnit:JSON.parse(JSON.stringify(noun)),adjoinedUnitType:'nnc',timeProfile:'iuhqui'}).ok,true);
+});

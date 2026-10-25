@@ -1,0 +1,31 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {createPossessiveFixture} from './helpers/deverbal_possessive_fixture.mjs';
+
+test('first-degree place NNC can follow a general place head in apposition',async()=>{
+ const {r}=await createPossessiveFixture('');
+ const potential=r.buildClassicalNahuatlLexicalAdverbialPotentialFrame({stem:'iz'});
+ const head=r.requestClassicalAdverbialNncResult({adverbialPotentialFrame:potential,degree:'first-degree',scope:'external-clause',context:{sentencePosition:'initial',clauseType:'assertion'}});
+ assert.equal(head.authorizationStatus,'authorized',head.blockReason);
+ const s=r.buildClassicalNahuatlOrdinaryNncSourceFrame({stem:'ā',sourceClass:'tl-1-a'});
+ const noun=r.requestClassicalOrdinaryNncResult(s,r.buildClassicalNahuatlOrdinaryNncOperationFrame(s,{state:'absolutive',subject:'3common'}));
+ assert.equal(noun.wordSurface,'ātl');
+ const controller=r.createClassicalClauseRelationController();
+ controller.captureCurrentResult('principal',head);controller.captureCurrentResult('adjoined',noun);
+ const selections={relation:'place',degree:'first',structureProfile:'apposition',order:'appositive-head-modifier'};
+ const contract=controller.buildDecisionContract(selections);
+ assert.equal(contract.authorizationStatus,'authorized',contract.blockReason);
+ const result=controller.compose(selections);
+ assert.equal(result.authorizationStatus,'authorized',result.blockReason);
+ assert.equal(result.canonicalResult.surface,'Iz ātl.');
+ assert.equal(result.canonicalResult.sourceContract.principal.issuedResult,head);
+ assert.equal(result.canonicalResult.sourceContract.adjoined.issuedResult,noun);
+ assert.equal(noun.wordSurface,'ātl');
+ assert.notEqual(controller.compose({...selections,order:'modifier-head'}).authorizationStatus,'authorized');
+ const second=controller.buildDecisionContract({...selections,degree:'second'});
+ assert.equal(second.authorizationStatus,'authorized');
+ assert.deepEqual(Array.from(second.decisions.find(d=>d.id==='structure-profile').values),['modification','apposition','adverbial-principal']);
+ assert.deepEqual(Array.from(contract.decisions.find(d=>d.id==='structure-profile').values),['modification','apposition']);
+ const copied=r.createClassicalClauseRelationController();copied.captureCurrentResult('principal',{...head});copied.captureCurrentResult('adjoined',noun);
+ assert.notEqual(copied.compose(selections).authorizationStatus,'authorized');
+});

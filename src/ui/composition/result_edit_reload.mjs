@@ -1,5 +1,5 @@
-import {resolveResultEditTarget} from './result_editing.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&v=20261023-conjunction-1';
-import {canRebuildResultEdit,isResultEditOccurrencePath} from './result_edit_rebuild.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1';
+import {resolveResultEditTarget} from './result_editing.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&v=20261023-conjunction-1&interfaceRelease=1.2.36';
+import {canRebuildResultEdit,isResultEditOccurrencePath} from './result_edit_rebuild.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1&interfaceRelease=1.2.36';
 
 // Persist only an occurrence address. Replayed owner Results supply all identity
 // and grammar; serialized objects and written text cannot stand in for them.

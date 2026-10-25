@@ -28,11 +28,11 @@ function ledgerRows() {
 function ordinaryNncResult(ctx, stem = "xōchi") {
     const source = ctx.buildClassicalNahuatlOrdinaryNncSourceFrame({
         stem,
-        sourceClass: "zero",
+        sourceClass: "tl-1-a",
     });
     const operation = ctx.buildClassicalNahuatlOrdinaryNncOperationFrame(
         source,
-        { state: "absolutive", subject: "3sg" },
+        { state: "absolutive", subject: "3common" },
     );
     return ctx.requestClassicalOrdinaryNncResult(source, operation);
 }
@@ -212,7 +212,7 @@ function run(ctx) {
         zero: [possessiveCollectiveZero.lcmAxisId, possessiveCollectiveZero.formulaRealization, possessiveCollectiveZero.wordSurface],
         uh: [possessiveCollectiveUh.lcmAxisId, possessiveCollectiveUh.formulaRealization, possessiveCollectiveUh.wordSurface],
     }, {
-        zero: ["extension/collectivity-possessive", "#0-0+n-o(Mē-xi-h-ca-yō)0-0#", "noMēxihcayō"],
+        zero: ["extension/collectivity-possessive", "#0-0+n-o(Mē-xi-h-ca-yo)0-0#", "noMēxihcayo"],
         uh: ["extension/collectivity-possessive", "#0-0+n-o(Mē-xi-h-ca-yō)uh-0#", "noMēxihcayōuh"],
     });
 
@@ -426,7 +426,7 @@ function run(ctx) {
     const exactNncResult = ordinaryNncResult(ctx);
     const exactPlace = ctx.evaluatePlaceGentilicNnc({
         constructionKind: "place-name",
-        formation: "co",
+        formation: "c",
         canonicalNncResult: exactNncResult,
         usage: "adverbial",
     });
@@ -477,7 +477,7 @@ function run(ctx) {
     }, {
         status: "authorized",
         valid: true,
-        surface: "xōchico",
+        surface: "xōchic",
         sourceMode: "exact-owner-issued-ordinary-nnc-result",
         projectedStem: "xōchi",
         exactResult: true,

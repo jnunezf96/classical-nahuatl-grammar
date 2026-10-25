@@ -1,17 +1,19 @@
-# Grammar OS v1.2.35 release
+# Grammar OS v1.2.36 release
 
-Release name: **Andrews Semantic Corrections**
+Release name: **Andrews Interface Harmony**
 
-Browser build: **20261024-andrews-semantics-54**
+Browser build: **20261025-interface-harmony-55**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Keeps the supplementary subject separate when an object is selected as the shared reference, following Andrews 17.4.4 and 42.8.2.
-- Treats reduplicated impersonal tla as a stem constituent and an impersonal event, preserving the separate fused-object interpretation and correct Result explanation (Andrews 27.2.1).
-- Accepts the authenticated īc-point clause in the two longer how-much-more comparison choices (Andrews 53.6), while copied or forged compositions remain rejected.
-- Preserves explicit Make, accepted Results while staging, and existing supported reload boundaries. Comparison Results remain deliberately unsupported for reload; the existing recovery message is retained.
+- Organizes choices within the existing Source, Build and Result panels, with no separate Decisions panel.
+- Keeps source, participant, voice and formation choices aligned with Andrews and their canonical owners; staged changes preserve the accepted Result until explicit Make.
+- Corrects exact-parent continuation across patientive, demonstrative affective, adjective-group, comparison and incorporated-complement paths.
+- Preserves selected irregular verb endings and displays the chosen denominal sentence punctuation in Preview and Result.
+
+Focused local verification and independent review are recorded in the recovered interface overview. Release checks cover package integrity and selected affected live paths; prior completed grammar checks are retained. One separately unapproved local pil-child restriction is excluded from this release.
 
 ## Review scope and current limits
 
@@ -38,7 +40,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.35/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.36/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.

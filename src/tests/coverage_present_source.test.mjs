@@ -1,0 +1,24 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {createRuntimeInstance} from '../runtime/create_runtime.mjs';
+import {getVncSourceClassRequirement} from '../ui/composer/source_admission.mjs';
+const r=(await createRuntimeInstance({documentObject:{getElementById:()=>null,addEventListener(){}}})).runtimeObject;
+test('Andrews mo-ca coverage source admits its present without an invented perfective class',()=>{
+ const source=r.resolveClassicalNahuatlImperfectiveVncSourceFrame({enteredStem:'mo-ca',valence:'intransitive'});
+ assert.equal(r.isClassicalNahuatlImperfectiveVncSourceFrame(source),true);
+ assert.equal(source.perfectiveClassStatus,'unresolved');
+ assert.equal(getVncSourceClassRequirement({...r,getClassicalVncSourceLexemeId:()=>'',getClassicalBasalUnitFromRuntime:()=> 'vnc',document:{getElementById:()=>({value:'intransitive'})}},{mode:'whole-stem',sourceWholeStem:'mo-ca'}),null);
+ const choices={subject:'1sg',subjectAnimacy:'animate',subjectHumanness:'human',mood:'indicative',tense:'present',requestedVoice:'active',requestedDerivation:'direct'};
+ const binding=r.issueClassicalNahuatlVncTypedSourceApplicationBindingFrame(source,choices);
+ assert.equal(binding.bindingStatus,'ready',binding.blockReason);
+ assert.deepEqual(Array.from(binding.choiceOptionProjection.tense,x=>x.optionId),['present']);
+ const navigator=r.getClassicalGrammarApplicationCapabilityNavigator(source);
+ const aggregate=r.issueClassicalGrammarTypedSourceOperationBindingFrame(navigator,'vnc:application',choices);
+ assert.equal(aggregate.bindingStatus,'ready',aggregate.blockReason);
+ const out=r.executeClassicalGrammarTypedSourceOperationBindingFrame(aggregate);
+ assert.equal(out.authorizationStatus,'authorized',out.blockReason);
+ assert.equal(out.canonicalResult.resultFrame.surfaceRealization,'nimoca');
+ assert.equal(out.canonicalResult.normalizedRequest.verbClass,'');
+ assert.equal(r.issueClassicalNahuatlVncTypedSourceApplicationBindingFrame(source,{...choices,tense:'preterit'}).bindingStatus,'rejected');
+ assert.equal(r.isClassicalNahuatlImperfectiveVncSourceFrame({...source}),false);
+});

@@ -65,7 +65,8 @@ export function stemCollectorCaption(hasRelatedChoices=false){
   return hasRelatedChoices?'Stem and related choices':'Stem';
 }
 
-export function vncSubjectCaption({isTarget=false,derivation='',voice='',nativeDerivation='direct',nativeVoice='active'}={}){
+export function vncSubjectCaption({isCauser=false,isTarget=false,derivation='',voice='',nativeDerivation='direct',nativeVoice='active'}={}){
+  if(isCauser)return 'Causer';
   if(isTarget)return 'Result subject';
   return (derivation||nativeDerivation)!=='direct'||(voice||nativeVoice)!=='active'?'Source subject':'Subject';
 }
@@ -199,8 +200,12 @@ export function arrangeProjectedClauseChoices(doc,organizer,family,active=true){
     if(!parent){restore();continue;}
     if(bucket.parentElement!==parent){
       const nativeSection=parent===native?native.querySelector(family==='vnc'?'[data-classical-vnc-authority-disclosure]':'[data-classical-nnc-grammar-section]'):null;
-      if(nativeSection&&slot==='state')nativeSection.after(bucket);
-      else if(nativeSection)parent.insertBefore(bucket,nativeSection);else parent.append(bucket);
+      // Native collectors may sit inside another layout wrapper. Insert next
+      // to that wrapper, retaining the native controls and a stable portal home.
+      let anchor=nativeSection;
+      while(anchor&&anchor.parentElement!==parent)anchor=anchor.parentElement;
+      if(anchor&&slot==='state')anchor.after(bucket);
+      else if(anchor)parent.insertBefore(bucket,anchor);else parent.append(bucket);
     }
     registerOwnerChoicePortal(doc,bucket);bucket.dataset.buildPortalFamily=family;
     bucket.firstElementChild.hidden=Boolean(parent===native||sentence);

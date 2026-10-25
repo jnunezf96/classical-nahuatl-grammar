@@ -633,6 +633,16 @@ function probeNominalConstruction(
     }
   } else if (
     ownerPreflight.validate("isClassicalNahuatlPronominalNncResult", exactResult)
+    && ["demonstrative-this", "demonstrative-that"].includes(exactResult.sourceFrame?.familyId)
+    && exactResult.sourceFrame?.nounClass === "zero"
+  ) {
+    constituentKind = "demonstrative-pronominal-nnc";
+    constituentStem = exactResult.sourceFrame.stem;
+    constituentClass = "zero";
+    constituentSourceClass = "zero";
+    affectiveOnly = true;
+  } else if (
+    ownerPreflight.validate("isClassicalNahuatlPronominalNncResult", exactResult)
     && exactResult.sourceFrame?.familyId === "quantitive"
     && ["qui", "chi"].includes(exactResult.sourceFrame?.matrixFamily)
     && exactResult.operationFrame?.subject === "3common"

@@ -1,11 +1,11 @@
 // Non-authorizing validation projection for the independent semantic owners in
 // Lessons 57-58. The projection shares typed construction mechanics only.
 
-import { createClassicalNahuatlVncApplicationModule } from "../../application/classical/vnc_application.mjs?v=20260826-relational-role-340&andrewsRelease=20261024-1";
-import { createClassicalNahuatlSourceStemInventoryApi } from "./source_stem_inventory.mjs";
+import { createClassicalNahuatlVncApplicationModule } from "../../application/classical/vnc_application.mjs?v=20260826-relational-role-340&andrewsRelease=20261024-1&interfaceRelease=1.2.36";
+import { createClassicalNahuatlSourceStemInventoryApi } from "./source_stem_inventory.mjs?interfaceRelease=1.2.36";
 import { createClassicalNahuatlSupplementationApi } from "../sentence/supplementation.mjs?andrewsRelease=20261024-1";
-import { createClassicalNahuatlDenominalVncGrammarApi } from "./denominal_vnc_grammar.mjs?v=20260826-relational-role-340&andrewsRelease=20261024-1";
-import { installClassicalNahuatlNominalConstructionGlobals } from "./nominal_construction.mjs";
+import { createClassicalNahuatlDenominalVncGrammarApi } from "./denominal_vnc_grammar.mjs?v=20260826-relational-role-340&andrewsRelease=20261024-1&interfaceRelease=1.2.36";
+import { installClassicalNahuatlNominalConstructionGlobals } from "./nominal_construction.mjs?interfaceRelease=1.2.36";
 
 const ISSUED_VALIDATION_FRAMES = new WeakSet();
 

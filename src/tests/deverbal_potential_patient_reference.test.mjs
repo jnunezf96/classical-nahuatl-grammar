@@ -1,0 +1,31 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import vm from 'node:vm';
+import {readFileSync} from 'node:fs';
+import {createPossessiveFixture} from './helpers/deverbal_possessive_fixture.mjs';
+
+test('potential-patient restores owned nominal reference choices after fixed active action',async()=>{
+ const {r}=await createPossessiveFixture('mahui');
+ const parent=r.requestClassicalVncApplicationResult({sourceStem:'mahui',verbClass:'B',sourceValence:'intransitive',subject:'3sg',mood:'indicative',tense:'future',requestedVoice:'active'});
+ assert.equal(parent.authorizationStatus,'authorized',parent.blockReason);
+ const request={constructionKind:'deverbal-action',actionKind:'potential-patient',actionSuffix:'z',canonicalVncResult:parent,state:'absolutive',subject:'3common',animacy:'nonanimate',humanness:'nonhuman'};
+ const frame=r.evaluateClassicalNahuatlDeverbalNnc(request);
+ assert.equal(frame.authorizationStatus,'authorized',frame.blockReason);
+ assert.equal(frame.operationFrame.fixedTargetSubject,'');
+ const code=readFileSync(new URL('../ui/rendering/rendering.mjs',import.meta.url),'utf8');
+ const start=code.indexOf('    function syncClassicalDeverbalNncStateOptions('),end=code.indexOf('\n    function ',start+1);
+ const writes=[];
+ const ctx=vm.createContext({targetObject:r,getActiveClassicalGrammarResultBinding:()=>({exactResult:parent}),getClassicalNominalConstructionControlValue:(_id,fallback)=>fallback,buildClassicalNominalConstructionUiRequest:()=>request,getClassicalDeverbalEditablePossessorValues:()=>[],applyClassicalRuleLogicSelectOptionAvailability:(...args)=>writes.push(args)});
+ vm.runInContext(code.slice(start,end),ctx);
+ ctx.syncClassicalDeverbalNncStateOptions(frame);
+ assert.ok(writes.find(([id,values])=>id==='classical-rule-logic-nnc-subject-animacy'&&values.includes('animate')));
+ const human={...request,subject:'2sg',animacy:'animate',humanness:'human'};
+ const result=r.evaluateClassicalNahuatlDeverbalNnc(human);
+ assert.equal(result.authorizationStatus,'authorized',result.blockReason);
+ assert.equal(result.wordSurface,'timahuiztli');
+ assert.equal(result.sourceFrame.canonicalVncResult,parent);
+ writes.length=0;ctx.syncClassicalDeverbalNncStateOptions({...frame});assert.equal(writes.length,0);
+ const fixed=r.evaluateClassicalNahuatlDeverbalNnc({...request,actionKind:'active-action'});
+ ctx.syncClassicalDeverbalNncStateOptions(fixed);
+ assert.ok(writes.find(([id,values])=>id==='classical-rule-logic-nnc-subject-animacy'&&values.length===1&&values[0]==='nonanimate'));
+});

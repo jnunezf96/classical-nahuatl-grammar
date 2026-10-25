@@ -16,7 +16,10 @@ export function runClassicalSourceApplyAction(targetObject, action) {
   const doc = targetObject.document;
   const signature = () => JSON.stringify(Array.from(doc.querySelectorAll(
     "#classical-source-panel input, #classical-source-panel select"
-  )).map(control => [control.id, control.value, control.checked]));
+  )).map(control => [control.id, control.value, control.checked])
+    // Presentation may move existing fields during the paint opportunity.
+    // Only changed selections invalidate the queued Source action.
+    .sort((a, b) => a[0].localeCompare(b[0])));
   const before = signature();
   return runCompositionAction(doc, doc.getElementById("verb-entry-apply"), action,
     {label: "Applying Source…", isCurrent: () => signature() === before});

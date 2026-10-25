@@ -24,6 +24,39 @@ export function isGrammarOwnerVisible(doc,node){
     return true;
 }
 
+export function reconcileOrdinaryNncSharedChoices(doc) {
+  const plan=doc.getElementById('classical-capability-operation-plan');
+  if(!plan)return false;
+  const typedNnc=plan.dataset.classicalCapabilityOperationId==='nnc:ordinary'
+    && plan.dataset.classicalCapabilityTypedSourceBindingOperation==='nnc:ordinary';
+  const ownerVisible=node=>isGrammarOwnerVisible(doc,node);
+  let changed=false;
+    for(const [choiceId,controlId] of [
+      ['state','classical-rule-logic-nnc-state'],
+      ['possessor','classical-rule-logic-nnc-possessor'],
+      ['animacy','classical-rule-logic-nnc-subject-animacy'],
+    ]) {
+      const projection=findOwnerChoice(doc,`[data-classical-capability-choice-id="${choiceId}"][data-classical-capability-owner-projection="exact-binding"]`);
+      const field=projection?.closest('.classical-capability-operation-plan__choice');
+      if(!field)continue;
+      const native=doc.getElementById(controlId);
+      const nativeValues=new Set(Array.from(native?.options || []).filter(option=>option.value && !option.disabled && !option.hidden).map(option=>option.value));
+      const projectedValues=Array.from(projection.options).filter(option=>option.value && !option.disabled && !option.hidden && option.dataset.classicalCapabilityOwnerOptionAvailability==='available').map(option=>option.value);
+      const resolved=!projection.disabled && !projection.required && projection.getAttribute('aria-required')!=='true'
+        && projection.value && !projection.selectedOptions[0]?.disabled;
+      const pendingFallback=choiceId!=='possessor' && !projection.required
+        && projection.getAttribute('aria-required')!=='true' && !projection.value;
+      const mirrored=typedNnc && (resolved||pendingFallback) && ownerVisible(projection) && ownerVisible(native)
+        && !native.disabled && !native.readOnly
+        && nativeValues.has(native?.value) && (pendingFallback||native.value===projection.value) && projectedValues.length>0
+        && (pendingFallback||projectedValues.includes(projection.value)) && projectedValues.every(value=>nativeValues.has(value));
+      if(mirrored) {
+        if(field.dataset.compositionNativeChoiceMirror!==controlId){field.dataset.compositionNativeChoiceMirror=controlId;changed=true;}
+      } else if(field.hasAttribute('data-composition-native-choice-mirror')){field.removeAttribute('data-composition-native-choice-mirror');changed=true;}
+    }
+  return changed;
+}
+
 export function createGrammarPresentation(doc,{constructionPlacement='legacy'}={}) {
   const requiredSignatures=new WeakMap();
   let previousSentenceFields=new Set();
@@ -173,35 +206,14 @@ export function createGrammarPresentation(doc,{constructionPlacement='legacy'}={
       && plan.dataset.classicalCapabilityTypedSourceBindingOperation==='nnc:ordinary';
     const typedPronominal=plan.dataset.classicalCapabilityOperationId==='nnc:pronominal'
       && plan.dataset.classicalCapabilityTypedSourceBindingOperation==='nnc:pronominal';
-    for(const [choiceId,controlId] of [
-      ['state','classical-rule-logic-nnc-state'],
-      ['possessor','classical-rule-logic-nnc-possessor'],
-      ['animacy','classical-rule-logic-nnc-subject-animacy'],
-    ]) {
-      const projection=findOwnerChoice(doc,`[data-classical-capability-choice-id="${choiceId}"][data-classical-capability-owner-projection="exact-binding"]`);
-      const field=projection?.closest('.classical-capability-operation-plan__choice');
-      if(!field)continue;
-      const native=doc.getElementById(controlId);
-      const nativeValues=new Set(Array.from(native?.options || []).filter(option=>option.value && !option.disabled && !option.hidden).map(option=>option.value));
-      const projectedValues=Array.from(projection.options).filter(option=>option.value && !option.disabled && !option.hidden && option.dataset.classicalCapabilityOwnerOptionAvailability==='available').map(option=>option.value);
-      const resolved=!projection.disabled && !projection.required && projection.getAttribute('aria-required')!=='true'
-        && projection.value && !projection.selectedOptions[0]?.disabled;
-      const pendingFallback=choiceId!=='possessor' && !projection.required
-        && projection.getAttribute('aria-required')!=='true' && !projection.value;
-      const mirrored=typedNnc && (resolved||pendingFallback) && ownerVisible(projection) && ownerVisible(native)
-        && !native.disabled && !native.readOnly
-        && nativeValues.has(native?.value) && (pendingFallback||native.value===projection.value) && projectedValues.length>0
-        && (pendingFallback||projectedValues.includes(projection.value)) && projectedValues.every(value=>nativeValues.has(value));
-      if(mirrored) {
-        if(field.dataset.compositionNativeChoiceMirror!==controlId)field.dataset.compositionNativeChoiceMirror=controlId;
-      } else if(field.hasAttribute('data-composition-native-choice-mirror'))field.removeAttribute('data-composition-native-choice-mirror');
-    }
+    reconcileOrdinaryNncSharedChoices(doc);
 
     // Subject is a joint Person/Number decision. A completed-request menu may
     // omit plural while its ending is unresolved; retain the native pending
     // editor until the projected domain covers those available staging paths.
     const subjectProjection=findOwnerChoice(doc,'[data-classical-capability-choice-id="subject"][data-classical-capability-owner-projection="exact-binding"]');
     const subjectField=subjectProjection?.closest('.classical-capability-operation-plan__choice');
+    let subjectProjectionReplacesNumber=false;
     if(subjectField) {
       const person=nativeChoice('classical-rule-logic-nnc-subject-person');
       const number=nativeChoice('classical-rule-logic-nnc-subject-number');
@@ -215,6 +227,13 @@ export function createGrammarPresentation(doc,{constructionPlacement='legacy'}={
       const projectedValues=new Set(Array.from(subjectProjection.options || []).filter(option=>
         option.value && !option.disabled && !option.hidden
         && option.dataset.classicalCapabilityOwnerOptionAvailability==='available').map(option=>option.value));
+      // Person may be a fixed, hidden coordinate while Number is editable.
+      // Replacing the joint editor must still preserve that Number domain.
+      const numberDomain=new Set([...pendingValues(number)].map(value=>
+        value==='common' && person.control?.value==='3' ? '3common'
+          : ['singular','plural'].includes(value)
+            ? `${person.control?.value}${value==='singular'?'sg':'pl'}` : '').filter(Boolean));
+      subjectProjectionReplacesNumber=covers(projectedValues,numberDomain);
       const nativePending=typedNnc && ownerVisible(subjectProjection)
         && ownerVisible(person.control) && ownerVisible(number.control)
         && (person.available || number.available)
@@ -248,7 +267,7 @@ export function createGrammarPresentation(doc,{constructionPlacement='legacy'}={
     // retain their native values/listeners but cannot display a second answer.
     const ownerFields={subject:['subject-person','subject-number'],
       humanness:['subject-humanness'],animacy:['subject-animacy'],state:['state'],
-      possessor:['possessor'],possessorReduplication:['possessor-reduplication'],metaphoricalUse:['metaphorical-use'],predicateFormation:['predicate-form'],stemFormation:['stem-relation'],
+      possessor:['possessor'],includedPossessor:['possessor'],possessorReduplication:['possessor-reduplication'],metaphoricalUse:['metaphorical-use'],predicateFormation:['predicate-form'],stemFormation:['stem-relation'],
       pluralConnector:['plural-connector']};
     const pronominalFields={subject:['subject-person','subject-number'],
       humanness:['subject-humanness'],animacy:['subject-animacy'],
@@ -263,7 +282,10 @@ export function createGrammarPresentation(doc,{constructionPlacement='legacy'}={
       if(typedPronominal && (projection.disabled || projection.readOnly
         || !Array.from(projection.options || []).some(option=>option.value && !option.disabled && !option.hidden
           && option.dataset.classicalCapabilityOwnerOptionAvailability==='available')))continue;
-      for(const suffix of nativeIds)duplicate(doc.getElementById(`classical-rule-logic-nnc-${suffix}`)?.closest('.classical-rule-control,label'),choiceId);
+      for(const suffix of nativeIds) {
+        if(typedNnc && suffix==='subject-number' && !subjectProjectionReplacesNumber)continue;
+        duplicate(doc.getElementById(`classical-rule-logic-nnc-${suffix}`)?.closest('.classical-rule-control,label'),choiceId);
+      }
     }
     const typedParticle=plan.dataset.classicalCapabilityOperationId==='particle:result'
       && plan.dataset.classicalCapabilityTypedSourceBindingOperation==='particle:result';

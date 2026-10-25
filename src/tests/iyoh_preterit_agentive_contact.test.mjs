@@ -1,0 +1,25 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {createPossessiveFixture} from './helpers/deverbal_possessive_fixture.mjs';
+const {r,set,controls}=await createPossessiveFixture('iyo-ā');
+for(const [id,value] of Object.entries({'classical-rule-logic-class':'C','classical-rule-logic-valence':'intransitive','classical-vnc-source-initial-i-choice':'supportive','classical-deverbal-nnc-family':'predicate-nominalization','classical-deverbal-nnc-nominalization-kind':'preterit-agentive','classical-rule-logic-nnc-state':'absolutive','classical-rule-logic-nnc-subject-person':'1','classical-rule-logic-nnc-subject-number':'singular','classical-deverbal-nnc-number-connector':'silent'}))set(id,value);
+controls.get('classical-deverbal-nnc-number-connector').disabled=false;
+test('genuine preterit-agentive iyoh retains its licensed subject contact',()=>{
+ const req=r.buildClassicalNominalConstructionUiRequest();
+ const nominal=r.evaluateClassicalNahuatlDeverbalNnc(req);
+ assert.equal(nominal.authorizationStatus,'authorized',nominal.blockReason);
+ assert.equal(nominal.wordSurface,'niyoh');
+ const verb=r.evaluateClassicalNahuatlVncApplication({sourceStem:'chīhua',verbClass:'B',sourceValence:'specific-projective',objectKind:'specific-projective',objectPerson:'3common',subject:'1sg',mood:'indicative',tense:'present',voice:'active'});
+ const principal=r.buildClassicalNahuatlClauseCompositionSourceFrame(verb,{referenceId:'actor',subjectReferenceId:'actor'});
+ const complement=r.buildClassicalNahuatlClauseCompositionSourceFrame(nominal,{referenceId:'actor',subjectReferenceId:'actor'});
+ const request={operationKind:'subject-complement',principalClause:principal,complementClause:complement,options:{semanticCategory:'state',contactKind:'preterit-agentive-subject-iyoh',order:'complement-principal'}};
+ const result=r.evaluateClassicalNahuatlClauseComplementation(request);
+ assert.equal(result.authorizationStatus,'authorized',result.blockReason+' predicate='+complement.predicateStem+' envelope='+complement.envelope.sourceStem);
+ assert.equal(result.surfaceRealization,'Niyoh nicchīhua.');
+ assert.equal(r.evaluateClassicalNahuatlClauseComplementation({...request,complementClause:{...complement}}).authorizationStatus,'blocked');
+ const ordinarySource=r.buildClassicalNahuatlOrdinaryNncSourceFrame({stem:'iyoh',sourceClass:'zero'});
+ const ordinaryOperation=r.buildClassicalNahuatlOrdinaryNncOperationFrame(ordinarySource,{state:'absolutive',subject:'1sg'});
+ const ordinary=r.executeClassicalGrammarApplicationRequest({operationId:'nnc:ordinary',args:[ordinarySource,ordinaryOperation]}).canonicalResult;
+ const ordinaryClause=r.buildClassicalNahuatlClauseCompositionSourceFrame(ordinary,{referenceId:'actor',subjectReferenceId:'actor'});
+ assert.equal(r.evaluateClassicalNahuatlClauseComplementation({...request,complementClause:ordinaryClause}).blockReason,'iyoh-contact-requires-typed-iyoh-nnc');
+});

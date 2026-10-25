@@ -2,10 +2,10 @@
 import { getSourceClassRequirement } from "../composer/source_admission.mjs?deverbalReload=20261024-8&v=20261014-source-admission-3";
 
 import { CLASSICAL_RESULT_OUTPUT_SCOPE_CONTROL_CONTRACTS } from "../../core/output/scope.mjs?v=20260726-lessons2-58-one-system-094";
-import { PLACE_GENTILIC_NNC_UI_CONTROL_CONTRACTS } from "../../core/nnc/place_gentilic/ui_contract.mjs?v=20260726-lessons2-58-one-system-094";
+import { PLACE_GENTILIC_NNC_UI_CONTROL_CONTRACTS } from "../../core/nnc/place_gentilic/ui_contract.mjs?v=20260726-lessons2-58-one-system-094&interfaceRelease=1.2.36";
 import {
   CLASSICAL_NAHUATL_VNC_LATE_OPERATION_UI_CONTROL_CONTRACTS,
-} from "../../core/classical/vnc_late_operation_ui_contract.mjs?v=20261001-reader-27-2-copy-i-1";
+} from "../../core/classical/vnc_late_operation_ui_contract.mjs?v=20261001-reader-27-2-copy-i-1&interfaceRelease=1.2.36";
 import {
   installClassicalPlayWitness,
 } from "../diagnostics/classical_play_witness.mjs?v=20260828-private-play-study-handoff-364";
@@ -1143,6 +1143,12 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-result-kind")}
                           </select>
                         </label>
                         <label class="classical-rule-control" data-construction-for="place-gentilic-nnc" hidden>
+                          <span class="classical-rule-control__label">Possessive number ending</span>
+                          <select id="classical-gentilic-collectivity-ending" data-classical-rule-logic-control="gentilic-collectivity-ending">
+${renderPlaceGentilicNncOptions("classical-gentilic-collectivity-ending")}
+                          </select>
+                        </label>
+                        <label class="classical-rule-control" data-construction-for="place-gentilic-nnc" hidden>
                           <span class="classical-rule-control__label">Formation</span>
                           <select id="classical-place-gentilic-formation" data-classical-rule-logic-control="place-gentilic-formation">
 ${renderPlaceGentilicNncOptions("classical-place-gentilic-formation")}
@@ -1210,6 +1216,9 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
                             <option value="1pl">1pl</option>
                             <option value="2pl">2pl</option>
                             <option value="3pl">3pl</option>
+                            <option value="te" hidden disabled>tē · nonspecific human</option>
+                            <option value="tla" hidden disabled>tla · nonspecific nonhuman</option>
+                            <option value="3common" hidden disabled>3 common · nonanimate target</option>
                           </select>
                         </label>
                         <label class="classical-rule-control" data-construction-for="denominal-vnc" data-denominal-vnc-result-object="1" hidden>
@@ -4266,6 +4275,7 @@ ${renderClassicalVncLateOperationOptions("classical-rule-logic-honorific-stem-al
                         <span class="classical-rule-control__label">Following voice layer</span>
                         <select
                           id="classical-rule-logic-voice-layer-3"
+                          data-classical-compact-choice-display="true"
                           data-classical-rule-logic-control="voice-layer-3"
                         >
                           <option value="" selected>keep tla-impersonal</option>
@@ -4490,6 +4500,9 @@ ${renderClassicalVncLateOperationOptions("classical-rule-logic-honorific-stem-al
                           <option value="statement" selected>statement</option>
                           <option value="question">question</option>
                           <option value="exclamation">exclamation</option>
+                          <option value="wish" hidden disabled>wish</option>
+                          <option value="command" hidden disabled>command</option>
+                          <option value="admonition" hidden disabled>admonition</option>
                         </select>
                       </label>
                       <label class="classical-rule-control classical-rule-control--result-surface"

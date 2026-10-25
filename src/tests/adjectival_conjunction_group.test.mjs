@@ -1,0 +1,43 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {createRuntimeInstance} from '../runtime/create_runtime.mjs';
+
+test('Andrews52.2: a genuine adjoined adjective group modifies its compatible noun as a whole',async()=>{
+ const r=(await createRuntimeInstance({documentObject:{getElementById:()=>null,addEventListener(){}}})).runtimeObject;
+ const noun=(stem,sourceClass,subject='3common')=>{
+  const s=r.buildClassicalNahuatlOrdinaryNncSourceFrame({stem,sourceClass});
+  const nav=r.getClassicalGrammarApplicationCapabilityNavigator(s);
+  const binding=r.issueClassicalGrammarTypedSourceOperationBindingFrame(nav,'nnc:ordinary',{subject,state:'absolutive',humanness:subject==='1sg'?'human':'nonhuman',predicateFormation:'source-stem'});
+  assert.ok(binding,`${stem}: ${s.blockReason}`);
+  const made=r.executeClassicalGrammarTypedSourceOperationBindingFrame(binding);
+  assert.equal(made.authorizationStatus,'authorized',made.blockReason);return made.canonicalResult;
+ };
+ const head=noun('cal','tli-1'),members=[noun('canāhuac','zero'),noun('chicāhuac','zero')];
+ const choices={relation:'conjunction',coordinationRelation:'unmarked',coordinationType:'additive',clauseLevel:'adjoined',polarity:'positive',leftContext:'present',rightwardModifier:'none',modifierAdjunctor:'none',sharedModifierScope:'none',sharedModifier:'none',adjoinedFunction:'adjectival-modifier',identicalAdjoinedClauseEllipsis:'none',boundaryPunctuation:'none'};
+ const group=(overrides={})=>{const c=r.createClassicalClauseRelationController();members.forEach((m,i)=>c.captureCurrentResult(['principal','adjoined'][i],m));const result=c.compose({...choices,...overrides});assert.equal(result.authorizationStatus,'authorized',result.blockReason);return result.canonicalResult;};
+ const exact=group(),envelope=r.buildClassicalNahuatlSupplementationClauseEnvelope(exact);
+ assert.equal(envelope.sharedCommonNominalContact,true);
+ const request={operationKind:'adjectival-modification',head,modifier:exact,topology:'ordinary',order:'head-modifier',adjunctor:'in'};
+ const result=r.requestClassicalAdjectivalModificationResult(request);
+ assert.equal(result.authorizationStatus,'authorized',result.blockReason);
+ assert.equal(result.writtenProjection.result,'Calli in canāhuac chicāhuac.');
+ assert.equal(result.selectedClauses[0].sourceResult,head);
+ assert.equal(result.selectedClauses[1].sourceResult,exact);
+ assert.equal(result.selectedClauses[1].adjectivalConjunctionEnvelope.canonicalConjunctionResult,exact);
+ const selected=r.getClassicalNahuatlAdjectivalModifierReferenceContacts(exact);
+ assert.deepEqual(Array.from(selected),['shared-subject'],'the actual group supplies a whole reference contact');
+ assert.equal(r.getClassicalNahuatlSupplementationClauseSourceFrame(envelope),exact);
+ assert.equal(exact.conjuncts.length,2);
+ assert.equal(r.getClassicalNahuatlSupplementationClauseSourceFrame(exact.conjuncts[0].envelope),members[0]);
+ assert.equal(r.getClassicalNahuatlSupplementationClauseSourceFrame(exact.conjuncts[1].envelope),members[1]);
+ const rejected=req=>{try{return r.requestClassicalAdjectivalModificationResult(req).authorizationStatus!=='authorized';}catch(error){return /forbidden-authority|canonical/.test(error.message);}};
+ for(const modifier of [{...exact},group({adjoinedFunction:'supplementary-subject'}),group({clauseLevel:'principal',adjoinedFunction:'none'})])assert.ok(rejected({...request,modifier}));
+ assert.ok(rejected({...request,head:exact,modifier:head}),'adjoined modifier group is not a new nominal head route');
+ const lex=r.createClassicalClauseRelationController();
+ lex.captureCurrentResult('principal',noun('ā','tl-1-a'));lex.captureCurrentResult('adjoined',noun('tepē','tl-1-a'));
+ const lexical=lex.compose({relation:'lexical-conjunction',lexicalType:'bread-and-butter',adjunctorDistribution:'none',stateRealization:'conjoined-stems'});
+ assert.equal(lexical.authorizationStatus,'authorized',lexical.blockReason);
+ assert.deepEqual(Array.from(r.getClassicalNahuatlAdjectivalModifierReferenceContacts(lexical.canonicalResult)),['shared-subject'],'existing whole lexical contact remains admitted');
+ assert.notEqual(r.requestClassicalAdjectivalModificationResult({...request,head:noun('oquich','tli-1','1sg')}).authorizationStatus,'authorized');
+ assert.equal(head.wordSurface,'calli','selection/formation never mutates accepted source');
+});

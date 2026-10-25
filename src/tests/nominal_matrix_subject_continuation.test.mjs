@@ -1,0 +1,24 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {createPossessiveFixture} from './helpers/deverbal_possessive_fixture.mjs';
+const {r}=await createPossessiveFixture('tēm-o-ā');
+test('exact finite matrix continuation carries its target reference, not the earlier source reference',()=>{
+ const parent=r.evaluateClassicalNahuatlVncApplication({sourceStem:'tēm-o-ā',verbClass:'C',sourceValence:'specific-projective',objectKind:'specific-projective',objectPerson:'3sg',subject:'1sg',sourceSubject:'3sg',sourceSubjectAnimacy:'nonanimate',sourceSubjectHumanness:'nonhuman',sourceSubjectNumber:'common',mood:'indicative',tense:'present',voice:'active'});
+ assert.equal(parent.authorizationStatus,'authorized');
+ const original=parent.resultFrame;
+ const choices={requestedDerivation:'direct',requestedVoice:'active',subject:'1sg',mood:'indicative',tense:'present'};
+ const binding=r.issueClassicalNahuatlVncContinuationBindingFrame('vnc:application',parent,choices);
+ assert.equal(binding.bindingStatus,'ready',binding.blockReason);
+ assert.equal(binding.exactInputResult,parent);
+ assert.equal(binding.ownerPreflightResult.normalizedRequest.sourceSubject,'1sg');
+ assert.equal(binding.ownerPreflightResult.normalizedRequest.sourceSubjectPerson,'1');
+ assert.equal(binding.ownerPreflightResult.normalizedRequest.sourceSubjectHumanness,'human');
+ assert.equal(parent.resultFrame,original);
+ assert.equal(parent.normalizedRequest.sourceSubject,'3sg');
+ assert.equal(parent.normalizedRequest.sourceSubjectNumber,'common');
+ assert.deepEqual(binding.ownerPreflightResult.normalizedRequest.sourceObjectRequests,parent.normalizedRequest.sourceObjectRequests);
+ assert.equal(r.isClassicalNahuatlVncContinuationBindingFrame(binding),true);
+ const copied=r.issueClassicalNahuatlVncContinuationBindingFrame('vnc:application',{...parent},choices);
+ assert.notEqual(copied?.bindingStatus,'ready');
+ assert.equal(r.isClassicalNahuatlVncContinuationBindingFrame({...binding}),false);
+});

@@ -1,7 +1,7 @@
 import {orderVncSubjectFields,presentNncBuildOptions} from './build_composition.mjs?v=20261023-1';
 import {nativeChoiceAddress,CONDITIONAL_NATIVE_FIELDS} from './build_choice_catalog.mjs?v=20261023-all-build-2&andrewsRelease=20261024-1';
 import {ownerChoiceRoots,findOwnerChoice} from './owner_choice_roots.mjs?v=20261023-core-1';
-import {arrangeNuclearClauseSlots,arrangeProjectedFormulaChoices,stemCollectorCaption,vncSubjectCaption,uniteCoreStemChoices,uniteNounstemChoices,arrangeProjectedClauseChoices,preserveDisclosureChoice} from './formula_layout.mjs?clauseHarmony=20261023-5&v=20261023-slots-17&andrewsRelease=20261024-1';
+import {arrangeNuclearClauseSlots,arrangeProjectedFormulaChoices,stemCollectorCaption,vncSubjectCaption,uniteCoreStemChoices,uniteNounstemChoices,arrangeProjectedClauseChoices,preserveDisclosureChoice} from './formula_layout.mjs?clauseHarmony=20261023-5&v=20261023-slots-17&andrewsRelease=20261024-1&interfaceRelease=1.2.36';
 import {validateWorkspaceOrganization,DEFAULT_WORKSPACE_ORGANIZATION,loadWorkspaceOrganization} from './workspace_organization_model.mjs?v=20261013-canvas-workspace-1&choicesLayout=20261014-4&startupDelivery=20261022-1';
 import {createParticleChoices} from './particle_choices.mjs?v=20261021-particle-clear-2';
 
@@ -17,6 +17,21 @@ export function resolveWorkspaceChoiceGroup(model,choice='',explicitClause='',op
 const NOMINAL_NUMBER_ENDING_IDS=new Set([
   'classical-rule-logic-nnc-singular-connector','classical-rule-logic-nnc-plural-connector',
 ]);
+export function hasAvailableNativeFormulaControl(doc,wrapper,organizer){
+  return [...wrapper.querySelectorAll('select,input,button')].some(field=>{
+    if(field.type==='hidden')return false;
+    for(let n=field;n&&n!==organizer;n=n.parentElement){
+      if(n.dataset.buildFormula!==undefined||n.dataset.buildFormulaPart!==undefined)continue;
+      if(n.hidden)return false;
+      // The task gate settles after layout. Its previous CSS state cannot
+      // make an available native choice permanently empty for the new task.
+      if(n.dataset.compositionOperationGated!==undefined
+        &&doc.getElementById('classical-workbench')?.dataset.compositionOperationSelected==='false')continue;
+      if(doc.defaultView.getComputedStyle(n).display==='none')return false;
+    }
+    return true;
+  });
+}
 function nominalNumberEndingContext(doc,section){
   const fields=[...section?.querySelectorAll('select,input') || []].filter(control=>{
     if(control.disabled||control.readOnly||control.type==='hidden')return false;
@@ -104,6 +119,8 @@ export function createWorkspaceOrganization(doc,initialModel=DEFAULT_WORKSPACE_O
         const summary=row.wrapper.querySelector(':scope > summary');if(!summary)continue;
         const labels={verbstem:'Stem',state:'State and possession',nounstem:'Nounstem',predicate:'Predicate choices',
           subject:family==='vnc'?vncSubjectCaption({
+            isCauser:Boolean(doc.getElementById('classical-rule-logic-causative-result-subject')
+              &&visibleField(doc.getElementById('classical-rule-logic-causative-result-subject'),row.section)),
             isTarget:doc.getElementById('classical-workbench')?.dataset.compositionTargetSubject==='true',
             derivation:findOwnerChoice(doc,'[data-classical-capability-choice-id="requestedDerivation"]')?.value,
             voice:findOwnerChoice(doc,'[data-classical-capability-choice-id="requestedVoice"]')?.value,
@@ -266,14 +283,7 @@ export function createChoicesLayout(doc,initialModel){
       const clause=arrangeNuclearClauseSlots(doc,organizer,family,entries);
       // Ignore presentation wrappers when measuring native availability. A
       // formerly empty slot must reveal itself when its owner offers controls.
-      const available=entry=>[...entry.wrapper.querySelectorAll('select,input,button')].some(field=>{
-        if(field.type==='hidden')return false;
-        for(let n=field;n&&n!==organizer;n=n.parentElement){
-          if(n.dataset.buildFormula!==undefined||n.dataset.buildFormulaPart!==undefined)continue;
-          if(n.hidden||doc.defaultView.getComputedStyle(n).display==='none')return false;
-        }
-        return true;
-      });
+      const available=entry=>hasAvailableNativeFormulaControl(doc,entry.wrapper,organizer);
       for(const part of clause.querySelectorAll('[data-build-formula-part]')){
         const members=entries.filter(entry=>part.contains(entry.wrapper));
         part.hidden=!members.some(available);

@@ -685,14 +685,6 @@ const ORDINARY_NNC_LEXICON = Object.freeze({
       sourceStructureAuthority: "typed-embed-matrix",
     },
   }),
-  nēnehuilia: defineOrdinaryNncLexeme({
-    nounClass: "zero",
-    lexicalFormation: "verbstem-resemblance-predicate-nnc",
-    boundaryFacts: {
-      sourceCategory: "verbstem",
-      comparisonRelation: "resemblance",
-    },
-  }),
   yōlchicāhuacātzintli: defineOrdinaryNncLexeme({
     nounClass: "zero",
     lexicalFormation: "honorific-predicate-nnc",
@@ -1868,6 +1860,16 @@ export function createClassicalNahuatlNncApplicationModule(
         "issued-authorized-nnc-source-required",
       );
     }
+    const compoundMatrixValues = pronominal ? getPronominalCompoundMatrixValues(sourceFrame) : [];
+    const requestedCompoundMatrix = pronominal ? normalizeChoice(selections.compoundMatrix || "none") : "none";
+    if (requestedCompoundMatrix !== "none"
+      && !compoundMatrixValues.includes(requestedCompoundMatrix)) {
+      return buildBlockedFrame(NNC_OPERATION_SELECTION_FRAME_KIND,
+        "pronominal-compound-matrix-not-licensed-for-source");
+    }
+    const effectiveSourceFrame = requestedCompoundMatrix !== "none"
+      ? getPronominalCompoundSource(sourceFrame, requestedCompoundMatrix)
+      : sourceFrame;
     const requestedSubject = normalizeSubject(
       ownDataValue(selections, "subject", ""),
     );
@@ -1883,7 +1885,7 @@ export function createClassicalNahuatlNncApplicationModule(
       && !sourceFrame.adjectivalProfile?.includesPossessor
       && sourceFrame.referentialAnimacy !== "any"
       ? ORDINARY_NNC_SUBJECTS
-      : sourceFrame.allowedSubjects;
+      : effectiveSourceFrame?.allowedSubjects || [];
     const requestedSubjectAnimacy = getNncSubjectAnimacy(requestedSubject);
     const preferRequestedPronominalSubject = pronominal
       && (
@@ -2164,16 +2166,6 @@ export function createClassicalNahuatlNncApplicationModule(
       });
     }
 
-    const compoundMatrixValues = getPronominalCompoundMatrixValues(sourceFrame);
-    const requestedCompoundMatrix = normalizeChoice(selections.compoundMatrix || "none");
-    if (requestedCompoundMatrix !== "none"
-      && !compoundMatrixValues.includes(requestedCompoundMatrix)) {
-      return buildBlockedFrame(NNC_OPERATION_SELECTION_FRAME_KIND,
-        "pronominal-compound-matrix-not-licensed-for-source");
-    }
-    const effectiveSourceFrame = requestedCompoundMatrix !== "none"
-      ? getPronominalCompoundSource(sourceFrame, requestedCompoundMatrix)
-      : sourceFrame;
     const receipt = issuedPronominalSourceReceipts.get(effectiveSourceFrame);
     if (!receipt) return buildBlockedFrame(NNC_OPERATION_SELECTION_FRAME_KIND,
       "pronominal-compound-source-preflight-blocked");
@@ -2522,6 +2514,8 @@ export function createClassicalNahuatlNncApplicationModule(
       blockReason = "ordinary-nnc-state-not-lexically-authorized";
     } else if (!ORDINARY_NNC_SUBJECTS.includes(subject)) {
       blockReason = "ordinary-nnc-subject-not-recognized";
+    } else if (subjectParticipantFrame.category !== subject) {
+      blockReason = "ordinary-nnc-subject-reference-mismatches-selected-person";
     } else if (
       animacyMismatch
       && !metaphoricalUse
@@ -4167,7 +4161,7 @@ export function createClassicalNahuatlNncApplicationModule(
     ) {
       blockReason =
         "issued-pronominal-nnc-derived-coordinate-required";
-    } else if (!subject || !sourceFrame.allowedSubjects.includes(subject)) {
+    } else if (!subject || !effectiveSourceFrame.allowedSubjects.includes(subject)) {
       blockReason = "pronominal-nnc-subject-not-licensed-for-source";
     } else if (!ORDINARY_NNC_SENTENCE_TYPES.includes(sentenceType)) {
       blockReason = "pronominal-nnc-sentence-type-not-recognized";

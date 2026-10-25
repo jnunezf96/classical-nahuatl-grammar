@@ -2629,6 +2629,10 @@ function capturePerfectivePatientiveVncResult(
   // the complete nominal compound remains the exact patientive parent.
   if (nominalWhole) result = nominalWhole.canonicalResult.resultFrame;
   let wrappedVncApplication = null;
+  if (target?.isClassicalNahuatlVncApplicationFrame?.(result) === true) {
+    wrappedVncApplication = result;
+    result = wrappedVncApplication.resultFrame;
+  }
   if (target?.isClassicalNahuatlVncSentenceResultFrame?.(result) === true) {
     if (target?.isClassicalNahuatlVncApplicationFrame?.(result.vncApplicationFrame) === true) {
       wrappedVncApplication = result.vncApplicationFrame;
@@ -2789,6 +2793,10 @@ function captureImperfectivePatientiveVncResult(
 ) {
   const exactInputResult = result;
   let wrappedVncApplication = null;
+  if (target?.isClassicalNahuatlVncApplicationFrame?.(result) === true) {
+    wrappedVncApplication = result;
+    result = wrappedVncApplication.resultFrame;
+  }
   if (target?.isClassicalNahuatlNominalConstructionResult?.(result) === true
     && result.constructionKind === "nominal-embed-vnc"
     && target?.isClassicalNahuatlVncApplicationFrame?.(result.canonicalResult) === true) {
@@ -3105,9 +3113,24 @@ function capturePredicateNominalizationVncResultFromContext(
     nominalizationKind,
     state
   );
-  const fullInstrumentiveVoiceAllowed = normalizeKey(nominalizationKind) !== "instrumentive-full"
-    || ["impersonal", "nonactive"].includes(normalizeKey(
-      result?.selectedVoice || projection?.sourceVoice || "active"));
+  // Capture is the public role admission boundary. Apply the same source-voice
+  // requirements used by the nominalization owner before offering a role.
+  const kind = normalizeKey(nominalizationKind);
+  const voice = normalizeKey(result?.selectedVoice || projection?.sourceVoice || "active");
+  const requestedState = normalizeKey(state || "absolutive");
+  let voiceBlock = "";
+  if (["customary-agentive-reanalysis", "customary-agentive-full",
+    "present-agentive", "future-agentive"].includes(kind)
+      && voice !== "active") voiceBlock = `${kind}-requires-active-source`;
+  else if (kind === "customary-patientive" && !["passive", "nonactive"].includes(voice))
+    voiceBlock = "customary-patientive-requires-passive-source";
+  else if (kind === "instrumentive-full" && !["impersonal", "nonactive"].includes(voice))
+    voiceBlock = "full-instrumentive-requires-customary-impersonal-source";
+  else if (kind === "instrumentive" && requestedState === "absolutive"
+      && !["impersonal", "nonactive"].includes(voice))
+    voiceBlock = "absolutive-instrumentive-requires-customary-impersonal-source";
+  else if (kind === "instrumentive" && requestedState === "possessive" && voice !== "active")
+    voiceBlock = "possessive-instrumentive-requires-imperfect-active-source";
   const actionSourceBlock = actionNominalizationSourceBlockReason(normalizeKey(nominalizationKind), {
     sourceVoice: normalizeKey(result?.selectedVoice || projection?.sourceVoice || "active"),
     sourceValence, sourceObjectPattern,
@@ -3117,7 +3140,7 @@ function capturePredicateNominalizationVncResultFromContext(
     && projection
     && predicateStem
     && tense === spec.tense
-    && fullInstrumentiveVoiceAllowed
+    && !voiceBlock
     && !actionSourceBlock
     && sourceSubject
   );
@@ -3133,8 +3156,8 @@ function capturePredicateNominalizationVncResultFromContext(
           ? "exact-owner-issued-vnc-result-required"
           : tense !== spec.tense
             ? `${spec.tense}-vnc-result-required`
-            : !fullInstrumentiveVoiceAllowed
-              ? "full-instrumentive-requires-customary-impersonal-source"
+            : voiceBlock
+              ? voiceBlock
             : actionSourceBlock
               ? actionSourceBlock
               : !sourceSubject ? "owner-issued-predicate-subject-required"
@@ -3292,6 +3315,11 @@ function captureDeverbalActionVncResult(
   const exactInputResult = result;
   if (target?.isClassicalNahuatlVncSentenceResultFrame?.(result) === true) {
     result = result.canonicalResultFrame;
+  }
+  // Keep the exact application parent; its authenticated nucleus owns the
+  // future core slots, separately from finite subject and tense morphology.
+  if (target?.isClassicalNahuatlVncApplicationFrame?.(result) === true) {
+    result = result.resultFrame;
   }
   const canonicalCompoundResult = target?.isClassicalNahuatlNominalConstructionResult?.(result) === true
     && result.constructionKind === "nominal-embed-vnc"
@@ -3875,6 +3903,10 @@ function captureImpersonalPatientiveVncResult(
   // finite child. The whole remains the exact patientive parent.
   if (nominalWhole) result = nominalWhole.canonicalResult.resultFrame;
   let wrappedVncApplication = null;
+  if (target?.isClassicalNahuatlVncApplicationFrame?.(result) === true) {
+    wrappedVncApplication = result;
+    result = wrappedVncApplication.resultFrame;
+  }
   let nominalCoordinate = null;
   const lateNucleus = target?.isClassicalNahuatlVncSentenceResultFrame?.(result) === true
     ? result.lateOperationClosureFrame : result;
@@ -4330,22 +4362,69 @@ function findHostileAuthorityPath(
   predicateCaptureContext = path === "request"
     && normalizeKey(value?.constructionKind) === "predicate-nominalization"
       ? {kind: normalizeKey(value.nominalizationKind), state: normalizeKey(value.state || "absolutive"),
-        sourceAnalysis: normalizeKey(value.preteritSourceAnalysis || "ordinary")}
-      : null
+        sourceAnalysis: normalizeKey(value.preteritSourceAnalysis || "ordinary"),
+        instrumentivePair: normalizeKey(value.nominalizationKind) === "instrumentive"
+          && value.canonicalInstrumentiveAbsolutiveVncResult && value.canonicalInstrumentivePossessiveVncResult
+          ? buildInstrumentiveSourcePairFrame(value, target) : null}
+      : null,
+  allowActionParent = path === "request"
+    && normalizeKey(value?.constructionKind) === "deverbal-action",
+  patientiveParentFamily = path === "request"
+    && normalizeKey(value?.constructionKind) === "patientive"
+      ? normalizeKey(value.patientiveSourceFamily) : ""
 ) {
   if (!value || typeof value !== "object") return "";
-  if (predicateCaptureContext && path.endsWith(".canonicalVncResult")
+  if (allowActionParent && path === "request.canonicalVncResult"
+    && target?.isClassicalNahuatlVncApplicationFrame?.(value) === true
+    && isClassicalNahuatlDeverbalActionVncCaptureFrame(
+      captureDeverbalActionVncResult(value, target))) {
+    // Only the exact future application's owner-derived fields retain custody.
+    return "";
+  }
+  // The matching capture authenticates the complete parent; derived fields
+  // elsewhere in the request still remain caller-supplied authority.
+  if (patientiveParentFamily && path === "request.canonicalVncResult"
+    && target?.isClassicalNahuatlVncApplicationFrame?.(value) === true) {
+    const capture = patientiveParentFamily === "imperfective-active-core"
+      ? captureImperfectivePatientiveVncResult(value, target)
+      : patientiveParentFamily === "perfective-active-core"
+        ? capturePerfectivePatientiveVncResult(value, target)
+        : patientiveParentFamily === "impersonal-core"
+          ? captureImpersonalPatientiveVncResult(value, target) : null;
+    if (capture?.authorizationStatus === "authorized"
+      && capture.canonicalVncResult === value) return "";
+  }
+  const instrumentiveParentState = predicateCaptureContext?.kind === "instrumentive"
+    ? path === "request.canonicalInstrumentiveAbsolutiveVncResult" ? "absolutive"
+      : path === "request.canonicalInstrumentivePossessiveVncResult" ? "possessive" : ""
+    : "";
+  if (instrumentiveParentState
     && target?.isClassicalNahuatlVncApplicationFrame?.(value) === true
     && target.getClassicalNahuatlVncContinuationSourceConstituents?.(value)
       ?.canonicalApplicationFrame === value
+    && isClassicalNahuatlPredicateNominalizationVncCaptureFrame(
+      capturePredicateNominalizationVncResult(value, "instrumentive", instrumentiveParentState, target))) {
+    // Each authentic parent retains its own state's capture; pair compatibility
+    // is still checked by the instrumentive owner. Copies retain the scan.
+    return "";
+  }
+  if (predicateCaptureContext && path.endsWith(".canonicalVncResult")
+    && target?.isClassicalNahuatlVncApplicationFrame?.(value) === true
+    && (target.isClassicalNahuatlVncApplicationIssuedFrame?.(value) === true
+      || target.getClassicalNahuatlVncContinuationSourceConstituents?.(value)
+        ?.canonicalApplicationFrame === value)
     && (isClassicalNahuatlPredicateNominalizationVncCaptureFrame(
       capturePredicateNominalizationVncResult(value,
         predicateCaptureContext.kind, predicateCaptureContext.state, target))
+      || isClassicalNahuatlInstrumentiveSourcePairFrame(predicateCaptureContext.instrumentivePair)
+        && [predicateCaptureContext.instrumentivePair.customaryImpersonal.canonicalVncResult,
+          predicateCaptureContext.instrumentivePair.imperfectActive.canonicalVncResult].includes(value)
       || ["preterit-agentive", "preterit-patientive"].includes(predicateCaptureContext.kind)
         && isClassicalNahuatlPreteritVncNominalizationCaptureFrame(
           capturePreteritVncResult(value, target, predicateCaptureContext.sourceAnalysis)))) {
-    // The private wrapper lookup and this consuming owner's exact capture
-    // establish custody. A copied wrapper still undergoes the hostile scan.
+    // The issuer receipt (or private continuation lookup) and this consuming
+    // owner's capture establish custody, even without a separate Source mirror.
+    // A copied wrapper still undergoes the hostile scan.
     return "";
   }
   if (allowRootStockParent && path.endsWith(".canonicalVncResult")
@@ -4399,7 +4478,7 @@ function findHostileAuthorityPath(
       return nextPath;
     }
     if (item && typeof item === "object") {
-      const nested = findHostileAuthorityPath(item, nextPath, target, allowRootStockParent, predicateCaptureContext);
+      const nested = findHostileAuthorityPath(item, nextPath, target, allowRootStockParent, predicateCaptureContext, allowActionParent, patientiveParentFamily);
       if (nested) return nested;
     }
   }

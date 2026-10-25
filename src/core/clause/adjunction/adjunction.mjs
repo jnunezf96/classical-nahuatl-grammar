@@ -81,6 +81,12 @@ export function createAdverbialAdjunctionGlobals(targetObject = globalThis, inst
       inTlaNel: "in-tla-nel",
       inMaNel: "in-ma-nel",
       maNel: "ma-nel",
+      maNelZan: "ma-nel-zan",
+      maZanNel: "ma-zan-nel",
+      maNelZa: "ma-nel-za",
+      maZaNel: "ma-za-nel",
+      maTelZa: "ma-tel-za",
+      maTelZaYeh: "ma-tel-za-yeh",
       maZo: "ma-zo",
       maZoTel: "ma-zo-tel",
       ca: "ca",
@@ -461,6 +467,11 @@ export function createAdverbialAdjunctionGlobals(targetObject = globalThis, inst
           result.operationFrame?.contextFrame) === true) {
         return String(result.operationFrame.contextFrame.phraseSurface || "").trim();
       }
+      // A genuine complementary whole owns separate sentence and embedded
+      // realizations. Its terminal punctuation belongs only to the outer clause.
+      if (targetObject.isClassicalNahuatlClauseComplementationResultFrame?.(result) === true) {
+        return String(result.embeddedSurface || "").trim();
+      }
       const sentence = result?.sentenceFrame;
       if (sentence?.polarity === "negative"
         && targetObject.isClassicalNahuatlIssuedNncSentenceSurfaceFrame?.(sentence) === true) {
@@ -580,8 +591,12 @@ export function createAdverbialAdjunctionGlobals(targetObject = globalThis, inst
             result,
             ["sentenceType"]
           ) || ""),
-          sentencePunctuation: String(result.sentenceSurfaceDisplay || result.sentenceSurface
-            || result.sentenceFrame?.sentenceSurface || "").match(/[.?!]$/u)?.[0] || "",
+          sentencePunctuation: String(
+            targetObject.isClassicalNahuatlClauseComplementationResultFrame?.(result) === true
+              ? result.surfaceRealization
+              : result.sentenceSurfaceDisplay || result.sentenceSurface
+                || result.sentenceFrame?.sentenceSurface || ""
+          ).match(/[.?!]$/u)?.[0] || "",
           adverbialCenter: operationId === "nnc:adverbial"
             && (lexicalEntryId === "44.3-iuh" || surface.toLowerCase() === "iuh")
             ? "iuh"
@@ -643,6 +658,26 @@ export function createAdverbialAdjunctionGlobals(targetObject = globalThis, inst
         children: Object.freeze(children)});
     }
     function getCanonicalAdverbialAdjunctionSourceUnit(input = null, role = "unknown") {
+      // Andrews 53.1.7: the actual iuhqui concatenate may modify a further
+      // clause. Keep its issued whole and owner-written embedded form intact.
+      if (targetObject.isClassicalComparisonResultFrame?.(input) === true
+        && input.authorizationStatus === "authorized"
+        && input.routeId === "similarity-iuhqui-principal") {
+        const surface = input.embeddedSurface;
+        return Object.freeze({
+          kind: "canonical-adverbial-adjunction-source-unit", role,
+          ok: Boolean(surface && input.formulaRealization),
+          sourceKind: "composition-ast", unitType: "clause", surface,
+          surfaceForms: Object.freeze(surface ? [surface] : []),
+          formulaRealizationRecordId: input.formulaRealizationRecord.id,
+          formulaRecordId: input.formulaRecord.id, astKind: input.astFrame.kind,
+          features: Object.freeze({unitKind: "clause", mood: "", tense: "",
+            antecessive: false, futureEmbed: false, sentenceType: "comparison",
+            sentencePunctuation: String(input.surface).match(/[.?!]$/u)?.[0] || "",
+            adverbialCenter: "", negativizedParticle: ""}),
+          grammarFrame: null, issuedResult: input,
+        });
+      }
       const attestedCell=targetObject.getClassicalNahuatlAttestedNncCellExternalProjection?.(input);
       const attestedPlace=targetObject.getClassicalNahuatlAttestedPlaceExternalProjection?.(input);
       const attestedCollocation=targetObject.isClassicalNahuatlAttestedPrincipalCollocationResult?.(input)===true;
@@ -1564,7 +1599,7 @@ export function createAdverbialAdjunctionGlobals(targetObject = globalThis, inst
           && request.sourceInitialISelection === "real"
           && request.sourceVoice === "active" && request.voice === "active"
           && ["direct", ""].includes(request.requestedDerivation || "")
-          && exact.resultFrame?.sourceMachineryFrame?.predicateTableCell === "B:indicative:preterit";
+          && exact.resultFrame?.selectedMachineryFrame?.predicateTableCell === "B:indicative:preterit";
         return {...empty, iuhState: iuh ? exact : null};
       }
       if (targetObject.isClassicalNahuatlDeverbalNncGrammarFrame?.(exact) === true
@@ -2117,7 +2152,7 @@ export function createAdverbialAdjunctionGlobals(targetObject = globalThis, inst
             [ADVERBIAL_ADJUNCTION_CONCESSION.inMaNel]: [ADVERBIAL_ADJUNCTION_MARKING.inMaNel, ADVERBIAL_ADJUNCTION_MARKING.maNel],
             [ADVERBIAL_ADJUNCTION_CONCESSION.maZo]: [ADVERBIAL_ADJUNCTION_MARKING.maZo],
             [ADVERBIAL_ADJUNCTION_CONCESSION.maZoTel]: [ADVERBIAL_ADJUNCTION_MARKING.maZoTel],
-            [ADVERBIAL_ADJUNCTION_CONCESSION.atLeast]: [ADVERBIAL_ADJUNCTION_MARKING.maNel, ADVERBIAL_ADJUNCTION_MARKING.maZo, ADVERBIAL_ADJUNCTION_MARKING.maZoTel]
+            [ADVERBIAL_ADJUNCTION_CONCESSION.atLeast]: [ADVERBIAL_ADJUNCTION_MARKING.maNelZan, ADVERBIAL_ADJUNCTION_MARKING.maZanNel, ADVERBIAL_ADJUNCTION_MARKING.maNelZa, ADVERBIAL_ADJUNCTION_MARKING.maZaNel, ADVERBIAL_ADJUNCTION_MARKING.maTelZa, ADVERBIAL_ADJUNCTION_MARKING.maTelZaYeh]
           };
           if (concessionMarkers[profile.concessionType]
             && !concessionMarkers[profile.concessionType].includes(profile.marking)) {
@@ -2236,6 +2271,29 @@ export function createAdverbialAdjunctionGlobals(targetObject = globalThis, inst
         formulaRealizationRecord
       });
     }
+    function getPurposeIntroductionProjection(adjoinedSource, markerSource, profile) {
+      const sentence = adjoinedSource?.issuedResult;
+      if (profile.relation !== ADVERBIAL_ADJUNCTION_RELATION.purpose
+        || ![ADVERBIAL_ADJUNCTION_PURPOSE.maOptative, ADVERBIAL_ADJUNCTION_PURPOSE.maAdmonitiveLest].includes(profile.purposeType)
+        || ![ADVERBIAL_ADJUNCTION_MARKING.ma, ADVERBIAL_ADJUNCTION_MARKING.inMa].includes(profile.marking)
+        || targetObject.isClassicalNahuatlVncSentenceResultFrame?.(sentence) !== true
+        || markerSource?.ok !== true) return null;
+      const sentenceFrame = sentence.sentenceSurfaceFrame;
+      const particles = sentenceFrame?.sentenceParticles;
+      if (!Array.isArray(particles) || particles.filter(particle => particle === "mā").length !== 1) return null;
+      // §50.6.2 supplies the same mā introduction at the clause boundary.
+      // Consume its structural occurrence once, retaining all other particles
+      // and prefix carriers. This is a realization projection, not a new owner.
+      const remainingParticles = Object.freeze(particles.filter(particle => particle !== "mā"));
+      const realizationFrame = {...sentenceFrame, sentenceParticles: remainingParticles, finalPunctuation: ""};
+      const surface = targetObject.buildClassicalNahuatlVncSentenceSurfaceRealization(
+        realizationFrame, sentence.consumedNuclearSurface, null, {embedded: true});
+      const formula = targetObject.buildClassicalNahuatlVncSentenceFormulaRealization(
+        realizationFrame, sentence.consumedNuclearFormula);
+      return surface && formula ? Object.freeze({exactSentence: sentence,
+        exactMarker: markerSource.issuedResult, consumedIntroduction: "mā",
+        remainingParticles, surface, formula, grammarAuthority: false}) : null;
+    }
     function evaluateAdverbialAdjunction(request = {}) {
       const principalSource = getCanonicalAdverbialAdjunctionSourceUnit(request.principalClause, "principal");
       const adjoinedSource = getCanonicalAdverbialAdjunctionSourceUnit(request.adjoinedUnit, "adjoined");
@@ -2280,9 +2338,14 @@ export function createAdverbialAdjunctionGlobals(targetObject = globalThis, inst
         markerSource,
         profile
       });
+      const purposeIntroductionProjection = getPurposeIntroductionProjection(adjoinedSource, markerSource, profile);
+      const realizedAdjoinedSource = purposeIntroductionProjection
+        ? Object.freeze({...adjoinedSource, surface: purposeIntroductionProjection.surface,
+            surfaceForms: Object.freeze([purposeIntroductionProjection.surface])})
+        : adjoinedSource;
       const composed = buildAdverbialAdjunctionAst({
         principalClause: principalSource,
-        adjoinedUnit: adjoinedSource,
+        adjoinedUnit: realizedAdjoinedSource,
         semanticRelation: profile.relation,
         adjoinedUnitType: profile.unitType,
         order: profile.order,
@@ -2389,7 +2452,7 @@ export function createAdverbialAdjunctionGlobals(targetObject = globalThis, inst
       const surface = supported ? sharedIntervenerProjection?.surface || wishAdverbialProjection?.surface || composedSentenceSurface : "";
       const artifacts = buildAdverbialAdjunctionFormulaArtifacts({
         principalSource,
-        adjoinedSource,
+        adjoinedSource: realizedAdjoinedSource,
         markerSource,
         profile,
         surface,
@@ -2425,6 +2488,7 @@ export function createAdverbialAdjunctionGlobals(targetObject = globalThis, inst
         surfaceSequence: supported ? sharedIntervenerProjection || wishAdverbialProjection ? [surface] : composed.surfaceSequence : [],
         wishAdverbialProjection,
         sharedIntervenerProjection,
+        purposeIntroductionProjection,
         surface,
         sentencePunctuation,
         embeddedSurface: supported

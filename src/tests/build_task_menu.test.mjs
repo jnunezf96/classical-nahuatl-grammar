@@ -37,7 +37,7 @@ test('one task catalog retains distinct input lanes and shared owners by exact i
   assert.ok(routes.some(r => r.optionRef === ref(stemId, 'adverbial-nuclear')));
   assert.ok(routes.some(r => r.optionRef === ref(navId, 'clause:adverbial-adjunction')));
   assert.ok(routes.some(r => r.optionRef === ref(stemId, 'cardinal-numeral-nnc')));
-  assert.ok(routes.some(r => r.optionRef === ref(stemId, 'calendar-date-nnc')));
+  assert.equal(routes.some(r => r.optionRef === ref(stemId, 'calendar-date-nnc')),false,'calendar requires an exact Result binding');
   assert.ok(routes.some(r => r.optionRef === ref(navId, 'future:owner-operation')));
   assert.ok(routes.find(r => r.optionRef === ref(navId, 'vnc:application')).aliasRefs.includes(ref(stemId, 'none')));
   assert.deepEqual(events, [], 'catalog inspection must not stage or execute');
@@ -145,4 +145,89 @@ test('two-nucleus Source exposes its actual ownerhood task caption without chang
   assert.equal(tasks.getBuildTaskRoutes(doc).find(route=>route.optionRef===ref(stemId,'deverbal-nnc')).label,'Form two-nucleus ownerhood');
   family.value='predicate-nominalization';
   assert.equal(tasks.getBuildTaskRoutes(doc).find(route=>route.optionRef===ref(stemId,'deverbal-nnc')).label,'Make a noun from a verb');
+});
+
+test('calendar keeps its exact Result route and native collector without a raw or duplicate task',()=>{
+ const {doc,nav,stem,events}=fixture(),get=doc.getElementById;
+ const calendar=stem.options.find(o=>o.value==='calendar-date-nnc');
+ assert.equal(tasks.getBuildTaskRoutes(doc).some(r=>r.optionRef===ref(stemId,'calendar-date-nnc')),false);
+ nav.options.push({value:'grammar:nominal-construction',textContent:'Nominal construction',dataset:{}});
+ const root={dataset:{classicalCapabilitySourceRole:'exact-owner-issued-result',classicalCapabilityBindingFamily:'formation-result'}};
+ const frame={textContent:JSON.stringify({operations:[{operationId:'grammar:nominal-construction',ownerBindingFrameValidated:true,sourceIdentityMatched:true}]})};
+ doc.getElementById=id=>id==='classical-capability-navigator'?root:id==='classical-capability-navigator-frame'?frame:get(id);
+ stem.value='calendar-date-nnc';nav.value='grammar:nominal-construction';
+ const routes=tasks.getBuildTaskRoutes(doc);
+ assert.ok(routes.some(r=>r.optionRef===ref(navId,'grammar:nominal-construction')));
+ assert.equal(routes.some(r=>r.optionRef===ref(stemId,'calendar-date-nnc')),false);
+ assert.equal(stem.options.find(o=>o.value==='calendar-date-nnc'),calendar);
+ assert.equal(stem.value,'calendar-date-nnc');assert.deepEqual(events,[]);
+});
+
+test('noun-source formation caption covers its actual family without changing its native address or dispatch',()=>{
+ const {doc,stem,events}=fixture();const find=()=>tasks.getBuildTaskRoutes(doc).find(r=>r.optionRef===ref(stemId,'deverbal-nnc'));
+ const original=find();assert.equal(original.label,'Make a noun from a verb');
+ stem.dataset.classicalSourceUnit='nnc';const noun=find();assert.equal(noun.label,'Form a noun construction');assert.equal(noun.option,original.option);assert.equal(noun.optionRef,original.optionRef);
+ const get=doc.getElementById;doc.getElementById=id=>id==='classical-deverbal-nnc-family'?{value:'double-nucleus-ownerhood'}:get(id);
+ assert.equal(find().label,'Form two-nucleus ownerhood');assert.deepEqual(events,[]);
+});
+
+test('fixed typed Sources expose owner operations without silently reinterpreting their citation as a nounstem',()=>{
+ for(const [sourceKind,operationId] of [
+  ['attested-nnc-cell-source','nnc:attested-cell'],
+  ['attested-place-source','nnc:attested-place'],
+  ['attested-principal-collocation-source','clause:attested-collocation'],
+  ['quantitative-predicate-source','nnc:quantitative-predicate'],
+ ]){
+  const {doc,nav,stem,events}=fixture();stem.dataset.classicalSourceUnit='nnc';nav.value=operationId;
+  nav.options=[{value:operationId,textContent:'Use fixed Source',dataset:{}},{value:'particle:result',textContent:'Make a particle',dataset:{}}];
+  const projection={inputRole:'exact-owner-issued-source',sourceUnitKinds:[sourceKind]};
+  const get=doc.getElementById;doc.getElementById=id=>id==='classical-capability-navigator-frame'?{textContent:JSON.stringify(projection)}:get(id);
+  assert.deepEqual(tasks.getBuildTaskRoutes(doc).map(r=>r.operationId).sort(),[operationId,'particle:result'].sort(),sourceKind);
+  assert.equal(tasks.activateBuildTask(doc,ref(stemId,'none')),false,'no phantom ordinary task');
+  assert.equal(tasks.activateBuildTask(doc,ref(stemId,'deverbal-nnc')),false,'stale raw entry cannot reinterpret a fixed Source');
+  assert.deepEqual(events,[]);
+  for (const kind of ['ordinary-nnc-source','pronominal-nnc-source']) {
+   projection.sourceUnitKinds=[kind];
+   assert.ok(tasks.getBuildTaskRoutes(doc).some(r=>r.control===stem),'explicit ordinary/pronominal Source restores native routes');
+  }
+  projection.sourceUnitKinds=[sourceKind];projection.inputRole='exact-owner-issued-result';
+  assert.ok(tasks.getBuildTaskRoutes(doc).some(r=>r.control===stem),'Result continuation retains its distinct input lanes');
+ }
+});
+
+test('quality changes retain their exact Result owner route and reject the raw duplicate',()=>{
+ const {doc,nav,stem,events}=fixture();stem.dataset.classicalSourceUnit='nnc';
+ stem.options.push({value:'adjectival-nnc',textContent:'Change quality',dataset:{classicalApplicationOperation:'grammar:nominal-construction'}});
+ nav.options.push({value:'grammar:nominal-construction',textContent:'Nominal construction',dataset:{}});
+ const get=doc.getElementById;
+ doc.getElementById=id=>id==='classical-capability-navigator-frame'?{textContent:JSON.stringify({operations:[{operationId:'grammar:nominal-construction',ownerBindingFrameValidated:true}]})}:get(id);
+ const routes=tasks.getBuildTaskRoutes(doc);
+ assert.ok(routes.some(r=>r.optionRef===ref(navId,'grammar:nominal-construction')));
+ assert.equal(routes.some(r=>r.optionRef===ref(stemId,'adjectival-nnc')),false);
+ assert.equal(tasks.activateBuildTask(doc,ref(stemId,'adjectival-nnc')),false);
+ assert.deepEqual(events,[]);
+ assert.ok(routes.some(r=>r.optionRef===ref(stemId,'deverbal-nnc')));
+});
+
+test('first explicit neutral task remains selected for recovery when the raw finite owner is unavailable',async()=>{
+  const {Element}=await import('./helpers/organization_dom.mjs');
+  const {doc,nav,stem,events}=fixture();nav.options=[];nav.disabled=true;nav.value='';stem.value='none';
+  const field=new Element('label'),get=doc.getElementById;
+  doc.getElementById=id=>id==='classical-capability-navigator-field'?field:get(id);
+  doc.createElement=tag=>new Element(tag);doc.querySelectorAll=()=>[];
+  const refresh=tasks.createBuildTaskMenu(doc);refresh();const menu=field.querySelector('#classical-build-task');
+  assert.equal(menu.value,'');const direct=ref(stemId,'none');
+  menu.value=direct;for(const listener of menu.listeners.change)listener({stopPropagation(){}});
+  assert.equal(menu.value,direct,'an explicitly chosen direct task must remain visible so its participant controls can be edited');
+  assert.equal(menu.dataset.buildTaskOperation,'vnc:application');
+  assert.deepEqual(events,[[stemId,'none']]);assert.equal(nav.disabled,true,'presentation does not admit the invalid raw finite');
+  for(const listener of menu.listeners.change)listener({stopPropagation(){}});
+  assert.equal(events.length,1,'the already-active same-value route remains a no-op');
+  nav.options=[{value:'vnc:application',textContent:'Make a verb clause',dataset:{}}];nav.disabled=false;
+  refresh();
+  assert.equal(menu.value,ref(navId,'vnc:application'),'correcting the Source retains the explicitly selected direct task through its canonical alias');
+  assert.equal(nav.value,'vnc:application');
+  assert.deepEqual(events,[[stemId,'none'],[navId,'vnc:application']],'only the newly available owner is staged; no Make is dispatched');
+  refresh();for(const listener of menu.listeners.change)listener({stopPropagation(){}});
+  assert.equal(events.length,2,'the migrated active route remains a same-value no-op');
 });

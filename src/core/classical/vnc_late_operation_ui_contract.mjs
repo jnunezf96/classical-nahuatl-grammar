@@ -496,8 +496,8 @@ export const CLASSICAL_NAHUATL_VNC_LATE_OPERATION_UI_CONTROL_CONTRACTS =
     "classical-rule-logic-frequentative-target": [
       ...[
         ["lexical-stem", "lexical stem"],
-        ["fused-tla", "fused tla"],
-        ["fused-tla-and-lexical-stem", "fused tla and lexical stem"],
+        ["fused-tla", "tla prefix"],
+        ["fused-tla-and-lexical-stem", "tla prefix and lexical stem"],
         ["mainline-reflexive", "mainline reflexive"],
       ].map(([value, label], index) => option({
         controlId: "classical-rule-logic-frequentative-target",

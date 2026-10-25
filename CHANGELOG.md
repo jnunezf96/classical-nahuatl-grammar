@@ -1,5 +1,13 @@
 # Version History
 
+## v1.2.36 — Andrews Interface Harmony
+
+- Harmonizes existing Source, Build and Result controls and removes the separate Decisions panel.
+- Corrects source-dependent choice visibility, participant transitions, exact-parent continuations and selected irregular endings.
+- Makes denominal sentence punctuation visible while preserving accepted Results during staging.
+- Retains documented source and persistence limits; no claim of every lexical combination.
+
+
 ## v1.2.35 — Andrews Semantic Corrections
 
 - Corrects shared subject/object reference identity and the impersonal-tla analysis shown with Results.

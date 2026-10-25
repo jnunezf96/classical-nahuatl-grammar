@@ -2,7 +2,7 @@
 // results. It owns presentation decisions only; the clause engine remains the
 // sole owner of relation validation, formulas, realization, and surfaces.
 
-import { installClassicalLateValidationOwnersGlobals } from "../../core/classical/late_validation_owner_catalog.mjs?v=20260826-relational-role-340&andrewsRelease=20261024-1";
+import { installClassicalLateValidationOwnersGlobals } from "../../core/classical/late_validation_owner_catalog.mjs?v=20260826-relational-role-340&andrewsRelease=20261024-1&interfaceRelease=1.2.36";
 
 const CONTROLLER_KIND = "classical-clause-relation-controller";
 const CONTROLLER_RESULT_KIND = "classical-clause-relation-controller-result";
@@ -95,6 +95,12 @@ const MARKING_VALUES = Object.freeze([
   "in-tla-nel",
   "in-ma-nel",
   "ma-nel",
+  "ma-nel-zan",
+  "ma-zan-nel",
+  "ma-nel-za",
+  "ma-za-nel",
+  "ma-tel-za",
+  "ma-tel-za-yeh",
   "ma-zo",
   "ma-zo-tel",
   "ca",
@@ -143,11 +149,17 @@ const PROFILE_VALUES_BY_RELATION = Object.freeze({
 const MARKING_VALUES_BY_RELATION = Object.freeze({
   place: Object.freeze(["in"]),
   condition: Object.freeze(["tla", "in-tla"]),
-  purpose: Object.freeze(["unmarked", "ma", "in-ma"]),
+  purpose: Object.freeze(["unmarked", "in", "ma", "in-ma"]),
   concession: Object.freeze([
     "in-tla-nel",
     "in-ma-nel",
     "ma-nel",
+    "ma-nel-zan",
+    "ma-zan-nel",
+    "ma-nel-za",
+    "ma-za-nel",
+    "ma-tel-za",
+    "ma-tel-za-yeh",
     "ma-zo",
     "ma-zo-tel",
   ]),
@@ -1554,6 +1566,7 @@ export function createClassicalClauseRelationControllerGlobals(
     const discourseSourceContextFrames = new Map();
     let conjunctionEllipsisPreview = null;
     let conjunctionReadinessPreview = null;
+    let supplementationReadinessPreview = null;
     const issuedRelationAvailabilityContracts = new WeakSet();
     let captureRevision = 0;
 
@@ -1983,6 +1996,8 @@ export function createClassicalClauseRelationControllerGlobals(
 
     function getComparisonChoiceValues(routeId = "", field = "") {
       if (field === "degreeMarker") {
+        const canonicalValues = targetObject.getClassicalComparisonDegreeChoiceInventory?.(routeId);
+        if (canonicalValues) return freezeArray(canonicalValues);
         if (
           [
             "similarity-tloc-relational-nnc",
@@ -2913,6 +2928,12 @@ export function createClassicalClauseRelationControllerGlobals(
       }
       const layout = COMPARISON_CAPTURE_SLOT_LAYOUTS[routeSpec?.id] || {};
       const requiredSlots = new Set(routeSpec?.requiredSlots || []);
+      if (["equality-iuhqui", "equality-ihuan", "similarity-iuhqui-principal"].includes(routeSpec?.id)
+        && (normalizeToken(selectionObject.icRelation)
+          || getComparisonChoiceDefault(routeSpec.id, "icRelation", layout)) === "yes") {
+        requiredSlots.add("dimension");
+      }
+
       Object.entries(layout).forEach(([role, slotId]) => {
         if (requiredSlots.has(slotId)) {
           requireCapturedSource(role, diagnostics, {
@@ -2978,6 +2999,14 @@ export function createClassicalClauseRelationControllerGlobals(
         const values = field === "reduplicationShape" ? (tiChoices || nehnemiChoices || tlahtoaChoices || citationChoices)?.reduplicationShapes || []
           : field === "tiClass" ? tiChoices?.classChoices || []
             : getComparisonChoiceValues(routeSpec.id, field);
+        // Citation similarity has one owned prefix pattern. Other nominal
+        // prefix readings remain with their affinity/distribution owners.
+        if (field === "reduplicationShape" && citationContinuation && values.length === 1) {
+          const requested = normalizeToken(selectionObject[field]);
+          if (requested && requested !== values[0]) diagnostics.push("classical-comparison-reduplicationShape-not-licensed");
+          operationSelections[field] = values[0];
+          return;
+        }
         // A sole verbal class is an owner-derived fact, not a user control.
         if (field === "tiClass" && values.length === 1) {
           operationSelections.tiClass = values[0];
@@ -3000,6 +3029,7 @@ export function createClassicalClauseRelationControllerGlobals(
           values,
           selectedValue,
           reason: `the ${routeSpec.id} route licenses this comparison choice`,
+          determinesCaptureRoles: field === "icRelation",
         }));
         if (requestedValue && !selectedValue) {
           diagnostics.push(`classical-comparison-${field}-not-licensed`);
@@ -5101,18 +5131,19 @@ export function createClassicalClauseRelationControllerGlobals(
       const relationAllowsApposition = (
         !relationalNumeralCoCFixedProfile
         &&
-        degree === "second"
+        ["first", "second"].includes(degree)
         && ["place", "time"].includes(relation)
         && unitType === "nnc"
       );
       const relationAllowsAdverbialPrincipal = !relationalNumeralCoCFixedProfile
         && degree === "second" && unitType === "nnc"
         && ["place", "time", "manner"].includes(relation);
-      const structureProfileValues = relationAllowsApposition
-        ? ["modification", "apposition", "adverbial-principal"]
-        : relationAllowsAdverbialPrincipal
-          ? ["modification", "adverbial-principal"]
-          : [];
+      // §49.8 includes first-degree NNCs (e.g. ātl) in place/time apposition.
+      // Keep the independent principal-clause domain unchanged.
+      const structureProfileValues = relationAllowsApposition || relationAllowsAdverbialPrincipal
+        ? ["modification", ...(relationAllowsApposition ? ["apposition"] : []),
+          ...(relationAllowsAdverbialPrincipal ? ["adverbial-principal"] : [])]
+        : [];
       const requestedStructureProfile = normalizeToken(
         selectionObject.structureProfile,
       );
@@ -5399,6 +5430,23 @@ export function createClassicalClauseRelationControllerGlobals(
       }
       // Ask the same canonical owner used by preview and Make about coupled
       // options. Completing each field alone is not grammatical readiness.
+      if (contract.relation === "supplementation"
+        && contract.operationSelections.supplementationReferenceMode === "shared"
+        && contract.authorizationStatus === "authorized") {
+        const key = `${captureRevision}:${JSON.stringify(contract.operationSelections)}`;
+        if (supplementationReadinessPreview?.key !== key) {
+          let failure = "classical-supplementation-preflight-blocked";
+          try {
+            const result = composeSupplementationRelation(contract, true, []);
+            failure = result?.authorizationStatus === "authorized"
+              ? "" : result?.blockReason || failure;
+          } catch { failure = "classical-supplementation-preflight-threw"; }
+          supplementationReadinessPreview = {key, failure};
+        }
+        const {failure} = supplementationReadinessPreview;
+        if (failure) contract = Object.freeze({...contract, authorizationStatus: "blocked",
+          blockReason: failure, diagnostics: freezeArray(unique([...contract.diagnostics, failure]))});
+      }
       if (contract.relation === "conjunction" && contract.authorizationStatus === "authorized") {
         const key = `${captureRevision}:${JSON.stringify(contract.operationSelections)}`;
         let failure = "classical-conjunction-preflight-capability-required";

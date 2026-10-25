@@ -1108,6 +1108,19 @@ export function createPlaceGentilicNncApi(targetObject = globalThis, installatio
         .replace(/^-+|-+$/gu, "");
       return stem && /^[\p{L}\p{M}Ø⎕0-]+$/u.test(stem) ? stem : "";
     }
+    // Andrews 46.7, imported by 48.4.1: co after a consonant, c after
+    // a vowel; tle (fire) is the stated lexical exception.
+    function getPlaceGentilicNncCoCFormationOptions(embedStem = "") {
+      const stem = realizePlaceGentilicNncCarrier(normalizePlaceGentilicNncStem(embedStem)).toLowerCase();
+      if (!stem) return Object.freeze([]);
+      return Object.freeze([stem === "tle" || !/[aeiouāēīō]$/u.test(stem) ? "co" : "c"]);
+    }
+    function getPlaceGentilicNncCoCBlockReason(formation = "", embedStem = "") {
+      const matrix = formation === "co-affective-embed" ? "co" : formation;
+      if (!["co", "c"].includes(matrix) || !embedStem) return "";
+      return getPlaceGentilicNncCoCFormationOptions(embedStem).includes(matrix)
+        ? "" : "place-co-c-source-final-segment-mismatch";
+    }
     function realizePlaceGentilicNncCarrier(value = "") {
       return normalizePlaceGentilicNncToken(value)
         .split("-")
@@ -1317,11 +1330,13 @@ export function createPlaceGentilicNncApi(targetObject = globalThis, installatio
       const nominalizedStem = normalizePlaceGentilicNncStem(
         nominalization.nncSlotFrame?.slots?.predicate?.stem
       );
-      if (!/-ya-n$/u.test(nominalizedStem)) {
+      if (!/-yā-n$/u.test(nominalizedStem)) {
         return blocked("owner-issued-imperfect-predicate-nominalization-required");
       }
-      // Protected imperfect ya has length before the locative n (46.4).
-      const nominalizedImperfectPredicateStem = nominalizedStem.replace(/-ya-n$/u, "-yā-n");
+      // The relational owner already realizes protected yā before n (46.4).
+      // Preserve its authenticated predicate instead of expecting an earlier
+      // unlengthened intermediate and realizing the boundary a second time.
+      const nominalizedImperfectPredicateStem = nominalizedStem;
       const sourceVoice = active ? "active" : voiceOperation;
       return Object.freeze({
         kind: "classical-nahuatl-place-gentilic-exact-source-resolution",
@@ -1342,6 +1357,7 @@ export function createPlaceGentilicNncApi(targetObject = globalThis, installatio
         canonicalVncSourceProjection: projection,
         canonicalImperfectNominalizationResult: nominalization,
         exactVncResultIdentityPreserved: true,
+        availableConstructionKinds: Object.freeze(["place-name"]),
         availableFormations,
         sourceVoice,
         sourceVoiceOperation: voiceOperation,
@@ -1577,6 +1593,9 @@ export function createPlaceGentilicNncApi(targetObject = globalThis, installatio
       } else {
         source = { embedStem: sourceStem };
       }
+      if (!blockReason && constructionKind === "place-name") {
+        blockReason = getPlaceGentilicNncCoCBlockReason(formation, source.embedStem);
+      }
       return Object.freeze({
         kind: "classical-nahuatl-place-gentilic-exact-source-resolution",
         version: 1,
@@ -1732,6 +1751,8 @@ export function createPlaceGentilicNncApi(targetObject = globalThis, installatio
       if (!embed && !["gentilic-incorporated-place", "gentilic-affective-co"].includes(formation)) {
         return { authorizationStatus: "blocked", blockReason: "place-name-embed-stem-required" };
       }
+      const coCBlockReason = getPlaceGentilicNncCoCBlockReason(formation, embed);
+      if (coCBlockReason) return {authorizationStatus: "blocked", blockReason: coCBlockReason};
       let stem = "";
       let axisId = "";
       let boundaryRule = "";
@@ -2097,7 +2118,11 @@ export function createPlaceGentilicNncApi(targetObject = globalThis, installatio
       const typedSlotFrame = targetObject.buildClassicalNahuatlNncSlotFrame?.({
         sourceFrameKind: "classical-nahuatl-place-name-formation-frame",
         sourceAuthorizationStatus: "authorized", stem: formulaStem,
-        stateFrame: nominalizedStateFrame || {authorizationStatus:"authorized",arity:"vacant",slots:[]},
+        // This state is a slot projection of the already authenticated
+        // relational nominalization, not a standalone lower-owner frame.
+        stateFrame: nominalizedStateFrame
+          ? {...nominalizedStateFrame, authorizationStatus:"authorized"}
+          : {authorizationStatus:"authorized",arity:"vacant",slots:[]},
         personFrame: {authorizationStatus:"authorized",subject:"3common",pers1:"Ø",pers2:"Ø"},
         numberFrame: {authorizationStatus:"authorized",subject:"3common",subjectNumber:"common",
           num1,num2:"Ø",numberBelongsTo:"adverbialized-subject-pronoun",
@@ -2235,6 +2260,16 @@ export function createPlaceGentilicNncApi(targetObject = globalThis, installatio
         }
         finiteFrame = agreementFrame;
       } else if (sourceAnalysis.constructionKind === "gentilic-collective") {
+        const collectivityNumber = request.singularConnector
+          || (request.collectivityPossessiveVariant === "uh" ? "uh" : "0");
+        // Andrews 2.2 and 48.12: this typed yō matrix has reduced-long
+        // final spelling before silent number, but retains ō before uh.
+        // Build the canonical predicate with that realization; never patch
+        // a completed word or infer a matrix from arbitrary final letters.
+        const reducedCollectivityMatrix = normalizePlaceGentilicNncState(request.state) === "possessive"
+          && !String(request.subject || "3sg").endsWith("pl")
+          && ["0", "Ø", "⎕"].includes(collectivityNumber);
+        const collectivityAgreementStem = `${sourceAnalysis.gentilicStem}-${reducedCollectivityMatrix ? "yo" : "yō"}`;
         formationFrame = Object.freeze({
           kind: "classical-nahuatl-gentilic-collectivity-formation-frame",
           version: 1,
@@ -2246,10 +2281,13 @@ export function createPlaceGentilicNncApi(targetObject = globalThis, installatio
           sourceGentilicStem: sourceAnalysis.gentilicStem,
           boundaryRule: "embed-gentilic-stem-in-yō",
           derivedStem: `${sourceAnalysis.gentilicStem}-yō`,
+          agreementStem: collectivityAgreementStem,
+          matrixRealization: reducedCollectivityMatrix
+            ? "reduced-long-before-silent-number" : "full-long",
           typedFrameAuthority: true,
           targetStringAuthority: false
         });
-        agreementFrame = buildPlaceGentilicNncAgreementFrame(formationFrame.derivedStem, {
+        agreementFrame = buildPlaceGentilicNncAgreementFrame(formationFrame.agreementStem, {
           ...request,
           nounClass: "tl"
         }, {
@@ -2692,6 +2730,7 @@ export function createPlaceGentilicNncApi(targetObject = globalThis, installatio
     api.normalizePlaceGentilicNncStem = normalizePlaceGentilicNncStem;
     api.findPlaceGentilicNncHostileAuthorityPath = findPlaceGentilicNncHostileAuthorityPath;
     api.resolvePlaceGentilicNncExactSource = resolvePlaceGentilicNncExactSource;
+    api.getPlaceGentilicNncCoCFormationOptions = getPlaceGentilicNncCoCFormationOptions;
     api.buildPlaceGentilicNncSourceAnalysis = buildPlaceGentilicNncSourceAnalysis;
     api.realizePlaceGentilicNncPlaceStem = realizePlaceGentilicNncPlaceStem;
     api.realizePlaceGentilicNncGentilicStem = realizePlaceGentilicNncGentilicStem;

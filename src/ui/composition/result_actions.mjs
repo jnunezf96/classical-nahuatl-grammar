@@ -1,10 +1,10 @@
 import {runCompositionAction} from './action_feedback.mjs?v=20261023-1';
-import {getResultEditTargets,projectResultForEditing} from './result_editing.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&v=20261023-conjunction-1';
-import {canRebuildResultEdit,getResultEditReorder} from './result_edit_rebuild.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1';
-import {inventoryOptionReference} from './build_navigation_model.mjs';
+import {getResultEditTargets,projectResultForEditing} from './result_editing.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&v=20261023-conjunction-1&interfaceRelease=1.2.36';
+import {canRebuildResultEdit,getResultEditReorder} from './result_edit_rebuild.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1&interfaceRelease=1.2.36';
+import {inventoryOptionReference} from './build_navigation_model.mjs?interfaceRelease=1.2.36';
 
 const ORDER_FIELD='clause-choice:sentence:supplementation:supplementation-order';
-const ACTIONS=['change','add','reorder','remove','undo','clear'];
+const ACTIONS=['continue','change','add','reorder','remove','undo','clear'];
 const actionLabel=action=>action[0].toUpperCase()+action.slice(1);
 const text=(node,value)=>{if(node.textContent!==value)node.textContent=value;};
 const editAction=edit=>['reorder','remove'].includes(edit?.action)?edit.action
@@ -68,7 +68,8 @@ export function createResultActions(doc,{selection,onSelect,onAction,onAdd,sched
       &&binding.exactResult===target&&binding.exactResultIdentityPreserved===true
       &&binding.bindingIds?.includes('supplementation:principal')===true;
     if(rebuild)reorder=getResultEditReorder(runtime,target,project);
-    return {change,add,reorder,remove:Boolean(record.removableTo&&project(record.removableTo)),
+    return {continue:root!==target && runtime.isClassicalNahuatlVncSentenceResultFrame?.(root)===true
+      && root.vncApplicationFrame===target && runtime.isClassicalNahuatlVncApplicationFrame?.(target)===true,change,add,reorder,remove:Boolean(record.removableTo&&project(record.removableTo)),
       undo:Boolean(doc.getElementById('classical-grammar-workspace-history-undo')
         &&!doc.getElementById('classical-grammar-workspace-history-undo').disabled),clear:true};
   }
@@ -156,12 +157,13 @@ export function createResultActions(doc,{selection,onSelect,onAction,onAdd,sched
     targetSelect.disabled=!detail;
     targetSelect.dataset.inventorySelectedRef=inventoryOptionReference(`id:${targetSelect.id}`,selectedValue);
     section.hidden=!detail;
-    const reasons={change:'No offered operation can change this part while retaining its whole Result.',
+    const reasons={continue:'Select the sentence’s verb clause to use it as the next Source.',change:'No offered operation can change this part while retaining its whole Result.',
       add:'This part cannot serve as the principal of a new clause relation while retaining its whole Result.',
       reorder:'This part has no owner-supported order change that can retain its whole Result.',
       remove:'This part has no optional outer attachment that can be removed while retaining an exact Result.',
       undo:'There is no previous workspace state to restore.',clear:'There is no accepted Result to clear.'};
     for(const [action,button] of controls){
+      if(action==='continue')button.hidden=!available.continue;
       const enabled=Boolean(available[action]);
       if(button.disabled===enabled)button.disabled=!enabled;
       const title=enabled?'':reasons[action];if(button.title!==title)button.title=title;

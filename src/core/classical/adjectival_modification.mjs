@@ -471,19 +471,25 @@ function getSelectedCanonicalClause(
   if (!canonicalInput) return null;
 
   if (targetObject.isClassicalNahuatlClauseConjunctionResultFrame?.(canonicalInput) === true) {
-    // §52.6 supplies the whole shared-subject lexical unit as a modifier.
-    // The supplementation owner already validates its member contacts; no
-    // member's single predicate slot is substituted for the whole unit.
+    // §§52.2, 52.6 supply whole conjoined clauses as modifiers. The
+    // supplementation owner validates their common/shared subject contacts;
+    // no member's single predicate slot represents the whole group.
     const envelope = targetObject.buildClassicalNahuatlSupplementationClauseEnvelope?.(canonicalInput);
+    const lexical = envelope?.sharedLexicalConjunctionSubjectContact === true;
+    const adjectivalGroup = envelope?.sharedCommonNominalContact === true
+      && canonicalInput.operationKind === "conjunction"
+      && canonicalInput.relationFrame?.level === "adjoined"
+      && canonicalInput.relationFrame?.adjoinedFunction === "adjectival-modifier"
+      && (role === "modifier" || role.startsWith("modifier-"));
     if (targetObject.isClassicalNahuatlSupplementationClauseEnvelope?.(envelope) !== true
-      || envelope.sharedLexicalConjunctionSubjectContact !== true
+      || !(lexical || adjectivalGroup)
       || envelope.canonicalConjunctionResult !== canonicalInput
       || targetObject.getClassicalNahuatlSupplementationClauseSourceFrame?.(envelope) !== canonicalInput) return null;
     return issueSelectedClause(targetObject, {
       role: normalizeKey(role) || "unknown",
       sourceResult: canonicalInput,
       unitKind: "nnc",
-      clauseClass: "lexical-conjunction-nnc",
+      clauseClass: lexical ? "lexical-conjunction-nnc" : "adjoined-adjectival-conjunction-nnc",
       formula: envelope.formulaRealization,
       unitSurface: stripSentenceBoundary(envelope.surface),
       subjectId: envelope.subject.category,
@@ -495,8 +501,10 @@ function getSelectedCanonicalClause(
       compoundHead: false,
       pronominalFamily: "",
       typedSlotFrame: null,
-      lexicalConjunctionEnvelope: envelope,
-      lexicalConjunctionMembers: envelope.lexicalConjunctionMembers,
+      ...(lexical ? {
+        lexicalConjunctionEnvelope: envelope,
+        lexicalConjunctionMembers: envelope.lexicalConjunctionMembers,
+      } : {adjectivalConjunctionEnvelope: envelope}),
       ownedModifierAdjunctor: ["in-before-each", "in-before-left-only"].includes(
         canonicalInput.relationFrame.adjunctorDistribution) ? "in" : "",
       ownedAdjunctorDistribution: canonicalInput.relationFrame.adjunctorDistribution,

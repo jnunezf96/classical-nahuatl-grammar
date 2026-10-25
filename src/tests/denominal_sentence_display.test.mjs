@@ -1,0 +1,30 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import vm from 'node:vm';
+import {createPossessiveFixture} from './helpers/deverbal_possessive_fixture.mjs';
+
+test('denominal sentence use reaches preview and accepted projection without replacing its exact nuclear parent',async()=>{
+ const {r}=await createPossessiveFixture('mahcēhual');
+ const args={nounStem:'mahcēhual',sourceNounClass:'tli-1',sourceKind:'possessive-nnc-predicate',sourceState:'possessive',possessor:'1sg',operationId:'included-possessor-ti',classChoice:'A',subject:'3sg',subjectAnimacy:'nonanimate',subjectHumanness:'nonhuman',mood:'indicative',tense:'preterit',exclamatory:true};
+ const request={operationId:'vnc:denominal',args:[args]};
+ const preview=r.previewClassicalGrammarApplicationRequest(request);
+ assert.ok(preview,'genuine denominal preview');
+ assert.equal(preview.surface,'Nomahcēhualtic!');
+ const app=r.executeClassicalGrammarApplicationRequest(request),exact=app.canonicalResult;
+ assert.equal(app.authorizationStatus,'authorized',app.blockReason);
+ assert.equal(exact.surfaceRealization,'nomahcēhualtic','nuclear word remains unchanged');
+ const code=readFileSync(new URL('../ui/rendering/rendering.mjs',import.meta.url),'utf8');
+ const start=code.indexOf('    function getClassicalOwnerIssuedResultProjection('),end=code.indexOf('    function getClassicalClauseRelationMarkerOptions(',start);
+ const context=vm.createContext({targetObject:r,getClassicalClauseRelationCurrentCanonicalResult:x=>x,getClassicalCompositeAnalysisProjection:()=>null});
+ vm.runInContext(code.slice(start,end),context);
+ const projected=context.getClassicalOwnerIssuedResultProjection(exact);
+ assert.equal(projected.canonicalResult,exact);
+ assert.equal(projected.applicationResult,app);
+ assert.equal(projected.surface,'Nomahcēhualtic!');
+ assert.ok(projected.sentenceFormula);
+ assert.equal(context.getClassicalOwnerIssuedResultProjection({...exact}),null,'copied result remains rejected');
+ const plain=r.previewClassicalGrammarApplicationRequest({operationId:'vnc:denominal',args:[{...args,exclamatory:false}]});
+ assert.equal(plain.surface,'Nomahcēhualtic.','ordinary sentence punctuation remains owner-derived');
+ assert.equal(exact.sourceFrame.exclamatory,true,'later preview cannot rewrite accepted force');
+});

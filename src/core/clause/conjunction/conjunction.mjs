@@ -1634,7 +1634,11 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
             const objectKinds = positions?.map(position =>
               normalizeClassicalNahuatlClauseConjunctionToken(position.objectKind));
             const voice = normalizeClassicalNahuatlClauseConjunctionToken(
-              carrier?.controlFrame?.selectedVoice || machinery?.voice || node.voice,
+              carrier?.controlFrame?.selectedVoice || machinery?.voice
+              // Late derivations retain their executed voice on the authentic
+              // closure request rather than the ordinary machinery projection.
+              || (finiteSlots ? carrier?.normalizedRequest?.requestedVoice : "")
+              || node.voice,
             );
             const valence = normalizeClassicalNahuatlClauseConjunctionToken(
               machinery?.classTargetValence || machinery?.valence || node.predicateValence,

@@ -306,8 +306,20 @@ function run(ctx) {
     const cal = issueOrdinary("cal", { subject: "3common" }).comparisonSource;
     const mich = issueOrdinary("mich", { subject: "3common" }).comparisonSource;
     const teuc = issueOrdinary("tēuc").comparisonSource;
-    const resemblance =
-        issueOrdinary("nēnehuilia").comparisonSource;
+    // The objective-prefixed §53.1.6 example is a genuine verbal predicate;
+    // its present does not establish a perfective class.
+    const resemblanceSource = ctx.resolveClassicalNahuatlImperfectiveVncSourceFrame({
+        enteredStem: "nēnehuilia", valence: "specific-projective",
+    });
+    const resemblanceBinding = ctx.issueClassicalGrammarTypedSourceOperationBindingFrame(
+        ctx.getClassicalGrammarApplicationCapabilityNavigator(resemblanceSource),
+        "vnc:application", {subject: "1sg", subjectAnimacy: "animate", subjectHumanness: "human",
+            objectSelection: "specific-projective:3common", mood: "indicative", tense: "present",
+            requestedDerivation: "direct", requestedVoice: "active"},
+    );
+    const resemblanceReceipt = ctx.executeClassicalGrammarTypedSourceOperationBindingFrame(resemblanceBinding);
+    requireAuthorized(resemblanceReceipt.authorizationStatus === "authorized", "resemblance-verbal-parent");
+    const resemblance = ctx.buildClassicalComparisonSourceUnit({sourceResult: resemblanceReceipt.canonicalResult});
     const honorific =
         issueOrdinary("yōlchicāhuacātzintli")
             .comparisonSource;
@@ -392,8 +404,8 @@ function run(ctx) {
                 },
                 choices: {},
             },
-            "nēnehuilia in calli",
-            "#0-0(nēnehuilia)0-0#"
+            "nicnēnehuilia in calli",
+            "#ni-0+c-0(nēnehuilia)0+0-0#"
                 + " + in + #0-0(cal)li-0#",
         ],
         [

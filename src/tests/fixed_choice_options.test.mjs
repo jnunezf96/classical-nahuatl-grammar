@@ -52,3 +52,19 @@ test('option-group restrictions disable alternatives and stale buttons cannot by
  f.refresh();assert.equal(f.buttons().find(b=>b.textContent==='human').disabled,true);
  group.hidden=true;f.refresh();assert.deepEqual(f.buttons().map(b=>b.textContent),['nonhuman','other']);
 });
+
+
+test('optional third voice layer retains the native keep alternative after choosing its sole added layer',async()=>{
+ const {readFileSync}=await import('node:fs');
+ const shell=readFileSync(new URL('../ui/shell/classical_shell.mjs',import.meta.url),'utf8');
+ const tag=shell.match(/<select\s+id="classical-rule-logic-voice-layer-3"[^>]*>/u)?.[0] || '';
+ const f=fixture({id:'classical-rule-logic-voice-layer-3',value:'nonactive-lō',disabled:false,options:[['',false],['nonactive-lō',false]]});
+ delete f.select.dataset.classicalCanvasSelectAvailability;
+ if(tag.includes('data-classical-compact-choice-display="true"'))f.select.dataset.classicalCompactChoiceDisplay='true';
+ f.refresh();
+ assert.equal(f.mirror(),undefined,'Keep is a real owner alternative: the sole nonempty value must not become fixed');
+ assert.equal(f.select.getAttribute('aria-hidden'),null);
+ assert.deepEqual(f.select.options.map(o=>o.value),['','nonactive-lō']);
+ f.select.value='';f.select.dispatchEvent({type:'change'});f.refresh();
+ assert.equal(f.select.value,'');assert.equal(f.changes(),1);assert.equal(f.mirror(),undefined);
+});

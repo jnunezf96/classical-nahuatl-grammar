@@ -341,9 +341,22 @@ export function createClassicalClauseComplementValidationSemanticOperationsApi(
         }));
       }
       if (profileId === "subject-iyoh-contact") {
-        return target.evaluateClassicalNahuatlClauseComplementation(subjectRequest("state", {
-          complementStem: "iyoh", contactKind: "preterit-agentive-subject-iyoh",
-        }));
+        const source = target.evaluateClassicalNahuatlVncApplication({
+          sourceStem: "iyo-ā", verbClass: "C", sourceValence: "intransitive",
+          sourceInitialISelection: "supportive", subject: "3sg",
+          mood: "indicative", tense: "preterit", requestedVoice: "active",
+        });
+        const nominal = target.requestClassicalDeverbalNncResult({
+          constructionKind: "predicate-nominalization", nominalizationKind: "preterit-agentive",
+          canonicalVncResult: source.resultFrame, subject: "3sg", state: "absolutive",
+          numberConnector: "silent",
+        });
+        return target.evaluateClassicalNahuatlClauseComplementation({
+          operationKind: "subject-complement",
+          principalClause: clause(vnc("nēci"), { referenceId: "entity" }),
+          complementClause: clause(nominal, { referenceId: "entity" }),
+          options: { semanticCategory: "state", contactKind: "preterit-agentive-subject-iyoh" },
+        });
       }
       if (profileId === "passive-object-transform") {
         return target.evaluateClassicalNahuatlClauseComplementation(subjectRequest(

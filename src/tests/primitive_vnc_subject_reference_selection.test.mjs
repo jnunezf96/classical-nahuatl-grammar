@@ -1,0 +1,55 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import vm from 'node:vm';
+import {buildClassicalNahuatlParticipantFrame} from '../core/classical/participant_frame.mjs';
+import {createRuntimeInstance} from '../runtime/create_runtime.mjs';
+const r=(await createRuntimeInstance({documentObject:{getElementById:()=>null,addEventListener(){}}})).runtimeObject;
+const code=readFileSync(new URL('../ui/rendering/rendering.mjs',import.meta.url),'utf8');
+const request={sourceStem:'tōcāyōtiā',verbClass:'C',sourceValence:'projective-nonhuman',subject:'3sg',sourceSubjectAnimacy:'nonanimate',sourceSubjectHumanness:'nonhuman',sourceSubjectNumber:'common',mood:'indicative',tense:'present',requestedDerivation:'direct',requestedVoice:'active'};
+const choices={subject:'3sg',subjectAnimacy:'animate',subjectHumanness:'human',mood:'indicative',tense:'present',requestedDerivation:'direct',requestedVoice:'active'};
+
+test('primitive direct-active Make uses the visible subject reference without rewriting its exact input Source or other voice roles',()=>{
+ const preview=r.evaluateClassicalNahuatlVncApplication(request);assert.equal(preview.authorizationStatus,'authorized');
+ const source=preview.resultFrame.sourceMachineryFrame;
+ const nav=r.getClassicalGrammarApplicationCapabilityNavigator(source);
+ const initial=r.issueClassicalGrammarTypedSourceOperationBindingFrame(nav,'vnc:application',{requestedDerivation:'direct'});
+ const fields={'classical-rule-logic-subject':'3sg','classical-rule-logic-vnc-subject-animacy':'animate','classical-rule-logic-vnc-subject-humanness':'human','classical-rule-logic-vnc-voice':'active'};
+ const ctx=vm.createContext({targetObject:{...r,document:{getElementById:id=>fields[id]?{value:fields[id]}:null,querySelector:()=>null},getActiveDerivationType:()=> 'direct'},ActiveClassicalGrammarCapabilityNavigator:nav,ActiveClassicalGrammarResultBinding:null,
+ getClassicalVncContinuationDraftMoodSelections:()=>({mood:'indicative',tense:'present',introductoryParticle:'none',introductoryModifier:'none',prefaceParticle:'none',sentenceSurfaceMode:'affirmative',polarityMode:'positive',prefixStackMode:'none'}),
+ parseClassicalRuleLogicSurfaceObjectSelection:()=>({objectKind:'specific-projective',objectPerson:'3sg'}),getClassicalOptativeSentenceUseChoices:()=>[],getClassicalRuleLogicSurfaceSentenceOptions:()=>({sentenceType:'affirmative-assertion'}),normalizeClassicalRuleLogicSurfaceDirectionalPrefix:()=>''});
+ ctx.buildClassicalNahuatlParticipantFrame=buildClassicalNahuatlParticipantFrame;ctx.getClassicalRuleLogicSurfaceControlValue=(id,fallback)=>fields[id]||fallback;
+ const helper=code.indexOf('    function getClassicalRuleLogicVncSubjectFrame(');vm.runInContext(code.slice(helper,code.indexOf('\n    function ',helper+20)),ctx);
+ const start=code.indexOf('    function getClassicalVncContinuationBindingSelections(');vm.runInContext(code.slice(start,code.indexOf('\n    function ',start+20)),ctx);
+ const visible=ctx.getClassicalVncContinuationBindingSelections(initial);
+ assert.equal(visible.subjectAnimacy,'animate');assert.equal(visible.subjectHumanness,'human');
+ const binding=r.issueClassicalGrammarTypedSourceOperationBindingFrame(nav,'vnc:application',visible);
+ assert.equal(binding.bindingStatus,'ready',binding.blockReason);assert.equal(binding.exactSource,source);
+ assert.equal(preview.resultFrame.participantProjection.targetSubject.category,'3common');
+ const made=r.executeClassicalGrammarTypedSourceOperationBindingFrame(binding);assert.equal(made.authorizationStatus,'authorized',made.blockReason);
+ const whole=made.canonicalResult,p=whole.resultFrame.participantProjection;
+ assert.deepEqual([p.targetSubject.category,p.targetSubject.animacy,p.targetSubject.humanness,p.targetSubject.number],['3sg','animate','human','singular']);
+ assert.equal(whole.resultFrame.surfaceRealization,'tlatōcāyōtia');assert.equal(whole.resultFrame.sourceMachineryFrame,source);
+ assert.equal(p.sourceSubject.number,'common');assert.equal(preview.resultFrame.participantProjection.targetSubject.number,'common');
+ const continueBinding=r.issueClassicalNahuatlVncContinuationBindingFrame('vnc:application',whole,{subject:'3sg',mood:'indicative',tense:'present',requestedDerivation:'direct',requestedVoice:'active'});
+ assert.equal(continueBinding.bindingStatus,'ready',continueBinding.blockReason);assert.equal(continueBinding.ownerPreflightResult.resultFrame.participantProjection.targetSubject.humanness,'human');
+ assert.notEqual(r.issueClassicalNahuatlVncContinuationBindingFrame('vnc:application',whole,choices).bindingStatus,'ready');
+ for(const bad of [{...choices,requestedVoice:'impersonal'},{...choices,requestedDerivation:'causative'},{...choices,subjectAnimacy:'invented'}])assert.equal(r.issueClassicalNahuatlVncTypedSourceApplicationBindingFrame(source,bad).bindingStatus,'rejected');
+ assert.equal(r.issueClassicalNahuatlVncTypedSourceApplicationBindingFrame({...source},choices).bindingStatus,'rejected');
+ assert.equal(r.isClassicalGrammarTypedSourceOperationBindingFrame({...binding}),false);
+ const explicit=r.evaluateClassicalNahuatlVncApplication({...request,sourceSubject:'3sg'});
+ assert.equal(r.issueClassicalNahuatlVncTypedSourceApplicationBindingFrame(explicit.resultFrame.sourceMachineryFrame,choices).bindingStatus,'rejected');
+ const legacy=r.issueClassicalGrammarTypedSourceOperationBindingFrame(nav,'vnc:application',{subject:'1sg',mood:'indicative',tense:'present',requestedDerivation:'direct',requestedVoice:'active'});
+ const legacyResult=r.executeClassicalGrammarTypedSourceOperationBindingFrame(legacy);assert.equal(legacyResult.canonicalResult.resultFrame.participantProjection.targetSubject.category,'1sg');
+ fields['classical-rule-logic-vnc-subject-animacy']='nonanimate';fields['classical-rule-logic-vnc-subject-humanness']='nonhuman';
+ const commonVisible=ctx.getClassicalVncContinuationBindingSelections(initial);
+ assert.equal(commonVisible.subject,'3sg','the native finite control carries third-singular morphology');
+ const commonBinding=r.issueClassicalGrammarTypedSourceOperationBindingFrame(nav,'vnc:application',commonVisible);
+ assert.equal(commonBinding.bindingStatus,'ready',commonBinding.blockReason);
+ const common=r.executeClassicalGrammarTypedSourceOperationBindingFrame(commonBinding);
+ assert.equal(common.authorizationStatus,'authorized');
+ assert.equal(common.canonicalResult.resultFrame.participantProjection.targetSubject.category,'3common');
+ assert.equal(common.canonicalResult.resultFrame.participantProjection.targetSubject.morphologicalAgreement,'3sg');
+ assert.equal(common.canonicalResult.resultFrame.sourceMachineryFrame,source);
+ assert.equal(r.issueClassicalNahuatlVncTypedSourceApplicationBindingFrame(source,{...choices,subject:'3pl',subjectAnimacy:'nonanimate',subjectHumanness:'nonhuman'}).bindingStatus,'rejected','nonanimate common reference cannot authorize plural morphology');
+});

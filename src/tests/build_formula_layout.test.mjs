@@ -332,3 +332,27 @@ test('decision heading precedes the first structurally ordered field, independen
  arrangeProjectedFormulaChoices(doc,host,entries,groups);organizeWorkspaceDecisionHeadings(doc,entries,groups);
  assert.deepEqual(entries.map(entry=>entry.field.removals||0),moves);assert.equal(heading.nextElementSibling,entries[1].field);
 });
+
+test('a visible imported-causer control is named independently of the final voice subject',()=>{
+ assert.equal(vncSubjectCaption({isCauser:true,isTarget:true,derivation:'causative',voice:'active'}),'Causer');
+ assert.equal(vncSubjectCaption({isCauser:true,isTarget:true,derivation:'causative',voice:'passive'}),'Causer');
+ assert.equal(vncSubjectCaption({isTarget:true,derivation:'causative',voice:'passive'}),'Result subject');
+});
+
+test('projected choices use a direct insertion anchor when native collectors are nested',()=>{
+ for(const slot of ['subject','state']){
+  const f=portalFixture('nnc'),native=f.get(slot),nested=new Element('div');
+  native.section.dataset.classicalNncGrammarSection=slot;
+  native.wrapper.append(nested);nested.append(native.section);
+  const insert=native.wrapper.insertBefore.bind(native.wrapper);
+  native.wrapper.insertBefore=(node,anchor)=>{assert.ok(!anchor||anchor.parentElement===native.wrapper,'insertion anchor must be a direct child');insert(node,anchor);};
+  const field=new Element('label'),control=new Element('select');control.dataset.classicalCapabilityChoiceId=slot;control.value='retained';field.append(control);f.host.append(field);
+  arrangeProjectedFormulaChoices(f.doc,f.host,[{choice:slot,group:'participants',field,family:'nnc'}]);
+  arrangeProjectedClauseChoices(f.doc,f.organizer,'nnc');
+  const bucket=field.parentElement;
+  assert.equal(bucket.parentElement,native.wrapper);
+  assert.equal(native.section.parentElement,nested);
+  assert.equal(control.value,'retained');
+  const removals=bucket.removals;arrangeProjectedClauseChoices(f.doc,f.organizer,'nnc');assert.equal(bucket.removals,removals);
+ }
+});

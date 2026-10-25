@@ -45,6 +45,8 @@ export function syncClassicalSourceObjectRows(documentObject) {
     const row=documentObject.getElementById(`classical-source-object-${i}`);
     if (row) row.hidden=i>n;
     const kind=documentObject.getElementById(`classical-source-object-${i}-kind`);
+    const kindLabel=kind?.closest('label');
+    if(kindLabel)kindLabel.hidden=false;
     const label=documentObject.getElementById(`classical-source-object-${i}-person`)?.closest('label');
     if (label) label.hidden=kind?.value!=='specific-projective';
   }

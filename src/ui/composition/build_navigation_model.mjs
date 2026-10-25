@@ -205,7 +205,7 @@ export function formatBuildOperationLabel(operationId = "") {
     "particle:result": "Make a particle",
     "particle:negative-selection": "Choose a negative expression",
     "nnc:adjectival-modification": "Add a description",
-    "nnc:deverbal-construction": "Make a noun from a verb",
+    "nnc:deverbal-construction": "Form a noun construction",
     "vnc:denominal": "Make a verb from a noun",
     "nnc:personal-name": "Form a personal name",
     "nnc:place-gentilic": "Form a place or inhabitant name",

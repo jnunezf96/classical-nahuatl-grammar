@@ -3,7 +3,7 @@
 
 import {
   createClassicalNahuatlNncClosureApi,
-} from "./nnc_lessons45_47_closure.mjs?v=20260902-result-partition-375";
+} from "./nnc_lessons45_47_closure.mjs?v=20260902-result-partition-375&interfaceRelease=1.2.36";
 
 const ISSUED_VALIDATION_FRAMES = new WeakSet();
 

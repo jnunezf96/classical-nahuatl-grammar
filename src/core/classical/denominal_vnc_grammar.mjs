@@ -473,6 +473,7 @@ function normalizePossessor(value = "") {
     "1sg": "n-o",
     "2sg": "m-o",
     "3sg": "i",
+    "3common": "i",
     "1pl": "t-o",
     "2pl": "am-o",
     "3pl": "i-m",
@@ -752,6 +753,12 @@ function classesForSpec(spec, sourceFrame) {
   return [];
 }
 
+function isPanTargetPossessor(sourceFrame) {
+  // §54.3.4: common nonanimate reference changes relational pan's reading.
+  // The established Source meaning, not target spelling, licenses causation.
+  return sourceFrame?.includedPossessorFamily === "temporal-pan"
+    && sourceFrame.possessorPerson === "3common" && sourceFrame.possessor === "i";
+}
 function operationInapplicabilityReason(spec, sourceFrame) {
   // §25.5.2 and §54.2.3b.ii supply actual hui-ya ancestry before ya is
   // deleted. §54.2.2's shorter correspondence does not independently
@@ -761,10 +768,11 @@ function operationInapplicabilityReason(spec, sourceFrame) {
     && sourceFrame?.priorOperationId === "inceptive-hui") {
     return "independent-hui-lia-analysis-not-established";
   }
-  // §54.5.1b: the single-object route follows an absolutive inceptive,
-  // not the §54.3 verb whose possessor remains included in its predicate.
+  // §54.5.1b normally follows an absolutive inceptive. §54.3.4
+  // separately licenses relational pan with a common nonanimate possessor.
   return spec?.id === "ti-a-causative-single"
     && sourceFrame?.priorOperationId === "included-possessor-ti"
+    && !isPanTargetPossessor(sourceFrame.priorOperationFrame?.sourceFrame)
     ? "included-possessor-single-object-causative-not-licensed" : "";
 }
 
@@ -1001,7 +1009,8 @@ function buildObjectRequests(spec, source, sourceFrame = null) {
         || spec.id === "ti-a-causative-single"
           && (sourceFrame?.priorOperationId === "inceptive-hui"
             && sourceFrame.priorTargetClass === "B"
-            || sourceFrame?.priorOperationId === "possession-ti")
+            || sourceFrame?.priorOperationId === "possession-ti"
+            || isPanTargetPossessor(sourceFrame?.priorOperationFrame?.sourceFrame))
         || sourceFrame?.affectiveMatrixSourceFrame?.causativeObjectKinds?.includes(people[0]));
     return [{
       objectId: "denominal-object-1",
@@ -1060,7 +1069,7 @@ function buildObjectRequests(spec, source, sourceFrame = null) {
   }];
 }
 
-function buildFiniteRequest(operationFrame, source) {
+function buildFiniteRequest(operationFrame, source, generatedPossessorInitialI = false) {
   const sourceObjectRequests = operationFrame.objectRequests;
   const singleReflexiveObject = sourceObjectRequests.length === 1
     && sourceObjectRequests[0].objectKind === "reflexive";
@@ -1092,7 +1101,8 @@ function buildFiniteRequest(operationFrame, source) {
       ? sourceObjectRequests[0].objectPerson
       : "",
     sourceObjectRequests,
-    sourceInitialISelection: includedPossessorInitialI ? "real" : source.sourceInitialISelection,
+    sourceInitialISelection: includedPossessorInitialI || generatedPossessorInitialI
+      ? "real" : source.sourceInitialISelection,
     // This Source is the newly formed verb, not the nominal Source whose
     // subject can independently project into a causative object.
     subject: source.subject === "3common" ? "3sg" : source.subject,
@@ -1826,7 +1836,15 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
       return blocked("classical-nahuatl-denominal-vnc-operation-frame",
         huiBoundaryFrame.blockReason, { sourceFrame: inventory.sourceFrame });
     }
-    const targetStem = buildTargetStem(spec, inventory.sourceFrame, huiBoundaryFrame);
+    const includedPossessorBoundaryFrame = spec.id === "included-possessor-ti"
+      ? resolveIncludedPossessorBoundary(inventory.sourceFrame) : null;
+    if (spec.id === "included-possessor-ti" && !includedPossessorBoundaryFrame) {
+      return blocked("classical-nahuatl-denominal-vnc-operation-frame",
+        "included-possessor-writing-owner-required", {sourceFrame: inventory.sourceFrame});
+    }
+    const targetStem = includedPossessorBoundaryFrame
+      ? join(...includedPossessorBoundaryFrame.realizedTargetMorphs)
+      : buildTargetStem(spec, inventory.sourceFrame, huiBoundaryFrame);
     if (!targetStem) {
       return blocked(
         "classical-nahuatl-denominal-vnc-operation-frame",
@@ -1850,6 +1868,7 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
       family: spec.family,
       sourceFrame: inventory.sourceFrame,
       sourceStem: inventory.sourceFrame.sourceStem,
+      includedPossessorBoundaryFrame,
       targetStem,
       targetClass,
       ...(spec.id === "ti-a-causative-single" && inventory.sourceFrame.priorOperationId === "inceptive-hui"
@@ -2045,7 +2064,8 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
             // Source selections. They never leave the inventory as a Source
             // request and therefore cannot authorize a Result.
             sourceSubject: "3sg",
-            possessor: "3sg",
+            possessor: includedPossessorSourceFacts.meaningFamily === "temporal-pan"
+              ? "3common" : "3sg",
           }
           : {};
       const rootRequest = {
@@ -2136,9 +2156,11 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
       const pathLabel = pathFrames.map(frame => {
         const spec = OPERATION_BY_ID.get(frame.operationId);
         const selectedClass = classChoices[frame.operationId] || "";
+        const label = frame.operationId === "ti-a-causative-single"
+          && isPanTargetPossessor(frame.sourceFrame.priorOperationFrame?.sourceFrame)
+          ? "cause to hit a target" : spec.label;
         return classSelectionOperationIds.includes(frame.operationId)
-          ? `${spec.label} · Class ${selectedClass}`
-          : spec.label;
+          ? `${label} · Class ${selectedClass}` : label;
       }).join(" → ");
       const includedPossessor = operationPath.includes(
         "included-possessor-ti"
@@ -2151,6 +2173,13 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
         sourceSubject: sourceProjectedDoubleObject,
         sourcePossessor:
           rootRequest.sourceKind === "possessive-nnc-predicate",
+        sourcePossessorValues: operationFrame.operationId === "ti-a-causative-single"
+          && isPanTargetPossessor(operationFrame.sourceFrame.priorOperationFrame?.sourceFrame)
+          ? ["3common"]
+          : operationFrame.operationId === "included-possessor-ti"
+          ? ["1sg", "2sg", "3sg", "1pl", "2pl", "3pl", "te", "tla",
+            ...(includedPossessorSourceFacts.meaningFamily === "temporal-pan" ? ["3common"] : [])]
+          : ["1sg", "2sg", "3sg", "1pl", "2pl", "3pl"],
         includedPossessorFamily: includedPossessor,
         includedPossessorSourceFacts,
         includedPossessorFiniteContext: includedPossessor && operationFrame.operationId === "included-possessor-ti",
@@ -2158,7 +2187,8 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
         resultObjectKinds: operationFrame.objectCount === 1
           ? operationSpecRecord.id === "applicative-huia-use" || operationFrame.causativeFormationFrame
             || operationSpecRecord.id === "ti-a-causative-single"
-              && operationFrame.sourceFrame.priorOperationId === "possession-ti"
+              && (operationFrame.sourceFrame.priorOperationId === "possession-ti"
+                || isPanTargetPossessor(operationFrame.sourceFrame.priorOperationFrame?.sourceFrame))
             ? ["non-specific-human", "non-specific-nonhuman"]
             : operationFrame.sourceFrame.affectiveMatrixSourceFrame?.causativeObjectKinds || []
           : [],
@@ -2238,7 +2268,8 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
             classChoice: "",
             classChoices: undefined,
           };
-          const continuationSource = { priorOperationId: operationFrame.operationId };
+          const continuationSource = { priorOperationId: operationFrame.operationId,
+            priorOperationFrame: operationFrame };
           const blockReason = operationInapplicabilityReason(spec, continuationSource);
           if (blockReason) {
             const operationPath = [...pathFrames.map(frame => frame.operationId), spec.id];
@@ -2705,6 +2736,50 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
     );
   }
 
+  function resolveIncludedPossessorBoundary(sourceFrame) {
+    const morphs = sourceFrame.possessor.split("-");
+    const writingSource = targetObject.issueClassicalNahuatlLesson2WritingSource?.({
+      parts: [
+        ...morphs.map((value, index) => ({role: `included-possessor-${index + 1}`, value})),
+        ...sourceFrame.nounStem.split("-").filter(Boolean).map((value, index) => ({
+          role: `nominal-predicate-${index + 1}`, value,
+        })),
+        {role: "verbalizer", value: "ti"},
+      ],
+      boundaryKind: "typed-ordered-morphemes",
+    });
+    const writtenResult = targetObject.writeClassicalNahuatlLesson2Result?.(writingSource);
+    if (targetObject.isClassicalNahuatlLesson2WrittenResult?.(writtenResult) !== true
+      || writtenResult.authorizationStatus !== "authorized"
+      || writtenResult.source !== writingSource) return null;
+    return deepFreeze({
+      writingSource, writtenResult,
+      sourcePossessor: sourceFrame.possessor,
+      realizedPossessorMorphs: writtenResult.realizedParts.slice(0, morphs.length),
+      realizedTargetMorphs: writtenResult.realizedParts,
+    });
+  }
+
+  function hasGeneratedPossessorInitialI(operationFrame) {
+    if (!isClassicalNahuatlDenominalVncOperationFrame(operationFrame)) return false;
+    const source = operationFrame.sourceFrame;
+    if (operationFrame.operationId === "included-possessor-ti") {
+      // The typed operation constructed this carrier (§54.3). It is not a
+      // lexical initial-i choice, including on the raw noun analysis path.
+      return ["3sg", "3pl", "3common"].includes(source.possessorPerson)
+        && source.possessor === normalizePossessor(source.possessorPerson)
+        && operationFrame.includedPossessorBoundaryFrame?.sourcePossessor === source.possessor
+        && targetObject.isClassicalNahuatlLesson2WrittenResult?.(
+          operationFrame.includedPossessorBoundaryFrame.writtenResult) === true
+        && operationFrame.targetStem === join(
+          ...operationFrame.includedPossessorBoundaryFrame.realizedTargetMorphs);
+    }
+    return operationFrame.operationId === "ti-a-causative-single"
+      && isPanTargetPossessor(source.priorOperationFrame?.sourceFrame)
+      && hasGeneratedPossessorInitialI(source.priorOperationFrame)
+      && operationFrame.targetStem === join(source.priorOperationFrame.targetStem, "ā");
+  }
+
   function evaluateClassicalNahuatlDenominalVnc(request = {}) {
     const operationFrame = deriveClassicalNahuatlDenominalVncOperationPath(request);
     if (!isClassicalNahuatlDenominalVncOperationFrame(operationFrame)) {
@@ -2724,7 +2799,7 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
     const exactNncBinding =
       resolveClassicalNahuatlDenominalExactNncBinding(request);
     const source = normalizeSourceRequest(request, exactNncBinding);
-    const finiteRequest = buildFiniteRequest(operationFrame, source);
+    const finiteRequest = buildFiniteRequest(operationFrame, source, hasGeneratedPossessorInitialI(operationFrame));
     const canonicalVncFrame = operationFrame.causativeFormationFrame
       ? targetObject.evaluateClassicalNahuatlVncApplication(finiteRequest, operationFrame)
       : targetObject.evaluateClassicalNahuatlVncApplication(finiteRequest);
@@ -2835,7 +2910,7 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
       outputScope: "paradigm",
     });
     const canonicalPlan = targetObject.prepareClassicalNahuatlVncParadigmPlan(
-      buildFiniteRequest(operationFrame, source)
+      buildFiniteRequest(operationFrame, source, hasGeneratedPossessorInitialI(operationFrame))
     );
     const authorized = canonicalPlan?.authorizationStatus === "authorized";
     const plan = deepFreeze({

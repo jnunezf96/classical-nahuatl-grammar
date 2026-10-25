@@ -56,6 +56,10 @@ export function createClassicalNahuatlSourceStemInventoryApi() {
       ...(stem==="xoco-ya"?{licensedOperationRuleIds:Object.freeze(["cn-l25-2552-root-plus-ya-lia"]),sourceSection:"25.5.2"}:{})})])));
     // §50.6 attested full compounded future; perfective membership is unclaimed.
     const ADDITIONAL_IMPERFECTIVE_SOURCE_ANALYSES = Object.freeze({
+      // §51.4.1 attests mo-ca in present VNCs. The admitted coordinate
+      // does not establish a perfective class or prohibit unattested tenses.
+      "mo-ca":Object.freeze({sourceForm:"full-imperfective",formation:"lexical-coverage-verbstem",
+        perfectiveClassStatus:"unresolved",sourceSection:"51.4.1",classIndependentTenses:Object.freeze(["present"])}),
       "quiy-a-hui":Object.freeze({sourceForm:"full-imperfective",formation:"lexical-inherent-impersonal",perfectiveClassStatus:"established",
         sourceVoice:"inherent-impersonal",sourceSection:"22.1/30.11/50.9",sourceClass:"B",
         perfectiveClassEvidence:Object.freeze({
@@ -79,6 +83,14 @@ export function createClassicalNahuatlSourceStemInventoryApi() {
         sourceConstituents:Object.freeze([Object.freeze({stem:"cal",rank:"nounstem"}),Object.freeze({stem:"aqui",rank:"verbstem"})])})
     });
     const TRANSITIVE_IMPERFECTIVE_SOURCE_ANALYSES = Object.freeze(Object.fromEntries([
+      // §53.1.6 supplies objective-prefixed present predicates. Its introductory
+      // NNC label is inconsistent with those examples; no perfective is given.
+      ...["nēnehuilia", "nehuihuilia"].map(stem => [stem, Object.freeze({
+        sourceForm: "full-imperfective", formation: "attested-resemblance-verbstem",
+        perfectiveClassStatus: "unresolved", sourceSection: "53.1.6",
+        classIndependentTenses: Object.freeze(["present"]),
+        classIndependentObjectKinds: Object.freeze(["specific-projective"]),
+      })]),
       ...[["ināya","7.8 Note1"],["ztlac-mēya","57.6"]].map(([stem,sourceSection])=>[stem,Object.freeze({
         sourceForm:"full-imperfective",formation:"attested-whole-reflexive-imperfective",sourceValence:"mainline-reflexive",
         containedObjectKind:"reflexive",perfectiveClassStatus:"unresolved",sourceSection,classIndependentTenses:Object.freeze(["present"]),

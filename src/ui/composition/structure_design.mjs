@@ -19,7 +19,10 @@ function semanticChildren(r,exact) {
   const children=[];
   const nuclei=getDoubleNucleusEditChildren(r,exact);
   if(nuclei.length)children.push(...nuclei);
-  else if(r.isClassicalNahuatlClauseConjunctionResultFrame?.(exact)) {
+  else if(r.isClassicalNahuatlVncSentenceResultFrame?.(exact)===true
+    && r.isClassicalNahuatlVncApplicationFrame?.(exact.vncApplicationFrame)===true) {
+    children.push({role:'Verb clause',exact:exact.vncApplicationFrame});
+  } else if(r.isClassicalNahuatlClauseConjunctionResultFrame?.(exact)) {
     for(const [index,node] of exact.conjuncts.entries()) {const child=conjunctionChild(r,node);if(child)children.push({role:conjunctLabel(index,exact.relationFrame?.leftContextAbsent===true),exact:child});}
     const supplement=conjunctionChild(r,exact.sharedSupplement);if(supplement)children.push({role:'Shared supplement',exact:supplement});
   } else if(r.isClassicalNahuatlSupplementationFrame?.(exact)) {
@@ -163,16 +166,21 @@ export function projectClauseStructure(r,controller,selections,project) {
   if(!controller?.getCapturedCanonicalResult || !controller?.buildDecisionContract)return null;
   const contract=controller.buildDecisionContract(selections);
   const derived=contract.derived||{};
-  let roles=derived.requiredCaptureRoles || (contract.relation==='adjectival-modification'
+  let roles=derived.requiredCaptureRoles || (derived.operationFamily==='complement'
+    ? ['principal','adjoined',...(derived.auxiliaryRequired?['dependent']:[])]
+    : contract.relation==='adjectival-modification'
     ? ['principal','adjoined',...(derived.dependentRequired?['dependent']:[])]
     : ['principal','adjoined','dependent','supplement','marker'].filter(role=>
       Object.hasOwn(derived,`${role}SourceKind`) || (contract.missingCaptureRoles||[]).includes(role)));
+  const optionalRoles=derived.optionalCaptureRoles || [];
+  roles=[...new Set([...roles,...optionalRoles.filter(role=>controller.getCapturedCanonicalResult(role))])];
   if(contract.relation==='intensification' && derived.order==='modifier-head')
     roles=[...roles.filter(role=>role==='adjoined'),...roles.filter(role=>role!=='adjoined')];
   const conjunction=derived.operationFamily==='conjunction';
   const rightOnly=contract.relation==='conjunction' && contract.operationSelections?.leftContextAbsent===true;
   if(rightOnly)roles=roles.filter(role=>!['adjoined','dependent'].includes(role));
   const sources=roles.map(role=>projectCanonicalStructure(r,controller.getCapturedCanonicalResult(role),project,role)).filter(Boolean);
+  for(const source of sources)source.optionalCapture=optionalRoles.includes(source.role);
   if(conjunction)for(const source of sources) {const index=['principal','adjoined','dependent'].indexOf(source.role);if(index>=0)source.label=conjunctLabel(index,rightOnly);else if(source.role==='supplement')source.label='Shared supplement';}
   for(const source of sources)for(const endpoint of source.endpoints)endpoint.navigation=navigationFor(contract,source.role,endpoint);
   const native=contract.operationSelections||{}, unresolved=new Set(contract.unresolvedDecisionIds||[]);
@@ -224,7 +232,7 @@ export function compareCanonicalStructures(r,left,right,project) {
 const structureIds=new WeakMap();let structureId=0;
 const identity=exact=>{if(!structureIds.has(exact))structureIds.set(exact,++structureId);return structureIds.get(exact);};
 export function structurePresentationSignature(state) {
-  const serialize=tree=>({identity:identity(tree.exact),role:tree.role,label:tree.label,surface:tree.surface,unit:tree.unit,operation:tree.operation,facts:tree.facts,spatial:tree.spatial && {pending:tree.spatial.pending,pieces:tree.spatial.pieces.map(p=>({...p,source:p.source?identity(p.source):null}))},
+  const serialize=tree=>({identity:identity(tree.exact),role:tree.role,label:tree.label,optionalCapture:tree.optionalCapture===true,surface:tree.surface,unit:tree.unit,operation:tree.operation,facts:tree.facts,spatial:tree.spatial && {pending:tree.spatial.pending,pieces:tree.spatial.pieces.map(p=>({...p,source:p.source?identity(p.source):null}))},
     endpoints:tree.endpoints.map(endpoint=>({...endpoint,origin:Boolean(endpoint.origin)})),children:tree.children.map(serialize)});
   return JSON.stringify({sources:(state?.sources||[]).map(serialize),missing:state?.missingSources || [],scope:state?.sourceScope?identity(state.sourceScope):null,binding:state?.bindingScope?identity(state.bindingScope):null,operation:state?.operation,bindingId:state?.bindingId,links:(state?.links||[]).map(link=>[link.left.id,link.right.id,link.state]),spatial:state?.spatial && {pending:state.spatial.pending,pieces:state.spatial.pieces.map(p=>({...p,source:p.source?identity(p.source):null}))}});
 }
@@ -247,6 +255,23 @@ export function createStructureDesign(doc) {
     const card=element('div','composition-structure-node');card.dataset.compositionStructureRole=tree.role;
     card.dataset.compositionStructureDepth=String(depth);card.dataset.compositionStructureWhole=String(Boolean(tree.children.length));
     card.append(element('span','composition-source-card__role',title(tree.label||tree.role)),element('span','composition-source-card__form',tree.surface));
+    if(depth===0 && tree.optionalCapture) {
+      const action=`clear-clause-relation-${tree.role}`;
+      const native=doc.querySelector(`[data-classical-user-action="${action}"]`);
+      if(native && !native.disabled) {
+        const clear=element('button','classical-whole-canvas-action',native.textContent);
+        clear.type='button';clear.dataset.compositionClearCapture=tree.role;
+        const root=doc.getElementById('classical-workbench'),scope=readStructureDesignContext(root);
+        clear.addEventListener('click',()=>{
+          const current=readStructureDesignContext(root);
+          if(current?.sourceScope!==scope?.sourceScope || current?.bindingScope!==scope?.bindingScope || current?.operation!==scope?.operation || current?.bindingId!==scope?.bindingId)return;
+          if(!current?.sources.some(source=>source.role===tree.role && source.exact===tree.exact && source.optionalCapture))return;
+          const control=doc.querySelector(`[data-classical-user-action="${action}"]`);
+          if(control && !control.disabled)control.click();
+        });
+        card.append(clear);
+      }
+    }
     if(tree.endpoints.length) {
       const ends=element('div','composition-contact-endpoints');
       for(const endpoint of tree.endpoints) {

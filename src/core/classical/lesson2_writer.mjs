@@ -279,7 +279,7 @@ export function createClassicalNahuatlLesson2WriterApi(targetObject = globalThis
       // Replaying them must not choose an optional or low-frequency dialectal
       // alternative (§2.11). The grammatical owner's selected spelling stays
       // intact; ordinary required boundary rules still apply.
-      if (["typed-ordered-morphemes", "typed-nnc-slots", "ordinary-nnc-slots"].includes(source.boundaryKind)
+      if (["typed-ordered-morphemes", "typed-nnc-slots", "ordinary-nnc-slots", "typed-relational-nnc-slots"].includes(source.boundaryKind)
         && (frame?.optional === true || frame?.lowFrequency === true)) {
         boundaryActions.push(Object.freeze({
           boundaryIndex: index,

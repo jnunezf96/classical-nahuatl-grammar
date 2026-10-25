@@ -1,20 +1,20 @@
 import {syncOperationChoiceGate} from './operation_choice_gate.mjs?v=20261023-2';
 import {organizeClauseWorkflow,presentIdleClauseComposition} from './clause_composition.mjs?v=20261023-4&andrewsRelease=20261024-1';
-import {preserveDisclosureChoice} from './formula_layout.mjs?clauseHarmony=20261023-5&v=20261023-slots-17&andrewsRelease=20261024-1';
-import {organizeSourceComposition} from './source_composition.mjs?v=20261023-source-composition-1';
+import {preserveDisclosureChoice} from './formula_layout.mjs?clauseHarmony=20261023-5&v=20261023-slots-17&andrewsRelease=20261024-1&interfaceRelease=1.2.36';
+import {organizeSourceComposition} from './source_composition.mjs?v=20261023-source-composition-1&interfaceRelease=1.2.36';
 import {createFlowDesign} from './flow_design.mjs?v=20261022-reset-eligibility-1&writingSource=20261022-1&makePreview=20261022-1&fixedChoices=20261022-1';
 import {createLiveDesign} from './live_design.mjs?v=20261008-apple-panel-navigation-7';
-import {createGrammarPresentation} from './grammar_presentation.mjs?operationFirst=20261023-4&clickFeedback=20261023-1&allBuild=20261023-4&coreStem=20261023-1&v=20261014-construction-click-1&choicesLayout=20261014-4&ownerPresentation=20261021-2';
+import {createGrammarPresentation,reconcileOrdinaryNncSharedChoices} from './grammar_presentation.mjs?operationFirst=20261023-4&clickFeedback=20261023-1&allBuild=20261023-4&coreStem=20261023-1&v=20261014-construction-click-1&choicesLayout=20261014-4&ownerPresentation=20261021-2&interfaceRelease=1.2.36';
 import {createWorkspacePresentation} from './workspace_presentation.mjs?clickFeedback=20261023-1&v=20261023-whole-fit-1';
 // Presentation only: existing controls, handlers and owner availability survive.
 import {createResultInformation} from './result_information.mjs?v=20261023-result-composition-1&reader=42-6-227&journeyOrganization=20261019-1&writingSource=20261022-1';
 import {createPathPresentation} from './path_presentation.mjs?v=20261011-path-targets-7&routeShapes=20261021-1&writtenPreview=20261022-1&writingSource=20261022-1';
 import {createRouteDesign} from './route_design.mjs?clauseHarmony=20261023-5&clickFeedback=20261023-1&v=20261014-task-menu-1&routeShapes=20261021-1';
-import {createStructureDesign,readStructureDesignContext} from './structure_design.mjs?nucleusEdit=20261024-9&clauseHarmony=20261023-5&v=20261011-structure-15&routeShapes=20261021-1&clauseCoordinate=20261021-1&resetEligibility=20261022-1&writingSource=20261022-1&makePreview=20261022-1&fixedChoices=20261022-1';
+import {createStructureDesign,readStructureDesignContext} from './structure_design.mjs?nucleusEdit=20261024-9&clauseHarmony=20261023-5&v=20261011-structure-15&routeShapes=20261021-1&clauseCoordinate=20261021-1&resetEligibility=20261022-1&writingSource=20261022-1&makePreview=20261022-1&fixedChoices=20261022-1&interfaceRelease=1.2.36';
 import {createChoiceDesign} from './choice_design.mjs?clickFeedback=20261023-1&coreStem=20261023-1&v=20261022-reset-eligibility-1&writingSource=20261022-1&fixedChoices=20261022-1';
-import {createWorkspaceOrganization} from './workspace_organization.mjs?clauseHarmony=20261023-5&formulaSlots=20261023-22&v=20261014-task-menu-1&choicesLayout=20261014-4&objectsPlacement=20261014-1&ownerOrganization=20261024-andrews-decisions&startupDelivery=20261022-1&andrewsRelease=20261024-1';
+import {createWorkspaceOrganization} from './workspace_organization.mjs?clauseHarmony=20261023-5&formulaSlots=20261023-22&v=20261014-task-menu-1&choicesLayout=20261014-4&objectsPlacement=20261014-1&ownerOrganization=20261024-andrews-decisions&startupDelivery=20261022-1&andrewsRelease=20261024-1&interfaceRelease=1.2.36';
 import {createBuildConstructionPresentation} from './build_constructions.mjs?v=20261014-construction-click-1&choicesLayout=20261014-4';
-import {createBuildNavigation} from './build_navigation.mjs?deverbalReload=20261024-8&operationFirst=20261023-4&clickFeedback=20261023-1&v=20261021-ending-reference-2&writingSource=20261022-2&fixedChoices=20261022-1';
+import {createBuildNavigation} from './build_navigation.mjs?deverbalReload=20261024-8&operationFirst=20261023-4&clickFeedback=20261023-1&v=20261021-ending-reference-2&writingSource=20261022-2&fixedChoices=20261022-1&interfaceRelease=1.2.36';
 import {presentParticleComposition} from './particle_composition.mjs?v=20261023-particle-composition-2';
 
 export function hasVisibleCompositionControls(node,disclosure){
@@ -291,6 +291,9 @@ export function createCompositionPresentation(doc,organizationModel) {
       if(composition.hidden!==hidden)composition.hidden=hidden;
     }
     syncOperationChoiceGate(doc);
+    // Final placement/gating can reveal native editors after the first mirror
+    // pass. Reconcile only those shared fields, without reparenting the plan.
+    if(reconcileOrdinaryNncSharedChoices(doc))organizeChoicesLayout();
     lastAction=action;
   };
 }

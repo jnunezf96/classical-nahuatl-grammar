@@ -1,4 +1,4 @@
-import {getConstructionParticleHostInput} from './construction_layers.mjs?v=20261023-conjunct-edit-1';
+import {getConstructionParticleHostInput} from './construction_layers.mjs?v=20261023-conjunct-edit-1&interfaceRelease=1.2.36';
 import {getDoubleNucleusEditChildren,isDoubleNucleusContinuationCapture,buildDoubleNucleusEditRequest} from '../../application/classical/double_nucleus_edit.mjs?nucleusEdit=20261024-9';
 // Editing is an owner reissue along one authenticated occurrence path. The
 // untouched siblings stay exact objects; no saved recipe or written form is an

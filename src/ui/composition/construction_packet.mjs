@@ -1,8 +1,8 @@
-import {previewConstructionPacket} from './construction_preview.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1';
-import {getConstructionLayerReadiness as getLayerReadiness,getConstructionParticleHostInput} from './construction_layers.mjs?v=20261023-conjunct-edit-1';
-export {getConstructionParticleHostInput} from './construction_layers.mjs?v=20261023-conjunct-edit-1';
-import {resolveResultEditTarget,projectResultForEditing} from './result_editing.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&v=20261023-conjunction-1';
-import {rebuildResultEdit,requiresResultEditPreview,canRebuildResultEdit} from './result_edit_rebuild.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1';
+import {previewConstructionPacket} from './construction_preview.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1&interfaceRelease=1.2.36';
+import {getConstructionLayerReadiness as getLayerReadiness,getConstructionParticleHostInput} from './construction_layers.mjs?v=20261023-conjunct-edit-1&interfaceRelease=1.2.36';
+export {getConstructionParticleHostInput} from './construction_layers.mjs?v=20261023-conjunct-edit-1&interfaceRelease=1.2.36';
+import {resolveResultEditTarget,projectResultForEditing} from './result_editing.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&v=20261023-conjunction-1&interfaceRelease=1.2.36';
+import {rebuildResultEdit,requiresResultEditPreview,canRebuildResultEdit} from './result_edit_rebuild.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1&interfaceRelease=1.2.36';
 
 // Freeze request containers while retaining the exact opaque owner frames.
 export function freezeConstructionData(value) {
@@ -14,7 +14,8 @@ export function freezeConstructionData(value) {
 const origins=new WeakMap();
 export const getConstructionPacketOrigin=packet=>origins.get(packet) || null;
 export const captureConstructionParents=controller=>Object.freeze(['principal','adjoined','dependent','supplement','marker']
-  .map(role=>Object.freeze({role,exact:controller.getCapturedCanonicalResult(role) || null})));
+  .map(role=>Object.freeze({role,exact:controller.getCapturedCanonicalResult(role) || null,
+    discourseContext:controller.getState?.()?.captures?.[role]?.discourseSourceContext || null})));
 export const matchesConstructionWitness=(binding,{source,operation,sourceOrigin=null,originOwner=null})=>Boolean(binding
   && binding.operationId===operation && (binding.exactSource===source || sourceOrigin && originOwner===source && binding.exactSource===sourceOrigin));
 export function orderConstructionSlots(structure) {
@@ -64,7 +65,9 @@ export function executeConstructionPacket(runtime,packet) {
     return rebuildResultEdit(runtime,edit.root,edit.target,application.canonicalResult,project,edit.path);
   }
   if(packet.kind==='clause') {
-    if(packet.captures.some(slot=>packet.controller.getCapturedCanonicalResult(slot.role)!==slot.exact))return null;
+    if(packet.captures.some(slot=>packet.controller.getCapturedCanonicalResult(slot.role)!==slot.exact
+      || JSON.stringify(packet.controller.getState?.()?.captures?.[slot.role]?.discourseSourceContext || null)
+        !== JSON.stringify(slot.discourseContext || null)))return null;
     const result=packet.controller.compose(packet.choices);
     if(result?.authorizationStatus!=='authorized')return result;
     return runtime.captureClassicalGrammarApplicationResult?.(result.canonicalResult,'construction-position-make')?.applicationResult || null;

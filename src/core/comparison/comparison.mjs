@@ -141,6 +141,26 @@ export function createComparisonApi(targetObject = globalThis, installationConte
       oc: "oc",
       none: ""
     });
+    // Andrews 53.5.2a: each listed collocation may be intensified with huel.
+    const NEGATIVE_COMPARATIVE_BASE_DEGREES = freeze({
+      "oc-achi": "oc achi",
+      "oc-cencah": "oc cencah",
+      "oc-cencah-yeh": "oc cencah yeh",
+      "oc-cencah-yehhuatl": "oc cencah yehhuātl",
+      "oc-yeh": "oc yeh",
+      "oc-yeh-cencah": "oc yeh cencah"
+    });
+    const NEGATIVE_COMPARATIVE_DEGREES = freeze({
+      ...NEGATIVE_COMPARATIVE_BASE_DEGREES,
+      ...Object.fromEntries(Object.entries(NEGATIVE_COMPARATIVE_BASE_DEGREES)
+        .map(([id, surface]) => [`huel-${id}`, `huel ${surface}`]))
+    });
+    // The adversative comparative requires cencah in a conjunct (53.5.1).
+    const ADVERSATIVE_COMPARATIVE_DEGREES = freeze({
+      cencah: "cencah",
+      ...Object.fromEntries(Object.entries(NEGATIVE_COMPARATIVE_DEGREES)
+        .filter(([id]) => id.split("-").includes("cencah")))
+    });
     const SIMILARITY_DEGREE_MARKERS = freeze({
       achi: "achi",
       none: ""
@@ -266,7 +286,11 @@ export function createComparisonApi(targetObject = globalThis, installationConte
         "oc-yeh-cencah": "oc + yeh + cencah",
         "huel-oc": "huel + oc",
         "huel-oc-achi": "huel + oc + achi",
-        "huel-oc-cencah": "huel + oc + cencah"
+        "huel-oc-cencah": "huel + oc + cencah",
+        "huel-oc-cencah-yeh": "huel + oc + cencah + yeh",
+        "huel-oc-cencah-yehhuatl": "huel + oc + cencah + yehhuātl",
+        "huel-oc-yeh": "huel + oc + yeh",
+        "huel-oc-yeh-cencah": "huel + oc + yeh + cencah"
       },
       adversativeMarker: {
         zan: "zan",
@@ -362,7 +386,7 @@ export function createComparisonApi(targetObject = globalThis, installationConte
       route("similarity-tloc-relational-nnc", COMPARISON_RELATION.similarity, "compose-relational-nnc-similarity", ["comparand", "standard"], "COMPARAND+DEGREE+POSSESSIVE(tloc)+in+STANDARD", ["degreeMarker", "sentenceType"], ["principal-nnc", "relational", "degree"]),
       route("similarity-same-as-pronominal", COMPARISON_RELATION.similarity, "compose-nonpreposed-same-as", ["comparand", "standard"], "COMPARAND+SAME_AS_MARKER+in+STANDARD", ["sameAsMarker", "sentenceType"], ["principal-clause", "nonpreposed-adjectival", "marker-variant"]),
       route("similarity-incorporated-nehnequi", COMPARISON_RELATION.similarity, "derive-incorporated-complement-resemblance-vnc", ["source"], "mo+INCORPORATED_NOUNSTEM+nehnequi", ["degreeMarker", "sentenceType"], ["compound-verbstem", "incorporation", "reflexive-matrix"]),
-      route("similarity-resemblance-verbstem-nnc", COMPARISON_RELATION.similarity, "compose-resemblance-verbstem-nnc", ["principal", "standard"], "RESEMBLANCE_NNC+in+STANDARD", ["sentenceType"], ["principal-nnc", "resemblance-verbstem"]),
+      route("similarity-resemblance-verbstem-nnc", COMPARISON_RELATION.similarity, "compose-resemblance-verbstem-vnc", ["principal", "standard"], "RESEMBLANCE_VNC+in+STANDARD", ["sentenceType"], ["principal-vnc", "resemblance-verbstem"]),
       route("similarity-ihui-vnc", COMPARISON_RELATION.similarity, "compose-ihui-vnc-similarity", ["principal"], "TOPIC+ihui_VNC", ["sentenceType"], ["ihui", "vnc", "topic"]),
       route("similarity-iuhqui-principal", COMPARISON_RELATION.similarity, "compose-iuhqui-principal-clause", ["adjoined"], "TOPIC+MODIFIER+iuhqui+(in)+ADJOINED+(ic)+DIMENSION", ["iuhquiModifier", "adjunctorIn", "icRelation", "sentenceType"], ["iuhqui", "principal-nnc", "impersonal", "adjoined-clause", "topic", "ic"]),
       route("similarity-iuhqui-larger-concatenate", COMPARISON_RELATION.similarity, "adjoin-iuhqui-to-larger-concatenate", ["similarityClause", "headClause"], "IUHQUI_CONCATENATE+HEAD_CONCATENATE", ["position", "sentenceType"], ["iuhqui", "larger-concatenate", "clause-rank"]),
@@ -403,7 +427,7 @@ export function createComparisonApi(targetObject = globalThis, installationConte
         comparand: ANY_CLAUSE_SOURCE_KINDS
       },
       "similarity-resemblance-verbstem-nnc": {
-        principal: ["nnc"],
+        principal: ["vnc"],
         standard: ["nnc"]
       },
       "similarity-ihui-vnc": {
@@ -417,7 +441,7 @@ export function createComparisonApi(targetObject = globalThis, installationConte
       },
       "similarity-iuhqui-larger-concatenate": {
         similarityClause: ["composition"],
-        headClause: ["composition"]
+        headClause: ANY_CLAUSE_SOURCE_KINDS
       },
       "equality-iuhqui": {
         comparand: ANY_CLAUSE_SOURCE_KINDS,
@@ -537,6 +561,13 @@ export function createComparisonApi(targetObject = globalThis, installationConte
     }
     function getClassicalComparisonRouteInventory() {
       return clone(COMPARISON_ROUTE_INVENTORY);
+    }
+    function getClassicalComparisonDegreeChoiceInventory(routeId = "") {
+      const inventory = routeId === "comparative-adversative"
+        ? ADVERSATIVE_COMPARATIVE_DEGREES
+        : routeId === "comparative-negative-adverbial"
+          ? NEGATIVE_COMPARATIVE_DEGREES : null;
+      return inventory ? Object.keys(inventory) : null;
     }
     function getClassicalComparisonLcmInventory() {
       return {
@@ -947,6 +978,8 @@ export function createComparisonApi(targetObject = globalThis, installationConte
       const vncSlotFrame = getComparisonVncSlotFrame(canonicalResult);
       const compositionResultAuthorized = Boolean(
         targetObject.isAdverbialAdjunctionResult?.(canonicalResult) === true
+        || (isClassicalComparisonResultFrame(canonicalResult)
+          && canonicalResult.routeId === "similarity-iuhqui-principal")
         || targetObject.isClassicalNahuatlSupplementationFrame?.(canonicalResult) === true
         || (
           typeof targetObject
@@ -1227,7 +1260,11 @@ export function createComparisonApi(targetObject = globalThis, installationConte
               ? TACHCAUH_DEGREE_MARKERS
               : routeId.startsWith("comparative-panahuia")
                 ? PANAHUIA_DEGREE_MARKERS
-                : COMPARATIVE_DEGREE_MARKERS;
+                : routeId === "comparative-adversative"
+                  ? ADVERSATIVE_COMPARATIVE_DEGREES
+                  : routeId === "comparative-negative-adverbial"
+                    ? NEGATIVE_COMPARATIVE_DEGREES
+                    : COMPARATIVE_DEGREE_MARKERS;
         addChoice("degreeMarker", degreeInventory, degreeInventory.none !== undefined ? "none" : Object.keys(degreeInventory)[0]);
       }
       if (routeSpec.choiceFields.includes("adversativeMarker")) addChoice("adversativeMarker", ADVERSATIVE_MARKERS, "yeceh");
@@ -1240,6 +1277,11 @@ export function createComparisonApi(targetObject = globalThis, installationConte
       if (routeSpec.choiceFields.includes("continuationFamily")) addChoice("continuationFamily", REDUPLICATIVE_CONTINUATIONS, "bare");
       if (routeSpec.choiceFields.includes("adjunctorIn")) choices.adjunctorIn = normalizeBooleanChoice(operationRequest, "adjunctorIn", true);
       if (routeSpec.choiceFields.includes("icRelation")) choices.icRelation = normalizeBooleanChoice(operationRequest, "icRelation", Boolean(slots.dimension));
+      if (["equality-iuhqui", "equality-ihuan", "similarity-iuhqui-principal"].includes(routeId) && choices.icRelation
+        && (!isClassicalComparisonSourceUnit(slots.dimension)
+          || slots.dimension.authorizationStatus !== "authorized")) {
+        diagnostics.push("comparison-dimension-typed-source-required");
+      }
       if (routeSpec.choiceFields.includes("copula")) choices.copula = normalizeBooleanChoice(operationRequest, "copula", false);
       if (routeSpec.choiceFields.includes("position")) {
         const position = key(
@@ -1253,6 +1295,14 @@ export function createComparisonApi(targetObject = globalThis, installationConte
       if (routeId === "similarity-downgraded-possessive-tla"
         && (!text(slots.source?.stem) || !text(slots.source?.absolutiveSuffix))) {
         diagnostics.push("comparison-possessive-nounstem-and-absolutive-required");
+      }
+      if (routeId === "similarity-iuhqui-larger-concatenate") {
+        const child = getClassicalComparisonCanonicalSourceResult(slots.similarityClause);
+        if (!isClassicalComparisonResultFrame(child)
+          || child.authorizationStatus !== "authorized"
+          || child.routeId !== "similarity-iuhqui-principal") {
+          diagnostics.push("comparison-authentic-iuhqui-concatenate-required");
+        }
       }
       if (routeId === "similarity-reduplicative-prefix" && !text(slots.source?.stem)) {
         diagnostics.push("comparison-reduplicative-source-stem-required");
@@ -1284,7 +1334,9 @@ export function createComparisonApi(targetObject = globalThis, installationConte
         }
       }
       if (!diagnostics.length && citationSourceUseFrame) {
-        addChoice("reduplicationShape", TI_REDUPLICATION_SHAPES, "");
+        // §53.1.1 ca-cal is similarity; §14.3 cā-cal/cah-cal are
+        // distinct nominal affinity/distribution operations.
+        addChoice("reduplicationShape", {"short-cv": "short-cv"}, "short-cv");
         if (!diagnostics.length) {
           citationNounFrame = getCitationNounFrame(slots.source, citationSourceUseFrame,
             absolutiveContinuationFrame, choices.reduplicationShape.id);
@@ -1331,12 +1383,19 @@ export function createComparisonApi(targetObject = globalThis, installationConte
       }
       if (
         routeId === "similarity-resemblance-verbstem-nnc"
-        && slots.principal?.lexicalFormation
-          !== "verbstem-resemblance-predicate-nnc"
+        && (!['nenehuilia', 'nehuihuilia'].includes(slots.principal?.lexeme)
+          || slots.principal?.objectSpecificity !== "specified")
       ) {
         diagnostics.push(
-          "comparison-resemblance-verbstem-nnc-source-required"
+          "comparison-objective-resemblance-verbstem-source-required"
         );
+      }
+      if (routeId === "similarity-resemblance-verbstem-nnc") {
+        const principal = getClassicalComparisonCanonicalSourceResult(slots.principal);
+        const objects = (principal?.resultFrame || principal)?.participantProjection?.targetObjects || [];
+        if (objects.length !== 1 || objects[0].category !== slots.standard?.person) {
+          diagnostics.push("comparison-resemblance-standard-object-agreement-required");
+        }
       }
       if (
         routeId === "similarity-ihui-vnc"
@@ -1530,7 +1589,7 @@ export function createComparisonApi(targetObject = globalThis, installationConte
           reduplicationShapes: [] });
       }
       return freeze({ authorizationStatus: "authorized", blockReason: "", sourceUseFrame,
-        reduplicationShapes: Object.keys(TI_REDUPLICATION_SHAPES),
+        reduplicationShapes: ["short-cv"],
         formulaStringAuthority: false, surfaceStringAuthority: false });
     }
     function getClassicalComparisonTiAgentiveChoiceInventory(source) {
@@ -1704,7 +1763,8 @@ export function createComparisonApi(targetObject = globalThis, installationConte
         embedReduplication: "similarity", similarityReduplicationShape: reduplicationShape,
         subject: "3sg", mood: "indicative", tense: "present", voice: "active",
       });
-      if (!targetObject.isClassicalNahuatlNominalConstructionResult(nominalConstruction)) {
+      if (!targetObject.isClassicalNahuatlNominalConstructionResult(nominalConstruction)
+        || nominalConstruction.authorizationStatus !== "authorized") {
         return blocked(`comparison-${matrixId}-incorporation:${nominalConstruction?.blockReason || "canonical-nominal-construction-required"}`);
       }
       const compoundStem = text(nominalConstruction.operationFrame?.compoundStem);
@@ -2146,7 +2206,7 @@ export function createComparisonApi(targetObject = globalThis, installationConte
           choices.adjunctorIn ? "in" : "",
           slotFormula(operationFrame, "adjoined"),
           choices.icRelation ? "īc" : "",
-          slotFormula(operationFrame, "dimension")
+          choices.icRelation ? slotFormula(operationFrame, "dimension") : ""
         );
       } else if (routeId === "similarity-iuhqui-larger-concatenate") {
         const similarity = slotFormula(operationFrame, "similarityClause");
@@ -2166,7 +2226,7 @@ export function createComparisonApi(targetObject = globalThis, installationConte
           "in",
           slotFormula(operationFrame, "standard"),
           choices.icRelation ? "īc" : "",
-          slotFormula(operationFrame, "dimension")
+          choices.icRelation ? slotFormula(operationFrame, "dimension") : ""
         );
       } else if (routeId === "size-ixquich") {
         formula = joinComparisonFormula(
@@ -2322,15 +2382,15 @@ export function createComparisonApi(targetObject = globalThis, installationConte
         formulaSlots = ["mo", slotStem(operationFrame, "source"), "nehnequi"];
       } else if (routeId === "similarity-resemblance-verbstem-nnc") {
         surface = join(slotSurface(operationFrame, "principal"), "in", slotSurface(operationFrame, "standard"));
-        formulaSlots = ["RESEMBLANCE_NNC", "in", "STANDARD"];
+        formulaSlots = ["RESEMBLANCE_VNC", "in", "STANDARD"];
       } else if (routeId === "similarity-ihui-vnc") {
         surface = comma(slotSurface(operationFrame, "topic"), slotSurface(operationFrame, "principal"));
         formulaSlots = ["TOPIC", "ihui_VNC"];
       } else if (routeId === "similarity-iuhqui-principal") {
         const adjoined = join(choices.adjunctorIn ? "in" : "", slotSurface(operationFrame, "adjoined"));
-        const dimension = join(choices.icRelation ? "īc" : "", slotSurface(operationFrame, "dimension"));
+        const dimension = choices.icRelation ? join("īc", slotSurface(operationFrame, "dimension")) : "";
         surface = join(slotSurface(operationFrame, "topic"), choiceSurface(operationFrame, "iuhquiModifier"), "iuhqui", adjoined, dimension);
-        formulaSlots = ["TOPIC", "MODIFIER", "iuhqui", choices.adjunctorIn ? "in" : "", "ADJOINED", choices.icRelation ? "īc" : "", slots.dimension ? "DIMENSION" : ""].filter(Boolean);
+        formulaSlots = ["TOPIC", "MODIFIER", "iuhqui", choices.adjunctorIn ? "in" : "", "ADJOINED", choices.icRelation ? "īc" : "", choices.icRelation && slots.dimension ? "DIMENSION" : ""].filter(Boolean);
       } else if (routeId === "similarity-iuhqui-larger-concatenate") {
         const similarity = embeddedSlotSurface(
           operationFrame,
@@ -2348,9 +2408,9 @@ export function createComparisonApi(targetObject = globalThis, installationConte
         formulaSlots = choices.position === "postposed" ? ["HEAD", "IUHQUI_CONCATENATE"] : ["IUHQUI_CONCATENATE", "HEAD"];
       } else if (routeId === "equality-iuhqui" || routeId === "equality-ihuan") {
         const marker = routeId === "equality-iuhqui" ? "iuhqui" : "īhuān";
-        const dimension = join(choices.icRelation ? "īc" : "", slotSurface(operationFrame, "dimension"));
+        const dimension = choices.icRelation ? join("īc", slotSurface(operationFrame, "dimension")) : "";
         surface = comma(slotSurface(operationFrame, "comparand"), join(marker, "in", slotSurface(operationFrame, "standard"), dimension));
-        formulaSlots = ["COMPARAND", marker, "in", "STANDARD", choices.icRelation ? "īc" : "", slots.dimension ? "DIMENSION" : ""].filter(Boolean);
+        formulaSlots = ["COMPARAND", marker, "in", "STANDARD", choices.icRelation ? "īc" : "", choices.icRelation && slots.dimension ? "DIMENSION" : ""].filter(Boolean);
       } else if (routeId === "size-ixquich") {
         surface = join(slotSurface(operationFrame, "comparand"), choiceSurface(operationFrame, "degreeMarker"), "ixquich", choices.adjunctorIn ? "in" : "", slotSurface(operationFrame, "standard"));
         formulaSlots = ["COMPARAND", "DEGREE", "ixquich", choices.adjunctorIn ? "in" : "", "STANDARD"].filter(Boolean);
@@ -2397,6 +2457,7 @@ export function createComparisonApi(targetObject = globalThis, installationConte
         formulaSlots = ["TOPIC", "SUPERLATIVE_PRINCIPAL", choices.adjunctorIn ? "in" : "", "īc", "PREDICATE"].filter(Boolean);
       }
       return {
+        embeddedSurface: surface,
         surface: terminal(surface, statementType),
         formulaSlots
       };
@@ -2582,6 +2643,8 @@ export function createComparisonApi(targetObject = globalThis, installationConte
         surface: realization.surface,
         surfaceForms: [realization.surface],
         selectedResult: realization.surface,
+        ...(operationFrame.routeId === "similarity-iuhqui-principal"
+          ? {embeddedSurface: realization.embeddedSurface} : {}),
         formula: formulaRealization,
         formulaRealization,
         formulaRecord,
@@ -2742,6 +2805,7 @@ export function createComparisonApi(targetObject = globalThis, installationConte
       getComparisonAntiConflationRules,
       getComparisonStructuralQuestions,
       getClassicalComparisonRouteInventory,
+      getClassicalComparisonDegreeChoiceInventory,
       getClassicalComparisonTiAgentiveChoiceInventory,
       getClassicalComparisonNehnemiChoiceInventory,
       getClassicalComparisonTlahtoaChoiceInventory,

@@ -1,0 +1,31 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import vm from 'node:vm';
+import {readFileSync} from 'node:fs';
+import {createPossessiveFixture} from './helpers/deverbal_possessive_fixture.mjs';
+
+test('patientive matrix collector sends the genuine grammar wrapper through its declared owner input',async()=>{
+ const {r}=await createPossessiveFixture('cuā');
+ const vnc=r.requestClassicalVncApplicationResult({sourceStem:'cuā',verbClass:'D',sourceValence:'projective-nonhuman',objectKind:'nonspecific-nonhuman',subject:'3sg',mood:'indicative',tense:'present',requestedVoice:'impersonal',nonactiveOptionId:'lō:cua-lō',lexicalReading:'generalized-active'});
+ assert.equal(vnc.authorizationStatus,'authorized',vnc.blockReason);
+ const parent=r.evaluateClassicalNahuatlDeverbalNnc({constructionKind:'patientive',patientiveKind:'ordinary',patientiveSourceFamily:'impersonal-core',canonicalVncResult:vnc,subject:'3common',animacy:'nonanimate',state:'absolutive'});
+ assert.equal(parent.authorizationStatus,'authorized',parent.blockReason);assert.equal(parent.wordSurface,'tlacualli');
+ const code=readFileSync(new URL('../ui/rendering/rendering.mjs',import.meta.url),'utf8');
+ const start=code.indexOf('        if (exactBindingId === "continuation:patientive-nnc"\n          && constructionFamily === "patientive-matrix-continuation")');
+ assert.ok(start>=0);
+ const end=code.indexOf('\n        if (exactBindingId',start+1);
+ const values={'classical-deverbal-nnc-patientive-matrix-embed-stem':'miquiz','classical-deverbal-nnc-patientive-matrix-embed-class':'tli-1','classical-deverbal-nnc-patientive-matrix-relation':'character'};
+ const ctx=vm.createContext({exactBindingId:'continuation:patientive-nnc',constructionFamily:'patientive-matrix-continuation',exactBinding:{exactResult:parent},subject:'3common',state:'absolutive',possessor:'3sg',animacy:'nonanimate',getClassicalNominalConstructionControlValue:(id,fallback)=>values[id]??fallback});
+ const request=vm.runInContext(`(()=>{${code.slice(start,end)}})()`,ctx);
+ assert.ok(request.canonicalPatientiveNncGrammarFrame===parent,'collector must use the grammar-frame input');
+ const result=r.evaluateClassicalNahuatlDeverbalNnc(request);
+ assert.equal(result.authorizationStatus,'authorized',result.blockReason);assert.equal(result.wordSurface,'miquiztlacualli');
+ const f=result.operationFrame.patientiveMatrixCompoundFrame;
+ assert.ok(f.canonicalPatientiveNncGrammarFrame===parent,'exact whole grammar parent');
+ assert.ok(f.canonicalPatientiveNncResult===parent.canonicalResult,'exact canonical nucleus');
+ assert.equal(f.exactPatientiveResultIdentityPreserved,true);
+ assert.ok(f.canonicalVncResult===vnc,'exact verbal ancestor');
+ const copied=r.evaluateClassicalNahuatlDeverbalNnc({...request,canonicalPatientiveNncGrammarFrame:{...parent}});
+ assert.notEqual(copied.authorizationStatus,'authorized');
+ assert.equal(parent.wordSurface,'tlacualli');
+});

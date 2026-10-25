@@ -1,0 +1,14 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import vm from 'node:vm';
+import {readFileSync} from 'node:fs';
+const source=readFileSync(new URL('../ui/rendering/rendering.mjs',import.meta.url),'utf8');
+function fixture(){const start=source.indexOf('    function getClassicalSpecializedTypedVncControlProjection(');assert.notEqual(start,-1);const end=source.indexOf('    function getClassicalCurrentGrammarControlSurfaceFrame()',start);const exact={kind:'imperfective',sourceStem:'teci',sourceValence:'specific-projective'};const navigator={exactSource:exact};const binding={operationId:'vnc:application',exactSource:exact,exactNavigatorInput:exact,navigator,effectiveSelections:{subject:'3sg',mood:'indicative',tense:'present'}};const context={targetObject:{isClassicalGrammarTypedSourceOperationBindingFrame:b=>b===binding,isClassicalNahuatlImperfectiveVncSourceFrame:s=>s===exact,isClassicalNahuatlAnalyticalVncSourceFrame:()=>false},ActiveClassicalGrammarCapabilityNavigator:navigator};vm.createContext(context);vm.runInContext(source.slice(start,end)+';globalThis.project=getClassicalSpecializedTypedVncControlProjection;',context);return {context,binding,exact};}
+test('class-independent transitive Source owns the control layout while the older NNC Result stays accepted',()=>{const {context,binding,exact}=fixture();const accepted=Object.freeze({kind:'ordinary-nnc',authorizationStatus:'authorized',wordSurface:'peyotl'});const p=context.project(binding,accepted);assert.equal(p.basalUnit,'vnc');assert.equal(p.state.basalUnit,'vnc');assert.equal(p.state.vncImperfectiveSourceFrame,exact);assert.equal(p.state.stem,'teci');assert.equal(p.state.sourceValence,'specific-projective');assert.equal(p.grammarAuthority,false);assert.equal(p.authorizationStatus,'blocked');assert.equal(accepted.wordSurface,'peyotl');assert.equal(context.project({...binding},accepted),null);assert.equal(context.project(binding,p),p);});
+test('the owner-projected native object is not left CSS-hidden by the prior surface',()=>{
+ const start=source.indexOf('          object.disabled = false; object.setAttribute',source.indexOf('const transitiveImperfective ='));
+ const end=source.indexOf('\n        }\n      } else {',start);
+ const wrapper={hidden:true,dataset:{classicalControlAvailability:'hidden',classicalRuleLogicCurrentVisibility:'hidden'},setAttribute(k,v){this[k]=v;}};
+ const object={disabled:true,closest:()=>wrapper,setAttribute(k,v){this[k]=v;}};vm.runInNewContext(source.slice(start,end),{object,binding:{callerSelections:{}}});assert.equal(object['aria-disabled'],'false');assert.equal(object.disabled,false);
+ assert.equal(wrapper.hidden,false);assert.equal(wrapper.dataset.classicalControlAvailability,'enabled');assert.equal(wrapper.dataset.classicalRuleLogicCurrentVisibility,'visible');assert.equal(wrapper['aria-hidden'],'false');
+});

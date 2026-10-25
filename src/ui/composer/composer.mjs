@@ -1,5 +1,5 @@
 import {runCompositionAction} from '../composition/action_feedback.mjs?v=20261023-1';
-import { installClassicalSourceObjectRows, syncClassicalSourceObjectRows } from "./source_objects.mjs?v=20261007-panel-source-objects-1";
+import { installClassicalSourceObjectRows, syncClassicalSourceObjectRows } from "./source_objects.mjs?v=20261007-panel-source-objects-1&interfaceRelease=1.2.36";
 import { getSourceClassRequirement } from "./source_admission.mjs?deverbalReload=20261024-8&v=20261014-source-admission-3";
 // Canonical modern ESM module.
 
@@ -9171,8 +9171,13 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       const valenceDisplay = String(sourceValence || "").trim() === "intransitive"
         ? "intransitive"
         : "transitive";
+      // Use the same canonical spelling resolution as Source admission. A
+      // recognized spelling must not hide a required lexical distinction.
+      const canonicalStem = targetObject.resolveClassicalNahuatlCanonicalSourceStemRecord?.({
+        enteredStem: stem, basalUnit: "vnc", valence: valenceDisplay,
+      })?.stem || stem;
       const exact = getClassicalCanonicalSourceStemInventory("vnc").filter(record => (
-        record?.stem === stem
+        record?.stem === canonicalStem
         && record?.valenceDisplay === valenceDisplay
         && record?.sourceLexemeSelectionRequired === true
       ));
@@ -9180,7 +9185,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         return exact[0];
       }
       const stemOnly = getClassicalCanonicalSourceStemInventory("vnc").filter(record => (
-        record?.stem === stem
+        record?.stem === canonicalStem
         && record?.sourceLexemeSelectionRequired === true
       ));
       return stemOnly.length === 1 ? stemOnly[0] : null;
@@ -10040,7 +10045,10 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         sourceVoice: targetObject.document?.getElementById?.("classical-rule-logic-causative-source-voice")?.value || "active",
         sourceNonactiveOptionId: targetObject.document?.getElementById?.("classical-rule-logic-causative-source-nonactive")?.value || "",
         sourceRelationalChoices: isClassicalRelationalNncUiModeEnabled()
-          ? [targetObject.document.getElementById("classical-nnc-source-example"), ...Array.from(targetObject.document.querySelectorAll("[data-classical-relational-nnc-control]"))].filter(Boolean).map(control=>[control.id,control.value])
+          ? [targetObject.document.getElementById("classical-nnc-source-example"), ...Array.from(targetObject.document.querySelectorAll("[data-classical-relational-nnc-control]"))].filter(Boolean)
+              .map(control => [control.id, control.value])
+              // Presentation may move these fields without changing the Source.
+              .sort(([leftId], [rightId]) => leftId.localeCompare(rightId))
           : [],
         sourceNncClass: targetObject.document?.getElementById?.("classical-rule-logic-nnc-class")?.value || "",
         sourceNncUse: targetObject.document?.getElementById?.("classical-rule-logic-nnc-source-use")?.value || "nounstem",
@@ -11257,8 +11265,9 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         || ""
       );
       const sourceSubject = String(
-        targetObject.document?.getElementById?.("classical-rule-logic-subject")?.value
-        || "3sg"
+        ["imperfect-active", "imperfect-passive", "perfective-active"].includes(sourceFormation)
+          ? getClassicalRelationalNncUiElements().possessor?.value || "3sg"
+          : targetObject.document?.getElementById?.("classical-rule-logic-subject")?.value || "3sg"
       );
       if (["preterit-agentive", "active-action"].includes(sourceFormation)) {
         if (typeof targetObject.requestClassicalDeverbalNncResult !== "function") {
@@ -11336,6 +11345,8 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         sourceValence: sourceValenceSelection,
         subject: sourceSubject,
         mood: "indicative",
+        nonactiveOptionId: ["imperfect-passive", "imperfect-impersonal"].includes(sourceFormation)
+          ? String(targetObject.document?.getElementById?.("classical-rule-logic-nonactive-family")?.value || "") : "",
         ...vncProfile,
       });
     }
@@ -11535,6 +11546,9 @@ export function createUiComposerRuntime(targetObject = globalThis) {
           stemId,
           operation,
           formation: option,
+          // The authentic upstream Result supplies its material, while this
+          // declared formation tells the owner which derivation consumes it.
+          ...(operation === "relational-nnc" ? {sourceFormation: selectedSourceFormation} : {}),
           ...(!ownerIssuedDerivedSource && operation === "relational-nnc"
             ? {
               sourceKind,
@@ -11543,7 +11557,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
             }
             : {}),
               sourceMode,
-              sourceEmbedStem,
+              ...(!ownerIssuedDerivedSource ? {sourceEmbedStem} : {}),
               sourceMatrixStem:
                 sourceAdmission?.sourceMatrixStem || sourceMatrixStem,
               ...(sourceAdmission?.sourceLexemeId
@@ -11843,6 +11857,11 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       const selectedImperfectPredicateSource = getClassicalRelationalNncUiSelectedImperfectSource(
         derivedSourceFormation, getClassicalSourcePartControlState().sourceEmbedStem,
       );
+      const rawVerbalSource = sourceFormationAvailable && !selectedImperfectPredicateSource && !exactChoice
+        && ["preterit-agentive","active-action","imperfect-active","imperfect-passive",
+          "imperfect-impersonal","present-yohua","perfective-active","perfective-impersonal-tla"].includes(derivedSourceFormation);
+      const authoritySection=targetObject.document?.getElementById?.("classical-relational-nnc-authority");
+      if(authoritySection)authoritySection.dataset.classicalRelationalRawVerbalSource=String(rawVerbalSource);
       const sourceFormationState = inheritedCharacteristic?.derivedRelationalSourceState
         || selectedImperfectPredicateSource?.selectedState || {
         "preterit-agentive": "absolutive",
@@ -11895,6 +11914,16 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       }
       if (elements.possessorField) elements.possessorField.hidden = state !== "possessive";
       if (elements.possessor) {
+        const subjectDerivedPossessor = rawVerbalSource
+          && ["imperfect-active", "imperfect-passive", "perfective-active"].includes(derivedSourceFormation);
+        for (const choice of Array.from(elements.possessor.options || [])) {
+          const unavailable = subjectDerivedPossessor
+            && !["1sg", "2sg", "3sg", "1pl", "2pl", "3pl", "3common"].includes(choice.value);
+          choice.hidden = unavailable;
+          choice.disabled = unavailable;
+        }
+        if (subjectDerivedPossessor && elements.possessor.selectedOptions?.[0]?.disabled)
+          elements.possessor.value = "3sg";
         const fixedPossessor = targetObject.getClassicalNahuatlRelationalStemInventory?.()
           .find(entry => entry.stemId === selectedStemId)?.fixedPossessorId;
         elements.possessor.disabled = Boolean(fixedPossessor || inheritedCharacteristic);

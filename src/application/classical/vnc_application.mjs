@@ -73,6 +73,8 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
     const CLASSICAL_NAHUATL_VNC_TYPED_SOURCE_APPLICATION_SELECTION_FIELDS =
       Object.freeze([
         "subject",
+        "subjectAnimacy",
+        "subjectHumanness",
         "mood",
         "tense",
         "admonitivePluralEnding",
@@ -1304,6 +1306,10 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         sourceInitialISelection,
         sourceInitialIAnalysis,
         subject,
+        ...(request.subjectAnimacy || request.subjectHumanness ? {
+          subjectAnimacy: normalizeClassicalNahuatlVncApplicationToken(request.subjectAnimacy),
+          subjectHumanness: normalizeClassicalNahuatlVncApplicationToken(request.subjectHumanness),
+        } : {}),
         sourceSubject,
         sourceSubjectPerson,
         sourceSubjectAnimacy,
@@ -1693,6 +1699,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         normalizedRequest.derivationType === "direct"
         && !requiresMultipleObjectBase
         && !requiresDistinctSourceSubject
+        && sourceStem === normalizedRequest.sourceStem
           ? normalizedRequest
           : Object.freeze({
           ...normalizedRequest,
@@ -2556,7 +2563,12 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         || (activeMachineryFrame.targetObjectRequests || [])[0]
         || (machineryFrame.sourceObjectClusterFrame?.objectRequests || [])[0]
         || null;
-      const sourceObjectPerson = firstSpecificObject?.objectPerson
+      // Preserve the exact lower owner's source-object coordinate. Its
+      // morphological alias can be 3sg for a semantic 3common patient;
+      // the promoted patient may also differ from the first source object.
+      const sourceObjectPerson = retainedPatient?.canonicalVoiceMachineryFrame
+        ?.voiceTransformationFrame?.sourceSpecificObject
+        || firstSpecificObject?.objectPerson
         || activeMachineryFrame.priorVncFrame?.objectFrame?.objectPerson || "";
       // Late operations keep their participants in the issued Source analysis,
       // rather than the ordinary machinery's direct object aliases.
@@ -7451,6 +7463,20 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         && normalizedRequest.sourceVoice === "active"
         && (normalizedRequest.subject === normalizedRequest.sourceSubject
           || normalizedRequest.subject === normalizedRequest.sourceSubjectFrame?.category);
+      // Raw direct authoring can change reference while its third-person
+      // morphology stays the same. Keep the input Source role as provenance;
+      // the explicitly selected current target is a separate coordinate.
+      const authoredTargetSubject = normalizedRequest.derivationType === "direct"
+        && normalizedRequest.requestedVoice === "active"
+        && normalizedRequest.sourceVoice === "active"
+        && normalizedRequest.subjectAnimacy && normalizedRequest.subjectHumanness
+        ? buildClassicalNahuatlParticipantFrame({
+          role: "subject", agreement: normalizedRequest.subject,
+          animacy: normalizedRequest.subjectAnimacy,
+          humanness: normalizedRequest.subjectHumanness,
+          number: normalizedRequest.subject.endsWith("common") ? "common"
+            : normalizedRequest.subject.endsWith("pl") ? "plural" : "singular",
+        }) : null;
       const transformedImpersonalSubject = selectedMachineryFrame?.authorizationStatus === "authorized"
         && ["impersonal", "inherent-impersonal", "tla-impersonal"].includes(selectedMachineryFrame.voice)
         && selectedMachineryFrame.voiceTransformationFrame?.impersonalSubjectReferent === "none";
@@ -7507,7 +7533,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       return Object.freeze({
         kind: "classical-nahuatl-vnc-participant-projection",
         sourceSubject: normalizedRequest.sourceSubjectFrame,
-        targetSubject: passiveTargetSubject || reflexiveCausativeSubject || (directActiveSubject || directInherentSubject || applicativePreservedSubject ? normalizedRequest.sourceSubjectFrame : buildClassicalNahuatlParticipantFrame({
+        targetSubject: passiveTargetSubject || reflexiveCausativeSubject || authoredTargetSubject || (directActiveSubject || directInherentSubject || applicativePreservedSubject ? normalizedRequest.sourceSubjectFrame : buildClassicalNahuatlParticipantFrame({
           role: "subject",
           agreement: transformedImpersonalSubject ? selectedMachineryFrame.subject : normalizedRequest.subject,
           ...(transformedImpersonalSubject ? {impersonal: true, hasReferent: false, specificity: "nonspecific"} : {}),
@@ -9120,14 +9146,32 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
             retainedDescriptor.sourceAnalysisFrame, dependencySource,
           )
         );
-        const sourceDescriptor = retainedDescriptorAuthorized
+        // A finite direct Result can have a different subject from the raw
+        // Source used to form it. Its continuation must retain that Result's
+        // issued target reference, not the older machinery's Source reference.
+        const exactTargetSubject = applicationResultAuthorized
+          && sourceResultFrame.selectedDerivation === "direct"
+          && sourceResultFrame.selectedVoice === "active"
+          ? sourceResultFrame.participantProjection?.targetSubject : null;
+        const targetReference = isClassicalNahuatlParticipantFrame(exactTargetSubject)
+          ? exactTargetSubject : null;
+        const retainedTargetReferenceMatches = !targetReference
+          || [
+            ["sourceSubjectPerson", "person"], ["sourceSubjectAnimacy", "animacy"],
+            ["sourceSubjectHumanness", "humanness"], ["sourceSubjectNumber", "number"],
+          ].every(([sourceKey, participantKey]) =>
+            retainedDescriptor?.[sourceKey] === targetReference[participantKey]);
+        const sourceDescriptor = retainedDescriptorAuthorized && retainedTargetReferenceMatches
           ? retainedDescriptor
           : getClassicalNahuatlVncContinuationSourceDescriptor(
             sourceMachineryFrame,
             dependencySource,
             lateOperationResultAuthorized
               ? getClassicalNahuatlLateParticipantProvenance(sourceResultFrame, currentRuntimeTarget)
-              : null,
+              : targetReference ? Object.freeze({
+                ...classicalNahuatlVncParticipantProvenanceByMachinery.get(sourceMachineryFrame),
+                subjectFrame: targetReference,
+              }) : null,
           );
         return sourceDescriptor.sourceStem
           && sourceDescriptor.verbClass
@@ -9176,7 +9220,10 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
             getClassicalNahuatlVncContinuationSourceDescriptor(
               sourceResultFrame.selectedMachineryFrame,
               currentRuntimeTarget,
-              getClassicalNahuatlLateParticipantProvenance(sourceResultFrame, currentRuntimeTarget),
+              // An exact late whole may lack a complete Participant receipt.
+              // A sibling recapture of its machinery must not invent one later.
+              getClassicalNahuatlLateParticipantProvenance(sourceResultFrame, currentRuntimeTarget)
+                || Object.freeze({}),
             );
           const facts = operationFrame.operationFacts;
           if (!sourceDescriptor.sourceStem
@@ -9301,6 +9348,10 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       ) => {
         const continuationSource =
           getContinuationSourceForResult(sourceResultFrame);
+        // Reference edits belong to an unasserted raw Source's target. An
+        // exact made Result supplies its own participant reference.
+        if (["subjectAnimacy", "subjectHumanness"].some(field =>
+          request[field] != null && request[field] !== "")) return null;
         // Passive deletes the expressed active subject (Andrews22/52).
         // Keep the exact whole Source as history, without a passive agent.
         if (continuationSource?.subjectSupplementedSourceResultFrame
@@ -11336,10 +11387,33 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
             : {}),
         })
         : Object.freeze({});
+      const subjectReferenceAuthoringAllowed = provenance?.rawSubjectAuthoringAllowed === true;
+      const hasSubjectReferenceSelection = ["subjectAnimacy", "subjectHumanness"]
+        .some(field => Object.hasOwn(selections || {}, field));
+      const selectedSubjectReference = hasSubjectReferenceSelection
+        ? buildClassicalNahuatlParticipantFrame({
+          role: "subject", agreement: effectiveSelections.subject,
+          animacy: effectiveSelections.subjectAnimacy,
+          humanness: effectiveSelections.subjectHumanness,
+          number: String(effectiveSelections.subject).endsWith("common") ? "common"
+            : String(effectiveSelections.subject).endsWith("pl") ? "plural" : "singular",
+        }) : null;
+      const subjectReferenceBlockReason = hasSubjectReferenceSelection
+        && (!subjectReferenceAuthoringAllowed
+          || effectiveSelections.requestedDerivation !== "direct"
+          || (effectiveSelections.requestedVoice || "active") !== "active"
+          || !["animate", "nonanimate"].includes(effectiveSelections.subjectAnimacy)
+          || !["human", "nonhuman", "unspecified"].includes(effectiveSelections.subjectHumanness)
+          || !isClassicalNahuatlParticipantFrame(selectedSubjectReference)
+          || ![selectedSubjectReference.category, selectedSubjectReference.morphologicalAgreement]
+            .includes(effectiveSelections.subject)
+          || selectedSubjectReference.animacy !== effectiveSelections.subjectAnimacy
+          || selectedSubjectReference.humanness !== effectiveSelections.subjectHumanness)
+        ? "classical-vnc-typed-source-authored-subject-reference-not-licensed" : "";
       let evaluationProvenance = provenance;
       let evaluationSourceMachineryFrame = exactSourceMachineryFrame;
       let preparedSourceApplicationFrame = null;
-      let subjectPreparationBlockReason = "";
+      let subjectPreparationBlockReason = subjectReferenceBlockReason;
       if (!initialBlockReason && provenance?.rawSubjectAuthoringAllowed === true
         && effectiveSelections.requestedDerivation === "applicative"
         && (effectiveSelections.requestedVoice || "active") === "active"
@@ -11808,6 +11882,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         choiceOptionProjection,
         ownerDerivationOptionInventory: selectedInventory,
         preparedSourceApplicationFrame,
+        subjectReferenceAuthoringAllowed,
         ownerInventoryValidated: selectedDerivation === "direct"
           ? true
           : Boolean(selectedInventory),
@@ -11919,6 +11994,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       ) {
         return false;
       }
+      if (frame.subjectReferenceAuthoringAllowed !== (provenance.rawSubjectAuthoringAllowed === true)) return false;
       if (frame.preparedSourceApplicationFrame !== context.preparedSourceApplicationFrame) return false;
       if (context.preparedSourceApplicationFrame) {
         const prepared = context.preparedSourceApplicationFrame;
@@ -12733,6 +12809,9 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
               ? "classical-vnc-continuation-caller-authority-rejected"
               : sourceFieldOverride
                 ? "classical-vnc-continuation-source-provenance-is-owner-issued"
+                : normalizedOperationId === "vnc:application"
+                  && ["subjectAnimacy", "subjectHumanness"].some(field => Object.hasOwn(selections, field))
+                  ? "classical-vnc-continuation-subject-reference-is-owner-issued"
                 : !additional.valid
                   ? additional.blockReason
                   : normalizedOperationId === "vnc:derivational-operation"

@@ -918,7 +918,7 @@ export function createComplementClauseGlobals(targetObject = globalThis, install
     const CLASSICAL_NAHUATL_CLAUSE_COMPLEMENTATION_LEXICAL_ALIASES = Object.freeze({
       chihua: Object.freeze(["chīhua", "chihua"]),
       cuepa: Object.freeze(["cuepa"]),
-      ihtoa: Object.freeze(["ihtoa"]),
+      ihtoa: Object.freeze(["ihtoa", "iht-o-ā"]),
       tocayotia: Object.freeze(["tōcāyōtiā", "tōcāyōtia", "tōcāyotīa", "tocayotia"]),
       mati: Object.freeze(["mati"]),
       teci: Object.freeze(["teci"]),
@@ -1902,8 +1902,19 @@ export function createComplementClauseGlobals(targetObject = globalThis, install
         if (contactKind === "embedded-possessor-el" && !classicalNahuatlClauseComplementationStemLicensed(complement, ["el"])) {
           return buildClassicalNahuatlClauseComplementationBlockedResultFrame(operationKind, "el-contact-requires-typed-el-nnc");
         }
-        if (contactKind === "preterit-agentive-subject-iyoh" && !classicalNahuatlClauseComplementationStemLicensed(complement, ["iyoh"])) {
-          return buildClassicalNahuatlClauseComplementationBlockedResultFrame(operationKind, "iyoh-contact-requires-typed-iyoh-nnc");
+        if (contactKind === "preterit-agentive-subject-iyoh") {
+          // Andrews 51.3.3c contacts the subject of the preterit-agentive NNC.
+          // Its derived predicate includes nominalization zero (iyo-h-0); the exact owner's
+          // source analysis, not removal of spelling material, licenses iyoh.
+          const exact = targetObject.getClassicalNahuatlSupplementationClauseSourceFrame?.(complement.envelope);
+          if (targetObject.isClassicalNahuatlDeverbalNncGrammarFrame?.(exact) !== true
+            || exact.operationFrame?.constructionKind !== "predicate-nominalization"
+            || exact.operationFrame?.nominalizationKind !== "preterit-agentive"
+            || exact.sourceFrame?.sourceStage !== "preterit-predicate"
+            || exact.sourceFrame?.sourceVoice !== "active"
+            || !["iyo-h", "iyoh"].includes(exact.sourceFrame?.sourceStem)) {
+            return buildClassicalNahuatlClauseComplementationBlockedResultFrame(operationKind, "iyoh-contact-requires-typed-iyoh-nnc");
+          }
         }
         const passiveTransform = options.passiveTransform === true || semanticCategory === "passive-object-complement-transform";
         if (passiveTransform && !["passive", "nonactive-passive"].includes(principal.voice)) {
@@ -1935,9 +1946,8 @@ export function createComplementClauseGlobals(targetObject = globalThis, install
           if (complement.unitKind !== "nnc") {
             return buildClassicalNahuatlClauseComplementationBlockedResultFrame(operationKind, "coverage-complement-requires-typed-nnc");
           }
-          if (complement.subject?.features?.number === "plural") {
-            return buildClassicalNahuatlClauseComplementationBlockedResultFrame(operationKind, "coverage-complement-nnc-is-normally-singular");
-          }
+          // Andrews §51.4.1 describes singular as normal, not obligatory.
+          // Keep the pattern descriptive; canonical NNC admission owns number.
         } else if (semanticCategory === "relational-lexicalized") {
           if (complement.unitKind !== "nnc") {
             return buildClassicalNahuatlClauseComplementationBlockedResultFrame(operationKind, "relational-complement-requires-typed-relational-nnc");
@@ -1976,6 +1986,7 @@ export function createComplementClauseGlobals(targetObject = globalThis, install
           role: "adverbial-complement",
           semanticCategory,
           referenceIdentityUnified: !["coverage", "relational-lexicalized"].includes(semanticCategory),
+          ...(semanticCategory === "coverage" ? {complementNumberPattern:"normally-singular"} : {}),
           complementTensePolicy: ["beginning", "satisfaction"].includes(semanticCategory)
             ? "normally-present-occasional-future"
             : semanticCategory === "daring"

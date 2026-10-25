@@ -1479,15 +1479,15 @@ import { createClassicalDeverbalNncValidationSemanticOperationsApi } from "./dev
 import { createClassicalDeverbalPatientiveValidationSemanticOperationsApi } from "./deverbal_patientive_validation_semantic_operations.mjs";
 import { createClassicalAdjectivalModificationValidationSemanticOperationsApi } from "./adjectival_modification_validation_semantic_operations.mjs";
 import { createClassicalAdverbialNuclearValidationSemanticOperationsApi } from "./adverbial_nuclear_validation_semantic_operations.mjs?v=20260826-relational-role-340&andrewsRelease=20261024-1";
-import { createClassicalRelationalNncValidationSemanticOperationsApi } from "./relational_nnc_validation_semantic_operations.mjs?v=20260902-result-partition-375";
-import { createClassicalLocativeRelationalNncValidationSemanticOperationsApi } from "./locative_relational_nnc_validation_semantic_operations.mjs?v=20260902-result-partition-375";
-import { createClassicalRelationalContinuationValidationSemanticOperationsApi } from "./relational_continuation_validation_semantic_operations.mjs?v=20260902-result-partition-375";
-import { createClassicalPlaceGentilicValidationSemanticOperationsApi } from "./place_gentilic_validation_semantic_operations.mjs?v=20260902-result-partition-375";
+import { createClassicalRelationalNncValidationSemanticOperationsApi } from "./relational_nnc_validation_semantic_operations.mjs?v=20260902-result-partition-375&interfaceRelease=1.2.36";
+import { createClassicalLocativeRelationalNncValidationSemanticOperationsApi } from "./locative_relational_nnc_validation_semantic_operations.mjs?v=20260902-result-partition-375&interfaceRelease=1.2.36";
+import { createClassicalRelationalContinuationValidationSemanticOperationsApi } from "./relational_continuation_validation_semantic_operations.mjs?v=20260902-result-partition-375&interfaceRelease=1.2.36";
+import { createClassicalPlaceGentilicValidationSemanticOperationsApi } from "./place_gentilic_validation_semantic_operations.mjs?v=20260902-result-partition-375&interfaceRelease=1.2.36";
 import { createClassicalAdverbialAdjunctionValidationSemanticOperationsApi } from "./adverbial_adjunction_validation_semantic_operations.mjs";
-import { createClassicalClauseComplementValidationSemanticOperationsApi } from "./clause_complement_validation_semantic_operations.mjs";
+import { createClassicalClauseComplementValidationSemanticOperationsApi } from "./clause_complement_validation_semantic_operations.mjs?interfaceRelease=1.2.36";
 import { createClassicalClauseConjunctionValidationSemanticOperationsApi } from "./clause_conjunction_validation_semantic_operations.mjs";
 import { createClassicalComparisonValidationSemanticOperationsApi } from "./comparison_validation_semantic_operations.mjs";
-import { createClassicalDenominalVncValidationSemanticOperationsApi } from "./denominal_vnc_validation_semantic_operations.mjs?v=20260826-relational-role-340&andrewsRelease=20261024-1";
+import { createClassicalDenominalVncValidationSemanticOperationsApi } from "./denominal_vnc_validation_semantic_operations.mjs?v=20260826-relational-role-340&andrewsRelease=20261024-1&interfaceRelease=1.2.36";
 import { createRoutineSemanticOwnerMechanicsApi } from "./transcription_owner_mechanics.mjs?v=20260904-ni-stock-ocr-corrections-414";
 const OWNER_SPECS = Object.freeze([
   classical_absolutive_nnc_formula_formation,

@@ -1,5 +1,5 @@
 import {getWritingSourcePresentation} from './choice_design.mjs?clickFeedback=20261023-1&coreStem=20261023-1&v=20261022-reset-eligibility-1&writingSource=20261022-1&fixedChoices=20261022-1';
-import {getBuildOperationGroup, getBuildOperationOrder, inventoryOptionReference} from './build_navigation_model.mjs?v=20261021-ending-reference-2';
+import {getBuildOperationGroup, getBuildOperationOrder, inventoryOptionReference} from './build_navigation_model.mjs?v=20261021-ending-reference-2&interfaceRelease=1.2.36';
 
 const navigatorId = 'classical-capability-navigator-operation';
 const constructionId = 'classical-construction-operation';
@@ -27,23 +27,38 @@ const directId = construction => construction?.dataset?.classicalSourceUnit === 
 export function getBuildTaskRoutes(doc) {
   const navigator = doc.getElementById(navigatorId), construction = doc.getElementById(constructionId);
   const routes = [];
+  let projection = null;
+  try {projection = JSON.parse(doc.getElementById('classical-capability-navigator-frame')?.textContent || 'null');} catch {}
+  // These owners admit whole citations with fixed analysis, not raw nounstems.
+  // Native formation would silently discard that analysis. Keep their actual
+  // owner routes; changing Source analysis remains an explicit Source action.
+  const fixedTypedSource = projection?.inputRole === 'exact-owner-issued-source'
+    && projection.sourceUnitKinds?.some(kind => [
+      'quantitative-predicate-source', 'attested-nnc-cell-source',
+      'attested-place-source', 'attested-principal-collocation-source',
+    ].includes(kind));
   const writing = getWritingSourcePresentation(doc);
   const writingMode = Boolean(writing), writingOperations = writing?.operationIds;
   for (const control of [navigator, construction]) for (const option of control?.options || []) {
     if (!option.value || option.value === 'none' || !available(control, option)) continue;
     if (writingMode && (control !== navigator || !writingOperations.has(option.value))) continue;
     const native = control === construction;
+    if (native && fixedTypedSource) continue;
+    // Calendar and quality native values are exact-binding mirrors, not
+    // raw-stem entry routes. Their owner Result roles expose the controls.
+    if (native && ['calendar-date-nnc', 'adjectival-nnc'].includes(option.value)) continue;
     const operationId = native ? option.dataset.classicalApplicationOperation : option.value;
     const group = native && ['nominal-embed-vnc', 'compound-nnc'].includes(option.value)
       ? 'Modification and combination' : getBuildOperationGroup(operationId);
     routes.push({control, option, optionRef: address(control, option), aliasRefs: [], operationId, group,
       label: native ? option.value === 'deverbal-nnc' && doc.getElementById('classical-deverbal-nnc-family')?.value === 'double-nucleus-ownerhood'
-        ? 'Form two-nucleus ownerhood' : constructionTasks[option.value] || option.textContent : option.textContent,
+        ? 'Form two-nucleus ownerhood' : option.value === 'deverbal-nnc' && construction.dataset.classicalSourceUnit === 'nnc'
+          ? 'Form a noun construction' : constructionTasks[option.value] || option.textContent : option.textContent,
       order: getBuildOperationOrder(operationId)});
   }
   const neutral = Array.from(construction?.options || []).find(option => option.value === 'none');
   const exactResultInput = doc.getElementById('classical-capability-navigator')?.dataset.classicalCapabilitySourceRole === 'exact-owner-issued-result';
-  if (!writingMode && available(construction, neutral)
+  if (!writingMode && !fixedTypedSource && available(construction, neutral)
     && (!exactResultInput || routes.some(route=>route.control===navigator && route.operationId===directId(construction)))) {
     // The reviewed neutral route is direct formation, not a competing task.
     const direct = routes.find(route => route.control === navigator && route.operationId === directId(construction));
@@ -52,8 +67,6 @@ export function getBuildTaskRoutes(doc) {
       operationId: directId(construction), group: 'Clauses and sentences', order: -1,
       label: directId(construction) === 'nnc:ordinary' ? 'Make a noun clause' : 'Make a verb clause'});
   }
-  let projection = null;
-  try {projection = JSON.parse(doc.getElementById('classical-capability-navigator-frame')?.textContent || 'null');} catch {}
   for (let i = routes.length - 1; i >= 0; i--) {
     const route = routes[i];
     if (route.control !== navigator || route.operationId !== 'grammar:nominal-construction') continue;
@@ -62,14 +75,18 @@ export function getBuildTaskRoutes(doc) {
     // This known, explicitly unbound family only focuses the old selector.
     // Its concrete native tasks are already here. Keep real owner bindings,
     // typed-source matches and future/unknown owner tasks discoverable.
-    if (concrete.length > 1 && owner?.ownerBindingFrameValidated === false
+    if (concrete.length > 0 && owner?.ownerBindingFrameValidated === false
       && owner.ownerPreflightFrameValidated === false && owner.ownerInputAcceptanceProven === false
       && owner.sourceIdentityMatched !== true) routes.splice(i, 1);
   }
   // Similar captions/owner IDs do not prove equivalent input lanes. Keep each
   // address and explicitly name the input when both lanes are offered.
   const inputRole = doc.getElementById('classical-capability-navigator')?.dataset.classicalCapabilitySourceRole;
-  const editorMaterial = String(doc.getElementById('classical-source-whole')?.value || '').trim();
+  const sourceParts = doc.getElementById('classical-source-parts');
+  const editorMaterial = sourceParts?.dataset.classicalSourcePartsMode === 'embed-matrix'
+    ? ['classical-source-embed', 'classical-source-matrix']
+      .map(id => String(doc.getElementById(id)?.value || '').trim()).filter(Boolean).join('-')
+    : String(doc.getElementById('classical-source-whole')?.value || '').trim();
   for (const route of routes) {
     const overlapping = routes.some(other => other !== route && other.operationId === route.operationId && other.control !== route.control);
     if (route.control === construction && route.option.value !== 'none' && inputRole === 'exact-owner-issued-result') {
@@ -103,7 +120,8 @@ export function activateBuildTask(doc, optionRef, activeRef = '') {
     && construction?.value && construction.value !== 'none';
   const navigator = doc.getElementById(navigatorId);
   const sameLane = activeRef ? activeRef === optionRef : route.control === (navigator?.value ? navigator : construction);
-  if (sameLane && route.control.value === route.option.value && !reset) return false;
+  const firstNeutralSelection = !activeRef && route.control === construction && route.option.value === 'none';
+  if (sameLane && route.control.value === route.option.value && !reset && !firstNeutralSelection) return false;
   const dispatch = (control, intermediate = false) => {
     const event = new doc.defaultView.Event('change', {bubbles: true});
     if (intermediate) intermediateBuildTaskResets.set(event, {doc, control});
@@ -161,6 +179,8 @@ export function createBuildTaskMenu(doc) {
         refresh();
       });
       field.append(menu);
+      // The visible task menu owns this label; its hidden mirrors may be disabled.
+      if (field.tagName === 'LABEL') field.htmlFor = menu.id;
     }
     // CSS-only suppression keeps original collectors and [hidden] source
     // admission checks intact. Never move the original fields or editors.
@@ -173,6 +193,20 @@ export function createBuildTaskMenu(doc) {
     const oldTools = doc.getElementById(`${navigatorId}-choices`)?.parentElement;
     if (oldTools?.dataset && oldTools.dataset.buildTaskNative !== 'true') oldTools.dataset.buildTaskNative = 'true';
     const routes = getBuildTaskRoutes(doc);
+    const construction = doc.getElementById(constructionId), navigator = doc.getElementById(navigatorId);
+    const neutralRef = inventoryOptionReference(`id:${constructionId}`, 'none');
+    const recoveredDirect = activeRef === neutralRef && lastSelectedRef === neutralRef
+      && construction.value === 'none' && !navigator?.value
+      ? routes.find(route => route.control === navigator && route.aliasRefs.includes(neutralRef)) : null;
+    if (recoveredDirect) {
+      // The user already chose direct formation while correcting its Source.
+      // Transfer that explicit intent to the now-offered owner, which stages
+      // its binding through the existing handler; Make remains separate.
+      lastSelectedRef = recoveredDirect.optionRef;
+      activeRef = recoveredDirect.optionRef;
+      activateBuildTask(doc, recoveredDirect.optionRef, neutralRef);
+      return refresh();
+    }
     const nextSignature = JSON.stringify(routes.map(route => [route.optionRef, route.label, route.group, route.aliasRefs]));
     if (signature !== nextSignature) {
       signature = nextSignature; menu.replaceChildren();

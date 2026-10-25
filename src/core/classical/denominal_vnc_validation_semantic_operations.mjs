@@ -4,7 +4,7 @@
 
 import {
   CLASSICAL_NAHUATL_DENOMINAL_VNC_LCM,
-} from "./denominal_vnc_grammar.mjs?v=20260826-relational-role-340&andrewsRelease=20261024-1";
+} from "./denominal_vnc_grammar.mjs?v=20260826-relational-role-340&andrewsRelease=20261024-1&interfaceRelease=1.2.36";
 
 const ISSUED_VALIDATION_FRAMES = new WeakSet();
 

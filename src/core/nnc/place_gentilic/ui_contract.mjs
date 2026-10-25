@@ -74,6 +74,14 @@ export const PLACE_GENTILIC_NNC_UI_CONTROL_CONTRACTS = Object.freeze({
     kind("profession-pertinency", "profession pertinency", "profession-pertinency", 20667, 20680),
     kind("gentilic-adjectival-use", "adjectival gentilic use", "adjectival", 20619, 20628),
   ]),
+  "classical-gentilic-collectivity-ending": Object.freeze([
+    ...[["0", "silent"], ["uh", "-uh"]].map(([value, label]) => option({
+      controlId: "classical-gentilic-collectivity-ending", value, label,
+      tagSuffix: `collectivity-possessive-${value}`, lineStart: 20659, lineEnd: 20663,
+      applicability: "possessive gentilic collectivity with singular or common subject number",
+      outputBehavior: "selects the existing possessive num1 realization",
+    })),
+  ]),
   "classical-place-gentilic-formation": Object.freeze([
     formation("n-imperfect-active", "n · active imperfect predicate", "n-imperfect-active", 20013, 20030, "place-name"),
     formation("n-imperfect-nonactive", "n · nonactive imperfect predicate", "n-imperfect-nonactive", 20031, 20038, "place-name"),

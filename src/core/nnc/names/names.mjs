@@ -19,6 +19,7 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
   const issuedSentenceResults = new WeakSet();
   const issuedPlans = new WeakSet();
   const issuedExactSourceResolutions = new WeakSet();
+  const exactSourceResolutionBySource = new WeakMap();
   const issuedOpaqueQuotedSources = new WeakMap();
   let quotedDesignationReferenceSequence = 0;
   const quotedDesignationSourcesByCitation = new Map();
@@ -357,8 +358,12 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
       subjectPrefix: "Ø",
       subjectConnector: "Ø",
       subjectReference: "independent-of-outer",
+      // Andrews 56.2.1.b–d: present, customary-present and purposive
+      // past-agentive names retain silent inner number. The preterit
+      // agentive c of 56.2.1.a does not extend to these families.
       numberPrefix:
-        truncatedNumber || spec.nominalization === "present-agentive"
+        truncatedNumber || ["present-agentive", "customary-present-agentive", "past-agentive"]
+          .includes(spec.nominalization)
           ? "Ø" : vncSource ? "c" : "Ø",
       numberSuffix: "Ø",
       functionalMorphsAreDerived: true,
@@ -778,9 +783,11 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
     const source = getPersonalNameExactVncSource(result);
     const frames = [
       source,
+      // An application may retain active sourceVoice while its issued
+      // output has selected passive/impersonal voice (§56.2.1.f–g).
+      source?.resultFrame,
       source?.normalizedRequest,
       source?.operationFrame,
-      source?.resultFrame,
       source?.resultFrame?.normalizedRequest,
       source?.selectedMachineryFrame,
       source?.selectedMachineryFrame?.lesson11ParadigmPlan,
@@ -862,6 +869,9 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
     if (voice.includes("purposive") || mood === "purposive") {
       return ["purposive-past-agentive"];
     }
+    if (tense === "preterit-as-present") {
+      return ["preterit-as-present-agentive"];
+    }
     if (tense === "preterit") {
       return ["preterit-agentive", "preterit-as-present-agentive"];
     }
@@ -888,6 +898,12 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
         sourceFamily,
       );
     if (!functionalSlots) return null;
+    // §35.3 and §56.2.1: downgrading a genuine preterit retains its
+    // number dyad. Conservative qui alternatives belong to the NNC owner.
+    const preserveSourceNumber = sourceType === "nnc"
+      ? sourceFamily !== "absolutive-state-truncated-inner-number"
+      : sourceType === "vnc"
+        && sourceFamilySpec(sourceFamily)?.nominalization?.startsWith("preterit-");
     const predicate = slotFrame.slots?.predicate || {};
     const predicateMorphs = (sourceType === "vnc"
       ? [
@@ -918,9 +934,9 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
       predicateMorphs,
       // An issued NNC is downgraded whole (§56.2.2). Its number dyad is
       // inside the name predicate, independently of the outer zero dyad.
-      numberPrefix: sourceType === "nnc" && sourceFamily !== "absolutive-state-truncated-inner-number"
+      numberPrefix: preserveSourceNumber
         ? slotFrame.slots.number?.num1 ?? functionalSlots.numberPrefix : functionalSlots.numberPrefix,
-      numberSuffix: sourceType === "nnc" && sourceFamily !== "absolutive-state-truncated-inner-number"
+      numberSuffix: preserveSourceNumber
         ? slotFrame.slots.number?.num2 ?? functionalSlots.numberSuffix : functionalSlots.numberSuffix,
       subjectReference: functionalSlots.subjectReference,
     });
@@ -1013,6 +1029,9 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
       callerSuppliedFormulaAuthority: false, callerSuppliedSurfaceAuthority: false,
     });
     issuedExactSourceResolutions.add(frame);
+    if (frame.authorizationStatus === "authorized" && frame.sourceFrame) {
+      exactSourceResolutionBySource.set(frame.sourceFrame, frame);
+    }
     return frame;
   }
 
@@ -1163,6 +1182,9 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
       callerSuppliedSurfaceAuthority: false,
     });
     issuedExactSourceResolutions.add(frame);
+    if (frame.authorizationStatus === "authorized" && frame.sourceFrame) {
+      exactSourceResolutionBySource.set(frame.sourceFrame, frame);
+    }
     return frame;
   }
 
@@ -1233,6 +1255,42 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
     );
   }
 
+  function buildExactPersonalNameInnerAffective(sourceFrame, matrix) {
+    const resolution = exactSourceResolutionBySource.get(sourceFrame);
+    if (!resolution) return null; // Raw typed clauses declare their own inner analysis.
+    const parent = resolution.canonicalSourceResult;
+    if (!targetObject.isClassicalNahuatlOrdinaryNncResult?.(parent)) {
+      return { blockReason: "personal-name-inner-affective-exact-source-adapter-required" };
+    }
+    const source = parent.sourceFrame;
+    const operation = parent.operationFrame;
+    // §32.3 owns the compound class and boundary. §56.2.2 subsequently
+    // downgrades that complete NNC and may independently truncate its number.
+    const result = targetObject.requestClassicalNominalConstructionResult?.({
+      constructionKind: "affective-nnc",
+      affectiveMatrix: matrix === "ton" ? "tōn" : matrix,
+      subject: operation.subject,
+      state: operation.state,
+      possessor: operation.possessor,
+      animacy: operation.referentialAnimacy,
+      source: {
+        embedStem: source.stem,
+        embedClass: parent.typedSlotFrame.nounClass,
+        embedSourceClass: source.sourceClass,
+        embedConstituent: { kind: "ordinary-nnc", stem: source.stem, resultFrame: parent },
+      },
+    });
+    if (!targetObject.isClassicalNahuatlNominalConstructionResult?.(result)
+      || result.authorizationStatus !== "authorized") {
+      return { blockReason: result?.blockReason || "personal-name-inner-affective-owner-unavailable" };
+    }
+    const clause = buildPersonalNameExactInnerClause(
+      sourceFrame.sourceFamily, "nnc", result.canonicalResult?.nncSlotFrame, true,
+    );
+    return clause ? { result, clause, blockReason: "" }
+      : { blockReason: "personal-name-inner-affective-canonical-slots-required" };
+  }
+
   function buildPersonalNameNncOperationFrame(
     sourceFrame = null,
     selections = {},
@@ -1277,6 +1335,8 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
         ].includes(sourceFrame.sourceFamily)
       )
     ) return null;
+    const innerAffective = affectiveScope === "inner-source"
+      ? buildExactPersonalNameInnerAffective(sourceFrame, affectiveMatrix) : null;
     const outerAffectiveZeroClauseIndexes = affectiveScope === "outer-name"
       ? (
         [
@@ -1294,6 +1354,9 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
       version: VERSION,
       operationId: "downgrade-complete-statement-to-personal-name-predicate",
       sourceFrame,
+      canonicalInnerAffectiveResult: innerAffective?.result || null,
+      canonicalInnerAffectiveClause: innerAffective?.clause || null,
+      innerAffectiveBlockReason: innerAffective?.blockReason || "",
       sourceFamily: sourceFrame.sourceFamily,
       affectiveScope,
       affectiveMatrix,
@@ -1352,11 +1415,12 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
       ? `+${operationFrame.affectiveMatrix}`
       : "";
     const projectClause = (clause, clauseIndex) => {
-      const slots = clause.slots;
+      const slots = (operationFrame.canonicalInnerAffectiveClause || clause).slots;
       const predicateMorphs =
         operationFrame.affectiveScope === "general-use-agentive"
         ? [...slots.predicate.morphs, "cā", operationFrame.affectiveMatrix]
         : operationFrame.affectiveScope === "inner-source"
+          && !operationFrame.canonicalInnerAffectiveClause
           ? [...slots.predicate.morphs, operationFrame.affectiveMatrix]
         : slots.predicate.morphs;
       const number = operationFrame.affectiveScope === "general-use-agentive"
@@ -1510,11 +1574,12 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
       ? realizeClassicalMorph(operationFrame.affectiveMatrix)
       : "";
     const projectClause = (clause, clauseIndex) => {
-      const slots = clause.slots;
+      const slots = (operationFrame.canonicalInnerAffectiveClause || clause).slots;
       const predicateMorphs =
         operationFrame.affectiveScope === "general-use-agentive"
         ? [...slots.predicate.morphs, "cā", operationFrame.affectiveMatrix]
         : operationFrame.affectiveScope === "inner-source"
+          && !operationFrame.canonicalInnerAffectiveClause
           ? [...slots.predicate.morphs, operationFrame.affectiveMatrix]
         : slots.predicate.morphs;
       const number = operationFrame.affectiveScope === "general-use-agentive"
@@ -1547,7 +1612,7 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
           )).join("-")
           : personalNameQuotedSurface(clauseProjections
             .map(projection => projection.result)
-            .join(""));
+            .join("-"));
         return `${outerSubjectSurface(subject, innerSurface)}${
           innerSurface
         }${outerMatrix}`;
@@ -1576,6 +1641,9 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
       return makeBlockedPersonalNameResult(
         !subject ? "outer-subject-required" : "issued-operation-required",
       );
+    }
+    if (operationFrame.innerAffectiveBlockReason) {
+      return makeBlockedPersonalNameResult(operationFrame.innerAffectiveBlockReason);
     }
     const source = operationFrame.sourceFrame;
     if (isPersonalNameOpaqueQuotedInnerSourceFrame(source)
@@ -1812,7 +1880,8 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
       kind: "classical-nahuatl-personal-name-paradigm-plan",
       version: VERSION,
       authorizationStatus:
-        operationFrame && !selectedOpaqueSource && !hostilePath && !unsupportedField
+        operationFrame && !operationFrame.innerAffectiveBlockReason
+          && !selectedOpaqueSource && !hostilePath && !unsupportedField
           ? "authorized"
           : "blocked",
       blockReason: hostilePath
@@ -1822,7 +1891,7 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
         : selectedOpaqueSource
           ? "opaque-quoted-inner-paradigm-unclaimed"
         : operationFrame
-          ? ""
+          ? operationFrame.innerAffectiveBlockReason || ""
           : "issued-source-required",
       operationFrame:
         hostilePath || unsupportedField ? null : operationFrame,
