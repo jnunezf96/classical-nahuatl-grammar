@@ -37955,6 +37955,13 @@ export function createUiRenderingApi(targetObject = globalThis) {
             || "none"
       });
     }
+    function shouldPreserveClassicalComparisonCaptureChoices(controller, role) {
+      const contract = controller.buildDecisionContract(ClassicalClauseRelationSelections);
+      return contract.relation === "comparison"
+        && (contract.derived?.optionalCaptureRoles?.includes(role)
+          || (role === "dependent"
+            && contract.derived?.requiredCaptureRoles?.includes(role)));
+    }
     function resetClassicalClauseRelationSelections({
       preserveRelation = false
     } = {}) {
@@ -38615,11 +38622,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
           userRole: "clear-issued-result-capture",
           machineRole: "typed-capture-controller",
           onClick: () => {
-            const contract = controller.buildDecisionContract(
-              ClassicalClauseRelationSelections
-            );
-            const preserveComparisonChoices = contract.relation === "comparison"
-              && contract.derived?.optionalCaptureRoles?.includes(role);
+            const preserveComparisonChoices =
+              shouldPreserveClassicalComparisonCaptureChoices(controller, role);
             controller.clearCapture(role);
             if (role === "marker") {
               ActiveClassicalClauseRelationMarkerOptionId = "";
@@ -38888,6 +38892,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
           disabled: !(currentResult && currentSource?.ok),
           onClick: () => {
             ClassicalExplicitClauseRelationIntent = selectedRelation;
+            const preserveComparisonChoices =
+              shouldPreserveClassicalComparisonCaptureChoices(controller, role);
             const capture = controller.captureCurrentResult(
               role,
               currentResult,
@@ -38896,9 +38902,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
               )
             );
             if (capture.authorizationStatus === "authorized") {
-              resetClassicalClauseRelationSelections({
-                preserveRelation: true
-              });
+              if (preserveComparisonChoices) {
+                ActiveClassicalClauseRelationResult = null;
+              } else {
+                resetClassicalClauseRelationSelections({ preserveRelation: true });
+              }
               ClassicalClauseRelationStatusMessage =
                 `${formatClassicalClauseRelationValue(role)} captured from the current canonical Result.`;
             } else {

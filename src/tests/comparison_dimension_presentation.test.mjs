@@ -5,6 +5,7 @@ import vm from 'node:vm';
 import {createRuntimeInstance} from '../runtime/create_runtime.mjs';
 import * as presentation from '../ui/composition/structure_design.mjs';
 import {Element} from './helpers/organization_dom.mjs';
+import {createConstructionSession} from '../ui/composition/construction_session.mjs';
 const r=(await createRuntimeInstance({documentObject:{getElementById:()=>null,addEventListener(){}}})).runtimeObject;
 const noun=stem=>{const s=r.buildClassicalNahuatlOrdinaryNncSourceFrame({stem,sourceClass:'zero'});const x=r.executeClassicalGrammarApplicationRequest({operationId:'nnc:ordinary',args:[s,r.buildClassicalNahuatlOrdinaryNncOperationFrame(s,{subject:'3sg',state:'absolutive'})]});assert.equal(x.authorizationStatus,'authorized');return x.canonicalResult;};
 const principal=noun('canāhuac'),adjoined=noun('tomāhuac'),dimension=noun('chicāhuac');
@@ -27,4 +28,34 @@ test('native comparison Dimension card follows required versus retained state',(
  const ctx={targetObject:{document:{createElement:tag=>new Element(tag)}},ClassicalClauseRelationSelections:choices,comparisonCapturePresentation:presentation.comparisonCapturePresentation,formatClassicalClauseRelationValue:x=>x,createGrammarInspectorLine:(label,value)=>{lines.push([label,value]);return new Element();},appendClassicalWholeCanvasPanelActionRow(){}};vm.createContext(ctx);extract(ctx,'appendClassicalClauseRelationCaptureCard');
  const parent=new Element();ctx.appendClassicalClauseRelationCaptureCard(parent,c,'dependent',{captured:false},'dimension');assert.equal(lines.find(([k])=>k==='status')[1],'Required · not captured');
  choices.icRelation='no';lines.length=0;c.captureCurrentResult('dependent',dimension);ctx.appendClassicalClauseRelationCaptureCard(parent,c,'dependent',{captured:true,unitType:'nnc',surface:'chicāhuac'},'dimension');assert.equal(lines.find(([k])=>k==='status')[1],'Retained for reuse · not included');
+});
+
+test('clearing required dimension preserves selected comparison and blocks only until recovery',()=>{
+ const c=r.createClassicalClauseRelationController();
+ for(const[role,exact]of Object.entries({principal,adjoined,dependent:dimension}))c.captureCurrentResult(role,exact);
+ const choices={relation:'comparison',comparisonRoute:'equality-iuhqui',icRelation:'yes',sentenceType:'none'};
+ const receipt=c.compose({...choices,icRelation:'no'});assert.equal(receipt.authorizationStatus,'authorized');
+ let executions=0,clear,contract;const lines=[];
+ const session=createConstructionSession({isSource:x=>x===principal,isResult:x=>r.isClassicalComparisonResultFrame(x),execute:p=>{executions++;return c.compose(p.choices);},present:()=>true});session.restore(receipt.canonicalResult);
+ const ctx={targetObject:{document:{createElement:tag=>new Element(tag)}},ClassicalClauseRelationSelections:{...choices},ActiveClassicalClauseRelationResult:receipt,
+ comparisonCapturePresentation:presentation.comparisonCapturePresentation,formatClassicalClauseRelationValue:x=>x,
+ createGrammarInspectorLine:(label,value)=>{lines.push([label,value]);return new Element();},
+ appendClassicalWholeCanvasPanelActionRow(card,actions){clear=actions.find(a=>a.action==='clear-clause-relation-dependent')?.onClick||clear;},
+ refreshClassicalClauseRelationWorkflow(){contract=c.buildDecisionContract(ctx.ClassicalClauseRelationSelections);session.stage({source:principal,route:{operation:'comparison'},slots:[{role:'principal',exact:principal}],choices:{...ctx.ClassicalClauseRelationSelections},legalMoves:[],ready:contract.authorizationStatus==='authorized',execution:{choices:{...ctx.ClassicalClauseRelationSelections},signature:JSON.stringify(ctx.ClassicalClauseRelationSelections)}});}
+ };vm.createContext(ctx);extract(ctx,'shouldPreserveClassicalComparisonCaptureChoices');extract(ctx,'resetClassicalClauseRelationSelections');extract(ctx,'appendClassicalClauseRelationCaptureCard');
+ const parent=new Element();ctx.appendClassicalClauseRelationCaptureCard(parent,c,'dependent',{captured:true,unitType:'nnc',surface:'chicāhuac'},'dimension');assert.equal(typeof clear,'function');clear();
+ assert.equal(ctx.ClassicalClauseRelationSelections.comparisonRoute,'equality-iuhqui');assert.equal(ctx.ClassicalClauseRelationSelections.icRelation,'yes');
+ assert.equal(c.getCapturedCanonicalResult('dependent'),null);assert.equal(contract.authorizationStatus,'blocked');assert.ok(contract.derived.requiredCaptureRoles.includes('dependent'));
+ lines.length=0;ctx.appendClassicalClauseRelationCaptureCard(parent,c,'dependent',{captured:false},'dimension');assert.equal(lines.find(([k])=>k==='status')[1],'Required · not captured');
+ assert.equal(session.make(),false);assert.equal(executions,0);assert.equal(session.position.accepted.result,receipt.canonicalResult);
+ assert.equal(c.captureCurrentResult('dependent',{...dimension}).authorizationStatus,'blocked');
+ ctx.ClassicalClauseRelationSelections.icRelation='no';ctx.refreshClassicalClauseRelationWorkflow();assert.equal(contract.authorizationStatus,'authorized');
+ ctx.ClassicalClauseRelationSelections.icRelation='yes';
+ Object.assign(ctx,{controller:c,role:'dependent',currentResult:dimension,selectedRelation:'comparison',issueClassicalClauseRelationCurrentDiscourseSourceContextFrame:()=>null});
+ const nativeStart=code.indexOf('      captureActionRoles.forEach(role => {');
+ const actionStart=code.indexOf('onClick: () => {',nativeStart)+'onClick: '.length;
+ const actionEnd=code.indexOf('\n          }\n        });',actionStart)+'\n          }'.length;
+ vm.runInContext(`nativeCapture = ${code.slice(actionStart,actionEnd)}`,ctx);ctx.nativeCapture();
+ assert.equal(ctx.ClassicalClauseRelationSelections.comparisonRoute,'equality-iuhqui');assert.equal(ctx.ClassicalClauseRelationSelections.icRelation,'yes');assert.equal(contract.authorizationStatus,'authorized');
+ assert.equal(c.getCapturedCanonicalResult('principal'),principal);assert.equal(c.getCapturedCanonicalResult('adjoined'),adjoined);assert.equal(session.position.accepted.result,receipt.canonicalResult);assert.equal(executions,0);
 });

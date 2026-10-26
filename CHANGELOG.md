@@ -1,5 +1,9 @@
 # Version History
 
+## v1.2.51 — Comparison Input Recovery
+
+- Preserves comparison choices when clearing and recapturing a dimension, keeping required-input guidance and recovery consistent.
+
 ## v1.2.50 — Overview Visibility
 
 - Removes a dead-end Overview disclosure in Simple view; Analysis retains the existing populated overview.

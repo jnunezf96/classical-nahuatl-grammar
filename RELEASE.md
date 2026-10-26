@@ -1,15 +1,15 @@
-# Grammar OS v1.2.50 release
+# Grammar OS v1.2.51 release
 
-Release name: **Overview Visibility**
+Release name: **Comparison Input Recovery**
 
-Browser build: **20261026-overview-69**
+Browser build: **20261026-dimension-clear-70**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Removes the empty Overview disclosure from Simple view while preserving its populated content in Analysis.
-- Keeps the existing Source, Build and Result controls and grammar unchanged.
+- Keeps the selected comparison and īc choice when removing or recapturing its dimension.
+- Shows the missing required input accurately and preserves the accepted Result while choices are staged.
 
 ## Review scope and current limits
 
@@ -36,7 +36,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.50/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.51/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.
