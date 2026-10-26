@@ -1,3 +1,4 @@
+import {clauseMarkerResultLabel} from '../composition/clause_composition.mjs?reasonPresentation=20261026-1';
 import {syncFutureObjectChoices} from '../composition/future_object_choices.mjs?futureObject=20261024-3';
 import {getDoubleNucleusEditChildren} from '../../application/classical/double_nucleus_edit.mjs?nucleusEdit=20261024-9';
 import {syncStemLayerChoices} from '../composition/stem_layer_choices.mjs?stemNominal=20261024-2';
@@ -15,7 +16,7 @@ import { normalizeClassicalNahuatlIntroductoryModifier }
 import {createClassicalWorkspaceProvenanceProjector}
   from '../composer/result_provenance.mjs?v=20261012-position-provenance-7';
 import {resolvePathTargets, setPathHistoryPresentation} from '../composition/path_presentation.mjs?v=20261011-path-targets-7&routeShapes=20261021-1&writtenPreview=20261022-1&writingSource=20261022-1';
-import {setStructureDesignContext, setStructureComparison, projectCanonicalStructure, projectClauseStructure, projectOperationShape, compareCanonicalStructures} from '../composition/structure_design.mjs?nucleusEdit=20261024-9&clauseHarmony=20261023-5&v=20261011-structure-15&routeShapes=20261021-1&clauseCoordinate=20261021-1&resetEligibility=20261022-1&writingSource=20261022-1&makePreview=20261022-1&fixedChoices=20261022-1&interfaceRelease=1.2.36';
+import {setStructureDesignContext, setStructureComparison, projectCanonicalStructure, projectClauseStructure, projectOperationShape, projectCapturedOperationShape, compareCanonicalStructures} from '../composition/structure_design.mjs?reasonPresentation=20261026-1&nucleusEdit=20261024-9&clauseHarmony=20261023-5&v=20261011-structure-15&routeShapes=20261021-1&clauseCoordinate=20261021-1&resetEligibility=20261022-1&writingSource=20261022-1&makePreview=20261022-1&fixedChoices=20261022-1&interfaceRelease=1.2.36';
 import {setSourceCandidatePresentation, projectSavedSourceCandidate, setRouteChoicePresentation, projectOfferedOperationShapes} from '../composition/candidate_design.mjs?v=20261021-route-shapes-1';
 import {notifyExplicitMakeResult,focusNativeChoice} from '../composition/flow_design.mjs?v=20261022-reset-eligibility-1&writingSource=20261022-1&makePreview=20261022-1&fixedChoices=20261022-1';
 import {getBuildOperationGroup,getBuildOperationOrder,inventoryOptionReference,formatBuildOperationLabel} from '../composition/build_navigation_model.mjs?v=20261021-ending-reference-2&nominalReload=20261024-4&interfaceRelease=1.2.36';
@@ -38809,12 +38810,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         markerField.dataset.classicalDisplayAuthority = "false";
         const markerLabel = targetObject.document.createElement("span");
         markerLabel.className = "classical-whole-canvas-choice__label";
-        markerLabel.textContent = [
-          "exclamatory-utterance",
-          "such-that-adjunction"
-        ].includes(selectedRelation)
-          ? "Particle Source Result"
-          : "Optional marker Result";
+        markerLabel.textContent = clauseMarkerResultLabel(selectedRelation, targetObject.document.getElementById("classical-capability-navigator-binding-choices")?.value);
         const markerSelect = targetObject.document.createElement("select");
         markerSelect.className = "classical-whole-canvas-choice__control";
         markerSelect.dataset.classicalClauseRelationMarkerResult = "particle";
@@ -54058,8 +54054,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
           if (additional && !sources.some(record => record.exact === additional.exact)) sources.push(additional);
         }
       }
-      const diagram = projectOperationShape(targetObject, navigator, operation);
-      if (diagram && sources.length && sources.every(record => record.unit)) diagram.inputs = sources.map(record => record.unit);
+      const diagram = projectCapturedOperationShape(
+        projectOperationShape(targetObject, navigator, operation), sources, ClassicalClauseRelationSelections.relation);
       return {sources, link, links, diagram, spatial, sourceSurface, acceptedResult,
         sourceScope: source, operation, bindingScope: binding?.ownerBindingFrame || null,
         bindingId: binding?.selectedBindingId || "", missingSources: getClassicalMissingSourceSlots(binding)};

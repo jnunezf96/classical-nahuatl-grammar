@@ -75,3 +75,11 @@ export function presentIdleClauseComposition(doc,context){
   else if(!idle&&formula.dataset.compositionClauseIdle==='true'){formula.hidden=false;delete formula.dataset.compositionClauseIdle;}
  }
 }
+
+export function clauseMarkerResultLabel(relation,bindingId='') {
+  if(!relation && /^reason:(principal|adjoined)$/u.test(bindingId))relation='reason';
+  if(relation==='reason')return 'Required principal-clause introducer';
+  if(relation==='supplementation')return 'Boundary: ca → principal · in → adjunct';
+  if(['exclamatory-utterance','such-that-adjunction'].includes(relation))return 'Particle Source Result';
+  return 'Optional marker Result';
+}

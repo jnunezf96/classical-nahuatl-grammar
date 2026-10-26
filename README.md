@@ -3,8 +3,8 @@
 `Classical_Nahuatl_Grammar_Web` is the live browser-based Classical Nahuatl
 grammar and conjugation application.
 
-Current release: **Grammar OS v1.2.44 — Andrews Directional Continuation**
-(browser build `20261025-huic-continuation-63`).
+Current release: **Grammar OS v1.2.45 — Andrews Reason Presentation**
+(browser build `20261026-reason-presentation-64`).
 
 See [Version History](CHANGELOG.md) for user-facing “What’s New” notes.
 
@@ -84,7 +84,7 @@ Startup JSON travels with the page. After editing a startup JSON source, run
 `node scripts/sync_startup_data.mjs`; the release gate checks the embedded data
 against all sixteen original files. Optional fonts never hold up first use.
 
-The generated `reports/generated/grammar_os_release/v1.2.44/site/` directory is
+The generated `reports/generated/grammar_os_release/v1.2.45/site/` directory is
 the deployment root. Publish that directory—not this full repository. Its
 release manifest records every shipped file and digest.
 

@@ -1,5 +1,9 @@
 # Version History
 
+## v1.2.45 — Andrews Reason Presentation
+
+- Clarifies sentence rank and the required ca introducer in the existing reason-construction journey.
+
 ## v1.2.44 — Andrews Directional Continuation
 
 - Enables genuine huīc Result continuation into pa with exact inner ancestry, possessor and negative-particle custody through existing controls.

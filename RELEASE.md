@@ -1,16 +1,16 @@
-# Grammar OS v1.2.44 release
+# Grammar OS v1.2.45 release
 
-Release name: **Andrews Directional Continuation**
+Release name: **Andrews Reason Presentation**
 
-Browser build: **20261025-huic-continuation-63**
+Browser build: **20261026-reason-presentation-64**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Continues genuine huīc Results into directional pa through the existing Build a relational noun operation.
-- Retains exact inner compound, possessor and negative-particle analysis for tlanihuīcpa, tēhuīcpa and ahhuīcpa, without duplicating outer possession or negation.
-- Preserves the accepted Result while staging and rejects copied or conflicting source claims. No new panels.
+- Shows genuine sentence operands as Sentences, with their inner verb clauses still separately inspectable.
+- Identifies the reason route as juxtaposed sentences and its ca introducer as required before capture.
+- Retains Andrews's grammatical construction, generated wording and explicit Apply/Make boundaries. No new panels.
 
 ## Review scope and current limits
 
@@ -37,7 +37,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.44/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.45/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.

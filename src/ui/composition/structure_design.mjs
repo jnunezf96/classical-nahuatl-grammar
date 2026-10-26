@@ -149,7 +149,7 @@ function navigationFor(contract,role,endpoint) {
 export function projectCanonicalStructure(r,exact,project,role='Source',seen=new Set()) {
   const projection=project(exact);if(!projection || projection.canonicalResult!==exact || seen.has(exact))return null;
   const nextSeen=new Set(seen).add(exact), envelope=envelopeFor(r,exact);
-  const unit=r.isClassicalNahuatlClauseConjunctionResultFrame?.(exact) || r.isClassicalNahuatlSupplementationFrame?.(exact) || r.isClassicalNahuatlIssuedParticleSentenceLayerFrame?.(exact) || r.isAdverbialAdjunctionResult?.(exact) ? 'Clause' : envelope?.unitKind==='nnc'?'Noun clause':envelope?.unitKind==='vnc'?'Verb clause':envelope?.unitKind==='particle'?'Particle':envelope?'Clause':'';
+  const unit=r.isClassicalNahuatlVncSentenceResultFrame?.(exact)===true ? 'Sentence' : r.isClassicalNahuatlClauseConjunctionResultFrame?.(exact) || r.isClassicalNahuatlSupplementationFrame?.(exact) || r.isClassicalNahuatlIssuedParticleSentenceLayerFrame?.(exact) || r.isAdverbialAdjunctionResult?.(exact) ? 'Clause' : envelope?.unitKind==='nnc'?'Noun clause':envelope?.unitKind==='vnc'?'Verb clause':envelope?.unitKind==='particle'?'Particle':envelope?'Clause':'';
   const children=semanticChildren(r,exact).map(child=>{
     const captured=projectCanonicalStructure(r,child.exact,project,child.role,nextSeen);if(captured)return {...captured,selectedClause:child.selectedClause};
     // An issued particle layer can attest its signed NNC nucleus even when
@@ -217,6 +217,13 @@ export function projectOperationShape(r,navigator,operationId) {
   const inputs=typeLabels(operation.sharedUnitKinds||operation.matchedSourceUnitKinds||operation.inputUnitKinds);
   const outputs=typeLabels(operation.outputUnitKinds);
   return inputs.length && outputs.length?{inputs,outputs,pending:true}:null;
+}
+// Display only: sources were projected from exact owner-issued Results.
+export function projectCapturedOperationShape(shape,sources,relation) {
+  if(!shape)return null;
+  const inputs=sources.length && sources.every(source=>source.unit)?sources.map(source=>source.unit):shape.inputs;
+  const sentences=['principal','adjoined'].every(role=>sources.some(source=>source.role===role && source.unit==='Sentence'));
+  return {...shape,inputs,outputs:relation==='reason' && sentences?['Juxtaposed sentences']:shape.outputs};
 }
 export function compareCanonicalStructures(r,left,right,project) {
   const a=projectCanonicalStructure(r,left,project),b=projectCanonicalStructure(r,right,project);if(!a||!b)return null;
