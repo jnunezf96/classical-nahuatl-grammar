@@ -37958,14 +37958,15 @@ export function createUiRenderingApi(targetObject = globalThis) {
       });
     }
     function applyClassicalComparisonChoiceIntent(controller, intent, expectedFrame = null) {
-      const transition = controller.transitionComparisonChoice?.({selections:ClassicalClauseRelationSelections, expectedFrame, intent});
+      const conjunction = controller.transitionConjunctionChoice?.({selections:ClassicalClauseRelationSelections, expectedFrame, intent});
+      const transition = conjunction?.handled ? conjunction : controller.transitionComparisonChoice?.({selections:ClassicalClauseRelationSelections, expectedFrame, intent});
       if (!transition?.handled) return false;
       if (transition.authorizationStatus === "authorized") {
         ClassicalClauseRelationSelections = Object.assign(Object.create(null), transition.selections);
         ActiveClassicalClauseRelationResult = null;
-        ClassicalClauseRelationStatusMessage = "Comparison choices updated.";
+        ClassicalClauseRelationStatusMessage = "Choices updated.";
       } else {
-        ClassicalClauseRelationStatusMessage = transition.blockReason === "comparison-choice-stale-frame"
+        ClassicalClauseRelationStatusMessage = ["comparison-choice-stale-frame", "conjunction-choice-stale-frame"].includes(transition.blockReason)
           ? "The inputs changed. Review the current choices and try again."
           : formatClassicalClauseRelationValue(transition.blockReason);
       }
@@ -38000,6 +38001,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         });
         if (contract && (contract.currentChoiceFrame || binding.clauseRelationDecisionContract?.currentChoiceFrame)) {
           syncClassicalClauseRelationCapabilityChoices(contract, contract.missingCaptureRoles || []);
+          if (contract.relation === "conjunction") syncClassicalRequiredResultChooser();
         }
       }
       const contextSurface = ActiveClassicalRuleLogicSurfaceFrame || {};
@@ -38524,6 +38526,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         // This decision determines whether a second conjunct is required.
         // The owner still blocks Make until its selected captures are ready.
         || decision.id === "left-context"
+        || (decision.id === "contextual-silent-first-person" && !decision.resolved)
         || decision.determinesCaptureRoles === true
       )).forEach(decision => {
         const control = createClassicalClauseRelationDecisionControl(decision, decisionContract.currentChoiceFrame);

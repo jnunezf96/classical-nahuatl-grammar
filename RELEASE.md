@@ -1,16 +1,16 @@
-# Grammar OS v1.2.55 release
+# Grammar OS v1.2.56 release
 
-Release name: **Unified Comparison Choices**
+Release name: **Coordinated Conjunction Choices**
 
-Browser build: **20261026-comparison-choices-74**
+Browser build: **20261026-conjunction-choices-75**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- All23 comparison routes use shared canonical choice domains and application transitions.
-- Source-derived facts stay distinct from genuine alternatives; conflicting earlier selections require an explicit correction.
-- Inactive negative-standard choices remain retained without blocking an absent standard or entering the request.
+- Ordinary conjunction choices come from the canonical conjunction owner, including conditional modifier, rank and shared-scope availability.
+- Incompatible selections stay pending for explicit recovery; stale controls cannot change the current construction.
+- Retained conjuncts remain available when switching back from absent-left context. Source-dependent silence has an explicit reset after eligibility changes.
 - Existing panels, exact Source custody and explicit Make are preserved.
 
 ## Review scope and current limits
@@ -38,7 +38,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.55/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.56/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.

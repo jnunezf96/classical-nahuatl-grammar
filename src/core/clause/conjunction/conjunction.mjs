@@ -1048,6 +1048,40 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
       ah: Object.freeze({ surface: "ah", formula: "ah#" }),
       aic: Object.freeze({ surface: "aīc", formula: "ah + īc" })
     });
+    const ordinaryConjunctionDomains = Object.freeze({
+      coordinationRelation: ["marked", "unmarked"], coordinationType: ["additive", "alternative", "adversative"],
+      clauseLevel: ["principal", "adjoined"], polarity: ["positive", "negative"], leftContext: ["present", "absent"],
+      modifierAdjunctor: ["none", "in"], sharedModifierScope: ["none", "before-first-applies-to-all"],
+      adjoinedFunction: ["none", "supplementary-object", "supplementary-subject", "adverbial-adjunct", "adjectival-modifier"]
+    });
+    const permitsConjunctionModifierIn = (type, modifier) => type === "alternative" || ["yeh", "neh"].includes(modifier);
+    const permitsConjunctionFunction = (level, value) => ordinaryConjunctionDomains.adjoinedFunction.includes(value)
+      && (level === "adjoined" ? value !== "none" : value === "none");
+    function getClassicalConjunctionChoiceContract(selections = {}) {
+      const {coordinationType, coordinationRelation, clauseLevel, rightwardModifier, sharedModifierScope} = Object.fromEntries(
+        Object.entries(selections).map(([key,value])=>[key,normalizeClassicalNahuatlClauseConjunctionToken(value)]));
+      const domains = {...ordinaryConjunctionDomains,
+        rightwardModifier: Object.keys(CLASSICAL_NAHUATL_CLAUSE_CONJUNCTION_MODIFIERS[coordinationType] || {}).map(value=>value || "none"),
+        sharedModifier: Object.keys(CLASSICAL_NAHUATL_CLAUSE_CONJUNCTION_SHARED_MODIFIERS).filter(Boolean)};
+      const order=["coordinationRelation","coordinationType","clauseLevel","polarity","leftContext","rightwardModifier","modifierAdjunctor","sharedModifierScope","sharedModifier","adjoinedFunction"];
+      const decisions = order.map(key=>({key,
+        id:key.replace(/[A-Z]/gu, letter=>`-${letter.toLowerCase()}`), values:[...domains[key]],
+        sourceReference:"Andrews §§52.1–52.4", responsibility:"user", applicability:"relevant",
+        optionAvailability:domains[key].map(value=>{
+          let allowed=true, reasonCode="";
+          if(key === "leftContext" && value === "absent") {
+            allowed=coordinationRelation === "marked" && clauseLevel === "principal" && coordinationType !== "adversative";
+            reasonCode="absent-left-conjunct-requires-marked-principal-nonadversative-conjunction";
+          }
+          if(key === "modifierAdjunctor" && value === "in") {allowed=permitsConjunctionModifierIn(coordinationType,rightwardModifier);reasonCode="in-modifier-adjunctor-not-licensed-in-this-conjunction";}
+          if(key === "adjoinedFunction") {allowed=permitsConjunctionFunction(clauseLevel,value);reasonCode="licensed-adjoined-conjunction-function-requires-adjoined-level";}
+          if(key === "sharedModifier") {allowed=sharedModifierScope === "before-first-applies-to-all" ? value !== "none" : value === "none";reasonCode="shared-modifier-and-pre-first-scope-must-be-jointly-licensed";}
+          const recoveries={leftContext:"Use marked principal conjunction with additive or alternative coordination, or keep the left context present.",modifierAdjunctor:"Use alternative coordination or the adversative modifier yeh or neh, or choose None.",adjoinedFunction:"Choose a function at adjoined rank; choose None at principal rank.",sharedModifier:"Choose a shared modifier with scope over all conjuncts, or choose None for both."};
+          return {value,status:allowed?"available":"incompatible",reasonCode:allowed?"":reasonCode,recovery:allowed?"":recoveries[key] || ""};
+        })}));
+      return freezeClassicalNahuatlClauseConjunction({familyId:"conjunction",routeId:"conjunction",decisions,
+        sourceReference:"Andrews §§52.1–52.4",executionAuthority:false});
+    }
     const CLASSICAL_NAHUATL_CLAUSE_CONJUNCTION_CORRELATIVE_PATTERNS = Object.freeze({
       "ahzo-ahzo": Object.freeze(["ahzo", "ahzo"]),
       "ahzo-eh-ahzo-eh": Object.freeze(["ahzo eh", "ahzo eh"]),
@@ -2071,10 +2105,10 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
           return buildClassicalNahuatlClauseConjunctionBlockedResultFrame(operationKind,
             "composite-conjunctor-marked-principal-role-required");
         }
-        if (!["marked", "unmarked"].includes(relation)
-          || !["additive", "alternative", "adversative"].includes(coordinationType)
-          || !["principal", "adjoined"].includes(level)
-          || !["positive", "negative"].includes(polarity)) {
+        if (!ordinaryConjunctionDomains.coordinationRelation.includes(relation)
+          || !ordinaryConjunctionDomains.coordinationType.includes(coordinationType)
+          || !ordinaryConjunctionDomains.clauseLevel.includes(level)
+          || !ordinaryConjunctionDomains.polarity.includes(polarity)) {
           return buildClassicalNahuatlClauseConjunctionBlockedResultFrame(operationKind, "complete-conjunction-relation-type-level-and-polarity-required");
         }
         if (leftContextAbsent) {
@@ -2094,13 +2128,13 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
           return buildClassicalNahuatlClauseConjunctionBlockedResultFrame(operationKind, "rightward-modifier-not-licensed-for-coordination-type");
         }
         if (modifierAdjunctor === "in"
-          && !(coordinationType === "alternative" || ["yeh", "neh"].includes(rightwardModifier))) {
+          && !permitsConjunctionModifierIn(coordinationType, rightwardModifier)) {
           return buildClassicalNahuatlClauseConjunctionBlockedResultFrame(operationKind, "in-modifier-adjunctor-not-licensed-in-this-conjunction");
         }
-        if (!["none", "in"].includes(modifierAdjunctor)) {
+        if (!ordinaryConjunctionDomains.modifierAdjunctor.includes(modifierAdjunctor)) {
           return buildClassicalNahuatlClauseConjunctionBlockedResultFrame(operationKind, "recognized-modifier-adjunctor-required");
         }
-        if (!["none", "before-first-applies-to-all"].includes(sharedModifierScope)) {
+        if (!ordinaryConjunctionDomains.sharedModifierScope.includes(sharedModifierScope)) {
           return buildClassicalNahuatlClauseConjunctionBlockedResultFrame(operationKind, "recognized-shared-modifier-scope-required");
         }
         if (!Object.hasOwn(CLASSICAL_NAHUATL_CLAUSE_CONJUNCTION_SHARED_MODIFIERS, sharedModifier)
@@ -2112,9 +2146,7 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
             "shared-modifier-and-pre-first-scope-must-be-jointly-licensed"
           );
         }
-        if (!["none", "supplementary-object", "supplementary-subject", "adverbial-adjunct", "adjectival-modifier"].includes(adjoinedFunction)
-          || (level === "adjoined" && adjoinedFunction === "none")
-          || (level !== "adjoined" && adjoinedFunction !== "none")) {
+        if (!permitsConjunctionFunction(level, adjoinedFunction)) {
           return buildClassicalNahuatlClauseConjunctionBlockedResultFrame(operationKind, "licensed-adjoined-conjunction-function-requires-adjoined-level");
         }
         const sharedSupplement = operationRequest.sharedSupplement;
@@ -2679,6 +2711,7 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
     api.buildClassicalNahuatlClauseConjunctionOperationRequest = buildClassicalNahuatlClauseConjunctionOperationRequest;
     api.isClassicalNahuatlClauseConjunctionOperationRequest = isClassicalNahuatlClauseConjunctionOperationRequest;
     api.buildClassicalNahuatlConjunctReplacementRequest = buildClassicalNahuatlConjunctReplacementRequest;
+    api.getClassicalConjunctionChoiceContract = getClassicalConjunctionChoiceContract;
     api.evaluateClassicalNahuatlClauseConjunction = evaluateClassicalNahuatlClauseConjunction;
     api.isClassicalNahuatlClauseConjunctionResultFrame = isClassicalNahuatlClauseConjunctionResultFrame;
     api.evaluateClassicalNahuatlClauseConjunctionParadigm = evaluateClassicalNahuatlClauseConjunctionParadigm;

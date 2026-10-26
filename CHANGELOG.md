@@ -1,5 +1,11 @@
 # Version History
 
+## v1.2.56 — Coordinated Conjunction Choices
+
+- Shares ordinary conjunction domains and conditional choices with the canonical owner.
+- Preserves invalid requests for explicit recovery, exact captured parents and accepted Results while staging.
+- Keeps existing panels and uncommon marked-adjoined alternatives.
+
 ## v1.2.55 — Unified Comparison Choices
 
 - Coordinates all23 comparison routes through canonical domains and shared transitions.

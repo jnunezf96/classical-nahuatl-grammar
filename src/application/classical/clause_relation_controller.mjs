@@ -1,3 +1,4 @@
+import {buildCurrentChoiceFrame} from './current_choice_frame.mjs';
 import {resolveComparisonChoices, projectComparisonChoiceFrame} from './comparison_choices.mjs?v=20261026-all-comparison-1';
 // Typed application controller for composing already-issued canonical clause
 // results. It owns presentation decisions only; the clause engine remains the
@@ -234,65 +235,6 @@ const RELATIONAL_COMPLEMENT_PAIRS = Object.freeze([
   "te-pan+teca",
   "te-tech+chicotlamati",
   "te-tech-pa+tlaocoya",
-]);
-const CONJUNCTION_COORDINATION_TYPES = Object.freeze([
-  "additive",
-  "alternative",
-  "adversative",
-]);
-const CONJUNCTION_LEVELS = Object.freeze([
-  "principal",
-  "adjoined",
-]);
-const CONJUNCTION_POLARITIES = Object.freeze(["positive", "negative"]);
-const CONJUNCTION_RIGHTWARD_MODIFIERS = Object.freeze({
-  additive: Object.freeze([
-    "none",
-    "no",
-    "oc",
-    "oc-no",
-    "ihuan",
-    "oc-ihuan",
-    "no-ihuan",
-    "oc-no-ihuan",
-    "ahno",
-    "ahmo-no",
-    "no-zo",
-    "no-zo-eh",
-    "ma-no-zo",
-    "ma-no-zo-eh",
-  ]),
-  alternative: Object.freeze([
-    "none",
-    "ahzo",
-    "ahzo-eh",
-    "no-zo",
-    "no-zo-eh",
-    "ma-no-zo",
-    "ma-no-zo-eh",
-    "ahno-zo",
-    "ahno-zo-eh",
-  ]),
-  adversative: Object.freeze([
-    "none",
-    "zan",
-    "tel",
-    "yeceh",
-    "yeh",
-    "neh",
-  ]),
-});
-const CONJUNCTION_SHARED_MODIFIERS = Object.freeze([
-  "none",
-  "ah",
-  "aic",
-]);
-const CONJUNCTION_ADJOINED_FUNCTIONS = Object.freeze([
-  "none",
-  "supplementary-object",
-  "supplementary-subject",
-  "adverbial-adjunct",
-  "adjectival-modifier",
 ]);
 const CORRELATION_TYPES = Object.freeze(["standard", "loose"]);
 const CORRELATIVE_PATTERNS = Object.freeze([
@@ -1530,6 +1472,27 @@ export function createClassicalClauseRelationControllerGlobals(
         contract:buildDecisionContract(selected)});
     }
 
+    function transitionConjunctionChoice({selections={},expectedFrame=null,intent={}}={}) {
+      const current=selections.relation === "conjunction";
+      if(!current && expectedFrame?.familyId !== "conjunction") return Object.freeze({handled:false});
+      const blocked=reason=>Object.freeze({handled:true,authorizationStatus:"blocked",blockReason:reason,selections,contract:buildDecisionContract(selections)});
+      if(!current || !isCurrentChoiceFrame(expectedFrame,selections)) return blocked("conjunction-choice-stale-frame");
+      const next={...selections};
+      if(intent.type === "set-choice") {
+        if(!expectedFrame.decisions.some(d=>(d.key || d.id.replace(/-([a-z])/gu,(_,letter)=>letter.toUpperCase())) === intent.key)) return blocked("conjunction-choice-field-not-licensed");
+        if(intent.value) next[intent.key]=String(intent.value).trim(); else delete next[intent.key];
+      } else if(intent.type === "clear-capture" || intent.type === "capture") {
+        if(!CAPTURE_ROLES.includes(intent.role)) return blocked("conjunction-choice-capture-role-not-licensed");
+        if(intent.type === "clear-capture") clearCapture(intent.role);
+        else {
+          const capture=captureCurrentResult(intent.role,intent.result,intent.context);
+          if(capture.authorizationStatus !== "authorized") return blocked(capture.blockReason);
+        }
+      } else return blocked("conjunction-choice-intent-not-recognized");
+      choiceRevision += 1;
+      return Object.freeze({handled:true,authorizationStatus:"authorized",selections:Object.freeze(next),contract:buildDecisionContract(next)});
+    }
+
     function validateRole(role = "") {
       const normalizedRole = normalizeToken(role);
       return CAPTURE_ROLES.includes(normalizedRole) ? normalizedRole : "";
@@ -2331,173 +2294,24 @@ export function createClassicalClauseRelationControllerGlobals(
     }) {
       const operationSelections = {};
       if (relation === "conjunction") {
-        const requestedCoordinationRelation = normalizeToken(
-          selectionObject.coordinationRelation,
-        );
-        const coordinationRelation = ["marked", "unmarked"].includes(
-          requestedCoordinationRelation,
-        )
-          ? requestedCoordinationRelation
-          : "";
-        decisions.push(buildDecision({
-          id: "coordination-relation",
-          values: ["marked", "unmarked"],
-          selectedValue: coordinationRelation,
-          reason: "the conjunction may be structurally marked or asyndetic",
-        }));
-        const requestedCoordinationType = normalizeToken(
-          selectionObject.coordinationType,
-        );
-        const coordinationType = CONJUNCTION_COORDINATION_TYPES.includes(
-          requestedCoordinationType,
-        )
-          ? requestedCoordinationType
-          : "";
-        decisions.push(buildDecision({
-          id: "coordination-type",
-          values: CONJUNCTION_COORDINATION_TYPES,
-          selectedValue: coordinationType,
-          reason: "additive, alternative, and adversative coordination differ",
-        }));
-        const requestedLevel = normalizeToken(selectionObject.clauseLevel);
-        const level = CONJUNCTION_LEVELS.includes(requestedLevel)
-          ? requestedLevel
-          : "";
-        decisions.push(buildDecision({
-          id: "clause-level",
-          values: CONJUNCTION_LEVELS,
-          selectedValue: level,
-          reason: "coordination applies at a selected clause rank",
-        }));
-        const requestedPolarity = normalizeToken(selectionObject.polarity);
-        const polarity = CONJUNCTION_POLARITIES.includes(requestedPolarity)
-          ? requestedPolarity
-          : "";
-        decisions.push(buildDecision({
-          id: "polarity",
-          values: CONJUNCTION_POLARITIES,
-          selectedValue: polarity,
-          reason: "negative coordination licenses its own modifier inventory",
-        }));
-        const leftContext = ["present", "absent"].includes(
-          normalizeToken(selectionObject.leftContext),
-        )
-          ? normalizeToken(selectionObject.leftContext)
-          : "";
-        decisions.push(buildDecision({
-          id: "left-context",
-          values: ["present", "absent"],
-          selectedValue: leftContext,
-          reason: "the leftward conjunct may be absent in the sentence-initial Auh construction (§52.3)",
-          optionAvailability: [
-            {value: "present", status: RELATION_AVAILABILITY.AVAILABLE},
-            {value: "absent", status: coordinationRelation === "marked" && level === "principal"
-              ? RELATION_AVAILABILITY.AVAILABLE : RELATION_AVAILABILITY.INCOMPATIBLE,
-            reasonCode: coordinationRelation === "marked" && level === "principal" ? ""
-              : "absent-left-conjunct-requires-marked-principal-conjunction",
-            recovery: "Choose marked conjunction at principal rank for sentence-initial Auh, or retain the leftward conjunct."},
-          ],
-        }));
-        requireCapturedSource("principal", diagnostics, {
-          diagnosticPrefix: "classical-conjunction",
-        });
-        if (leftContext !== "absent") {
-          requireCapturedSource("adjoined", diagnostics, {
-            diagnosticPrefix: "classical-conjunction",
-          });
+        const ownerChoices = targetObject.getClassicalConjunctionChoiceContract?.(selectionObject);
+        if (!ownerChoices) diagnostics.push("conjunction-choice-owner-capability-required");
+        const selected = {};
+        for (const domain of ownerChoices?.decisions || []) {
+          const requestedValue = normalizeToken(selectionObject[domain.key] || (domain.key === "sharedModifier" ? "none" : ""));
+          const decision = buildDecision({...domain, selectedValue:requestedValue,
+            reason:"Choice licensed by the canonical conjunction owner"});
+          decisions.push(Object.freeze({...decision,key:domain.key,requestedValue,
+            responsibility:"user",selectionOrigin:selectionObject[domain.key]?"explicit-user":"application-default",
+            sourceReference:domain.sourceReference}));
+          selected[domain.key] = decision.selectedValue;
+          const unavailable=decision.optionAvailability?.find(option=>option.value===requestedValue && option.status!==RELATION_AVAILABILITY.AVAILABLE);
+          if(unavailable?.reasonCode) diagnostics.push(unavailable.reasonCode);
         }
-        const modifierValues = CONJUNCTION_RIGHTWARD_MODIFIERS[
-          coordinationType
-        ] || [];
-        const requestedModifier = normalizeToken(
-          selectionObject.rightwardModifier,
-        );
-        const rightwardModifier = modifierValues.includes(requestedModifier)
-          ? requestedModifier
-          : "";
-        if (coordinationType) {
-          decisions.push(buildDecision({
-            id: "rightward-modifier",
-            values: modifierValues,
-            selectedValue: rightwardModifier,
-            reason: "the right conjunct licenses a typed adverbial modifier",
-          }));
-        }
-        const modifierAdjunctor = ["none", "in"].includes(
-          normalizeToken(selectionObject.modifierAdjunctor),
-        )
-          ? normalizeToken(selectionObject.modifierAdjunctor)
-          : "";
-        decisions.push(buildDecision({
-          id: "modifier-adjunctor",
-          values: ["none", "in"],
-          selectedValue: modifierAdjunctor,
-          reason: "in may introduce only the licensed rightward modifier",
-        }));
-        const sharedModifierScope = [
-          "none",
-          "before-first-applies-to-all",
-        ].includes(normalizeToken(selectionObject.sharedModifierScope))
-          ? normalizeToken(selectionObject.sharedModifierScope)
-          : "";
-        decisions.push(buildDecision({
-          id: "shared-modifier-scope",
-          values: ["none", "before-first-applies-to-all"],
-          selectedValue: sharedModifierScope,
-          reason: "a preposed modifier may scope over every conjunct",
-        }));
-        const requestedSharedModifier = normalizeToken(
-          selectionObject.sharedModifier || "none",
-        );
-        const sharedModifier = CONJUNCTION_SHARED_MODIFIERS.includes(
-          requestedSharedModifier,
-        )
-          ? requestedSharedModifier
-          : "";
-        decisions.push(buildDecision({
-          id: "shared-modifier",
-          values: CONJUNCTION_SHARED_MODIFIERS,
-          selectedValue: sharedModifier,
-          reason:
-            "ah or aic may be placed before the first conjunct with typed scope over every conjunct",
-        }));
-        if (
-          requestedSharedModifier
-          && !sharedModifier
-        ) {
-          diagnostics.push(
-            "classical-conjunction-shared-modifier-not-licensed",
-          );
-        }
-        if (
-          sharedModifierScope === "before-first-applies-to-all"
-          && sharedModifier === "none"
-        ) {
-          diagnostics.push(
-            "classical-conjunction-shared-modifier-required-for-pre-first-scope",
-          );
-        }
-        if (
-          sharedModifierScope === "none"
-          && sharedModifier
-          && sharedModifier !== "none"
-        ) {
-          diagnostics.push(
-            "classical-conjunction-shared-modifier-requires-pre-first-scope",
-          );
-        }
-        const adjoinedFunction =
-          CONJUNCTION_ADJOINED_FUNCTIONS.includes(
-            normalizeToken(selectionObject.adjoinedFunction),
-          )
-            ? normalizeToken(selectionObject.adjoinedFunction)
-            : "";
-        decisions.push(buildDecision({
-          id: "adjoined-function",
-          values: CONJUNCTION_ADJOINED_FUNCTIONS,
-          selectedValue: adjoinedFunction,
-          reason: "adjoined conjunctions retain a typed clause function",
-        }));
+        const {coordinationRelation,coordinationType,clauseLevel:level,polarity,leftContext,
+          rightwardModifier,modifierAdjunctor,sharedModifierScope,sharedModifier,adjoinedFunction} = selected;
+        requireCapturedSource("principal", diagnostics, {diagnosticPrefix:"classical-conjunction"});
+        if(leftContext !== "absent") requireCapturedSource("adjoined", diagnostics, {diagnosticPrefix:"classical-conjunction"});
         Object.assign(operationSelections, {
           relation: coordinationRelation,
           coordinationType,
@@ -2528,8 +2342,9 @@ export function createClassicalClauseRelationControllerGlobals(
           || requestedFirstPerson === "present" && !contextualFirstPersonAvailable) {
           diagnostics.push("conjunction-contextual-first-person-not-licensed");
         }
-        if (contextualFirstPersonAvailable) decisions.push(buildDecision({
+        if (contextualFirstPersonAvailable || requestedFirstPerson !== "absent") decisions.push(buildDecision({
           id: "contextual-silent-first-person", values: ["absent", "present"], selectedValue: requestedFirstPerson,
+          optionAvailability:[{value:"absent",status:RELATION_AVAILABILITY.AVAILABLE},{value:"present",status:contextualFirstPersonAvailable?RELATION_AVAILABILITY.AVAILABLE:RELATION_AVAILABILITY.INCOMPATIBLE,reasonCode:contextualFirstPersonAvailable?"":"conjunction-contextual-first-person-not-licensed"}],
           reason: "later VNCs with the same first-person referent may silence pers1 after the sounded first VNC"}));
         operationSelections.contextualSilentFirstPerson = requestedFirstPerson === "present";
         const ellipsis = normalizeToken(
@@ -5296,6 +5111,17 @@ export function createClassicalClauseRelationControllerGlobals(
           contract = Object.freeze({...contract, currentChoiceFrame});
         }
       }
+      if(contract.relation === "conjunction") {
+        const currentChoiceFrame=buildCurrentChoiceFrame({familyId:"conjunction",routeId:"conjunction",
+          captureRevision,stagedRevision:choiceRevision,decisions:contract.decisions.filter(d=>d.id !== "relation"),
+          inputs:CAPTURE_ROLES.map(role=>({role,presence:getValidatedCapture(role)?"captured":"missing",
+            applicability:contract.operationSelections.leftContextAbsent && ["adjoined","dependent"].includes(role)?"inactive":"relevant",
+            required:role === "principal" || role === "adjoined" && !contract.operationSelections.leftContextAbsent})),
+          facts:contract.derived,outcome:{readyToMake:contract.authorizationStatus === "authorized",reasons:contract.diagnostics},
+          provenance:{owner:"conjunction",sourceReferences:["Andrews §§52.1–52.4"]}});
+        issuedChoiceFrames.set(currentChoiceFrame,{captureRevision,choiceRevision,signature:choiceSignature(selections)});
+        contract=Object.freeze({...contract,currentChoiceFrame});
+      }
       return contract;
     }
 
@@ -6518,6 +6344,7 @@ export function createClassicalClauseRelationControllerGlobals(
       isRelationAvailabilityContract,
       buildDecisionContract,
       transitionComparisonChoice,
+      transitionConjunctionChoice,
       preserveComparisonCaptureChoices(selections, role) {
         const contract = buildDecisionContract(selections);
         return contract.relation === "comparison" && (contract.currentChoiceFrame
@@ -6528,7 +6355,7 @@ export function createClassicalClauseRelationControllerGlobals(
       isCurrentChoiceFrame,
       preview(selections = {}) {
         const previewChoiceRevision = choiceRevision;
-        const migrated = selections.relation === "comparison" && isCurrentComparisonRoute(selections.comparisonRoute);
+        const migrated = selections.relation === "conjunction" || selections.relation === "comparison" && isCurrentComparisonRoute(selections.comparisonRoute);
         const parents = CAPTURE_ROLES.map(role => [role, getValidatedCapture(role)?.canonicalResult || null]);
         const leases = [], result = compose(selections, true, leases);
         if (result?.authorizationStatus !== "authorized" || !leases.length) return null;
