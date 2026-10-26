@@ -3479,6 +3479,35 @@ export function createClassicalNahuatlSupplementationApi(
     return null;
   }
 
+  // §50.3: a locative predicate gains a referring subject under omitted
+  // cah/catca. Its original adverbial dummy is never made referential.
+  function getClassicalReducedCopulaPredicateSource(source) {
+    if (targetObject.isClassicalNahuatlRelationalResult?.(source) !== true
+      || source.sourceFrame?.subjectMode !== "adverbialized"
+      || source.sourceFrame?.adverbialSubject?.subjectHasReferent !== false
+      || !["locative", "direction", "specific-location", "far-bank",
+        "direction-toward", "downward-direction"].includes(source.relationalKind)) return null;
+    return source;
+  }
+
+  function buildReducedCopulaPredicationFrame(principalClause, supplementClause, options) {
+    if (options.referenceMode !== "reduced-copula"
+      || options.headRole !== "subject" || options.contactRole !== "subject"
+      || options.order !== "principal-first" || options.adjunctor !== "none"
+      || supplementClause.unitKind !== "nnc"
+      || supplementClause.subject?.participantFrame?.hasReferent !== true) return null;
+    const predicate = getClassicalReducedCopulaPredicateSource(clauseEnvelopeSources.get(principalClause));
+    const subject = clauseEnvelopeSources.get(supplementClause);
+    if (!predicate || !subject) return null;
+    return Object.freeze({kind: "classical-nahuatl-reduced-copula-predication-frame",
+      sourceSection: "50.3", relationship: "locative-predicate-with-subject-under-omitted-copula",
+      canonicalPredicate: predicate, canonicalSubject: subject,
+      predicateClause: principalClause, subjectClause: supplementClause,
+      subjectParticipant: supplementClause.subject,
+      omittedCopula: "cah-or-catca", tenseSpecified: false,
+      originalAdverbialNonreferential: true, identityUnified: false});
+  }
+
   function buildDesignatingLocativeSupplementFrame(
     principalClause, supplementClause, principalHead, supplementContact,
     {referenceMode, headRole, contactRole, principalContinuationFrames = []} = {},
@@ -4176,7 +4205,7 @@ export function createClassicalNahuatlSupplementationApi(
       contactRole,
       options.supplementObjectId
     );
-    if (!["shared", "included", "absolute-topic"].includes(referenceMode)) {
+    if (!["shared", "included", "absolute-topic", "reduced-copula"].includes(referenceMode)) {
       return blockedSupplementationFrame("unknown-supplementation-reference-mode", {
         principalClause,
         supplementClause,
@@ -4216,13 +4245,17 @@ export function createClassicalNahuatlSupplementationApi(
         identityUnified: false, targetRemainsNonreferential: true,
         sourceActorReclassified: false, specificSupplementPersonNumberPreserved: true,
       }) : null;
+    const reducedCopulaPredicationFrame = buildReducedCopulaPredicationFrame(
+      principalClause, supplementClause, {referenceMode, headRole, contactRole, order, adjunctor});
+    if (referenceMode === "reduced-copula" && !reducedCopulaPredicationFrame)
+      return blockedSupplementationFrame("reduced-copula-authentic-locative-and-referring-nnc-required", {principalClause, supplementClause});
     const designatingLocativeSupplementFrame = buildDesignatingLocativeSupplementFrame(
       principalClause, supplementClause, principalHead, supplementContact,
       {referenceMode, headRole, contactRole,
         principalContinuationFrames: Array.isArray(options.principalContinuationFrames)
           ? options.principalContinuationFrames : []},
     );
-    if (!designatingLocativeSupplementFrame
+    if (!designatingLocativeSupplementFrame && !reducedCopulaPredicationFrame
       && ((!absoluteTopicContext && !specificityDomainRestrictionFrame && principalHead.participantFrame?.hasReferent === false)
         || (["shared", "absolute-topic"].includes(referenceMode)
           && supplementContact?.participantFrame?.hasReferent === false))) {
@@ -5039,7 +5072,7 @@ export function createClassicalNahuatlSupplementationApi(
       headRole,
       supplementContactRole: contactRole,
       principalHead,
-      supplementContact: referenceMode === "shared"
+      supplementContact: ["shared", "reduced-copula"].includes(referenceMode)
         ? supplementContact
         : {
             id: "whole-supplement",
@@ -5047,16 +5080,19 @@ export function createClassicalNahuatlSupplementationApi(
             features: parsePersonNumber("3sg"),
           },
       principalReferenceId: principalHead.referenceId,
-      supplementReferenceId: referenceMode === "shared"
+      supplementReferenceId: ["shared", "reduced-copula"].includes(referenceMode)
         ? supplementContact.referenceId
         : supplementClause.referenceId,
       capturedContinuationContactsJoined,
       specificityDomainRestrictionFrame,
       ...(designatingLocativeSupplementFrame ? {designatingLocativeSupplementFrame} : {}),
+      ...(reducedCopulaPredicationFrame ? {reducedCopulaPredicationFrame} : {}),
       referenceIdentityUnified: referenceMode === "shared"
         ? !specificityDomainRestrictionFrame && !designatingLocativeSupplementFrame && sharedReferencesMatch
         : false,
-      referenceRelationship: designatingLocativeSupplementFrame
+      referenceRelationship: reducedCopulaPredicationFrame
+        ? reducedCopulaPredicationFrame.relationship
+        : designatingLocativeSupplementFrame
         ? designatingLocativeSupplementFrame.relationship
         : specificityDomainRestrictionFrame
         ? specificityDomainRestrictionFrame.relationship
@@ -7214,6 +7250,7 @@ export function createClassicalNahuatlSupplementationApi(
     buildClassicalNahuatlNegativeAcPluralFrame,
     isClassicalNahuatlNegativeAcPluralFrame,
     buildClassicalNahuatlNegativeAcPluralParadigm,
+    getClassicalReducedCopulaPredicateSource,
     buildClassicalNahuatlSupplementationContextRecord,
     isClassicalNahuatlSupplementationContextRecord,
     buildClassicalNahuatlSupplementationAdverbialModifierFrame,

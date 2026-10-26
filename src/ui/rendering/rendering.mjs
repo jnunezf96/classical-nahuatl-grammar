@@ -37528,6 +37528,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         return comparisonExpressions[decisionId][normalized];
       }
       const exactLabels = {
+        "reduced-copula": "Locative predicate with subject (copula omitted)",
         "supplement-possessor": "Possessor in the description",
         "ownerhood:nnc-source": "ownership",
         "ownerhood-nnc-source": "ownership",

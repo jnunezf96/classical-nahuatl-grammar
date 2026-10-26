@@ -1,0 +1,47 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {createRuntimeInstance} from '../runtime/create_runtime.mjs';
+import {createClassicalClauseRelationControllerGlobals} from '../application/classical/clause_relation_controller.mjs';
+const r=(await createRuntimeInstance({documentObject:{getElementById:()=>null,addEventListener(){}}})).runtimeObject;
+const locative=(stemId='pa-direction',embed='ōm',sourceKind='nounstem')=>r.executeClassicalGrammarApplicationRequest({operationId:'nnc:relational',args:[{nounstem:{kind:'classical-nahuatl-nnc-nounstem-request',stemId,operation:'relational-nnc',formation:'option-two',sourceKind,sourceFormation:'plain-nounstem',sourceMode:'embed-matrix',sourceStem:embed+'-pa',sourceEmbedStem:embed,sourceMatrixStem:'pa'},state:'absolutive',subjectMode:'adverbialized',subjectId:'3common'}]}).canonicalResult;
+const s=r.buildClassicalNahuatlPronominalNncSourceFrame({stem:'īn'});
+const op=r.buildClassicalNahuatlPronominalNncOperationFrame(s,{subject:'3common'});
+const subject=r.executeClassicalGrammarApplicationRequest({operationId:'nnc:pronominal',args:[s,op]}).canonicalResult;
+const choices={relation:'supplementation',supplementationReferenceMode:'reduced-copula',supplementationHeadRole:'subject',supplementationContactRole:'subject',supplementationOrder:'principal-first'};
+test('Andrews50.3 admits exact locative predicate and subject without making the adverbial referential',()=>{
+ const loc=locative();assert.equal(loc.authorizationStatus,'authorized');assert.ok(subject,JSON.stringify(op));assert.equal(r.getClassicalReducedCopulaPredicateSource?.(loc),loc,'predicate API');
+ const c=createClassicalClauseRelationControllerGlobals(r).createClassicalClauseRelationController();
+ assert.equal(c.captureCurrentResult('principal',loc).authorizationStatus,'authorized');c.captureCurrentResult('adjoined',subject);
+ const contract=c.buildDecisionContract(choices);assert.equal(contract.authorizationStatus,'authorized',contract.blockReason+JSON.stringify(contract.diagnostics));
+ const out=c.compose(choices);assert.equal(out.authorizationStatus,'authorized',out.blockReason);const made=out.canonicalResult;
+ assert.equal(made.surfaceRealization,'Ōmpa īn.');
+ const license=made.referenceFrame.reducedCopulaPredicationFrame;
+ assert.equal(license.canonicalPredicate,loc);assert.equal(license.canonicalSubject,subject);
+ assert.equal(made.referenceFrame.referenceIdentityUnified,false);
+ assert.equal(made.referenceFrame.supplementContact,made.supplementClause.subject);
+ assert.equal(made.referenceFrame.supplementContact.category,'3common');
+ assert.equal(r.getClassicalReducedCopulaPredicateSource({...loc}),null);
+ const direct=q=>r.evaluateClassicalNahuatlSupplementationOperation({operationKind:'relation',principalClause:made.principalClause,supplementClause:made.supplementClause,options:{referenceMode:'reduced-copula',headRole:'subject',supplementContactRole:'subject',order:'principal-first',adjunctor:'none',...q}});
+ assert.equal(direct({referenceMode:'shared'}).authorizationStatus,'blocked');
+ assert.equal(direct({order:'supplement-first'}).authorizationStatus,'blocked');
+ assert.equal(direct({adjunctor:'in'}).authorizationStatus,'blocked');
+ assert.equal(loc.sourceFrame.adverbialSubject.subjectHasReferent,false);
+ assert.equal(r.getClassicalNahuatlSupplementationClauseSourceFrame(made.principalClause),loc);
+ assert.equal(r.getClassicalNahuatlSupplementationClauseSourceFrame(made.supplementClause),subject);
+ assert.equal(c.buildDecisionContract({...choices,supplementationReferenceMode:'shared'}).authorizationStatus,'blocked');
+ assert.equal(c.captureCurrentResult('principal',{...loc}).authorizationStatus,'blocked');
+ const frequency=locative('pa-frequency','ōm','numeral');assert.equal(frequency.authorizationStatus,'authorized');
+ c.captureCurrentResult('principal',frequency);assert.equal(c.compose(choices).authorizationStatus,'blocked');
+});
+
+test('new relationship preserves an existing possessed directional principal contact',()=>{
+ const loc=r.executeClassicalGrammarApplicationRequest({operationId:'nnc:relational',args:[{nounstem:{kind:'classical-nahuatl-nnc-nounstem-request',stemId:'pa-direction',operation:'relational-nnc',formation:'option-two',sourceKind:'nounstem',sourceFormation:'plain-nounstem',sourceMode:'embed-matrix',sourceStem:'ilhuica-pa',sourceEmbedStem:'ilhuica',sourceMatrixStem:'pa'},state:'possessive',possessorId:'3sg',subjectMode:'adverbialized',subjectId:'3common'}]}).canonicalResult;
+ assert.equal(loc.authorizationStatus,'authorized');
+ const op=r.buildClassicalNahuatlPronominalNncOperationFrame(s,{subject:'3sg'});
+ const person=r.executeClassicalGrammarApplicationRequest({operationId:'nnc:pronominal',args:[s,op]}).canonicalResult;
+ const c=createClassicalClauseRelationControllerGlobals(r).createClassicalClauseRelationController();
+ c.captureCurrentResult('principal',loc);c.captureCurrentResult('adjoined',person);
+ const q={...choices,supplementationReferenceMode:'shared',supplementationHeadRole:'possessor'};
+ assert.equal(c.buildDecisionContract(q).authorizationStatus,'authorized');
+ assert.equal(c.compose(q).authorizationStatus,'authorized');
+});

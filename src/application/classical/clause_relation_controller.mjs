@@ -3175,10 +3175,15 @@ export function createClassicalClauseRelationControllerGlobals(
           // It can fill a saying object's included direct-speech contact.
           && !getCapturedSupplementationContinuation("adjoined"),
         );
+        const reducedCopulaPredicate = targetObject.getClassicalReducedCopulaPredicateSource?.(
+          getValidatedCapture("principal")?.canonicalResult);
         const referenceMode = resolveChoice({
           id: "supplementation-reference-mode",
+          expose: Boolean(reducedCopulaPredicate) || !typedInterrogativeSupplement,
           key: "supplementationReferenceMode",
-          values: typedInterrogativeSupplement
+          values: reducedCopulaPredicate
+            ? ["reduced-copula", "shared", "included", "absolute-topic"]
+            : typedInterrogativeSupplement
             ? ["shared"]
             : ["shared", "included", "absolute-topic"],
           fallback: "shared",
@@ -3219,6 +3224,7 @@ export function createClassicalClauseRelationControllerGlobals(
             : []).filter(role => role !== "subject"
               || principalPreview?.subject?.participantFrame?.hasReferent !== false
               || referenceMode === "absolute-topic"
+              || referenceMode === "reduced-copula" && Boolean(reducedCopulaPredicate)
               || referenceMode === "shared" && principalPreview?.transformedImpersonalSubjectDomainEligible === true);
         // The canonical owner distinguishes the designating object's locative
         // harmony from referential agreement and from ordinary adverbial use.
@@ -3321,7 +3327,8 @@ export function createClassicalClauseRelationControllerGlobals(
         const interrogativeSupplement = Boolean(
           referenceMode === "shared" && typedInterrogativeSupplement,
         );
-        const orderValues = markerSemantic === "ca"
+        const orderValues = referenceMode === "reduced-copula" ? ["principal-first"]
+          : markerSemantic === "ca"
           ? ["supplement-first"]
           : interrogativeSupplement
             ? ["supplement-first", "discontinuous"]
@@ -4104,6 +4111,7 @@ export function createClassicalClauseRelationControllerGlobals(
         supplementableHeadPresent: Boolean(
           supplementationEnvelope?.subject
             && supplementationEnvelope.subject.participantFrame?.hasReferent !== false
+          || Boolean(targetObject.getClassicalReducedCopulaPredicateSource?.(capture?.canonicalResult))
           || supplementationEnvelope?.transformedImpersonalSubjectDomainEligible === true
           || supplementationEnvelope?.objects?.length
           || supplementationEnvelope?.possessor,

@@ -1,5 +1,9 @@
 # Version History
 
+## v1.2.40 — Andrews Reduced Copula
+
+- Repairs the locative predicate/subject handoff for In ōmpa īn cencah tōna (§50.3) within existing controls, preserving exact sources and distinct reference identities.
+
 ## v1.2.39 — Andrews Coyote Walking
 
 - Repairs the contextual coyō embedding analysis for cocoyōnehnemi (§53.1.1), preserving exact Source custody and unclaimed broader paradigms.

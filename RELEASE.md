@@ -1,16 +1,17 @@
-# Grammar OS v1.2.39 release
+# Grammar OS v1.2.40 release
 
-Release name: **Andrews Coyote Walking**
+Release name: **Andrews Reduced Copula**
 
-Browser build: **20261025-coyote-walking-58**
+Browser build: **20261025-ompa-reduced-copula-59**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Supplies Andrews §53.1.1's contextual coyō Source analysis for short-prefix similarity with neh-nemi, producing cocoyōnehnemi through the existing comparison controls.
-- Preserves the exact nominal Source and its restricted citation status; no possessive subclass or general paradigm is invented.
-- Requires the documented contextual reduplication at execution; copied, incompatible and incomplete requests stay rejected.
+- Repairs the existing Combine Results handoff for Andrews §50.3's locative predicate with a subject under omitted cah/catca.
+- Produces In ōmpa īn cencah tōna through existing Analysis controls, retaining the exact locative, subject, adverb, verb and marker Results.
+- Keeps the original adverbial subject nonreferential and does not identify it with the supplied subject. Copied and incompatible sources remain rejected.
+- Adds no panel. This construction's reload persistence remains unclaimed.
 
 ## Review scope and current limits
 
@@ -37,7 +38,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.39/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.40/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.
