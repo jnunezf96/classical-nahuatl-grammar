@@ -34,3 +34,57 @@ test('public explicit Yes policy does not replace owner omitted-value semantics'
  const op=r.evaluateClassicalNahuatlComparison({routeId:'equality-iuhqui',slots});assert.equal(op.authorizationStatus,'authorized');assert(!op.selectedResult.includes('īc'));
  const {c,s}=setup('equality-iuhqui',false);assert.equal(c.buildDecisionContract(s).authorizationStatus,'blocked');
 });
+for(const route of routes)test(`${route}: transition authority preserves choices and rejects stale/copy inputs`,()=>{
+ const {c,s}=setup(route);let selections={...s,icRelation:'yes'};
+ const frame=c.buildDecisionContract(selections).currentChoiceFrame;
+ const clear=c.transitionComparisonChoice({selections,expectedFrame:frame,intent:{type:'clear-capture',role:'dependent'}});
+ assert.equal(clear.authorizationStatus,'authorized');assert.equal(clear.selections.comparisonRoute,route);assert.equal(clear.selections.icRelation,'yes');
+ assert.equal(clear.contract.currentChoiceFrame.outcome.readyToMake,false);
+ const stale=c.transitionComparisonChoice({selections,expectedFrame:frame,intent:{type:'set-choice',key:'icRelation',value:'no'}});assert.equal(stale.authorizationStatus,'blocked');
+ selections=clear.selections;const current=clear.contract.currentChoiceFrame;
+ const copied=c.transitionComparisonChoice({selections,expectedFrame:{...current},intent:{type:'set-choice',key:'icRelation',value:'no'}});assert.equal(copied.authorizationStatus,'blocked');
+ const off=c.transitionComparisonChoice({selections,expectedFrame:current,intent:{type:'set-choice',key:'icRelation',value:'no'}});
+ assert.equal(off.contract.currentChoiceFrame.outcome.readyToMake,true);selections=off.selections;
+ const fake=c.transitionComparisonChoice({selections,expectedFrame:off.contract.currentChoiceFrame,intent:{type:'capture',role:'dependent',result:{...parents.dependent}}});assert.equal(fake.authorizationStatus,'blocked');
+ const capture=c.transitionComparisonChoice({selections,expectedFrame:off.contract.currentChoiceFrame,intent:{type:'capture',role:'dependent',result:parents.dependent}});
+ assert.equal(capture.authorizationStatus,'authorized');assert.equal(capture.contract.currentChoiceFrame.inputs.find(i=>i.slot==='dimension').contribution,'retained-not-included');assert.equal(c.getCapturedCanonicalResult('dependent'),parents.dependent);
+ const invalid=c.transitionComparisonChoice({selections:capture.selections,expectedFrame:capture.contract.currentChoiceFrame,intent:{type:'set-choice',key:'icRelation',value:'invalid'}});assert.equal(invalid.contract.authorizationStatus,'blocked');assert.equal(invalid.selections.icRelation,'invalid');
+});
+test('pilot route changes invalidate old intents and delegate nonpilot contract without creating a second grammar',()=>{
+ const {c,s}=setup('equality-iuhqui');const start=c.buildDecisionContract(s).currentChoiceFrame;
+ const next=c.transitionComparisonChoice({selections:s,expectedFrame:start,intent:{type:'set-choice',key:'comparisonRoute',value:'equality-ihuan'}});
+ assert.equal(next.contract.derived.comparisonRoute,'equality-ihuan');
+ const stale=c.transitionComparisonChoice({selections:next.selections,expectedFrame:start,intent:{type:'clear-capture',role:'principal'}});assert.equal(stale.authorizationStatus,'blocked');assert.equal(c.getCapturedCanonicalResult('principal'),parents.principal);
+ const out=c.transitionComparisonChoice({selections:next.selections,expectedFrame:next.contract.currentChoiceFrame,intent:{type:'set-choice',key:'comparisonRoute',value:'size-ixquich'}});assert.equal(out.contract.currentChoiceFrame,undefined);assert.equal(out.contract.derived.comparisonRoute,'size-ixquich');
+ const reenter=c.transitionComparisonChoice({selections:out.selections,intent:{type:'set-choice',key:'comparisonRoute',value:'equality-iuhqui'}});assert.equal(reenter.contract.currentChoiceFrame.routeId,'equality-iuhqui');
+});
+import {comparisonCapturePresentation} from '../ui/composition/structure_design.mjs';
+test('capture presentation consumes issued description instead of reconstructing choice conditions',()=>{
+ const {c,s}=setup('equality-iuhqui');const contract=c.buildDecisionContract({...s,icRelation:'no'});
+ const display={...contract,operationSelections:{icRelation:'yes'}};
+ assert.deepEqual(comparisonCapturePresentation(display,'dependent'),{required:false,retainedOnly:true});
+});
+import {readFileSync} from 'node:fs';
+import vm from 'node:vm';
+import {Element} from './helpers/organization_dom.mjs';
+test('capability choice surface forwards the same rendered frame to each control',()=>{
+ const code=readFileSync(new URL('../ui/rendering/rendering.mjs',import.meta.url),'utf8');const start=code.indexOf('    function syncClassicalClauseRelationCapabilityChoices(');const end=code.indexOf('\n    function ',start+10);
+ const {c,s}=setup('equality-iuhqui');const contract=c.buildDecisionContract(s);const seen=[];const host=new Element();
+ const ctx={targetObject:{document:{getElementById:()=>host}},clearOwnerChoicePortals(){},createClassicalClauseRelationDecisionControl(decision,frame){seen.push(frame);return new Element();}};
+ vm.runInNewContext(code.slice(start,end),ctx);ctx.syncClassicalClauseRelationCapabilityChoices(contract,[]);
+ assert(seen.length>0);assert(seen.every(frame=>frame===contract.currentChoiceFrame));
+});
+test('a preview becomes stale when choices change even though captured parents do not',()=>{
+ const {c,s}=setup('equality-iuhqui');const preview=c.preview({...s,icRelation:'yes'});assert(preview?.isCurrent());
+ const selections={...s,icRelation:'yes'},frame=c.buildDecisionContract(selections).currentChoiceFrame;
+ c.transitionComparisonChoice({selections,expectedFrame:frame,intent:{type:'set-choice',key:'icRelation',value:'no'}});
+ assert.equal(preview.isCurrent(),false);
+});
+test('leaving the pilot rejects its old callbacks instead of delegating them to legacy mutation',()=>{
+ const {c,s}=setup('equality-iuhqui');const frame=c.buildDecisionContract(s).currentChoiceFrame;
+ const out=c.transitionComparisonChoice({selections:s,expectedFrame:frame,intent:{type:'set-choice',key:'comparisonRoute',value:'size-ixquich'}});
+ for(const selections of [out.selections,{relation:'conjunction'}])for(const intent of [{type:'clear-capture',role:'principal'},{type:'capture',role:'principal',result:parents.adjoined},{type:'set-choice',key:'icRelation',value:'no'}]){
+  const stale=c.transitionComparisonChoice({selections,expectedFrame:frame,intent});assert.equal(stale.handled,true);assert.equal(stale.authorizationStatus,'blocked');assert.equal(c.getCapturedCanonicalResult('principal'),parents.principal);
+ }
+ assert.equal(c.transitionComparisonChoice({selections:out.selections,intent:{type:'set-choice',key:'adjunctorIn',value:'no'}}).handled,false);
+});

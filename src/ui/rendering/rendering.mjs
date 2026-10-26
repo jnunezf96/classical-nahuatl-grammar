@@ -16,14 +16,14 @@ import { normalizeClassicalNahuatlIntroductoryModifier }
 import {createClassicalWorkspaceProvenanceProjector}
   from '../composer/result_provenance.mjs?v=20261012-position-provenance-7';
 import {resolvePathTargets, setPathHistoryPresentation} from '../composition/path_presentation.mjs?v=20261011-path-targets-7&routeShapes=20261021-1&writtenPreview=20261022-1&writingSource=20261022-1';
-import {setStructureDesignContext, setStructureComparison, projectCanonicalStructure, projectClauseStructure, comparisonCapturePresentation, projectOperationShape, projectCapturedOperationShape, compareCanonicalStructures} from '../composition/structure_design.mjs?icDimension=20261026-1&reasonPresentation=20261026-1&nucleusEdit=20261024-9&clauseHarmony=20261023-5&v=20261011-structure-15&routeShapes=20261021-1&clauseCoordinate=20261021-1&resetEligibility=20261022-1&writingSource=20261022-1&makePreview=20261022-1&fixedChoices=20261022-1&interfaceRelease=1.2.36';
+import {setStructureDesignContext, setStructureComparison, projectCanonicalStructure, projectClauseStructure, comparisonCapturePresentation, projectOperationShape, projectCapturedOperationShape, compareCanonicalStructures} from '../composition/structure_design.mjs?choiceArchitecture=20261026-4&icDimension=20261026-1&reasonPresentation=20261026-1&nucleusEdit=20261024-9&clauseHarmony=20261023-5&v=20261011-structure-15&routeShapes=20261021-1&clauseCoordinate=20261021-1&resetEligibility=20261022-1&writingSource=20261022-1&makePreview=20261022-1&fixedChoices=20261022-1&interfaceRelease=1.2.36';
 import {setSourceCandidatePresentation, projectSavedSourceCandidate, setRouteChoicePresentation, projectOfferedOperationShapes} from '../composition/candidate_design.mjs?v=20261021-route-shapes-1';
 import {notifyExplicitMakeResult,focusNativeChoice} from '../composition/flow_design.mjs?v=20261022-reset-eligibility-1&writingSource=20261022-1&makePreview=20261022-1&fixedChoices=20261022-1';
 import {getBuildOperationGroup,getBuildOperationOrder,inventoryOptionReference,formatBuildOperationLabel} from '../composition/build_navigation_model.mjs?v=20261021-ending-reference-2&nominalReload=20261024-4&interfaceRelease=1.2.36';
 import {createConstructionSession} from '../composition/construction_session.mjs?stemReload=20261024-2&v=20261012-position-12&acceptedBuild=20261023-1';
 import {projectConstructionValue} from '../composition/construction_position.mjs?stemReload=20261024-2&v=20261012-position-12&acceptedBuild=20261023-1';
 import {executeConstructionPacket, freezeConstructionData, getConstructionPacketOrigin, captureConstructionParents, matchesConstructionWitness, orderConstructionSlots, getConstructionFixedChoices, getConstructionLayerReadiness, getConstructionParticleHostInput} from '../composition/construction_packet.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1&interfaceRelease=1.2.36';
-import {resolveResultEditTarget} from '../composition/result_editing.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&v=20261023-conjunction-1&interfaceRelease=1.2.36';
+import {resolveResultEditTarget} from '../composition/result_editing.mjs?choiceArchitecture=20261026-4&nucleusEdit=20261024-9&innerParticle=20261024-1&v=20261023-conjunction-1&interfaceRelease=1.2.36';
 import {canRebuildResultEdit,getResultEditReorder} from '../composition/result_edit_rebuild.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1&interfaceRelease=1.2.36';
 import {getNativeGrammarControls, getWritingSourcePresentation, setChoiceDesignContext, setAppliedRoutePresentation} from '../composition/choice_design.mjs?clickFeedback=20261023-1&coreStem=20261023-1&v=20261022-reset-eligibility-1&writingSource=20261022-1&fixedChoices=20261022-1';
 import { readClassicalSourceObjectRows, getClassicalSourceObjectControls,
@@ -37957,12 +37957,23 @@ export function createUiRenderingApi(targetObject = globalThis) {
             || "none"
       });
     }
+    function applyClassicalComparisonChoiceIntent(controller, intent, expectedFrame = null) {
+      const transition = controller.transitionComparisonChoice?.({selections:ClassicalClauseRelationSelections, expectedFrame, intent});
+      if (!transition?.handled) return false;
+      if (transition.authorizationStatus === "authorized") {
+        ClassicalClauseRelationSelections = Object.assign(Object.create(null), transition.selections);
+        ActiveClassicalClauseRelationResult = null;
+        ClassicalClauseRelationStatusMessage = "Comparison choices updated.";
+      } else {
+        ClassicalClauseRelationStatusMessage = transition.blockReason === "comparison-choice-stale-frame"
+          ? "The inputs changed. Review the current choices and try again."
+          : formatClassicalClauseRelationValue(transition.blockReason);
+      }
+      refreshClassicalClauseRelationWorkflow();
+      return true;
+    }
     function shouldPreserveClassicalComparisonCaptureChoices(controller, role) {
-      const contract = controller.buildDecisionContract(ClassicalClauseRelationSelections);
-      return contract.relation === "comparison"
-        && (contract.derived?.optionalCaptureRoles?.includes(role)
-          || (role === "dependent"
-            && contract.derived?.requiredCaptureRoles?.includes(role)));
+      return controller.preserveComparisonCaptureChoices(ClassicalClauseRelationSelections, role);
     }
     function resetClassicalClauseRelationSelections({
       preserveRelation = false
@@ -38074,10 +38085,13 @@ export function createUiRenderingApi(targetObject = globalThis) {
       ClassicalAdjectivalContactCaptureContexts.set(controller, context);
     }
 
-    function setClassicalClauseRelationDecision(decisionId = "", value = "") {
+    function setClassicalClauseRelationDecision(decisionId = "", value = "", expectedFrame = null) {
       const key = CLASSICAL_CLAUSE_RELATION_DECISION_KEYS[decisionId] || "";
       if (!key) return false;
       const normalizedValue = String(value || "").trim();
+      if (key !== "relation" && applyClassicalComparisonChoiceIntent(
+        getClassicalClauseRelationControllerForRendering(),
+        {type:"set-choice", key, value:normalizedValue}, expectedFrame)) return true;
       let nextRelationBindingId = "";
       let relationRoleRequired = false;
       if (key === "relation"
@@ -38385,7 +38399,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const select = targetObject.document?.getElementById?.("classical-construction-operation");
       if (select?.parentElement) compactClassicalChoiceMenu(select);
     }
-    function createClassicalClauseRelationDecisionControl(decision = null) {
+    function createClassicalClauseRelationDecisionControl(decision = null, currentChoiceFrame = null) {
       if (!decision || typeof targetObject.document === "undefined") {
         return null;
       }
@@ -38483,7 +38497,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       });
       select.value = renderedSelectedValue;
       select.addEventListener("change", () => {
-        setClassicalClauseRelationDecision(decision.id, select.value);
+        setClassicalClauseRelationDecision(decision.id, select.value, currentChoiceFrame);
       });
       field.append(label, select);
       if (decision.id === "additional-possessor-contact" && decision.reason) {
@@ -38514,7 +38528,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         || decision.id === "left-context"
         || decision.determinesCaptureRoles === true
       )).forEach(decision => {
-        const control = createClassicalClauseRelationDecisionControl(decision);
+        const control = createClassicalClauseRelationDecisionControl(decision, decisionContract.currentChoiceFrame);
         if (control) host.appendChild(control);
       });
       host.hidden = host.childElementCount === 0;
@@ -38546,8 +38560,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
         : formatClassicalClauseRelationValue(role);
       const facts = targetObject.document.createElement("div");
       facts.className = "grammar-inspector__facts";
-      const comparisonCapture = comparisonCapturePresentation(
-        controller.buildDecisionContract(ClassicalClauseRelationSelections), role);
+      const captureContract = controller.buildDecisionContract(ClassicalClauseRelationSelections);
+      const comparisonCapture = comparisonCapturePresentation(captureContract, role);
       facts.appendChild(createGrammarInspectorLine(
         "status",
         captureState.captured
@@ -38624,6 +38638,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           userRole: "clear-issued-result-capture",
           machineRole: "typed-capture-controller",
           onClick: () => {
+            if (applyClassicalComparisonChoiceIntent(controller, {type:"clear-capture", role}, captureContract.currentChoiceFrame)) return;
             const preserveComparisonChoices =
               shouldPreserveClassicalComparisonCaptureChoices(controller, role);
             controller.clearCapture(role);
@@ -38874,8 +38889,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const captureActions = targetObject.document.createElement("div");
       captureActions.className = "classical-whole-canvas-actions";
       captureActions.dataset.classicalClauseRelationCaptureActions = "true";
-      const captureActionRoles = !selectedRelation
-        ? []
+      const captureActionRoles = previewDecisionContract.currentChoiceFrame
+        ? previewDecisionContract.currentChoiceFrame.inputs.map(input=>input.role)
+        : !selectedRelation ? []
         : selectedRelation === "supplementation"
         ? Array.from(
             previewDecisionContract.derived?.requiredCaptureRoles || [
@@ -38894,6 +38910,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
           disabled: !(currentResult && currentSource?.ok),
           onClick: () => {
             ClassicalExplicitClauseRelationIntent = selectedRelation;
+            if (applyClassicalComparisonChoiceIntent(controller, {type:"capture", role, result:currentResult,
+              context:issueClassicalClauseRelationCurrentDiscourseSourceContextFrame(controller)}, previewDecisionContract.currentChoiceFrame)) return;
             const preserveComparisonChoices =
               shouldPreserveClassicalComparisonCaptureChoices(controller, role);
             const capture = controller.captureCurrentResult(
@@ -38966,8 +38984,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const captureGrid = targetObject.document.createElement("div");
       captureGrid.className = "classical-whole-canvas-lanes";
       captureGrid.dataset.classicalClauseRelationCaptures = "read-only";
-      const captureCardRoles = !selectedRelation
-        ? []
+      const captureCardRoles = previewDecisionContract.currentChoiceFrame
+        ? previewDecisionContract.currentChoiceFrame.inputs.map(input=>input.role)
+        : !selectedRelation ? []
         : selectedRelation === "supplementation"
         ? [
             ...captureActionRoles,
@@ -39009,7 +39028,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       }
       remainingDecisions.forEach(decision => {
         const control =
-          createClassicalClauseRelationDecisionControl(decision);
+          createClassicalClauseRelationDecisionControl(decision, decisionContract.currentChoiceFrame);
         if (control) decisionGrid.appendChild(control);
       });
       if (remainingDecisions.length) {

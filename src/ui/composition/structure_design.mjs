@@ -165,11 +165,9 @@ export function projectCanonicalStructure(r,exact,project,role='Source',seen=new
 // Presentation of the existing comparison contract; never changes capture custody.
 export function comparisonCapturePresentation(contract,role) {
   if(contract?.derived?.operationFamily!=='comparison')return null;
-  const required=contract.derived.requiredCaptureRoles?.includes(role)===true;
-  const retainedOnly=contract.derived.captureSlotLayout?.[role]==='dimension'
-    && ['equality-iuhqui','equality-ihuan','similarity-iuhqui-principal'].includes(contract.derived.comparisonRoute)
-    && contract.operationSelections?.icRelation==='no';
-  return {required,retainedOnly};
+  const input=contract.currentChoiceFrame?.inputs.find(input=>input.role===role);
+  return input ? {required:input.requirement==='required',retainedOnly:input.contribution==='retained-not-included'}
+    : {required:contract.derived.requiredCaptureRoles?.includes(role)===true,retainedOnly:false};
 }
 export function projectClauseStructure(r,controller,selections,project) {
   if(!controller?.getCapturedCanonicalResult || !controller?.buildDecisionContract)return null;

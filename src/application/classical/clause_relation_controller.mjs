@@ -1570,6 +1570,51 @@ export function createClassicalClauseRelationControllerGlobals(
     let supplementationReadinessPreview = null;
     const issuedRelationAvailabilityContracts = new WeakSet();
     let captureRevision = 0;
+    let choiceRevision = 0;
+    const issuedChoiceFrames = new WeakMap();
+    const choiceSignature = selections => JSON.stringify(Object.entries(selections || {}).sort(([a],[b])=>a.localeCompare(b)));
+    function isCurrentChoiceFrame(frame, selections) {
+      const receipt = frame && issuedChoiceFrames.get(frame);
+      return !!receipt && receipt.captureRevision === captureRevision
+        && receipt.choiceRevision === choiceRevision && receipt.signature === choiceSignature(selections);
+    }
+    function transitionComparisonChoice({selections = {}, expectedFrame = null, intent = {}} = {}) {
+      const current = selections.relation === "comparison" && isCurrentComparisonRoute(selections.comparisonRoute);
+      const entering = selections.relation === "comparison" && intent.type === "set-choice"
+        && intent.key === "comparisonRoute" && isCurrentComparisonRoute(intent.value);
+      const blocked = reason => Object.freeze({handled:true, authorizationStatus:"blocked", blockReason:reason,
+        selections, contract:buildDecisionContract(selections)});
+      // An old pilot control must never fall through into an unrelated legacy handler.
+      if (expectedFrame && (!current || !isCurrentChoiceFrame(expectedFrame, selections)))
+        return blocked("comparison-choice-stale-frame");
+      if (!current && !entering) return Object.freeze({handled:false});
+      if (current && !expectedFrame) return blocked("comparison-choice-stale-frame");
+      const next = {...selections};
+      if (intent.type === "set-choice") {
+        const fields = targetObject.getClassicalComparisonChoiceContract?.(selections.comparisonRoute)?.decisions.map(d=>d.key) || [];
+        if (intent.key !== "comparisonRoute" && !fields.includes(intent.key)) return blocked("comparison-choice-field-not-licensed");
+        if (intent.key === "comparisonRoute" && !getComparisonRouteInventory().some(route=>route.id===intent.value))
+          return blocked("comparison-choice-route-not-licensed");
+        if (intent.value) next[intent.key] = String(intent.value).trim();
+        else delete next[intent.key];
+      } else if (intent.type === "clear-capture" || intent.type === "capture") {
+        if (!Object.hasOwn(COMPARISON_CAPTURE_SLOT_LAYOUTS[selections.comparisonRoute] || {}, intent.role))
+          return blocked("comparison-choice-capture-role-not-licensed");
+        if (intent.type === "clear-capture") clearCapture(intent.role);
+        else {
+          // Comparison admission precedes mutation of generic clause capture.
+          const source = targetObject.buildClassicalComparisonSourceUnit?.({sourceResult:intent.result});
+          if (targetObject.isClassicalComparisonSourceUnit?.(source) !== true || source.authorizationStatus !== "authorized")
+            return blocked(source?.blockReason || "comparison-owner-issued-source-required");
+          const capture = captureCurrentResult(intent.role, intent.result, intent.context);
+          if (capture.authorizationStatus !== "authorized") return blocked(capture.blockReason);
+        }
+      } else return blocked("comparison-choice-intent-not-recognized");
+      choiceRevision += 1;
+      const selected = Object.freeze(next);
+      return Object.freeze({handled:true, authorizationStatus:"authorized", selections:selected,
+        contract:buildDecisionContract(selected)});
+    }
 
     function validateRole(role = "") {
       const normalizedRole = normalizeToken(role);
@@ -5508,8 +5553,9 @@ export function createClassicalClauseRelationControllerGlobals(
         const choices = resolveComparisonChoices(ownerContract, selections);
         if (ownerContract && choices) {
           const currentChoiceFrame = projectComparisonChoiceFrame({contract, ownerContract, choices,
-            captureRevision, stagedRevision: 0,
+            captureRevision, stagedRevision: choiceRevision,
             captures: Object.fromEntries(CAPTURE_ROLES.map(role=>[role, !!getValidatedCapture(role)]))});
+          issuedChoiceFrames.set(currentChoiceFrame, {captureRevision, choiceRevision, signature:choiceSignature(selections)});
           contract = Object.freeze({...contract, currentChoiceFrame});
         }
       }
@@ -6734,14 +6780,25 @@ export function createClassicalClauseRelationControllerGlobals(
       issueRelationAvailabilityContract,
       isRelationAvailabilityContract,
       buildDecisionContract,
+      transitionComparisonChoice,
+      preserveComparisonCaptureChoices(selections, role) {
+        const contract = buildDecisionContract(selections);
+        return contract.relation === "comparison" && (contract.currentChoiceFrame
+          ? contract.currentChoiceFrame.inputs.some(input=>input.role === role)
+          : contract.derived?.optionalCaptureRoles?.includes(role)
+            || (role === "dependent" && contract.derived?.requiredCaptureRoles?.includes(role)));
+      },
+      isCurrentChoiceFrame,
       preview(selections = {}) {
+        const previewChoiceRevision = choiceRevision;
+        const migrated = selections.relation === "comparison" && isCurrentComparisonRoute(selections.comparisonRoute);
         const parents = CAPTURE_ROLES.map(role => [role, getValidatedCapture(role)?.canonicalResult || null]);
         const leases = [], result = compose(selections, true, leases);
         if (result?.authorizationStatus !== "authorized" || !leases.length) return null;
         const exact = result.canonicalResult;
         const surface = result.presentation?.surface || exact?.sentenceSurfaceDisplay || exact?.surfaceRealization || exact?.surface || "";
         return Object.freeze({surface, canonicalResult: exact, isCurrent: () =>
-          parents.every(([role, parent]) => (getValidatedCapture(role)?.canonicalResult || null) === parent)
+          (!migrated || previewChoiceRevision === choiceRevision) && parents.every(([role, parent]) => (getValidatedCapture(role)?.canonicalResult || null) === parent)
           && leases.every(lease => targetObject.isClassicalGrammarApplicationPreview?.(lease) === true)});
       },
       compose,

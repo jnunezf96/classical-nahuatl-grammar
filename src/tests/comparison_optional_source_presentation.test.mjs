@@ -28,7 +28,7 @@ test('captured optional comparison Source is inspectable and clears through the 
     refreshClassicalClauseRelationWorkflow(){const contract=c.buildDecisionContract(ctx.ClassicalClauseRelationSelections);session.stage({source:cal,route:{operation:'comparison'},slots:[{role:'principal',exact:cal}],choices:{...ctx.ClassicalClauseRelationSelections},legalMoves:[],ready:contract.authorizationStatus==='authorized',execution:{choices:{...ctx.ClassicalClauseRelationSelections},signature:JSON.stringify(ctx.ClassicalClauseRelationSelections)}});state={...projectClauseStructure(r,c,ctx.ClassicalClauseRelationSelections,project),sourceScope:cal,bindingScope:binding,operation:'clause:comparison',bindingId:'comparison:principal'};},
   };
   vm.createContext(ctx);
-  for(const name of ['shouldPreserveClassicalComparisonCaptureChoices','resetClassicalClauseRelationSelections','appendClassicalClauseRelationCaptureCard']){const start=code.indexOf(`    function ${name}(`);assert.ok(start>=0);vm.runInContext(code.slice(start,code.indexOf('\n    function ',start+20)),ctx);}
+  for(const name of ['applyClassicalComparisonChoiceIntent','shouldPreserveClassicalComparisonCaptureChoices','resetClassicalClauseRelationSelections','appendClassicalClauseRelationCaptureCard']){const start=code.indexOf(`    function ${name}(`);assert.ok(start>=0);vm.runInContext(code.slice(start,code.indexOf('\n    function ',start+20)),ctx);}
   ctx.refreshClassicalClauseRelationWorkflow();
   assert.deepEqual(state.sources.map(s=>[s.role,s.exact]),[['principal',cal],['adjoined',tepe]]);
   assert.equal(state.sources.find(s=>s.role==='adjoined').optionalCapture,true);

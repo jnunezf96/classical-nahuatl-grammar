@@ -1,15 +1,17 @@
-# Grammar OS v1.2.52 release
+# Grammar OS v1.2.53 release
 
-Release name: **First Source Guidance**
+Release name: **Current Comparison Choices**
 
-Browser build: **20261026-first-source-71**
+Browser build: **20261026-current-choices-72**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Gives first-time Source entry an accurate Apply instruction without referring to a nonexistent previous Source.
-- Retains the existing warning when editing an already committed Source.
+- Centralizes permitted choices and conditional input requirements for the iuhqui/īhuān equality and principal-iuhqui comparison routes.
+- Preserves compatible choices through capture changes and distinguishes a retained dimension from one used in the construction.
+- Rejects stale choice actions and invalidates comparison previews when selections change, while preserving explicit Make and accepted Results.
+- Rebuilds this bounded family's coordination inside the existing interface; other families retain their current owners and paths.
 
 ## Review scope and current limits
 
@@ -36,7 +38,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.52/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.53/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.

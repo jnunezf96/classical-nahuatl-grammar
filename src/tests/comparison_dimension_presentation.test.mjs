@@ -42,7 +42,7 @@ test('clearing required dimension preserves selected comparison and blocks only 
  createGrammarInspectorLine:(label,value)=>{lines.push([label,value]);return new Element();},
  appendClassicalWholeCanvasPanelActionRow(card,actions){clear=actions.find(a=>a.action==='clear-clause-relation-dependent')?.onClick||clear;},
  refreshClassicalClauseRelationWorkflow(){contract=c.buildDecisionContract(ctx.ClassicalClauseRelationSelections);session.stage({source:principal,route:{operation:'comparison'},slots:[{role:'principal',exact:principal}],choices:{...ctx.ClassicalClauseRelationSelections},legalMoves:[],ready:contract.authorizationStatus==='authorized',execution:{choices:{...ctx.ClassicalClauseRelationSelections},signature:JSON.stringify(ctx.ClassicalClauseRelationSelections)}});}
- };vm.createContext(ctx);extract(ctx,'shouldPreserveClassicalComparisonCaptureChoices');extract(ctx,'resetClassicalClauseRelationSelections');extract(ctx,'appendClassicalClauseRelationCaptureCard');
+ };vm.createContext(ctx);extract(ctx,'applyClassicalComparisonChoiceIntent');extract(ctx,'shouldPreserveClassicalComparisonCaptureChoices');extract(ctx,'resetClassicalClauseRelationSelections');extract(ctx,'appendClassicalClauseRelationCaptureCard');
  const parent=new Element();ctx.appendClassicalClauseRelationCaptureCard(parent,c,'dependent',{captured:true,unitType:'nnc',surface:'chicāhuac'},'dimension');assert.equal(typeof clear,'function');clear();
  assert.equal(ctx.ClassicalClauseRelationSelections.comparisonRoute,'equality-iuhqui');assert.equal(ctx.ClassicalClauseRelationSelections.icRelation,'yes');
  assert.equal(c.getCapturedCanonicalResult('dependent'),null);assert.equal(contract.authorizationStatus,'blocked');assert.ok(contract.derived.requiredCaptureRoles.includes('dependent'));
@@ -51,7 +51,7 @@ test('clearing required dimension preserves selected comparison and blocks only 
  assert.equal(c.captureCurrentResult('dependent',{...dimension}).authorizationStatus,'blocked');
  ctx.ClassicalClauseRelationSelections.icRelation='no';ctx.refreshClassicalClauseRelationWorkflow();assert.equal(contract.authorizationStatus,'authorized');
  ctx.ClassicalClauseRelationSelections.icRelation='yes';
- Object.assign(ctx,{controller:c,role:'dependent',currentResult:dimension,selectedRelation:'comparison',issueClassicalClauseRelationCurrentDiscourseSourceContextFrame:()=>null});
+ Object.assign(ctx,{previewDecisionContract:c.buildDecisionContract(ctx.ClassicalClauseRelationSelections),controller:c,role:'dependent',currentResult:dimension,selectedRelation:'comparison',issueClassicalClauseRelationCurrentDiscourseSourceContextFrame:()=>null});
  const nativeStart=code.indexOf('      captureActionRoles.forEach(role => {');
  const actionStart=code.indexOf('onClick: () => {',nativeStart)+'onClick: '.length;
  const actionEnd=code.indexOf('\n          }\n        });',actionStart)+'\n          }'.length;

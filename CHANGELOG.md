@@ -1,5 +1,10 @@
 # Version History
 
+## v1.2.53 — Current Comparison Choices
+
+- Moves three comparison routes to shared owner domains, current-choice frames and application-owned transitions; preserves exact parents and explicit Make.
+- Removes pilot-specific input-contribution rules from presentation and rejects stale choice actions/previews.
+
 ## v1.2.52 — First Source Guidance
 
 - Distinguishes first Source entry from edits to an existing Source in the pending-state instruction.
