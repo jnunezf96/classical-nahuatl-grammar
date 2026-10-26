@@ -1,0 +1,58 @@
+import test from 'node:test';
+import {createClassicalClauseRelationControllerGlobals} from '../application/classical/clause_relation_controller.mjs';
+import assert from 'node:assert/strict';
+import {createPossessiveFixture} from './helpers/deverbal_possessive_fixture.mjs';
+const request={nounStem:'īxxīptla',sourceNounClass:'tl',sourceKind:'possessive-nnc-predicate',sourceState:'possessive',sourceInitialISelection:'real',possessor:'3sg',includedPossessorFamily:'proxy',operationId:'included-possessor-ti',operationPath:['included-possessor-ti'],classChoice:'A',subject:'3sg',subjectPerson:'3',subjectAnimacy:'animate',subjectHumanness:'human',subjectNumber:'singular',mood:'indicative',tense:'preterit'};
+test('included third possessor preserves long i before real long initial i',async()=>{
+ const {r}=await createPossessiveFixture('īxxīptla');
+ const result=r.evaluateClassicalNahuatlDenominalVnc(request);
+ assert.equal(result.authorizationStatus,'authorized',result.blockReason);
+ assert.equal(result.surfaceRealization,'īīxxīptlatic');
+ const b=result.operationFrame.includedPossessorBoundaryFrame;
+ assert.equal(b.writtenResult.source,b.writingSource);
+ assert.equal(b.possessorStateFrame.slots[0].carrier,'ī');
+ assert.equal(result.sourceFrame.nounStem,'īxxīptla');
+ const neighbor=r.evaluateClassicalNahuatlDenominalVnc({...request,nounStem:'ihiyo'});
+ assert.equal(neighbor.authorizationStatus,'authorized',neighbor.blockReason);
+ assert.equal(neighbor.operationFrame.includedPossessorBoundaryFrame.possessorStateFrame,null);
+ assert.match(neighbor.surfaceRealization,/^iihiyo/);
+ r.buildClassicalNahuatlPossessiveStateFrame=undefined;
+ assert.equal(r.evaluateClassicalNahuatlDenominalVnc(request).authorizationStatus,'blocked');
+});
+test('sentence projects only the authenticated included possessor as supplementary head',async()=>{
+ const {r}=await createPossessiveFixture('īxxīptla');
+ const result=r.evaluateClassicalNahuatlDenominalVnc(request);
+ const sentence=r.buildClassicalNahuatlVncSentenceResultFrame(result);
+ assert.equal(sentence.authorizationStatus,'authorized',sentence.blockReason);
+ const envelope=r.buildClassicalNahuatlSupplementationClauseEnvelope(sentence,{referenceId:'impersonator',subjectReferenceId:'impersonator',possessorReferenceId:'deity'});
+ assert.equal(envelope.authorizationStatus,'authorized',envelope.blockReason);
+ assert.equal(envelope.possessor?.category,'3sg');
+ assert.equal(envelope.possessor.referenceId,'deity');
+ assert.equal(envelope.canonicalIncludedPossessorFrame.canonicalResult,result);
+ assert.equal(envelope.canonicalIncludedPossessorFrame.operationFrame,result.operationFrame);
+ assert.notEqual(envelope.subject.referenceId,envelope.possessor.referenceId);
+ assert.equal(r.buildClassicalNahuatlSupplementationClauseEnvelope({...sentence},{referenceId:'copy'}).authorizationStatus,'blocked');
+ const ordinary=r.evaluateClassicalNahuatlDenominalVnc({...request,sourceKind:'nounstem',sourceState:'absolutive',operationId:'inceptive-ti',operationPath:['inceptive-ti']});
+ const plain=r.buildClassicalNahuatlVncSentenceResultFrame(ordinary);
+ assert.equal(r.buildClassicalNahuatlSupplementationClauseEnvelope(plain,{referenceId:'plain'}).possessor,null);
+});
+
+test('existing relation controller exposes and executes the included possessor contact',async()=>{
+ const {r}=await createPossessiveFixture('īxxīptla');
+ const verb=r.executeClassicalGrammarApplicationRequest({operationId:'vnc:denominal',args:[request]}).canonicalResult,sentence=r.requestClassicalVncSentenceResultFrame(verb);
+ const source=r.buildClassicalNahuatlOrdinaryNncSourceFrame({stem:'oquich',sourceClass:'tli-1'});
+ const b=r.issueClassicalGrammarTypedSourceOperationBindingFrame(r.getClassicalGrammarApplicationCapabilityNavigator(source),'nnc:ordinary',{subject:'3sg',humanness:'human',state:'absolutive',predicateFormation:'source-stem'});
+ const noun=r.executeClassicalGrammarTypedSourceOperationBindingFrame(b).canonicalResult;
+ const c=createClassicalClauseRelationControllerGlobals(r).createClassicalClauseRelationController();
+ const captured=c.captureCurrentResult('principal',sentence); assert.equal(captured.authorizationStatus,'authorized',captured.blockReason);
+ assert.equal(c.captureCurrentResult('adjoined',noun).authorizationStatus,'authorized');
+ const choices={relation:'supplementation',supplementationReferenceMode:'shared',supplementationHeadRole:'possessor',supplementationContactRole:'subject',supplementationOrder:'principal-first'};
+ const contract=c.buildDecisionContract(choices);assert.equal(contract.authorizationStatus,'authorized',JSON.stringify(contract));
+ assert.ok(c.preview(choices));
+ const made=c.compose(choices);
+ assert.equal(made.authorizationStatus,'authorized',made.blockReason);
+ assert.equal(made.canonicalResult.referenceFrame.headRole,'possessor');
+ assert.equal(r.getClassicalNahuatlSupplementationClauseSourceFrame(made.canonicalResult.principalClause),sentence);
+ assert.equal(r.getClassicalNahuatlSupplementationClauseSourceFrame(made.canonicalResult.supplementClause),noun);
+ assert.equal(c.captureCurrentResult('principal',{...sentence}).authorizationStatus,'blocked');
+});

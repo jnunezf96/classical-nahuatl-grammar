@@ -1,5 +1,9 @@
 # Version History
 
+## v1.2.43 — Andrews Included Possessor
+
+- Corrects long-vowel contact and retains the included possessor through the sentence handoff for Andrews’s īxxīptla construction.
+
 ## v1.2.42 — Andrews Recompense Boundary
 
 - Corrects supportive initial-i realization after the included possessor, producing Andrews’s titocnōpiltiz through existing controls while retaining the citation source.

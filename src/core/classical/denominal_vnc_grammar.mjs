@@ -2739,7 +2739,15 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
   }
 
   function resolveIncludedPossessorBoundary(sourceFrame) {
+    const needsPossessorState = ["3sg", "3common"].includes(sourceFrame.possessorPerson)
+      && sourceFrame.sourceInitialISelection === "real" && /^ī/u.test(sourceFrame.nounStem);
+    const possessorStateFrame = needsPossessorState
+      ? targetObject.buildClassicalNahuatlPossessiveStateFrame?.({
+        possessor: sourceFrame.possessorPerson, stem: sourceFrame.nounStem,
+      }) : null;
+    if (needsPossessorState && possessorStateFrame?.authorizationStatus !== "authorized") return null;
     const morphs = sourceFrame.possessor.split("-");
+    if (possessorStateFrame) morphs[0] = possessorStateFrame.slots[0].carrier;
     // The included possessor contacts the nominal predicate before ti is
     // attached. Keep the citation and select its owner-issued use variant.
     const nominalSourceVariant = sourceFrame.sourceInitialISelection === "supportive"
@@ -2768,7 +2776,7 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
       || writtenResult.authorizationStatus !== "authorized"
       || writtenResult.source !== writingSource) return null;
     return deepFreeze({
-      writingSource, writtenResult, nominalSourceVariant,
+      writingSource, writtenResult, nominalSourceVariant, possessorStateFrame,
       sourcePossessor: sourceFrame.possessor,
       realizedPossessorMorphs: writtenResult.realizedParts.slice(0, morphs.length),
       realizedTargetMorphs: writtenResult.realizedParts,

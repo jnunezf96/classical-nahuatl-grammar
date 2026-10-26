@@ -3220,6 +3220,7 @@ export function createClassicalClauseRelationControllerGlobals(
             ? [
                 "subject",
                 ...(principalPreview.objects?.length ? ["object"] : []),
+                ...(principalPreview.possessor ? ["possessor"] : []),
               ]
             : []).filter(role => role !== "subject"
               || principalPreview?.subject?.participantFrame?.hasReferent !== false

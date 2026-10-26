@@ -2359,7 +2359,24 @@ export function createClassicalNahuatlSupplementationApi(
         arguments[1] || {},
       );
       if (!isClassicalNahuatlSupplementationClauseEnvelope(nucleus)) return nucleus;
+      // §54.3: a possessor inside a genuine denominal predicate remains
+      // available for supplementation; it is not the verb's subject/object.
+      const denominal = sourceFrame.canonicalSourceFrame;
+      const includedOperation = targetObject.isClassicalNahuatlDenominalVncResultFrame?.(denominal) === true
+        && denominal.operationFrame?.operationId === "included-possessor-ti"
+        && denominal.canonicalVncFrame === sourceFrame.vncApplicationFrame
+        ? denominal.operationFrame : null;
+      const includedContact = includedOperation
+        ? getPossessorRecord({possessor: includedOperation.sourceFrame.possessorPerson}) : null;
       const projection = {...nucleus,
+        ...(includedContact ? {
+          possessor: {...includedContact, referenceId: normalizeReferenceId(possessorReferenceId || referenceId)},
+          canonicalIncludedPossessorFrame: {
+            canonicalResult: denominal, operationFrame: includedOperation,
+            canonicalVncFrame: denominal.canonicalVncFrame,
+            embeddedInPredicate: true,
+          },
+        } : {}),
         sourceFrameKind: sourceFrame.kind,
         sentenceKind: ["question", "yes-no-question", "information-question"].includes(sourceFrame.sentenceSurfaceFrame?.sentenceType)
           || sourceFrame.sentenceSurfaceFrame?.finalPunctuation === "?"
@@ -4282,6 +4299,7 @@ export function createClassicalNahuatlSupplementationApi(
       && !principalClause.objects?.length
       || principalClause.unitKind === "vnc"
         && headRole === "possessor"
+        && !principalClause.canonicalIncludedPossessorFrame
     ) {
       return blockedSupplementationFrame(
         "principal-clause-kind-does-not-license-requested-head-role",

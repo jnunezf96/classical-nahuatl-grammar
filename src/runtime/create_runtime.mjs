@@ -4,7 +4,7 @@ import { installClassicalGrammarApplicationGlobals } from "../application/classi
 import { installClassicalNahuatlFormationResultBindingGlobals } from "../application/classical/formation_result_binding.mjs?v=20261011-reader-42-8-272&repair=position-model-20261011-9&interfaceRelease=1.2.36";
 import { installClassicalGrammarWorkspaceHistoryGlobals } from "../application/classical/grammar_workspace_history.mjs?deverbalReload=20261024-8&innerSource=20261024-1&innerParticle=20261024-1&remainingReload=20261024-1&v=20260826-interface-repairs-341&resultEditing=20261014-2&nominalReload=20261024-4";
 import { installClassicalCapabilityClosureAtlasGlobals } from "../ui/diagnostics/classical_capability_closure_atlas.mjs?v=20260920-atlas-input-count-533";
-import { installClassicalClauseRelationControllerGlobals } from "../application/classical/clause_relation_controller.mjs?conjunction=20261023-2&v=20261011-reader-42-8-273&remaining=20261013-inventory-1&comparisonCapture=20261021-3&formalAxes=20261022-1&temporalProfiles=20261022-1&makePreview=20261022-1&andrewsRelease=20261024-1&ad102=20261024-1&andrewsCorrections=20261024-1&interfaceRelease=1.2.37&ompaCopula=20261025-1";
+import { installClassicalClauseRelationControllerGlobals } from "../application/classical/clause_relation_controller.mjs?conjunction=20261023-2&v=20261011-reader-42-8-273&remaining=20261013-inventory-1&comparisonCapture=20261021-3&formalAxes=20261022-1&temporalProfiles=20261022-1&makePreview=20261022-1&andrewsRelease=20261024-1&ad102=20261024-1&andrewsCorrections=20261024-1&interfaceRelease=1.2.37&ompaCopula=20261025-1&proxyPossessor=20261025-2";
 import { installScriptRuntimeGlobals } from "../bootstrap/script_runtime.mjs?v=20260904-ni-stock-ocr-corrections-414&startupDelivery=20261022-1";
 import { installAgreementGlobals } from "../core/agreement/agreement.mjs?v=20260818-lesson29-groups10-12-357";
 import { installAgreementDisplayGlobals } from "../core/agreement/display.mjs?v=20260818-lesson29-groups10-12-357";
@@ -27,7 +27,7 @@ import { installClassicalNahuatlRelationalNncGlobals } from "../core/classical/n
 import { installClassicalNahuatlVncLayerEvaluatorGlobals } from "../core/classical/vnc_layer_evaluator.mjs?formulaSlots=20261023-24&v=20261008-reader-40-8-184&andrewsRelease=20261024-1";
 import { installClassicalNahuatlVncClosureGlobals } from "../core/classical/vnc_lessons27_29_33_closure.mjs?futureObject=20261024-3&v=20261011-reader-42-8-272&reader=41-2-205&audit=20261013-source-facts-1&andrewsCorrections=20261024-1";
 import { installClassicalNahuatlVncLateOperationUiContractGlobals } from "../core/classical/vnc_late_operation_ui_contract.mjs?futureObject=20261024-3&v=20261001-reader-27-2-copy-i-1&interfaceRelease=1.2.36";
-import { installClassicalNahuatlDenominalVncGrammarGlobals } from "../core/classical/denominal_vnc_grammar.mjs?v=20261007-reader-39-7-162&reader=41-3-213&exactMeaning=20261021-1&andrewsRelease=20261024-1&interfaceRelease=1.2.36&includedSupportiveI=20261025-2";
+import { installClassicalNahuatlDenominalVncGrammarGlobals } from "../core/classical/denominal_vnc_grammar.mjs?v=20261007-reader-39-7-162&reader=41-3-213&exactMeaning=20261021-1&andrewsRelease=20261024-1&interfaceRelease=1.2.36&includedSupportiveI=20261025-2&proxyPossessor=20261025-2";
 import { installClassicalNahuatlFiniteVncGlobals } from "../core/classical/finite_vnc_slots.mjs?v=20260928-reader-evidence-cache-774&andrewsRelease=20261024-1";
 import { installClassicalNahuatlTransitiveVncObjectGlobals } from "../core/classical/transitive_vnc_object.mjs?v=20260928-reader-evidence-cache-774&andrewsRelease=20261024-1";
 import { installClassicalNahuatlNuclearFactCatalogGlobals } from "../core/classical/nuclear_clause_fact_catalog.mjs?v=20260802-l4-l6-facts-001";
@@ -61,7 +61,7 @@ import { installOutputProvenanceGlobals } from "../core/output/provenance.mjs?v=
 import { installOutputSurfaceGlobals } from "../core/output/surface.mjs?v=20260912-derived-mu-destination-480";
 import { installClassicalResultOutputScopeGlobals } from "../core/output/scope.mjs?v=20260818-lesson29-groups10-12-357";
 import { installParsingGlobals } from "../core/parsing/parsing.mjs?v=20260913-entrada-integrity-510";
-import { installClassicalNahuatlSupplementationGlobals } from "../core/sentence/supplementation.mjs?mixedInner=20261024-1&remainingReload=20261024-1&v=20261011-reader-42-8-273&andrewsRelease=20261024-1&ompaCopula=20261025-1";
+import { installClassicalNahuatlSupplementationGlobals } from "../core/sentence/supplementation.mjs?mixedInner=20261024-1&remainingReload=20261024-1&v=20261011-reader-42-8-273&andrewsRelease=20261024-1&ompaCopula=20261025-1&proxyPossessor=20261025-2";
 import { installPhonologyGlobals } from "../core/phonology/phonology.mjs?v=20260818-lesson29-groups10-12-357";
 import { installPreteritContextGlobals } from "../core/preterit/context.mjs?v=20260818-lesson29-groups10-12-357";
 import { installPreteritEngineGlobals } from "../core/preterit/engine.mjs?v=20260920-preterit-candidates-532";

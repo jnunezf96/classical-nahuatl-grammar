@@ -1,16 +1,16 @@
-# Grammar OS v1.2.42 release
+# Grammar OS v1.2.43 release
 
-Release name: **Andrews Recompense Boundary**
+Release name: **Andrews Included Possessor**
 
-Browser build: **20261025-titocnopiltiz-61**
+Browser build: **20261025-ixxiptla-62**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Preserves the selected supportive initial-i analysis at the included-possessor boundary.
-- Uses the existing nounstem and writing owners to produce Andrews §54.3.2's Titocnōpiltiz with its animate second-person subject and first-person plural possessor.
-- Retains source citation, possessor-specific vowel retention and generated possessor i. No new panels or lexical whitelist.
+- Preserves the third-person possessor’s long ī before real lexical ī, using the existing possessive owner.
+- Keeps the authenticated included possessor available in Combine Results, so Andrews’s īxxīptla impersonator sentence can attach its supplementary possessor.
+- Preserves exact source identity and distinct subject/possessor contacts. No new panel or lexical whitelist.
 
 ## Review scope and current limits
 
@@ -37,7 +37,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.42/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.43/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.
