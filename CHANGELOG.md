@@ -1,5 +1,9 @@
 # Version History
 
+## v1.2.48 — Source Guidance Agreement
+
+- Clears the stale pending-Source instruction after Apply and directs the user to the existing operation choices.
+
 ## v1.2.47 — Comparison Dimension Clarity
 
 - Distinguishes required, included and retained comparison dimensions across the existing panels as īc changes.

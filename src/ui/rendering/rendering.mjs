@@ -42827,9 +42827,18 @@ export function createUiRenderingApi(targetObject = globalThis) {
       );
       const projection = exactResult
         ? getClassicalOwnerIssuedResultProjection(exactResult) : null;
-      if (!status || !projection?.surface
-        || projection.canonicalResult !== exactResult) return;
+      if (!status) return;
       const state = button?.dataset?.classicalCapabilityApplyState;
+      if (!projection?.surface || projection.canonicalResult !== exactResult) {
+        // Applying raw Source removes the pending-Source gate before a Result
+        // exists. Replace that old prompt with the actual next step; retain
+        // selected-operation requirements and all uncommitted Source guidance.
+        if (state === "waiting" && targetObject.document?.getElementById?.("classical-source-parts")
+          ?.dataset?.classicalSourceCommitState === "committed") {
+          status.textContent = "Choose an available operation for this Source.";
+        }
+        return;
+      }
       const join = values => values.length > 1
         ? `${values.slice(0, -1).join(", ")} and ${values.at(-1)}`
         : values[0] || "";
