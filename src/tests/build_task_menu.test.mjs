@@ -98,7 +98,7 @@ test('overlapping lane labels distinguish the actual Result input without miscla
   doc.getElementById=id=>id==='classical-capability-navigator'
     ? {dataset:{classicalCapabilitySourceRole:'exact-owner-issued-result'}} : id==='classical-source-whole'?{value:'ce-liā'}:get(id);
   const routes=tasks.getBuildTaskRoutes(doc);
-  assert.match(routes.find(r=>r.optionRef===ref(navId,'nnc:adverbial')).label,/current Result/u);
+  assert.match(routes.find(r=>r.optionRef===ref(navId,'nnc:adverbial')).label,/Applied Source/u);
   assert.doesNotMatch(routes.find(r=>r.optionRef===ref(stemId,'adverbial-nuclear')).label,/Source stem/u);
   assert.match(routes.find(r=>r.optionRef===ref(stemId,'deverbal-nnc')).label,/Source editor: ce-liā/u,
     'an alternate material route must name its editor material before selection');

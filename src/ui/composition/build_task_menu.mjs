@@ -97,7 +97,7 @@ export function getBuildTaskRoutes(doc) {
         : ` · Source editor${editorMaterial ? `: ${editorMaterial}` : ''}`;
     } else if (overlapping) route.label += route.control === construction ? ' · formation choices' : ' · current Source';
     if (overlapping && route.control === navigator && inputRole === 'exact-owner-issued-result') {
-      route.label = route.label.replace(/ · current Source$/u, ' · current Result');
+      route.label = route.label.replace(/ · current Source$/u, ' · Applied Source');
     }
   }
   return routes.sort((a, b) => a.order - b.order);

@@ -1,15 +1,15 @@
-# Grammar OS v1.2.48 release
+# Grammar OS v1.2.49 release
 
-Release name: **Source Guidance Agreement**
+Release name: **Applied Source Labels**
 
-Browser build: **20261026-source-guidance-67**
+Browser build: **20261026-source-label-68**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- After raw Source is applied, Build correctly asks for an operation instead of continuing to say “Use this Source first.”
-- Preserves pending-Source requirements, Result-specific guidance, and explicit Make. No grammar or layout change.
+- Labels overlapping exact-input operations Applied Source instead of current Result.
+- Preserves separate Source-editor routes, input identities, availability and execution. No new panel or grammatical change.
 
 ## Review scope and current limits
 
@@ -36,7 +36,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.48/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.49/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.

@@ -1,5 +1,9 @@
 # Version History
 
+## v1.2.49 — Applied Source Labels
+
+- Names overlapping operation inputs Applied Source, distinguishing them from the newer accepted Result and the separate Source editor.
+
 ## v1.2.48 — Source Guidance Agreement
 
 - Clears the stale pending-Source instruction after Apply and directs the user to the existing operation choices.
