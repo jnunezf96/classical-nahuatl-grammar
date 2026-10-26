@@ -1,4 +1,4 @@
-import {isCurrentComparisonRoute, resolveComparisonChoices, projectComparisonChoiceFrame} from './comparison_choices.mjs';
+import {resolveComparisonChoices, projectComparisonChoiceFrame} from './comparison_choices.mjs?v=20261026-all-comparison-1';
 // Typed application controller for composing already-issued canonical clause
 // results. It owns presentation decisions only; the clause engine remains the
 // sole owner of relation validation, formulas, realization, and surfaces.
@@ -333,98 +333,6 @@ const APPOSITIVE_TYPES = Object.freeze([
   "clarifying",
   "summarizing",
 ]);
-const COMPARISON_CHOICE_VALUES = Object.freeze({
-  sentenceType: Object.freeze([
-    "none",
-    "declarative",
-    "interrogative",
-    "exclamative",
-  ]),
-  sameAsMarker: Object.freeze([
-    "zan-no-yehhuatl",
-    "zan-ye-yehhuatl",
-    "zan-ye-no-yehhuatl",
-    "zan-no-yeh",
-    "zan-ye-yeh",
-    "zan-ye-no-yeh",
-  ]),
-  negativeIntroducer: Object.freeze([
-    "inahmo",
-    "in-ahmo-iuh",
-    "in-ahmo-iuhqui",
-    "in-ahmo-mach-iuh",
-    "in-ahmo-mach-iuhqui",
-  ]),
-  degreeMarker: Object.freeze([
-    "none",
-    "achi",
-    "zan-achi",
-    "cencah",
-    "oc",
-    "oc-achi",
-    "oc-cencah",
-    "oc-cencah-yeh",
-    "oc-cencah-yehhuatl",
-    "oc-yeh",
-    "oc-yeh-cencah",
-    "huel-oc",
-    "huel-oc-achi",
-    "huel-oc-cencah",
-  ]),
-  adversativeMarker: Object.freeze(["zan", "yeceh"]),
-  questionCollocation: Object.freeze([
-    "oc-yeh",
-    "oc-eh",
-    "zan-yeh",
-    "oc-yeh-cencah-hualcah",
-    "oc-yeh-cencah-tlapanahuia",
-  ]),
-  superlativeAdverbial: Object.freeze([
-    "cencah",
-    "huel",
-    "cencah-huel",
-    "za-cencah",
-    "za-cencah-huel",
-  ]),
-  incorporatedSuperlative: Object.freeze([
-    "cem",
-    "cenquizca",
-    "cemahcica",
-  ]),
-  superlativePrincipal: Object.freeze([
-    "ahcic",
-    "cemahcic",
-    "tlapanahuia",
-    "tlacempanahuia",
-    "mahcitzinohticah",
-    "mocemahcitzinohticah",
-    "motlacempanahuilia",
-  ]),
-  iuhquiModifier: Object.freeze([
-    "none",
-    "ca",
-    "ca-zan",
-    "ca-ye",
-    "huel",
-    "zan-achi-huel",
-    "ahmo-zan-no",
-    "za",
-    "ma-nen",
-  ]),
-  principalNnc: Object.freeze(["tachcauh", "hualcah"]),
-  continuationFamily: Object.freeze([
-    "absolutive-tl",
-    "absolutive-tli",
-    "absolutive-li",
-    "hui-preterit-agentive",
-    "ti-agentive",
-    "oyotl-nehnemi",
-    "cihuatl-tlahtoa",
-    "bare",
-  ]),
-  position: Object.freeze(["preposed", "postposed"]),
-  boolean: Object.freeze(["yes", "no"]),
-});
 const COMPARISON_CAPTURE_SLOT_LAYOUTS = Object.freeze({
   "similarity-reduplicative-prefix": Object.freeze({
     principal: "source",
@@ -1589,12 +1497,18 @@ export function createClassicalClauseRelationControllerGlobals(
         return blocked("comparison-choice-stale-frame");
       if (!current && !entering) return Object.freeze({handled:false});
       if (current && !expectedFrame) return blocked("comparison-choice-stale-frame");
-      const next = {...selections};
+      let next = {...selections};
       if (intent.type === "set-choice") {
-        const fields = targetObject.getClassicalComparisonChoiceContract?.(selections.comparisonRoute)?.decisions.map(d=>d.key) || [];
+        const domain = getCurrentComparisonOwnerContract(selections.comparisonRoute, selections);
+        const fields = [...(domain?.decisions || []), ...(domain?.facts || [])].map(d=>d.key);
         if (intent.key !== "comparisonRoute" && !fields.includes(intent.key)) return blocked("comparison-choice-field-not-licensed");
         if (intent.key === "comparisonRoute" && !getComparisonRouteInventory().some(route=>route.id===intent.value))
           return blocked("comparison-choice-route-not-licensed");
+        if (intent.key === "continuationFamily" && intent.value !== selections.continuationFamily
+          && ["bare", "absolutive-tl", "absolutive-tli", "absolutive-li"].includes(intent.value)) {
+          delete next.reduplicationShape;
+          delete next.tiClass;
+        }
         if (intent.value) next[intent.key] = String(intent.value).trim();
         else delete next[intent.key];
       } else if (intent.type === "clear-capture" || intent.type === "capture") {
@@ -2040,79 +1954,15 @@ export function createClassicalClauseRelationControllerGlobals(
         : [];
     }
 
-    function getComparisonChoiceValues(routeId = "", field = "") {
-      if (field === "degreeMarker") {
-        const canonicalValues = targetObject.getClassicalComparisonDegreeChoiceInventory?.(routeId);
-        if (canonicalValues) return freezeArray(canonicalValues);
-        if (
-          [
-            "similarity-tloc-relational-nnc",
-            "similarity-incorporated-nehnequi",
-          ].includes(routeId)
-        ) {
-          return freezeArray(["none", "achi"]);
-        }
-        if (routeId === "size-ixquich") {
-          return freezeArray(["none", "achi", "zan-achi"]);
-        }
-        if (routeId === "comparative-tachcauh-hualcah") {
-          return freezeArray([
-            "oc",
-            "oc-achi",
-            "oc-cencah",
-            "huel-oc",
-            "huel-oc-achi",
-            "huel-oc-cencah",
-          ]);
-        }
-        if (routeId.startsWith("comparative-panahuia")) {
-          return freezeArray([
-            "none",
-            "achi",
-            "cencah",
-            "oc",
-            "oc-achi",
-            "oc-cencah",
-            "huel-oc",
-            "huel-oc-achi",
-            "huel-oc-cencah",
-          ]);
-        }
-      }
-      if (["adjunctorIn", "negativeStandardIn", "icRelation", "copula"].includes(field)) {
-        return COMPARISON_CHOICE_VALUES.boolean;
-      }
-      return freezeArray(COMPARISON_CHOICE_VALUES[field] || []);
+    function isCurrentComparisonRoute(routeId) {
+      return getComparisonRouteInventory().some(route => route.id === routeId);
     }
-
-    function getComparisonChoiceDefault(
-      routeId = "",
-      field = "",
-      layout = {},
-    ) {
-      if (field === "sentenceType") return "none";
-      if (field === "sameAsMarker") return "zan-no-yehhuatl";
-      if (field === "negativeIntroducer") return "in-ahmo-iuhqui";
-      if (field === "adversativeMarker") return "yeceh";
-      if (field === "questionCollocation") return "oc-yeh";
-      if (field === "superlativeAdverbial") return "cencah";
-      if (field === "incorporatedSuperlative") return "cem";
-      if (field === "superlativePrincipal") return "ahcic";
-      if (field === "iuhquiModifier") return "none";
-      if (field === "principalNnc") return "tachcauh";
-      if (field === "continuationFamily") return "bare";
-      if (field === "position") return "preposed";
-      if (["adjunctorIn", "negativeStandardIn"].includes(field)) return "yes";
-      if (field === "icRelation") {
-        return Object.values(layout).includes("dimension") ? "yes" : "no";
-      }
-      if (field === "copula") return "no";
-      if (field === "degreeMarker") {
-        return getComparisonChoiceValues(routeId, field).includes("none")
-          ? "none"
-          : getComparisonChoiceValues(routeId, field)[0] || "";
-      }
-      return "";
+    function getCurrentComparisonOwnerContract(routeId, choices = {}) {
+      const capture = getValidatedCapture("principal");
+      const source = capture ? targetObject.buildClassicalComparisonSourceUnit?.({sourceResult:capture.canonicalResult}) : null;
+      const presentSlots = Object.entries(COMPARISON_CAPTURE_SLOT_LAYOUTS[routeId] || {})
+        .filter(([role]) => !!getValidatedCapture(role)).map(([,slot]) => slot);
+      return targetObject.getClassicalComparisonChoiceContract?.(routeId, choices, source, presentSlots);
     }
 
     function buildNewRelationContract({
@@ -2974,9 +2824,9 @@ export function createClassicalClauseRelationControllerGlobals(
       }
       const layout = COMPARISON_CAPTURE_SLOT_LAYOUTS[routeSpec?.id] || {};
       const migrated = isCurrentComparisonRoute(routeSpec?.id);
-      const domain = migrated ? targetObject.getClassicalComparisonChoiceContract?.(routeSpec.id) : null;
+      const domain = migrated ? getCurrentComparisonOwnerContract(routeSpec.id, selectionObject) : null;
       const resolved = resolveComparisonChoices(domain, selectionObject);
-      const ownerChoices = resolved ? targetObject.getClassicalComparisonChoiceContract(routeSpec.id, resolved.operationSelections) : null;
+      const ownerChoices = resolved ? getCurrentComparisonOwnerContract(routeSpec.id, resolved.operationSelections) : null;
       if (migrated && !ownerChoices) diagnostics.push("comparison-choice-owner-capability-required");
       const requiredSlots = new Set(ownerChoices?.requiredSlots || routeSpec?.requiredSlots || []);
 
@@ -3001,136 +2851,23 @@ export function createClassicalClauseRelationControllerGlobals(
         }
       });
       if (migrated) {
+        diagnostics.push(...(resolved?.diagnostics || []));
         for (const choice of resolved?.decisions || []) {
-          decisions.push(Object.freeze({...buildDecision(choice), ...choice}));
-          if (!choice.resolved) diagnostics.push(`classical-comparison-${choice.key}-not-licensed`);
+          if (choice.applicability !== "inactive") decisions.push(Object.freeze({...buildDecision(choice), ...choice}));
+          if (!choice.resolved && choice.applicability !== "inactive") diagnostics.push(`classical-comparison-${choice.key}-not-licensed`);
         }
         return buildNewRelationContract({selectionObject, relation, decisions, diagnostics,
           operationSelections: resolved?.operationSelections || {comparisonRoute: routeSpec.id},
           derived: {operationFamily: "comparison", operationKind: routeSpec.operation,
             comparisonRelation: routeSpec.relation, comparisonRoute: routeSpec.id,
+            ownerFacts: ownerChoices?.facts || [],
             captureSlotLayout: Object.freeze({...layout}),
             requiredCaptureRoles: freezeArray(Object.entries(layout).filter(([,slot])=>requiredSlots.has(slot)).map(([role])=>role)),
             optionalCaptureRoles: freezeArray(Object.entries(layout).filter(([,slot])=>!requiredSlots.has(slot)).map(([role])=>role))},
           derivedFieldIds: ["operation-family", "operation-kind", "comparison-relation", "capture-slot-layout", "required-capture-roles", "optional-capture-roles"]});
       }
-      const operationSelections = {
-        comparisonRoute: routeSpec?.id || "",
-      };
-      const tiContinuation = routeSpec?.id === "similarity-reduplicative-prefix"
-        && normalizeToken(selectionObject.continuationFamily) === "ti-agentive";
-      const nehnemiContinuation = routeSpec?.id === "similarity-reduplicative-prefix"
-        && normalizeToken(selectionObject.continuationFamily) === "oyotl-nehnemi";
-      const tlahtoaContinuation = routeSpec?.id === "similarity-reduplicative-prefix"
-        && normalizeToken(selectionObject.continuationFamily) === "cihuatl-tlahtoa";
-      const citationContinuation = routeSpec?.id === "similarity-reduplicative-prefix"
-        && ["bare", "absolutive-tl", "absolutive-tli", "absolutive-li"].includes(
-          normalizeToken(selectionObject.continuationFamily) || "bare");
-      const reduplicativeSource = (tiContinuation || nehnemiContinuation || tlahtoaContinuation || citationContinuation) && getValidatedCapture("principal")
-        && typeof targetObject.buildClassicalComparisonSourceUnit === "function"
-        ? targetObject.buildClassicalComparisonSourceUnit({ sourceResult: getValidatedCapture("principal").canonicalResult })
-        : null;
-      const tiChoices = tiContinuation && reduplicativeSource && typeof targetObject.getClassicalComparisonTiAgentiveChoiceInventory === "function"
-        ? targetObject.getClassicalComparisonTiAgentiveChoiceInventory(reduplicativeSource) : null;
-      const nehnemiChoices = nehnemiContinuation && reduplicativeSource
-        && typeof targetObject.getClassicalComparisonNehnemiChoiceInventory === "function"
-        ? targetObject.getClassicalComparisonNehnemiChoiceInventory(reduplicativeSource) : null;
-      const tlahtoaChoices = tlahtoaContinuation && reduplicativeSource
-        && typeof targetObject.getClassicalComparisonTlahtoaChoiceInventory === "function"
-        ? targetObject.getClassicalComparisonTlahtoaChoiceInventory(reduplicativeSource) : null;
-      const citationChoices = citationContinuation && reduplicativeSource
-        && typeof targetObject.getClassicalComparisonCitationChoiceInventory === "function"
-        ? targetObject.getClassicalComparisonCitationChoiceInventory(reduplicativeSource) : null;
-      if (tiContinuation && tiChoices?.authorizationStatus !== "authorized") {
-        diagnostics.push(tiChoices?.blockReason || "classical-comparison-ti-canonical-choice-inventory-required");
-      }
-      if (nehnemiContinuation && nehnemiChoices?.authorizationStatus !== "authorized") {
-        diagnostics.push(nehnemiChoices?.blockReason || "classical-comparison-nehnemi-canonical-choice-inventory-required");
-      }
-      if (tlahtoaContinuation && tlahtoaChoices?.authorizationStatus !== "authorized") {
-        diagnostics.push(tlahtoaChoices?.blockReason || "classical-comparison-tlahtoa-canonical-choice-inventory-required");
-      }
-      if (citationContinuation && citationChoices?.authorizationStatus !== "authorized") {
-        diagnostics.push(citationChoices?.blockReason || "classical-comparison-citation-canonical-choice-inventory-required");
-      }
-      Array.from(routeSpec?.choiceFields || []).forEach(field => {
-        if (field === "tiClass" && !tiContinuation) return;
-        if (field === "reduplicationShape" && !tiContinuation && !nehnemiContinuation && !tlahtoaContinuation && !citationContinuation) return;
-        const values = field === "reduplicationShape" ? (tiChoices || nehnemiChoices || tlahtoaChoices || citationChoices)?.reduplicationShapes || []
-          : field === "tiClass" ? tiChoices?.classChoices || []
-            : getComparisonChoiceValues(routeSpec.id, field);
-        // Citation similarity has one owned prefix pattern. Other nominal
-        // prefix readings remain with their affinity/distribution owners.
-        if (field === "reduplicationShape" && citationContinuation && values.length === 1) {
-          const requested = normalizeToken(selectionObject[field]);
-          if (requested && requested !== values[0]) diagnostics.push("classical-comparison-reduplicationShape-not-licensed");
-          operationSelections[field] = values[0];
-          return;
-        }
-        // A sole verbal class is an owner-derived fact, not a user control.
-        if (field === "tiClass" && values.length === 1) {
-          operationSelections.tiClass = values[0];
-          return;
-        }
-        const selectionKey = field;
-        const requestedValue = normalizeToken(selectionObject[selectionKey]);
-        const defaultValue = getComparisonChoiceDefault(
-          routeSpec.id,
-          field,
-          layout,
-        );
-        const selectedValue = values.includes(requestedValue)
-          ? requestedValue
-          : requestedValue
-            ? ""
-            : defaultValue;
-        decisions.push(buildDecision({
-          id: field.replace(/[A-Z]/gu, letter => `-${letter.toLowerCase()}`),
-          values,
-          selectedValue,
-          reason: `the ${routeSpec.id} route licenses this comparison choice`,
-          determinesCaptureRoles: field === "icRelation",
-        }));
-        if (requestedValue && !selectedValue) {
-          diagnostics.push(`classical-comparison-${field}-not-licensed`);
-        }
-        operationSelections[field] = selectedValue;
-      });
-      return buildNewRelationContract({
-        selectionObject,
-        relation,
-        decisions,
-        diagnostics,
-        derived: {
-          operationFamily: "comparison",
-          operationKind: routeSpec?.operation || "",
-          comparisonRelation: routeSpec?.relation || "",
-          comparisonRoute: routeSpec?.id || "",
-          ...(tiContinuation ? { tiClass: operationSelections.tiClass || "",
-            tiClassChoices: freezeArray(tiChoices?.classChoices || []) } : {}),
-          captureSlotLayout: Object.freeze({ ...layout }),
-          requiredCaptureRoles: Object.freeze(
-            Object.entries(layout)
-              .filter(([, slotId]) => requiredSlots.has(slotId))
-              .map(([role]) => role),
-          ),
-          optionalCaptureRoles: Object.freeze(
-            Object.entries(layout)
-              .filter(([, slotId]) => !requiredSlots.has(slotId))
-              .map(([role]) => role),
-          ),
-        },
-        operationSelections,
-        derivedFieldIds: [
-          "operation-family",
-          "operation-kind",
-          "comparison-relation",
-          "capture-slot-layout",
-          "required-capture-roles",
-          "optional-capture-roles",
-          ...(tiContinuation && tiChoices?.classChoices.length === 1 ? ["ti-class"] : []),
-        ],
-      });
+      return buildNewRelationContract({selectionObject,relation,decisions,diagnostics,
+        operationSelections:{comparisonRoute:""},derived:{operationFamily:"comparison",captureSlotLayout:Object.freeze({})}});
     }
 
     function buildSupplementationDecisionContract({
@@ -5549,7 +5286,7 @@ export function createClassicalClauseRelationControllerGlobals(
       ));
       contract = Object.freeze({...contract, missingCaptureRoles: freezeArray(missingCaptureRoles)});
       if (isCurrentComparisonRoute(contract.derived?.comparisonRoute)) {
-        const ownerContract = targetObject.getClassicalComparisonChoiceContract?.(contract.derived.comparisonRoute, contract.operationSelections);
+        const ownerContract = getCurrentComparisonOwnerContract(contract.derived.comparisonRoute, contract.operationSelections);
         const choices = resolveComparisonChoices(ownerContract, selections);
         if (ownerContract && choices) {
           const currentChoiceFrame = projectComparisonChoiceFrame({contract, ownerContract, choices,

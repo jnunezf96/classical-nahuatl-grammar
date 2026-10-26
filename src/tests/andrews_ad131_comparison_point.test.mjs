@@ -50,7 +50,7 @@ function generatedChoice(c,choices){
   let executions=0;
   const session=createConstructionSession({isSource:x=>x===base||x===point,isResult:x=>x===base||r.isClassicalComparisonResultFrame(x),execute:packet=>{executions++;return c.compose(packet.choices);},present:()=>true});
   session.restore(base);
-  const ctx={targetObject:{...r,document:{createElement:tag=>new Element(tag)}},ActiveClassicalGrammarResultBinding:null,ClassicalClauseRelationSelections:{...choices},ActiveClassicalClauseRelationResult:null,ClassicalExplicitClauseRelationIntent:'',ClassicalClauseRelationStatusMessage:'',formatClassicalClauseRelationValue:x=>x,compactClassicalChoiceMenu(){},
+  const ctx={getClassicalClauseRelationControllerForRendering:()=>c,targetObject:{...r,document:{createElement:tag=>new Element(tag)}},ActiveClassicalGrammarResultBinding:null,ClassicalClauseRelationSelections:{...choices},ActiveClassicalClauseRelationResult:null,ClassicalExplicitClauseRelationIntent:'',ClassicalClauseRelationStatusMessage:'',formatClassicalClauseRelationValue:x=>x,compactClassicalChoiceMenu(){},
     refreshClassicalClauseRelationWorkflow(){
       const d=c.buildDecisionContract(ctx.ClassicalClauseRelationSelections);
       session.stage({source:base,route:{operation:'comparison'},slots:[{role:'principal',exact:base},{role:'adjoined',exact:point}],choices:{...ctx.ClassicalClauseRelationSelections},legalMoves:[],ready:d.authorizationStatus==='authorized',execution:{choices:{...ctx.ClassicalClauseRelationSelections},signature:JSON.stringify(ctx.ClassicalClauseRelationSelections)}});
@@ -60,11 +60,11 @@ function generatedChoice(c,choices){
     const start=rendering.indexOf(`    const ${name} = Object.freeze({`);
     vm.runInContext(rendering.slice(start,rendering.indexOf('\n    });',start)+8),ctx);
   }
-  for(const name of ['setClassicalClauseRelationDecision','createClassicalClauseRelationDecisionControl'])vm.runInContext(extract(name),ctx);
+  for(const name of ['applyClassicalComparisonChoiceIntent','setClassicalClauseRelationDecision','createClassicalClauseRelationDecisionControl'])vm.runInContext(extract(name),ctx);
   const contract=c.buildDecisionContract(choices);
   const decision=contract.decisions.find(d=>d.id==='question-collocation');
   assert.ok(decision);
-  const select=ctx.createClassicalClauseRelationDecisionControl(decision).children.find(e=>e.tagName==='SELECT');
+  const select=ctx.createClassicalClauseRelationDecisionControl(decision,contract.currentChoiceFrame).children.find(e=>e.tagName==='SELECT');
   return {session,select,get executions(){return executions;},change(value){select.value=value;select.listeners.change();}};
 }
 
@@ -149,7 +149,7 @@ test('AD131 comparison continuation explicitly retains the existing unsupported 
   assert.equal(exportClassicalResultReloadRecipe(r,{result:made.canonicalResult,source:point}),null);
   const block={dataset:{},style:{},setAttribute(){}};
   const storage=new Map(),url='https://example.invalid/grammar';
-  const ctx={targetObject:{...r,document:{getElementById:id=>id==='classical-rule-logic-surface'?block:null,defaultView:{location:{href:url},sessionStorage:{setItem:(k,v)=>storage.set(k,v)}}}},classicalVncReloadPersistenceReady:true,classicalUnsupportedResultReloadPending:false,classicalVncAcceptedBasalReloadState:null,ActiveClassicalGrammarResultSourceCapture:{canonicalResult:point},PendingClassicalResultEdit:null,ActiveClassicalClauseRelationController:null,ActiveClassicalGrammarResultBinding:null,ActiveClassicalRuleLogicSurfaceFrame:null,ActiveClassicalCapabilityApplicationResult:null,
+  const ctx={getClassicalClauseRelationControllerForRendering:()=>c,targetObject:{...r,document:{getElementById:id=>id==='classical-rule-logic-surface'?block:null,defaultView:{location:{href:url},sessionStorage:{setItem:(k,v)=>storage.set(k,v)}}}},classicalVncReloadPersistenceReady:true,classicalUnsupportedResultReloadPending:false,classicalVncAcceptedBasalReloadState:null,ActiveClassicalGrammarResultSourceCapture:{canonicalResult:point},PendingClassicalResultEdit:null,ActiveClassicalClauseRelationController:null,ActiveClassicalGrammarResultBinding:null,ActiveClassicalRuleLogicSurfaceFrame:null,ActiveClassicalCapabilityApplicationResult:null,
     CLASSICAL_VNC_RELOAD_SESSION_KEY:'test',exportClassicalResultReloadRecipe,
     exportClassicalGrammarWorkspaceHistoryReloadState:()=>null,getClassicalHistoryReloadSelection:()=>null,getActiveClassicalCapabilityApplicationResult:()=>null,getClassicalSgrOwnerIssuedProjection:()=>null,getClassicalVisibleAcceptedResult:()=>({canonicalResult:made.canonicalResult}),snapshotResultEditReload:()=>null,showClassicalHistoryReloadNotice(){},clearClassicalRuleLogicSurfaceBlock(){},clearClassicalGrammarResultSourceContinuation(){},syncClassicalCapabilityNavigator(){},syncClassicalCapabilityApplyOperationState(){}};
   vm.createContext(ctx);

@@ -15,7 +15,7 @@ for(const route of routes){
   assert(yes.requiredSlots.includes('dimension'));assert(!no.requiredSlots.includes('dimension'));
   assert.equal(no.inputs.find(i=>i.slot==='dimension').contribution,'retained-not-included');
   assert.equal(yes.decisions.some(d=>d.key==='adjunctorIn'),route==='similarity-iuhqui-principal');
-  assert(Object.isFrozen(yes.decisions));assert.equal(owner.getClassicalComparisonChoiceContract('size-ixquich',{}),null);
+  assert(Object.isFrozen(yes.decisions));assert.equal(owner.getClassicalComparisonChoiceContract('unknown',{}),null);
  });
  test(`${route}: shared frame explains default, prerequisite and explicit choice without changing parent`,()=>{
   const {c,s}=setup(route,false);let contract=c.buildDecisionContract(s),frame=contract.currentChoiceFrame;
@@ -55,8 +55,8 @@ test('pilot route changes invalidate old intents and delegate nonpilot contract 
  const next=c.transitionComparisonChoice({selections:s,expectedFrame:start,intent:{type:'set-choice',key:'comparisonRoute',value:'equality-ihuan'}});
  assert.equal(next.contract.derived.comparisonRoute,'equality-ihuan');
  const stale=c.transitionComparisonChoice({selections:next.selections,expectedFrame:start,intent:{type:'clear-capture',role:'principal'}});assert.equal(stale.authorizationStatus,'blocked');assert.equal(c.getCapturedCanonicalResult('principal'),parents.principal);
- const out=c.transitionComparisonChoice({selections:next.selections,expectedFrame:next.contract.currentChoiceFrame,intent:{type:'set-choice',key:'comparisonRoute',value:'size-ixquich'}});assert.equal(out.contract.currentChoiceFrame,undefined);assert.equal(out.contract.derived.comparisonRoute,'size-ixquich');
- const reenter=c.transitionComparisonChoice({selections:out.selections,intent:{type:'set-choice',key:'comparisonRoute',value:'equality-iuhqui'}});assert.equal(reenter.contract.currentChoiceFrame.routeId,'equality-iuhqui');
+ const out=c.transitionComparisonChoice({selections:next.selections,expectedFrame:next.contract.currentChoiceFrame,intent:{type:'set-choice',key:'comparisonRoute',value:'size-ixquich'}});assert.equal(out.contract.currentChoiceFrame.routeId,'size-ixquich');assert.equal(out.contract.derived.comparisonRoute,'size-ixquich');
+ const reenter=c.transitionComparisonChoice({selections:out.selections,expectedFrame:out.contract.currentChoiceFrame,intent:{type:'set-choice',key:'comparisonRoute',value:'equality-iuhqui'}});assert.equal(reenter.contract.currentChoiceFrame.routeId,'equality-iuhqui');
 });
 import {comparisonCapturePresentation} from '../ui/composition/structure_design.mjs';
 test('capture presentation consumes issued description instead of reconstructing choice conditions',()=>{
@@ -86,7 +86,7 @@ test('leaving the pilot rejects its old callbacks instead of delegating them to 
  for(const selections of [out.selections,{relation:'conjunction'}])for(const intent of [{type:'clear-capture',role:'principal'},{type:'capture',role:'principal',result:parents.adjoined},{type:'set-choice',key:'icRelation',value:'no'}]){
   const stale=c.transitionComparisonChoice({selections,expectedFrame:frame,intent});assert.equal(stale.handled,true);assert.equal(stale.authorizationStatus,'blocked');assert.equal(c.getCapturedCanonicalResult('principal'),parents.principal);
  }
- assert.equal(c.transitionComparisonChoice({selections:out.selections,intent:{type:'set-choice',key:'adjunctorIn',value:'no'}}).handled,false);
+ assert.equal(c.transitionComparisonChoice({selections:{relation:'conjunction'},intent:{type:'set-choice',key:'adjunctorIn',value:'no'}}).handled,false);
 });
 test('bound capability controls receive a fresh frame after each consecutive choice',()=>{
  const code=readFileSync(new URL('../ui/rendering/rendering.mjs',import.meta.url),'utf8');
@@ -101,5 +101,5 @@ test('bound capability controls receive a fresh frame after each consecutive cho
  ctx.applyClassicalComparisonChoiceIntent(c,{type:'set-choice',key:'icRelation',value:'yes'},displayed);
  assert.equal(ctx.ClassicalClauseRelationSelections.icRelation,'yes');assert(c.isCurrentChoiceFrame(displayed,ctx.ClassicalClauseRelationSelections));
  ctx.applyClassicalComparisonChoiceIntent(c,{type:'set-choice',key:'comparisonRoute',value:'size-ixquich'},displayed);
- assert.equal(displayed,undefined);assert.equal(ctx.ActiveClassicalGrammarResultBinding.clauseRelationDecisionContract.derived.comparisonRoute,'size-ixquich');
+ assert.equal(displayed.routeId,'size-ixquich');assert.equal(ctx.ActiveClassicalGrammarResultBinding.clauseRelationDecisionContract.derived.comparisonRoute,'size-ixquich');
 });

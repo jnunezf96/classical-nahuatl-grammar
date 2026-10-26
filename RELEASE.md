@@ -1,15 +1,17 @@
-# Grammar OS v1.2.54 release
+# Grammar OS v1.2.55 release
 
-Release name: **Comparison Choice Synchronization**
+Release name: **Unified Comparison Choices**
 
-Browser build: **20261026-choice-sync-73**
+Browser build: **20261026-comparison-choices-74**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Refreshes bound comparison controls after each choice and when leaving the migrated family, so consecutive selections use the current state.
-- Preserves canonical validation, exact parents, and explicit Make.
+- All23 comparison routes use shared canonical choice domains and application transitions.
+- Source-derived facts stay distinct from genuine alternatives; conflicting earlier selections require an explicit correction.
+- Inactive negative-standard choices remain retained without blocking an absent standard or entering the request.
+- Existing panels, exact Source custody and explicit Make are preserved.
 
 ## Review scope and current limits
 
@@ -36,7 +38,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.54/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.55/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.

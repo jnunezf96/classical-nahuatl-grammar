@@ -1,25 +1,33 @@
 import {buildCurrentChoiceFrame} from './current_choice_frame.mjs';
-export const comparisonChoiceRoutes=Object.freeze(['equality-iuhqui','equality-ihuan','similarity-iuhqui-principal']);
-export const isCurrentComparisonRoute=route=>comparisonChoiceRoutes.includes(route);
-const defaults=Object.freeze({icRelation:'yes',adjunctorIn:'yes',sentenceType:'none',iuhquiModifier:'none'});
+const defaults=Object.freeze({icRelation:'yes',adjunctorIn:'yes',negativeStandardIn:'yes',copula:'no',sentenceType:'none',iuhquiModifier:'none',sameAsMarker:'zan-no-yehhuatl',negativeIntroducer:'in-ahmo-iuhqui',adversativeMarker:'yeceh',questionCollocation:'oc-yeh',superlativeAdverbial:'cencah',incorporatedSuperlative:'cem',superlativePrincipal:'ahcic',principalNnc:'tachcauh',continuationFamily:'bare',position:'preposed'});
 export function resolveComparisonChoices(ownerContract,selections={}) {
   if (!ownerContract) return null;
   const operationSelections={comparisonRoute:ownerContract.routeId};
+  const recoveries=[];
+  const diagnostics=[...(ownerContract.diagnostics||[])];
+  for(const fact of ownerContract.facts||[]) {
+    operationSelections[fact.key]=fact.value;
+    if(selections[fact.key] && selections[fact.key]!==fact.value) {
+      diagnostics.push(`classical-comparison-${fact.key}-not-licensed`);
+      recoveries.push({key:fact.key,id:fact.key.replace(/[A-Z]/gu,l=>`-${l.toLowerCase()}`),values:[fact.value],selectedValue:'',requestedValue:selections[fact.key],required:true,resolved:false,responsibility:'application-recovery',applicability:'relevant',selectionOrigin:'explicit-user',implementationSupport:'implemented',workflowCompletion:'reset-required',reason:'Reset the previous selection to the value required by this Source',candidates:[{value:fact.value,linguisticJudgment:'licensed',obligation:'owner-fixed',interaction:'selectable-for-recovery'}]});
+    }
+  }
   const decisions=ownerContract.decisions.map(domain=>{
     const requestedValue=String(selections[domain.key]??'').trim().toLowerCase();
-    const candidate=requestedValue||defaults[domain.key];
+    const defaultValue=defaults[domain.key] ?? (domain.key==='degreeMarker' ? (domain.values.includes('none')?'none':domain.values[0]) : '');
+    const candidate=requestedValue||defaultValue;
     const selectedValue=domain.values.includes(candidate)?candidate:'';
-    operationSelections[domain.key]=selectedValue;
+    if(domain.applicability!=='inactive') operationSelections[domain.key]=selectedValue;
     return {...domain,requestedValue,selectedValue,
       selectionOrigin:requestedValue?'explicit-user':'application-default',
-      defaultPolicy:{value:defaults[domain.key],authority:'application'},
-      applicability:'relevant',required:true,resolved:!!selectedValue,
-      implementationSupport:'implemented',workflowCompletion:'answer-required',
+      defaultPolicy:{value:defaultValue,authority:'application'},
+      applicability:domain.applicability||'relevant',required:true,resolved:!!selectedValue,
+      implementationSupport:domain.implementationSupport||'implemented',workflowCompletion:'answer-required',
       conditions:domain.key==='icRelation'?['yes-requires-dimension']:[],
-      candidates:domain.values.map(value=>({value,linguisticJudgment:'licensed',interaction:'selectable-for-staging'})),
+      candidates:domain.values.map(value=>({value,linguisticJudgment:'licensed',interaction:domain.applicability==='inactive'?'unavailable':'selectable-for-staging'})),
       reason:'Choice licensed by the canonical comparison owner'};
   });
-  return {decisions,operationSelections};
+  return {decisions:[...decisions,...recoveries],operationSelections,diagnostics};
 }
 export function projectComparisonChoiceFrame({contract, ownerContract, choices, captureRevision, stagedRevision, captures}) {
   const layout=contract.derived.captureSlotLayout;
@@ -31,5 +39,5 @@ export function projectComparisonChoiceFrame({contract, ownerContract, choices, 
     facts:contract.derived,
     outcome:{operationSelected:true,readyToMake:contract.authorizationStatus==='authorized',
       reasons:contract.diagnostics,scope:'applied-captured-inputs'},
-    provenance:{owner:'comparison',sourceReferences:['Andrews-53.1.7','Andrews-53.3.1-2']}});
+    provenance:{owner:'comparison',sourceReferences:[ownerContract.sourceReference]}});
 }

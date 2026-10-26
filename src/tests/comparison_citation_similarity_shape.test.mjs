@@ -1,7 +1,5 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import vm from 'node:vm';
-import {readFileSync} from 'node:fs';
 import {createRuntimeInstance} from '../runtime/create_runtime.mjs';
 const r=(await createRuntimeInstance({documentObject:{getElementById:()=>null,addEventListener(){}}})).runtimeObject;
 test('citation similarity derives short reduplication and excludes nominal affinity/distribution analyses',()=>{
@@ -24,13 +22,10 @@ test('citation similarity derives short reduplication and excludes nominal affin
    assert.equal(r.evaluateClassicalNahuatlComparison({routeId:'similarity-reduplicative-prefix',slots:{source},choices:{continuationFamily:family,reduplicationShape:shape}}).authorizationStatus,'blocked');
   }
  }
- const code=readFileSync(new URL('../ui/rendering/rendering.mjs',import.meta.url),'utf8');
- const start=code.indexOf('    function setClassicalClauseRelationDecision(');
- const ctx=vm.createContext({CLASSICAL_CLAUSE_RELATION_DECISION_KEYS:{'continuation-family':'continuationFamily'},CLASSICAL_CLAUSE_RELATION_DECISION_LABELS:{},
- ClassicalClauseRelationSelections:{relation:'comparison',comparisonRoute:'similarity-reduplicative-prefix',continuationFamily:'ti-agentive',reduplicationShape:'long-cv',tiClass:'c'},
- ActiveClassicalGrammarResultBinding:null,ActiveClassicalClauseRelationResult:null,ClassicalExplicitClauseRelationIntent:'',ClassicalClauseRelationStatusMessage:'',refreshClassicalClauseRelationWorkflow(){}});
- vm.runInContext(code.slice(start,code.indexOf('\n    function ',start+20)),ctx);
- assert.equal(ctx.setClassicalClauseRelationDecision('continuation-family','bare'),true);
- assert.equal(ctx.ClassicalClauseRelationSelections.reduplicationShape,undefined);
- assert.equal(ctx.ClassicalClauseRelationSelections.continuationFamily,'bare');
+ const before={relation:'comparison',comparisonRoute:'similarity-reduplicative-prefix',continuationFamily:'ti-agentive',reduplicationShape:'long-cv',tiClass:'c'};
+ const transition=c.transitionComparisonChoice({selections:before,expectedFrame:c.buildDecisionContract(before).currentChoiceFrame,intent:{type:'set-choice',key:'continuationFamily',value:'bare'}});
+ assert.equal(transition.authorizationStatus,'authorized');
+ assert.equal(transition.selections.reduplicationShape,undefined);
+ assert.equal(transition.selections.tiClass,undefined);
+ assert.equal(transition.contract.operationSelections.reduplicationShape,'short-cv');
 });

@@ -1132,23 +1132,63 @@ export function createComparisonApi(targetObject = globalThis, installationConte
       return { ok: true, id: value, surface: inventory[value], diagnostic: "" };
     }
     // Read-only grammar description. It cannot authenticate a Source or authorize Make.
-    function getClassicalComparisonChoiceContract(routeId, choices = {}) {
-      if (!["equality-iuhqui", "equality-ihuan", "similarity-iuhqui-principal"].includes(routeId)) return null;
+    function getComparisonDegreeDomain(routeId) {
+      return ["similarity-tloc-relational-nnc", "similarity-incorporated-nehnequi"].includes(routeId)
+        ? SIMILARITY_DEGREE_MARKERS : routeId === "size-ixquich" ? SIZE_DEGREE_MARKERS
+        : routeId === "comparative-tachcauh-hualcah" ? TACHCAUH_DEGREE_MARKERS
+        : routeId.startsWith("comparative-panahuia") ? PANAHUIA_DEGREE_MARKERS
+        : routeId === "comparative-adversative" ? ADVERSATIVE_COMPARATIVE_DEGREES
+        : routeId === "comparative-negative-adverbial" ? NEGATIVE_COMPARATIVE_DEGREES : COMPARATIVE_DEGREE_MARKERS;
+    }
+    function getClassicalComparisonChoiceContract(routeId, choices = {}, source = null, presentSlots = null) {
       const spec = ROUTES_BY_ID.get(routeId);
-      const ic = choices.icRelation === true || choices.icRelation === "yes";
+      if (!spec) return null;
+      const ic = spec.choiceFields.includes("icRelation") && (choices.icRelation === true || choices.icRelation === "yes");
       const requiredSlots = [...spec.requiredSlots, ...(ic ? ["dimension"] : [])];
       const domains = {icRelation: ["yes", "no"], adjunctorIn: ["yes", "no"],
-        iuhquiModifier: Object.keys(IUHQUI_MODIFIERS), sentenceType: SENTENCE_TYPES};
-      return freeze({routeId, requiredSlots: freeze(requiredSlots),
-        decisions: freeze(spec.choiceFields.map(field => ({key: field,
-          id: field.replace(/[A-Z]/gu, letter => `-${letter.toLowerCase()}`),
-          values: freeze(domains[field]), responsibility: "user", regularity: "unclassified",
-          productivity: "productive", linguisticJudgment: "licensed",
-          evidence: field === "sentenceType" ? "existing-sentence-realization-owner" : "Andrews-53.1.7/53.3.1-2",
-          determinesCaptureRoles: field === "icRelation"}))),
-        inputs: freeze(Object.keys(ROUTE_SLOT_SOURCE_KINDS[routeId]).map(slot => ({slot,
-          requirement: requiredSlots.includes(slot) ? "required" : "optional",
-          contribution: slot === "dimension" && !ic ? "retained-not-included" : "included"})))});
+        negativeStandardIn: ["yes", "no"], copula: ["yes", "no"],
+        iuhquiModifier: Object.keys(IUHQUI_MODIFIERS), sentenceType: SENTENCE_TYPES,
+        degreeMarker: Object.keys(getComparisonDegreeDomain(routeId)), sameAsMarker: Object.keys(SAME_AS_MARKERS),
+        negativeIntroducer: Object.keys(NEGATIVE_STANDARD_INTRODUCERS), adversativeMarker: Object.keys(ADVERSATIVE_MARKERS),
+        questionCollocation: Object.keys(QUESTION_COLLOCATIONS), superlativeAdverbial: Object.keys(SUPERLATIVE_ADVERBIALS),
+        incorporatedSuperlative: Object.keys(SUPERLATIVE_INCORPORATED), superlativePrincipal: Object.keys(SUPERLATIVE_PRINCIPALS),
+        principalNnc: Object.keys(PRINCIPAL_COMPARISON_NNCS), continuationFamily: Object.keys(REDUPLICATIVE_CONTINUATIONS),
+        position: ["preposed", "postposed"]};
+      const sourceReference = routeId.startsWith("superlative-") ? "Andrews-53.7"
+        : routeId.startsWith("question-") ? "Andrews-53.6" : routeId.startsWith("comparative-") ? "Andrews-53.5"
+        : routeId.startsWith("size-") ? "Andrews-53.4" : routeId.startsWith("equality-") ? "Andrews-53.3"
+        : "Andrews-53.1";
+      const diagnostics = [], facts = [], fields = [...spec.choiceFields];
+      const continuation = key(choices.continuationFamily || "bare");
+      let sourceChoices = null;
+      if (routeId === "similarity-reduplicative-prefix") {
+        sourceChoices = continuation === "ti-agentive" ? getClassicalComparisonTiAgentiveChoiceInventory(source)
+          : continuation === "oyotl-nehnemi" ? getClassicalComparisonNehnemiChoiceInventory(source)
+          : continuation === "cihuatl-tlahtoa" ? getClassicalComparisonTlahtoaChoiceInventory(source)
+          : ["bare", "absolutive-tl", "absolutive-tli", "absolutive-li"].includes(continuation)
+            ? getClassicalComparisonCitationChoiceInventory(source) : null;
+        if (sourceChoices && sourceChoices.authorizationStatus !== "authorized") diagnostics.push(sourceChoices.blockReason);
+        domains.reduplicationShape = sourceChoices?.reduplicationShapes || [];
+        domains.tiClass = sourceChoices?.classChoices || [];
+      }
+      const decisions = fields.flatMap(field => {
+        if (field === "tiClass" && continuation !== "ti-agentive") return [];
+        if (field === "reduplicationShape" && !sourceChoices) return [];
+        const values = domains[field] || [];
+        const fixed = (field === "tiClass" || (field === "reduplicationShape" && ["bare", "absolutive-tl", "absolutive-tli", "absolutive-li"].includes(continuation))) && values.length === 1;
+        if (fixed) { facts.push(freeze({key:field,value:values[0],responsibility:"owner"})); return []; }
+        return [{key:field,id:field.replace(/[A-Z]/gu, letter => `-${letter.toLowerCase()}`),
+          values:freeze(values),responsibility:"user",regularity:"unclassified",productivity:"unclassified",
+          linguisticJudgment:"licensed",implementationSupport:values.length ? "implemented" : "source-required",
+          evidence:field === "sentenceType" ? "existing-sentence-realization-owner" : sourceReference,
+          applicability:routeId === "comparative-panahuia-unspecified" && presentSlots && !presentSlots.includes("standard")
+            && ["negativeIntroducer", "negativeStandardIn"].includes(field) ? "inactive" : "relevant",
+          determinesCaptureRoles:field === "icRelation"}];
+      });
+      return freeze({routeId,sourceReference,requiredSlots:freeze(requiredSlots),decisions:freeze(decisions),facts:freeze(facts),diagnostics:freeze(diagnostics),
+        inputs:freeze(Object.keys(ROUTE_SLOT_SOURCE_KINDS[routeId]).map(slot => ({slot,
+          requirement:requiredSlots.includes(slot) ? "required" : "optional",
+          contribution:slot === "dimension" && spec.choiceFields.includes("icRelation") && !ic ? "retained-not-included" : "included"})))});
     }
     function normalizeBooleanChoice(request, field, fallback = false) {
       const value = request?.choices?.[field] ?? request?.[field];
@@ -1271,19 +1311,7 @@ export function createComparisonApi(targetObject = globalThis, installationConte
         "in-ahmo-iuhqui");
       }
       if (routeSpec.choiceFields.includes("degreeMarker")) {
-        const degreeInventory = ["similarity-tloc-relational-nnc", "similarity-incorporated-nehnequi"].includes(routeId)
-          ? SIMILARITY_DEGREE_MARKERS
-          : routeId === "size-ixquich"
-            ? SIZE_DEGREE_MARKERS
-            : routeId === "comparative-tachcauh-hualcah"
-              ? TACHCAUH_DEGREE_MARKERS
-              : routeId.startsWith("comparative-panahuia")
-                ? PANAHUIA_DEGREE_MARKERS
-                : routeId === "comparative-adversative"
-                  ? ADVERSATIVE_COMPARATIVE_DEGREES
-                  : routeId === "comparative-negative-adverbial"
-                    ? NEGATIVE_COMPARATIVE_DEGREES
-                    : COMPARATIVE_DEGREE_MARKERS;
+        const degreeInventory = getComparisonDegreeDomain(routeId);
         addChoice("degreeMarker", degreeInventory, degreeInventory.none !== undefined ? "none" : Object.keys(degreeInventory)[0]);
       }
       if (routeSpec.choiceFields.includes("adversativeMarker")) addChoice("adversativeMarker", ADVERSATIVE_MARKERS, "yeceh");

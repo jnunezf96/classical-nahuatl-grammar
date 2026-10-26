@@ -1,5 +1,10 @@
 # Version History
 
+## v1.2.55 — Unified Comparison Choices
+
+- Coordinates all23 comparison routes through canonical domains and shared transitions.
+- Retains Source-derived facts, inactive choices and explicit recovery without adding panels.
+
 ## v1.2.54 — Comparison Choice Synchronization
 
 - Refreshes bound comparison controls after each choice and when leaving the migrated family, so consecutive selections use the current state.
