@@ -1,5 +1,9 @@
 # Version History
 
+## v1.2.38 — Andrews Negative Continuation
+
+- Repairs contextual negative-prefix continuation and the incorrect sentence label using existing controls; preserves exact source custody.
+
 ## v1.2.37 — Andrews Pil Child Correction
 
 - Restricts singular child/simple pil and explains the valid affective route; preserves plural-child and noble readings.

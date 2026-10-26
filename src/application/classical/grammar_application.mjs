@@ -1321,6 +1321,7 @@ const ROUTE_DEFINITIONS = Object.freeze({
       "particle-semantic-marker",
     ]),
   }),
+  "particle:negative-attachment": Object.freeze({capabilityName: "buildClassicalNahuatlNegativeParticleAttachment", axisIds: Object.freeze(["negative-selection", "following-particle"])}),
   "particle:negative-selection": Object.freeze({
     capabilityName: "selectClassicalNahuatlNegativeParticleFrame",
     axisIds: Object.freeze([
@@ -1506,6 +1507,7 @@ const CLASSICAL_GRAMMAR_APPLICATION_CONTINUATION_TYPE_CONTRACTS =
       inputUnitKinds: Object.freeze([]),
       outputUnitKinds: Object.freeze(["particle-result"]),
     }),
+    "particle:negative-attachment": Object.freeze({inputUnitKinds: Object.freeze(["particle-result"]), outputUnitKinds: Object.freeze(["particle-result"])}),
     "particle:negative-selection": Object.freeze({
       inputUnitKinds: Object.freeze(["particle-result"]),
       outputUnitKinds: Object.freeze(["particle-result"]),
@@ -1862,6 +1864,7 @@ const CLASSICAL_GRAMMAR_APPLICATION_RESULT_BINDING_CONTRACTS = Object.freeze({
     validatorCapabilityName:
       "isClassicalNahuatlParticleSentenceBindingFrame",
   }),
+  "particle:negative-attachment": Object.freeze({family: "particle-sentence", issuerCapabilityName: "issueClassicalNahuatlParticleSentenceBindingFrame", validatorCapabilityName: "isClassicalNahuatlParticleSentenceBindingFrame"}),
   "particle:negative-selection": Object.freeze({
     family: "particle-sentence",
     issuerCapabilityName:
@@ -2182,6 +2185,7 @@ const FOUNDATION_AXIS_SEMANTIC_FACT_ROLES = Object.freeze({
     "particle-placement": "lexical-fact",
     "particle-semantic-marker": "lexical-fact",
   }),
+  "particle:negative-attachment": defineAxisSemanticFactRoles({"negative-selection": "contextual-fact", "following-particle": "lexical-fact"}),
   "particle:negative-selection": defineAxisSemanticFactRoles({
     polarity: "genuine-user-choice",
     "preceding-particle": "contextual-fact",
@@ -2612,6 +2616,7 @@ const CANONICAL_RESULT_CONTRACTS = Object.freeze({
   "particle:result": defineCanonicalResultContract(
     "classical-nahuatl-particle-result-frame",
   ),
+  "particle:negative-attachment": defineCanonicalResultContract("classical-nahuatl-particle-result-frame"),
   "particle:negative-selection": defineCanonicalResultContract(
     "classical-nahuatl-negative-particle-selection-frame",
   ),
@@ -3342,6 +3347,7 @@ const AUTHORIZED_RESULT_VALIDATOR_NAMES = Object.freeze({
   "particle:result": Object.freeze([
     "isClassicalNahuatlParticleResultFrame",
   ]),
+  "particle:negative-attachment": Object.freeze(["isClassicalNahuatlParticleResultFrame"]),
   "particle:negative-selection": Object.freeze([
     "isClassicalNahuatlNegativeParticleSelectionFrame",
   ]),

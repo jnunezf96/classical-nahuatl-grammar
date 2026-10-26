@@ -204,6 +204,7 @@ export function formatBuildOperationLabel(operationId = "") {
     "sentence:adverbial-adjunction": "Add a modifier",
     "particle:result": "Make a particle",
     "particle:negative-selection": "Choose a negative expression",
+    "particle:negative-attachment": "Attach the negative prefix",
     "nnc:adjectival-modification": "Add a description",
     "nnc:deverbal-construction": "Form a noun construction",
     "vnc:denominal": "Make a verb from a noun",

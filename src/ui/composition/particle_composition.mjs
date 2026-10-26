@@ -29,11 +29,12 @@ export function presentParticleComposition(doc,{acceptedResult,card,action=''}={
   // A pending particle choice must never relabel the old accepted clause, and
   // a pending clause must not relabel the particle still accepted beside it.
   const particle=acceptedResult?.authorizationStatus==='authorized'&&doc.defaultView?.isClassicalNahuatlParticleResultFrame?.(acceptedResult)===true;
-  const unit=particle?'particle expression':'sentence';
-  write(doc.getElementById('composition-result-cue'),action
+  const negative=doc.defaultView?.isClassicalNahuatlNegativeParticleSelectionFrame?.(acceptedResult)===true;
+  const unit=negative?'negative prefix':particle?'particle expression':'sentence';
+  write(doc.getElementById('composition-result-cue'),negative ? 'This negative prefix needs following material. Continue to attach it to a licensed particle.' : action
     ?`Your accepted ${unit} stays here while you prepare a change.`
     :`Keep this ${unit} or prepare its next change.`);
-  write(doc.getElementById('classical-result-outline-structure-analysis-heading'),particle?'Particle expression':'Sentence');
+  write(doc.getElementById('classical-result-outline-structure-analysis-heading'),negative?'Negative prefix':particle?'Particle expression':'Sentence');
   write(card?.querySelector('.classical-result-continuation-card__scope'),action
-    ?`Accepted ${unit}`:particle?'Particle expression':'Sentence');
+    ?`Accepted ${unit}`:negative?'Negative prefix':particle?'Particle expression':'Sentence');
 }

@@ -43128,7 +43128,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
             packet.layers = packet.sentenceOptions ? layers : [];
           } else if (operationId === "vnc:sentence-result") packet.layers = layers;
         } else if (binding?.family === "particle-sentence") {
-          if (operationId === "particle:negative-selection") packet.request = {operationId, args: [{polarity: "negative",
+          if (operationId === "particle:negative-attachment") packet.request = {operationId, args: [{negativeSelectionFrame: (binding.particleHostBinding || binding.ownerBindingFrame)?.exactHostClause, followingParticleResultFrame: binding.particleResultBinding?.exactParticleResult}]};
+          else if (operationId === "particle:negative-selection") packet.request = {operationId, args: [{polarity: "negative",
             sentenceKind: targetObject.document.getElementById("classical-rule-logic-sentence-surface")?.value || "statement",
             precedingParticleResultFrame: binding.exactResult}]};
           else {
@@ -48332,7 +48333,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
         );
         const ready = Boolean(
           unresolvedChoiceIds.length === 0
-          && (sentenceAdverbialReady || sentenceParticleReady)
+          && (sentenceAdverbialReady || sentenceParticleReady || (current.operationId === "particle:negative-attachment"
+            && targetObject.buildClassicalNahuatlNegativeParticleAttachment?.({negativeSelectionFrame: hostBinding?.exactHostClause, followingParticleResultFrame: particleBinding?.exactParticleResult})?.authorizationStatus === "authorized"))
         );
         ActiveClassicalGrammarResultBinding = Object.freeze({
           ...current,
@@ -48360,6 +48362,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         firstMissingChoice?.focus?.({ preventScroll: true });
         firstMissingChoice?.scrollIntoView?.({ block: "center" });
         if (allowExecution && ready) {
+          if (current.operationId === "particle:negative-attachment") return Boolean(renderClassicalCapabilityApplicationResultForReview(targetObject.executeClassicalGrammarApplicationRequest?.({operationId: current.operationId, args: [{negativeSelectionFrame: hostBinding.exactHostClause, followingParticleResultFrame: particleBinding.exactParticleResult}]}), current.operationId));
           const hostOption = hostBinding.inputRole === "consumed-sentence"
             ? { consumedSentenceFrame: hostBinding.exactHostClause }
             : { nuclearResultFrame: hostBinding.exactHostClause };
@@ -53913,6 +53916,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         if (!targetObject.isClassicalNahuatlParticleSentenceBindingFrame?.(additional)
           || additional.authorizationStatus !== "authorized") return false;
         const frames = [binding.ownerBindingFrame, additional];
+        if (binding.operationId === "particle:negative-attachment") return targetObject.buildClassicalNahuatlNegativeParticleAttachment?.({negativeSelectionFrame: frames.find(frame => frame?.exactHostClause)?.exactHostClause, followingParticleResultFrame: frames.find(frame => frame?.exactParticleResult)?.exactParticleResult})?.authorizationStatus === "authorized";
         return frames.some(frame => frame?.exactHostClause)
           && frames.some(frame => frame?.exactParticleResult);
       }
@@ -54535,6 +54539,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           frame => frame.exactParticleResult
         ) || null;
         if (!hostBinding || !particleBinding) return false;
+        if (binding.operationId === "particle:negative-attachment" && targetObject.buildClassicalNahuatlNegativeParticleAttachment?.({negativeSelectionFrame: hostBinding.exactHostClause, followingParticleResultFrame: particleBinding.exactParticleResult})?.authorizationStatus !== "authorized") return false;
         ActiveClassicalGrammarResultBinding = Object.freeze({
           ...binding,
           particleHostBinding: hostBinding,

@@ -1265,6 +1265,41 @@ l50-ma-tel-za-yeh|although it may be only; at least|restrictive concession; form
         && frame.callerSuppliedFormulaAuthority === false
         && Object.isFrozen(frame));
     }
+    // §3.3: join only an authenticated contextual selection and a genuine
+    // following particle whose typed sequence is licensed by the inventory.
+    function buildClassicalNahuatlNegativeParticleAttachment(request = {}) {
+      const selection = request.negativeSelectionFrame;
+      const following = request.followingParticleResultFrame;
+      const valid = Reflect.ownKeys(request).every(key =>
+        ["negativeSelectionFrame", "followingParticleResultFrame"].includes(key))
+        && isClassicalNahuatlNegativeParticleSelectionFrame(selection)
+        && selection.authorizationStatus === "authorized"
+        && isClassicalNahuatlParticleResultFrame(selection.precedingParticleResultFrame)
+        && isClassicalNahuatlParticleResultFrame(following)
+        && !following.negativeSelectionFrame;
+      const segments = valid ? [
+        ...selection.precedingParticleResultFrame.formulaSegments,
+        ...selection.particleResultFrame.formulaSegments,
+        ...following.formulaSegments
+      ] : [];
+      const matches = valid ? getClassicalNahuatlParticleSourceEntries().filter(entry =>
+        entry.curriculumCoordinate === "3.3"
+        && entry.formulaSegments.length === segments.length
+        && entry.formulaSegments.every((segment, index) => segment === segments[index])) : [];
+      if (matches.length !== 1) return Object.freeze({
+        kind: "classical-nahuatl-particle-result-frame", authorizationStatus: "blocked",
+        blockReason: "classical-negative-attachment-authentic-context-and-licensed-following-particle-required"
+      });
+      const lexical = buildClassicalNahuatlParticleResultFrame(
+        buildClassicalNahuatlParticleSourceFrame(matches[0].id));
+      if (!isClassicalNahuatlParticleResultFrame(lexical)) return lexical;
+      const result = Object.freeze({...lexical, negativeSelectionFrame: selection,
+        followingParticleResultFrame: following});
+      issuedParticleResultFrames.set(result, Object.freeze({
+        ...issuedParticleResultFrames.get(lexical), negativeSelectionFrame: selection,
+        followingParticleResultFrame: following}));
+      return result;
+    }
     function freezeClassicalNahuatlLesson3ParticleResult(value, seen = new Set()) {
       if (!value || typeof value !== "object" || Object.isFrozen(value) || seen.has(value)) {
         return value;
@@ -2035,7 +2070,7 @@ l50-ma-tel-za-yeh|although it may be only; at least|restrictive concession; form
       return issued;
     }
     function getClassicalNahuatlParticleReloadInputs(frame = null) {
-      return isClassicalNahuatlParticleResultFrame(frame)
+      return isClassicalNahuatlParticleResultFrame(frame) && !frame.negativeSelectionFrame
         ? Object.freeze({sourceFrame: frame.sourceFrame,
           options: issuedParticleResultFrames.get(frame).reloadOptions}) : null;
     }
@@ -2051,6 +2086,8 @@ l50-ma-tel-za-yeh|although it may be only; at least|restrictive concession; form
         && frame.version === CLASSICAL_NAHUATL_LESSON3_PARTICLES_VERSION
         && frame.authorizationStatus === receipt.authorizationStatus
         && frame.sourceFrame === receipt.sourceFrame
+        && frame.negativeSelectionFrame === receipt.negativeSelectionFrame
+        && frame.followingParticleResultFrame === receipt.followingParticleResultFrame
         && frame.formulaProjection === receipt.formulaProjection
         && frame.writtenProjection === receipt.writtenProjection
         && frame.contextualRealizationFrame
@@ -2861,7 +2898,8 @@ l50-ma-tel-za-yeh|although it may be only; at least|restrictive concession; form
       const recognized = [
         "sentence:adverbial-adjunction",
         "sentence:particle-adjunction",
-        "particle:negative-selection"
+        "particle:negative-selection",
+        "particle:negative-attachment"
       ].includes(normalizedOperationId);
       const runtimeTarget = getClassicalNahuatlParticleRuntimeTarget();
       const exactParticleResult = isClassicalNahuatlParticleResultFrame(
@@ -2884,7 +2922,10 @@ l50-ma-tel-za-yeh|although it may be only; at least|restrictive concession; form
           currentResult
         )
       ) ? currentResult : null;
-      const exactHostClause = (isClassicalParticleAdverbialCompositionHost(currentResult) ? currentResult : null)
+      const exactHostClause = (normalizedOperationId === "particle:negative-attachment"
+        && isClassicalNahuatlNegativeParticleSelectionFrame(currentResult)
+        && currentResult.authorizationStatus === "authorized" ? currentResult : null)
+        || (isClassicalParticleAdverbialCompositionHost(currentResult) ? currentResult : null)
         || (getClassicalParticleAttestedAdjectivalNncHostProjection(currentResult) ? currentResult : null)
         || (getClassicalParticleAdjectivalNncHostProjection(currentResult) ? currentResult : null)
         || exactSentenceLayer
@@ -2909,7 +2950,14 @@ l50-ma-tel-za-yeh|although it may be only; at least|restrictive concession; form
       let requiredChoiceIds = [];
       let requiredResultRoles = [];
       let accepted = false;
-      if (normalizedOperationId === "sentence:adverbial-adjunction") {
+      if (normalizedOperationId === "particle:negative-attachment") {
+        if (isClassicalNahuatlNegativeParticleSelectionFrame(exactHostClause)) {
+          inputRole = "host-clause"; requiredResultRoles = ["particle-adjunct"]; accepted = true;
+        } else if (exactParticleResult && particleEntry?.formulaSegments?.length === 1
+          && particleEntry.placement?.scope !== "bound-to-following") {
+          inputRole = "particle-adjunct"; requiredResultRoles = ["host-clause"]; accepted = true;
+        }
+      } else if (normalizedOperationId === "sentence:adverbial-adjunction") {
         if (exactHostClause) {
           inputRole = exactSentenceLayer
             ? "consumed-sentence"
@@ -3761,6 +3809,7 @@ l50-ma-tel-za-yeh|although it may be only; at least|restrictive concession; form
         isClassicalNahuatlParticleResultFrame,
         isClassicalNahuatlParticleStructuralRoleFrame,
         selectClassicalNahuatlNegativeParticleFrame,
+        buildClassicalNahuatlNegativeParticleAttachment,
         isClassicalNahuatlNegativeParticleSelectionFrame,
         buildClassicalNahuatlParticleHonorificSourceFrame,
         isClassicalNahuatlParticleHonorificSourceFrame,
@@ -3868,6 +3917,7 @@ l50-ma-tel-za-yeh|although it may be only; at least|restrictive concession; form
     api.isClassicalNahuatlParticleResultFrame = isClassicalNahuatlParticleResultFrame;
     api.isClassicalNahuatlParticleStructuralRoleFrame = isClassicalNahuatlParticleStructuralRoleFrame;
     api.selectClassicalNahuatlNegativeParticleFrame = selectClassicalNahuatlNegativeParticleFrame;
+    api.buildClassicalNahuatlNegativeParticleAttachment = buildClassicalNahuatlNegativeParticleAttachment;
     api.isClassicalNahuatlNegativeParticleSelectionFrame = isClassicalNahuatlNegativeParticleSelectionFrame;
     api.buildClassicalNahuatlParticleHonorificSourceFrame = buildClassicalNahuatlParticleHonorificSourceFrame;
     api.isClassicalNahuatlParticleHonorificSourceFrame = isClassicalNahuatlParticleHonorificSourceFrame;

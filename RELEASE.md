@@ -1,16 +1,17 @@
-# Grammar OS v1.2.37 release
+# Grammar OS v1.2.38 release
 
-Release name: **Andrews Pil Child Correction**
+Release name: **Andrews Negative Continuation**
 
-Browser build: **20261025-pil-singular-56**
+Browser build: **20261025-negative-continuation-57**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Rejects simple pil with an explicitly singular child reading, following Andrews §32.6.1b.
-- Preserves plural child, singular affective child and noble readings.
-- Gives a clear recovery instruction while keeping the accepted Result unchanged during staging.
+- Continues an authenticated negative-prefix selection into an Andrews-licensed particle combination through existing Result controls.
+- Preserves the exact preceding particle, sentence context, prefix selection and following particle; copied and incompatible inputs remain rejected.
+- Labels a bare selection as a negative prefix, not a complete sentence.
+- The focused public path is mā + wish + ca# + zo → mā cazo (§3.3). Matching attested particle sequences define this route; arbitrary following hosts are not licensed. Reload of these new composite particles is deliberately unsupported rather than losing their original context.
 
 ## Review scope and current limits
 
@@ -37,7 +38,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.37/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.38/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.
