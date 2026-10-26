@@ -1,15 +1,15 @@
-# Grammar OS v1.2.51 release
+# Grammar OS v1.2.52 release
 
-Release name: **Comparison Input Recovery**
+Release name: **First Source Guidance**
 
-Browser build: **20261026-dimension-clear-70**
+Browser build: **20261026-first-source-71**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Keeps the selected comparison and īc choice when removing or recapturing its dimension.
-- Shows the missing required input accurately and preserves the accepted Result while choices are staged.
+- Gives first-time Source entry an accurate Apply instruction without referring to a nonexistent previous Source.
+- Retains the existing warning when editing an already committed Source.
 
 ## Review scope and current limits
 
@@ -36,7 +36,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.51/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.52/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.

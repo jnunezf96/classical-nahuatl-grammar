@@ -1,5 +1,9 @@
 # Version History
 
+## v1.2.52 — First Source Guidance
+
+- Distinguishes first Source entry from edits to an existing Source in the pending-state instruction.
+
 ## v1.2.51 — Comparison Input Recovery
 
 - Preserves comparison choices when clearing and recapturing a dimension, keeping required-input guidance and recovery consistent.

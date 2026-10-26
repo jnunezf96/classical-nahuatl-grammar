@@ -18385,7 +18385,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
         return Object.freeze({
           state: "pending",
           message: enteredSourcePresent
-            ? "Press Enter to apply this Source. Grammar and Result still belong to the last committed Source."
+            ? committedSourcePresent
+              ? "Press Enter to apply this Source. Grammar and Result still belong to the last committed Source."
+              : "Press Enter to apply this Source and continue to Build."
             : committedSourcePresent
               ? "The Source field is cleared but not applied. Press Enter to apply the change; Grammar and Result still belong to the last committed Source."
               : "Enter or choose a Classical Nahuatl Source, then press Enter to apply it."
