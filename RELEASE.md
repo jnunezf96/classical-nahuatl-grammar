@@ -1,16 +1,16 @@
-# Grammar OS v1.2.46 release
+# Grammar OS v1.2.47 release
 
-Release name: **Comparison Source Agreement**
+Release name: **Comparison Dimension Clarity**
 
-Browser build: **20261026-comparison-source-65**
+Browser build: **20261026-ic-dimension-66**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Keeps the existing Source and Build summaries aligned with the comparison's currently captured inputs.
-- Removing an optional comparand removes it from the summaries while preserving the original continuation for recapture and the accepted Result until explicit Make.
-- Retains Andrews's existing comparison grammar and choices. No new panels.
+- Identifies a missing required comparison dimension when īc is on.
+- Keeps an inactive dimension inspectable as saved for reuse, while excluding it from active Source summaries and the route diagram when īc is off.
+- Preserves exact captured Results, comparison grammar and explicit Make. No new panels.
 
 ## Review scope and current limits
 
@@ -37,7 +37,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.46/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.47/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.

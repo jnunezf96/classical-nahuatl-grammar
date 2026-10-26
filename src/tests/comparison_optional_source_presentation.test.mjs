@@ -4,7 +4,7 @@ import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 import {createRuntimeInstance} from '../runtime/create_runtime.mjs';
 import {createConstructionSession} from '../ui/composition/construction_session.mjs';
-import {createStructureDesign,projectClauseStructure,setStructureDesignContext} from '../ui/composition/structure_design.mjs';
+import {createStructureDesign,projectClauseStructure,comparisonCapturePresentation,setStructureDesignContext} from '../ui/composition/structure_design.mjs';
 import {Element} from './helpers/organization_dom.mjs';
 const r=(await createRuntimeInstance({documentObject:{getElementById:()=>null,addEventListener(){}}})).runtimeObject;
 const code=readFileSync(new URL('../ui/rendering/rendering.mjs',import.meta.url),'utf8');
@@ -22,7 +22,7 @@ test('captured optional comparison Source is inspectable and clears through the 
   let executions=0;
   const session=createConstructionSession({isSource:x=>x===cal,isResult:x=>r.isClassicalComparisonResultFrame(x),execute:p=>{executions++;return c.compose(p.choices);},present:()=>true});session.restore(accepted);
   const binding={};let state;
-  const ctx={targetObject:{document:doc},ClassicalClauseRelationSelections:{...choices},ActiveClassicalClauseRelationResult:receipt,
+  const ctx={comparisonCapturePresentation,targetObject:{document:doc},ClassicalClauseRelationSelections:{...choices},ActiveClassicalClauseRelationResult:receipt,
     formatClassicalClauseRelationValue:x=>x,createGrammarInspectorLine:()=>create('span'),
     appendClassicalWholeCanvasPanelActionRow(card,actions){for(const action of actions){const b=create('button');b.textContent=action.label;b.dataset.classicalUserAction=action.action;b.addEventListener('click',action.onClick);card.append(b);}},
     refreshClassicalClauseRelationWorkflow(){const contract=c.buildDecisionContract(ctx.ClassicalClauseRelationSelections);session.stage({source:cal,route:{operation:'comparison'},slots:[{role:'principal',exact:cal}],choices:{...ctx.ClassicalClauseRelationSelections},legalMoves:[],ready:contract.authorizationStatus==='authorized',execution:{choices:{...ctx.ClassicalClauseRelationSelections},signature:JSON.stringify(ctx.ClassicalClauseRelationSelections)}});state={...projectClauseStructure(r,c,ctx.ClassicalClauseRelationSelections,project),sourceScope:cal,bindingScope:binding,operation:'clause:comparison',bindingId:'comparison:principal'};},

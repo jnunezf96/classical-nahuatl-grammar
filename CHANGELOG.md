@@ -1,5 +1,9 @@
 # Version History
 
+## v1.2.47 — Comparison Dimension Clarity
+
+- Distinguishes required, included and retained comparison dimensions across the existing panels as īc changes.
+
 ## v1.2.46 — Comparison Source Agreement
 
 - Keeps Source and Build summaries aligned when an optional comparison operand is removed, without replacing the accepted Result until Make.

@@ -16,7 +16,7 @@ import { normalizeClassicalNahuatlIntroductoryModifier }
 import {createClassicalWorkspaceProvenanceProjector}
   from '../composer/result_provenance.mjs?v=20261012-position-provenance-7';
 import {resolvePathTargets, setPathHistoryPresentation} from '../composition/path_presentation.mjs?v=20261011-path-targets-7&routeShapes=20261021-1&writtenPreview=20261022-1&writingSource=20261022-1';
-import {setStructureDesignContext, setStructureComparison, projectCanonicalStructure, projectClauseStructure, projectOperationShape, projectCapturedOperationShape, compareCanonicalStructures} from '../composition/structure_design.mjs?reasonPresentation=20261026-1&nucleusEdit=20261024-9&clauseHarmony=20261023-5&v=20261011-structure-15&routeShapes=20261021-1&clauseCoordinate=20261021-1&resetEligibility=20261022-1&writingSource=20261022-1&makePreview=20261022-1&fixedChoices=20261022-1&interfaceRelease=1.2.36';
+import {setStructureDesignContext, setStructureComparison, projectCanonicalStructure, projectClauseStructure, comparisonCapturePresentation, projectOperationShape, projectCapturedOperationShape, compareCanonicalStructures} from '../composition/structure_design.mjs?icDimension=20261026-1&reasonPresentation=20261026-1&nucleusEdit=20261024-9&clauseHarmony=20261023-5&v=20261011-structure-15&routeShapes=20261021-1&clauseCoordinate=20261021-1&resetEligibility=20261022-1&writingSource=20261022-1&makePreview=20261022-1&fixedChoices=20261022-1&interfaceRelease=1.2.36';
 import {setSourceCandidatePresentation, projectSavedSourceCandidate, setRouteChoicePresentation, projectOfferedOperationShapes} from '../composition/candidate_design.mjs?v=20261021-route-shapes-1';
 import {notifyExplicitMakeResult,focusNativeChoice} from '../composition/flow_design.mjs?v=20261022-reset-eligibility-1&writingSource=20261022-1&makePreview=20261022-1&fixedChoices=20261022-1';
 import {getBuildOperationGroup,getBuildOperationOrder,inventoryOptionReference,formatBuildOperationLabel} from '../composition/build_navigation_model.mjs?v=20261021-ending-reference-2&nominalReload=20261024-4&interfaceRelease=1.2.36';
@@ -38537,10 +38537,13 @@ export function createUiRenderingApi(targetObject = globalThis) {
         : formatClassicalClauseRelationValue(role);
       const facts = targetObject.document.createElement("div");
       facts.className = "grammar-inspector__facts";
+      const comparisonCapture = comparisonCapturePresentation(
+        controller.buildDecisionContract(ClassicalClauseRelationSelections), role);
       facts.appendChild(createGrammarInspectorLine(
         "status",
         captureState.captured
-          ? "Captured canonical Result"
+          ? comparisonCapture?.retainedOnly ? "Retained for reuse · not included" : "Captured canonical Result"
+          : comparisonCapture?.required ? "Required · not captured"
           : ["marker", "dependent", "supplement"].includes(role)
             ? "Optional"
             : "Not captured"
@@ -53790,7 +53793,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const structure = projectClauseStructure(targetObject,
         getClassicalClauseRelationControllerForRendering(),
         ClassicalClauseRelationSelections, getClassicalOwnerIssuedResultProjection);
-      return (structure?.sources || []).map(source => source.surface).filter(Boolean).join(" + ");
+      return (structure?.sources || []).filter(source => !source.retainedOnly).map(source => source.surface).filter(Boolean).join(" + ");
     }
 
     function syncClassicalContinuationTarget({onlyIfChanged = false} = {}) {

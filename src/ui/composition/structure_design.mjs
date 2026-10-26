@@ -162,6 +162,15 @@ export function projectCanonicalStructure(r,exact,project,role='Source',seen=new
   }).filter(Boolean);
   return {exact,role,surface:projection.surface,operation:projection.operationId,unit,children,spatial:acceptedSpatial(r,exact,children),endpoints:endpointsFor(r,exact,project),facts:structureFacts(r,exact).filter(([,value])=>value)};
 }
+// Presentation of the existing comparison contract; never changes capture custody.
+export function comparisonCapturePresentation(contract,role) {
+  if(contract?.derived?.operationFamily!=='comparison')return null;
+  const required=contract.derived.requiredCaptureRoles?.includes(role)===true;
+  const retainedOnly=contract.derived.captureSlotLayout?.[role]==='dimension'
+    && ['equality-iuhqui','equality-ihuan','similarity-iuhqui-principal'].includes(contract.derived.comparisonRoute)
+    && contract.operationSelections?.icRelation==='no';
+  return {required,retainedOnly};
+}
 export function projectClauseStructure(r,controller,selections,project) {
   if(!controller?.getCapturedCanonicalResult || !controller?.buildDecisionContract)return null;
   const contract=controller.buildDecisionContract(selections);
@@ -180,7 +189,11 @@ export function projectClauseStructure(r,controller,selections,project) {
   const rightOnly=contract.relation==='conjunction' && contract.operationSelections?.leftContextAbsent===true;
   if(rightOnly)roles=roles.filter(role=>!['adjoined','dependent'].includes(role));
   const sources=roles.map(role=>projectCanonicalStructure(r,controller.getCapturedCanonicalResult(role),project,role)).filter(Boolean);
-  for(const source of sources)source.optionalCapture=optionalRoles.includes(source.role);
+  for(const source of sources) {
+    source.optionalCapture=optionalRoles.includes(source.role);
+    source.retainedOnly=comparisonCapturePresentation(contract,source.role)?.retainedOnly===true;
+    if(source.retainedOnly)source.label='Saved dimension · not included';
+  }
   if(conjunction)for(const source of sources) {const index=['principal','adjoined','dependent'].indexOf(source.role);if(index>=0)source.label=conjunctLabel(index,rightOnly);else if(source.role==='supplement')source.label='Shared supplement';}
   for(const source of sources)for(const endpoint of source.endpoints)endpoint.navigation=navigationFor(contract,source.role,endpoint);
   const native=contract.operationSelections||{}, unresolved=new Set(contract.unresolvedDecisionIds||[]);
@@ -221,7 +234,8 @@ export function projectOperationShape(r,navigator,operationId) {
 // Display only: sources were projected from exact owner-issued Results.
 export function projectCapturedOperationShape(shape,sources,relation) {
   if(!shape)return null;
-  const inputs=sources.length && sources.every(source=>source.unit)?sources.map(source=>source.unit):shape.inputs;
+  const activeSources=sources.filter(source=>!source.retainedOnly);
+  const inputs=activeSources.length && activeSources.every(source=>source.unit)?activeSources.map(source=>source.unit):shape.inputs;
   const sentences=['principal','adjoined'].every(role=>sources.some(source=>source.role===role && source.unit==='Sentence'));
   return {...shape,inputs,outputs:relation==='reason' && sentences?['Juxtaposed sentences']:shape.outputs};
 }
@@ -239,7 +253,7 @@ export function compareCanonicalStructures(r,left,right,project) {
 const structureIds=new WeakMap();let structureId=0;
 const identity=exact=>{if(!structureIds.has(exact))structureIds.set(exact,++structureId);return structureIds.get(exact);};
 export function structurePresentationSignature(state) {
-  const serialize=tree=>({identity:identity(tree.exact),role:tree.role,label:tree.label,optionalCapture:tree.optionalCapture===true,surface:tree.surface,unit:tree.unit,operation:tree.operation,facts:tree.facts,spatial:tree.spatial && {pending:tree.spatial.pending,pieces:tree.spatial.pieces.map(p=>({...p,source:p.source?identity(p.source):null}))},
+  const serialize=tree=>({identity:identity(tree.exact),role:tree.role,label:tree.label,optionalCapture:tree.optionalCapture===true,retainedOnly:tree.retainedOnly===true,surface:tree.surface,unit:tree.unit,operation:tree.operation,facts:tree.facts,spatial:tree.spatial && {pending:tree.spatial.pending,pieces:tree.spatial.pieces.map(p=>({...p,source:p.source?identity(p.source):null}))},
     endpoints:tree.endpoints.map(endpoint=>({...endpoint,origin:Boolean(endpoint.origin)})),children:tree.children.map(serialize)});
   return JSON.stringify({sources:(state?.sources||[]).map(serialize),missing:state?.missingSources || [],scope:state?.sourceScope?identity(state.sourceScope):null,binding:state?.bindingScope?identity(state.bindingScope):null,operation:state?.operation,bindingId:state?.bindingId,links:(state?.links||[]).map(link=>[link.left.id,link.right.id,link.state]),spatial:state?.spatial && {pending:state.spatial.pending,pieces:state.spatial.pieces.map(p=>({...p,source:p.source?identity(p.source):null}))}});
 }
