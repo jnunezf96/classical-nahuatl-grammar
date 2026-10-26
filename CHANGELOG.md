@@ -1,5 +1,9 @@
 # Version History
 
+## v1.2.46 — Comparison Source Agreement
+
+- Keeps Source and Build summaries aligned when an optional comparison operand is removed, without replacing the accepted Result until Make.
+
 ## v1.2.45 — Andrews Reason Presentation
 
 - Clarifies sentence rank and the required ca introducer in the existing reason-construction journey.

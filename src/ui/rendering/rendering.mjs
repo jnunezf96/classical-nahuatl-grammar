@@ -53780,6 +53780,19 @@ export function createUiRenderingApi(targetObject = globalThis) {
       setClassicalWholeCanvasActionStatus("Lexicalized Sun noun staged. Choose its grammar, then Make.");
       return true;
     }
+    function getClassicalComparisonSourceSummary() {
+      const operation = targetObject.document?.getElementById?.("classical-capability-navigator-operation")?.value || "";
+      const binding = getActiveClassicalGrammarResultBinding(operation);
+      if (binding?.family !== "clause-relation"
+        || ClassicalClauseRelationSelections.relation !== "comparison") return null;
+      // Keep the original continuation for recapture, while every composition
+      // summary describes only its current authenticated captured inputs.
+      const structure = projectClauseStructure(targetObject,
+        getClassicalClauseRelationControllerForRendering(),
+        ClassicalClauseRelationSelections, getClassicalOwnerIssuedResultProjection);
+      return (structure?.sources || []).map(source => source.surface).filter(Boolean).join(" + ");
+    }
+
     function syncClassicalContinuationTarget({onlyIfChanged = false} = {}) {
       const preview = targetObject.document?.getElementById?.(
         "classical-continuation-target"
@@ -53789,8 +53802,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const exactInput = targetObject.isClassicalGrammarApplicationCapabilityNavigator?.(navigator) === true
         ? navigator.exactSource || navigator.exactResult : null;
       const projected = exactInput ? getClassicalOwnerIssuedResultProjection(exactInput) : null;
-      const surface = projected?.canonicalResult === exactInput ? projected.surface || "" : "";
-      const text = surface ? `Source used · Entire Result: ${surface}` : "";
+      let surface = projected?.canonicalResult === exactInput ? projected.surface || "" : "";
+      const comparisonSurface = getClassicalComparisonSourceSummary();
+      const comparison = comparisonSurface !== null;
+      if (comparison) surface = comparisonSurface;
+      const text = surface ? comparison ? `Composition uses · ${surface}` : `Source used · Entire Result: ${surface}` : "";
       const changed = preview.textContent !== text || preview.hidden !== !surface
         || preview.dataset.classicalContinuationSourceSurface !== surface;
       if (preview.textContent !== text) preview.textContent = text;
@@ -53987,6 +54003,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
     }
 
     function getClassicalCommittedSourcePresentation() {
+      const comparisonSurface = getClassicalComparisonSourceSummary();
+      if (comparisonSurface !== null) return comparisonSurface;
       try {
         const committed = JSON.parse(targetObject.ClassicalSourcePartsCommittedSignature || "null");
         if (committed?.mode === "two-nucleus-nnc") return committed.caption || "";

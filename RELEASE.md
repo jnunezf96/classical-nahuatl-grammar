@@ -1,16 +1,16 @@
-# Grammar OS v1.2.45 release
+# Grammar OS v1.2.46 release
 
-Release name: **Andrews Reason Presentation**
+Release name: **Comparison Source Agreement**
 
-Browser build: **20261026-reason-presentation-64**
+Browser build: **20261026-comparison-source-65**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Shows genuine sentence operands as Sentences, with their inner verb clauses still separately inspectable.
-- Identifies the reason route as juxtaposed sentences and its ca introducer as required before capture.
-- Retains Andrews's grammatical construction, generated wording and explicit Apply/Make boundaries. No new panels.
+- Keeps the existing Source and Build summaries aligned with the comparison's currently captured inputs.
+- Removing an optional comparand removes it from the summaries while preserving the original continuation for recapture and the accepted Result until explicit Make.
+- Retains Andrews's existing comparison grammar and choices. No new panels.
 
 ## Review scope and current limits
 
@@ -37,7 +37,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.45/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.46/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.
