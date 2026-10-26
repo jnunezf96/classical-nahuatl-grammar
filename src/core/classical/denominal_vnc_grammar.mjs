@@ -716,6 +716,8 @@ function sourceFrameForRequest(source, issuedOperationFrames, affectiveMatrixSou
       || source.canonicalBoundNominalSourceFrame || prior?.sourceFrame?.canonicalBoundNominalSourceFrame),
     sourceNounClass:
       source.sourceNounClass || prior?.sourceFrame?.sourceNounClass || "",
+    sourceInitialISelection: source.sourceInitialISelection
+      || prior?.sourceFrame?.sourceInitialISelection || "",
     exactResultIdentityPreserved: Boolean(canonicalNncResult),
     affectiveMatrixSourceFrame: prior?.sourceFrame?.affectiveMatrixSourceFrame
       || affectiveMatrixSourceFrame,
@@ -2738,10 +2740,23 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
 
   function resolveIncludedPossessorBoundary(sourceFrame) {
     const morphs = sourceFrame.possessor.split("-");
+    // The included possessor contacts the nominal predicate before ti is
+    // attached. Keep the citation and select its owner-issued use variant.
+    const nominalSourceVariant = sourceFrame.sourceInitialISelection === "supportive"
+      && /^i/u.test(sourceFrame.nounStem)
+      ? targetObject.buildClassicalNahuatlNounstemSourceFrame?.(sourceFrame.nounStem, {
+        state: "possessive", nounClass: sourceFrame.sourceNounClass,
+        classSelectionAuthority: "user-selection", supportiveInitialI: true,
+        selectedInitialVariant: ["1sg", "2sg", "1pl", "2pl", "3sg", "3common", "tla"]
+          .includes(sourceFrame.possessorPerson) ? "omitted" : "retained",
+      }) : null;
+    if (sourceFrame.sourceInitialISelection === "supportive" && /^i/u.test(sourceFrame.nounStem)
+      && nominalSourceVariant?.authorizationStatus !== "authorized") return null;
+    const nominalStem = nominalSourceVariant?.selectedUseStem || sourceFrame.nounStem;
     const writingSource = targetObject.issueClassicalNahuatlLesson2WritingSource?.({
       parts: [
         ...morphs.map((value, index) => ({role: `included-possessor-${index + 1}`, value})),
-        ...sourceFrame.nounStem.split("-").filter(Boolean).map((value, index) => ({
+        ...nominalStem.split("-").filter(Boolean).map((value, index) => ({
           role: `nominal-predicate-${index + 1}`, value,
         })),
         {role: "verbalizer", value: "ti"},
@@ -2753,7 +2768,7 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
       || writtenResult.authorizationStatus !== "authorized"
       || writtenResult.source !== writingSource) return null;
     return deepFreeze({
-      writingSource, writtenResult,
+      writingSource, writtenResult, nominalSourceVariant,
       sourcePossessor: sourceFrame.possessor,
       realizedPossessorMorphs: writtenResult.realizedParts.slice(0, morphs.length),
       realizedTargetMorphs: writtenResult.realizedParts,

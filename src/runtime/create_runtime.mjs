@@ -27,7 +27,7 @@ import { installClassicalNahuatlRelationalNncGlobals } from "../core/classical/n
 import { installClassicalNahuatlVncLayerEvaluatorGlobals } from "../core/classical/vnc_layer_evaluator.mjs?formulaSlots=20261023-24&v=20261008-reader-40-8-184&andrewsRelease=20261024-1";
 import { installClassicalNahuatlVncClosureGlobals } from "../core/classical/vnc_lessons27_29_33_closure.mjs?futureObject=20261024-3&v=20261011-reader-42-8-272&reader=41-2-205&audit=20261013-source-facts-1&andrewsCorrections=20261024-1";
 import { installClassicalNahuatlVncLateOperationUiContractGlobals } from "../core/classical/vnc_late_operation_ui_contract.mjs?futureObject=20261024-3&v=20261001-reader-27-2-copy-i-1&interfaceRelease=1.2.36";
-import { installClassicalNahuatlDenominalVncGrammarGlobals } from "../core/classical/denominal_vnc_grammar.mjs?v=20261007-reader-39-7-162&reader=41-3-213&exactMeaning=20261021-1&andrewsRelease=20261024-1&interfaceRelease=1.2.36";
+import { installClassicalNahuatlDenominalVncGrammarGlobals } from "../core/classical/denominal_vnc_grammar.mjs?v=20261007-reader-39-7-162&reader=41-3-213&exactMeaning=20261021-1&andrewsRelease=20261024-1&interfaceRelease=1.2.36&includedSupportiveI=20261025-2";
 import { installClassicalNahuatlFiniteVncGlobals } from "../core/classical/finite_vnc_slots.mjs?v=20260928-reader-evidence-cache-774&andrewsRelease=20261024-1";
 import { installClassicalNahuatlTransitiveVncObjectGlobals } from "../core/classical/transitive_vnc_object.mjs?v=20260928-reader-evidence-cache-774&andrewsRelease=20261024-1";
 import { installClassicalNahuatlNuclearFactCatalogGlobals } from "../core/classical/nuclear_clause_fact_catalog.mjs?v=20260802-l4-l6-facts-001";

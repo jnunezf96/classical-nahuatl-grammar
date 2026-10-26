@@ -1,5 +1,9 @@
 # Version History
 
+## v1.2.42 — Andrews Recompense Boundary
+
+- Corrects supportive initial-i realization after the included possessor, producing Andrews’s titocnōpiltiz through existing controls while retaining the citation source.
+
 ## v1.2.41 — Andrews Incorporated Adverb
 
 - Restores participant choices and directional forwarding for nominal incorporation; verifies Andrews’s complete īmāltepēuh reduced-copula example through existing controls.

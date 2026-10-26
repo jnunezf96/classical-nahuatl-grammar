@@ -1,17 +1,16 @@
-# Grammar OS v1.2.41 release
+# Grammar OS v1.2.42 release
 
-Release name: **Andrews Incorporated Adverb**
+Release name: **Andrews Recompense Boundary**
 
-Browser build: **20261025-imaltepeuh-60**
+Browser build: **20261025-titocnopiltiz-61**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Restores active incorporation participant choices after a nonanimate noun Source.
-- Preserves the selected huāl directional prefix through the nominal-incorporation owner.
-- Produces Andrews §50.3's Huālmauhcāquīzqueh in oncān īmāltepēuh through the existing Analysis controls, with exact constituent custody and explicit Make.
-- Adds no panels or source-specific exceptions.
+- Preserves the selected supportive initial-i analysis at the included-possessor boundary.
+- Uses the existing nounstem and writing owners to produce Andrews §54.3.2's Titocnōpiltiz with its animate second-person subject and first-person plural possessor.
+- Retains source citation, possessor-specific vowel retention and generated possessor i. No new panels or lexical whitelist.
 
 ## Review scope and current limits
 
@@ -38,7 +37,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.41/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.42/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.
