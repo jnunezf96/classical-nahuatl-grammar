@@ -1,5 +1,11 @@
 # Version History
 
+## v1.2.57 — Coordinated Correlative Choices
+
+- Coordinates standard and loose correlation through the existing canonical owner.
+- Distinguishes fixed loose pairing from user alternatives and preserves explicit recovery after source or type changes.
+- Keeps exact parents, staged versus accepted Results, and the existing panels.
+
 ## v1.2.56 — Coordinated Conjunction Choices
 
 - Shares ordinary conjunction domains and conditional choices with the canonical owner.

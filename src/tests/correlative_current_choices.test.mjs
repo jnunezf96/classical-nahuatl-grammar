@@ -1,0 +1,71 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {createRuntimeInstance} from '../runtime/create_runtime.mjs';
+import {createConjunctionClauseGlobals} from '../core/clause/conjunction/conjunction.mjs';
+const r=(await createRuntimeInstance({documentObject:{getElementById:()=>null,addEventListener(){}}})).runtimeObject;
+const owner=createConjunctionClauseGlobals(r);
+const ordinary=stem=>{const source=r.buildClassicalNahuatlOrdinaryNncSourceFrame({stem,sourceClass:'zero'});return r.executeClassicalGrammarApplicationRequest({operationId:'nnc:ordinary',args:[source,r.buildClassicalNahuatlOrdinaryNncOperationFrame(source,{subject:'3sg',state:'absolutive'})]}).canonicalResult;};
+const a=ordinary('canāhuac'),b=ordinary('chicāhuac');
+const base={relation:'correlative-conjunction',correlationType:'standard',correlativePattern:'ahzo-ahzo',boundaryPunctuation:'none'};
+const setup=()=>{const c=r.createClassicalClauseRelationController();c.captureCurrentResult('principal',a);c.captureCurrentResult('adjoined',b);return c;};
+test('canonical correlative inventory distinguishes four alternatives from fixed loose structure',()=>{
+ const standard=owner.getClassicalCorrelativeChoiceContract({correlationType:' Standard '});
+ assert.deepEqual(standard.decisions.find(d=>d.key==='correlativePattern').values,['ahzo-ahzo','ahzo-eh-ahzo-eh','ahzo-ahzo-no','ahmo-no-ahmo-no']);
+ const loose=owner.getClassicalCorrelativeChoiceContract({correlationType:'loose'});
+ assert(!loose.decisions.some(d=>d.key==='correlativePattern'));assert.equal(loose.facts[0].value,'paired-nncs');assert.equal(loose.executionAuthority,false);
+});
+test('current correlative frame retains incompatible pattern and invalidates stale actions and preview',()=>{
+ const c=setup(),before=c.buildDecisionContract(base),preview=c.preview(base);assert.equal(before.authorizationStatus,'authorized');assert(preview?.isCurrent());
+ assert.equal(before.currentChoiceFrame.familyId,'correlative-conjunction');
+ const next=c.transitionConjunctionChoice({selections:base,expectedFrame:before.currentChoiceFrame,intent:{type:'set-choice',key:'correlationType',value:'loose'}});
+ assert.equal(next.selections.correlativePattern,'ahzo-ahzo');assert.equal(next.contract.authorizationStatus,'blocked');assert.equal(preview.isCurrent(),false);
+ const recovery=next.contract.decisions.find(d=>d.id==='correlative-pattern');assert.equal(recovery.responsibility,'application-recovery');assert.equal(recovery.selectedValue,'');
+ for(const frame of [before.currentChoiceFrame,{...next.contract.currentChoiceFrame}])assert.equal(c.transitionConjunctionChoice({selections:next.selections,expectedFrame:frame,intent:{type:'clear-capture',role:'principal'}}).authorizationStatus,'blocked');
+ assert.equal(c.getCapturedCanonicalResult('principal'),a);
+});
+test('correlative readiness rejects a retained third conjunct before Make',()=>{
+ const c=setup();c.captureCurrentResult('dependent',a);const contract=c.buildDecisionContract(base);
+ assert.equal(contract.authorizationStatus,'blocked');assert.match(contract.blockReason,/two-conjuncts/);assert.equal(c.getCapturedCanonicalResult('dependent'),a);
+});
+const pronoun=()=>{const source=r.buildClassicalNahuatlPronominalNncSourceFrame({stem:'ce-qui',embedStem:'ce',matrixStem:'qui'});const operation=r.buildClassicalNahuatlPronominalNncOperationFrame(source,{subject:'3common'});const made=r.executeClassicalGrammarApplicationRequest({operationId:'nnc:pronominal',args:[source,operation]});assert.equal(made.authorizationStatus,'authorized',made.blockReason);return made.canonicalResult;};
+test('loose pairing is fixed for exact pronominal Sources; conflicting earlier pattern requires explicit recovery',()=>{
+ const first=pronoun(),second=pronoun(),c=r.createClassicalClauseRelationController();
+ assert.equal(c.captureCurrentResult('principal',first).authorizationStatus,'authorized');assert.equal(c.captureCurrentResult('adjoined',second).authorizationStatus,'authorized');
+ const loose={relation:'correlative-conjunction',correlationType:'loose',boundaryPunctuation:'none'};
+ const contract=c.buildDecisionContract(loose);assert.equal(contract.authorizationStatus,'authorized',contract.blockReason);
+ assert(!contract.decisions.some(d=>d.id==='correlative-pattern'));assert.equal(contract.currentChoiceFrame.facts.correlativePattern,'paired-nncs');
+ const pending={...loose,correlativePattern:'ahzo-ahzo'},conflict=c.buildDecisionContract(pending);assert.equal(conflict.authorizationStatus,'blocked');
+ const fixed=c.transitionConjunctionChoice({selections:pending,expectedFrame:conflict.currentChoiceFrame,intent:{type:'set-choice',key:'correlativePattern',value:'paired-nncs'}});
+ assert.equal(fixed.contract.authorizationStatus,'authorized');assert(!fixed.contract.decisions.some(d=>d.id==='correlative-pattern'));
+ const made=c.compose(fixed.selections);assert.equal(made.authorizationStatus,'authorized');assert.equal(made.canonicalResult.relationFrame.looseCorrelationMemberRole,'pronominal');
+ assert.equal(r.getClassicalNahuatlSupplementationClauseSourceFrame(made.canonicalResult.conjuncts[0].envelope),first);
+ const clear=c.transitionConjunctionChoice({selections:fixed.selections,expectedFrame:fixed.contract.currentChoiceFrame,intent:{type:'clear-capture',role:'adjoined'}});
+ assert.equal(clear.contract.authorizationStatus,'blocked');assert.equal(clear.selections.correlationType,'loose');
+ const forged=c.transitionConjunctionChoice({selections:clear.selections,expectedFrame:clear.contract.currentChoiceFrame,intent:{type:'capture',role:'adjoined',result:{...second}}});assert.equal(forged.authorizationStatus,'blocked');
+ const restored=c.transitionConjunctionChoice({selections:clear.selections,expectedFrame:clear.contract.currentChoiceFrame,intent:{type:'capture',role:'adjoined',result:second}});
+ assert.equal(restored.contract.authorizationStatus,'authorized');assert.equal(c.getCapturedCanonicalResult('adjoined'),second);
+ const standard=c.transitionConjunctionChoice({selections:restored.selections,expectedFrame:restored.contract.currentChoiceFrame,intent:{type:'set-choice',key:'correlationType',value:'standard'}});
+ assert.equal(standard.selections.correlativePattern,'paired-nncs');assert.equal(standard.contract.decisions.find(d=>d.id==='correlative-pattern').resolved,false);
+});
+test('loose eligibility shares execution role constraints, retaining unrelated captured inputs inactive',()=>{
+ const loc=()=>r.executeClassicalGrammarApplicationRequest({operationId:'nnc:relational',args:[{nounstem:{kind:'classical-nahuatl-nnc-nounstem-request',stemId:'pa-direction',operation:'relational-nnc',formation:'option-two',sourceKind:'nounstem',sourceFormation:'plain-nounstem',sourceMode:'embed-matrix',sourceStem:'ōm-pa',sourceEmbedStem:'ōm',sourceMatrixStem:'pa'},state:'absolutive',subjectMode:'adverbialized',subjectId:'3common'}]}).canonicalResult;
+ const first=loc(),second=loc(),c=r.createClassicalClauseRelationController();assert.equal(first.authorizationStatus,'authorized');
+ c.captureCurrentResult('principal',first);c.captureCurrentResult('adjoined',second);c.captureCurrentResult('supplement',a);
+ const s={relation:'correlative-conjunction',correlationType:'loose'},contract=c.buildDecisionContract(s);
+ assert.equal(contract.authorizationStatus,'authorized',contract.blockReason);assert.equal(contract.currentChoiceFrame.inputs.find(i=>i.role==='supplement').applicability,'inactive');
+ assert.equal(contract.currentChoiceFrame.facts.ownerFacts.find(f=>f.key==='looseCorrelationMemberRole').value,'adverbial');
+ const made=c.compose(s);assert.equal(made.authorizationStatus,'authorized');assert.equal(made.canonicalResult.relationFrame.looseCorrelationMemberRole,'adverbial');
+ const replaced=c.transitionConjunctionChoice({selections:s,expectedFrame:contract.currentChoiceFrame,intent:{type:'capture',role:'adjoined',result:pronoun()}});
+ assert.equal(replaced.contract.authorizationStatus,'blocked');assert.match(replaced.contract.blockReason,/matching-adverbial-or-pronominal/);assert.equal(c.getCapturedCanonicalResult('supplement'),a);
+ const node=r.buildClassicalNahuatlClauseCompositionSourceFrame(first,{referenceId:'one'});
+ const fake=owner.getClassicalCorrelativeChoiceContract(s,[node,{...node}]);assert.equal(fake.decisions[0].optionAvailability.find(v=>v.value==='loose').status,'incompatible');
+ const exit=c.transitionConjunctionChoice({selections:{relation:'comparison',comparisonRoute:'equality-iuhqui'},expectedFrame:replaced.contract.currentChoiceFrame,intent:{type:'clear-capture',role:'principal'}});assert.equal(exit.authorizationStatus,'blocked');assert.equal(c.getCapturedCanonicalResult('principal'),first);
+});
+test('bound controls retain correlation and explicit pattern recovery while a capture is missing',async()=>{
+ const {readFileSync}=await import('node:fs'),vm=await import('node:vm'),{Element}=await import('./helpers/organization_dom.mjs');
+ const c=setup();c.clearCapture('adjoined');const contract=c.buildDecisionContract({...base,correlationType:'loose'});
+ const code=readFileSync(new URL('../ui/rendering/rendering.mjs',import.meta.url),'utf8'),start=code.indexOf('    function syncClassicalClauseRelationCapabilityChoices('),host=new Element(),seen=[];
+ const ctx={targetObject:{document:{getElementById:()=>host}},clearOwnerChoicePortals(){},createClassicalClauseRelationDecisionControl(d,frame){seen.push({id:d.id,frame});return new Element();}};
+ vm.runInNewContext(code.slice(start,code.indexOf('\n    function ',start+10)),ctx);ctx.syncClassicalClauseRelationCapabilityChoices(contract,['adjoined']);
+ assert(seen.some(d=>d.id==='correlation-type'));assert(seen.some(d=>d.id==='correlative-pattern'));assert(seen.every(d=>d.frame===contract.currentChoiceFrame));
+});

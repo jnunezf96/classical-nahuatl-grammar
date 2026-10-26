@@ -1088,6 +1088,30 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
       "ahzo-ahzo-no": Object.freeze(["ahzo", "ahzo nō"]),
       "ahmo-no-ahmo-no": Object.freeze(["ahmō nō", "ahmō nō"])
     });
+    const correlativeTypes = Object.freeze(["standard", "loose"]);
+    function getLooseCorrelationEligibility(conjuncts = []) {
+      if (conjuncts.length !== 2) return {reason:"correlative-conjunction-requires-two-conjuncts-and-a-licensed-type",role:""};
+      if (!conjuncts.every(node => targetObject.isClassicalNahuatlClauseCompositionSourceFrame?.(node) === true && node.unitKind === "nnc"))
+        return {reason:"loose-correlation-requires-typed-nnc-conjuncts",role:""};
+      const roles=conjuncts.map(node=>node.envelope?.isAdverbialNnc === true ? "adverbial" : node.pronominalSubtype ? "pronominal" : "");
+      return !roles[0] || roles[0] !== roles[1]
+        ? {reason:"loose-correlation-requires-matching-adverbial-or-pronominal-nnc-roles",role:""}
+        : {reason:"",role:roles[0]};
+    }
+    function getClassicalCorrelativeChoiceContract(selections = {}, conjuncts = []) {
+      const type=normalizeClassicalNahuatlClauseConjunctionToken(selections.correlationType);
+      const eligibility=getLooseCorrelationEligibility(conjuncts);
+      const decisions=[{key:"correlationType",id:"correlation-type",values:correlativeTypes,
+        sourceReference:"Andrews §52.5",optionAvailability:correlativeTypes.map(value=>({value,
+          status:value === "standard" || !eligibility.reason ? "available" : conjuncts.length < 2 ? "missing-prerequisite" : "incompatible",
+          reasonCode:value === "loose" ? eligibility.reason : "",
+          recovery:value === "loose" && eligibility.reason ? "Requires two adverbial noun clauses or two pronominal noun clauses." : ""}))}];
+      if(type === "standard") decisions.push({key:"correlativePattern",id:"correlative-pattern",
+        values:Object.keys(CLASSICAL_NAHUATL_CLAUSE_CONJUNCTION_CORRELATIVE_PATTERNS),sourceReference:"Andrews §52.5.1"});
+      const facts=type === "loose" ? [{key:"correlativePattern",value:"paired-nncs",responsibility:"owner",sourceReference:"Andrews §52.5.2"},
+        ...(eligibility.role ? [{key:"looseCorrelationMemberRole",value:eligibility.role,responsibility:"owner",sourceReference:"Andrews §52.5.2"}] : [])] : [];
+      return freezeClassicalNahuatlClauseConjunction({familyId:"correlative-conjunction",decisions,facts,executionAuthority:false,sourceReference:"Andrews §52.5"});
+    }
     const CLASSICAL_NAHUATL_CLAUSE_CONJUNCTION_REPHRASE_AXES = Object.freeze([
       "none",
       "nonspecific-specific-object",
@@ -2268,7 +2292,7 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
       if (operationKind === "correlative-conjunction") {
         const correlationType = normalizeClassicalNahuatlClauseConjunctionToken(options.correlationType);
         const pattern = normalizeClassicalNahuatlClauseConjunctionToken(options.pattern);
-        if (conjuncts.length !== 2 || !["standard", "loose"].includes(correlationType)) {
+        if (conjuncts.length !== 2 || !correlativeTypes.includes(correlationType)) {
           return buildClassicalNahuatlClauseConjunctionBlockedResultFrame(operationKind, "correlative-conjunction-requires-two-conjuncts-and-a-licensed-type");
         }
         if (correlationType === "standard" && !Object.hasOwn(CLASSICAL_NAHUATL_CLAUSE_CONJUNCTION_CORRELATIVE_PATTERNS, pattern)) {
@@ -2277,26 +2301,11 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
         if (correlationType === "loose" && pattern && pattern !== "paired-nncs") {
           return buildClassicalNahuatlClauseConjunctionBlockedResultFrame(operationKind, "loose-correlation-uses-paired-adverbial-or-pronominal-nncs");
         }
-        if (correlationType === "loose" && !conjuncts.every(node => (
-          typeof targetObject.isClassicalNahuatlClauseCompositionSourceFrame === "function"
-          && targetObject.isClassicalNahuatlClauseCompositionSourceFrame(node)
-          && node.unitKind === "nnc"
-        ))) {
-          return buildClassicalNahuatlClauseConjunctionBlockedResultFrame(operationKind, "loose-correlation-requires-typed-nnc-conjuncts");
-        }
         let looseCorrelationMemberRole = "";
         if (correlationType === "loose") {
-          const memberRoles = conjuncts.map(node => (
-            node.envelope?.isAdverbialNnc === true
-              ? "adverbial"
-              : node.pronominalSubtype
-                ? "pronominal"
-                : ""
-          ));
-          if (!memberRoles[0] || memberRoles[0] !== memberRoles[1]) {
-            return buildClassicalNahuatlClauseConjunctionBlockedResultFrame(operationKind, "loose-correlation-requires-matching-adverbial-or-pronominal-nnc-roles");
-          }
-          looseCorrelationMemberRole = memberRoles[0];
+          const eligibility=getLooseCorrelationEligibility(conjuncts);
+          if(eligibility.reason) return buildClassicalNahuatlClauseConjunctionBlockedResultFrame(operationKind,eligibility.reason);
+          looseCorrelationMemberRole=eligibility.role;
         }
         const particles = correlationType === "standard"
           ? CLASSICAL_NAHUATL_CLAUSE_CONJUNCTION_CORRELATIVE_PATTERNS[pattern]
@@ -2711,6 +2720,7 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
     api.buildClassicalNahuatlClauseConjunctionOperationRequest = buildClassicalNahuatlClauseConjunctionOperationRequest;
     api.isClassicalNahuatlClauseConjunctionOperationRequest = isClassicalNahuatlClauseConjunctionOperationRequest;
     api.buildClassicalNahuatlConjunctReplacementRequest = buildClassicalNahuatlConjunctReplacementRequest;
+    api.getClassicalCorrelativeChoiceContract = getClassicalCorrelativeChoiceContract;
     api.getClassicalConjunctionChoiceContract = getClassicalConjunctionChoiceContract;
     api.evaluateClassicalNahuatlClauseConjunction = evaluateClassicalNahuatlClauseConjunction;
     api.isClassicalNahuatlClauseConjunctionResultFrame = isClassicalNahuatlClauseConjunctionResultFrame;

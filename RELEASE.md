@@ -1,17 +1,17 @@
-# Grammar OS v1.2.56 release
+# Grammar OS v1.2.57 release
 
-Release name: **Coordinated Conjunction Choices**
+Release name: **Coordinated Correlative Choices**
 
-Browser build: **20261026-conjunction-choices-75**
+Browser build: **20261026-correlative-choices-76**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Ordinary conjunction choices come from the canonical conjunction owner, including conditional modifier, rank and shared-scope availability.
-- Incompatible selections stay pending for explicit recovery; stale controls cannot change the current construction.
-- Retained conjuncts remain available when switching back from absent-left context. Source-dependent silence has an explicit reset after eligibility changes.
-- Existing panels, exact Source custody and explicit Make are preserved.
+- Correlative conjunction shares standard pattern inventory and loose-source eligibility with its canonical owner.
+- Loose pairing is an owner-derived structure; an incompatible earlier pattern requires explicit correction.
+- Missing-input recovery remains available, saved Results retain exact identity, and stale controls/previews are rejected.
+- Existing panels and explicit Make are preserved.
 
 ## Review scope and current limits
 
@@ -38,7 +38,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.56/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.57/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.

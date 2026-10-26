@@ -236,14 +236,6 @@ const RELATIONAL_COMPLEMENT_PAIRS = Object.freeze([
   "te-tech+chicotlamati",
   "te-tech-pa+tlaocoya",
 ]);
-const CORRELATION_TYPES = Object.freeze(["standard", "loose"]);
-const CORRELATIVE_PATTERNS = Object.freeze([
-  "ahzo-ahzo",
-  "ahzo-eh-ahzo-eh",
-  "ahzo-ahzo-no",
-  "ahmo-no-ahmo-no",
-  "paired-nncs",
-]);
 const LEXICAL_CONJUNCTION_TYPES = Object.freeze([
   "lord-and-master",
   "bread-and-butter",
@@ -1473,8 +1465,8 @@ export function createClassicalClauseRelationControllerGlobals(
     }
 
     function transitionConjunctionChoice({selections={},expectedFrame=null,intent={}}={}) {
-      const current=selections.relation === "conjunction";
-      if(!current && expectedFrame?.familyId !== "conjunction") return Object.freeze({handled:false});
+      const current=["conjunction","correlative-conjunction"].includes(selections.relation);
+      if(!current && !["conjunction","correlative-conjunction"].includes(expectedFrame?.familyId)) return Object.freeze({handled:false});
       const blocked=reason=>Object.freeze({handled:true,authorizationStatus:"blocked",blockReason:reason,selections,contract:buildDecisionContract(selections)});
       if(!current || !isCurrentChoiceFrame(expectedFrame,selections)) return blocked("conjunction-choice-stale-frame");
       const next={...selections};
@@ -2293,6 +2285,7 @@ export function createClassicalClauseRelationControllerGlobals(
       diagnostics,
     }) {
       const operationSelections = {};
+      let ownerFacts = [];
       if (relation === "conjunction") {
         const ownerChoices = targetObject.getClassicalConjunctionChoiceContract?.(selectionObject);
         if (!ownerChoices) diagnostics.push("conjunction-choice-owner-capability-required");
@@ -2399,37 +2392,30 @@ export function createClassicalClauseRelationControllerGlobals(
         requireCapturedSource("adjoined", diagnostics, {
           diagnosticPrefix: "classical-conjunction",
         });
-        const correlationType = CORRELATION_TYPES.includes(
-          normalizeToken(selectionObject.correlationType),
-        )
-          ? normalizeToken(selectionObject.correlationType)
-          : "";
-        decisions.push(buildDecision({
-          id: "correlation-type",
-          values: CORRELATION_TYPES,
-          selectedValue: correlationType,
-          reason: "standard particle pairs and loose NNC correlation differ",
-        }));
-        const patternValues = correlationType === "loose"
-          ? ["paired-nncs"]
-          : CORRELATIVE_PATTERNS.filter(value => value !== "paired-nncs");
-        const pattern = patternValues.includes(
-          normalizeToken(selectionObject.correlativePattern),
-        )
-          ? normalizeToken(selectionObject.correlativePattern)
-          : "";
-        if (correlationType) {
-          decisions.push(buildDecision({
-            id: "correlative-pattern",
-            values: patternValues,
-            selectedValue: pattern,
-            reason: "the selected correlation type licenses its paired pattern",
-          }));
+        const conjuncts=["principal","adjoined","dependent"].filter(role=>getValidatedCapture(role))
+          .map((role,index)=>getCapturedCompositionNode(role,`conjunct-${index+1}`));
+        const owner=targetObject.getClassicalCorrelativeChoiceContract?.(selectionObject,conjuncts);
+        if(!owner) diagnostics.push("correlative-choice-owner-capability-required");
+        ownerFacts = owner?.facts || [];
+        const selected={};
+        for(const domain of owner?.decisions || []) {
+          const requestedValue=normalizeToken(selectionObject[domain.key]);
+          const decision=buildDecision({...domain,selectedValue:requestedValue,reason:"Choice licensed by the canonical correlative owner"});
+          decisions.push(Object.freeze({...decision,key:domain.key,requestedValue,responsibility:"user",sourceReference:domain.sourceReference}));
+          selected[domain.key]=decision.selectedValue;
+          const unavailable=decision.optionAvailability?.find(option=>option.value===requestedValue && option.status!==RELATION_AVAILABILITY.AVAILABLE);
+          if(unavailable?.reasonCode) diagnostics.push(unavailable.reasonCode);
         }
-        Object.assign(operationSelections, {
-          correlationType,
-          pattern,
-        });
+        for(const fact of owner?.facts || []) {
+          if(fact.key !== "correlativePattern") continue;
+          selected[fact.key]=fact.value;
+          const requestedValue=normalizeToken(selectionObject[fact.key]);
+          if(requestedValue && requestedValue !== fact.value) {
+            decisions.push(Object.freeze({...buildDecision({id:"correlative-pattern",values:[fact.value],selectedValue:"",reason:"Reset the previous pattern to the paired noun-clause structure"}),
+              key:fact.key,requestedValue,responsibility:"application-recovery",sourceReference:fact.sourceReference}));
+          }
+        }
+        Object.assign(operationSelections,{correlationType:selected.correlationType,pattern:selected.correlativePattern || ""});
       } else if (relation === "lexical-conjunction") {
         requireCapturedSource("principal", diagnostics, {
           diagnosticPrefix: "classical-conjunction",
@@ -2582,6 +2568,7 @@ export function createClassicalClauseRelationControllerGlobals(
         diagnostics,
         derived: {
           operationFamily: "conjunction",
+          ...(relation === "correlative-conjunction" ? {ownerFacts} : {}),
           operationKind: relation,
           conjunctCount: (relation === "conjunction" && operationSelections.leftContextAbsent
             ? ["principal"] : ["principal", "adjoined", "dependent"])
@@ -5068,8 +5055,8 @@ export function createClassicalClauseRelationControllerGlobals(
         if (failure) contract = Object.freeze({...contract, authorizationStatus: "blocked",
           blockReason: failure, diagnostics: freezeArray(unique([...contract.diagnostics, failure]))});
       }
-      if (contract.relation === "conjunction" && contract.authorizationStatus === "authorized") {
-        const key = `${captureRevision}:${JSON.stringify(contract.operationSelections)}`;
+      if (["conjunction","correlative-conjunction"].includes(contract.relation) && contract.authorizationStatus === "authorized") {
+        const key = `${contract.relation}:${captureRevision}:${JSON.stringify(contract.operationSelections)}`;
         let failure = "classical-conjunction-preflight-capability-required";
         try {
           if (typeof targetObject.evaluateClassicalNahuatlClauseConjunction === "function") {
@@ -5111,14 +5098,15 @@ export function createClassicalClauseRelationControllerGlobals(
           contract = Object.freeze({...contract, currentChoiceFrame});
         }
       }
-      if(contract.relation === "conjunction") {
-        const currentChoiceFrame=buildCurrentChoiceFrame({familyId:"conjunction",routeId:"conjunction",
+      if(["conjunction","correlative-conjunction"].includes(contract.relation)) {
+        const correlative=contract.relation === "correlative-conjunction";
+        const currentChoiceFrame=buildCurrentChoiceFrame({familyId:contract.relation,routeId:contract.relation,
           captureRevision,stagedRevision:choiceRevision,decisions:contract.decisions.filter(d=>d.id !== "relation"),
           inputs:CAPTURE_ROLES.map(role=>({role,presence:getValidatedCapture(role)?"captured":"missing",
-            applicability:contract.operationSelections.leftContextAbsent && ["adjoined","dependent"].includes(role)?"inactive":"relevant",
+            applicability:(correlative && ["supplement","marker"].includes(role)) || (contract.operationSelections.leftContextAbsent && ["adjoined","dependent"].includes(role))?"inactive":"relevant",
             required:role === "principal" || role === "adjoined" && !contract.operationSelections.leftContextAbsent})),
-          facts:contract.derived,outcome:{readyToMake:contract.authorizationStatus === "authorized",reasons:contract.diagnostics},
-          provenance:{owner:"conjunction",sourceReferences:["Andrews §§52.1–52.4"]}});
+          facts:{...contract.derived,...(correlative ? Object.fromEntries((contract.derived.ownerFacts || []).map(fact=>[fact.key,fact.value])) : {})},outcome:{readyToMake:contract.authorizationStatus === "authorized",reasons:contract.diagnostics},
+          provenance:{owner:"conjunction",sourceReferences:[correlative?"Andrews §52.5":"Andrews §§52.1–52.4"]}});
         issuedChoiceFrames.set(currentChoiceFrame,{captureRevision,choiceRevision,signature:choiceSignature(selections)});
         contract=Object.freeze({...contract,currentChoiceFrame});
       }
@@ -6355,7 +6343,7 @@ export function createClassicalClauseRelationControllerGlobals(
       isCurrentChoiceFrame,
       preview(selections = {}) {
         const previewChoiceRevision = choiceRevision;
-        const migrated = selections.relation === "conjunction" || selections.relation === "comparison" && isCurrentComparisonRoute(selections.comparisonRoute);
+        const migrated = ["conjunction","correlative-conjunction"].includes(selections.relation) || selections.relation === "comparison" && isCurrentComparisonRoute(selections.comparisonRoute);
         const parents = CAPTURE_ROLES.map(role => [role, getValidatedCapture(role)?.canonicalResult || null]);
         const leases = [], result = compose(selections, true, leases);
         if (result?.authorizationStatus !== "authorized" || !leases.length) return null;
