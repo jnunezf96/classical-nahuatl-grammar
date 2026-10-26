@@ -1,5 +1,12 @@
 # Version History
 
+## v1.2.59 — Coordinated Source Analysis
+
+- Centralizes Source analysis choice projections while retaining canonical grammar authority.
+- Retains inactive singular ti alternatives and restores them in licensed cells.
+- Distinguishes canonical personal-name defaults from incompatible explicit requests.
+- Preserves existing Source Apply, particle choices and interface panels.
+
 ## v1.2.58 — Coordinated Lexical and Parallel Choices
 
 - Completes choice coordination for joining, contrasting and rephrasing in the existing interface.

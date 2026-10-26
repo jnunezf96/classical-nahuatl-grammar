@@ -1,3 +1,4 @@
+import {resolveVncSourceClassChoice,resolveNncSourceClassValues,resolveIrregularSourceAlternatives,resolvePersonalNameSourceChoice,resolveCoarseNominalSourceFacts,resolveNncSourceChoiceDomain,resolveIrregularSourceRequest} from "../../application/classical/source_choice_coordination.mjs?sourceChoices=20261026-1";
 import {clauseMarkerResultLabel} from '../composition/clause_composition.mjs?reasonPresentation=20261026-1';
 import {syncFutureObjectChoices} from '../composition/future_object_choices.mjs?futureObject=20261024-3';
 import {getDoubleNucleusEditChildren} from '../../application/classical/double_nucleus_edit.mjs?nucleusEdit=20261024-9';
@@ -2215,134 +2216,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
       return state?.basalUnit === "vnc" && isClassicalRuleLogicTlaFusionSourceValence(state?.valence);
     }
     function getClassicalRuleLogicCanvasClassSelection(stem = "", options = {}) {
-      const allClassIds = ["A", "B", "C", "D"];
-      const analytical=!options.sourceEmbedStem && !options.sourceMatrixStem
-        ? targetObject.resolveClassicalNahuatlAnalyticalVncSourceFrame?.({enteredStem:stem,valence:options.valence || "intransitive"}) : null;
-      if(targetObject.isClassicalNahuatlAnalyticalVncSourceFrame?.(analytical)===true) return {
-        kind:"classical-nahuatl-canvas-class-selection",determinate:Boolean(analytical.sourceClass),selectedClassId:analytical.sourceClass,
-        allowedClassIds:analytical.sourceClass?[analytical.sourceClass]:[],dropdownLocked:true,
-        canvasRuleId:"owner-issued-restricted-analytical-source",classBasis:"source-analysis-only-no-base-finite"};
-      const imperfective=!options.sourceEmbedStem && !options.sourceMatrixStem
-        ? targetObject.resolveClassicalNahuatlImperfectiveVncSourceFrame?.({enteredStem:stem,valence:options.valence || "intransitive"}) : null;
-      if(targetObject.isClassicalNahuatlImperfectiveVncSourceFrame?.(imperfective)===true) return {
-        kind:"classical-nahuatl-canvas-class-selection",determinate:false,selectedClassId:"",allowedClassIds:[],dropdownLocked:true,
-        canvasRuleId:"owner-issued-imperfective-class-unresolved",classBasis:"known-imperfective-perfective-class-unresolved"};
-      const containing = !options.sourceEmbedStem && !options.sourceMatrixStem
-        ? targetObject.resolveClassicalNahuatlRestrictedContainingVncSourceFrame?.({enteredStem:stem,valence:options.valence || "intransitive",sourceLexemeId:options.sourceLexemeId || targetObject.getClassicalVncSourceLexemeId?.() || ""}) : null;
-      const corrected = !options.sourceEmbedStem && !options.sourceMatrixStem
-        ? targetObject.resolveClassicalNahuatlNominalRankCorrectedSourceFrame?.({enteredStem:stem,valence:options.valence || "intransitive"}) : null;
-      if (containing || corrected) return {kind:"classical-nahuatl-canvas-class-selection",determinate:Boolean(containing?.sourceClass),
-        selectedClassId:containing?.sourceClass || "",allowedClassIds:containing?.sourceClass?[containing.sourceClass]:[],dropdownLocked:true,
-        canvasRuleId:"owner-issued-containing-source-rank",classBasis:"source-rank-and-use-only-no-source-finite"};
-      const requestedClassId = String(options.requestedClassId || "").trim().toUpperCase();
-      const retained = ActiveClassicalVncResultSourceContinuation;
-      const projection = targetObject.isClassicalNahuatlClosureFrame?.(retained) === true
-        && retained.authorizationStatus === "authorized"
-        ? targetObject.getClassicalNahuatlVncContinuationSourceConstituents?.(retained)
-        : null;
-      if (projection
-        && normalizeClassicalNahuatlMachinerySourceValue(stem)
-          === normalizeClassicalNahuatlMachinerySourceValue(projection.sourceStem)
-        && requestedClassId === projection.verbClass
-        && options.valence === projection.sourceValence) {
-        return {
-          kind: "classical-nahuatl-canvas-class-selection",
-          determinate: true,
-          selectedClassId: projection.verbClass,
-          allowedClassIds: [projection.verbClass],
-          canvasRuleId: "owner-issued-retained-vnc-coordinate",
-          dropdownLocked: true,
-          classBasis: "owner-issued-derived-coordinate"
-        };
-      }
-      const compoundSelection = targetObject.buildClassicalNahuatlFuenteSourceSelectionFrame?.(stem, {
-        sourceEmbedStem: options.sourceEmbedStem || "",
-        sourceMatrixStem: options.sourceMatrixStem || ""
+      return resolveVncSourceClassChoice(targetObject, stem, options, {
+        retainedSource: ActiveClassicalVncResultSourceContinuation,
+        sourceLexemeId: !options.sourceEmbedStem && !options.sourceMatrixStem ? targetObject.getClassicalVncSourceLexemeId?.() || "" : "",
+        normalizeStem: normalizeClassicalNahuatlMachinerySourceValue,
       });
-      const compoundMatrixClass = compoundSelection?.authorizationStatus === "authorized"
-        && compoundSelection.selectedSourceKind === "embed-matrix"
-        && compoundSelection.typedSourceSelectsEmbedMatrix === true
-        && compoundSelection.typedPartsMatchStem === true
-        ? targetObject.buildClassicalNahuatlVerbstemClassRuleFrame?.(
-            compoundSelection.selectedMatrixStem, { verbClass: "D", valence: options.valence || "" })
-        : null;
-      if (compoundMatrixClass?.authorizationStatus === "authorized") {
-        return {
-          kind: "classical-nahuatl-canvas-class-selection",
-          determinate: true, selectedClassId: compoundMatrixClass.classId,
-          allowedClassIds: [compoundMatrixClass.classId],
-          canvasRuleId: "owner-issued-compound-matrix-class",
-          dropdownLocked: true, classBasis: "typed-compound-matrix",
-          compoundMatrixClassFrame: compoundMatrixClass
-        };
-      }
-      const lexicalParadigm = targetObject.buildClassicalNahuatlIrregularVncParadigmPlan?.(stem);
-      const fixedCell = !options.sourceEmbedStem && !options.sourceMatrixStem
-        && lexicalParadigm?.irregularityKind === "defective-reporting-preterit"
-        ? lexicalParadigm.fixedSourceCell : null;
-      const fixedParadigm = fixedCell
-        ? targetObject.buildClassicalNahuatlIrregularVncParadigmPlan?.(stem, fixedCell) : null;
-      if (fixedParadigm?.authorizationStatus === "authorized"
-        && fixedParadigm.irregularityKind === "defective-reporting-preterit"
-        && allClassIds.includes(fixedParadigm.selectedClassOverride)) {
-        return {
-          kind: "classical-nahuatl-canvas-class-selection",
-          determinate: true, selectedClassId: fixedParadigm.selectedClassOverride,
-          allowedClassIds: [fixedParadigm.selectedClassOverride],
-          canvasRuleId: "owner-issued-fixed-vnc-source-cell",
-          dropdownLocked: true, classBasis: "owner-issued-fixed-source-cell",
-          fixedSourceCell: fixedParadigm.fixedSourceCell,
-          lexemeId: fixedParadigm.lexemeId,
-        };
-      }
-      if (lexicalParadigm?.authorizationStatus === "authorized"
-        && lexicalParadigm.irregularityKind === "suppletive"
-        && allClassIds.includes(lexicalParadigm.selectedClassOverride)) {
-        return {
-          kind: "classical-nahuatl-canvas-class-selection",
-          determinate: true, selectedClassId: lexicalParadigm.selectedClassOverride,
-          allowedClassIds: [lexicalParadigm.selectedClassOverride],
-          canvasRuleId: "owner-issued-lexical-paradigm-class",
-          dropdownLocked: true, classBasis: "owner-issued-lexical-paradigm",
-          lexemeId: lexicalParadigm.lexemeId
-        };
-      }
-      if (!stem || typeof targetObject.inferClassicalNahuatlLesson7ClassProfile !== "function") {
-        return {
-          kind: "classical-nahuatl-canvas-class-selection",
-          determinate: false,
-          selectedClassId: allClassIds.includes(requestedClassId) ? requestedClassId : "",
-          allowedClassIds: allClassIds,
-          canvasRuleId: "cn-l7-76-guidelines-not-majority-prediction",
-          dropdownLocked: false
-        };
-      }
-      const profile = targetObject.inferClassicalNahuatlLesson7ClassProfile(stem, {
-        valence: options.valence || "",
-        transitivity: options.valence || "",
-        signifiesChange: options.signifiesChange === true
-      });
-      const hasDeterminingRule = Boolean(profile?.guidelineId && profile.guidelineId !== "cn-l7-76-guidelines-not-majority-prediction");
-      const ruleClassIds = Array.from(new Set((profile?.classGuidelineAllowedClassIds?.length ? profile.classGuidelineAllowedClassIds : profile?.classOptions || []).map(value => String(value || "").trim().toUpperCase()).filter(value => allClassIds.includes(value))));
-      const claimClassIds = Array.from(new Set((profile?.classClaimAllowedClassIds || []).map(value => String(value || "").trim().toUpperCase()).filter(value => allClassIds.includes(value))));
-      const allowedClassIds = hasDeterminingRule && ruleClassIds.length ? ruleClassIds : claimClassIds.length ? claimClassIds : allClassIds;
-      const selectedClassId = allowedClassIds.includes(requestedClassId)
-        ? requestedClassId
-        : hasDeterminingRule && allowedClassIds.includes(profile.classId)
-          ? profile.classId
-          : "";
-      return {
-        kind: "classical-nahuatl-canvas-class-selection",
-        determinate: hasDeterminingRule,
-        selectedClassId,
-        allowedClassIds,
-        canvasRuleId: profile?.guidelineId || "cn-l7-76-guidelines-not-majority-prediction",
-        dropdownLocked: hasDeterminingRule && allowedClassIds.length === 1,
-        inferredSubclass: profile?.subclass || "",
-        classBasis: profile?.classBasis || "perfective-stem-shape",
-        claimEligibilityRuleIds: profile?.classClaimEligibilityRuleIds || [],
-        claimEligibilityReason: profile?.classClaimEligibilityReason || ""
-      };
     }
     function parseClassicalNncSubjectCategories(subject = "3sg") {
       const normalized = String(subject || "3sg").trim();
@@ -2911,7 +2789,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const constructionSelection = String(overrides.construction || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-construction", "none") || "none").trim();
       const lexicalReadingSelection = String(overrides.lexicalReading || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-lexical-reading", "unspecified") || "unspecified").trim();
       const predicateReferentKindSelection = String(overrides.predicateReferentKind || overrides.referentKind || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-predicate-referent", "unspecified") || "unspecified").trim();
-      const lesson11AlternativeStemSelection = String(overrides.irregularStemChoice || overrides.irregularAlternativeStem || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-irregular-alternative", "") || "").trim();
+      const requestedLesson11AlternativeStemSelection = String(overrides.irregularStemChoice || overrides.irregularAlternativeStem || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-irregular-alternative", "") || "").trim();
       const classSelectionContract = getClassicalRuleLogicCanvasClassSelection(sourceValue, {
         requestedClassId: requestedVerbClass,
         valence,
@@ -2995,6 +2873,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
       });
       const effectiveMood = moodBoundSelections.mood;
       const effectiveTense = moodBoundSelections.tense;
+      const lesson11AlternativeStemSelection = resolveIrregularSourceRequest(targetObject, sourceValue,
+        {subject, mood:effectiveMood, tense:effectiveTense}, requestedLesson11AlternativeStemSelection);
       const sentenceSurfaceMode = CLASSICAL_NNC_USER_SENTENCE_SURFACE_VALUES.includes(requestedSentenceSurfaceMode)
         ? requestedSentenceSurfaceMode
         : moodBoundSelections.sentenceSurfaceMode;
@@ -4615,100 +4495,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
         }),
       };
     }
-    function getClassicalNncCompatibleOpenSourceClassValues(
-      stem = "",
-      options = {}
-    ) {
-      const normalizedStem = String(stem || "").trim();
-      const inventory = typeof targetObject
-        .getClassicalNahuatlOpenNncSourceClassInventory === "function"
-        ? targetObject.getClassicalNahuatlOpenNncSourceClassInventory()
-        : [];
-      if (!Array.isArray(inventory)) return Object.freeze([]);
-      const sourceFrame = options.sourceFrame || null;
-      if (
-        sourceFrame?.authorizationStatus === "authorized"
-        && sourceFrame?.kind === "classical-nahuatl-ordinary-nnc-source-frame"
-        && sourceFrame?.openStemSource !== true
-        && sourceFrame?.sourceClass
-      ) {
-        if (typeof targetObject.buildClassicalNahuatlOrdinaryNncSourceFrame === "function"
-          && typeof targetObject.isClassicalNahuatlOrdinaryNncSourceFrame === "function") {
-          const admittedClasses = inventory.map(entry => entry.sourceClass).filter(sourceClass => {
-            const candidate = targetObject.buildClassicalNahuatlOrdinaryNncSourceFrame({
-              stem: normalizedStem || sourceFrame.stem,
-              sourceClass,
-              supportiveInitialI: sourceFrame.supportiveInitialI === true,
-            });
-            return targetObject.isClassicalNahuatlOrdinaryNncSourceFrame(candidate)
-              && candidate.authorizationStatus === "authorized"
-              && candidate.sourceClass === sourceClass;
-          });
-          if (admittedClasses.length) return Object.freeze([...new Set(admittedClasses)]);
-        }
-        return Object.freeze([
-          sourceFrame.sourceClass === "tl-2-a-to-1-a"
-            ? "tl-2-a"
-            : sourceFrame.sourceClass
-        ]);
-      }
-      if (!normalizedStem) {
-        return Object.freeze(inventory.map(entry => entry.sourceClass));
-      }
-      const guidance = typeof targetObject
-        .getClassicalNahuatlClassFormGuidance === "function"
-        ? targetObject.getClassicalNahuatlClassFormGuidance(normalizedStem)
-        : null;
-      const candidateClasses = Array.isArray(guidance?.candidateClasses)
-        ? guidance.candidateClasses
-        : [];
-      if (!candidateClasses.length) return Object.freeze([]);
-      const compatibleValues = inventory.filter(entry => {
-        if (entry.boundaryFacts?.borrowedOrthographyRetained === true) return true;
-        if (!candidateClasses.includes(entry.nounClass)) return false;
-        if (entry.useShape !== "truncated") return true;
-        if (
-          entry.subclass === "tl-2-b"
-          && entry.ephemeralFinalVowel
-          && entry.ephemeralFinalVowel !== guidance.finalSound
-        ) {
-          return false;
-        }
-        if (typeof targetObject
-          .validateClassicalNahuatlSubclassSourceShape !== "function") {
-          return false;
-        }
-        const shapeFrame = targetObject
-          .validateClassicalNahuatlSubclassSourceShape(normalizedStem, {
-            nounClass: entry.nounClass,
-            generalUseShape: entry.useShape,
-            tlSubclass: String(entry.subclass || "")
-              .replace(/^tl-2-/u, "2")
-              .toUpperCase(),
-            ephemeralFinalVowel: entry.ephemeralFinalVowel || "",
-            truncationRepair: entry.truncationRepair || "none",
-            compoundStem: options.compoundStem === true
-          });
-        return shapeFrame?.authorizationStatus === "authorized";
-      }).map(entry => entry.sourceClass);
-      return Object.freeze(compatibleValues);
+    function getClassicalNncCompatibleOpenSourceClassValues(stem = "", options = {}) {
+      return resolveNncSourceClassValues(targetObject, stem, options);
     }
     function getClassicalCoarseNominalSourceFacts(stem = "", sourceClass = "") {
-      if (!stem || !["tl", "tli"].includes(sourceClass)) return null;
-      try {
-        const result = targetObject.evaluateClassicalNahuatlNominalConstruction?.({
-          constructionKind: "affective-nnc", affectiveMatrix: "pōl",
-          source: {embedStem: stem, embedClass: sourceClass, embedSourceClass: sourceClass},
-          subject: "3common", state: "absolutive", animacy: "nonanimate",
-        });
-        const authorization = result?.sourceAuthorizationFrame;
-        const facts = authorization?.lexicalFacts?.embedSourceClassFrame;
-        return targetObject.isClassicalNahuatlNominalConstructionResult?.(result) === true
-          && result.authorizationStatus === "authorized"
-          && targetObject.isClassicalNahuatlNominalConstructionSourceAuthorization?.(authorization) === true
-          && authorization.authorizationStatus === "authorized"
-          && facts?.nounClass === sourceClass && facts.subclass === "" ? facts : null;
-      } catch { return null; }
+      return resolveCoarseNominalSourceFacts(targetObject, stem, sourceClass);
     }
     function isClassicalCoarseNominalSourceAvailable(stem = "", sourceClass = "") {
       return Boolean(getClassicalCoarseNominalSourceFacts(stem, sourceClass));
@@ -4725,31 +4516,14 @@ export function createUiRenderingApi(targetObject = globalThis) {
       );
       if (!control) return Object.freeze([]);
       const generalUse = targetObject.document.getElementById("classical-rule-logic-nnc-source-use")?.value === "general-use";
-      const ordinaryValues = generalUse ? [] : getClassicalNncCompatibleOpenSourceClassValues(
-        stem,
-        options
-      );
-      const scopedCompoundSource = options.sourceFrame?.familyId === "nominal-compound-source"
-        && targetObject.isIssuedCanonicalNncSourceFrame?.(options.sourceFrame) === true;
-      const fixedOrdinarySource = options.sourceFrame?.authorizationStatus === "authorized"
-        && options.sourceFrame?.openStemSource !== true && !scopedCompoundSource;
-      const rawOwnerhood = !fixedOrdinarySource
-        && getClassicalNominalConstructionControlValue("classical-construction-operation", "") === "deverbal-nnc"
-        && getClassicalNominalConstructionControlValue("classical-deverbal-nnc-family", "") === "ownerhood"
-        && !getActiveClassicalGrammarResultBinding("nnc:deverbal-construction");
-      const coarseClasses = generalUse ? ["tl", "tli"]
-        .filter(value => (!options.sourceFrame?.nounClass || options.sourceFrame.nounClass === value)
-          && isClassicalCoarseNominalSourceAvailable(stem, value))
-        .map(value => ({value, label: `${value} · subtype unspecified`})) : rawOwnerhood ? [
-        {value: "tl", nounClass: "tl", subclass: "", label: "tl"},
-        {value: "tli", nounClass: "tli", subclass: "", label: "tli"},
-        {value: "tl-1", nounClass: "tl", subclass: "1", label: "tl 1"},
-      ].filter(record => targetObject.getClassicalNahuatlOwnerhoodSourceAnalysis?.({
-        sourceStem: stem, nounClass: record.nounClass, nounSubclass: record.subclass,
-      })?.authorizationStatus === "authorized") : !fixedOrdinarySource
-        && !getActiveClassicalGrammarResultBinding("grammar:nominal-construction")
-          ? ["tl", "tli"].filter(value => isClassicalCoarseNominalSourceAvailable(stem, value))
-            .map(value => ({value, nounClass: value, subclass: "", label: `${value} · subtype unspecified`})) : [];
+      const domain = resolveNncSourceChoiceDomain(targetObject, stem, options, {
+        generalUse,
+        construction:getClassicalNominalConstructionControlValue("classical-construction-operation", ""),
+        deverbalFamily:getClassicalNominalConstructionControlValue("classical-deverbal-nnc-family", ""),
+        exactDeverbalBinding:Boolean(getActiveClassicalGrammarResultBinding("nnc:deverbal-construction")),
+        exactNominalBinding:Boolean(getActiveClassicalGrammarResultBinding("grammar:nominal-construction")),
+      });
+      const coarseClasses = domain.coarseClasses;
       for (const record of coarseClasses) {
         if (Array.from(control.options || []).some(option => option.value === record.value)) continue;
         const option = targetObject.document.createElement("option");
@@ -4758,9 +4532,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         option.dataset.classicalOwnerhoodSourceClass = "true";
         control.appendChild(option);
       }
-      const allowedValues = Object.freeze([...new Set([
-        ...ordinaryValues, ...coarseClasses.map(record => record.value),
-      ])]);
+      const allowedValues = domain.values;
       const allowedSet = new Set(allowedValues);
       let committedCoarseClass = "";
       try {
@@ -20814,16 +20586,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       );
       const lesson11Plan = surfaceFrame.machineryFrame?.lesson11ParadigmPlan || null;
       const lesson11AlternativeControl = targetObject.document.getElementById("classical-rule-logic-irregular-alternative");
-      const lesson11AlternativeRecords = lesson11Plan?.authorizationStatus === "authorized"
-        ? [
-          ...(lesson11Plan.defaultStemOverride ? [{ stemOverride: lesson11Plan.defaultStemOverride, label: "preferred form" }] : []),
-          ...(lesson11Plan.selectedAlternativeStem ? [{ stemOverride: lesson11Plan.selectedAlternativeStem, label: lesson11Plan.usageStatus === "dialectal-not-good-usage" ? "selected dialectal form · Andrews calls this not good usage" : "selected alternative" }] : []),
-          ...(lesson11Plan.authorizedAlternatives || []).map(alternative => ({
-            stemOverride: alternative.stemOverride || "",
-            label: alternative.preference === "default" ? "preferred form" : alternative.usage === "dialectal-not-good-usage" ? "dialectal form · Andrews calls this not good usage" : "authorized alternative"
-          }))
-        ].filter((record, index, list) => record.stemOverride && list.findIndex(candidate => candidate.stemOverride === record.stemOverride) === index)
-        : [];
+      const lesson11AlternativeRecords = resolveIrregularSourceAlternatives(lesson11Plan);
       if (lesson11AlternativeControl && lesson11AlternativeRecords.length > 1) {
         const optionSignature = lesson11AlternativeRecords.map(record => `${record.stemOverride}:${record.label}`).join("|");
         if (lesson11AlternativeControl.dataset.classicalLesson11AlternativeSignature !== optionSignature) {
@@ -21242,7 +21005,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         if (id === "classical-rule-logic-irregular-alternative") {
           wrapper.dataset.classicalRuleLogicGate = hide ? "canvas-lesson11-no-authorized-alternative-for-current-cell" : "canvas-lesson11-authorized-result-alternative";
           wrapper.dataset.classicalAuthorityDecisionOwner = hide ? "application" : "user";
-          if (hide && "value" in control) control.value = "";
+          if (hide && lesson11Plan?.irregularityKind !== "conditioned-ti-perfective" && "value" in control) control.value = "";
         }
         if (id === "classical-rule-logic-directional-contraction" && hide) {
           control.value = "ordinary";
@@ -28577,6 +28340,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         dependencyBlocked,
       };
     }
+    const ClassicalPersonalNameChoiceParents = new WeakMap();
     function syncClassicalPersonalNameNncControls(
       selectedConstruction = ""
     ) {
@@ -28588,31 +28352,39 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const sourceFamilyControl = targetObject.document?.getElementById(
         "classical-personal-name-source-family"
       );
-      const exactFamilies = Array.isArray(
-        exactResolution?.compatibleSourceFamilyIds
-      ) ? exactResolution.compatibleSourceFamilyIds : [];
+      const exactParent = exactBinding?.exactResult || null;
+      const sameParent = exactParent && sourceFamilyControl
+        && ClassicalPersonalNameChoiceParents.get(sourceFamilyControl) === exactParent;
+      if (sourceFamilyControl) {
+        if (exactParent) ClassicalPersonalNameChoiceParents.set(sourceFamilyControl, exactParent);
+        else ClassicalPersonalNameChoiceParents.delete(sourceFamilyControl);
+      }
+      const sourceChoice = resolvePersonalNameSourceChoice(targetObject, {
+        exactSource: Boolean(exactBinding?.exactResult), resolution: exactResolution,
+        requestedFamily: exactParent && !sameParent ? "" : sourceFamilyControl?.value || (exactBinding ? "" : "preterit-agentive"),
+      });
+      const exactFamilies = sourceChoice.values;
       const shortNameOption = Array.from(sourceFamilyControl?.options || []).find(
         option => option.value === "absolutive-state-truncated-inner-number");
       if (shortNameOption) shortNameOption.textContent = exactBinding?.exactResult
         ? "absolutive NNC · shorten inner ending" : "already shortened absolutive NNC";
       if (active && exactBinding?.exactResult && sourceFamilyControl) {
-        Array.from(sourceFamilyControl.options || []).forEach(option => {
-          const allowed = exactFamilies.includes(option.value);
-          option.hidden = !allowed;
-          option.disabled = !allowed;
-        });
-        if (!exactFamilies.includes(sourceFamilyControl.value)) {
-          sourceFamilyControl.value = exactFamilies[0] || "";
+        let prompt = Array.from(sourceFamilyControl.options || []).find(option=>option.value === "");
+        if (!prompt) {
+          prompt=targetObject.document.createElement("option");prompt.value="";
+          prompt.textContent="Choose source family";sourceFamilyControl.prepend(prompt);
         }
+        Array.from(sourceFamilyControl.options || []).forEach(option => {
+          const allowed = option.value === "" || exactFamilies.includes(option.value);
+          option.hidden = !allowed && option.value !== sourceChoice.requestedValue;option.disabled = !allowed;
+        });
+        sourceFamilyControl.value = sourceChoice.selectedValue;
       } else if (sourceFamilyControl) {
         Array.from(sourceFamilyControl.options || []).forEach(option => {
-          option.hidden = false;
-          option.disabled = false;
+          option.hidden = false;option.disabled = false;
         });
       }
-      const structure = active
-        ? getClassicalPersonalNameSourceStructure()
-        : null;
+      const structure = active ? sourceChoice.structure : null;
       if (active && structure && !exactBinding) {
         if (
           structure.minimumClauseCount >= 2
@@ -42291,7 +42063,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           sentenceOptions: Object.freeze({
             sentenceType,
             punctuationMode: draft.sentenceSurfaceMode,
-            irregularStemChoice: value("classical-rule-logic-irregular-alternative"),
+            irregularStemChoice: getClassicalRuleLogicSurfaceState({subject, mood:draft.mood, tense:draft.tense}).lesson11AlternativeStemSelection,
             negative: draft.polarityMode === "negative",
             introductoryParticle: intro,
             introductoryModifier: modifier,

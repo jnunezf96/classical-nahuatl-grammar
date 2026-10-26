@@ -1,17 +1,17 @@
-# Grammar OS v1.2.58 release
+# Grammar OS v1.2.59 release
 
-Release name: **Coordinated Lexical and Parallel Choices**
+Release name: **Coordinated Source Analysis**
 
-Browser build: **20261026-lexical-parallel-77**
+Browser build: **20261026-source-choices-78**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Lexical conjunction and parallel structure obtain their choices from the canonical conjunction owner.
-- Readiness, explicit recovery, captured inputs and stale previews now share the existing choice coordination.
-- Parallel contrasts remain source-dependent; inactive selections are retained, and missing-input recovery stays available.
-- Lexical contextual readings do not grant compound or lexical authority. Existing panels and explicit Make remain unchanged.
+- Source-class, nominal-class, irregular-cell and personal-name choices share application projections of canonical owner data.
+- The selected singular ti alternative remains staged when a different cell makes it inactive, and returns when licensed again.
+- Personal names display canonical defaults and preserve incompatible explicit source-family requests for correction.
+- Existing Source Apply, particle coordination, exact parents and panels are retained.
 
 ## Review scope and current limits
 
@@ -38,7 +38,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.58/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.59/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.
