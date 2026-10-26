@@ -1,16 +1,16 @@
-# Grammar OS v1.2.43 release
+# Grammar OS v1.2.44 release
 
-Release name: **Andrews Included Possessor**
+Release name: **Andrews Directional Continuation**
 
-Browser build: **20261025-ixxiptla-62**
+Browser build: **20261025-huic-continuation-63**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Preserves the third-person possessor’s long ī before real lexical ī, using the existing possessive owner.
-- Keeps the authenticated included possessor available in Combine Results, so Andrews’s īxxīptla impersonator sentence can attach its supplementary possessor.
-- Preserves exact source identity and distinct subject/possessor contacts. No new panel or lexical whitelist.
+- Continues genuine huīc Results into directional pa through the existing Build a relational noun operation.
+- Retains exact inner compound, possessor and negative-particle analysis for tlanihuīcpa, tēhuīcpa and ahhuīcpa, without duplicating outer possession or negation.
+- Preserves the accepted Result while staging and rejects copied or conflicting source claims. No new panels.
 
 ## Review scope and current limits
 
@@ -37,7 +37,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.43/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.44/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.

@@ -1,5 +1,9 @@
 # Version History
 
+## v1.2.44 — Andrews Directional Continuation
+
+- Enables genuine huīc Result continuation into pa with exact inner ancestry, possessor and negative-particle custody through existing controls.
+
 ## v1.2.43 — Andrews Included Possessor
 
 - Corrects long-vowel contact and retains the included possessor through the sentence handoff for Andrews’s īxxīptla construction.

@@ -1221,9 +1221,10 @@ function probeRelationalConstruction(
   ];
   if (ownerPreflight.validate("isClassicalNahuatlRelationalResult", exactResult)) {
     const source = exactResult.sourceFrame;
+    const wholeDirectionalEmbed = source.stemId === "huic-direction";
     const preflight = ownerPreflight.invoke("evaluateClassicalNahuatlRelationalNnc", [{
-      state: source.state,
-      possessorId: source.possessorId,
+      state: wholeDirectionalEmbed ? "absolutive" : source.state,
+      possessorId: wholeDirectionalEmbed ? "" : source.possessorId,
       subjectMode: source.subjectMode,
       subjectId: source.subjectId,
       sentencePosition: source.sentencePosition,
@@ -1238,6 +1239,8 @@ function probeRelationalConstruction(
       const choice = makeChoice({bindingId: "relational-source:relational-nnc-predicate:pa-direction",
         inputRole: "derived-relational-source", ownerPreflightKind: preflight.value.kind,
         derivedRelationalSourceStem: preflight.value.sourceFrame.upstreamSourceCarrier.sourceStem,
+        derivedRelationalSourceState: preflight.value.sourceFrame.state,
+        derivedRelationalSourcePossessor: preflight.value.sourceFrame.possessorId,
         requiredChoiceIds: []});
       choices.push(choice);
       evidence.push(Object.freeze({choice, ownerPreflight: preflight.value}));

@@ -1634,16 +1634,28 @@ function resolveOwnerIssuedDerivedSourceCarrier(
     if (targetObject?.isClassicalNahuatlRelationalResult?.(parent) !== true) {
       return blocked("canonical-relational-upstream-result-required");
     }
+    const wholeDirectionalEmbed = source?.stem?.stemId === "huic-direction";
     if (normalized.stemId !== "pa-direction" || normalized.option !== OPTION.TWO
       || normalized.constructionKind !== "relational-nnc"
-      || source?.stem?.stemId !== "co-c-specific-location"
+      || (!wholeDirectionalEmbed && source?.stem?.stemId !== "co-c-specific-location")
       || source.constructionKind !== "relational-nnc" || source.affective !== "none"
       || source.negative === true || normalized.negative === true
-      || source.state !== normalized.state || source.possessorId !== normalized.possessorId
+      || (wholeDirectionalEmbed
+        ? normalized.state !== STATE.ABSOLUTIVE || normalized.possessorId !== ""
+          || source.subjectMode !== "adverbialized"
+        : source.state !== normalized.state || source.possessorId !== normalized.possessorId)
       || source.subjectMode !== normalized.subjectMode) {
       return blocked("relational-direction-source-scope-mismatch");
     }
-    const segments = parent.operationFrame?.predicateStemFrame?.predicateSegments;
+    // §47.1.2 embeds the whole huīc expression: its inner possessor belongs
+    // inside the compound, while lexical ah is already a predicate segment.
+    const predicateSegments = parent.operationFrame?.predicateStemFrame?.predicateSegments;
+    const stateSegments = wholeDirectionalEmbed
+      ? (parent.nncSlotFrame?.slots?.state?.slots || [])
+        .filter(slot => slot.carrier && !["Ø", "0"].includes(slot.carrier))
+        .map(slot => buildPredicateSegment({morpheme: slot.carrier, role: "embedded-possessor"}))
+      : [];
+    const segments = Array.isArray(predicateSegments) ? [...stateSegments, ...predicateSegments] : null;
     const sourceStem = Array.isArray(segments)
       ? segments.map(segment => normalizeStemText(segment?.morpheme)).filter(Boolean).join("-") : "";
     if (!sourceStem || [normalized.sourceStem, normalized.sourceEmbedStem].some(value => value && value !== sourceStem)

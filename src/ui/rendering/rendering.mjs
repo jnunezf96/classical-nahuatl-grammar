@@ -36368,8 +36368,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
           possessorId: selectedChoice.derivedRelationalSourcePossessor || "",
         } : {}),
         ...(inheritedRelationalSource ? {
-          state: inheritedRelationalSource.state,
-          possessorId: inheritedRelationalSource.possessorId,
+          state: selectedChoice?.derivedRelationalSourceState || inheritedRelationalSource.state,
+          possessorId: selectedChoice?.derivedRelationalSourceState
+            ? selectedChoice.derivedRelationalSourcePossessor || "" : inheritedRelationalSource.possessorId,
           subjectMode: inheritedRelationalSource.subjectMode,
           subjectId: inheritedRelationalSource.subjectId,
           sentencePosition: inheritedRelationalSource.sentencePosition,
