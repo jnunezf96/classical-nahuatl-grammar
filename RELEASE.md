@@ -1,17 +1,17 @@
-# Grammar OS v1.2.40 release
+# Grammar OS v1.2.41 release
 
-Release name: **Andrews Reduced Copula**
+Release name: **Andrews Incorporated Adverb**
 
-Browser build: **20261025-ompa-reduced-copula-59**
+Browser build: **20261025-imaltepeuh-60**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Repairs the existing Combine Results handoff for Andrews §50.3's locative predicate with a subject under omitted cah/catca.
-- Produces In ōmpa īn cencah tōna through existing Analysis controls, retaining the exact locative, subject, adverb, verb and marker Results.
-- Keeps the original adverbial subject nonreferential and does not identify it with the supplied subject. Copied and incompatible sources remain rejected.
-- Adds no panel. This construction's reload persistence remains unclaimed.
+- Restores active incorporation participant choices after a nonanimate noun Source.
+- Preserves the selected huāl directional prefix through the nominal-incorporation owner.
+- Produces Andrews §50.3's Huālmauhcāquīzqueh in oncān īmāltepēuh through the existing Analysis controls, with exact constituent custody and explicit Make.
+- Adds no panels or source-specific exceptions.
 
 ## Review scope and current limits
 
@@ -38,7 +38,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.40/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.41/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.

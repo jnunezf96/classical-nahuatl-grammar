@@ -30824,15 +30824,16 @@ export function createUiRenderingApi(targetObject = globalThis) {
         syncClassicalPreteritAgentiveParticipantChoices();
         syncClassicalPatientiveVncTargetParticipantChoices();
       }
-      if (selected === "attitude-vnc"
+      if (["attitude-vnc", "nominal-embed-vnc"].includes(selected)
         && !ActiveClassicalGrammarResultBinding
         && !ActiveClassicalGrammarResultSourceCapture
-        && targetObject.getClassicalSourcePartControlState?.()?.mode !== "embed-matrix"
+        && (selected === "nominal-embed-vnc"
+          || targetObject.getClassicalSourcePartControlState?.()?.mode !== "embed-matrix")
         && getClassicalNominalConstructionControlValue("classical-rule-logic-vnc-voice", "active") === "active"
         && targetObject.getClassicalNahuatlInherentImpersonalSourceAnalysis?.(
           getClassicalNominalConstructionControlValue("classical-source-whole", "")
         )?.inherentImpersonalFixedByKnownLexicon !== true) {
-        // A raw attitude draft can retain another route's number options.
+        // A raw finite draft can retain another route's number options.
         // Project its current native reference before collecting the request;
         // the accepted Result and the explicit Make boundary remain intact.
         const value = axis => getClassicalNominalConstructionControlValue(

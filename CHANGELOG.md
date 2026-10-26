@@ -1,5 +1,9 @@
 # Version History
 
+## v1.2.41 — Andrews Incorporated Adverb
+
+- Restores participant choices and directional forwarding for nominal incorporation; verifies Andrews’s complete īmāltepēuh reduced-copula example through existing controls.
+
 ## v1.2.40 — Andrews Reduced Copula
 
 - Repairs the locative predicate/subject handoff for In ōmpa īn cencah tōna (§50.3) within existing controls, preserving exact sources and distinct reference identities.

@@ -6319,6 +6319,7 @@ function evaluateNominalEmbedConstruction(request, target, sourceAuthorizationFr
     ),
     outputScope: "single",
     incorporatedAdverb: relation === "adverb",
+    directionalPrefix: request.directionalPrefix || "",
     sourceInitialISelection: compoundInitialISelection,
     requestedCausativeSpecificShuntlineRealization:
       targetObjectRequests.some(objectRequest => (
