@@ -4841,6 +4841,8 @@ body.is-language-classical .classical-toy-stage-prompt {
 }
 
 body.is-language-classical.is-ui-simple #classical-workbench
+  .composition-overview,
+body.is-language-classical.is-ui-simple #classical-workbench
   .classical-composition-path-summary,
 body.is-language-classical.is-ui-simple #classical-workbench
   #classical-app-root > .classical-grammar-advanced {

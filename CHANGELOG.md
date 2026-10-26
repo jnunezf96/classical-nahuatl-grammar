@@ -1,5 +1,9 @@
 # Version History
 
+## v1.2.50 — Overview Visibility
+
+- Removes a dead-end Overview disclosure in Simple view; Analysis retains the existing populated overview.
+
 ## v1.2.49 — Applied Source Labels
 
 - Names overlapping operation inputs Applied Source, distinguishing them from the newer accepted Result and the separate Source editor.
