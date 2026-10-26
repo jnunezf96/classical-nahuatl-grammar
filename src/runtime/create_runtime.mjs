@@ -176,6 +176,7 @@ const PRIVATE_INSTALLER_DEPENDENCIES = Object.freeze({
             "getClassicalNahuatlParallelRephraseAxisContract",
         ]),
         "src/core/comparison/comparison.mjs": Object.freeze([
+            "getClassicalComparisonChoiceContract",
             "buildClassicalComparisonOperationFrame",
             "isClassicalComparisonOperationFrame",
         ]),

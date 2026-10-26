@@ -1,3 +1,4 @@
+import {isCurrentComparisonRoute, resolveComparisonChoices, projectComparisonChoiceFrame} from './comparison_choices.mjs';
 // Typed application controller for composing already-issued canonical clause
 // results. It owns presentation decisions only; the clause engine remains the
 // sole owner of relation validation, formulas, realization, and surfaces.
@@ -2927,12 +2928,12 @@ export function createClassicalClauseRelationControllerGlobals(
         diagnostics.push("classical-comparison-route-not-licensed");
       }
       const layout = COMPARISON_CAPTURE_SLOT_LAYOUTS[routeSpec?.id] || {};
-      const requiredSlots = new Set(routeSpec?.requiredSlots || []);
-      if (["equality-iuhqui", "equality-ihuan", "similarity-iuhqui-principal"].includes(routeSpec?.id)
-        && (normalizeToken(selectionObject.icRelation)
-          || getComparisonChoiceDefault(routeSpec.id, "icRelation", layout)) === "yes") {
-        requiredSlots.add("dimension");
-      }
+      const migrated = isCurrentComparisonRoute(routeSpec?.id);
+      const domain = migrated ? targetObject.getClassicalComparisonChoiceContract?.(routeSpec.id) : null;
+      const resolved = resolveComparisonChoices(domain, selectionObject);
+      const ownerChoices = resolved ? targetObject.getClassicalComparisonChoiceContract(routeSpec.id, resolved.operationSelections) : null;
+      if (migrated && !ownerChoices) diagnostics.push("comparison-choice-owner-capability-required");
+      const requiredSlots = new Set(ownerChoices?.requiredSlots || routeSpec?.requiredSlots || []);
 
       Object.entries(layout).forEach(([role, slotId]) => {
         if (requiredSlots.has(slotId)) {
@@ -2954,6 +2955,20 @@ export function createClassicalClauseRelationControllerGlobals(
           }`);
         }
       });
+      if (migrated) {
+        for (const choice of resolved?.decisions || []) {
+          decisions.push(Object.freeze({...buildDecision(choice), ...choice}));
+          if (!choice.resolved) diagnostics.push(`classical-comparison-${choice.key}-not-licensed`);
+        }
+        return buildNewRelationContract({selectionObject, relation, decisions, diagnostics,
+          operationSelections: resolved?.operationSelections || {comparisonRoute: routeSpec.id},
+          derived: {operationFamily: "comparison", operationKind: routeSpec.operation,
+            comparisonRelation: routeSpec.relation, comparisonRoute: routeSpec.id,
+            captureSlotLayout: Object.freeze({...layout}),
+            requiredCaptureRoles: freezeArray(Object.entries(layout).filter(([,slot])=>requiredSlots.has(slot)).map(([role])=>role)),
+            optionalCaptureRoles: freezeArray(Object.entries(layout).filter(([,slot])=>!requiredSlots.has(slot)).map(([role])=>role))},
+          derivedFieldIds: ["operation-family", "operation-kind", "comparison-relation", "capture-slot-layout", "required-capture-roles", "optional-capture-roles"]});
+      }
       const operationSelections = {
         comparisonRoute: routeSpec?.id || "",
       };
@@ -5487,10 +5502,18 @@ export function createClassicalClauseRelationControllerGlobals(
             );
         })
       ));
-      return Object.freeze({
-        ...contract,
-        missingCaptureRoles: freezeArray(missingCaptureRoles),
-      });
+      contract = Object.freeze({...contract, missingCaptureRoles: freezeArray(missingCaptureRoles)});
+      if (isCurrentComparisonRoute(contract.derived?.comparisonRoute)) {
+        const ownerContract = targetObject.getClassicalComparisonChoiceContract?.(contract.derived.comparisonRoute, contract.operationSelections);
+        const choices = resolveComparisonChoices(ownerContract, selections);
+        if (ownerContract && choices) {
+          const currentChoiceFrame = projectComparisonChoiceFrame({contract, ownerContract, choices,
+            captureRevision, stagedRevision: 0,
+            captures: Object.fromEntries(CAPTURE_ROLES.map(role=>[role, !!getValidatedCapture(role)]))});
+          contract = Object.freeze({...contract, currentChoiceFrame});
+        }
+      }
+      return contract;
     }
 
     function buildConjunctionRequest(contract) {

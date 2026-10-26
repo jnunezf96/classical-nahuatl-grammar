@@ -1131,6 +1131,25 @@ export function createComparisonApi(targetObject = globalThis, installationConte
       }
       return { ok: true, id: value, surface: inventory[value], diagnostic: "" };
     }
+    // Read-only grammar description. It cannot authenticate a Source or authorize Make.
+    function getClassicalComparisonChoiceContract(routeId, choices = {}) {
+      if (!["equality-iuhqui", "equality-ihuan", "similarity-iuhqui-principal"].includes(routeId)) return null;
+      const spec = ROUTES_BY_ID.get(routeId);
+      const ic = choices.icRelation === true || choices.icRelation === "yes";
+      const requiredSlots = [...spec.requiredSlots, ...(ic ? ["dimension"] : [])];
+      const domains = {icRelation: ["yes", "no"], adjunctorIn: ["yes", "no"],
+        iuhquiModifier: Object.keys(IUHQUI_MODIFIERS), sentenceType: SENTENCE_TYPES};
+      return freeze({routeId, requiredSlots: freeze(requiredSlots),
+        decisions: freeze(spec.choiceFields.map(field => ({key: field,
+          id: field.replace(/[A-Z]/gu, letter => `-${letter.toLowerCase()}`),
+          values: freeze(domains[field]), responsibility: "user", regularity: "unclassified",
+          productivity: "productive", linguisticJudgment: "licensed",
+          evidence: field === "sentenceType" ? "existing-sentence-realization-owner" : "Andrews-53.1.7/53.3.1-2",
+          determinesCaptureRoles: field === "icRelation"}))),
+        inputs: freeze(Object.keys(ROUTE_SLOT_SOURCE_KINDS[routeId]).map(slot => ({slot,
+          requirement: requiredSlots.includes(slot) ? "required" : "optional",
+          contribution: slot === "dimension" && !ic ? "retained-not-included" : "included"})))});
+    }
     function normalizeBooleanChoice(request, field, fallback = false) {
       const value = request?.choices?.[field] ?? request?.[field];
       return value === undefined ? fallback : value === true;
@@ -1277,7 +1296,7 @@ export function createComparisonApi(targetObject = globalThis, installationConte
       if (routeSpec.choiceFields.includes("continuationFamily")) addChoice("continuationFamily", REDUPLICATIVE_CONTINUATIONS, "bare");
       if (routeSpec.choiceFields.includes("adjunctorIn")) choices.adjunctorIn = normalizeBooleanChoice(operationRequest, "adjunctorIn", true);
       if (routeSpec.choiceFields.includes("icRelation")) choices.icRelation = normalizeBooleanChoice(operationRequest, "icRelation", Boolean(slots.dimension));
-      if (["equality-iuhqui", "equality-ihuan", "similarity-iuhqui-principal"].includes(routeId) && choices.icRelation
+      if (getClassicalComparisonChoiceContract(routeId, choices)?.requiredSlots.includes("dimension")
         && (!isClassicalComparisonSourceUnit(slots.dimension)
           || slots.dimension.authorizationStatus !== "authorized")) {
         diagnostics.push("comparison-dimension-typed-source-required");
@@ -2805,6 +2824,7 @@ export function createComparisonApi(targetObject = globalThis, installationConte
       getComparisonAntiConflationRules,
       getComparisonStructuralQuestions,
       getClassicalComparisonRouteInventory,
+      getClassicalComparisonChoiceContract,
       getClassicalComparisonDegreeChoiceInventory,
       getClassicalComparisonTiAgentiveChoiceInventory,
       getClassicalComparisonNehnemiChoiceInventory,
