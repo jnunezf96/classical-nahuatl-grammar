@@ -6,7 +6,7 @@ const noun=(stem,sourceClass,humanness)=>{const s=r.buildClassicalNahuatlOrdinar
 test('compared-manner retains the embedding owner source requirement and accepts established general-use analyses',()=>{
  const restricted=noun('coyō','tl','nonhuman'),known=noun('cihuā','tl-1-a','human');
  const src=x=>r.buildClassicalComparisonSourceUnit({sourceResult:x});
- for(const [family,shape,surface] of [['oyotl-nehnemi','short-cv','cicihuānehnemi'],['cihuatl-tlahtoa','glottalized-cv','cihcihuātlahtoa']]){
+ for(const [family,shape,surface] of [['cihuatl-tlahtoa','glottalized-cv','cihcihuātlahtoa']]){
   const request=x=>({routeId:'similarity-reduplicative-prefix',slots:{source:src(x)},choices:{continuationFamily:family,reduplicationShape:shape}});
   const blocked=r.requestClassicalComparisonResult(request(restricted));
   assert.equal(blocked.authorizationStatus,'blocked');

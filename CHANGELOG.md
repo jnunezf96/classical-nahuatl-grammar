@@ -1,5 +1,9 @@
 # Version History
 
+## v1.2.39 — Andrews Coyote Walking
+
+- Repairs the contextual coyō embedding analysis for cocoyōnehnemi (§53.1.1), preserving exact Source custody and unclaimed broader paradigms.
+
 ## v1.2.38 — Andrews Negative Continuation
 
 - Repairs contextual negative-prefix continuation and the incorrect sentence label using existing controls; preserves exact source custody.

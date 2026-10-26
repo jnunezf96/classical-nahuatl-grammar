@@ -1196,6 +1196,7 @@ function resolveExactOrdinaryNncPredicateEmbed(source, target, request = {}) {
   // even when its broader general-use paradigm remains unclaimed. Predicate
   // continuation must consume that same fact as the ordinary-nnc route.
   const attestedObjectUseResolved = sourceStemOperation
+    && !lexicalSource.attestedPredicateEmbedUse
     && normalizeKey(request.relation || source.relation) === "object"
     && normalizeStem(lexicalSource.attestedGeneralUseStem) === predicateStem
     && projection.canonicalOperationFrame.stemFormation === "plain";
@@ -1212,9 +1213,10 @@ function resolveExactOrdinaryNncPredicateEmbed(source, target, request = {}) {
     && normalizeStem(attestedUse.useStem) === normalizeStem(lexicalSource.attestedGeneralUseStem)
     && normalizeKey(attestedUse.constructionKind) === "nominal-embed-vnc"
     && normalizeStem(source.matrixStem) === attestedUse.matrixStem
-    && ["relation", "orientation", "complementKind"].every(key => {
+    && ["relation", "orientation", "complementKind", "adverbRole",
+      "embedReduplication", "similarityReduplicationShape"].every(key => {
       const selected = normalizeKey(request[key] || source[key]);
-      return !selected || selected === normalizeKey(attestedUse[key]);
+      return !Object.hasOwn(attestedUse, key) || !selected || selected === normalizeKey(attestedUse[key]);
     }));
   if (!lexicalUseResolved && !attestedObjectUseResolved && !attestedPredicateUseResolved
     && (lexicalSource.restrictedUseOnly === true || lexicalSource.generalUseShapeClaimed === false)) {
@@ -5620,6 +5622,16 @@ function evaluateNominalEmbedConstruction(request, target, sourceAuthorizationFr
   }
 
   const embedReduplication = normalizeKey(request.embedReduplication || "none");
+  // Admission may leave choices pending; execution must satisfy every
+  // declared contextual-use condition, including obligatory copying.
+  const contextualUse = lexicalFacts.capturedExactOrdinaryNncPredicateFrame
+    ?.attestedPredicateEmbedUseFrame;
+  if (contextualUse && ["embedReduplication", "similarityReduplicationShape"].some(key =>
+    Object.hasOwn(contextualUse, key)
+    && normalizeKey(request[key]) !== normalizeKey(contextualUse[key]))) {
+    return buildBlockedFrame("nominal-embed-vnc",
+      "attested-predicate-embed-contextual-choices-required", request);
+  }
   const embedCopyingSelected = !["none", "plain-source"].includes(embedReduplication);
   const matrixReduplication = normalizeKey(request.matrixReduplication || "none");
   const similarityReduplicationShape = normalizeKey(request.similarityReduplicationShape);

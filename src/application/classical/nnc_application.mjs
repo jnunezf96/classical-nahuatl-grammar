@@ -16,6 +16,16 @@ const ORDINARY_NNC_SOURCE_KIND =
 // §30.3 attests the restricted nominal assertion and its general-use embed,
 // independently of an unprovided possessive/plural subclass.
 const ORDINARY_NNC_ATTESTED_STEM_USES = Object.freeze({
+  // §53.1.1 documents this contextual embed, not a possessive subclass.
+  "coyō": Object.freeze({nounClass: "tl", generalUseStem: "coyō",
+    predicateEmbedUse: Object.freeze({
+      kind: "classical-nahuatl-attested-nominal-predicate-embed-use",
+      sourceStem: "coyō", useStem: "coyō",
+      constructionKind: "nominal-embed-vnc", relation: "adverb",
+      orientation: "subject", adverbRole: "compared-manner", matrixStem: "neh-nemi",
+      embedReduplication: "similarity", similarityReduplicationShape: "short-cv",
+      sourceSection: "53.1.1", fullGeneralUseParadigmClaimed: false,
+    })}),
   "xōchi": Object.freeze({nounClass: "tl", generalUseStem: "xōchi"}),
   // §30.15.2 supplies this citation/use pair before mati. It does not
   // supply a possessed subclass or an ordinary general-use paradigm.

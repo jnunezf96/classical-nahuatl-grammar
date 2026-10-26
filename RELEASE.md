@@ -1,17 +1,16 @@
-# Grammar OS v1.2.38 release
+# Grammar OS v1.2.39 release
 
-Release name: **Andrews Negative Continuation**
+Release name: **Andrews Coyote Walking**
 
-Browser build: **20261025-negative-continuation-57**
+Browser build: **20261025-coyote-walking-58**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Continues an authenticated negative-prefix selection into an Andrews-licensed particle combination through existing Result controls.
-- Preserves the exact preceding particle, sentence context, prefix selection and following particle; copied and incompatible inputs remain rejected.
-- Labels a bare selection as a negative prefix, not a complete sentence.
-- The focused public path is mā + wish + ca# + zo → mā cazo (§3.3). Matching attested particle sequences define this route; arbitrary following hosts are not licensed. Reload of these new composite particles is deliberately unsupported rather than losing their original context.
+- Supplies Andrews §53.1.1's contextual coyō Source analysis for short-prefix similarity with neh-nemi, producing cocoyōnehnemi through the existing comparison controls.
+- Preserves the exact nominal Source and its restricted citation status; no possessive subclass or general paradigm is invented.
+- Requires the documented contextual reduplication at execution; copied, incompatible and incomplete requests stay rejected.
 
 ## Review scope and current limits
 
@@ -38,7 +37,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.38/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.39/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.
