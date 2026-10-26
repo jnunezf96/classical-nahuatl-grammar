@@ -38001,7 +38001,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         });
         if (contract && (contract.currentChoiceFrame || binding.clauseRelationDecisionContract?.currentChoiceFrame)) {
           syncClassicalClauseRelationCapabilityChoices(contract, contract.missingCaptureRoles || []);
-          if (["conjunction", "correlative-conjunction"].includes(contract.relation)) syncClassicalRequiredResultChooser();
+          if (["conjunction", "correlative-conjunction", "lexical-conjunction", "parallel-structure"].includes(contract.relation)) syncClassicalRequiredResultChooser();
         }
       }
       const contextSurface = ActiveClassicalRuleLogicSurfaceFrame || {};
@@ -38527,6 +38527,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         // The owner still blocks Make until its selected captures are ready.
         || decision.id === "left-context"
         || decision.id === "correlation-type"
+        || ["lexical-conjunction","parallel-structure"].includes(decisionContract?.relation)
         || (decision.id === "correlative-pattern" && decision.responsibility === "application-recovery")
         || (decision.id === "contextual-silent-first-person" && !decision.resolved)
         || decision.determinesCaptureRoles === true

@@ -1,5 +1,11 @@
 # Version History
 
+## v1.2.58 — Coordinated Lexical and Parallel Choices
+
+- Completes choice coordination for joining, contrasting and rephrasing in the existing interface.
+- Shares canonical domains and full readiness checks, preserves inactive selections and exact captured parents.
+- Keeps source-independent recovery available when a required input is missing.
+
 ## v1.2.57 — Coordinated Correlative Choices
 
 - Coordinates standard and loose correlation through the existing canonical owner.

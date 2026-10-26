@@ -1121,6 +1121,38 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
       "intransitive-reflexive-transitive"
     ]);
 
+    const lexicalTypes = Object.freeze(["lord-and-master", "bread-and-butter"]);
+    const lexicalAdjunctors = Object.freeze(["none", "in-before-each", "in-before-left-only"]);
+    const lexicalStates = Object.freeze(["conjoined-stems", "compound-handoff"]);
+    const parallelTypes = Object.freeze(["rephrasive", "progressive", "combined"]);
+    const appositiveTypes = Object.freeze(["none", "clarifying", "summarizing"]);
+    const parallelPunctuation = Object.freeze(["none", "comma", "semicolon", "dash"]);
+    // Descriptive choices only. Execution still authenticates every whole parent.
+    function getClassicalLexicalParallelChoiceContract(family, selections = {}, conjuncts = []) {
+      const sourceReference = family === "lexical-conjunction" ? "Andrews §52.6" : "Andrews §52.7";
+      const decision = (key, values, extra = {}) => ({key, id:key.replace(/[A-Z]/gu, c=>`-${c.toLowerCase()}`), values, sourceReference, ...extra});
+      let decisions;
+      if (family === "lexical-conjunction") {
+        decisions = [decision("lexicalType",lexicalTypes),decision("adjunctorDistribution",lexicalAdjunctors),
+          decision("stateRealization",lexicalStates,{optionAvailability:lexicalStates.map(value=>({value,
+            status:value !== "compound-handoff" || conjuncts.length === 2 ? "available" : conjuncts.length < 2 ? "missing-prerequisite" : "incompatible",
+            reasonCode:value === "compound-handoff" && conjuncts.length !== 2 ? "conjunctive-compound-handoff-requires-a-biclausal-unit-and-compound-state-selection" : ""}))})];
+      } else if (family === "parallel-structure") {
+        const type=normalizeClassicalNahuatlClauseConjunctionToken(selections.parallelType);
+        const axis=normalizeClassicalNahuatlClauseConjunctionToken(selections.rephraseAxis);
+        const appositive=normalizeClassicalNahuatlClauseConjunctionToken(selections.appositiveType);
+        decisions=[decision("parallelType",parallelTypes)];
+        if (["rephrasive","combined"].includes(type) && !(["clarifying","summarizing"].includes(appositive) && !axis)) {
+          const contact=getClassicalNahuatlParallelRephraseAxisContract({conjuncts,parallelType:type,rephraseAxis:axis});
+          decisions.push(decision("rephraseAxis",CLASSICAL_NAHUATL_CLAUSE_CONJUNCTION_REPHRASE_AXES,{optionAvailability:CLASSICAL_NAHUATL_CLAUSE_CONJUNCTION_REPHRASE_AXES.map(value=>({value,
+            status:value === "none" || contact.availableAxes.includes(value)?"available":conjuncts.length < 2?"missing-prerequisite":"incompatible",
+            reasonCode:value === "none" || contact.availableAxes.includes(value)?"":"rephrasive-parallelism-owned-contrast-required"}))}));
+        }
+        decisions.push(decision("appositiveType",appositiveTypes),decision("boundaryPunctuation",parallelPunctuation,{defaultValue:"none",responsibility:"writing"}));
+      } else return null;
+      return freezeClassicalNahuatlClauseConjunction({familyId:family,decisions,sourceReference,executionAuthority:false});
+    }
+
     function freezeClassicalNahuatlClauseConjunction(value) {
       if (targetObject.isAdverbialAdjunctionResult?.(value) === true) return value;
       if (
@@ -1631,7 +1663,7 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
         authorizationStatus: "blocked", blockReason, availableAxes: Object.freeze([]),
       });
       if (!Array.isArray(conjuncts) || conjuncts.length < 2
-        || !["rephrasive", "progressive", "combined"].includes(parallelType)) {
+        || !parallelTypes.includes(parallelType)) {
         return blocked("parallel-structure-requires-at-least-two-conjuncts-and-a-licensed-type");
       }
       // These maps last only for this read. Each whole Source is authenticated
@@ -2340,7 +2372,7 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
           ))) {
           return buildClassicalNahuatlClauseConjunctionBlockedResultFrame(operationKind, "lexical-conjunction-requires-two-or-three-typed-nncs");
         }
-        if (!["lord-and-master", "bread-and-butter"].includes(lexicalType)) {
+        if (!lexicalTypes.includes(lexicalType)) {
           return buildClassicalNahuatlClauseConjunctionBlockedResultFrame(operationKind, "licensed-lexical-conjunction-semantic-type-required");
         }
         const referenceIds = new Set(conjuncts.map(node => node.subject.referenceId));
@@ -2354,8 +2386,8 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
         const affectiveCoverage = affectiveMemberCount === conjuncts.length
           ? "all-members"
           : "none";
-        if (!["none", "in-before-each", "in-before-left-only"].includes(adjunctorDistribution)
-          || !["conjoined-stems", "compound-handoff"].includes(stateRealization)) {
+        if (!lexicalAdjunctors.includes(adjunctorDistribution)
+          || !lexicalStates.includes(stateRealization)) {
           return buildClassicalNahuatlClauseConjunctionBlockedResultFrame(operationKind, "licensed-lexical-conjunction-realization-options-required");
         }
         if (stateRealization === "compound-handoff" && conjuncts.length !== 2) {
@@ -2414,7 +2446,7 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
         const rephraseAxis = parallelType === "progressive" ? ""
           : normalizeClassicalNahuatlClauseConjunctionToken(options.rephraseAxis);
         const appositiveType = normalizeClassicalNahuatlClauseConjunctionToken(options.appositiveType || "none");
-        if (conjuncts.length < 2 || !["rephrasive", "progressive", "combined"].includes(parallelType)) {
+        if (conjuncts.length < 2 || !parallelTypes.includes(parallelType)) {
           return buildClassicalNahuatlClauseConjunctionBlockedResultFrame(operationKind, "parallel-structure-requires-at-least-two-conjuncts-and-a-licensed-type");
         }
         if (["rephrasive", "combined"].includes(parallelType)
@@ -2422,7 +2454,7 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
           && !CLASSICAL_NAHUATL_CLAUSE_CONJUNCTION_REPHRASE_AXES.includes(rephraseAxis)) {
           return buildClassicalNahuatlClauseConjunctionBlockedResultFrame(operationKind, "rephrasive-parallelism-axis-not-licensed");
         }
-        if (!["none", "clarifying", "summarizing"].includes(appositiveType)) {
+        if (!appositiveTypes.includes(appositiveType)) {
           return buildClassicalNahuatlClauseConjunctionBlockedResultFrame(operationKind, "recognized-appositive-parallelism-type-required");
         }
         const groupSummaryContactFrame = appositiveType === "summarizing"
@@ -2720,6 +2752,7 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
     api.buildClassicalNahuatlClauseConjunctionOperationRequest = buildClassicalNahuatlClauseConjunctionOperationRequest;
     api.isClassicalNahuatlClauseConjunctionOperationRequest = isClassicalNahuatlClauseConjunctionOperationRequest;
     api.buildClassicalNahuatlConjunctReplacementRequest = buildClassicalNahuatlConjunctReplacementRequest;
+    api.getClassicalLexicalParallelChoiceContract = getClassicalLexicalParallelChoiceContract;
     api.getClassicalCorrelativeChoiceContract = getClassicalCorrelativeChoiceContract;
     api.getClassicalConjunctionChoiceContract = getClassicalConjunctionChoiceContract;
     api.evaluateClassicalNahuatlClauseConjunction = evaluateClassicalNahuatlClauseConjunction;

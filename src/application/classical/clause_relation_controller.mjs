@@ -236,37 +236,6 @@ const RELATIONAL_COMPLEMENT_PAIRS = Object.freeze([
   "te-tech+chicotlamati",
   "te-tech-pa+tlaocoya",
 ]);
-const LEXICAL_CONJUNCTION_TYPES = Object.freeze([
-  "lord-and-master",
-  "bread-and-butter",
-]);
-const LEXICAL_ADJUNCTOR_DISTRIBUTIONS = Object.freeze([
-  "none",
-  "in-before-each",
-  "in-before-left-only",
-]);
-const LEXICAL_STATE_REALIZATIONS = Object.freeze([
-  "conjoined-stems",
-  "compound-handoff",
-]);
-const PARALLEL_TYPES = Object.freeze([
-  "rephrasive",
-  "progressive",
-  "combined",
-]);
-const REPHRASE_AXES = Object.freeze([
-  "none",
-  "nonspecific-specific-object",
-  "active-passive",
-  "tense-shift",
-  "incorporated-supplementary-object",
-  "intransitive-reflexive-transitive",
-]);
-const APPOSITIVE_TYPES = Object.freeze([
-  "none",
-  "clarifying",
-  "summarizing",
-]);
 const COMPARISON_CAPTURE_SLOT_LAYOUTS = Object.freeze({
   "similarity-reduplicative-prefix": Object.freeze({
     principal: "source",
@@ -1465,8 +1434,8 @@ export function createClassicalClauseRelationControllerGlobals(
     }
 
     function transitionConjunctionChoice({selections={},expectedFrame=null,intent={}}={}) {
-      const current=["conjunction","correlative-conjunction"].includes(selections.relation);
-      if(!current && !["conjunction","correlative-conjunction"].includes(expectedFrame?.familyId)) return Object.freeze({handled:false});
+      const current=["conjunction","correlative-conjunction","lexical-conjunction","parallel-structure"].includes(selections.relation);
+      if(!current && !["conjunction","correlative-conjunction","lexical-conjunction","parallel-structure"].includes(expectedFrame?.familyId)) return Object.freeze({handled:false});
       const blocked=reason=>Object.freeze({handled:true,authorizationStatus:"blocked",blockReason:reason,selections,contract:buildDecisionContract(selections)});
       if(!current || !isCurrentChoiceFrame(expectedFrame,selections)) return blocked("conjunction-choice-stale-frame");
       const next={...selections};
@@ -2416,150 +2385,29 @@ export function createClassicalClauseRelationControllerGlobals(
           }
         }
         Object.assign(operationSelections,{correlationType:selected.correlationType,pattern:selected.correlativePattern || ""});
-      } else if (relation === "lexical-conjunction") {
-        requireCapturedSource("principal", diagnostics, {
-          diagnosticPrefix: "classical-conjunction",
-        });
-        requireCapturedSource("adjoined", diagnostics, {
-          diagnosticPrefix: "classical-conjunction",
-        });
-        const lexicalType = LEXICAL_CONJUNCTION_TYPES.includes(
-          normalizeToken(selectionObject.lexicalType),
-        )
-          ? normalizeToken(selectionObject.lexicalType)
-          : "";
-        const adjunctorDistribution =
-          LEXICAL_ADJUNCTOR_DISTRIBUTIONS.includes(
-            normalizeToken(selectionObject.adjunctorDistribution),
-          )
-            ? normalizeToken(selectionObject.adjunctorDistribution)
-            : "";
-        const stateRealization = LEXICAL_STATE_REALIZATIONS.includes(
-          normalizeToken(selectionObject.stateRealization),
-        )
-          ? normalizeToken(selectionObject.stateRealization)
-          : "";
-        [
-          ["lexical-type", LEXICAL_CONJUNCTION_TYPES, lexicalType],
-          [
-            "adjunctor-distribution",
-            LEXICAL_ADJUNCTOR_DISTRIBUTIONS,
-            adjunctorDistribution,
-          ],
-          ["state-realization", LEXICAL_STATE_REALIZATIONS, stateRealization],
-        ].forEach(([id, values, selectedValue]) => {
-          decisions.push(buildDecision({
-            id,
-            values,
-            selectedValue,
-            reason: "lexical conjunction requires a typed structural choice",
-          }));
-        });
-        Object.assign(operationSelections, {
-          lexicalType,
-          adjunctorDistribution,
-          stateRealization,
-        });
       } else {
-        requireCapturedSource("principal", diagnostics, {
-          diagnosticPrefix: "classical-parallel-structure",
-        });
-        requireCapturedSource("adjoined", diagnostics, {
-          diagnosticPrefix: "classical-parallel-structure",
-        });
-        const parallelType = PARALLEL_TYPES.includes(
-          normalizeToken(selectionObject.parallelType),
-        )
-          ? normalizeToken(selectionObject.parallelType)
-          : "";
-        const rephraseAxis = ["rephrasive", "combined"].includes(parallelType)
-          && REPHRASE_AXES.includes(
-          normalizeToken(selectionObject.rephraseAxis),
-        )
-          ? normalizeToken(selectionObject.rephraseAxis)
-          : "";
-        const appositiveType = APPOSITIVE_TYPES.includes(
-          normalizeToken(selectionObject.appositiveType),
-        )
-          ? normalizeToken(selectionObject.appositiveType)
-          : "";
-        let axisContract = null;
-        if (!diagnostics.length && ["rephrasive", "combined"].includes(parallelType)) {
-          const decideAxis = targetObject.getClassicalNahuatlParallelRephraseAxisContract;
-          if (typeof decideAxis !== "function") {
-            diagnostics.push("parallel-rephrasing-current-owner-capability-required");
-          } else {
-            axisContract = decideAxis({
-              conjuncts: ["principal", "adjoined", "dependent"].filter(role => getValidatedCapture(role))
-                .map((role, index) => getCapturedCompositionNode(role, `conjunct-${index + 1}`)),
-              parallelType, rephraseAxis,
-            });
-            if (axisContract?.authorizationStatus !== "authorized") {
-              diagnostics.push(axisContract?.blockReason || "rephrasive-parallelism-owned-contrast-required");
-            }
-          }
+        requireCapturedSource("principal", diagnostics, {diagnosticPrefix:"classical-conjunction"});
+        requireCapturedSource("adjoined", diagnostics, {diagnosticPrefix:"classical-conjunction"});
+        const conjuncts=["principal","adjoined","dependent"].filter(role=>getValidatedCapture(role))
+          .map((role,index)=>getCapturedCompositionNode(role,`conjunct-${index+1}`));
+        const owner=targetObject.getClassicalLexicalParallelChoiceContract?.(relation,selectionObject,conjuncts);
+        if(!owner) diagnostics.push("lexical-parallel-choice-owner-capability-required");
+        for(const domain of owner?.decisions || []) {
+          const requestedValue=normalizeToken(selectionObject[domain.key] || domain.defaultValue || "");
+          const decision=buildDecision({...domain,selectedValue:requestedValue,reason:"Choice licensed by the canonical conjunction owner"});
+          decisions.push(Object.freeze({...decision,key:domain.key,requestedValue,responsibility:domain.responsibility || "user",sourceReference:domain.sourceReference}));
+          operationSelections[domain.key]=decision.selectedValue;
+          const unavailable=decision.optionAvailability?.find(option=>option.value===requestedValue && option.status!==RELATION_AVAILABILITY.AVAILABLE);
+          if(unavailable?.reasonCode) diagnostics.push(unavailable.reasonCode);
         }
-        decisions.push(buildDecision({
-          id: "parallel-type",
-          values: PARALLEL_TYPES,
-          selectedValue: parallelType,
-          reason: "parallel structures rephrase, progress, or combine both",
-        }));
-        if (["rephrasive", "combined"].includes(parallelType)
-          && !( ["clarifying", "summarizing"].includes(appositiveType)
-            && !normalizeToken(selectionObject.rephraseAxis) )) {
-          decisions.push(buildDecision({
-            id: "rephrase-axis",
-            values: REPHRASE_AXES,
-            selectedValue: rephraseAxis,
-            reason: "rephrasive parallelism may specify an owned grammatical contrast",
-            optionAvailability: axisContract ? REPHRASE_AXES.map(value => ({value,
-              status: axisContract.availableAxes.includes(value)
-                ? RELATION_AVAILABILITY.AVAILABLE : RELATION_AVAILABILITY.INCOMPATIBLE,
-              reasonCode: axisContract.availableAxes.includes(value) ? "" : "rephrasive-parallelism-owned-contrast-required",
-            })) : [],
-          }));
-        }
-        decisions.push(buildDecision({
-          id: "appositive-type",
-          values: APPOSITIVE_TYPES,
-          selectedValue: appositiveType,
-          reason: "parallel apposition may clarify, summarize, or remain absent",
-        }));
-        Object.assign(operationSelections, {
-          parallelType,
-          rephraseAxis,
-          appositiveType,
-        });
+        if(relation === "parallel-structure" && !operationSelections.rephraseAxis) operationSelections.rephraseAxis="";
       }
-      if (["conjunction", "parallel-structure"].includes(relation)) {
-        const punctuationValues = relation === "parallel-structure"
-          ? ["none", "comma", "semicolon", "dash"] : ["none", "comma", "semicolon"];
-        const boundaryPunctuation = normalizeToken(
-          selectionObject.boundaryPunctuation || "none",
-        );
-        decisions.push(buildDecision({
-          id: "boundary-punctuation",
-          values: punctuationValues,
-          selectedValue: boundaryPunctuation,
-          reason: "writing punctuation between the captured clauses",
-        }));
-        if (!punctuationValues.includes(boundaryPunctuation)) {
-          diagnostics.push("recognized-boundary-punctuation-required");
-        }
-        operationSelections.boundaryPunctuation = boundaryPunctuation;
-      }
-      if (relation === "parallel-structure"
-        && operationSelections.appositiveType === "summarizing"
-        && !diagnostics.length && decisions.every(decision => decision.resolved)) {
-        const preview = targetObject.evaluateClassicalNahuatlClauseConjunction?.({
-          operationKind: "parallel-structure",
-          conjuncts: ["principal", "adjoined", "dependent"].filter(role => getValidatedCapture(role))
-            .map((role, index) => getCapturedCompositionNode(role, `conjunct-${index + 1}`)),
-          options: operationSelections,
-        });
-        if (preview?.authorizationStatus !== "authorized")
-          diagnostics.push(preview?.blockReason || "parallel-structure-exact-parent-contact-required");
+      if (relation === "conjunction") {
+        const punctuationValues=["none","comma","semicolon"];
+        const boundaryPunctuation=normalizeToken(selectionObject.boundaryPunctuation || "none");
+        decisions.push(buildDecision({id:"boundary-punctuation",values:punctuationValues,selectedValue:boundaryPunctuation,reason:"Writing punctuation between the captured clauses"}));
+        if(!punctuationValues.includes(boundaryPunctuation)) diagnostics.push("recognized-boundary-punctuation-required");
+        operationSelections.boundaryPunctuation=boundaryPunctuation;
       }
       return buildNewRelationContract({
         selectionObject,
@@ -5055,7 +4903,7 @@ export function createClassicalClauseRelationControllerGlobals(
         if (failure) contract = Object.freeze({...contract, authorizationStatus: "blocked",
           blockReason: failure, diagnostics: freezeArray(unique([...contract.diagnostics, failure]))});
       }
-      if (["conjunction","correlative-conjunction"].includes(contract.relation) && contract.authorizationStatus === "authorized") {
+      if (["conjunction","correlative-conjunction","lexical-conjunction","parallel-structure"].includes(contract.relation) && contract.authorizationStatus === "authorized") {
         const key = `${contract.relation}:${captureRevision}:${JSON.stringify(contract.operationSelections)}`;
         let failure = "classical-conjunction-preflight-capability-required";
         try {
@@ -5098,15 +4946,15 @@ export function createClassicalClauseRelationControllerGlobals(
           contract = Object.freeze({...contract, currentChoiceFrame});
         }
       }
-      if(["conjunction","correlative-conjunction"].includes(contract.relation)) {
+      if(["conjunction","correlative-conjunction","lexical-conjunction","parallel-structure"].includes(contract.relation)) {
         const correlative=contract.relation === "correlative-conjunction";
         const currentChoiceFrame=buildCurrentChoiceFrame({familyId:contract.relation,routeId:contract.relation,
           captureRevision,stagedRevision:choiceRevision,decisions:contract.decisions.filter(d=>d.id !== "relation"),
           inputs:CAPTURE_ROLES.map(role=>({role,presence:getValidatedCapture(role)?"captured":"missing",
-            applicability:(correlative && ["supplement","marker"].includes(role)) || (contract.operationSelections.leftContextAbsent && ["adjoined","dependent"].includes(role))?"inactive":"relevant",
+            applicability:(contract.relation !== "conjunction" && ["supplement","marker"].includes(role)) || (contract.operationSelections.leftContextAbsent && ["adjoined","dependent"].includes(role))?"inactive":"relevant",
             required:role === "principal" || role === "adjoined" && !contract.operationSelections.leftContextAbsent})),
           facts:{...contract.derived,...(correlative ? Object.fromEntries((contract.derived.ownerFacts || []).map(fact=>[fact.key,fact.value])) : {})},outcome:{readyToMake:contract.authorizationStatus === "authorized",reasons:contract.diagnostics},
-          provenance:{owner:"conjunction",sourceReferences:[correlative?"Andrews §52.5":"Andrews §§52.1–52.4"]}});
+          provenance:{owner:"conjunction",sourceReferences:[({"conjunction":"Andrews §§52.1–52.4","correlative-conjunction":"Andrews §52.5","lexical-conjunction":"Andrews §52.6","parallel-structure":"Andrews §52.7"})[contract.relation]]}});
         issuedChoiceFrames.set(currentChoiceFrame,{captureRevision,choiceRevision,signature:choiceSignature(selections)});
         contract=Object.freeze({...contract,currentChoiceFrame});
       }
@@ -6343,7 +6191,7 @@ export function createClassicalClauseRelationControllerGlobals(
       isCurrentChoiceFrame,
       preview(selections = {}) {
         const previewChoiceRevision = choiceRevision;
-        const migrated = ["conjunction","correlative-conjunction"].includes(selections.relation) || selections.relation === "comparison" && isCurrentComparisonRoute(selections.comparisonRoute);
+        const migrated = ["conjunction","correlative-conjunction","lexical-conjunction","parallel-structure"].includes(selections.relation) || selections.relation === "comparison" && isCurrentComparisonRoute(selections.comparisonRoute);
         const parents = CAPTURE_ROLES.map(role => [role, getValidatedCapture(role)?.canonicalResult || null]);
         const leases = [], result = compose(selections, true, leases);
         if (result?.authorizationStatus !== "authorized" || !leases.length) return null;
