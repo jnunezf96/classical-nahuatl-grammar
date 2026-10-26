@@ -1,5 +1,9 @@
 # Version History
 
+## v1.2.54 — Comparison Choice Synchronization
+
+- Refreshes bound comparison controls after each choice and when leaving the migrated family, so consecutive selections use the current state.
+
 ## v1.2.53 — Current Comparison Choices
 
 - Moves three comparison routes to shared owner domains, current-choice frames and application-owned transitions; preserves exact parents and explicit Make.

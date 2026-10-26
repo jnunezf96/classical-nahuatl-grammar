@@ -88,3 +88,18 @@ test('leaving the pilot rejects its old callbacks instead of delegating them to 
  }
  assert.equal(c.transitionComparisonChoice({selections:out.selections,intent:{type:'set-choice',key:'adjunctorIn',value:'no'}}).handled,false);
 });
+test('bound capability controls receive a fresh frame after each consecutive choice',()=>{
+ const code=readFileSync(new URL('../ui/rendering/rendering.mjs',import.meta.url),'utf8');
+ const {c,s}=setup('equality-iuhqui');let displayed=c.buildDecisionContract(s).currentChoiceFrame;
+ const ctx={ClassicalClauseRelationSelections:s,ActiveClassicalClauseRelationResult:null,ClassicalClauseRelationStatusMessage:'',ActiveClassicalRuleLogicSurfaceFrame:{},ActiveClassicalGrammarResultBinding:{family:'clause-relation',ownerBindingFrame:{}},
+  targetObject:{isClassicalClauseRelationBindingFrame:()=>true},getClassicalClauseRelationControllerForRendering:()=>c,
+  syncClassicalClauseRelationCapabilityChoices(contract){displayed=contract.currentChoiceFrame;},syncClassicalDiscourseContextControls(){},normalizeClassicalBasalUnitForRendering:x=>x,
+  getActiveClassicalCapabilityApplicationResult:()=>({}),renderClassicalCapabilityApplicationResultForReview:()=>true,syncClassicalCapabilityApplyOperationState(){},formatClassicalClauseRelationValue:x=>x};
+ vm.createContext(ctx);for(const name of ['applyClassicalComparisonChoiceIntent','refreshClassicalClauseRelationWorkflow']){const start=code.indexOf(`    function ${name}(`);vm.runInContext(code.slice(start,code.indexOf('\n    function ',start+20)),ctx);}
+ const before=displayed;ctx.applyClassicalComparisonChoiceIntent(c,{type:'set-choice',key:'icRelation',value:'no'},displayed);
+ assert.notEqual(displayed,before);assert.equal(ctx.ClassicalClauseRelationSelections.icRelation,'no');
+ ctx.applyClassicalComparisonChoiceIntent(c,{type:'set-choice',key:'icRelation',value:'yes'},displayed);
+ assert.equal(ctx.ClassicalClauseRelationSelections.icRelation,'yes');assert(c.isCurrentChoiceFrame(displayed,ctx.ClassicalClauseRelationSelections));
+ ctx.applyClassicalComparisonChoiceIntent(c,{type:'set-choice',key:'comparisonRoute',value:'size-ixquich'},displayed);
+ assert.equal(displayed,undefined);assert.equal(ctx.ActiveClassicalGrammarResultBinding.clauseRelationDecisionContract.derived.comparisonRoute,'size-ixquich');
+});
