@@ -376,10 +376,9 @@ export function createStructureDesign(doc) {
     }
     const history=doc.getElementById('classical-grammar-workspace-history');const saved=history?comparisons.get(history):null;
     const legacyStatus=doc.getElementById('classical-grammar-workspace-history-status');
-    legacyStatus?.classList.toggle('composition-history-comparison-projected',Boolean(saved?.legacyStatus && legacyStatus.textContent===saved.legacyStatus));
     const comparison=saved && saved.leftNodeId===doc.getElementById('classical-grammar-workspace-history-node')?.value && saved.rightNodeId===doc.getElementById('classical-grammar-workspace-history-compare-node')?.value ? saved : null;
     let difference=doc.getElementById('composition-structural-comparison');
-    if(!difference && comparison && history) {difference=element('div','composition-structural-comparison');difference.id='composition-structural-comparison';difference.setAttribute('role','group');difference.setAttribute('aria-label','Structural comparison');history.querySelector('.path-compare')?.append(difference);}
+    if(!difference && comparison && history) {difference=element('div','composition-structural-comparison');difference.id='composition-structural-comparison';difference.setAttribute('role','group');difference.setAttribute('aria-label','Structural comparison');(history.querySelector('.path-compare')||history.querySelector('.classical-grammar-workspace-history__body')||history).append(difference);}
     if(difference) {
       difference.hidden=!comparison;
       const signature=JSON.stringify(comparison && {left:comparison.left.surface,right:comparison.right.surface,rows:comparison.rows});
@@ -390,6 +389,11 @@ export function createStructureDesign(doc) {
         }
       }
     }
+    if(legacyStatus && saved?.legacyStatus && legacyStatus.textContent===saved.legacyStatus && !comparison) {
+      legacyStatus.textContent=doc.getElementById('classical-grammar-workspace-history-node')?.value && doc.getElementById('classical-grammar-workspace-history-compare-node')?.value
+        ? 'Choose Compare to compare the selected builds.' : 'Select two builds, then Compare.';
+    }
+    legacyStatus?.classList.toggle('composition-history-comparison-projected',Boolean(comparison && difference && history?.contains(difference) && !difference.hidden && saved?.legacyStatus && legacyStatus.textContent===saved.legacyStatus));
     return state;
   };
 }

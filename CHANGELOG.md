@@ -1,3 +1,7 @@
+## v1.2.86 — Visible Saved Comparisons
+
+Mount saved comparison feedback in native History and withdraw stale pair output.
+
 ## v1.2.85 — Explicit Build Undo
 
 Clarify that Undo build restores a previous accepted build rather than undoing pending choices.
