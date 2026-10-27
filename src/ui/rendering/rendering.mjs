@@ -1,3 +1,4 @@
+import {inactiveAffectiveReloadControl,prepareNativeReloadSourceContext,reconcileAcceptedQuotedSourceBaseline} from '../composition/native_reload_source.mjs?nativeReload=20261027-4';
 import {normalizeSourceEditorSignature} from '../composition/source_editor_signature.mjs';
 import {inputLabel,captureRoleLabel,clauseReadinessGuidance,contractReferences,normalizeAndrewsReference} from '../composition/choice_guidance.mjs?choiceGuidance=20261027-2';
 import {constructionBackground, sourceAnalysisBackground} from '../composition/andrews_choice_references.mjs';
@@ -46,10 +47,10 @@ import { readClassicalSourceObjectRows, getClassicalSourceObjectControls,
   restoreClassicalSourceObjectRows, syncClassicalSourceObjectRows }
   from "../composer/source_objects.mjs?v=20261007-panel-source-objects-1&interfaceRelease=1.2.36";
 import { exportClassicalResultReloadRecipe, replayClassicalResultReloadRecipe, reissueClassicalAcceptedBuildBinding, matchesAcceptedVncContinuationBuild, matchesAcceptedNominalCompoundBuild, matchesAcceptedDeverbalBuild, supportsFutureObjectResultReload, supportsNominalCompoundResultReload }
-  from "../../application/classical/result_reload.mjs?deverbalReload=20261024-8&stemReload=20261024-2&innerParticle=20261024-1&remainingReload=20261024-1&conjunctReload=20261023-1&v=20261007-reader-40-2-175&acceptedBuild=20261023-1&nominalReload=20261024-4&complexReload=20261027-1&placeReload=20261027-1";
+  from "../../application/classical/result_reload.mjs?deverbalReload=20261024-8&stemReload=20261024-2&innerParticle=20261024-1&remainingReload=20261024-1&conjunctReload=20261023-1&v=20261007-reader-40-2-175&acceptedBuild=20261023-1&nominalReload=20261024-4&complexReload=20261027-1&placeReload=20261027-2";
 import { exportClassicalGrammarWorkspaceHistoryReloadState,
   restoreClassicalGrammarWorkspaceHistoryReloadState }
-  from "../../application/classical/grammar_workspace_history.mjs?placeReload=20261027-1&innerParticle=20261024-1&remainingReload=20261024-1&conjunctReload=20261023-1&v=20261006-history-reload-1&nominalReload=20261024-4&complexReload=20261027-1";
+  from "../../application/classical/grammar_workspace_history.mjs?placeReload=20261027-2&innerParticle=20261024-1&remainingReload=20261024-1&conjunctReload=20261023-1&v=20261006-history-reload-1&nominalReload=20261024-4&complexReload=20261027-1";
 // Canonical modern ESM module.
 
 import {
@@ -52796,7 +52797,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         committedMirror: String(targetObject.document?.getElementById?.("verb")?.value || ""),
         controls: snapshotClassicalVncReloadControls(getClassicalVncReloadSourceEditorControls()) };
     }
-    function restoreClassicalVncReloadSourceEditorState(saved) {
+    function restoreClassicalVncReloadSourceEditorState(saved, inactiveControl = null) {
       const note = reason => {
         const root = targetObject.document?.getElementById?.("classical-source-parts");
         if (root?.dataset) root.dataset.classicalSourceEditorReloadStatus = reason;
@@ -52815,6 +52816,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const allowed = new Map(getClassicalVncReloadSourceEditorControls({includeInactiveRelational: true}).map(c => [c.id, c]));
       const seen = new Set();
       for (const choice of saved.controls) {
+        if (choice?.id === inactiveControl?.id) {
+          if (seen.has(choice.id) || typeof choice.value !== "string" || choice.value.length > 4096) return false;
+          seen.add(choice.id); continue;
+        }
         const control = allowed.get(choice?.id);
         if (!control || seen.has(choice.id) || typeof choice.value !== "string"
           || choice.value.length > 4096
@@ -52830,6 +52835,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const before = snapshotClassicalVncReloadControls([...allowed.values()]);
       const beforeMode = targetObject.getClassicalSourcePartControlState?.().mode;
       const apply = choices => choices.forEach(choice => {
+        if (choice.id === inactiveControl?.id) return;
         const control = allowed.get(choice.id);
         control.value = choice.value;
         if (typeof choice.checked === "boolean") control.checked = choice.checked;
@@ -52837,9 +52843,17 @@ export function createUiRenderingApi(targetObject = globalThis) {
       targetObject.setClassicalSourcePartsMode(saved.mode, { clearValues: false });
       apply(saved.controls);
       syncClassicalSourceObjectRows(targetObject.document);
-      const normalize = signature => normalizeSourceEditorSignature(targetObject, signature,
-        ActiveClassicalGrammarResultSourceCapture,
-        targetObject.document?.getElementById?.("classical-capability-navigator-operation")?.value || "");
+      const normalize = signature => {
+        if (inactiveControl) {
+          try { const fields=JSON.parse(signature);
+            fields[inactiveControl.field]=allowed.get(inactiveControl.id)?.value || "";
+            signature=JSON.stringify(fields);
+          } catch { return signature; }
+        }
+        return normalizeSourceEditorSignature(targetObject, signature,
+          ActiveClassicalGrammarResultSourceCapture,
+          targetObject.document?.getElementById?.("classical-capability-navigator-operation")?.value || "");
+      };
       const restored = normalize(targetObject.getClassicalSourcePartsEvaluationSignature());
       const draftSignature = normalize(saved.draftSignature);
       const committedSignature = normalize(saved.committedSignature);
@@ -53211,12 +53225,17 @@ export function createUiRenderingApi(targetObject = globalThis) {
       // replayed independently; no saved draft is executed by restoration.
       clearClassicalGrammarTypedSourceOperationBinding("native-reload-draft");
       ActiveClassicalGrammarResultBinding = null;
-      if (!restoreClassicalVncReloadSourceEditorState(saved.sourceEditorState)) return false;
+      if (!prepareNativeReloadSourceContext(targetObject.document,construction,saved.controls)) return false;
+      const inactiveSourceControl=inactiveAffectiveReloadControl(targetObject,result,saved.sourceEditorState);
+      if (inactiveSourceControl) targetObject.document.getElementById(inactiveSourceControl.id).value = "";
+      const editorState=reconcileAcceptedQuotedSourceBaseline(targetObject,result,saved.sourceEditorState);
+      if (!restoreClassicalVncReloadSourceEditorState(editorState,inactiveSourceControl)) return false;
       const allowed = new Map([...getClassicalMixedReloadControls(), ...getClassicalVncBasalReloadControls()].map(item => [item.id,item]));
       for (let pass = 0; pass < 2; pass += 1) {
         control.value = construction;
         syncClassicalNominalConstructionControlVisibility(construction);
         for (const choice of Array.isArray(saved.controls) ? saved.controls : []) {
+          if (choice.id === inactiveSourceControl?.id) continue;
           const item = allowed.get(choice.id);
           if (!item) continue;
           if (typeof choice.value === "string" && choice.value.length <= 4096
@@ -53629,7 +53648,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
                 sourceEditorState: snapshotClassicalVncReloadSourceEditorState(),
                 selections: ClassicalClauseRelationSelections,
                 operationId: targetObject.document.getElementById("classical-capability-navigator-operation")?.value || "",
-                controls: snapshotClassicalVncReloadControls(edit || supportsFutureObjectResultReload(targetObject,current) || supportsNominalCompoundResultReload(targetObject,current)
+                controls: snapshotClassicalVncReloadControls(edit || targetObject.getClassicalNahuatlDenominalReloadInputs?.(current) || supportsFutureObjectResultReload(targetObject,current) || supportsNominalCompoundResultReload(targetObject,current)
                   ? [...new Set([...getClassicalMixedReloadControls(), ...getClassicalVncBasalReloadControls()])]
                   : getClassicalMixedReloadControls()) }));
             const reloadStatus = targetObject.document.getElementById("classical-grammar-workspace-history");
@@ -53691,7 +53710,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
         if (restored) {
           // Recipe and history restore accepted authority first. Editor replay
           // restores only the unaccepted draft and its committed coordinates.
-          if (!saved.edit) restoreClassicalVncReloadSourceEditorState(saved.sourceEditorState);
+          if (!saved.edit) restoreClassicalVncReloadSourceEditorState(
+            reconcileAcceptedQuotedSourceBaseline(targetObject,ClassicalConstructionSession.position.accepted.result,saved.sourceEditorState),
+            inactiveAffectiveReloadControl(targetObject,ClassicalConstructionSession.position.accepted.result,saved.sourceEditorState));
           syncClassicalCapabilityApplyOperationState();
         }
         return restored;

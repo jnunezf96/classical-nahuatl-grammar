@@ -25,6 +25,11 @@ function transform(r,value,family,edge,replay=false){
   if(corrected&&['canonicalNominalRankCorrectionFrame','canonicalNncSourceFrame','verbalStemPreparationFrame'].includes(key))continue;
   if(v===undefined)continue;
   if(edges.has(key)){out[key]=edge(v);continue;}
+  if(key==='classChoices'){
+   const path=Array.isArray(value.operationPath)?value.operationPath:[];
+   if(!exact(v,path)||Object.keys(v).length>32||!Object.values(v).every(x=>['','A','B','C','D'].includes(x)))throw Error('invalid denominal class map');
+   out[key]={...v};continue;
+  }
   if(key==='verbalStemPreparationFrame'){
    if(replay){if(!exact(v,['source','operationId','stemShape']))throw Error('bad preparation');out[key]=r.issueClassicalNahuatlDenominalVerbalStemPreparation(edge(v.source),{operationId:v.operationId,stemShape:v.stemShape});}
    else {if(!r.isClassicalNahuatlDenominalVerbalStemPreparation(v))throw Error('unissued preparation');out[key]={source:edge(v.canonicalNncSourceFrame),operationId:v.operationId,stemShape:v.stemShape};}continue;

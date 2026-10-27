@@ -1,3 +1,7 @@
+## 1.2.82 — Native Construction Restoration
+
+Prepared denominal Results replay their actual class-choice maps and preserve pending verbal participants. Affective drafts ignore only owner-inapplicable stale source coordinates. Opaque quoted names restore their validated native context and matching accepted source baseline. Canonical authority and explicit Make boundaries remain unchanged.
+
 ## 1.2.81 — Name and Place Restoration
 
 Exact-Source personal names retain valid pending choices after reload. Native place constructions now admit their actual output-kind input to canonical replay, preserving accepted and pending formations separately.
