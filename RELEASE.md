@@ -1,12 +1,13 @@
-# Grammar OS v1.2.87 release
+# Grammar OS v1.2.88 release
 
-Release name: **Copy Accepted Form**
+Release name: **Coordinated Comparison Pilot**
 
-Browser build: **20261028-copy-form-106**
+Browser build: **20261028-operation-pilot-107**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Copy form copies the accepted written form without its analysis formula.
-- Pending previews remain separate; analysis remains available in the existing interface.
+- Equality comparisons with iuhqui coordinate current choices through one owner-backed construction session.
+- Preview and explicit Make consume the same current request; accepted work remains unchanged while choices or Source edits are pending.
+- This is one verified operation pilot; other operations retain their established coordination.
