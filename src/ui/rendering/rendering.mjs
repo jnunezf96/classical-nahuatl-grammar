@@ -1,3 +1,5 @@
+import {inputLabel,clauseReadinessGuidance,contractReferences,normalizeAndrewsReference} from '../composition/choice_guidance.mjs';
+import {constructionBackground, sourceAnalysisBackground} from '../composition/andrews_choice_references.mjs';
 import {createCardinalChoiceCoordinator} from '../../application/classical/cardinal_choice_coordination.mjs';
 import {createCompoundChoiceMemory} from '../../application/classical/compound_choice_coordination.mjs';
 import {getCompoundNonactiveScopeDomain} from '../../core/classical/compound_choice_contract.mjs';
@@ -16,27 +18,27 @@ import {syncFutureObjectChoices} from '../composition/future_object_choices.mjs?
 import {getDoubleNucleusEditChildren} from '../../application/classical/double_nucleus_edit.mjs?nucleusEdit=20261024-9';
 import {syncStemLayerChoices} from '../composition/stem_layer_choices.mjs?stemNominal=20261024-2';
 import {syncNounstemOperationChoices,groupDeverbalFamilyOptions} from '../composition/nounstem_operation_choices.mjs?v=20261024-1&nominalReload=20261024-4';
-import {snapshotResultEditReload,restoreResultEditReload} from '../composition/result_edit_reload.mjs?nucleusEdit=20261024-9&innerSource=20261024-1&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-1&interfaceRelease=1.2.36';
+import {snapshotResultEditReload,restoreResultEditReload} from '../composition/result_edit_reload.mjs?nucleusEdit=20261024-9&innerSource=20261024-1&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-1&interfaceRelease=1.2.36&choiceGuidance=20261027-1';
 import {getVncChoiceEditContext, getVncVoiceEditSubject, projectVncChoiceEditControls} from '../composition/vnc_choice_edit.mjs?v=20261023-3';
 import {runCompositionAction} from '../composition/action_feedback.mjs?v=20261023-1';
 import {getAuthorityControl, projectAuthoredChoice} from '../composition/authority_control.mjs?v=20261023-2';
 import {clearOwnerChoicePortals,findOwnerChoice,ownerChoiceRoots} from '../composition/owner_choice_roots.mjs?v=20261023-core-1';
 import {appendValenceAnalysis} from '../composition/valence_analysis.mjs?v=20261023-slots-16';
-import {previewConstructionPacket} from '../composition/construction_preview.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1&interfaceRelease=1.2.36';
+import {previewConstructionPacket} from '../composition/construction_preview.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1&interfaceRelease=1.2.36&choiceGuidance=20261027-1';
 import {isIntermediateBuildTaskReset} from '../composition/build_task_menu.mjs?deverbalReload=20261024-8&operationFirst=20261023-2&clickFeedback=20261023-1&v=20261021-ending-reference-2&writingSource=20261022-2&fixedChoices=20261022-1&interfaceRelease=1.2.36';
 import { normalizeClassicalNahuatlIntroductoryModifier }
   from "../../core/classical/verbstem_classes.mjs?v=20261008-reader-40-9-190&modifier=canonical-20261009-1&quantityClass=20261022-1&andrewsRelease=20261024-1";
 import {createClassicalWorkspaceProvenanceProjector}
   from '../composer/result_provenance.mjs?v=20261012-position-provenance-7';
 import {resolvePathTargets, setPathHistoryPresentation} from '../composition/path_presentation.mjs?v=20261011-path-targets-7&routeShapes=20261021-1&writtenPreview=20261022-1&writingSource=20261022-1';
-import {setStructureDesignContext, setStructureComparison, projectCanonicalStructure, projectClauseStructure, comparisonCapturePresentation, projectOperationShape, projectCapturedOperationShape, compareCanonicalStructures} from '../composition/structure_design.mjs?choiceArchitecture=20261026-6&icDimension=20261026-1&reasonPresentation=20261026-1&nucleusEdit=20261024-9&clauseHarmony=20261023-5&v=20261011-structure-15&routeShapes=20261021-1&clauseCoordinate=20261021-1&resetEligibility=20261022-1&writingSource=20261022-1&makePreview=20261022-1&fixedChoices=20261022-1&interfaceRelease=1.2.36';
+import {setStructureDesignContext, setStructureComparison, projectCanonicalStructure, projectClauseStructure, comparisonCapturePresentation, projectOperationShape, projectCapturedOperationShape, compareCanonicalStructures} from '../composition/structure_design.mjs?choiceArchitecture=20261026-6&icDimension=20261026-1&reasonPresentation=20261026-1&nucleusEdit=20261024-9&clauseHarmony=20261023-5&v=20261011-structure-15&routeShapes=20261021-1&clauseCoordinate=20261021-1&resetEligibility=20261022-1&writingSource=20261022-1&makePreview=20261022-1&fixedChoices=20261022-1&interfaceRelease=1.2.36&choiceGuidance=20261027-1';
 import {setSourceCandidatePresentation, projectSavedSourceCandidate, setRouteChoicePresentation, projectOfferedOperationShapes} from '../composition/candidate_design.mjs?v=20261021-route-shapes-1';
 import {notifyExplicitMakeResult,focusNativeChoice} from '../composition/flow_design.mjs?v=20261022-reset-eligibility-1&writingSource=20261022-1&makePreview=20261022-1&fixedChoices=20261022-1';
 import {getBuildOperationGroup,getBuildOperationOrder,inventoryOptionReference,formatBuildOperationLabel} from '../composition/build_navigation_model.mjs?v=20261021-ending-reference-2&nominalReload=20261024-4&interfaceRelease=1.2.36';
 import {createConstructionSession} from '../composition/construction_session.mjs?stemReload=20261024-2&v=20261012-position-12&acceptedBuild=20261023-1';
 import {projectConstructionValue} from '../composition/construction_position.mjs?stemReload=20261024-2&v=20261012-position-12&acceptedBuild=20261023-1';
-import {executeConstructionPacket, freezeConstructionData, getConstructionPacketOrigin, captureConstructionParents, matchesConstructionWitness, orderConstructionSlots, getConstructionFixedChoices, getConstructionLayerReadiness, getConstructionParticleHostInput} from '../composition/construction_packet.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1&interfaceRelease=1.2.36';
-import {resolveResultEditTarget} from '../composition/result_editing.mjs?choiceArchitecture=20261026-6&nucleusEdit=20261024-9&innerParticle=20261024-1&v=20261023-conjunction-1&interfaceRelease=1.2.36';
+import {executeConstructionPacket, freezeConstructionData, getConstructionPacketOrigin, captureConstructionParents, matchesConstructionWitness, orderConstructionSlots, getConstructionFixedChoices, getConstructionLayerReadiness, getConstructionParticleHostInput} from '../composition/construction_packet.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1&interfaceRelease=1.2.36&choiceGuidance=20261027-1';
+import {resolveResultEditTarget} from '../composition/result_editing.mjs?choiceArchitecture=20261026-6&nucleusEdit=20261024-9&innerParticle=20261024-1&v=20261023-conjunction-1&interfaceRelease=1.2.36&choiceGuidance=20261027-1';
 import {canRebuildResultEdit,getResultEditReorder} from '../composition/result_edit_rebuild.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1&interfaceRelease=1.2.36';
 import {getNativeGrammarControls, getWritingSourcePresentation, setChoiceDesignContext, setAppliedRoutePresentation} from '../composition/choice_design.mjs?clickFeedback=20261023-1&coreStem=20261023-1&v=20261022-reset-eligibility-1&writingSource=20261022-1&fixedChoices=20261022-1';
 import { readClassicalSourceObjectRows, getClassicalSourceObjectControls,
@@ -37916,12 +37918,12 @@ export function createUiRenderingApi(targetObject = globalThis) {
         const adjunction = getClassicalClauseRelationControllerForRendering()?.preserveAdjunctionCaptureChoices?.(ClassicalClauseRelationSelections, "adjoined") === true;
         if (contract && (complement || adjunction || contract.currentChoiceFrame || binding.clauseRelationDecisionContract?.currentChoiceFrame)) {
           syncClassicalClauseRelationCapabilityChoices(contract, contract.missingCaptureRoles || []);
-          if (complement || adjunction) {
-            ClassicalClauseRelationStatusMessage = getClassicalComplementReadinessMessage(contract);
+          if (complement || adjunction || contract.currentChoiceFrame) {
+            ClassicalClauseRelationStatusMessage = clauseReadinessGuidance(contract);
             const status = targetObject.document?.getElementById("classical-capability-navigator-status");
             if (status) status.textContent = ClassicalClauseRelationStatusMessage;
           }
-          if (complement || adjunction || ["conjunction", "correlative-conjunction", "lexical-conjunction", "parallel-structure"].includes(contract.relation)) syncClassicalRequiredResultChooser();
+          if (complement || adjunction || contract.currentChoiceFrame || ["conjunction", "correlative-conjunction", "lexical-conjunction", "parallel-structure"].includes(contract.relation)) syncClassicalRequiredResultChooser();
         }
       }
       const contextSurface = ActiveClassicalRuleLogicSurfaceFrame || {};
@@ -38420,6 +38422,13 @@ export function createUiRenderingApi(targetObject = globalThis) {
         setClassicalClauseRelationDecision(decision.id, select.value, currentChoiceFrame);
       });
       field.append(label, select);
+      const reference = normalizeAndrewsReference(decision.sourceReference);
+      if (reference) {
+        const citation = targetObject.document.createElement("small");
+        citation.dataset.classicalChoiceReference = decision.id;
+        citation.textContent = `This choice: ${reference}.`;
+        field.appendChild(citation);
+      }
       if (decision.id === "additional-possessor-contact" && decision.reason) {
         const guidance = targetObject.document.createElement("span");
         guidance.textContent = decision.reason;
@@ -43768,7 +43777,68 @@ export function createUiRenderingApi(targetObject = globalThis) {
 
     // Native availability is only the first gate. Project the final staged
     // position after layer validation and applied-Result suppression as well.
+    function syncClassicalChoiceGuidance() {
+      const doc = targetObject.document;
+      if (!doc?.createElement) return;
+      const setText = (node, text) => { if (node && node.textContent !== text) node.textContent = text; };
+      const setHidden = (node, hidden) => { if (node && node.hidden !== hidden) node.hidden = hidden; };
+      const position = ClassicalConstructionSession.position;
+      const operation = position.construction.route.operation || "";
+      const binding = ActiveClassicalGrammarResultBinding;
+      const controller = binding?.family === "clause-relation"
+        && binding.operationId === operation ? getClassicalClauseRelationControllerForRendering() : null;
+      const contract = controller?.buildDecisionContract({...ClassicalClauseRelationSelections});
+      if (contract && !position.construction.sourcePending) {
+        const roleSelect = doc.getElementById("classical-capability-navigator-binding");
+        if (contract.currentChoiceFrame && roleSelect) {
+          let changed = false;
+          for (const option of Array.from(roleSelect.options || [])) {
+            const role = binding.ownerBindingFrame?.bindingChoices?.find(choice => choice.id === option.value);
+            if (role?.relation === contract.relation) {
+              const label = inputLabel(contract, role.captureRole);
+              if (option.textContent !== label) { option.textContent = label; changed = true; }
+            }
+          }
+          if (changed) compactClassicalChoiceMenu(roleSelect);
+        }
+        const guidance = position.applied ? "Result made. Change a choice to prepare another Result." : clauseReadinessGuidance(contract);
+        ClassicalClauseRelationStatusMessage = guidance;
+        for (const id of ["classical-capability-navigator-status", "classical-capability-operation-plan-status", "classical-clause-relation-status"]) {
+          setText(doc.getElementById(id), guidance);
+        }
+      }
+      const value = id => doc.getElementById(id)?.value || "";
+      const references = position.construction.sourcePending ? [] : contractReferences(contract);
+      const background = position.construction.sourcePending ? [] : references.length ? references : constructionBackground({operation,
+        construction: operation === "grammar:nominal-construction" ? value("classical-construction-operation") : "",
+        lateOperation: value("classical-rule-logic-late-operation"), derivation: position.choices.owner?.requestedDerivation || targetObject.getActiveDerivationType?.() || "direct",
+        family: value("classical-deverbal-nnc-family"), relation: contract?.relation || ""});
+      const sourceReferences = sourceAnalysisBackground(targetObject.getClassicalBasalUnitFromRuntime?.());
+      const sourceControls = doc.getElementById("classical-basal-unit-controls");
+      let sourceCitation = doc.getElementById("classical-source-analysis-reference");
+      if (!sourceCitation && sourceControls?.parentElement) {
+        sourceCitation = doc.createElement("small"); sourceCitation.id = "classical-source-analysis-reference";
+        sourceCitation.dataset.classicalDisplayAuthority = "false";
+        sourceControls.insertAdjacentElement("afterend", sourceCitation);
+      }
+      if (sourceCitation) {
+        setText(sourceCitation, sourceReferences.length ? `Source analysis background: ${sourceReferences.join("; ")}.` : "");
+        setHidden(sourceCitation, !sourceReferences.length || ClassicalWritingSourceMode);
+      }
+      const task = doc.getElementById("classical-build-task");
+      let citation = doc.getElementById("classical-current-construction-reference");
+      if (!citation && task?.parentElement) {
+        citation = doc.createElement("small"); citation.id = "classical-current-construction-reference";
+        citation.dataset.classicalDisplayAuthority = "false";
+        task.parentElement.appendChild(citation);
+      }
+      if (citation) {
+        setText(citation, background.length ? `Construction background: ${background.join("; ")}.` : "");
+        setHidden(citation, !background.length);
+      }
+    }
     function syncClassicalConstructionPositionApplyState(proposal = null) {
+      syncClassicalChoiceGuidance();
       const button = targetObject.document?.getElementById?.("classical-capability-apply-operation");
       if (button) button.disabled = !ClassicalConstructionSession.position.ready;
       if (button && !ClassicalConstructionSession.position.ready) {
@@ -49422,6 +49492,12 @@ export function createUiRenderingApi(targetObject = globalThis) {
           .replace(/[-_:]+/gu, " ")
           .replace(/\s+/gu, " ")
           .trim();
+        const clauseRole = binding?.family === "clause-relation"
+          ? binding.ownerBindingFrame?.bindingChoices?.find(choice => choice.id === bindingId) : null;
+        if (clauseRole?.relation === binding.clauseRelationDecisionContract?.relation
+          && binding.clauseRelationDecisionContract?.currentChoiceFrame) {
+          option.textContent = inputLabel(binding.clauseRelationDecisionContract, clauseRole.captureRole);
+        }
         select.appendChild(option);
       });
       field.hidden = bindingIds.length < 2;
@@ -54477,7 +54553,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
         if (controller) return !controller.getCapturedCanonicalResult(role);
         const exact = binding.additionalResults?.[role];
         return !exact || getClassicalOwnerIssuedResultProjection(exact)?.canonicalResult !== exact;
-      }).map(role => ({role, label: formatClassicalRequiredResultRoleLabel(role), pickerRole: role === binding.requiredResultRoles[0]}));
+      }).map(role => ({role, label: controller
+        ? inputLabel(controller.buildDecisionContract(ClassicalClauseRelationSelections), role)
+        : formatClassicalRequiredResultRoleLabel(role), pickerRole: role === binding.requiredResultRoles[0]}));
     }
 
     function getClassicalStructurePresentation() {
@@ -54705,7 +54783,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
         return null;
       }
       field.hidden = false;
-      const roleLabel = formatClassicalRequiredResultRoleLabel(requiredRole);
+      const roleLabel = binding.family === "clause-relation"
+        ? inputLabel(binding.clauseRelationDecisionContract, requiredRole)
+        : formatClassicalRequiredResultRoleLabel(requiredRole);
       const label = targetObject.document.getElementById(
         "classical-capability-required-result-label"
       );
@@ -54821,7 +54901,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
               ?.classicalCapabilityRequiredResultSurface || "saved Result"
           } · Retained Result: ${matrixSurface}`
           : `Choose a saved Result for ${roleLabel}.`
-        : `No saved Result fits ${roleLabel}. Build one, then return to this Result using Your builds → Continue.`;
+        : `No saved Result fits ${roleLabel}. Build one, then return to this Result using History → Use as Source.`;
       if (field.dataset.classicalCapabilityRequiredResultBound !== "true") {
         field.dataset.classicalCapabilityRequiredResultBound = "true";
         select.addEventListener("change", () => {

@@ -1,13 +1,13 @@
-# Grammar OS v1.2.77 release
+# Grammar OS v1.2.78 release
 
-Release name: **Complex Work Restoration**
+Release name: **Clear Choices and Andrews References**
 
-Browser build: **20261027-complex-reload-96**
+Browser build: **20261027-choice-guidance-97**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Comparisons and native constructed Results restore from their original grammatical inputs, retaining exact shared Sources and History relationships.
-- Pending choices remain separate from accepted Results and require explicit Make.
-- Unsupported or oversized History branches are disclosed without discarding supported current work. Invalid saved data never becomes grammatical authority.
+- Current construction prerequisites use meaningful input names and the existing next public action.
+- Source analysis and current constructions show scoped Andrews references in their existing controls.
+- References follow current choices and withdraw when the Source is pending; accepted Results remain unchanged.

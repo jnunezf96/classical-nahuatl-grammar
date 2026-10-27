@@ -1,3 +1,4 @@
+import {inputLabel} from './choice_guidance.mjs';
 import {resolveDecisionFocus,resolveSourceSlotFocus,focusNativeChoice,highlightSourceDecision} from './flow_design.mjs?v=20261022-reset-eligibility-1&writingSource=20261022-1&makePreview=20261022-1&fixedChoices=20261022-1';
 import {getNativeGrammarControls} from './choice_design.mjs?clickFeedback=20261023-1&coreStem=20261023-1&v=20261022-reset-eligibility-1&writingSource=20261022-1&fixedChoices=20261022-1';
 import {createCandidateDesign} from './candidate_design.mjs?v=20261021-route-shapes-1';
@@ -190,6 +191,7 @@ export function projectClauseStructure(r,controller,selections,project) {
   for(const source of sources) {
     source.optionalCapture=optionalRoles.includes(source.role);
     source.retainedOnly=comparisonCapturePresentation(contract,source.role)?.retainedOnly===true;
+    if(contract.derived?.operationFamily==='comparison')source.label=inputLabel(contract,source.role);
     if(source.retainedOnly)source.label='Saved dimension · not included';
   }
   if(conjunction)for(const source of sources) {const index=['principal','adjoined','dependent'].indexOf(source.role);if(index>=0)source.label=conjunctLabel(index,rightOnly);else if(source.role==='supplement')source.label='Shared supplement';}

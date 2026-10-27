@@ -1,3 +1,7 @@
+## 1.2.78 — Clear Choices and Andrews References
+
+Current prerequisites name the required grammatical input and next public action. Existing Source and Build controls display scoped Andrews references that follow current choices, with no added panel or change to grammatical authority.
+
 ## 1.2.77 — Complex Work Restoration
 
 Corrects a release76 startup packaging identifier. Complex-work restoration is unchanged; release76 is superseded before live acceptance.
