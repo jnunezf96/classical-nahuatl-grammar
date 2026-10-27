@@ -1,3 +1,7 @@
+## v1.2.87 — Copy Accepted Form
+
+Copy form now writes only its exact accepted surface, retaining authorization and pending-preview separation.
+
 ## v1.2.86 — Visible Saved Comparisons
 
 Mount saved comparison feedback in native History and withdraw stale pair output.

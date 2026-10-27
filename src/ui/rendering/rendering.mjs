@@ -22130,10 +22130,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
     function copyClassicalRuleSurfaceResult(surfaceFrame = null) {
       const projection =
         getClassicalOwnerIssuedResultProjection(surfaceFrame);
-      const text = [
-        projection?.surface || "",
-        projection?.formula || ""
-      ].filter(Boolean).join("\n");
+      const text = projection?.surface || "";
       if (!text) {
         setClassicalWholeCanvasActionStatus("No authorized result to copy.");
         return;

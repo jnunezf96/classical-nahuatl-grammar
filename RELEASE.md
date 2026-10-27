@@ -1,13 +1,12 @@
-# Grammar OS v1.2.86 release
+# Grammar OS v1.2.87 release
 
-Release name: **Visible Saved Comparisons**
+Release name: **Copy Accepted Form**
 
-Browser build: **20261028-history-compare-105**
+Browser build: **20261028-copy-form-106**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Saved Result comparisons display inside the existing History view even when its native layout is used.
-- Selecting another pair withdraws the previous comparison and prompts Compare again.
-- Accepted Results and history remain unchanged by comparison.
+- Copy form copies the accepted written form without its analysis formula.
+- Pending previews remain separate; analysis remains available in the existing interface.
