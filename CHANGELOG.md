@@ -1,3 +1,7 @@
+## v1.2.84 — Accepted Change Guidance
+
+Returning to accepted work names the missing operation before Make, without changing execution gates.
+
 ## 1.2.83 — Current Source Continuity
 
 New clause operations show their authentic starting Source while a role is pending. Retained prior relationship captures and citations appear only when the current owner binding selects that relationship; draft memory and accepted Results remain intact.

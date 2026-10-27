@@ -44379,7 +44379,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
         )
       );
       button.disabled = !ready;
-      button.textContent = needsRole
+      button.textContent = !operationId
+        ? "Choose an operation"
+        : needsRole
         ? "Choose a Result role"
         : needsResult
           ? "Add the required Result"
