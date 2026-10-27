@@ -1,3 +1,4 @@
+import {normalizeSourceEditorSignature} from '../composition/source_editor_signature.mjs';
 import {runCompositionAction} from '../composition/action_feedback.mjs?v=20261023-1';
 import { installClassicalSourceObjectRows, syncClassicalSourceObjectRows } from "./source_objects.mjs?v=20261007-panel-source-objects-1&interfaceRelease=1.2.36";
 import { getSourceClassRequirement } from "./source_admission.mjs?deverbalReload=20261024-8&v=20261014-source-admission-3";
@@ -10025,7 +10026,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       if (double) return JSON.stringify({unit: "nnc", mode: "two-nucleus-nnc",
         sourceAnalysisChoices: double.selections, caption: double.caption});
       const state = getClassicalSourcePartControlState();
-      return JSON.stringify({
+      const signature = JSON.stringify({
         unit: getClassicalBasalUnitFromRuntime(),
         mode: state.mode,
         sourceSelectionKind: state.sourceSelectionKind,
@@ -10069,6 +10070,9 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         sourceLexemeId: getClassicalVncSourceGuideElements().sourceLexemeChoice?.value || "",
         sourceObjectSelections: ["classical-source-object-count", "classical-source-object-2-kind", "classical-source-object-2-person", "classical-source-object-3-kind", "classical-source-object-3-person", ...(getClassicalBasalUnitFromRuntime() === "vnc" && targetObject.document?.getElementById?.("classical-rule-logic-valence")?.value === "specific-projective" ? ["classical-rule-logic-object"] : [])].map(id => targetObject.document?.getElementById?.(id)?.value || "")
       });
+      return normalizeSourceEditorSignature(targetObject, signature,
+        targetObject.getActiveClassicalGrammarResultSourceCapture?.(),
+        targetObject.document?.getElementById?.("classical-capability-navigator-operation")?.value || "");
     }
     function hasCommittableClassicalSourceParts(state = null) {
       const double = targetObject.getClassicalDoubleNucleusSourceDraft?.();

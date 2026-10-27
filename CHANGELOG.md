@@ -1,3 +1,7 @@
+## 1.2.81 — Name and Place Restoration
+
+Exact-Source personal names retain valid pending choices after reload. Native place constructions now admit their actual output-kind input to canonical replay, preserving accepted and pending formations separately.
+
 ## 1.2.79 — Clear Choices and Andrews References
 
 ## v1.2.80 — Consistent Source Navigation

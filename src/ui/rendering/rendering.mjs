@@ -1,3 +1,4 @@
+import {normalizeSourceEditorSignature} from '../composition/source_editor_signature.mjs';
 import {inputLabel,captureRoleLabel,clauseReadinessGuidance,contractReferences,normalizeAndrewsReference} from '../composition/choice_guidance.mjs?choiceGuidance=20261027-2';
 import {constructionBackground, sourceAnalysisBackground} from '../composition/andrews_choice_references.mjs';
 import {createCardinalChoiceCoordinator} from '../../application/classical/cardinal_choice_coordination.mjs';
@@ -45,10 +46,10 @@ import { readClassicalSourceObjectRows, getClassicalSourceObjectControls,
   restoreClassicalSourceObjectRows, syncClassicalSourceObjectRows }
   from "../composer/source_objects.mjs?v=20261007-panel-source-objects-1&interfaceRelease=1.2.36";
 import { exportClassicalResultReloadRecipe, replayClassicalResultReloadRecipe, reissueClassicalAcceptedBuildBinding, matchesAcceptedVncContinuationBuild, matchesAcceptedNominalCompoundBuild, matchesAcceptedDeverbalBuild, supportsFutureObjectResultReload, supportsNominalCompoundResultReload }
-  from "../../application/classical/result_reload.mjs?deverbalReload=20261024-8&stemReload=20261024-2&innerParticle=20261024-1&remainingReload=20261024-1&conjunctReload=20261023-1&v=20261007-reader-40-2-175&acceptedBuild=20261023-1&nominalReload=20261024-4&complexReload=20261027-1";
+  from "../../application/classical/result_reload.mjs?deverbalReload=20261024-8&stemReload=20261024-2&innerParticle=20261024-1&remainingReload=20261024-1&conjunctReload=20261023-1&v=20261007-reader-40-2-175&acceptedBuild=20261023-1&nominalReload=20261024-4&complexReload=20261027-1&placeReload=20261027-1";
 import { exportClassicalGrammarWorkspaceHistoryReloadState,
   restoreClassicalGrammarWorkspaceHistoryReloadState }
-  from "../../application/classical/grammar_workspace_history.mjs?innerParticle=20261024-1&remainingReload=20261024-1&conjunctReload=20261023-1&v=20261006-history-reload-1&nominalReload=20261024-4&complexReload=20261027-1";
+  from "../../application/classical/grammar_workspace_history.mjs?placeReload=20261027-1&innerParticle=20261024-1&remainingReload=20261024-1&conjunctReload=20261023-1&v=20261006-history-reload-1&nominalReload=20261024-4&complexReload=20261027-1";
 // Canonical modern ESM module.
 
 import {
@@ -52836,10 +52837,15 @@ export function createUiRenderingApi(targetObject = globalThis) {
       targetObject.setClassicalSourcePartsMode(saved.mode, { clearValues: false });
       apply(saved.controls);
       syncClassicalSourceObjectRows(targetObject.document);
-      const restored = targetObject.getClassicalSourcePartsEvaluationSignature();
-      if (restored !== saved.draftSignature) {
+      const normalize = signature => normalizeSourceEditorSignature(targetObject, signature,
+        ActiveClassicalGrammarResultSourceCapture,
+        targetObject.document?.getElementById?.("classical-capability-navigator-operation")?.value || "");
+      const restored = normalize(targetObject.getClassicalSourcePartsEvaluationSignature());
+      const draftSignature = normalize(saved.draftSignature);
+      const committedSignature = normalize(saved.committedSignature);
+      if (restored !== draftSignature) {
         try {
-          const savedFields = JSON.parse(saved.draftSignature);
+          const savedFields = JSON.parse(draftSignature);
           const actualFields = JSON.parse(restored);
           note(`signature-mismatch:${Object.keys(savedFields).filter(key =>
             JSON.stringify(savedFields[key]) !== JSON.stringify(actualFields[key])).join(",")}`);
@@ -52849,7 +52855,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         syncClassicalSourceObjectRows(targetObject.document);
         return false;
       }
-      targetObject.ClassicalSourcePartsCommittedSignature = saved.committedSignature;
+      targetObject.ClassicalSourcePartsCommittedSignature = committedSignature;
       const mirror = targetObject.document?.getElementById?.("verb");
       if (mirror && typeof saved.committedMirror === "string") {
         // Presentation/input coordinates only: this mirror cannot authorize a
@@ -52857,7 +52863,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         mirror.value = saved.committedMirror;
         if (mirror.dataset) mirror.dataset.prevValue = saved.committedMirror;
       }
-      targetObject.setClassicalSourcePartsPendingState?.(restored !== saved.committedSignature);
+      targetObject.setClassicalSourcePartsPendingState?.(restored !== committedSignature);
       targetObject.syncClassicalSourceCommitPresentation?.();
       note("restored");
       return true;
