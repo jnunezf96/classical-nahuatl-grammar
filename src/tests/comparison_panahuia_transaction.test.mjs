@@ -1,0 +1,23 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {createRuntimeInstance} from '../runtime/create_runtime.mjs';
+import {createConstructionSession} from '../ui/composition/construction_session.mjs';
+import {issueComparisonOperationSnapshot,transitionComparisonOperationSnapshot,isCurrentComparisonOperationSnapshot} from '../ui/composition/comparison_operation_transaction.mjs';
+const r=(await createRuntimeInstance({documentObject:{getElementById:()=>null,addEventListener(){}}})).runtimeObject;
+const noun=stem=>{const s=r.buildClassicalNahuatlOrdinaryNncSourceFrame({stem,sourceClass:'zero'});return r.executeClassicalGrammarApplicationRequest({operationId:'nnc:ordinary',args:[s,r.buildClassicalNahuatlOrdinaryNncOperationFrame(s,{subject:'3sg',state:'absolutive'})]}).canonicalResult;};
+const principal=r.executeClassicalGrammarApplicationRequest({operationId:'vnc:application',args:[{sourceStem:'cempanahuia',verbClass:'A',sourceValence:'projective-nonhuman',subject:'1sg',objectKind:'projective-nonhuman',requestedDerivation:'direct',requestedVoice:'active',mood:'indicative',tense:'present'}]}).canonicalResult;
+const parents={principal,adjoined:noun('canāhuac'),dependent:noun('tomāhuac'),supplement:noun('chicāhuac')};
+const route='comparative-panahuia-unspecified';
+function setup(){const c=r.createClassicalClauseRelationController();for(const [role,p]of Object.entries(parents))c.captureCurrentResult(role,p);const selections={relation:'comparison',comparisonRoute:route,degreeMarker:'huel-oc-achi',adjunctorIn:'no',negativeIntroducer:'in-ahmo-mach-iuh',negativeStandardIn:'no'};return{c,s:issueComparisonOperationSnapshot(c,selections,principal)};}
+test('panahuia optional standard deactivates choices without losing explicit intent or fourth capture identity',()=>{
+ const {c,s}=setup();assert.ok(s,'route admitted');assert.deepEqual(s.captures.map(x=>x.role),['principal','adjoined','dependent','supplement']);
+ const off=transitionComparisonOperationSnapshot(s,{type:'clear-capture',role:'supplement'},s.contract.currentChoiceFrame);assert.equal(off.authorizationStatus,'authorized');const missing=off.snapshot;assert.equal(missing.contract.authorizationStatus,'authorized');
+ for(const key of ['negativeIntroducer','negativeStandardIn']){assert.equal(missing.contract.currentChoiceFrame.decisions.find(x=>x.key===key).applicability,'inactive');assert.equal(missing.selections[key],s.selections[key]);assert.equal(Object.hasOwn(missing.contract.operationSelections,key),false);}
+ assert.equal(isCurrentComparisonOperationSnapshot(s),false);assert.equal(transitionComparisonOperationSnapshot(s,{type:'set-choice',key:'degreeMarker',value:'none'},s.contract.currentChoiceFrame).authorizationStatus,'blocked');
+ assert.equal(transitionComparisonOperationSnapshot(missing,{type:'capture',role:'supplement',result:{...parents.supplement}},missing.contract.currentChoiceFrame).authorizationStatus,'blocked');
+ const on=transitionComparisonOperationSnapshot(missing,{type:'capture',role:'supplement',result:parents.supplement},missing.contract.currentChoiceFrame).snapshot;assert.equal(on.contract.authorizationStatus,'authorized');assert.equal(on.captures.find(x=>x.role==='supplement').exact,parents.supplement);
+ for(const key of ['negativeIntroducer','negativeStandardIn','degreeMarker','adjunctorIn'])assert.equal(on.selections[key],s.selections[key]);assert.equal(on.contract.currentChoiceFrame.decisions.find(x=>x.key==='negativeIntroducer').applicability,'relevant');
+ c.captureCurrentResult('supplement',noun('iztāc'));assert.equal(isCurrentComparisonOperationSnapshot(on),false);
+});
+test('panahuia Make retains all four canonical parents and staged independent choices',()=>{
+ const {c,s}=setup();assert.ok(s);const session=createConstructionSession({isSource:x=>Object.values(parents).includes(x),isResult:x=>r.isClassicalComparisonResultFrame(x),execute:p=>c.compose(p.selections),present:()=>true});session.stage({source:principal,route:{operation:'clause:comparison'},slots:s.captures,choices:s.selections,operationContract:s,ready:s.contract.authorizationStatus==='authorized',execution:{selections:s.selections}});assert.equal(session.make(session.position.revision),true);const made=session.position.accepted.result;assert.equal(made.operationFrame.choices.negativeIntroducer.surface,'ahmō mach iuh');assert.equal(made.operationFrame.choices.adjunctorIn,false);for(const [slot,role]of Object.entries({principal:'principal',point:'adjoined',topic:'dependent',standard:'supplement'}))assert.equal(r.getClassicalComparisonCanonicalSourceResult(made.operationFrame.sourceSlots[slot]),parents[role]);
+});

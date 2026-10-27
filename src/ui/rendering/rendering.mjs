@@ -1,4 +1,4 @@
-import {issueComparisonOperationSnapshot,transitionComparisonOperationSnapshot,readComparisonOperationSelections,isCurrentComparisonOperationSnapshot} from '../composition/comparison_operation_transaction.mjs?operationPilot=20261027-1&similarityPilot=20261028-1&comparativePilot=20261028-5';
+import {issueComparisonOperationSnapshot,transitionComparisonOperationSnapshot,readComparisonOperationSelections,isCurrentComparisonOperationSnapshot} from '../composition/comparison_operation_transaction.mjs?operationPilot=20261027-1&similarityPilot=20261028-1&comparativePilot=20261028-5&panahuiaPilot=20261028-1';
 import {inactiveAffectiveReloadControl,prepareNativeReloadSourceContext,reconcileAcceptedQuotedSourceBaseline} from '../composition/native_reload_source.mjs?nativeReload=20261027-4';
 import {normalizeSourceEditorSignature} from '../composition/source_editor_signature.mjs';
 import {inputLabel,captureRoleLabel,clauseReadinessGuidance,contractReferences,normalizeAndrewsReference,hasCurrentClauseProjection} from '../composition/choice_guidance.mjs?choiceGuidance=20261027-3';

@@ -1,13 +1,13 @@
-# Grammar OS v1.2.90 release
+# Grammar OS v1.2.91 release
 
-Release name: **Coordinated Comparative Choices**
+Release name: **Coordinated Panahuia Choices**
 
-Browser build: **20261028-comparative-pilot-109**
+Browser build: **20261028-panahuia-pilot-110**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Comparative tāchcāuh/huālcah choices now use the shared owner-backed construction-session contract.
-- Clearing a required comparison anchor preserves pending choices and permits restoring its original saved Result without executing automatically.
-- Independent negative-standard and comparison-point links stay coordinated through preview and explicit Make.
+- Unspecified-object panahuia comparison uses the shared owner-backed choice contract.
+- Removing an optional comparison standard retains its choices while making them inactive; restoring it reactivates the same choices.
+- All four source roles participate in coordinated preview and explicit Make, preserving exact Result identities.

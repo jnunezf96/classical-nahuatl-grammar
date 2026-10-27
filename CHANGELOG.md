@@ -1,3 +1,9 @@
+# Version History
+
+## v1.2.91 — Coordinated Panahuia Choices
+
+Optional comparison-standard choices now stay coordinated when their Result is removed and restored. Exact inputs remain attached through preview and Make.
+
 ## v1.2.87 — Copy Accepted Form
 
 Copy form now writes only its exact accepted surface, retaining authorization and pending-preview separation.
