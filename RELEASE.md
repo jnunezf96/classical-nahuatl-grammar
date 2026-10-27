@@ -1,13 +1,13 @@
-# Grammar OS v1.2.71 release
+# Grammar OS v1.2.72 release
 
-Release name: **Coordinated Location Choices**
+Release name: **Coordinated Complement Choices**
 
-Browser build: **20261026-location-choices-90**
+Browser build: **20261026-participant-connections-91**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Relational affective choices survive inactive associated-entity and pertinency operations without affecting those requests.
-- Explicit place and gentilic formation choices return for the current Applied Source and Result kind when the canonical owner still accepts them.
-- Existing panels, Source Apply, Make and accepted Results during staging remain unchanged.
+- Complement choices now expose the current canonical owner's eligibility before Make.
+- Replacing a complement operand retains explicit choices and opens the existing saved Result picker while missing operands keep Make unavailable.
+- Readiness wording follows the current required operands and choices. Existing panels and explicit Source Apply/Make remain unchanged.

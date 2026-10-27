@@ -1,3 +1,7 @@
+## 1.2.72 — Coordinated Complement Choices
+
+Complement readiness follows the current canonical owner. Clearing or replacing a captured operand preserves explicit complement choices, refreshes the existing saved Result picker, and keeps Make unavailable until the current combination is valid.
+
 ## 1.2.71 — Coordinated Location Choices
 
 Relational affective choices remain staged across inactive operations without entering unrelated requests. Place and gentilic formation intent returns for the same Applied Source and Result kind only when the current canonical owner permits it.

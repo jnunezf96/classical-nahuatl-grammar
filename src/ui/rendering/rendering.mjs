@@ -37879,7 +37879,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
       return true;
     }
     function shouldPreserveClassicalComparisonCaptureChoices(controller, role) {
-      return controller.preserveComparisonCaptureChoices(ClassicalClauseRelationSelections, role);
+      return controller.preserveComplementCaptureChoices?.(ClassicalClauseRelationSelections, role) === true
+        || controller.preserveComparisonCaptureChoices(ClassicalClauseRelationSelections, role);
     }
     function resetClassicalClauseRelationSelections({
       preserveRelation = false
@@ -37893,6 +37894,12 @@ export function createUiRenderingApi(targetObject = globalThis) {
       }
       ActiveClassicalClauseRelationResult = null;
     }
+    function getClassicalComplementReadinessMessage(contract) {
+      if (contract.missingCaptureRoles?.length) return `Exact Result captured; add ${contract.missingCaptureRoles.map(formatClassicalCapabilityChoiceLabel).join(", ")}.`;
+      if (contract.unresolvedDecisionIds?.length) return `Exact Result captured; choose ${contract.unresolvedDecisionIds.map(formatClassicalCapabilityChoiceLabel).join(", ")}.`;
+      if (contract.authorizationStatus === "blocked") return formatClassicalClauseRelationValue(contract.blockReason || contract.diagnostics?.[0] || "clause-relation-not-ready");
+      return "Choices complete. Make Result.";
+    }
     function refreshClassicalClauseRelationWorkflow() {
       const binding = ActiveClassicalGrammarResultBinding;
       if (binding?.family === "clause-relation"
@@ -37904,9 +37911,15 @@ export function createUiRenderingApi(targetObject = globalThis) {
           requiredChoiceIds: Object.freeze([...(contract.unresolvedDecisionIds || [])]),
           clauseRelationExecutionBlockReason: contract.authorizationStatus === "blocked" ? contract.blockReason || "" : "",
         });
-        if (contract && (contract.currentChoiceFrame || binding.clauseRelationDecisionContract?.currentChoiceFrame)) {
+        const complement = ["object-complement", "subject-complement", "adverbial-complement"].includes(contract?.relation);
+        if (contract && (complement || contract.currentChoiceFrame || binding.clauseRelationDecisionContract?.currentChoiceFrame)) {
           syncClassicalClauseRelationCapabilityChoices(contract, contract.missingCaptureRoles || []);
-          if (["conjunction", "correlative-conjunction", "lexical-conjunction", "parallel-structure"].includes(contract.relation)) syncClassicalRequiredResultChooser();
+          if (complement) {
+            ClassicalClauseRelationStatusMessage = getClassicalComplementReadinessMessage(contract);
+            const status = targetObject.document?.getElementById("classical-capability-navigator-status");
+            if (status) status.textContent = ClassicalClauseRelationStatusMessage;
+          }
+          if (complement || ["conjunction", "correlative-conjunction", "lexical-conjunction", "parallel-structure"].includes(contract.relation)) syncClassicalRequiredResultChooser();
         }
       }
       const contextSurface = ActiveClassicalRuleLogicSurfaceFrame || {};

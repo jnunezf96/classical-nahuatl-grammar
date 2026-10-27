@@ -1379,6 +1379,7 @@ export function createClassicalClauseRelationControllerGlobals(
     let conjunctionEllipsisPreview = null;
     let conjunctionReadinessPreview = null;
     let supplementationReadinessPreview = null;
+    let complementReadinessPreview = null;
     const issuedRelationAvailabilityContracts = new WeakSet();
     let captureRevision = 0;
     let choiceRevision = 0;
@@ -2207,19 +2208,24 @@ export function createClassicalClauseRelationControllerGlobals(
         })),
       });
       if (complementOrder === "discontinuous" && !discontinuousAvailable) diagnostics.push(discontinuousReason);
-      if (relation === "subject-complement"
-        && ["embedded-possessor-cel", "embedded-possessor-el"].includes(operationSelections.contactKind)
-        && !diagnostics.length
+      if (!diagnostics.length
         && decisions.every(decision => !decision.required || decision.resolved)) {
-        const sourceFrames = buildComplementSourceFrames({
-          derived: { operationKind: relation }, operationSelections,
-        });
-        const preview = targetObject.evaluateClassicalNahuatlClauseComplementation?.({
-          operationKind: relation, ...sourceFrames, options: operationSelections,
-        });
-        if (preview?.authorizationStatus !== "authorized") {
-          diagnostics.push(preview?.blockReason || "classical-complement-included-contact-owner-required");
+        // Individually available choices do not license their combination.
+        // The same exact-source owner used by Make decides readiness, including
+        // semantic predicate eligibility and contact agreement (Andrews §51).
+        const key = `${relation}:${captureRevision}:${JSON.stringify(operationSelections)}`;
+        if (complementReadinessPreview?.key !== key) {
+          const sourceFrames = buildComplementSourceFrames({
+            derived: { operationKind: relation }, operationSelections,
+          });
+          const preview = targetObject.evaluateClassicalNahuatlClauseComplementation?.({
+            operationKind: relation, ...sourceFrames, options: operationSelections,
+          });
+          const valid = targetObject.isClassicalNahuatlClauseComplementationResultFrame?.(preview) === true;
+          complementReadinessPreview = {key, failure: valid && preview.authorizationStatus === "authorized"
+            ? "" : preview?.blockReason || "classical-complement-current-owner-required"};
         }
+        if (complementReadinessPreview.failure) diagnostics.push(complementReadinessPreview.failure);
       }
       return buildNewRelationContract({
         selectionObject,
@@ -6208,6 +6214,10 @@ export function createClassicalClauseRelationControllerGlobals(
       transitionComparisonChoice,
       transitionConjunctionChoice,
       transitionSentenceChoice,
+      preserveComplementCaptureChoices(selections, role) {
+        return COMPLEMENT_OPERATION_KINDS.includes(selections?.relation)
+          && ["principal", "adjoined", "dependent"].includes(role);
+      },
       preserveComparisonCaptureChoices(selections, role) {
         const contract = buildDecisionContract(selections);
         return contract.relation === "comparison" && (contract.currentChoiceFrame
