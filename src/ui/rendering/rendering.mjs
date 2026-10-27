@@ -1,4 +1,4 @@
-import {inputLabel,clauseReadinessGuidance,contractReferences,normalizeAndrewsReference} from '../composition/choice_guidance.mjs';
+import {inputLabel,captureRoleLabel,clauseReadinessGuidance,contractReferences,normalizeAndrewsReference} from '../composition/choice_guidance.mjs?choiceGuidance=20261027-2';
 import {constructionBackground, sourceAnalysisBackground} from '../composition/andrews_choice_references.mjs';
 import {createCardinalChoiceCoordinator} from '../../application/classical/cardinal_choice_coordination.mjs';
 import {createCompoundChoiceMemory} from '../../application/classical/compound_choice_coordination.mjs';
@@ -18,27 +18,27 @@ import {syncFutureObjectChoices} from '../composition/future_object_choices.mjs?
 import {getDoubleNucleusEditChildren} from '../../application/classical/double_nucleus_edit.mjs?nucleusEdit=20261024-9';
 import {syncStemLayerChoices} from '../composition/stem_layer_choices.mjs?stemNominal=20261024-2';
 import {syncNounstemOperationChoices,groupDeverbalFamilyOptions} from '../composition/nounstem_operation_choices.mjs?v=20261024-1&nominalReload=20261024-4';
-import {snapshotResultEditReload,restoreResultEditReload} from '../composition/result_edit_reload.mjs?nucleusEdit=20261024-9&innerSource=20261024-1&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-1&interfaceRelease=1.2.36&choiceGuidance=20261027-1';
+import {snapshotResultEditReload,restoreResultEditReload} from '../composition/result_edit_reload.mjs?nucleusEdit=20261024-9&innerSource=20261024-1&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-1&interfaceRelease=1.2.36&choiceGuidance=20261027-2';
 import {getVncChoiceEditContext, getVncVoiceEditSubject, projectVncChoiceEditControls} from '../composition/vnc_choice_edit.mjs?v=20261023-3';
 import {runCompositionAction} from '../composition/action_feedback.mjs?v=20261023-1';
 import {getAuthorityControl, projectAuthoredChoice} from '../composition/authority_control.mjs?v=20261023-2';
 import {clearOwnerChoicePortals,findOwnerChoice,ownerChoiceRoots} from '../composition/owner_choice_roots.mjs?v=20261023-core-1';
 import {appendValenceAnalysis} from '../composition/valence_analysis.mjs?v=20261023-slots-16';
-import {previewConstructionPacket} from '../composition/construction_preview.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1&interfaceRelease=1.2.36&choiceGuidance=20261027-1';
+import {previewConstructionPacket} from '../composition/construction_preview.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1&interfaceRelease=1.2.36&choiceGuidance=20261027-2';
 import {isIntermediateBuildTaskReset} from '../composition/build_task_menu.mjs?deverbalReload=20261024-8&operationFirst=20261023-2&clickFeedback=20261023-1&v=20261021-ending-reference-2&writingSource=20261022-2&fixedChoices=20261022-1&interfaceRelease=1.2.36';
 import { normalizeClassicalNahuatlIntroductoryModifier }
   from "../../core/classical/verbstem_classes.mjs?v=20261008-reader-40-9-190&modifier=canonical-20261009-1&quantityClass=20261022-1&andrewsRelease=20261024-1";
 import {createClassicalWorkspaceProvenanceProjector}
   from '../composer/result_provenance.mjs?v=20261012-position-provenance-7';
 import {resolvePathTargets, setPathHistoryPresentation} from '../composition/path_presentation.mjs?v=20261011-path-targets-7&routeShapes=20261021-1&writtenPreview=20261022-1&writingSource=20261022-1';
-import {setStructureDesignContext, setStructureComparison, projectCanonicalStructure, projectClauseStructure, comparisonCapturePresentation, projectOperationShape, projectCapturedOperationShape, compareCanonicalStructures} from '../composition/structure_design.mjs?choiceArchitecture=20261026-6&icDimension=20261026-1&reasonPresentation=20261026-1&nucleusEdit=20261024-9&clauseHarmony=20261023-5&v=20261011-structure-15&routeShapes=20261021-1&clauseCoordinate=20261021-1&resetEligibility=20261022-1&writingSource=20261022-1&makePreview=20261022-1&fixedChoices=20261022-1&interfaceRelease=1.2.36&choiceGuidance=20261027-1';
+import {setStructureDesignContext, setStructureComparison, projectCanonicalStructure, projectClauseStructure, comparisonCapturePresentation, projectOperationShape, projectCapturedOperationShape, compareCanonicalStructures} from '../composition/structure_design.mjs?choiceArchitecture=20261026-6&icDimension=20261026-1&reasonPresentation=20261026-1&nucleusEdit=20261024-9&clauseHarmony=20261023-5&v=20261011-structure-15&routeShapes=20261021-1&clauseCoordinate=20261021-1&resetEligibility=20261022-1&writingSource=20261022-1&makePreview=20261022-1&fixedChoices=20261022-1&interfaceRelease=1.2.36&choiceGuidance=20261027-2';
 import {setSourceCandidatePresentation, projectSavedSourceCandidate, setRouteChoicePresentation, projectOfferedOperationShapes} from '../composition/candidate_design.mjs?v=20261021-route-shapes-1';
 import {notifyExplicitMakeResult,focusNativeChoice} from '../composition/flow_design.mjs?v=20261022-reset-eligibility-1&writingSource=20261022-1&makePreview=20261022-1&fixedChoices=20261022-1';
 import {getBuildOperationGroup,getBuildOperationOrder,inventoryOptionReference,formatBuildOperationLabel} from '../composition/build_navigation_model.mjs?v=20261021-ending-reference-2&nominalReload=20261024-4&interfaceRelease=1.2.36';
 import {createConstructionSession} from '../composition/construction_session.mjs?stemReload=20261024-2&v=20261012-position-12&acceptedBuild=20261023-1';
 import {projectConstructionValue} from '../composition/construction_position.mjs?stemReload=20261024-2&v=20261012-position-12&acceptedBuild=20261023-1';
-import {executeConstructionPacket, freezeConstructionData, getConstructionPacketOrigin, captureConstructionParents, matchesConstructionWitness, orderConstructionSlots, getConstructionFixedChoices, getConstructionLayerReadiness, getConstructionParticleHostInput} from '../composition/construction_packet.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1&interfaceRelease=1.2.36&choiceGuidance=20261027-1';
-import {resolveResultEditTarget} from '../composition/result_editing.mjs?choiceArchitecture=20261026-6&nucleusEdit=20261024-9&innerParticle=20261024-1&v=20261023-conjunction-1&interfaceRelease=1.2.36&choiceGuidance=20261027-1';
+import {executeConstructionPacket, freezeConstructionData, getConstructionPacketOrigin, captureConstructionParents, matchesConstructionWitness, orderConstructionSlots, getConstructionFixedChoices, getConstructionLayerReadiness, getConstructionParticleHostInput} from '../composition/construction_packet.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1&interfaceRelease=1.2.36&choiceGuidance=20261027-2';
+import {resolveResultEditTarget} from '../composition/result_editing.mjs?choiceArchitecture=20261026-6&nucleusEdit=20261024-9&innerParticle=20261024-1&v=20261023-conjunction-1&interfaceRelease=1.2.36&choiceGuidance=20261027-2';
 import {canRebuildResultEdit,getResultEditReorder} from '../composition/result_edit_rebuild.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1&interfaceRelease=1.2.36';
 import {getNativeGrammarControls, getWritingSourcePresentation, setChoiceDesignContext, setAppliedRoutePresentation} from '../composition/choice_design.mjs?clickFeedback=20261023-1&coreStem=20261023-1&v=20261022-reset-eligibility-1&writingSource=20261022-1&fixedChoices=20261022-1';
 import { readClassicalSourceObjectRows, getClassicalSourceObjectControls,
@@ -38494,6 +38494,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const facts = targetObject.document.createElement("div");
       facts.className = "grammar-inspector__facts";
       const captureContract = controller.buildDecisionContract(ClassicalClauseRelationSelections);
+      const currentRoleLabel = captureRoleLabel(captureContract, role, roleLabel || role);
+      heading.textContent = formatClassicalClauseRelationValue(currentRoleLabel);
       const comparisonCapture = comparisonCapturePresentation(captureContract, role);
       facts.appendChild(createGrammarInspectorLine(
         "status",
@@ -38566,7 +38568,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       }
       if (captureState.captured) {
         appendClassicalWholeCanvasPanelActionRow(card, [{
-          label: `Clear ${role}`,
+          label: `Clear ${currentRoleLabel}`,
           action: `clear-clause-relation-${role}`,
           userRole: "clear-issued-result-capture",
           machineRole: "typed-capture-controller",
@@ -38719,7 +38721,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         Object.entries(
           previewDecisionContract.derived?.captureSlotLayout || {}
         ).forEach(([role, slotId]) => {
-          captureRoleLabels[role] = slotId;
+          captureRoleLabels[role] = captureRoleLabel(previewDecisionContract, role, slotId);
         });
       } else if (selectedRelation === "supplementation") {
         captureRoleLabels.principal = "principal clause";

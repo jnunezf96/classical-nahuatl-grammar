@@ -1,8 +1,8 @@
-# Grammar OS v1.2.78 release
+# Grammar OS v1.2.79 release
 
 Release name: **Clear Choices and Andrews References**
 
-Browser build: **20261027-choice-guidance-97**
+Browser build: **20261027-choice-guidance-98**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 

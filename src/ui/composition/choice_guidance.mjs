@@ -5,6 +5,9 @@ export function inputLabel(contract,role) {
     || contract?.derived?.captureSlotLayout?.[role] || role;
   return slot==='standard'?'comparison standard':words(slot);
 }
+export function captureRoleLabel(contract, role, fallback=role) {
+  return contract?.currentChoiceFrame ? inputLabel(contract, role) : words(fallback);
+}
 export function clauseReadinessGuidance(contract) {
   if(!contract)return '';
   const missing=contract.missingCaptureRoles||[];

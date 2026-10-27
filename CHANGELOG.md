@@ -1,3 +1,7 @@
+## 1.2.79 — Clear Choices and Andrews References
+
+Completes the same semantic-role presentation in existing Clause details: Capture, Clear, and captured-input headings follow the selected construction's current input names. Grammar and execution remain unchanged.
+
 ## 1.2.78 — Clear Choices and Andrews References
 
 Current prerequisites name the required grammatical input and next public action. Existing Source and Build controls display scoped Andrews references that follow current choices, with no added panel or change to grammatical authority.

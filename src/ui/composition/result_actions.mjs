@@ -1,5 +1,5 @@
 import {runCompositionAction} from './action_feedback.mjs?v=20261023-1';
-import {getResultEditTargets,projectResultForEditing} from './result_editing.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&v=20261023-conjunction-1&interfaceRelease=1.2.36&choiceGuidance=20261027-1';
+import {getResultEditTargets,projectResultForEditing} from './result_editing.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&v=20261023-conjunction-1&interfaceRelease=1.2.36&choiceGuidance=20261027-2';
 import {canRebuildResultEdit,getResultEditReorder} from './result_edit_rebuild.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1&interfaceRelease=1.2.36';
 import {inventoryOptionReference} from './build_navigation_model.mjs?interfaceRelease=1.2.36&negativeAttachment=20261025-1';
 
