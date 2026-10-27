@@ -1,17 +1,16 @@
-# Grammar OS v1.2.61 release
+# Grammar OS v1.2.62 release
 
-Release name: **Possessor and Subject Choices**
+Release name: **Visible Embedded Choices**
 
-Browser build: **20261026-possessor-choices-80**
+Browser build: **20261026-embedded-choices-81**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- The reciprocative possessor remains third-person while the independently selected subject follows Andrews’s possessive-clause formula.
-- Canonical State owners and operation validation now use the same distinction.
-- A selected nominal-embed nonactive formation can return when the same owner offers it again.
-- Source Apply, explicit Make, exact parents and existing panels are retained.
+- A required nonactive formation remains visible in the supported incorporated-adverb route.
+- The existing owner continues to validate the selected formation and exact Sources.
+- Source Apply, explicit Make and existing panels are retained.
 
 ## Review scope and current limits
 
@@ -38,7 +37,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.61/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.62/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.

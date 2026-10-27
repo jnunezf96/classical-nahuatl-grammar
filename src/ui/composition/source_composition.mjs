@@ -44,7 +44,9 @@ export function organizeSourceComposition(doc) {
       if(id!=='classical-rule-logic-nonactive-family')field.hidden=false;
     } else {
       const home=relationalAnalysisHomes.get(field);
-      if(field.parentElement!==home.parent) {
+      // Restore only the field this organizer borrowed into the relational
+      // authority. Other grammar owners may have moved the same control.
+      if(field.parentElement===authority && field.parentElement!==home.parent) {
         home.parent.insertBefore(field,home.next?.parentElement===home.parent?home.next:null);
         field.hidden=home.hidden;
         field.setAttribute("aria-hidden",String(field.hidden));

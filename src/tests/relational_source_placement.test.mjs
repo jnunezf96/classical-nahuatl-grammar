@@ -36,6 +36,19 @@ test('raw derived Source borrows original verb controls and restores hidden home
  authority.dataset.classicalRelationalRawVerbalSource='false';organizeSourceComposition(doc);
  for(const {field,control} of fields){assert.equal(field.parentElement,original);assert.equal(field.hidden,true);assert.equal(control.value,control.id);}
 });
+test('relational organizer does not undo another owner’s formation placement',()=>{
+ const root=new Element('main');const add=(p,id,tag='div')=>{const n=new Element(tag);n.id=id;p.append(n);return n;};
+ const source=add(root,'classical-source-parts');add(source,'classical-source-commit-status');
+ const build=add(root,'build'),authority=add(build,'classical-relational-nnc-authority');
+ const original=add(root,'original'),field=add(original,'formation-label','label');field.hidden=true;
+ add(field,'classical-rule-logic-nonactive-family','select');
+ const doc={getElementById:id=>root.querySelector('#'+id)};
+ organizeSourceComposition(doc);
+ const nominalEmbed=add(build,'nominal-embed-owner');nominalEmbed.append(field);field.hidden=false;
+ organizeSourceComposition(doc);
+ assert.equal(field.parentElement,nominalEmbed);assert.equal(field.hidden,false);
+ assert.notEqual(field.parentElement,authority);
+});
 test('additional verbal Source objects remain before commit while pending and return for nominal sources',()=>{
  const root=new Element('main'),source=new Element(),build=new Element();root.append(source,build);
  source.id='classical-source-parts';

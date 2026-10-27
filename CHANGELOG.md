@@ -1,5 +1,10 @@
 # Version History
 
+## v1.2.62 — Visible Embedded Choices
+
+- Keeps the owner-required nonactive formation control visible in the supported incorporated-adverb route.
+- Preserves Source custody, explicit Make and the existing panels.
+
 ## v1.2.61 — Possessor and Subject Choices
 
 - Corrects the distinction between a third-person reciprocative possessor and the independent clause subject.
