@@ -1,5 +1,6 @@
 import {resolveVncSourceClassChoice,resolveNncSourceClassValues,resolveIrregularSourceAlternatives,resolvePersonalNameSourceChoice,resolveCoarseNominalSourceFacts,resolveNncSourceChoiceDomain,resolveIrregularSourceRequest} from "../../application/classical/source_choice_coordination.mjs?sourceChoices=20261026-1";
 import {createOrganicPossessionStateCoordinator} from "../../application/classical/organic_possession_choice_coordination.mjs?organicChoices=20261026-1";
+import {createNominalEmbedVoiceChoiceCoordinator} from "../../application/classical/nominal_embed_voice_choice_coordination.mjs?participantChoices=20261026-1";
 import {stageOrdinaryNncDependencies} from "../../application/classical/participant_choice_coordination.mjs?participantChoices=20261026-1";
 import {resolveReflexiveInterpretationChoice,resolveRejectedReflexiveDraft} from "../../application/classical/reflexive_choice_coordination.mjs?participantChoices=20261026-1";
 import {createVncTenseCoordinator,createVncContinuationTenseCoordinator,buildProspectiveVncTenseFrame} from "../../application/classical/vnc_tense_choice_coordination.mjs?participantChoices=20261026-1";
@@ -5520,6 +5521,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
         person: "third",
         number: "singular"
       }),
+      "3common": Object.freeze({
+        person: "third",
+        number: "common"
+      }),
       "3pl": Object.freeze({
         person: "third",
         number: "plural"
@@ -5527,7 +5532,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
     });
     function buildClassicalNncSpecificPossessorMatrix(maps = []) {
       const rowDimensions = ["first", "second", "third"];
-      const columnDimensions = ["singular", "plural"];
+      const columnDimensions = ["singular", "common", "plural"];
       const sourceMaps = Array.isArray(maps) ? maps : [];
       const positions = rowDimensions.flatMap(person => (
         columnDimensions.map(number => {
@@ -20870,6 +20875,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
         if (fact) fact.hidden = !fixedImpersonalSubject;
       }
       Object.keys(controlVisibility).forEach(id => {
+        // The retained nominal-embed owner projects this shared selector from
+        // both exact parents; the raw Source surface must not hide it later.
+        if (id === "classical-rule-logic-nonactive-family"
+          && getClassicalRetainedNominalVncVoiceContext()) return;
         const control = targetObject.document.getElementById(id);
         const wrapper = control?.closest?.(".classical-rule-control")
           || (id === "classical-rule-logic-class"
@@ -45192,12 +45201,17 @@ export function createUiRenderingApi(targetObject = globalThis) {
       return controls || null;
     }
 
-    function syncClassicalRetainedNominalVncVoiceChoices() {
+    const nominalEmbedVoiceChoiceCoordinator = createNominalEmbedVoiceChoiceCoordinator();
+    function getClassicalRetainedNominalVncVoiceContext() {
       const binding = getClassicalRetainedNominalEmbedBinding();
-      if (!binding) return false;
+      const operands = getClassicalNominalEmbedOperands(binding);
+      if (binding?.selectedBindingId !== "nominal-embed:matrix-vnc-result"
+        || binding.ownerBindingFrame?.exactResult !== binding.exactResult
+        || !operands?.embedResult
+        || !getClassicalExactNncConstructionConstituent(operands.embedResult)) return null;
       const projection = targetObject
         .getClassicalNahuatlVncContinuationSourceConstituents?.(binding.exactResult);
-      if (!projection) return false;
+      if (!projection) return null;
       const voiceBinding = targetObject.issueClassicalNahuatlVncContinuationBindingFrame?.(
         "vnc:application", binding.exactResult, {
           requestedDerivation: "direct", subject: projection.sourceSubject,
@@ -45208,9 +45222,14 @@ export function createUiRenderingApi(targetObject = globalThis) {
       );
       if (targetObject.isClassicalNahuatlVncContinuationBindingFrame?.(voiceBinding) !== true
         || voiceBinding.exactInputResult !== binding.exactResult
-        || voiceBinding.ownerInputAcceptanceProven !== true) return false;
+        || voiceBinding.ownerInputAcceptanceProven !== true) return null;
       const controls = voiceBinding.ownerPreflightResult?.controlFrame;
-      if (!Array.isArray(controls?.allowedVoices)) return false;
+      return Array.isArray(controls?.allowedVoices) ? {binding, controls} : null;
+    }
+    function syncClassicalRetainedNominalVncVoiceChoices() {
+      const context = getClassicalRetainedNominalVncVoiceContext();
+      if (!context) { nominalEmbedVoiceChoiceCoordinator.clear(); return false; }
+      const {binding, controls} = context;
       const request = buildClassicalNominalConstructionUiRequest(binding);
       const targetVoices = request ? getClassicalNominalVncTargetVoiceOptions(request) : null;
       applyClassicalRuleLogicSelectOptionAvailability(
@@ -45221,6 +45240,34 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const options = request ? getClassicalIncorporatedMatrixNonactiveOptions(request) : [];
       const control = targetObject.document?.getElementById?.("classical-rule-logic-nonactive-family");
       const wrapper = control?.closest?.(".classical-rule-control, label, [data-classical-rule-control]");
+      const choiceScope = (currentBinding, currentRequest) => {
+        const operands = getClassicalNominalEmbedOperands(currentBinding);
+        if (currentBinding?.selectedBindingId !== "nominal-embed:matrix-vnc-result"
+          || targetObject.isClassicalNahuatlFormationResultBindingFrame?.(currentBinding.ownerBindingFrame) !== true
+          || currentBinding.ownerBindingFrame.exactResult !== currentBinding.exactResult
+          || !operands?.matrixResult || !operands.embedResult
+          || !getClassicalExactVncConstructionConstituent(operands.matrixResult)
+          || !getClassicalExactNncConstructionConstituent(operands.embedResult)
+          || currentRequest?.source?.matrixConstituent?.resultFrame !== operands.matrixResult
+          || currentRequest?.source?.embedConstituent?.resultFrame !== operands.embedResult
+          || !currentRequest.relation) return null;
+        return {matrix: operands.matrixResult, embed: operands.embedResult,
+          bindingId: currentBinding.selectedBindingId,
+          structure: JSON.stringify([currentRequest.relation, currentRequest.route || ""])};
+      };
+      if (control && !control.dataset.classicalNominalEmbedVoiceChoiceBound) {
+        control.dataset.classicalNominalEmbedVoiceChoiceBound = "true";
+        control.addEventListener("change", event => {
+          if (event.target !== control || !control.isConnected || control.disabled
+            || control.closest?.(".classical-rule-control, label, [data-classical-rule-control]")?.hidden) return;
+          const currentBinding = getClassicalRetainedNominalEmbedBinding();
+          const currentRequest = currentBinding && buildClassicalNominalConstructionUiRequest(currentBinding);
+          const scope = choiceScope(currentBinding, currentRequest);
+          if (!scope) { nominalEmbedVoiceChoiceCoordinator.clear(); return; }
+          nominalEmbedVoiceChoiceCoordinator.record(scope, currentRequest.voice, control.value,
+            getClassicalIncorporatedMatrixNonactiveOptions(currentRequest));
+        });
+      }
       const visible = ["passive", "impersonal"].includes(request?.voice) && options.length > 1;
       if (wrapper) {
         wrapper.hidden = !visible;
@@ -45230,6 +45277,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
         control.disabled = !visible;
         control.setAttribute?.("aria-disabled", String(!visible));
         const previous = control.value;
+        const scope = choiceScope(binding, request);
+        const remembered = nominalEmbedVoiceChoiceCoordinator.resolve(scope, request?.voice, options);
         if (visible) {
           const prompt = targetObject.document.createElement("option");
           prompt.value = ""; prompt.textContent = "Choose a grammar-supported formation";
@@ -45239,7 +45288,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
             node.value = option.optionId; node.textContent = option.label || option.optionId;
             return node;
           }));
-          control.value = options.some(option => option.optionId === previous) ? previous : "";
+          control.value = options.some(option => option.optionId === previous) ? previous : remembered;
         } else control.value = "";
       }
       return true;

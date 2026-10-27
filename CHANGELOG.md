@@ -1,5 +1,11 @@
 # Version History
 
+## v1.2.61 — Possessor and Subject Choices
+
+- Corrects the distinction between a third-person reciprocative possessor and the independent clause subject.
+- Retains an authorized nonactive formation while it is inactive in the demonstrated nominal-embed route.
+- Keeps canonical Source and shape restrictions, existing panels and explicit Make.
+
 ## v1.2.60 — Coordinated Participant Choices
 
 - Coordinates participant, possession and clause choices through their existing grammar owners.

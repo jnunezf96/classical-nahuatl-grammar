@@ -1,15 +1,16 @@
-# Grammar OS v1.2.60 release
+# Grammar OS v1.2.61 release
 
-Release name: **Coordinated Participant Choices**
+Release name: **Possessor and Subject Choices**
 
-Browser build: **20261026-participant-choices-79**
+Browser build: **20261026-possessor-choices-80**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Participant, possession and clause choices are coordinated with the canonical grammar owners.
-- Eligible inactive selections are retained, and incompatible active selections remain visible for correction.
+- The reciprocative possessor remains third-person while the independently selected subject follows Andrews’s possessive-clause formula.
+- Canonical State owners and operation validation now use the same distinction.
+- A selected nominal-embed nonactive formation can return when the same owner offers it again.
 - Source Apply, explicit Make, exact parents and existing panels are retained.
 
 ## Review scope and current limits
@@ -37,7 +38,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.60/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.61/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.

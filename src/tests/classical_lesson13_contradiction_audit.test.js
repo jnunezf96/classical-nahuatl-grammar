@@ -24,13 +24,9 @@ function run(ctx = {}) {
         consonant: [consonant.stateFrame.arity, consonant.stateFrame.slots.map((slot) => slot.carrier)],
         vowel: [vowel.stateFrame.arity, vowel.stateFrame.slots.map((slot) => slot.carrier)],
     }, { consonant: ["dyadic", ["n", "o"]], vowel: ["dyadic", ["n", "⎕"]] });
-    s.eq("monadic restrictions agree", {
-        ne: blockedNe.blockReason,
-        tla: blockedTla.blockReason,
-    }, {
-        ne: "reciprocal-possessor-requires-third-person-subject",
-        tla: "tla-possessor-requires-relational-or-analogical-derived-nounstem",
-    });
+    s.eq("reciprocative possessor does not restrict subject person", blockedNe.blockReason, "");
+    s.eq("nonspecific nonhuman source restriction", blockedTla.blockReason,
+        "tla-possessor-requires-relational-or-analogical-derived-nounstem");
     s.eq("amo and ammo remain different typed structures", {
         valid: contrastNnc.authorizationStatus === "authorized" && contrastVnc.proofFrame.authorizationStatus === "authorized",
         nnc: contrastNnc.stateFrame.slots.map((slot) => slot.role),

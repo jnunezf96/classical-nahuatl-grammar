@@ -91,7 +91,7 @@ function run(ctx = {}) {
 
     add("ACI-P121-L031-226BDB24A4", [human.stateFrame.arity, human.stateFrame.slots.map((slot) => [slot.role, slot.carrier])], ["monadic", [["st", "tē"]]]);
     add("ACI-P122-L002-3389139451", [reciprocalAllowed.stateFrame.possessorRole, reciprocalAllowed.stateFrame.arity, reciprocalAllowed.stateFrame.slots[0].role], ["reciprocal", "monadic", "st"]);
-    add("ACI-P122-L004-79CE340A6C", [reciprocalBlocked.authorizationStatus, reciprocalBlocked.blockReason, reciprocalAllowed.authorizationStatus], ["blocked", "reciprocal-possessor-requires-third-person-subject", "authorized"]);
+    add("ACI-P122-L004-79CE340A6C", [reciprocalBlocked.authorizationStatus, reciprocalBlocked.blockReason, reciprocalAllowed.authorizationStatus], ["authorized", "", "authorized"]);
     add("ACI-P122-L006-2B6E47A7DF", [[human.stateFrame.possessorRole, human.stateFrame.slots[0].carrier, human.authorizationStatus], [nonhumanAllowed.stateFrame.possessorRole, nonhumanAllowed.stateFrame.slots[0].carrier, nonhumanAllowed.authorizationStatus], [nonhumanBlocked.authorizationStatus, nonhumanBlocked.blockReason]], [["nonspecific-human", "tē", "authorized"], ["nonspecific-nonhuman", "tla", "authorized"], ["blocked", "tla-possessor-requires-relational-or-analogical-derived-nounstem"]]);
 
     s.eq("accepted Lesson 13 Groups 1-3 cover every atom once", {

@@ -852,7 +852,7 @@ export function createGrammarContractRegistryModule(targetObject = globalThis) {
               entry.conditioning
             ].join(":"))
             .join("|")
-            === "monadic-reciprocal-ne:monadic:reciprocal:reciprocal:third:reciprocal:ne//:state:third-person-subject-only|monadic-nonspecific-human-te:monadic:nonspecific-human:nonspecific-human:nonspecific:nonspecific:tē//:state:unrestricted-human-reference|monadic-nonspecific-nonhuman-tla:monadic:nonspecific-nonhuman:nonspecific-nonhuman:nonspecific:nonspecific:tla//:state:relational-or-authorized-analogical-derived-nounstem|dyadic-first-singular-o:dyadic:1sg:specific:first:singular:/n/o:st2:consonant-initial-stem|dyadic-first-singular-silent:dyadic:1sg:specific:first:singular:/n/⎕:st2:vowel-initial-stem|dyadic-first-plural-o:dyadic:1pl:specific:first:plural:/t/o:st2:consonant-initial-stem|dyadic-first-plural-silent:dyadic:1pl:specific:first:plural:/t/⎕:st2:vowel-initial-stem|dyadic-second-singular-o:dyadic:2sg:specific:second:singular:/m/o:st2:consonant-initial-stem|dyadic-second-singular-silent:dyadic:2sg:specific:second:singular:/m/⎕:st2:vowel-initial-stem|dyadic-second-plural-o:dyadic:2pl:specific:second:plural:/am/o:st2:consonant-initial-stem|dyadic-second-plural-silent:dyadic:2pl:specific:second:plural:/am/⎕:st2:vowel-initial-stem|dyadic-third-singular-zero:dyadic:3sg:specific:third:singular-or-common:/ī/0:st1:third-singular-or-common-possessor|dyadic-third-plural-m:dyadic:3pl:specific:third:plural:/ī/m:st1:before-vowel-m-or-p|dyadic-third-plural-n:dyadic:3pl:specific:third:plural:/ī/n:st1:outside-m-environment",
+            === "monadic-reciprocal-ne:monadic:reciprocal:reciprocal:third:reciprocal:ne//:state:third-person-reciprocal-possessor|monadic-nonspecific-human-te:monadic:nonspecific-human:nonspecific-human:nonspecific:nonspecific:tē//:state:unrestricted-human-reference|monadic-nonspecific-nonhuman-tla:monadic:nonspecific-nonhuman:nonspecific-nonhuman:nonspecific:nonspecific:tla//:state:relational-or-authorized-analogical-derived-nounstem|dyadic-first-singular-o:dyadic:1sg:specific:first:singular:/n/o:st2:consonant-initial-stem|dyadic-first-singular-silent:dyadic:1sg:specific:first:singular:/n/⎕:st2:vowel-initial-stem|dyadic-first-plural-o:dyadic:1pl:specific:first:plural:/t/o:st2:consonant-initial-stem|dyadic-first-plural-silent:dyadic:1pl:specific:first:plural:/t/⎕:st2:vowel-initial-stem|dyadic-second-singular-o:dyadic:2sg:specific:second:singular:/m/o:st2:consonant-initial-stem|dyadic-second-singular-silent:dyadic:2sg:specific:second:singular:/m/⎕:st2:vowel-initial-stem|dyadic-second-plural-o:dyadic:2pl:specific:second:plural:/am/o:st2:consonant-initial-stem|dyadic-second-plural-silent:dyadic:2pl:specific:second:plural:/am/⎕:st2:vowel-initial-stem|dyadic-third-singular-zero:dyadic:3sg:specific:third:singular-or-common:/ī/0:st1:third-singular-or-common-possessor|dyadic-third-plural-m:dyadic:3pl:specific:third:plural:/ī/m:st1:before-vowel-m-or-p|dyadic-third-plural-n:dyadic:3pl:specific:third:plural:/ī/n:st1:outside-m-environment",
         diagnostic: "lesson13-possessive-paradigm-contract-state-lcm-invalid"
       }, {
         ok: Boolean(frame?.leastCommonMultiple?.selectedCoordinate?.coordinateId)
@@ -927,7 +927,7 @@ export function createGrammarContractRegistryModule(targetObject = globalThis) {
       }, {
         ok: Array.isArray(frame?.coordinates)
           && frame.coordinates.length
-            === (frame.fixedReferent === "nonanimate" ? 9 : 50)
+            === (frame.fixedReferent === "nonanimate" ? 9 : 54)
           && frame.coordinateCount === frame.coordinates.length
           && new Set(frame.coordinates.map(coordinate => coordinate.coordinateId)).size
             === frame.coordinates.length
@@ -952,10 +952,6 @@ export function createGrammarContractRegistryModule(targetObject = globalThis) {
               "nonspecific-human": "te",
               "nonspecific-nonhuman": "tla"
             }[coordinate.possessorIdentity] || coordinate.possessorIdentity)
-            && (
-              coordinate.possessorIdentity !== "reciprocal"
-              || coordinate.subjectPerson === "third"
-            )
             && (
               frame.fixedReferent === "nonanimate"
                 ? coordinate.subjectIdentity === "third-singular-or-common"

@@ -740,7 +740,7 @@ function run(ctx = {}) {
     );
 
     s.eq(
-        "Lesson 13 restricts reciprocative possessor ne to a third-person subject",
+        "Lesson 13 keeps the third-person reciprocative possessor separate from subject person",
         [
             ctx.buildClassicalNahuatlPossessiveNncFrame("cal", {
                 subject: "1sg",
@@ -764,10 +764,10 @@ function run(ctx = {}) {
         })),
         [
             {
-                status: "blocked",
-                reason: "reciprocal-possessor-requires-third-person-subject",
-                formula: "",
-                contract: null
+                status: "authorized",
+                reason: "",
+                formula: "#ni-0+ne(cal)0-0#",
+                contract: "classical-nahuatl-possessive-nnc-possessive-paradigm-contract-frame"
             },
             {
                 status: "authorized",
@@ -854,9 +854,10 @@ function run(ctx = {}) {
                     possessorStateShapeCount: 14
                 },
                 stateShapes: 9,
-                coordinates: 50,
+                coordinates: 54,
                 subjects: ["1sg", "2sg", "3sg", "1pl", "2pl", "3pl"],
                 possessors: [
+                    "reciprocal",
                     "te",
                     "tla",
                     "1sg",
@@ -864,10 +865,9 @@ function run(ctx = {}) {
                     "2sg",
                     "2pl",
                     "3sg",
-                    "3pl",
-                    "reciprocal"
+                    "3pl"
                 ],
-                reciprocalSubjects: ["3sg", "3pl"],
+                reciprocalSubjects: ["1sg", "2sg", "3sg", "1pl", "2pl", "3pl"],
                 stringAuthority: false
             },
             nonanimate: {

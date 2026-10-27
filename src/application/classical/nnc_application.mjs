@@ -2018,12 +2018,7 @@ export function createClassicalNahuatlNncApplicationModule(
         : stemRelationValues[0] || "";
       const possessorValues = selectedState !== "possessive"
         ? Object.freeze([])
-        : Object.freeze(ORDINARY_NNC_POSSESSORS.filter((possessor) => (
-          !(
-            possessor === "reciprocal"
-            && !["3sg", "3common", "3pl"].includes(selectedSubject)
-          )
-        )));
+        : ORDINARY_NNC_POSSESSORS;
       const requestedPossessor = normalizePossessor(
         ownDataValue(selections, "possessor", ""),
       );
@@ -2543,11 +2538,6 @@ export function createClassicalNahuatlNncApplicationModule(
       blockReason = "ordinary-nnc-possessor-required";
     } else if (state === "absolutive" && normalizeText(requestedPossessor)) {
       blockReason = "ordinary-nnc-absolutive-state-has-no-possessor-operation";
-    } else if (
-      possessor === "reciprocal"
-      && !["3sg", "3common", "3pl"].includes(subject)
-    ) {
-      blockReason = "reciprocal-possessor-requires-third-person-subject";
     } else if (nonspecificHumanForm && (
       state !== "possessive"
       || !(predicateFormation === "secondary-general-use" || (predicateFormation === "source-stem" && possessor === "nonspecific-human"))
@@ -3423,12 +3413,6 @@ export function createClassicalNahuatlNncApplicationModule(
             return;
           }
           possessors.forEach((possessor) => {
-            if (
-              possessor === "reciprocal"
-              && !["3sg", "3common", "3pl"].includes(subject)
-            ) {
-              return;
-            }
             appendCoordinateOperations({ state, subject, possessor });
           });
         });

@@ -121,7 +121,7 @@ function run(ctx = {}) {
     }, {
         morph: "ne",
         role: "reciprocal",
-        conditioning: "third-person-subject-only",
+        conditioning: "third-person-reciprocal-possessor",
     });
 
     const concession = executeOwner(ctx, "ClassicalAdverbialAdjunctionConcessionIntensifier", "classical-adverbial-adjunction-concession-intensifier", "claim-p4765", "p4765-the-collocation-is-made-more-intense-by-adding-the");

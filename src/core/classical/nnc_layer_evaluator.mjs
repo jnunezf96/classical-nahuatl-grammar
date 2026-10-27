@@ -2031,7 +2031,7 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
         st1: "",
         st2: "",
         possessiveCaseLocation: "state",
-        conditioning: "third-person-subject-only"
+        conditioning: "third-person-reciprocal-possessor"
       }, {
         identity: "monadic-nonspecific-human-te",
         stateArity: "monadic",
@@ -2370,12 +2370,7 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
         "nonspecific-nonhuman": "tla"
       };
       const coordinates = subjectIdentities.flatMap(subjectIdentity => (
-        applicablePossessorStateShapes
-          .filter(stateShape => (
-            stateShape.possessor !== "reciprocal"
-            || subjectIdentity.person === "third"
-          ))
-          .map(stateShape => ({
+        applicablePossessorStateShapes.map(stateShape => ({
             kind: "classical-nahuatl-possessive-nnc-possessive-paradigm-coordinate-spec",
             version: 1,
             coordinateId: `${subjectIdentity.identity}:${stateShape.identity}`,
@@ -2493,12 +2488,6 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
           carrier: carriers[normalizedPossessor],
           possessorRole
         }];
-        if (
-          normalizedPossessor === "reciprocal"
-          && !["3sg", "3common", "3pl"].includes(normalizedSubject)
-        ) {
-          blockReason = "reciprocal-possessor-requires-third-person-subject";
-        }
       } else if (["1sg", "2sg", "3sg", "3common", "1pl", "2pl", "3pl"].includes(normalizedPossessor)) {
         arity = "dyadic";
         possessorRole = "specific";
