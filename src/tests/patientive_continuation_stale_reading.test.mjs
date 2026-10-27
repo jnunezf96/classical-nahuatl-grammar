@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import vm from 'node:vm';
 import {readFileSync} from 'node:fs';
+import {createOrganicPossessionStateCoordinator} from '../application/classical/organic_possession_choice_coordination.mjs';
 
 const rendering=readFileSync(new URL('../ui/rendering/rendering.mjs',import.meta.url),'utf8');
 const marker=rendering.indexOf('"[data-deverbal-characteristic-reading]"');
@@ -12,7 +13,7 @@ function setup(selectedFamily){
  const readingWrapper={hidden:false,setAttribute(){},querySelectorAll:()=>[reading]};
  const stateWrapper={hidden:false,setAttribute(){}};
  const state={value:'absolutive',disabled:false,dataset:{},closest:()=>stateWrapper};
- const ctx=vm.createContext({active:true,activeSourceUnit:'nnc',patientiveRoute:true,patientiveFamily:'characteristic-property',selectedFamily,getClassicalNominalConstructionControlValue:()=> 'organic-possession',targetObject:{document:{querySelectorAll:()=>[readingWrapper],getElementById:()=>state}}});
+ const ctx=vm.createContext({coordinateOrganicPossessionState:createOrganicPossessionStateCoordinator(),retainedNominalSource:null,active:true,activeSourceUnit:'nnc',patientiveRoute:true,patientiveFamily:'characteristic-property',selectedFamily,getClassicalNominalConstructionControlValue:()=> 'organic-possession',targetObject:{document:{querySelectorAll:()=>[readingWrapper],getElementById:()=>state}}});
  return{ctx,reading,readingWrapper,state,stateWrapper,run:()=>vm.runInContext(`{${rendering.slice(start,end)}}`,ctx)};
 }
 test('inherited characteristic reading cannot force compound continuation State',()=>{

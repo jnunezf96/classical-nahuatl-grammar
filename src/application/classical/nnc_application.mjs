@@ -2430,6 +2430,7 @@ export function createClassicalNahuatlNncApplicationModule(
     const requestedPluralConnector = normalizeChoice(
       ownDataValue(selections, "pluralConnector", ""),
     );
+    const currentPluralConnectors = getPluralConnectorsForStemRelation(sourceFrame, stemFormation);
     const pluralConnector = (
       state === "absolutive"
       && subject.endsWith("pl")
@@ -2437,8 +2438,8 @@ export function createClassicalNahuatlNncApplicationModule(
       ? normalizeChoice(
         typeof issuedPluralConnector === "undefined"
           ? requestedPluralConnector
-            || (sourceFrame.pluralConnectorOptions.length === 1
-              ? sourceFrame.pluralConnectorOptions[0]
+            || (currentPluralConnectors.length === 1
+              ? currentPluralConnectors[0]
               : "")
           : issuedPluralConnector,
       )
@@ -2575,7 +2576,7 @@ export function createClassicalNahuatlNncApplicationModule(
     } else if (
       state === "absolutive"
       && subject.endsWith("pl")
-      && !sourceFrame.pluralConnectorOptions.includes(pluralConnector)
+      && !currentPluralConnectors.includes(pluralConnector)
     ) {
       blockReason = "ordinary-nnc-plural-connector-not-lexically-authorized";
     } else if (useShape !== sourceFrame.useShape) {

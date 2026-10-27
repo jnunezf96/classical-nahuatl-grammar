@@ -1,17 +1,16 @@
-# Grammar OS v1.2.59 release
+# Grammar OS v1.2.60 release
 
-Release name: **Coordinated Source Analysis**
+Release name: **Coordinated Participant Choices**
 
-Browser build: **20261026-source-choices-78**
+Browser build: **20261026-participant-choices-79**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Source-class, nominal-class, irregular-cell and personal-name choices share application projections of canonical owner data.
-- The selected singular ti alternative remains staged when a different cell makes it inactive, and returns when licensed again.
-- Personal names display canonical defaults and preserve incompatible explicit source-family requests for correction.
-- Existing Source Apply, particle coordination, exact parents and panels are retained.
+- Participant, possession and clause choices are coordinated with the canonical grammar owners.
+- Eligible inactive selections are retained, and incompatible active selections remain visible for correction.
+- Source Apply, explicit Make, exact parents and existing panels are retained.
 
 ## Review scope and current limits
 
@@ -38,7 +37,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.59/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.60/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.

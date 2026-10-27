@@ -1,5 +1,11 @@
 # Version History
 
+## v1.2.60 — Coordinated Participant Choices
+
+- Coordinates participant, possession and clause choices through their existing grammar owners.
+- Preserves eligible inactive choices and requires correction of incompatible active requests.
+- Keeps explicit Source and Make actions, exact parents and existing panels.
+
 ## v1.2.59 — Coordinated Source Analysis
 
 - Centralizes Source analysis choice projections while retaining canonical grammar authority.

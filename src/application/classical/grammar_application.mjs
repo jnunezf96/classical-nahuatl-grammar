@@ -6820,6 +6820,7 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
 
   function getCanonicalNncBindingChoiceDescriptors(
     selectionFrame = null,
+    callerSelections = {},
   ) {
     if (!selectionFrame) return Object.freeze([]);
     const descriptor = (
@@ -6948,6 +6949,9 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
       ];
     return Object.freeze([...shared, ...familyDescriptors].filter(
       candidate => candidate.values.length > 1
+        || candidate.choiceId === "pluralConnector" && candidate.values.length === 1
+          && Boolean(callerSelections.pluralConnector)
+          && !candidate.values.includes(callerSelections.pluralConnector)
         || candidate.choiceId === "singularConnector" && candidate.values.length === 1
           && selectionFrame.sourceFrame?.generalUseOnly === true,
     ));
@@ -7097,7 +7101,7 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
     operationValidator = null,
   } = {}) {
     const descriptors = getCanonicalNncBindingChoiceDescriptors(
-      selectionFrame,
+      selectionFrame, callerSelections,
     );
     const entries = descriptors.map((choiceDescriptor) => {
       const options = Object.freeze(choiceDescriptor.values.map((value) => {
@@ -7256,12 +7260,16 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
     const requiredOptions = requiredChoiceId
       ? choiceOptionProjection[requiredChoiceId] || []
       : [];
+    const recoverableIncompatibleConnector = requiredChoiceId === "pluralConnector"
+      && typeof callerSelections.pluralConnector === "string"
+      && exactSource.pluralConnectorOptions?.includes(callerSelections.pluralConnector)
+      && !selectionFrame.pluralConnectorValues?.includes(callerSelections.pluralConnector);
     const choiceCanCompleteOperation = Boolean(
       requiredChoiceId
-      && !Object.prototype.hasOwnProperty.call(
+      && (recoverableIncompatibleConnector || !Object.prototype.hasOwnProperty.call(
         callerSelections,
         requiredChoiceId,
-      )
+      ))
       && requiredOptions.some(option => (
         option.availabilityStatus === "available"
       )),
@@ -7410,7 +7418,12 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
     if (!projectedChoiceEntries.every(([choiceId, options]) => (
       Object.isFrozen(options)
       && (options.length > 1 || choiceId === "singularConnector" && options.length === 1
-        && frame.exactSourceFrame?.generalUseOnly === true)
+        && frame.exactSourceFrame?.generalUseOnly === true
+        || choiceId === "pluralConnector" && options.length === 1
+          && frame.bindingStatus === "choices-required"
+          && frame.requiredChoiceIds.includes("pluralConnector")
+          && frame.exactSourceFrame?.pluralConnectorOptions?.includes(frame.callerSelections.pluralConnector)
+          && !frame.ownerSelectionFrame?.pluralConnectorValues?.includes(frame.callerSelections.pluralConnector))
       && new Set(options.map(option => option.optionId)).size
         === options.length
       && options.every(option => (

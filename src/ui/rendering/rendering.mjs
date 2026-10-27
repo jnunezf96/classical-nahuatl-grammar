@@ -1,4 +1,10 @@
 import {resolveVncSourceClassChoice,resolveNncSourceClassValues,resolveIrregularSourceAlternatives,resolvePersonalNameSourceChoice,resolveCoarseNominalSourceFacts,resolveNncSourceChoiceDomain,resolveIrregularSourceRequest} from "../../application/classical/source_choice_coordination.mjs?sourceChoices=20261026-1";
+import {createOrganicPossessionStateCoordinator} from "../../application/classical/organic_possession_choice_coordination.mjs?organicChoices=20261026-1";
+import {stageOrdinaryNncDependencies} from "../../application/classical/participant_choice_coordination.mjs?participantChoices=20261026-1";
+import {resolveReflexiveInterpretationChoice,resolveRejectedReflexiveDraft} from "../../application/classical/reflexive_choice_coordination.mjs?participantChoices=20261026-1";
+import {createVncTenseCoordinator,createVncContinuationTenseCoordinator,buildProspectiveVncTenseFrame} from "../../application/classical/vnc_tense_choice_coordination.mjs?participantChoices=20261026-1";
+import {createApplicativeChoiceCoordinator} from "../../application/classical/applicative_choice_coordination.mjs?participantChoices=20261026-1";
+import {createFiniteConnectorCoordinator,createFiniteConnectorContinuationCoordinator} from "../../application/classical/finite_connector_choice_coordination.mjs?participantChoices=20261026-1";
 import {clauseMarkerResultLabel} from '../composition/clause_composition.mjs?reasonPresentation=20261026-1';
 import {syncFutureObjectChoices} from '../composition/future_object_choices.mjs?futureObject=20261024-3';
 import {getDoubleNucleusEditChildren} from '../../application/classical/double_nucleus_edit.mjs?nucleusEdit=20261024-9';
@@ -18501,6 +18507,41 @@ export function createUiRenderingApi(targetObject = globalThis) {
       }
       return control.value || "";
     }
+    function syncClassicalObjectMeaningChoice(state = {}) {
+      const control = targetObject.document?.getElementById?.("classical-rule-logic-object-interpretation");
+      if (!control) return null;
+      const meaning = resolveReflexiveInterpretationChoice(targetObject, {
+        valence:state.valence || "", subject:state.subject || "", stem:state.stem || "",
+        requestedValue:control.value,
+      });
+      if (["licensed", "incompatible"].includes(meaning.state)) {
+        for (const option of Array.from(control.options || [])) {
+          option.disabled = !meaning.values.includes(option.value);
+          option.hidden = false;
+        }
+      } else if (meaning.state === "inactive") {
+        for (const option of Array.from(control.options || [])) option.disabled = false;
+      }
+      control.dataset.classicalObjectMeaningState = meaning.state;
+      return meaning;
+    }
+    function syncClassicalRejectedVncDraft(binding = null) {
+      const frame = binding?.ownerBindingFrame;
+      const draft = binding?.family === "vnc-continuation"
+        ? resolveRejectedReflexiveDraft(targetObject, binding.exactResult, frame) : null;
+      if (!draft?.subject) return false;
+      const subject = getClassicalRuleLogicVncSubjectFrame({subject:draft.subject});
+      syncClassicalVncSubjectFeatureControls(subject);
+      const scalar = targetObject.document?.getElementById?.("classical-rule-logic-subject");
+      if (scalar) scalar.value = draft.subject;
+      const meaning = targetObject.document?.getElementById?.("classical-rule-logic-object-interpretation");
+      if (meaning && Array.from(meaning.options || []).some(option => option.value === draft.objectInterpretation)) {
+        meaning.value = draft.objectInterpretation;
+      }
+      syncClassicalObjectMeaningChoice({valence:frame.continuationSourceProjection?.sourceValence,
+        stem:frame.continuationSourceProjection?.sourceStem, subject:draft.subject});
+      return true;
+    }
     function syncClassicalRuleLogicMoodBoundControlOptions(surfaceFrame = null) {
       if (typeof targetObject.document === "undefined" || !surfaceFrame?.state) {
         return null;
@@ -20733,6 +20774,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       }
       const moodBoundContract = syncClassicalRuleLogicMoodBoundControlOptions(surfaceFrame);
       const lesson11TenseContract = syncClassicalRuleLogicLesson11TenseOptions(surfaceFrame, moodBoundContract);
+      syncClassicalObjectMeaningChoice(surfaceFrame.state || {});
       const allowedVncVoices = surfaceFrame.state?.allowedVncVoices || ["active"];
       applyClassicalRuleLogicSelectOptionAvailability("classical-rule-logic-vnc-voice", allowedVncVoices, "active");
       const allowedSourceVoices = surfaceFrame.state?.allowedSourceVoices || ["active"];
@@ -26862,6 +26904,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       control.disabled = !visible;
     }
 
+    const coordinateOrganicPossessionState = createOrganicPossessionStateCoordinator();
     function syncClassicalDeverbalNncControls(
       selectedConstruction = "",
       frame = null
@@ -28066,8 +28109,16 @@ export function createUiRenderingApi(targetObject = globalThis) {
         && patientiveFamily === "characteristic-property"
         && characteristicReading === "organic-possession";
       if (nncStateControl && nncStateWrapper) {
+        coordinateOrganicPossessionState(nncStateControl, {
+          active: organicStateRuleActive,
+          restoreEligible: active && activeSourceUnit === "nnc"
+            && selectedFamily === "patientive"
+            && patientiveFamily === "characteristic-property",
+          sourceIdentity: retainedNominalSource?.exactResult
+            || targetObject.ClassicalSourcePartsCommittedSignature || null,
+          bindingId: retainedNominalSource?.selectedBindingId || "",
+        });
         if (organicStateRuleActive) {
-          nncStateControl.value = "possessive";
           nncStateControl.disabled = true;
           nncStateControl.dataset.classicalDerivedOrganicPossessionState =
             "possessive-only";
@@ -39206,6 +39257,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       "nnc:ordinary/sentence-force": "#classical-rule-logic-sentence-surface",
       "nnc:ordinary/stem-relation": "#classical-rule-logic-nnc-stem-relation",
       "nnc:ordinary/subject-person-number": "#classical-rule-logic-nnc-subject-person, #classical-rule-logic-nnc-subject-number",
+      "vnc:application/object-interpretation": "#classical-rule-logic-object-interpretation",
       "nnc:personal-name/name-source-family": "#classical-personal-name-source-family",
       "nnc:personal-name/outer-subject": "#classical-rule-logic-nnc-subject-person, #classical-rule-logic-nnc-subject-number",
       "nnc:personal-name/reranking": "#classical-personal-name-reranking",
@@ -40815,10 +40867,23 @@ export function createUiRenderingApi(targetObject = globalThis) {
           String(option.optionId || "") === acceptedSelection
           && option.availabilityStatus === "available"
         ))) select.value = acceptedSelection;
+        else if (binding.operationId === "nnc:ordinary" && choiceId === "pluralConnector"
+          && acceptedSelection && requiredChoiceIds.includes("pluralConnector")) {
+          const invalid = targetObject.document.createElement("option");
+          invalid.value = acceptedSelection;
+          invalid.textContent = `${acceptedSelection} · choose a compatible ending`;
+          invalid.disabled = true;
+          select.appendChild(invalid);
+          select.value = acceptedSelection;
+        }
         select.addEventListener("change", () => {
           const active = getActiveClassicalGrammarTypedSourceOperationBinding();
           const selectedValue = String(select.value || "").trim();
           if (!active) return;
+          if ((active.operationId === "nnc:ordinary"
+            || active.operationId === "vnc:application" && ["applicativeObjectKind",
+              "applicativeObjectPerson", "requestedDerivation", "finiteSingularConnector"].includes(choiceId))
+            && (active !== binding || select.isConnected === false)) return;
           const nextSelections = {
             ...(active.callerSelections || {}),
           };
@@ -40884,14 +40949,30 @@ export function createUiRenderingApi(targetObject = globalThis) {
               delete nextSelections.subjectHumanness;
             }
           }
+          const ordinaryStage = active.operationId === "nnc:ordinary"
+            ? stageOrdinaryNncDependencies(targetObject, active.exactSource, nextSelections, {
+              choiceId, previousMemory: ClassicalOrdinaryNncChoiceMemory.get(active),
+              previousSelections: active.callerSelections,
+              explicitValidated: (getClassicalOrdinaryNncNextChoiceProjection(active)[choiceId] || []).some(option => String(option.optionId) === selectedValue
+                && option.availabilityStatus === "available"),
+            }) : null;
+          if (ordinaryStage?.invalid) return;
+          const applicativeStage = active.operationId === "vnc:application"
+            && ["applicativeObjectKind", "applicativeObjectPerson", "requestedDerivation"].includes(choiceId)
+            ? ClassicalApplicativeChoices.prepare({binding:active, selections:nextSelections, choiceId,
+              explicitValidated:ownerOptions.some(option => String(option.optionId) === selectedValue
+                && option.availabilityStatus === "available")}) : null;
+          if (active.operationId === "vnc:application"
+            && ["applicativeObjectKind", "applicativeObjectPerson", "requestedDerivation"].includes(choiceId)
+            && !applicativeStage) return;
           const bindingSelections = active.operationId === "nnc:ordinary"
             ? getClassicalOrdinaryNncActiveCallerSelections(
-              active.exactSource, nextSelections
+              active.exactSource, ordinaryStage.active, {preserveDependent:true}
             )
             : active.operationId === "nnc:pronominal" && ["subject", "animacy", "predicatePluralization", "compoundMatrix", "specialHumanUse"].includes(choiceId)
               ? getClassicalPronominalSubjectTransitionSelections(active, nextSelections, choiceId)
-              : nextSelections;
-          const nextBinding = targetObject
+              : applicativeStage?.selections || nextSelections;
+          let nextBinding = targetObject
             .issueClassicalGrammarTypedSourceOperationBindingFrame?.(
               active.navigator,
               active.operationId,
@@ -40909,7 +40990,21 @@ export function createUiRenderingApi(targetObject = globalThis) {
             syncClassicalCapabilityApplyOperationState();
             return;
           }
+          if (active.operationId === "vnc:application") {
+            nextBinding = ClassicalFiniteConnectorChoices.handoff(active,nextBinding,{
+              choiceId,value:selectedValue,explicitValidated:ownerOptions.some(option =>
+                String(option.optionId) === selectedValue && option.availabilityStatus === "available"),
+              issue:selections => targetObject.issueClassicalGrammarTypedSourceOperationBindingFrame?.(
+                active.navigator, active.operationId, selections),
+            }) || nextBinding;
+          }
           ActiveClassicalGrammarTypedSourceOperationBinding = nextBinding;
+          if (ordinaryStage?.memory) ClassicalOrdinaryNncChoiceMemory.set(nextBinding, ordinaryStage.memory);
+          if (active.operationId === "vnc:application") {
+            ClassicalVncTenseChoices.carry(active, nextBinding);
+            const committed = applicativeStage && ClassicalApplicativeChoices.commit(active, nextBinding, applicativeStage.receipt);
+            if (!committed) ClassicalApplicativeChoices.carry(active, nextBinding);
+          }
           if (active.operationId === "nnc:ordinary" && choiceId === "singularConnector") {
             const mirror = targetObject.document.getElementById("classical-rule-logic-nnc-singular-connector");
             if (mirror) mirror.value = selectedValue;
@@ -40934,7 +41029,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
               if (scalar) scalar.value = subject;
             }
           }
-          const signature = getClassicalTypedSourceSelectionSignature(bindingSelections);
+          const signature = getClassicalTypedSourceSelectionSignature(nextBinding.callerSelections || bindingSelections);
           if (signature !== null) {
             ClassicalTypedSourceBindingSelectionSignatures.set(nextBinding, signature);
           }
@@ -41144,9 +41239,16 @@ export function createUiRenderingApi(targetObject = globalThis) {
       return Object.freeze(retained);
     }
 
+    const ClassicalOrdinaryNncChoiceMemory = new WeakMap();
+    const ClassicalVncTenseChoices = createVncTenseCoordinator(targetObject);
+    const ClassicalVncContinuationTenseChoices = createVncContinuationTenseCoordinator(targetObject);
+    const ClassicalApplicativeChoices = createApplicativeChoiceCoordinator(targetObject);
+    const ClassicalFiniteConnectorChoices = createFiniteConnectorCoordinator(targetObject);
+    const ClassicalFiniteConnectorContinuationChoices = createFiniteConnectorContinuationCoordinator(targetObject);
     function getClassicalOrdinaryNncActiveCallerSelections(
       exactSource = null,
-      selections = {}
+      selections = {},
+      {preserveDependent = false} = {}
     ) {
       const activeSelections = { ...selections };
       const selection = targetObject.getCanonicalNncOperationSelectionFrame?.(
@@ -41165,10 +41267,12 @@ export function createUiRenderingApi(targetObject = globalThis) {
         // An inactive dependent field is absent from this position. Keeping
         // an old empty possessor would make the next State probe reject its
         // otherwise legal possessive move.
-        if (!selection.possessorValues?.length) delete activeSelections.possessor;
-        if (!selection.pluralConnectorValues?.length) delete activeSelections.pluralConnector;
-        if (!selection.singularConnectorValues?.length) delete activeSelections.singularConnector;
-        if (!selection.possessorReduplicationAvailable) delete activeSelections.possessorReduplication;
+        if (!preserveDependent) {
+          if (!selection.possessorValues?.length) delete activeSelections.possessor;
+          if (!selection.pluralConnectorValues?.length) delete activeSelections.pluralConnector;
+          if (!selection.singularConnectorValues?.length) delete activeSelections.singularConnector;
+          if (!selection.possessorReduplicationAvailable) delete activeSelections.possessorReduplication;
+        }
       }
       return Object.freeze(activeSelections);
     }
@@ -41243,7 +41347,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
               }
             }
           }
-          if (Object.keys(candidate).every(key => Object.hasOwn(active, key)
+          if (!["subject", "stemFormation"].includes(choiceId) && Object.keys(candidate).every(key => Object.hasOwn(active, key)
             && active[key] === candidate[key])) return option;
           const next = targetObject.issueClassicalGrammarTypedSourceOperationBindingFrame?.(
             binding.navigator, binding.operationId, active
@@ -41255,6 +41359,24 @@ export function createUiRenderingApi(targetObject = globalThis) {
             && candidateOption.availabilityStatus === "available");
           if (nextOption) return nextOption;
           const selection = next.ownerBindingFrame?.ownerSelectionFrame;
+          if (choiceId === "subject" && next.bindingStatus === "choices-required"
+            && next.requiredChoiceIds?.includes("pluralConnector")
+            && selection?.authorizationStatus === "authorized"
+            && selection.sourceFrame === binding.exactSource
+            && selection.selectedSubject === option.optionId
+            && selection.pluralConnectorValues?.length > 1) {
+            return Object.freeze({...option, availabilityStatus:"available", blockReason:"",
+              ownerNextBindingStatus:next.bindingStatus, requiresDependentChoice:"pluralConnector"});
+          }
+          if (choiceId === "stemFormation" && next.bindingStatus === "choices-required"
+            && next.requiredChoiceIds?.includes("pluralConnector")
+            && selection?.authorizationStatus === "authorized"
+            && selection.sourceFrame === binding.exactSource
+            && selection.selectedStemRelation === option.optionId
+            && selection.pluralConnectorValues?.length) {
+            return Object.freeze({...option, availabilityStatus:"available", blockReason:"",
+              ownerNextBindingStatus:next.bindingStatus, requiresDependentChoice:"pluralConnector"});
+          }
           if (choiceId === "state" && next.bindingStatus === "choices-required"
             && selection?.authorizationStatus === "authorized"
             && selection.sourceFrame === binding.exactSource
@@ -41611,6 +41733,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       applicativeObjectPerson: "classical-rule-logic-applicative-object",
       requestedVoice: "classical-rule-logic-vnc-voice",
       objectSelection: "classical-rule-logic-object",
+      objectInterpretation: "classical-rule-logic-object-interpretation",
       operations: "classical-rule-logic-voice-layer-2",
       lateOperation: "classical-rule-logic-late-operation",
       derivationOptionId: "classical-rule-logic-derivation-option",
@@ -41914,8 +42037,43 @@ export function createUiRenderingApi(targetObject = globalThis) {
     }
 
     function getClassicalVncContinuationBindingSelections(
-      binding = null
+      binding = null, {editedControl = null, ignoreRejected = false, subjectOverride = ""} = {}
     ) {
+      const rejectedDraft = !ignoreRejected && binding?.family === "vnc-continuation"
+        ? resolveRejectedReflexiveDraft(targetObject, binding.exactResult, binding.ownerBindingFrame) : null;
+      if (rejectedDraft) {
+        let intent = null;
+        if (editedControl?.id === "classical-rule-logic-object-interpretation") {
+          intent = {choiceId:"objectInterpretation", value:editedControl.value};
+        } else if (String(editedControl?.id || "").startsWith("classical-rule-logic-vnc-subject-")) {
+          const axis = editedControl.id.replace("classical-rule-logic-vnc-subject-", "");
+          const override = {person:"subjectPerson",number:"subjectNumber",animacy:"subjectAnimacy",humanness:"subjectHumanness"}[axis];
+          if (override) {
+            const participant = getClassicalRuleLogicVncSubjectFrame({subject:rejectedDraft.subject, [override]:editedControl.value});
+            intent = {choiceId:"subject", value:participant.category};
+          }
+        }
+        if (intent) return resolveRejectedReflexiveDraft(targetObject, binding.exactResult, binding.ownerBindingFrame, intent)
+          || rejectedDraft;
+        if (editedControl) {
+          const fresh = getClassicalVncContinuationBindingSelections(binding, {ignoreRejected:true, subjectOverride:rejectedDraft.subject});
+          const draft = {...rejectedDraft};
+          const axes = ["mood", "tense", "requestedDerivation", "requestedVoice", "derivationOptionId", "nonactiveOptionId",
+            "applicativeObjectKind", "applicativeObjectPerson", "causativeObjectKind", "causativeSpecificShuntlineRealization",
+            "finiteSingularConnector", "admonitivePluralEnding", "tlaFusion", "sentenceType", "negative", "sentenceAntecessive",
+            "introductoryParticle", "introductoryModifier", "prefaceParticle", "directionalPrefix", "sentenceParticle",
+            "sentenceParticleHonorific", "particleCombination", "sentence-adverbial-id"]
+            .filter(id => getClassicalCapabilityBindingControlsForChoice(id).includes(editedControl));
+          for (const id of axes) if (Object.hasOwn(fresh,id)) draft[id] = fresh[id];
+          if (axes.some(id => ["mood", "tense", "sentenceType", "negative", "sentenceAntecessive", "introductoryParticle",
+            "introductoryModifier", "prefaceParticle", "directionalPrefix", "sentenceParticle", "sentenceParticleHonorific",
+            "particleCombination", "sentence-adverbial-id"].includes(id))) {
+            draft.mood = fresh.mood; draft.tense = fresh.tense; draft.sentenceOptions = fresh.sentenceOptions;
+          }
+          return Object.freeze(draft);
+        }
+        return rejectedDraft;
+      }
       const carrier = binding?.exactSource || (ActiveClassicalGrammarCapabilityNavigator?.inputRole === "exact-owner-issued-source"
         ? ActiveClassicalGrammarCapabilityNavigator.exactSource : null);
       if (binding?.operationId === "vnc:application"
@@ -41980,11 +42138,17 @@ export function createUiRenderingApi(targetObject = globalThis) {
         const causerControl = targetObject.document?.getElementById?.(
           "classical-rule-logic-causative-result-subject"
         );
-        const subject = requestedDerivation === "causative"
+        let subject = subjectOverride || (requestedDerivation === "causative"
           && ActiveClassicalGrammarCapabilityNavigator?.inputRole === "exact-owner-issued-source"
           && causerControl && causerControl.disabled !== true
           ? value("classical-rule-logic-causative-result-subject", "3sg")
-          : value("classical-rule-logic-subject", "3sg");
+          : value("classical-rule-logic-subject", "3sg"));
+        if (binding?.family === "vnc-continuation"
+          && String(editedControl?.id || "").startsWith("classical-rule-logic-vnc-subject-")) {
+          const axis = editedControl.id.replace("classical-rule-logic-vnc-subject-", "");
+          const key = {person:"subjectPerson",number:"subjectNumber",animacy:"subjectAnimacy",humanness:"subjectHumanness"}[axis];
+          if (key) subject = getClassicalRuleLogicVncSubjectFrame({subject, [key]:editedControl.value}).category;
+        }
         const intro = draft.introductoryParticle === "none" ? "" : draft.introductoryParticle;
         const modifier = draft.introductoryModifier === "none" ? "" : draft.introductoryModifier;
         const selectedUse = value("classical-rule-logic-optative-use", "auto");
@@ -42043,6 +42207,12 @@ export function createUiRenderingApi(targetObject = globalThis) {
               ? addedObject.objectPerson : "",
           } : {}),
           ...(connector ? {finiteSingularConnector: connector} : {}),
+          ...((carrier?.sourceValence || binding?.ownerBindingFrame?.ownerRequest?.sourceValence
+            || binding?.exactResult?.normalizedRequest?.sourceValence
+            || value("classical-rule-logic-valence")) === "mainline-reflexive"
+            && requestedDerivation === "direct"
+            && value("classical-rule-logic-vnc-voice", "active") === "active"
+            ? {objectInterpretation:value("classical-rule-logic-object-interpretation", "reflexive")} : {}),
           subject,
           ...(binding?.ownerBindingFrame?.subjectReferenceAuthoringAllowed === true
             && requestedDerivation === "direct"
@@ -44164,6 +44334,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
       bindingChoiceIds.forEach(choiceId => {
         getClassicalCapabilityBindingControlsForChoice(choiceId)
           .forEach(control => {
+            // Derivation buttons already stage through their scheduled native
+            // handler. An immediate second listener stages the old selection
+            // and invalidates that handler's current-position guard.
+            if (control?.hasAttribute?.("data-derivation-type")) return;
             if (
               !control
               || control.dataset
@@ -45824,6 +45998,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       syncClassicalPurposiveCoordinateControls();
       syncClassicalSentenceConjunctorPicker(binding);
       syncClassicalStemLayerChoices();
+      syncClassicalRejectedVncDraft(binding);
       return true;
     }
 
@@ -46588,7 +46763,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           "classical-rule-logic-sentence-particle", "classical-rule-logic-sentence-particle-honorific", "classical-rule-logic-sentence-adverbial",
           "classical-rule-logic-particle-combination-shortcut"].includes(id);
       const verbChoice = verb && ["subject", "vnc-subject-person", "vnc-subject-animacy",
-        "vnc-subject-humanness", "vnc-subject-number", "mood", "tense", "vnc-voice", "object",
+        "vnc-subject-humanness", "vnc-subject-number", "mood", "tense", "vnc-voice", "object", "object-interpretation",
         "derivation", "derivation-option", "nonactive-family", "causative-result-subject",
         "causative-causee-valence", "causative-specific-shuntline-realization", "applicative-object", "sentence-surface", "optative-use", "polarity",
         "prefix-stack", "directional", "introductory-particle", "before-introductory-particle",
@@ -47166,11 +47341,21 @@ export function createUiRenderingApi(targetObject = globalThis) {
           : choices && editedKeys
           ? Object.fromEntries(editedKeys.filter(key => Object.hasOwn(choices, key))
             .map(key => [key, choices[key]])) : choices;
+        const ordinaryStage = editedChoices && typedSourceBinding.operationId === "nnc:ordinary"
+          ? stageOrdinaryNncDependencies(targetObject, typedSourceBinding.exactSource,
+            {...(typedSourceBinding.callerSelections || {}), ...editedChoices}, {
+              choiceId: editedKeys?.find(key => Object.hasOwn(editedChoices, key)) || "",
+              previousMemory: ClassicalOrdinaryNncChoiceMemory.get(typedSourceBinding),
+              previousSelections: typedSourceBinding.callerSelections,
+              explicitValidated: Array.from(control.options || []).some(option =>
+                option.value === control.value && !option.disabled && !option.hidden),
+            }) : null;
+        if (ordinaryStage?.invalid) return true;
         const nextSelections = editedChoices
           ? typedSourceBinding.operationId === "nnc:ordinary"
             ? getClassicalOrdinaryNncActiveCallerSelections(
               typedSourceBinding.exactSource,
-              {...(typedSourceBinding.callerSelections || {}), ...editedChoices}
+              ordinaryStage.active, {preserveDependent:true}
             )
             : control.id === "classical-rule-logic-nnc-special-human-use"
               ? getClassicalPronominalSpecialHumanTransitionSelections(typedSourceBinding,
@@ -47183,6 +47368,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           ? stageClassicalGrammarTypedSourceOperationBinding(typedSourceBinding.operationId, nextSelections,
             {renewExecution: !editedKeys})
           : null;
+        if (staged && ordinaryStage?.memory) ClassicalOrdinaryNncChoiceMemory.set(staged, ordinaryStage.memory);
         if (staged) {
           syncClassicalRuleLogicControlsForSurfaceFrame({
             basalUnit: "nnc",
@@ -47212,7 +47398,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           && (targetObject.isClassicalNahuatlImperfectiveVncSourceFrame?.(typedSourceBinding.exactSource) === true
             && typedSourceBinding.exactSource.sourceValence === "specific-projective"
             || targetObject.isClassicalNahuatlAnalyticalVncSourceFrame?.(typedSourceBinding.exactSource) === true) || [
-          "subject", "mood", "tense", "admonitivePluralEnding", "finiteSingularConnector", "irregularStemChoice", "requestedDerivation", "requestedVoice",
+          "subject", "mood", "tense", "objectInterpretation", "admonitivePluralEnding", "finiteSingularConnector", "irregularStemChoice", "requestedDerivation", "requestedVoice",
           "derivationOptionId", "nonactiveOptionId", "applicativeObjectKind",
           "causativeObjectKind", "causativeSpecificShuntlineRealization",
           "sentenceType", "negative", "sentenceAntecessive", "tlaFusion",
@@ -47244,7 +47430,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         const nextSelections = { ...(typedSourceBinding.callerSelections || {}) };
         // The existing Result can still display the former derivation. An edit
         // changes its own coordinate, not every field in that old presentation.
-        const editedChoiceIds = ["subject", "mood", "tense", "admonitivePluralEnding", "finiteSingularConnector", "irregularStemChoice", "requestedDerivation", "requestedVoice",
+        const editedChoiceIds = ["subject", "mood", "tense", "objectInterpretation", "admonitivePluralEnding", "finiteSingularConnector", "irregularStemChoice", "requestedDerivation", "requestedVoice",
           "derivationOptionId", "nonactiveOptionId", "applicativeObjectKind", "applicativeObjectPerson", "objectSelection",
           "causativeObjectKind", "causativeSpecificShuntlineRealization", "sentenceType", "negative",
           "sentenceAntecessive", "tlaFusion", "introductoryParticle", "introductoryModifier",
@@ -47307,15 +47493,32 @@ export function createUiRenderingApi(targetObject = globalThis) {
             delete nextSelections.causativeObjectKind; delete nextSelections.causativeSpecificShuntlineRealization;
           }
         }
+        let tenseProposal = null;
         if (editedChoiceIds.some(id => ["subject", "mood", "tense", "sentenceType", "negative",
           "sentenceAntecessive", "introductoryParticle", "introductoryModifier", "prefaceParticle"].includes(id))) {
           // Typed Source edits use the same dependent domains as Result
           // continuations. Project the displayed fallback before staging it;
           // the accepted Result remains untouched until explicit Make.
-          const pendingSurfaceFrame = getClassicalCurrentGrammarControlSurfaceFrame();
+          const pendingSurfaceFrame = buildProspectiveVncTenseFrame(targetObject,
+            getClassicalCurrentGrammarControlSurfaceFrame(), typedSourceBinding, visibleSelections);
           const moodContract = syncClassicalRuleLogicMoodBoundControlOptions(pendingSurfaceFrame);
           syncClassicalRuleLogicLesson11TenseOptions(pendingSurfaceFrame, moodContract);
-          const projectedSelections = getClassicalVncContinuationBindingSelections(typedSourceBinding);
+          let projectedSelections = getClassicalVncContinuationBindingSelections(typedSourceBinding);
+          const tenseControl = targetObject.document?.getElementById?.("classical-rule-logic-tense");
+          if (editedChoiceIds.includes("mood") || editedChoiceIds.includes("tense")) {
+            const availableTenses = Array.from(tenseControl?.options || [])
+              .filter(option => !option.disabled && !option.hidden).map(option => option.value);
+            tenseProposal = ClassicalVncTenseChoices.prepare({binding:typedSourceBinding,
+              choiceId:editedChoiceIds.includes("tense") ? "tense" : "mood",
+              mood:projectedSelections.mood, tense:projectedSelections.tense, availableTenses,
+              explicitValidated:editedChoiceIds.includes("tense") && control.isConnected !== false
+                && Array.from(control.options || []).some(option => option.value === control.value && !option.disabled && !option.hidden),
+            });
+            if (tenseProposal?.restored && tenseControl) {
+              tenseControl.value = tenseProposal.tense;
+              projectedSelections = getClassicalVncContinuationBindingSelections(typedSourceBinding);
+            }
+          }
           nextSelections.mood = projectedSelections.mood;
           nextSelections.tense = projectedSelections.tense;
           nextSelections.sentenceOptions = projectedSelections.sentenceOptions;
@@ -47325,7 +47528,42 @@ export function createUiRenderingApi(targetObject = globalThis) {
             nextSelections.admonitivePluralEnding = projectedSelections.admonitivePluralEnding;
           } else delete nextSelections.admonitivePluralEnding;
         }
-        stageClassicalGrammarTypedSourceOperationBinding(typedSourceBinding.operationId, nextSelections);
+        const applicativeChoiceId = control.id === "classical-rule-logic-applicative-object"
+          ? "applicativeObject" : editedChoiceIds.includes("requestedDerivation") ? "requestedDerivation" : "";
+        const applicativeStage = applicativeChoiceId
+          ? ClassicalApplicativeChoices.prepare({binding:typedSourceBinding, selections:nextSelections,
+            choiceId:applicativeChoiceId, explicitValidated:typedDerivationButtonChoice
+              || control.isConnected !== false && Array.from(control.options || []).some(option =>
+                option.value === control.value && !option.disabled && !option.hidden)}) : null;
+        if (applicativeChoiceId && !applicativeStage) return true;
+        let stagedVnc = stageClassicalGrammarTypedSourceOperationBinding(typedSourceBinding.operationId,
+          applicativeStage?.selections || nextSelections);
+        if (stagedVnc) {
+          const connectorChoice = editedChoiceIds.includes("finiteSingularConnector");
+          const coordinated = ClassicalFiniteConnectorChoices.handoff(typedSourceBinding,stagedVnc,{
+            choiceId:connectorChoice ? "finiteSingularConnector" : "other",
+            value:connectorChoice ? String(control.value || "") : "",
+            explicitValidated:connectorChoice && control.isConnected !== false
+              && Array.from(control.options || []).some(option => option.value === control.value && !option.disabled && !option.hidden),
+            issue:selections => targetObject.issueClassicalGrammarTypedSourceOperationBindingFrame?.(
+              typedSourceBinding.navigator,typedSourceBinding.operationId,selections),
+          });
+          if (coordinated && coordinated !== stagedVnc) {
+            stagedVnc = coordinated;
+            ActiveClassicalGrammarTypedSourceOperationBinding = stagedVnc;
+            const signature = getClassicalTypedSourceSelectionSignature(stagedVnc.callerSelections);
+            if (signature !== null) ClassicalTypedSourceBindingSelectionSignatures.set(stagedVnc,signature);
+            syncClassicalGrammarTypedSourceOperationChoices(stagedVnc);
+          }
+          const committed = tenseProposal && ClassicalVncTenseChoices.commit(typedSourceBinding, stagedVnc, tenseProposal.receipt);
+          if (!committed) ClassicalVncTenseChoices.carry(typedSourceBinding, stagedVnc);
+          const participantCommitted = applicativeStage && ClassicalApplicativeChoices.commit(
+            typedSourceBinding, stagedVnc, applicativeStage.receipt);
+          if (!participantCommitted) ClassicalApplicativeChoices.carry(typedSourceBinding, stagedVnc);
+        }
+        if (editedChoiceIds.includes("subject") || editedChoiceIds.includes("objectInterpretation")) {
+          syncClassicalObjectMeaningChoice(getClassicalRuleLogicSurfaceState({subject:nextSelections.subject}));
+        }
         syncClassicalCapabilityApplyOperationState();
         return true;
       }
@@ -47484,10 +47722,61 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const matrixNonactiveSelection = binding.operationId === "grammar:nominal-construction"
         && getClassicalNominalEmbedOperands(binding)
         && control.id === "classical-rule-logic-nonactive-family" ? control.value : "";
+      let stagedVncIntent = binding.family === "vnc-continuation" && binding.operationId === "vnc:application"
+        ? getClassicalVncContinuationBindingSelections(binding, {editedControl:control}) : null;
+      const tenseChoiceId = stagedVncIntent && ["mood", "tense"].find(id =>
+        getClassicalCapabilityBindingControlsForChoice(id).includes(control));
+      let continuationTenseProposal = null;
+      if (tenseChoiceId) {
+        // The control inventory can still describe the preceding mood. Ask
+        // the existing owner-backed projection for the prospective cell.
+        const prospective = buildProspectiveVncTenseFrame(targetObject,
+          getClassicalCurrentGrammarControlSurfaceFrame(), binding, stagedVncIntent);
+        const moodContract = syncClassicalRuleLogicMoodBoundControlOptions(prospective);
+        syncClassicalRuleLogicLesson11TenseOptions(prospective, moodContract);
+        const tenseControl = targetObject.document?.getElementById?.("classical-rule-logic-tense");
+        if (tenseChoiceId === "mood" && tenseControl?.value) {
+          stagedVncIntent = {...stagedVncIntent, tense:tenseControl.value};
+        }
+        const availableTenses = Array.from(tenseControl?.options || [])
+          .filter(option => !option.disabled && !option.hidden).map(option => option.value);
+        continuationTenseProposal = ClassicalVncContinuationTenseChoices.prepare({
+          frame:binding.ownerBindingFrame, parent:binding.exactResult, choiceId:tenseChoiceId,
+          mood:stagedVncIntent.mood, tense:stagedVncIntent.tense, availableTenses,
+          explicitValidated:tenseChoiceId === "tense" && control.isConnected !== false
+            && availableTenses.includes(stagedVncIntent.tense),
+        });
+        if (continuationTenseProposal?.restored) {
+          stagedVncIntent = {...stagedVncIntent, tense:continuationTenseProposal.tense};
+          if (tenseControl) tenseControl.value = continuationTenseProposal.tense;
+        }
+      }
+      const connectorControl = targetObject.document?.getElementById?.("classical-rule-logic-finite-singular-connector");
+      const connectorProposal = stagedVncIntent && ClassicalFiniteConnectorContinuationChoices.prepare({
+        frame:binding.ownerBindingFrame, parent:binding.exactResult, selections:stagedVncIntent,
+        choiceId:control.id === "classical-rule-logic-finite-singular-connector" ? "finiteSingularConnector" : "other",
+        explicitValidated:control.isConnected !== false && Array.from(control.options || []).some(option =>
+          option.value === control.value && !option.disabled && !option.hidden),
+        additionalResults:binding.additionalResults || {},
+      });
+      if (connectorProposal) {
+        stagedVncIntent = connectorProposal.selections;
+        if (connectorProposal.restored && connectorControl) connectorControl.value = stagedVncIntent.finiteSingularConnector;
+      }
+      const stagedVncSubject = stagedVncIntent?.subject || "";
       const staged = enterClassicalGrammarResultBindingChoice(
         selectedBindingId,
-        { allowExecution: false }
+        { allowExecution: false, editedControl:control, vncSelections:stagedVncIntent }
       );
+      if (stagedVncIntent && staged && ActiveClassicalGrammarResultBinding?.exactResult === binding.exactResult) {
+        const nextFrame = ActiveClassicalGrammarResultBinding.ownerBindingFrame;
+        const committed = continuationTenseProposal && ClassicalVncContinuationTenseChoices.commit(
+          binding.ownerBindingFrame, nextFrame, binding.exactResult, continuationTenseProposal.receipt);
+        if (!committed) ClassicalVncContinuationTenseChoices.carry(binding.ownerBindingFrame, nextFrame, binding.exactResult);
+        const connectorCommitted = connectorProposal && ClassicalFiniteConnectorContinuationChoices.commit(
+          binding.ownerBindingFrame, nextFrame, binding.exactResult, connectorProposal.receipt);
+        if (!connectorCommitted) ClassicalFiniteConnectorContinuationChoices.carry(binding.ownerBindingFrame, nextFrame, binding.exactResult);
+      }
       if (binding.family === "vnc-continuation"
         && binding.operationId === "vnc:derivational-operation") {
         const current = ActiveClassicalGrammarResultBinding || binding;
@@ -47523,6 +47812,23 @@ export function createUiRenderingApi(targetObject = globalThis) {
       syncClassicalActiveResultBindingChoiceVisibility(
         ActiveClassicalGrammarResultBinding
       );
+      if (binding.family === "vnc-continuation" && binding.operationId === "vnc:application"
+        && (control.id === "classical-rule-logic-object-interpretation"
+          || getClassicalCapabilityBindingControlsForChoice("subject").includes(control))) {
+        if (stagedVncSubject && targetObject.isClassicalNahuatlVncContinuationBindingFrame?.(
+          ActiveClassicalGrammarResultBinding?.ownerBindingFrame) === true
+          && ActiveClassicalGrammarResultBinding.exactResult === binding.exactResult
+          && ActiveClassicalGrammarResultBinding.ownerBindingFrame.callerSelections?.subject === stagedVncSubject) {
+          const subject = getClassicalRuleLogicVncSubjectFrame({subject:stagedVncSubject});
+          syncClassicalVncSubjectFeatureControls(subject);
+          const agreement = targetObject.document?.getElementById?.("classical-rule-logic-subject");
+          if (agreement) agreement.value = stagedVncSubject;
+          const meaning = targetObject.document?.getElementById?.("classical-rule-logic-object-interpretation");
+          const requested = ActiveClassicalGrammarResultBinding.ownerBindingFrame.callerSelections?.objectInterpretation;
+          if (meaning && Array.from(meaning.options || []).some(option => option.value === requested)) meaning.value = requested;
+        }
+        syncClassicalObjectMeaningChoice(getClassicalRuleLogicSurfaceState({subject:stagedVncSubject}));
+      }
       if (binding.operationId === "grammar:nominal-construction"
         && getClassicalNominalEmbedOperands(binding)) {
         syncClassicalNominalConstructionControlVisibility("nominal-embed-vnc");
@@ -47594,7 +47900,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
     }
     function enterClassicalGrammarResultBindingChoice(
       bindingId = "",
-      { allowExecution = true } = {}
+      { allowExecution = true, editedControl = null, vncSelections = null } = {}
     ) {
       let current = ActiveClassicalGrammarResultBinding;
       const normalizedBindingId = String(bindingId || "").trim();
@@ -47606,7 +47912,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       syncClassicalSelectedResultBindingRole(current, normalizedBindingId);
       // Capture the draft before visibility restoration reprojects the accepted owner choices.
       const stagedVncSelections = ["vnc:sentence-result", "vnc:application", "vnc:derivational-operation"].includes(current.operationId)
-        ? getClassicalVncContinuationBindingSelections(current) : null;
+        ? vncSelections || getClassicalVncContinuationBindingSelections(current, {editedControl}) : null;
       stageClassicalRelationalResultBindingChoicePrompts(current);
       if (
         current.operationId === "vnc:denominal"

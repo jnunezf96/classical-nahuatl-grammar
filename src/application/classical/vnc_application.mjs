@@ -19,6 +19,7 @@ import {
   isClassicalNahuatlParticipantFrame,
   doesClassicalNahuatlParticipantTransitionRetireSourceRole,
 } from "../../core/classical/participant_frame.mjs?v=20260823-passive-formation-continuity-238";
+import {resolveReflexiveInterpretationChoice} from "./reflexive_choice_coordination.mjs";
 
 export function createClassicalNahuatlVncApplicationModule(targetObject = globalThis) {
     const CLASSICAL_NAHUATL_VNC_APPLICATION_VERSION = 1;
@@ -11839,6 +11840,28 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         }
       }
       if (!initialBlockReason && bindingStatus !== "rejected") {
+        // A retained typed Source may already contain a valid reflexive
+        // machinery frame from an earlier subject. Re-evaluate meaning for
+        // the current direct-active cell before issuing its execution lease.
+        const source = provenance?.sourceDescriptor;
+        if (source?.sourceValence === "mainline-reflexive"
+          && selectedDerivation === "direct" && requestedVoice === "active") {
+          const interpretation = resolveReflexiveInterpretationChoice(
+            getClassicalNahuatlVncApplicationRuntimeTarget(), {
+              valence: source.sourceValence, subject: effectiveSelections.subject,
+              stem: source.sourceStem,
+              requestedValue: effectiveSelections.objectInterpretation,
+            },
+          );
+          if (interpretation.state !== "licensed") {
+            bindingStatus = "rejected";
+            blockReason = interpretation.state === "unresolved"
+              ? "classical-vnc-typed-source-object-interpretation-owner-unavailable"
+              : "classical-vnc-typed-source-object-interpretation-not-licensed";
+          }
+        }
+      }
+      if (!initialBlockReason && bindingStatus !== "rejected") {
         if (requiredChoiceIds.length) {
           bindingStatus = "choices-required";
         } else {
@@ -12799,6 +12822,19 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
           sourceRecord,
         )
         : null;
+      const reflexiveSource = sourceRecord?.continuationSourceProjection;
+      const reflexiveMeaning = normalizedOperationId === "vnc:application"
+        && reflexiveSource?.sourceValence === "mainline-reflexive"
+        && (selections?.requestedDerivation || "direct") === "direct"
+        && (selections?.requestedVoice || "active") === "active"
+        ? resolveReflexiveInterpretationChoice(
+          getClassicalNahuatlVncApplicationRuntimeTarget(), {
+            valence: reflexiveSource.sourceValence,
+            subject: selections?.subject || reflexiveSource.sourceSubject,
+            stem: reflexiveSource.sourceStem,
+            requestedValue: selections?.objectInterpretation,
+          },
+        ) : null;
       const initialBlockReason = !operationRecognized
         ? "classical-vnc-continuation-binding-operation-not-recognized"
         : !sourceRecord
@@ -12822,6 +12858,10 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
                     ? "compound-attitude-exact-parent-required"
                   : orderedVoiceChoiceInventory?.ownerRejectionProven
                     ? orderedVoiceChoiceInventory.blockReason
+                  : reflexiveMeaning && reflexiveMeaning.state !== "licensed"
+                    ? reflexiveMeaning.state === "unresolved"
+                      ? "classical-vnc-continuation-object-interpretation-owner-unavailable"
+                      : "classical-vnc-continuation-object-interpretation-not-licensed"
                   : "";
       let bindingStatus = initialBlockReason ? "rejected" : "choices-required";
       let blockReason = initialBlockReason;
