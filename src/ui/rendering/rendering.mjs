@@ -1,3 +1,4 @@
+import {createDerivationChoiceCoordinator} from '../../application/classical/derivation_choice_coordination.mjs?derivationChoices=20261026-1';
 import {createSentenceChoiceCoordinator,createParticleHonorificChoiceCoordinator} from '../../application/classical/sentence_choice_coordination.mjs?sentenceChoices=20261026-1';
 import {resolveVncSourceClassChoice,resolveNncSourceClassValues,resolveIrregularSourceAlternatives,resolvePersonalNameSourceChoice,resolveCoarseNominalSourceFacts,resolveNncSourceChoiceDomain,resolveIrregularSourceRequest} from "../../application/classical/source_choice_coordination.mjs?sourceChoices=20261026-1";
 import {createOrganicPossessionStateCoordinator} from "../../application/classical/organic_possession_choice_coordination.mjs?organicChoices=20261026-1";
@@ -11267,13 +11268,18 @@ export function createUiRenderingApi(targetObject = globalThis) {
             "lesson27-short-glottal-ordinary-frequentatives",
           );
         }
+        if (lesson27Facts.attestedInterpretation) addLesson27Cue(
+          "lesson27-attested-frequentative-interpretation",
+          `${lesson27Facts.attestedInterpretation} · ${lesson27Facts.interpretationAuthority}`,
+          "lesson27-object-pronoun-reduplication",
+        );
         if (
           lesson27Facts.objectPronounReduplicated === true
           || lesson27Facts.reduplicationTarget === "mainline-reflexive"
         ) {
           addLesson27Cue(
             "lesson27-object-pronoun-reduplication",
-            `selected target: ${lesson27Facts.reduplicationTarget || "typed object pronoun"} · ${lesson27Facts.objectPronounReduplicated ? "fused tla is reduplicated" : `reflexive ${lesson27Facts.reflexiveCarrier || "carrier"} becomes ${lesson27Facts.partialReflexiveCarrier || "the partial reduplicated carrier"}`} · lexical stem ${lesson27Facts.lexicalStemAlsoReduplicated ? "is also reduplicated" : "is not additionally reduplicated"} · object scope ${lesson27Facts.objectScope || "comes from the typed participant"} · event scope ${lesson27Facts.eventScope || "remains distinct"} · supportive i ${lesson27Facts.supportiveIDeleted ? "is deleted automatically" : "does not require deletion"}`,
+            `selected target: ${lesson27Facts.reduplicationTarget || "typed object pronoun"} · ${lesson27Facts.objectPronounReduplicated ? "fused tla is reduplicated" : `reflexive ${lesson27Facts.reflexiveCarrier || "carrier"} becomes ${lesson27Facts.partialReflexiveCarrier || "the partial reduplicated carrier"}`} · lexical stem ${lesson27Facts.lexicalStemAlsoReduplicated ? "is also reduplicated" : "is not additionally reduplicated"} · interpretation depends on the construction and context · supportive i ${lesson27Facts.supportiveIDeleted ? "is deleted automatically" : "does not require deletion"}`,
           );
         }
         if (lesson27OperationFrame.variant === "destockal-intransitive") {
@@ -40961,6 +40967,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
             syncClassicalCapabilityApplyOperationState();
             return;
           }
+          nextBinding=ClassicalDerivationChoices.handoff(active,nextBinding,{choiceId,
+            explicitValidated:ownerOptions.some(option=>String(option.optionId)===selectedValue&&option.availabilityStatus==='available'),
+            issue:selections=>targetObject.issueClassicalGrammarTypedSourceOperationBindingFrame(active.navigator,active.operationId,selections)});
+          const derivationMemoryFrame=nextBinding;
           if (active.operationId === "vnc:application") {
             nextBinding = ClassicalFiniteConnectorChoices.handoff(active,nextBinding,{
               choiceId,value:selectedValue,explicitValidated:ownerOptions.some(option =>
@@ -40969,6 +40979,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
                 active.navigator, active.operationId, selections),
             }) || nextBinding;
           }
+          ClassicalDerivationChoices.carry(derivationMemoryFrame,nextBinding);
           ActiveClassicalGrammarTypedSourceOperationBinding = nextBinding;
           if (ordinaryStage?.memory) ClassicalOrdinaryNncChoiceMemory.set(nextBinding, ordinaryStage.memory);
           if (active.operationId === "vnc:application") {
@@ -41214,6 +41225,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
 
     const ClassicalOrdinaryNncChoiceMemory = new WeakMap();
     const ClassicalSentenceChoices = createSentenceChoiceCoordinator(targetObject);
+    const ClassicalDerivationChoices = createDerivationChoiceCoordinator(targetObject);
     const ClassicalParticleHonorificChoices = createParticleHonorificChoiceCoordinator(targetObject);
     function getClassicalParticleHonorificSourceSession(binding) {
       if(targetObject.isClassicalGrammarTypedSourceOperationBindingFrame?.(binding)!==true)return null;
@@ -47577,6 +47589,17 @@ export function createUiRenderingApi(targetObject = globalThis) {
         let stagedVnc = stageClassicalGrammarTypedSourceOperationBinding(typedSourceBinding.operationId,
           applicativeStage?.selections || nextSelections);
         if (stagedVnc) {
+          const derivationCoordinated=ClassicalDerivationChoices.handoff(typedSourceBinding,stagedVnc,{
+            choiceId:editedChoiceIds.find(id=>['derivationOptionId','nonactiveOptionId'].includes(id))||'other',
+            explicitValidated:control.isConnected!==false&&Array.from(control.options||[]).some(option=>option.value===control.value&&!option.disabled&&!option.hidden),
+            issue:selections=>targetObject.issueClassicalGrammarTypedSourceOperationBindingFrame(typedSourceBinding.navigator,typedSourceBinding.operationId,selections)});
+          if(derivationCoordinated!==stagedVnc) {
+            stagedVnc=derivationCoordinated;ActiveClassicalGrammarTypedSourceOperationBinding=stagedVnc;
+            const signature=getClassicalTypedSourceSelectionSignature(stagedVnc.callerSelections);
+            if(signature!==null)ClassicalTypedSourceBindingSelectionSignatures.set(stagedVnc,signature);
+            syncClassicalGrammarTypedSourceOperationChoices(stagedVnc);
+          }
+          const derivationMemoryFrame=stagedVnc;
           const sentenceCoordinated=coordinateClassicalSentenceChoices(typedSourceBinding,stagedVnc,control,
             selections=>targetObject.issueClassicalGrammarTypedSourceOperationBindingFrame(typedSourceBinding.navigator,typedSourceBinding.operationId,selections));
           if(sentenceCoordinated!==stagedVnc) {
@@ -47601,6 +47624,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
             if (signature !== null) ClassicalTypedSourceBindingSelectionSignatures.set(stagedVnc,signature);
             syncClassicalGrammarTypedSourceOperationChoices(stagedVnc);
           }
+          ClassicalDerivationChoices.carry(derivationMemoryFrame,stagedVnc);
           const committed = tenseProposal && ClassicalVncTenseChoices.commit(typedSourceBinding, stagedVnc, tenseProposal.receipt);
           if (!committed) ClassicalVncTenseChoices.carry(typedSourceBinding, stagedVnc);
           const participantCommitted = applicativeStage && ClassicalApplicativeChoices.commit(
@@ -48357,8 +48381,15 @@ export function createUiRenderingApi(targetObject = globalThis) {
           );
           if (voiceControl) voiceControl.value = requestedVoice;
         }
+        if(current.operationId==='vnc:application') nextFrame=ClassicalDerivationChoices.handoff(current.ownerBindingFrame,nextFrame,{
+          choiceId:editedControl?.id==='classical-rule-logic-derivation-option'?'derivationOptionId'
+            :editedControl?.id==='classical-rule-logic-nonactive-option'?'nonactiveOptionId':'other',
+          explicitValidated:editedControl?.isConnected!==false&&Array.from(editedControl?.options||[]).some(option=>option.value===editedControl.value&&!option.disabled&&!option.hidden),
+          issue:selections=>targetObject.issueClassicalNahuatlVncContinuationBindingFrame(current.operationId,current.exactResult,selections,current.additionalResults||{})});
+        const derivationMemoryFrame=nextFrame;
         if(current.operationId==="vnc:application") nextFrame=coordinateClassicalSentenceChoices(current.ownerBindingFrame,nextFrame,editedControl,
           selections=>targetObject.issueClassicalNahuatlVncContinuationBindingFrame(current.operationId,current.exactResult,selections,current.additionalResults||{}));
+        ClassicalDerivationChoices.carry(derivationMemoryFrame,nextFrame);
         const frame = targetObject
           .isClassicalNahuatlVncContinuationBindingFrame?.(nextFrame)
           ? nextFrame

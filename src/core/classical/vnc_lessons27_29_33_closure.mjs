@@ -2650,12 +2650,21 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
           impersonalStemPrefixReduplicated: fusedTlaSelected && baseIsTlaImpersonal,
           lexicalStemAlsoReduplicated:
             requestedTarget === "fused-tla-and-lexical-stem",
+          // Interpretation belongs to the particular construction (§27.3.1),
+          // not universally to the grammatical category of the copied unit.
+          ...(frequentativeSourceStem === "tla-cōhua" && shape === "short-glottal" && repetitions === 1
+            && requestedScope === "open" && requestedTarget !== "fused-tla" ? {
+              attestedInterpretation: requestedTarget === "fused-tla-and-lexical-stem"
+                ? "to shop for a variety of things on numerous occasions"
+                : "to shop for a variety of things",
+              interpretationAuthority: "Andrews §27.3.1",
+          } : {}),
           objectScope: baseIsTlaImpersonal ? "no object"
-            : fusedTlaSelected ? "nonspecific-nonhuman objects" : "unchanged",
+            : "construction-dependent interpretation",
           eventScope: baseIsTlaImpersonal ? "frequentative impersonal event"
-            : requestedTarget === "fused-tla" ? "unchanged" : "frequentative event",
-          independentObjectAndEventScopes:
-            !baseIsTlaImpersonal && requestedTarget === "fused-tla-and-lexical-stem",
+            : "construction-dependent interpretation",
+          independentObjectAndEventScopes: false,
+          independentlySelectedCopyingLoci: requestedTarget === "fused-tla-and-lexical-stem",
           ...(inheritedIrregularPrefixCoordinate ? {
             irregularCoordinateInherited: true,
             coordinateSelectedSourceStem: frequentativeSourceStem,

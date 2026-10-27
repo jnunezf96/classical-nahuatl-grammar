@@ -1,0 +1,50 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {createRuntimeInstance} from '../runtime/create_runtime.mjs';
+import {createDerivationChoiceCoordinator} from '../application/classical/derivation_choice_coordination.mjs';
+const owner=(await createRuntimeInstance({documentObject:{getElementById:()=>null,addEventListener(){}}})).runtimeObject;
+for(const exact of [false,true])test(`${exact?'exact':'typed'} formation survives inactive derivation and cannot cross source identity`,()=>{
+ const first=owner.evaluateClassicalNahuatlVncApplication({sourceStem:'chōca',verbClass:'A',sourceValence:'intransitive',subject:'3sg',mood:'indicative',tense:'present',requestedDerivation:'direct',requestedVoice:'active'});
+ const nav=owner.getClassicalGrammarApplicationCapabilityNavigator(first.resultFrame.sourceMachineryFrame);
+ const base={subject:'3sg',requestedDerivation:'direct',requestedVoice:'active',mood:'indicative',tense:'present'};
+ const bind=s=>exact?owner.issueClassicalNahuatlVncContinuationBindingFrame('vnc:application',first.resultFrame,{...base,...(s.requestedDerivation==='causative'?{causativeObjectKind:'reflexive'}:{}),...s}):owner.issueClassicalGrammarTypedSourceOperationBindingFrame(nav,'vnc:application',{...base,...(s.requestedDerivation==='causative'?{causativeObjectKind:'reflexive'}:{}),...s});
+ const c=createDerivationChoiceCoordinator(owner);let b=bind({requestedDerivation:'causative'});
+ const projection=b.choiceOptionProjection||b.ownerChoiceOptionProjection;
+ const id=(projection.derivationOptionId||b.ownerPreflightResult.controlFrame.derivationOptionInventory.options).find(o=>o.availabilityStatus==='available'||o.authorityStatus!=='blocked').optionId;
+ b=c.handoff(b,bind({requestedDerivation:'causative',derivationOptionId:id}),{choiceId:'derivationOptionId',explicitValidated:true,issue:bind});
+ b=c.handoff(b,bind({}),{issue:bind});assert.equal(b.callerSelections.derivationOptionId,undefined);
+ b=c.handoff(b,bind({requestedDerivation:'causative'}),{issue:bind});assert.equal(b.callerSelections.derivationOptionId,id);assert.equal(b.bindingStatus,'ready');
+ const pending=bind({requestedDerivation:'causative'});
+ assert.equal(c.handoff({...b},pending,{issue:bind}),pending);
+ const malicious=c.handoff(b,pending,{issue:()=>({...b})});assert.equal(malicious,pending);
+});
+test('nonactive formation remains voice-scoped and a different issued Source has no draft',()=>{
+ const make=()=>owner.evaluateClassicalNahuatlVncApplication({sourceStem:'chōca',verbClass:'A',sourceValence:'intransitive',subject:'3sg',mood:'indicative',tense:'present',requestedDerivation:'direct',requestedVoice:'active'});
+ const nav=owner.getClassicalGrammarApplicationCapabilityNavigator(make().resultFrame.sourceMachineryFrame);
+ const bind=s=>owner.issueClassicalGrammarTypedSourceOperationBindingFrame(nav,'vnc:application',{subject:'3sg',mood:'indicative',tense:'present',requestedDerivation:'direct',requestedVoice:'active',...s});
+ const c=createDerivationChoiceCoordinator(owner);let b=bind({requestedVoice:'impersonal'});
+ const id=b.choiceOptionProjection.nonactiveOptionId.find(o=>o.availabilityStatus==='available').optionId;
+ b=c.handoff(b,bind({requestedVoice:'impersonal',nonactiveOptionId:id}),{choiceId:'nonactiveOptionId',explicitValidated:true,issue:bind});
+ b=c.handoff(b,bind({}),{issue:bind});assert.equal(b.callerSelections.nonactiveOptionId,undefined);
+ b=c.handoff(b,bind({requestedVoice:'impersonal'}),{issue:bind});assert.equal(b.callerSelections.nonactiveOptionId,id);
+ const otherNav=owner.getClassicalGrammarApplicationCapabilityNavigator(make().resultFrame.sourceMachineryFrame);
+ const other=owner.issueClassicalGrammarTypedSourceOperationBindingFrame(otherNav,'vnc:application',{subject:'3sg',mood:'indicative',tense:'present',requestedDerivation:'direct',requestedVoice:'impersonal'});
+ assert.equal(c.handoff(b,other,{issue:bind}),other);
+});
+test('formation restoration preserves the preexisting sentence draft on the final issued binding',async()=>{
+ const {createSentenceChoiceCoordinator}=await import('../application/classical/sentence_choice_coordination.mjs');
+ const initial=owner.evaluateClassicalNahuatlVncApplication({sourceStem:'chōca',verbClass:'A',sourceValence:'intransitive',subject:'3sg',mood:'indicative',tense:'present',requestedDerivation:'direct',requestedVoice:'active'});
+ const nav=owner.getClassicalGrammarApplicationCapabilityNavigator(initial.resultFrame.sourceMachineryFrame);
+ const bind=s=>owner.issueClassicalGrammarTypedSourceOperationBindingFrame(nav,'vnc:application',{subject:'3sg',mood:'optative',tense:'nonpast',requestedDerivation:'causative',requestedVoice:'active',causativeObjectKind:'reflexive',...s});
+ const dc=createDerivationChoiceCoordinator(owner),sc=createSentenceChoiceCoordinator(owner);
+ const id=bind({}).choiceOptionProjection.derivationOptionId[0].optionId;
+ let b=bind({derivationOptionId:id,sentenceOptions:{introductoryParticle:'tlā'}});
+ b=dc.handoff(bind({}),b,{choiceId:'derivationOptionId',explicitValidated:true,issue:bind});
+ function step(s,key){let n=dc.handoff(b,bind(s),{choiceId:key,explicitValidated:true,issue:bind});const memory=n;n=sc.handoff(b,n,{choiceId:key,explicitValidated:true,issue:bind});dc.carry(memory,n);b=n;}
+ step({derivationOptionId:id,sentenceOptions:{introductoryParticle:'tlā',prefaceParticle:'ye'}},'prefaceParticle');
+ step({requestedDerivation:'direct',sentenceOptions:{introductoryParticle:'mā'}},'introductoryParticle');
+ step({sentenceOptions:{introductoryParticle:'mā'}},'requestedDerivation');
+ assert.equal(b.callerSelections.derivationOptionId,id);
+ step({derivationOptionId:id,sentenceOptions:{introductoryParticle:'tlā'}},'introductoryParticle');
+ assert.equal(b.callerSelections.sentenceOptions.prefaceParticle,'ye');
+});

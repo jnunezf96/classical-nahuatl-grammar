@@ -50,7 +50,7 @@ test('AD055 Result explanation describes an impersonal event without adding obje
   assert.ok(!cues.some(x=>x.role==='lesson27-object-pronoun-reduplication'));
 });
 
-test('AD055 immediate contrast retains independent object and event scopes on fused object tla',()=>{
+test('AD055 immediate contrast retains copying loci without inferring universal semantic scopes',()=>{
   const made=r.evaluateClassicalNahuatlLateVncDerivation({
     sourceStem:'tla-cōhua',sourceValence:'intransitive',verbClass:'A',subject:'3sg',
     mood:'indicative',tense:'present',derivationType:'direct',voice:'active',
@@ -61,7 +61,7 @@ test('AD055 immediate contrast retains independent object and event scopes on fu
   assert.equal(made.operationFrame.targetStem,'tlah-tla-coh-cōhua');
   const facts=made.operationFrame.operationFacts;
   assert.equal(facts.objectPronounReduplicated,true);
-  assert.equal(facts.objectScope,'nonspecific-nonhuman objects');
-  assert.equal(facts.eventScope,'frequentative event');
-  assert.equal(facts.independentObjectAndEventScopes,true);
+  assert.equal(facts.objectScope,'construction-dependent interpretation');
+  assert.equal(facts.eventScope,'construction-dependent interpretation');
+  assert.equal(facts.independentObjectAndEventScopes,false);
 });

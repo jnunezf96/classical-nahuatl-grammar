@@ -1,3 +1,7 @@
+## 1.2.66 — Current Derivation Choices
+
+Same-Source formation choices survive inactive derivation and voice. Frequentative shopping explanations now distinguish variety and repeated occasions according to Andrews§27.3.1 without assigning universal meanings to copying loci.
+
 ## 1.2.65 — Current Sentence Choices
 
 Sentence-dependent alternatives now use canonical domains and retain compatible explicit intent. Rumor fusion and particle honorific transitions recover their valid choices without changing the accepted Result while staging.

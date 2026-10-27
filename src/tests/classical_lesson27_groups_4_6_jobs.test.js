@@ -256,9 +256,9 @@ function run(ctx = {}) {
             targets: ["tla-coh-cōhua", "tlah-tla-cōhua", "tlah-tla-coh-cōhua"],
             selectedTargets: ["lexical-stem", "fused-tla", "fused-tla-and-lexical-stem"],
             bothScopes: {
-                object: "nonspecific-nonhuman objects",
-                event: "frequentative event",
-                independent: true,
+                object: "construction-dependent interpretation",
+                event: "construction-dependent interpretation",
+                independent: false,
             },
             reflexive: {
                 target: "lpi-ā",
@@ -332,7 +332,7 @@ function run(ctx = {}) {
         s.eq(`${record.atomId} has its accepted writing job`, observed, expected[record.reviewGroupId]);
         const mutation = JSON.parse(JSON.stringify(observed));
         if (record.reviewGroupId === "lesson27-object-pronoun-reduplication") {
-            mutation.bothScopes.independent = false;
+            mutation.bothScopes.independent = true;
         } else if (record.reviewGroupId === "lesson27-intransitive-destockal-frequentatives") {
             mutation.voicePaths = mutation.voicePaths.slice(0, 2);
         } else {
