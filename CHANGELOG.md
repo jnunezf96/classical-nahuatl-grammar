@@ -1,3 +1,7 @@
+## 1.2.76 — Complex Work Restoration
+
+Comparisons, calendar and number constructions, names, and other supported constructed Results restore through their original grammatical owners. Shared Sources and History retain identity; pending choices remain separate from accepted Results. Unavailable History is disclosed, and explicit Make remains required for pending changes.
+
 ## 1.2.75 — Recoverable Startup
 
 An early independent guard exposes startup delivery failures and the existing Reload action even when the application module cannot load. A bounded wait offers recovery, and successful runtime plus presentation readiness clears the warning. No automatic reload or grammar change.

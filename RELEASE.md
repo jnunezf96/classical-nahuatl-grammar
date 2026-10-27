@@ -1,13 +1,13 @@
-# Grammar OS v1.2.75 release
+# Grammar OS v1.2.76 release
 
-Release name: **Recoverable Startup**
+Release name: **Complex Work Restoration**
 
-Browser build: **20261027-startup-recovery-94**
+Browser build: **20261027-complex-reload-95**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Module delivery failures expose the existing Reload action instead of leaving an indefinite loading message.
-- A bounded startup wait offers recovery; late successful startup clears the warning.
-- Recovery remains explicit and does not change grammar or saved-state support.
+- Comparisons and native constructed Results restore from their original grammatical inputs, retaining exact shared Sources and History relationships.
+- Pending choices remain separate from accepted Results and require explicit Make.
+- Unsupported or oversized History branches are disclosed without discarding supported current work. Invalid saved data never becomes grammatical authority.
