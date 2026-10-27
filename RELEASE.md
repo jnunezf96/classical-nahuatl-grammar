@@ -1,13 +1,13 @@
-# Grammar OS v1.2.74 release
+# Grammar OS v1.2.75 release
 
-Release name: **Coordinated Denominal Choices**
+Release name: **Recoverable Startup**
 
-Browser build: **20261027-denominal-choices-93**
+Browser build: **20261027-startup-recovery-94**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Denominal stem-shape choices survive inactive operations for the same Applied Source, subject to current owner validation.
-- Nonspecific object choices survive intransitive excursions without entering their requests.
-- Accepted Results remain unchanged until explicit Make.
+- Module delivery failures expose the existing Reload action instead of leaving an indefinite loading message.
+- A bounded startup wait offers recovery; late successful startup clears the warning.
+- Recovery remains explicit and does not change grammar or saved-state support.

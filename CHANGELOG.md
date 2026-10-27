@@ -1,3 +1,7 @@
+## 1.2.75 — Recoverable Startup
+
+An early independent guard exposes startup delivery failures and the existing Reload action even when the application module cannot load. A bounded wait offers recovery, and successful runtime plus presentation readiness clears the warning. No automatic reload or grammar change.
+
 ## 1.2.74 — Coordinated Denominal Choices
 
 Existing denominal controls preserve valid stem-shape and nonspecific-object intent across inactive operations. Current canonical owners still validate Source and formation, inactive objects stay out of requests, and accepted Results wait for explicit Make.
