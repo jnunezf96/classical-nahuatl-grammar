@@ -24,3 +24,17 @@ test('exact continuation memory requires owner-issued frames, the same parent an
  let p=c.prepare({frame:b,parent,selections:s,choiceId:'finiteSingularConnector',explicitValidated:true});let n=bind(p.selections);assert(!c.commit(b,n,parent,{...p.receipt}));assert(c.commit(b,n,parent,p.receipt));b=n;
  s={...b.callerSelections,subject:'2sg'};delete s.finiteSingularConnector;p=c.prepare({frame:b,parent,selections:s,choiceId:'other'});assert(!p.selections.finiteSingularConnector);n=bind(p.selections);assert(c.commit(b,n,parent,p.receipt));
 });
+
+test('an issued rejected reciprocal draft retains a prior qui for explicit correction, without authority to execute',()=>{
+ const first=r.evaluateClassicalNahuatlVncApplication({sourceStem:'chīhua',verbClass:'B',sourceValence:'mainline-reflexive',subject:'1sg',mood:'indicative',tense:'present',requestedDerivation:'direct',requestedVoice:'active'});
+ const nav=r.getClassicalGrammarApplicationCapabilityNavigator(first.resultFrame.sourceMachineryFrame);
+ const initial={subject:'1sg',mood:'indicative',tense:'present',requestedDerivation:'direct',requestedVoice:'active',objectInterpretation:'reflexive'};
+ const parent=r.executeClassicalGrammarTypedSourceOperationBindingFrame(r.issueClassicalGrammarTypedSourceOperationBindingFrame(nav,'vnc:application',initial)).canonicalResult;
+ const bind=s=>r.issueClassicalNahuatlVncContinuationBindingFrame('vnc:application',parent,{...initial,tense:'future',...s});
+ const c=createFiniteConnectorContinuationCoordinator(r);let b=bind({});let s={...b.callerSelections,finiteSingularConnector:'qui'};
+ let p=c.prepare({frame:b,parent,selections:s,choiceId:'finiteSingularConnector',explicitValidated:true});let n=bind(p.selections);assert(c.commit(b,n,parent,p.receipt));b=n;
+ for(const patch of [{subject:'1pl'},{objectInterpretation:'reciprocal'}]){s={...b.callerSelections,...patch};delete s.finiteSingularConnector;p=c.prepare({frame:b,parent,selections:s,choiceId:'other'});n=bind(p.selections);assert(c.commit(b,n,parent,p.receipt));b=n;}
+ s={...b.callerSelections,subject:'1sg'};p=c.prepare({frame:b,parent,selections:s,choiceId:'other'});n=bind(p.selections);assert.equal(n.bindingStatus,'rejected');assert.equal(n.executionArgs.length,0);assert(c.commit(b,n,parent,p.receipt));b=n;
+ s={...b.callerSelections,objectInterpretation:'reflexive'};p=c.prepare({frame:b,parent,selections:s,choiceId:'other'});assert.equal(p.selections.finiteSingularConnector,'qui');n=bind(p.selections);assert.equal(n.bindingStatus,'ready');assert(c.commit(b,n,parent,p.receipt));
+ assert.equal(c.prepare({frame:{...b},parent,selections:s,choiceId:'other'}),null);
+});

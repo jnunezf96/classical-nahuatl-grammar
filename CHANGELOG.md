@@ -1,5 +1,11 @@
 # Version History
 
+## v1.2.64 — Current Participant Domains
+
+- Coordinates specialized carrier moods and tenses with the canonical owner.
+- Preserves a finite connector across correction of a rejected reciprocal draft.
+- Enables the owner-authorized passive formation in the supported noun-first incorporated-adverb route.
+
 ## v1.2.63 — Organic Continuation Choices
 
 - Retains the earlier noun State when an organic reading temporarily fixes possessive in the supported exact-Result route.

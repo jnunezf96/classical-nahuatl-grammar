@@ -1,16 +1,17 @@
-# Grammar OS v1.2.63 release
+# Grammar OS v1.2.64 release
 
-Release name: **Organic Continuation Choices**
+Release name: **Current Participant Domains**
 
-Browser build: **20261026-organic-continuation-82**
+Browser build: **20261026-current-domains-83**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- An explicit noun State is retained through an organic reading in the supported exact-Result continuation.
-- The owner still determines the organic possessive condition and validates the exact Source.
-- Source Apply, explicit Make and existing panels are retained.
+- Specialized nonactive carriers use the canonical current mood and tense domain.
+- A finite connector remains available after correction of the supported rejected reciprocal draft.
+- Noun-first incorporated-adverb continuations expose and retain the owner-authorized passive formation.
+- Source Apply, explicit Make, exact parents and existing panels are retained.
 
 ## Review scope and current limits
 
@@ -37,7 +38,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.63/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.64/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.

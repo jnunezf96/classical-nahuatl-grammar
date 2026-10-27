@@ -5,7 +5,7 @@ import {stageOrdinaryNncDependencies} from "../../application/classical/particip
 import {resolveReflexiveInterpretationChoice,resolveRejectedReflexiveDraft} from "../../application/classical/reflexive_choice_coordination.mjs?participantChoices=20261026-1";
 import {createVncTenseCoordinator,createVncContinuationTenseCoordinator,buildProspectiveVncTenseFrame} from "../../application/classical/vnc_tense_choice_coordination.mjs?participantChoices=20261026-1";
 import {createApplicativeChoiceCoordinator} from "../../application/classical/applicative_choice_coordination.mjs?participantChoices=20261026-1";
-import {createFiniteConnectorCoordinator,createFiniteConnectorContinuationCoordinator} from "../../application/classical/finite_connector_choice_coordination.mjs?participantChoices=20261026-1";
+import {createFiniteConnectorCoordinator,createFiniteConnectorContinuationCoordinator} from "../../application/classical/finite_connector_choice_coordination.mjs?participantChoices=20261026-2";
 import {clauseMarkerResultLabel} from '../composition/clause_composition.mjs?reasonPresentation=20261026-1';
 import {syncFutureObjectChoices} from '../composition/future_object_choices.mjs?futureObject=20261024-3';
 import {getDoubleNucleusEditChildren} from '../../application/classical/double_nucleus_edit.mjs?nucleusEdit=20261024-9';
@@ -3727,8 +3727,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
           { requestedReading: "" },
         )
         : requestedLesson22ImpersonalReadingFrame;
-      const applicationControlFrame = vncApplicationFrame.controlFrame || {};
-      const applicationTypedFrames = vncApplicationFrame.resultFrame?.appliedTypedFrames || [];
+      const applicationControlFrame = vncApplicationFrame?.controlFrame || {};
+      const applicationTypedFrames = vncApplicationFrame?.resultFrame?.appliedTypedFrames || [];
       nonactiveStemRecord = applicationTypedFrames.find(frame => frame?.kind === "classical-nahuatl-nonactive-vnc-nonactive-stem-record") || null;
       inherentImpersonalRecord = applicationTypedFrames.find(frame => frame?.kind === "classical-nahuatl-impersonal-vnc-inherent-impersonal-record") || null;
       tlaImpersonalStemRecord = applicationTypedFrames.find(frame => frame?.kind === "classical-nahuatl-impersonal-vnc-tla-impersonal-stem-record") || null;
@@ -3738,13 +3738,13 @@ export function createUiRenderingApi(targetObject = globalThis) {
       } else if (tlaImpersonalStemRecord?.authorizationStatus === "authorized") {
         nonactiveStem = tlaImpersonalStemRecord.impersonalStem || tlaImpersonalStemRecord.targetStem || "";
       }
-      derivationOperationFrame = vncApplicationFrame.resultFrame?.derivationOperationFrame || null;
+      derivationOperationFrame = vncApplicationFrame?.resultFrame?.derivationOperationFrame || null;
       derivationOptionInventory = applicationControlFrame.derivationOptionInventory || null;
       derivationSelectorRequired = applicationControlFrame.derivationSelectorRequired === true;
       selectedDerivationOptionId = applicationControlFrame.selectedDerivationOptionId || "";
       derivedStem = applicationControlFrame.derivedStem || derivationOperationFrame?.targetStem || derivationOperationFrame?.derivedStem || "";
       derivedClass = applicationControlFrame.derivedClass || derivationOperationFrame?.targetClass || derivationOperationFrame?.derivedClass || "";
-      targetValence = vncApplicationFrame.normalizedRequest?.targetValence || valence;
+      targetValence = vncApplicationFrame?.normalizedRequest?.targetValence || valence;
       targetObjectCount = Number(applicationControlFrame.targetObjectCount || derivationOperationFrame?.targetObjectCount || derivationOperationFrame?.targetObjectRequests?.length || 0);
       sourceVoice = applicationControlFrame.sourceVoice || applicationControlFrame.selectedSourceVoice || sourceVoice;
       allowedSourceVoices = applicationControlFrame.allowedSourceVoices || ["active"];
@@ -40892,7 +40892,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
           if (!active) return;
           if ((active.operationId === "nnc:ordinary"
             || active.operationId === "vnc:application" && ["applicativeObjectKind",
-              "applicativeObjectPerson", "requestedDerivation", "finiteSingularConnector"].includes(choiceId))
+              "applicativeObjectPerson", "requestedDerivation", "finiteSingularConnector"].includes(choiceId)
+            || active.operationId === "vnc:application" && ["mood", "tense"].includes(choiceId)
+              && targetObject.isClassicalNahuatlNonactiveCarrierSourceFrame?.(active.exactSource) === true)
             && (active !== binding || select.isConnected === false)) return;
           const nextSelections = {
             ...(active.callerSelections || {}),
@@ -40959,6 +40961,38 @@ export function createUiRenderingApi(targetObject = globalThis) {
               delete nextSelections.subjectHumanness;
             }
           }
+          let carrierTenseProposal = null;
+          if (active.operationId === "vnc:application" && ["mood", "tense"].includes(choiceId)
+            && targetObject.isClassicalNahuatlNonactiveCarrierSourceFrame?.(active.exactSource) === true) {
+            if (selectedValue && !ownerOptions.some(option => String(option.optionId) === selectedValue
+              && option.availabilityStatus === "available")) return;
+            // Ask the exact carrier owner for the new mood's domain before
+            // carrying a draft across it. An inactive tense is never submitted.
+            if (!nextSelections.mood) delete nextSelections.tense;
+            else {
+            const probeSelections = {...nextSelections};
+            delete probeSelections.tense;
+            const probe = targetObject.issueClassicalGrammarTypedSourceOperationBindingFrame?.(
+              active.navigator, active.operationId, probeSelections);
+            if (targetObject.isClassicalGrammarTypedSourceOperationBindingFrame?.(probe) !== true
+              || probe.exactSource !== active.exactSource) return;
+            const availableTenses = (probe.choiceOptionProjection?.tense || [])
+              .filter(option => option.availabilityStatus === "available")
+              .map(option => String(option.optionId || ""));
+            const oldTense = String(active.effectiveSelections?.tense || "");
+            const candidate = choiceId === "tense" ? selectedValue
+              : availableTenses.includes(oldTense) ? oldTense
+                : oldTense ? availableTenses[0] || "" : "";
+            if (candidate) {
+              carrierTenseProposal = ClassicalVncTenseChoices.prepare({binding:active, choiceId,
+                mood:nextSelections.mood, tense:candidate, availableTenses,
+                explicitValidated:choiceId === "tense" && ownerOptions.some(option =>
+                  String(option.optionId) === selectedValue && option.availabilityStatus === "available")});
+              if (!carrierTenseProposal) return;
+              nextSelections.tense = carrierTenseProposal.tense;
+            } else delete nextSelections.tense;
+            }
+          }
           const ordinaryStage = active.operationId === "nnc:ordinary"
             ? stageOrdinaryNncDependencies(targetObject, active.exactSource, nextSelections, {
               choiceId, previousMemory: ClassicalOrdinaryNncChoiceMemory.get(active),
@@ -41011,7 +41045,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
           ActiveClassicalGrammarTypedSourceOperationBinding = nextBinding;
           if (ordinaryStage?.memory) ClassicalOrdinaryNncChoiceMemory.set(nextBinding, ordinaryStage.memory);
           if (active.operationId === "vnc:application") {
-            ClassicalVncTenseChoices.carry(active, nextBinding);
+            const tenseCommitted = carrierTenseProposal
+              && ClassicalVncTenseChoices.commit(active, nextBinding, carrierTenseProposal.receipt);
+            if (!tenseCommitted) ClassicalVncTenseChoices.carry(active, nextBinding);
             const committed = applicativeStage && ClassicalApplicativeChoices.commit(active, nextBinding, applicativeStage.receipt);
             if (!committed) ClassicalApplicativeChoices.carry(active, nextBinding);
           }
@@ -45206,15 +45242,17 @@ export function createUiRenderingApi(targetObject = globalThis) {
     function getClassicalRetainedNominalVncVoiceContext() {
       const binding = getClassicalRetainedNominalEmbedBinding();
       const operands = getClassicalNominalEmbedOperands(binding);
-      if (binding?.selectedBindingId !== "nominal-embed:matrix-vnc-result"
-        || binding.ownerBindingFrame?.exactResult !== binding.exactResult
-        || !operands?.embedResult
-        || !getClassicalExactNncConstructionConstituent(operands.embedResult)) return null;
+      if (!["nominal-embed:matrix-vnc-result", "nominal-embed:embed-nnc-result"]
+        .includes(binding?.selectedBindingId)
+        || targetObject.isClassicalNahuatlFormationResultBindingFrame?.(binding.ownerBindingFrame) !== true
+        || binding.ownerBindingFrame.exactResult !== binding.exactResult
+        || !getClassicalExactVncConstructionConstituent(operands?.matrixResult)
+        || !getClassicalExactNncConstructionConstituent(operands?.embedResult)) return null;
       const projection = targetObject
-        .getClassicalNahuatlVncContinuationSourceConstituents?.(binding.exactResult);
+        .getClassicalNahuatlVncContinuationSourceConstituents?.(operands.matrixResult);
       if (!projection) return null;
       const voiceBinding = targetObject.issueClassicalNahuatlVncContinuationBindingFrame?.(
-        "vnc:application", binding.exactResult, {
+        "vnc:application", operands.matrixResult, {
           requestedDerivation: "direct", subject: projection.sourceSubject,
           mood: getClassicalNominalConstructionControlValue("classical-rule-logic-mood", "indicative"),
           tense: getClassicalNominalConstructionControlValue("classical-rule-logic-tense", "present"),
@@ -45222,7 +45260,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         }
       );
       if (targetObject.isClassicalNahuatlVncContinuationBindingFrame?.(voiceBinding) !== true
-        || voiceBinding.exactInputResult !== binding.exactResult
+        || voiceBinding.exactInputResult !== operands.matrixResult
         || voiceBinding.ownerInputAcceptanceProven !== true) return null;
       const controls = voiceBinding.ownerPreflightResult?.controlFrame;
       return Array.isArray(controls?.allowedVoices) ? {binding, controls} : null;
@@ -45243,7 +45281,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const wrapper = control?.closest?.(".classical-rule-control, label, [data-classical-rule-control]");
       const choiceScope = (currentBinding, currentRequest) => {
         const operands = getClassicalNominalEmbedOperands(currentBinding);
-        if (currentBinding?.selectedBindingId !== "nominal-embed:matrix-vnc-result"
+        if (!["nominal-embed:matrix-vnc-result", "nominal-embed:embed-nnc-result"]
+          .includes(currentBinding?.selectedBindingId)
           || targetObject.isClassicalNahuatlFormationResultBindingFrame?.(currentBinding.ownerBindingFrame) !== true
           || currentBinding.ownerBindingFrame.exactResult !== currentBinding.exactResult
           || !operands?.matrixResult || !operands.embedResult
@@ -47818,7 +47857,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         selectedBindingId,
         { allowExecution: false, editedControl:control, vncSelections:stagedVncIntent }
       );
-      if (stagedVncIntent && staged && ActiveClassicalGrammarResultBinding?.exactResult === binding.exactResult) {
+      if (stagedVncIntent && ActiveClassicalGrammarResultBinding?.exactResult === binding.exactResult) {
         const nextFrame = ActiveClassicalGrammarResultBinding.ownerBindingFrame;
         const committed = continuationTenseProposal && ClassicalVncContinuationTenseChoices.commit(
           binding.ownerBindingFrame, nextFrame, binding.exactResult, continuationTenseProposal.receipt);

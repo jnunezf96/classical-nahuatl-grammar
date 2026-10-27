@@ -11218,13 +11218,22 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       const allowed = new Set(["subject","subjectAnimacy","subjectHumanness","patientReferenceId","mood","tense","requestedVoice","requestedDerivation","sentenceOptions"]);
       const unsupported = Object.keys(selections).filter(key=>!allowed.has(key));
       const projection = {};
-      for (const [id,values] of Object.entries({subject:["1sg","2sg","3sg","1pl","2pl","3pl","3common"],subjectAnimacy:["animate","nonanimate"],subjectHumanness:["human","nonhuman"],mood:["indicative","optative","admonitive"],tense:["present","future","imperfect","preterit","distant-past","pluperfect"]}))
+      const moods = ["indicative","optative","admonitive"];
+      const tenses = (selections.mood
+        ? r.getClassicalNahuatlVncParadigmTensesForMood(selections.mood)
+        : [...new Set(moods.flatMap(mood=>r.getClassicalNahuatlVncParadigmTensesForMood(mood)))])
+        .filter(tense=>!["preterit-as-present","distant-past-as-past"].includes(tense));
+      for (const [id,values] of Object.entries({subject:["1sg","2sg","3sg","1pl","2pl","3pl","3common"],subjectAnimacy:["animate","nonanimate"],subjectHumanness:["human","nonhuman"],mood:moods,tense:tenses}))
         projection[id]=Object.freeze(values.map(optionId=>Object.freeze({choiceId:id,optionId,label:optionId,availabilityStatus:"available",ownerOptionProjected:true,ownerOptionAuthority:false,grammarAuthority:false})));
       projection.patientReferenceId=Object.freeze([Object.freeze({choiceId:"patientReferenceId",optionId:"text",label:"Patient",inputKind:"text",availabilityStatus:"available",ownerOptionProjected:true,ownerOptionAuthority:false,grammarAuthority:false})]);
       const required = ["subject","subjectAnimacy","subjectHumanness","patientReferenceId","mood","tense"].filter(key=>typeof selections[key] !== "string" || !selections[key].trim());
       const effective = Object.freeze({requestedDerivation:"direct",requestedVoice:"passive",...selections});
       let reason = unsupported.length ? "nonactive-carrier-finite-selection-not-recognized"
         : effective.requestedVoice !== "passive" || effective.requestedDerivation !== "direct" ? "nonactive-carrier-personal-passive-required" : "";
+      if (!reason && selections.mood && selections.tense
+        && (r.validateClassicalNahuatlVncSemanticSelection({mood:selections.mood,tense:selections.tense}).authorizationStatus !== "authorized"
+          || !tenses.includes(selections.tense)))
+        reason = "nonactive-carrier-mood-tense-not-authorized";
       const finite = !reason && !required.length ? r.buildClassicalNahuatlNonactiveCarrierFiniteFrame(source,effective) : null;
       if (finite && r.isClassicalNahuatlNonactiveCarrierFiniteFrame(finite) !== true) reason=finite.blockReason;
       const status=reason?"rejected":required.length?"choices-required":"ready";

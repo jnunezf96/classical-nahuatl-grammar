@@ -44,7 +44,10 @@ export function createFiniteConnectorContinuationCoordinator(owner) {
   const authentic=(frame,parent)=>Boolean(parent && frame
     && owner?.isClassicalNahuatlVncContinuationBindingFrame?.(frame) === true
     && frame.operationId === 'vnc:application' && frame.exactInputResult === parent
-    && frame.ownerInputAcceptanceProven === true && frame.bindingStatus === 'ready');
+    && frame.ownerInputAcceptanceProven === true && (frame.bindingStatus === 'ready'
+      || frame.bindingStatus === 'rejected'
+        && frame.blockReason === 'classical-vnc-continuation-object-interpretation-not-licensed'
+        && Array.isArray(frame.executionArgs) && frame.executionArgs.length === 0));
   const fields=['subject','mood','tense','requestedDerivation','requestedVoice','derivationOptionId',
     'nonactiveOptionId','objectSelection','objectInterpretation','applicativeObjectKind',
     'applicativeObjectPerson','causativeObjectKind','causativeSpecificShuntlineRealization','irregularStemChoice'];
@@ -59,7 +62,7 @@ export function createFiniteConnectorContinuationCoordinator(owner) {
     if (choiceId==='finiteSingularConnector' && explicitValidated && offered(frame,selected)) saved.set(coordinate(frame),selected);
     if (choiceId!=='finiteSingularConnector') {
       const candidate=owner.issueClassicalNahuatlVncContinuationBindingFrame?.('vnc:application',parent,next,additionalResults);
-      if (authentic(candidate,parent)) {
+      if (authentic(candidate,parent) && candidate.bindingStatus === 'ready') {
         const savedChoice=saved.get(coordinate(candidate));
         if (savedChoice && offered(candidate,savedChoice)) {
           next.finiteSingularConnector=savedChoice;

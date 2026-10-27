@@ -1,0 +1,41 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {createRuntimeInstance} from '../runtime/create_runtime.mjs';
+import {createVncTenseCoordinator} from '../application/classical/vnc_tense_choice_coordination.mjs';
+const r=(await createRuntimeInstance({documentObject:{getElementById:()=>null,addEventListener(){}}})).runtimeObject;
+const source=r.resolveClassicalNahuatlNonactiveCarrierSourceFrame({enteredStem:'nec-ō',valence:'intransitive'});
+const nav=r.getClassicalGrammarApplicationCapabilityNavigator(source);
+const base={subject:'3sg',subjectAnimacy:'animate',subjectHumanness:'human',patientReferenceId:'patient',requestedVoice:'passive',requestedDerivation:'direct'};
+const bind=(mood,tense)=>r.issueClassicalGrammarTypedSourceOperationBindingFrame(nav,'vnc:application',{...base,mood,tense});
+const available=b=>b.choiceOptionProjection.tense.filter(x=>x.availabilityStatus==='available').map(x=>x.optionId);
+test('carrier owner projects and enforces the canonical mood-dependent domain',()=>{
+ const indicative=bind('indicative','imperfect');assert.equal(indicative.bindingStatus,'ready');
+ const admonitive=bind('admonitive','nonpast');assert.equal(admonitive.bindingStatus,'ready');
+ assert.deepEqual(available(admonitive),['nonpast']);
+ assert.equal(bind('admonitive','imperfect').bindingStatus,'rejected');
+ assert.equal(bind('indicative','nonpast').bindingStatus,'rejected');
+ assert.deepEqual(available(bind('optative','past')),r.getClassicalNahuatlVncParadigmTensesForMood('optative'));
+});
+test('a copied binding or changed exact carrier cannot receive remembered tense',()=>{
+ const c=createVncTenseCoordinator(r),b=bind('indicative','present');
+ const proposal=c.prepare({binding:b,choiceId:'tense',mood:'indicative',tense:'imperfect',availableTenses:available(b),explicitValidated:true});
+ assert.equal(c.prepare({binding:{...b},choiceId:'tense',mood:'indicative',tense:'imperfect',availableTenses:available(b),explicitValidated:true}),null);
+ const other=r.deriveClassicalNahuatlNonactiveStemRecord('pāca',{sourceValence:'specific-projective',optionId:'ō:pāc-ō'});
+ assert.equal(r.isClassicalNahuatlNonactiveCarrierSourceFrame(other),true);
+ const otherNav=r.getClassicalGrammarApplicationCapabilityNavigator(other);
+ const changed=r.issueClassicalGrammarTypedSourceOperationBindingFrame(otherNav,'vnc:application',{...base,mood:'indicative',tense:'imperfect'});
+ assert.equal(changed.bindingStatus,'ready');
+ assert.equal(c.commit(b,changed,proposal.receipt),false);
+ assert.equal(c.carry(b,changed),false);
+});
+test('a real carrier binding retains explicit inactive tense across owner-authorized mood changes',()=>{
+ const c=createVncTenseCoordinator(r);let b=bind('indicative','present');
+ let p=c.prepare({binding:b,choiceId:'tense',mood:'indicative',tense:'imperfect',availableTenses:available(b),explicitValidated:true});
+ let n=bind(p.mood,p.tense);assert(c.commit(b,n,p.receipt));b=n;
+ p=c.prepare({binding:b,choiceId:'mood',mood:'admonitive',tense:'nonpast',availableTenses:available(bind('admonitive','nonpast'))});
+ n=bind(p.mood,p.tense);assert(c.commit(b,n,p.receipt));b=n;
+ p=c.prepare({binding:b,choiceId:'mood',mood:'indicative',tense:'present',availableTenses:available(bind('indicative','present'))});
+ assert.equal(p.tense,'imperfect');assert.equal(p.restored,true);n=bind(p.mood,p.tense);assert(c.commit(b,n,p.receipt));
+ const result=r.executeClassicalGrammarTypedSourceOperationBindingFrame(n);assert.equal(result.authorizationStatus,'authorized');
+ assert.equal(result.canonicalResult.normalizedRequest.tense,'imperfect');
+});
