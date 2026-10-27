@@ -1,3 +1,7 @@
+## 1.2.67 — Exact Formation Choice Handoff
+
+Uses the existing canonical control mapping when retaining nonactive formation choices on exact Result continuation.
+
 ## 1.2.66 — Current Derivation Choices
 
 Same-Source formation choices survive inactive derivation and voice. Frequentative shopping explanations now distinguish variety and repeated occasions according to Andrews§27.3.1 without assigning universal meanings to copying loci.

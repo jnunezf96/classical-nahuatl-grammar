@@ -1,8 +1,8 @@
-# Grammar OS v1.2.66 release
+# Grammar OS v1.2.67 release
 
 Release name: **Current Derivation Choices**
 
-Browser build: **20261026-derivation-choices-85**
+Browser build: **20261026-derivation-choices-86**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 

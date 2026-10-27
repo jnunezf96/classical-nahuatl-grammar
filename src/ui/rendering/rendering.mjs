@@ -48382,8 +48382,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           if (voiceControl) voiceControl.value = requestedVoice;
         }
         if(current.operationId==='vnc:application') nextFrame=ClassicalDerivationChoices.handoff(current.ownerBindingFrame,nextFrame,{
-          choiceId:editedControl?.id==='classical-rule-logic-derivation-option'?'derivationOptionId'
-            :editedControl?.id==='classical-rule-logic-nonactive-option'?'nonactiveOptionId':'other',
+          choiceId:['derivationOptionId','nonactiveOptionId'].find(key=>getClassicalCapabilityBindingControlsForChoice(key).includes(editedControl))||'other',
           explicitValidated:editedControl?.isConnected!==false&&Array.from(editedControl?.options||[]).some(option=>option.value===editedControl.value&&!option.disabled&&!option.hidden),
           issue:selections=>targetObject.issueClassicalNahuatlVncContinuationBindingFrame(current.operationId,current.exactResult,selections,current.additionalResults||{})});
         const derivationMemoryFrame=nextFrame;
