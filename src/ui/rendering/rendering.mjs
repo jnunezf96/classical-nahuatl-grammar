@@ -1,3 +1,5 @@
+import {createCompoundChoiceMemory} from '../../application/classical/compound_choice_coordination.mjs';
+import {getCompoundNonactiveScopeDomain} from '../../core/classical/compound_choice_contract.mjs';
 import {createDerivationChoiceCoordinator} from '../../application/classical/derivation_choice_coordination.mjs?derivationChoices=20261026-1';
 import {createSentenceChoiceCoordinator,createParticleHonorificChoiceCoordinator} from '../../application/classical/sentence_choice_coordination.mjs?sentenceChoices=20261026-1';
 import {resolveVncSourceClassChoice,resolveNncSourceClassValues,resolveIrregularSourceAlternatives,resolvePersonalNameSourceChoice,resolveCoarseNominalSourceFacts,resolveNncSourceChoiceDomain,resolveIrregularSourceRequest} from "../../application/classical/source_choice_coordination.mjs?sourceChoices=20261026-1";
@@ -271,6 +273,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
     const ClassicalAppliedSentenceLayerActions = new WeakMap();
     var ActiveClassicalCapabilityContinuedTypedSource = null;
     var ActiveClassicalLexicalizedPresentNncSource = null;
+    var ClassicalNativeCompoundChoiceSession = Object.freeze({grammarAuthority:false});
     var ActiveClassicalCapabilityCommittedTypedSource = null;
     var ActiveClassicalCapabilityCommittedTypedSourceSignature = "";
     var ClassicalParticleHonorificSourceSession = null;
@@ -926,6 +929,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
       // Mirroring an already-issued Result is an internal handoff. The Source
       // builder must not withdraw its universal capture during that commit.
       if (ClassicalVncResultSourceCommitInProgress) return false;
+      if (["typed-source-committed", "source-cleared", "clear-source-button", "result-workspace-cleared"].includes(reason))
+        ClassicalNativeCompoundChoiceSession = Object.freeze({grammarAuthority:false});
       restoreClassicalSentenceConjunctorPicker();
       // Explicit Clear ends the editing session. Source edits and ordinary
       // commits still retain an Add parent while its new material is prepared.
@@ -2420,18 +2425,96 @@ export function createUiRenderingApi(targetObject = globalThis) {
     function isClassicalStandardNncSurfaceResultFrame(frame = null) {
       return Boolean(getClassicalStandardNncSurfaceResultFamily(frame));
     }
+    function getClassicalCompoundChoiceContext(kind) {
+      const exact=ActiveClassicalGrammarResultBinding;
+      if(kind==='scope' && exact?.operationId==='vnc:derivational-operation'
+        && targetObject.isClassicalNahuatlVncContinuationBindingFrame?.(exact.ownerBindingFrame)===true
+        && exact.ownerBindingFrame.exactInputResult===exact.exactResult
+        && exact.ownerBindingFrame.ownerInputAcceptanceProven===true) {
+        const value=id=>targetObject.document?.getElementById?.(id)?.value||'';
+        return {source:exact.exactResult,
+          matrix:exact.additionalResults?.['compound-matrix-constituent']||value('classical-rule-logic-compound-matrix'),
+          route:JSON.stringify([value('classical-rule-logic-late-variant'),value('classical-rule-logic-compound-recursive-role'),
+            value('classical-rule-logic-compound-matrix-class'),value('classical-rule-logic-compound-matrix-initial-i')]),binding:exact};
+      }
+      if(['possessor','affinity'].includes(kind)) {
+        if(exact?.operationId==='grammar:nominal-construction'
+          && targetObject.isClassicalNahuatlFormationResultBindingFrame?.(exact.ownerBindingFrame)===true
+          && exact.ownerBindingFrame.exactResult===exact.exactResult)
+          return {source:exact.exactResult,
+            matrix:exact.additionalResults?.[exact.selectedBindingId==='compound-nnc:matrix-result'?'compound-embed-constituent':'compound-matrix-constituent']||null,
+            route:JSON.stringify(['compound-nnc',exact.selectedBindingId,
+              getClassicalPrimitiveMatrixSourceDeclaration(exact),
+              targetObject.document?.getElementById?.('classical-compound-nnc-embed-source-class')?.value||'',
+              targetObject.document?.getElementById?.('classical-compound-nnc-embed-analysis')?.value||''])};
+        const typed=getActiveClassicalGrammarTypedSourceOperationBinding();
+        if(typed?.operationId==='grammar:nominal-construction'
+          && targetObject.isClassicalGrammarTypedSourceOperationBindingFrame?.(typed)===true
+          && typed.navigator?.exactSource===typed.exactSource)
+          return {source:typed.exactSource,matrix:null,route:'compound-nnc'};
+        // The native open-input route has no exact operation binding. Its
+        // explicit Apply session owns draft intent only; the nominal owner
+        // still validates every restored choice from the current operands.
+        if (!exact && !typed) {
+          let applied;
+          try { applied=JSON.parse(targetObject.ClassicalSourcePartsCommittedSignature||"null"); } catch {}
+          const request=buildClassicalNominalConstructionUiRequest();
+          if (applied?.mode==='embed-matrix' && request?.constructionKind==='compound-nnc'
+            && applied.sourceEmbedStem===request.source?.embedStem
+            && applied.sourceMatrixStem===request.source?.matrixStem)
+            return {source:ClassicalNativeCompoundChoiceSession,matrix:null,
+              route:JSON.stringify([targetObject.ClassicalSourcePartsCommittedSignature,
+                request.source?.embedClass,request.source?.matrixClass,
+                request.source?.compoundEmbedAnalysis||null])};
+        }
+      }
+      return null;
+    }
+    function acceptsClassicalCompoundChoice(kind,value,context) {
+      if(!context)return false;
+      if(kind==='scope') {
+        const current=context.binding;
+        const selections=getClassicalVncContinuationBindingSelections(current);
+        if(selections?.lateOperation!=='compound')return false;
+        const candidate=targetObject.issueClassicalNahuatlVncContinuationBindingFrame?.(
+          current.operationId,current.exactResult,{...selections,compoundNonactiveScope:value},current.additionalResults||{});
+        return targetObject.isClassicalNahuatlVncContinuationBindingFrame?.(candidate)===true
+          && candidate.exactInputResult===context.source&&candidate.ownerInputAcceptanceProven===true
+          && candidate.bindingStatus==='ready';
+      }
+      const request=buildClassicalNominalConstructionUiRequest();
+      if(request?.constructionKind!=='compound-nnc')return false;
+      const candidate=targetObject.evaluateClassicalNahuatlNominalConstruction?.(kind==='affinity'
+        ? {...request,reduplicationTarget:value}
+        : {...request,possessorOrientation:value,source:{...request.source,possessorOrientation:value}});
+      return targetObject.isClassicalNahuatlNominalConstructionResult?.(candidate)===true
+        &&candidate.authorizationStatus==='authorized'&&(kind==='affinity'
+          ? candidate.operationFrame?.affinityScopeFrame?.availableTargets?.includes(value)
+          :candidate.operationFrame?.possessorOrientationOptions?.includes(value));
+    }
+    function coordinateClassicalCompoundControl(control,kind,coordinate,offered,active=true) {
+      if(!control)return;
+      const memories={scope:ClassicalCompoundScopes,possessor:ClassicalCompoundPossessors,affinity:ClassicalCompoundAffinity};
+      const memory=memories[kind];
+      const context=getClassicalCompoundChoiceContext(kind);
+      control.classicalCompoundChoiceContext={kind,coordinate,offered:[...offered],context};
+      if(!control.dataset.classicalCompoundChoiceMemoryBound) {
+        control.dataset.classicalCompoundChoiceMemoryBound='true';
+        control.addEventListener('change',()=>{
+          const info=control.classicalCompoundChoiceContext;
+          if(control.isConnected===false||control.disabled||!info?.context)return;
+          const current=getClassicalCompoundChoiceContext(info.kind);
+          if(!current||current.source!==info.context.source||current.matrix!==info.context.matrix||current.route!==info.context.route)return;
+          // Offered explicit intent supersedes older intent even while another
+          // choice is pending. Restoration still requires canonical acceptance.
+          memories[info.kind].record(current,info.coordinate,control.value,info.offered);
+        },true);
+      }
+      const restored=memory.restore(context,coordinate,active?offered:[],value=>acceptsClassicalCompoundChoice(kind,value,context));
+      if(restored)control.value=restored;
+    }
     function getClassicalCompoundNonactiveScopeValues(voiceOperation, voice, variant = "") {
-      const values = voiceOperation === "passive"
-        ? ["embed", "both"]
-        : voice === "impersonal"
-          ? voiceOperation === "tla-impersonal"
-            ? ["embed", "both"]
-            : ["embed", "matrix", "both"]
-          : ["none"];
-      // Project the existing §28.11 owner's embed-only restriction; the
-      // canonical compound owner still validates every requested operation.
-      return variant === "future-embed" && values.includes("embed")
-        ? ["embed"] : values;
+      return getCompoundNonactiveScopeDomain({voiceOperation,voice,variant});
     }
     function getClassicalRuleLogicSurfaceState(overrides = {}) {
       const basalUnit = normalizeClassicalBasalUnitForRendering(overrides.basalUnit || getClassicalBasalUnitFromSurfaceForRendering("vnc"));
@@ -18966,6 +19049,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
         option.hidden = fixedFutureEmbedScope ? false : !licensed;
         option.disabled = !licensed;
       });
+      coordinateClassicalCompoundControl(compoundNonactiveScopeControl,'scope',compoundVoiceOperation,
+        licensedNonactiveScopes,operation==='compound'&&compoundVoiceOperation!=='active');
       if (compoundNonactiveScopeControl
         && !licensedNonactiveScopes.includes(
           compoundNonactiveScopeControl.value
@@ -29037,8 +29122,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           if (targetObject.isClassicalNahuatlNominalConstructionResult?.(preflight)) frame = preflight;
         }
       }
-      if ((!frame || frame.authorizationStatus !== "authorized")
-        && selected === "compound-nnc" && state === "possessive") {
+      if (selected === "compound-nnc" && state === "possessive") {
         // Ask the owner which orientations the captured Source permits. This
         // preflight only configures choices; Make Result performs the operation.
         const request = buildClassicalNominalConstructionUiRequest();
@@ -29277,6 +29361,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
         if (control) {
           control.disabled = !visible;
           const orientations = frame?.operationFrame?.possessorOrientationOptions;
+          coordinateClassicalCompoundControl(control,'possessor','integrated',
+            Array.isArray(orientations)?orientations:[],visible);
           if (Array.isArray(orientations)) {
             Array.from(control.options || []).forEach(option => {
               option.disabled = !orientations.includes(option.value);
@@ -29403,6 +29489,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         if (control) {
           control.disabled = !visible;
           const accepted = compoundAffinity?.availableTargets;
+          coordinateClassicalCompoundControl(control,'affinity','affinity',accepted||[],visible);
           Array.from(control.options || []).forEach(option => {
             option.disabled = Boolean(accepted && !accepted.includes(option.value));
           });
@@ -41226,6 +41313,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
     const ClassicalOrdinaryNncChoiceMemory = new WeakMap();
     const ClassicalSentenceChoices = createSentenceChoiceCoordinator(targetObject);
     const ClassicalDerivationChoices = createDerivationChoiceCoordinator(targetObject);
+    const ClassicalCompoundScopes = createCompoundChoiceMemory();
+    const ClassicalCompoundPossessors = createCompoundChoiceMemory();
+    const ClassicalCompoundAffinity = createCompoundChoiceMemory();
     const ClassicalParticleHonorificChoices = createParticleHonorificChoiceCoordinator(targetObject);
     function getClassicalParticleHonorificSourceSession(binding) {
       if(targetObject.isClassicalGrammarTypedSourceOperationBindingFrame?.(binding)!==true)return null;

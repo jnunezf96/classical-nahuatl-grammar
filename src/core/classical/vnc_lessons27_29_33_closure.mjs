@@ -1,3 +1,4 @@
+import {getCompoundNonactiveScopeDomain} from './compound_choice_contract.mjs';
 // Canonical Andrews-only closure for Lessons 27, 28, 29, and 33.
 //
 // This production module contains executable typed grammar only. Source spans,
@@ -3395,7 +3396,7 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
         );
       }
       if (requestedCompoundVoice === "passive"
-        && !["embed", "both"].includes(requestedNonactiveScope)) {
+        && !getCompoundNonactiveScopeDomain({voice:"passive"}).includes(requestedNonactiveScope)) {
         return blockedOperation(
           request,
           "compound-passive-scope-must-be-embed-or-both",
@@ -3403,7 +3404,7 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
         );
       }
       if (requestedCompoundVoice === "impersonal"
-        && !["embed", "matrix", "both"].includes(requestedNonactiveScope)) {
+        && !getCompoundNonactiveScopeDomain({voice:"impersonal"}).includes(requestedNonactiveScope)) {
         return blockedOperation(
           request,
           "compound-impersonal-scope-must-be-embed-matrix-or-both",
@@ -6485,6 +6486,26 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
       || (typeof targetObject.evaluateClassicalNahuatlVncApplication === "function"
         ? targetObject.evaluateClassicalNahuatlVncApplication(baseRequest)
         : null);
+    // §28.7 assigns nonactive scope to the compound constituents. An exact
+    // active Source remains the signed parent, but its embedded operand must
+    // be issued at the selected voice by the ordinary continuation owner.
+    if (sourceApplicationFrame
+      && key(request.lateOperation) === "compound"
+      && ["embed", "both"].includes(compoundNonactiveScope)
+      && key(sourceApplicationFrame.controlFrame?.selectedVoiceOperation || "active") === "active"
+      && ["passive", "impersonal"].includes(key(request.requestedVoice || request.voice))) {
+      const exactEmbedSource = targetObject.getClassicalNahuatlVncContinuationSourceConstituents(
+        sourceApplicationFrame.resultFrame,
+      );
+      const embedApplicationFrame = targetObject.evaluateClassicalNahuatlVncApplication(
+        { ...baseRequest, verbClass: exactEmbedSource?.verbClass, requestedDerivation: "direct" },
+        sourceApplicationFrame.resultFrame,
+      );
+      if (embedApplicationFrame?.authorizationStatus !== "authorized") {
+        return blockedClosure(request, "canonical-compound-nonactive-embed-required", "compound-nonactive-scope");
+      }
+      baseApplicationFrame = embedApplicationFrame;
+    }
     let constructionEmbedClassFrame = null;
     if (sourceApplicationFrame
       && key(request.lateOperation) === "compound"
@@ -6495,7 +6516,8 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
       && ["specific-projective", "projective-human", "projective-nonhuman"]
         .includes(sourceApplicationFrame.normalizedRequest?.sourceValence)
       && key(sourceApplicationFrame.resultFrame?.selectedDerivation) === "direct"
-      && key(sourceApplicationFrame.controlFrame?.selectedVoiceOperation || "active") === "active") {
+      && key(sourceApplicationFrame.controlFrame?.selectedVoiceOperation || "active") === "active"
+      && key(baseApplicationFrame?.controlFrame?.selectedVoiceOperation || "active") === "active") {
       // §28.10 gives this transitive embed a Class A perfective. Issue its
       // construction operand without relabeling the retained ordinary B Source.
       const embedApplicationFrame = targetObject.evaluateClassicalNahuatlVncApplication({

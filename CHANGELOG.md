@@ -1,3 +1,7 @@
+## 1.2.68 — Coordinated Compound Choices
+
+Compound nonactive scope, possessor orientation and affinity choices return after an inactive excursion when the current Source and grammatical owner still permit them. Exact active Source continuation now constructs the selected nonactive embed for compound scope. Explicit Source Apply and Make remain unchanged.
+
 ## 1.2.67 — Exact Formation Choice Handoff
 
 Uses the existing canonical control mapping when retaining nonactive formation choices on exact Result continuation.

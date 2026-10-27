@@ -1,13 +1,14 @@
-# Grammar OS v1.2.67 release
+# Grammar OS v1.2.68 release
 
-Release name: **Current Derivation Choices**
+Release name: **Coordinated Compound Choices**
 
-Browser build: **20261026-derivation-choices-86**
+Browser build: **20261026-compound-choices-87**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Explicit verb formations return when their derivation or voice becomes active again, only when the same Source owner still offers them.
-- Frequentative explanations separate copying loci from interpretation. Andrews’s shopping example now distinguishes variety from numerous occasions.
+- Compound nonactive scope returns after an active-voice excursion when its Source owner permits it.
+- Integrated possessor orientation and affinity locus survive temporary changes within the same applied Source.
+- Exact active Source continuation now creates the selected nonactive embedded constituent rather than retaining its active form under a nonactive scope label.
 - Existing panels, explicit Source Apply and Make, and accepted Results while staging are preserved.
