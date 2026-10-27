@@ -1,13 +1,13 @@
-# Grammar OS v1.2.72 release
+# Grammar OS v1.2.73 release
 
-Release name: **Coordinated Complement Choices**
+Release name: **Coordinated Event Relationships**
 
-Browser build: **20261026-participant-connections-91**
+Browser build: **20261027-event-relationships-92**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Complement choices now expose the current canonical owner's eligibility before Make.
-- Replacing a complement operand retains explicit choices and opens the existing saved Result picker while missing operands keep Make unavailable.
-- Readiness wording follows the current required operands and choices. Existing panels and explicit Source Apply/Make remain unchanged.
+- Clause relationship readiness now follows the current canonical owner before Make.
+- The explicit Purposive VNC profile requires an authentic purposive verb construction; ordinary-purpose alternatives retain their existing scope.
+- Replacing a captured clause preserves choices and correctly rebinds the Applied Source when needed, while the accepted Result waits for explicit Make.

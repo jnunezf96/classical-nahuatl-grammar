@@ -37879,7 +37879,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
       return true;
     }
     function shouldPreserveClassicalComparisonCaptureChoices(controller, role) {
-      return controller.preserveComplementCaptureChoices?.(ClassicalClauseRelationSelections, role) === true
+      return controller.preserveAdjunctionCaptureChoices?.(ClassicalClauseRelationSelections, role) === true
+        || controller.preserveComplementCaptureChoices?.(ClassicalClauseRelationSelections, role) === true
         || controller.preserveComparisonCaptureChoices(ClassicalClauseRelationSelections, role);
     }
     function resetClassicalClauseRelationSelections({
@@ -37912,14 +37913,15 @@ export function createUiRenderingApi(targetObject = globalThis) {
           clauseRelationExecutionBlockReason: contract.authorizationStatus === "blocked" ? contract.blockReason || "" : "",
         });
         const complement = ["object-complement", "subject-complement", "adverbial-complement"].includes(contract?.relation);
-        if (contract && (complement || contract.currentChoiceFrame || binding.clauseRelationDecisionContract?.currentChoiceFrame)) {
+        const adjunction = getClassicalClauseRelationControllerForRendering()?.preserveAdjunctionCaptureChoices?.(ClassicalClauseRelationSelections, "adjoined") === true;
+        if (contract && (complement || adjunction || contract.currentChoiceFrame || binding.clauseRelationDecisionContract?.currentChoiceFrame)) {
           syncClassicalClauseRelationCapabilityChoices(contract, contract.missingCaptureRoles || []);
-          if (complement) {
+          if (complement || adjunction) {
             ClassicalClauseRelationStatusMessage = getClassicalComplementReadinessMessage(contract);
             const status = targetObject.document?.getElementById("classical-capability-navigator-status");
             if (status) status.textContent = ClassicalClauseRelationStatusMessage;
           }
-          if (complement || ["conjunction", "correlative-conjunction", "lexical-conjunction", "parallel-structure"].includes(contract.relation)) syncClassicalRequiredResultChooser();
+          if (complement || adjunction || ["conjunction", "correlative-conjunction", "lexical-conjunction", "parallel-structure"].includes(contract.relation)) syncClassicalRequiredResultChooser();
         }
       }
       const contextSurface = ActiveClassicalRuleLogicSurfaceFrame || {};
@@ -54814,6 +54816,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
       if (binding.family === "clause-relation") {
         const role = binding.requiredResultRoles[0] || "";
         const controller = getClassicalClauseRelationControllerForRendering();
+        const anchoredAdjunction = controller?.preserveAdjunctionCaptureChoices?.(ClassicalClauseRelationSelections, role)
+          && binding.ownerBindingFrame?.bindingChoices?.some(choice => choice.id === binding.selectedBindingId && choice.captureRole === role);
+        const replacement = anchoredAdjunction ? controller.prepareAdjunctionAnchorReplacement(
+          binding.ownerBindingFrame, binding.selectedBindingId, role, exactAdditionalResult) : null;
+        if (anchoredAdjunction && !replacement) return false;
         const result = role
           ? controller?.captureCurrentResult?.(
             role,
@@ -54829,10 +54836,22 @@ export function createUiRenderingApi(targetObject = globalThis) {
             requiredRole => requiredRole !== role
           )
         );
+        if (replacement) {
+          ActiveClassicalGrammarResultSourceCapture = replacement.capture;
+          ActiveClassicalGrammarCapabilityNavigator = replacement.navigator;
+        }
         ActiveClassicalGrammarResultBinding = Object.freeze({
           ...binding,
+          ...(replacement ? {
+            exactResult: exactAdditionalResult,
+            ownerBindingFrame: replacement.operation.ownerBindingFrame,
+            navigatorOwnerBindingFrame: replacement.operation.ownerBindingFrame,
+            bindingIds: Object.freeze([...replacement.operation.ownerBindingIds]),
+            ownerBindingCompletionFrame: null,
+          } : {}),
           requiredResultRoles: remainingRequiredResultRoles,
         });
+        if (replacement) syncClassicalContinuationTarget();
         const navigatorRoot = targetObject.document?.getElementById?.(
           "classical-capability-navigator"
         );

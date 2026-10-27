@@ -1380,6 +1380,7 @@ export function createClassicalClauseRelationControllerGlobals(
     let conjunctionReadinessPreview = null;
     let supplementationReadinessPreview = null;
     let complementReadinessPreview = null;
+    let adjunctionReadinessPreview = null;
     const issuedRelationAvailabilityContracts = new WeakSet();
     let captureRevision = 0;
     let choiceRevision = 0;
@@ -4944,6 +4945,23 @@ export function createClassicalClauseRelationControllerGlobals(
         if (failure) contract = Object.freeze({...contract, authorizationStatus: "blocked",
           blockReason: failure, diagnostics: freezeArray(unique([...contract.diagnostics, failure]))});
       }
+      if (contract.relation && !NON_ADJUNCTION_RELATIONS.includes(contract.relation)
+        && contract.authorizationStatus === "authorized") {
+        const key = `${captureRevision}:${JSON.stringify(selections)}`;
+        if (adjunctionReadinessPreview?.key !== key) {
+          let failure = "classical-adverbial-adjunction-preflight-capability-required";
+          try {
+            const result = targetObject.evaluateAdverbialAdjunction?.(buildAdjunctionRequest(contract));
+            failure = targetObject.isAdverbialAdjunctionResult?.(result) === true
+              && result.ok === true && result.supported === true
+              ? "" : result?.diagnostics?.[0] || failure;
+          } catch { failure = "classical-adverbial-adjunction-preflight-threw"; }
+          adjunctionReadinessPreview = {key, failure};
+        }
+        if (adjunctionReadinessPreview.failure) contract = Object.freeze({...contract,
+          authorizationStatus: "blocked", blockReason: adjunctionReadinessPreview.failure,
+          diagnostics: freezeArray(unique([...contract.diagnostics, adjunctionReadinessPreview.failure]))});
+      }
       const diagnostics = Array.isArray(contract?.diagnostics)
         ? contract.diagnostics
         : [];
@@ -5179,6 +5197,43 @@ export function createClassicalClauseRelationControllerGlobals(
             ];
           }),
       ));
+    }
+
+    function buildAdjunctionRequest(contract) {
+      const principalCapture = getValidatedCapture("principal");
+      const adjoinedCapture = getValidatedCapture("adjoined");
+      const markerCapture = getValidatedCapture("marker");
+      const request = {
+        principalClause: principalCapture.canonicalResult,
+        adjoinedUnit: adjoinedCapture.canonicalResult,
+        semanticRelation: contract.relation,
+        adverbializationDegree: contract.degree,
+        structureKind: contract.derived.structureKind,
+        adjoinedUnitType: contract.derived.unitType,
+        order: contract.derived.order,
+        recursion: contract.derived.recursion,
+        marking: contract.derived.marking,
+      };
+      if (markerCapture && contract.derived.marking !== "unmarked") {
+        request.markerUnit = markerCapture.canonicalResult;
+      }
+      if (contract.relation === "time") {
+        request.timeProfile = contract.relationProfile;
+      } else if (contract.relation === "condition") {
+        request.conditionType = contract.relationProfile;
+        request.conditionalCuePresent = !markerCapture
+          && getSourceUnit("adjoined")?.features?.conditionalCue === true;
+      } else if (contract.relation === "purpose") {
+        request.purposeType = contract.relationProfile;
+      } else if (contract.relation === "concession") {
+        request.concessionType = contract.relationProfile;
+      } else if (
+        contract.relation === "compared-manner"
+        || contract.relation === "consideration"
+      ) {
+        request.contrast = "adverbial-modification";
+      }
+      return request;
     }
 
     function buildComparisonOperationRequest(contract = null) {
@@ -6128,39 +6183,7 @@ export function createClassicalClauseRelationControllerGlobals(
           storedStateAuthority: false,
         });
       }
-      const principalCapture = getValidatedCapture("principal");
-      const adjoinedCapture = getValidatedCapture("adjoined");
-      const markerCapture = getValidatedCapture("marker");
-      const request = {
-        principalClause: principalCapture.canonicalResult,
-        adjoinedUnit: adjoinedCapture.canonicalResult,
-        semanticRelation: contract.relation,
-        adverbializationDegree: contract.degree,
-        structureKind: contract.derived.structureKind,
-        adjoinedUnitType: contract.derived.unitType,
-        order: contract.derived.order,
-        recursion: contract.derived.recursion,
-        marking: contract.derived.marking,
-      };
-      if (markerCapture && contract.derived.marking !== "unmarked") {
-        request.markerUnit = markerCapture.canonicalResult;
-      }
-      if (contract.relation === "time") {
-        request.timeProfile = contract.relationProfile;
-      } else if (contract.relation === "condition") {
-        request.conditionType = contract.relationProfile;
-        request.conditionalCuePresent = !markerCapture
-          && getSourceUnit("adjoined")?.features?.conditionalCue === true;
-      } else if (contract.relation === "purpose") {
-        request.purposeType = contract.relationProfile;
-      } else if (contract.relation === "concession") {
-        request.concessionType = contract.relationProfile;
-      } else if (
-        contract.relation === "compared-manner"
-        || contract.relation === "consideration"
-      ) {
-        request.contrast = "adverbial-modification";
-      }
+      const request = buildAdjunctionRequest(contract);
       const canonicalResult = requestPreviewOwner("clause:adverbial-adjunction", request);
       const authorized = Boolean(
         canonicalResult
@@ -6214,6 +6237,29 @@ export function createClassicalClauseRelationControllerGlobals(
       transitionComparisonChoice,
       transitionConjunctionChoice,
       transitionSentenceChoice,
+      prepareAdjunctionAnchorReplacement(bindingFrame, bindingId, role, exactResult) {
+        if (!isClassicalClauseRelationBindingFrame(bindingFrame)) return null;
+        const prior = bindingFrame.bindingChoices.find(choice => choice.id === bindingId);
+        if (!prior || NON_ADJUNCTION_RELATIONS.includes(prior.relation)
+          || prior.captureRole !== role || !["principal", "adjoined", "marker"].includes(role)) return null;
+        const navigator = targetObject.getClassicalGrammarApplicationCapabilityNavigator?.(exactResult);
+        if (targetObject.isClassicalGrammarApplicationCapabilityNavigator?.(navigator) !== true
+          || navigator.exactResult !== exactResult) return null;
+        const operation = navigator.operations?.find(item => item.operationId === bindingFrame.operationId);
+        const owner = operation?.ownerBindingFrame;
+        if (operation?.availabilityStatus !== "available" || operation.ownerBindingFrameValidated !== true
+          || operation.ownerBindingInputResult !== exactResult || !isClassicalClauseRelationBindingFrame(owner)
+          || owner.exactResult !== exactResult || !owner.bindingChoices.some(choice => choice.id === bindingId
+            && choice.relation === prior.relation && choice.captureRole === role)) return null;
+        const capture = targetObject.captureClassicalGrammarApplicationResult?.(exactResult, "adjunction-replacement-source");
+        if (targetObject.isClassicalGrammarApplicationResultCapture?.(capture, "adjunction-replacement-source") !== true
+          || capture.canonicalResult !== exactResult) return null;
+        return Object.freeze({navigator, operation, capture});
+      },
+      preserveAdjunctionCaptureChoices(selections, role) {
+        return Boolean(selections?.relation && !NON_ADJUNCTION_RELATIONS.includes(selections.relation)
+          && ["principal", "adjoined", "marker"].includes(role));
+      },
       preserveComplementCaptureChoices(selections, role) {
         return COMPLEMENT_OPERATION_KINDS.includes(selections?.relation)
           && ["principal", "adjoined", "dependent"].includes(role);

@@ -985,6 +985,7 @@ export function createAdverbialAdjunctionGlobals(targetObject = globalThis, inst
             tense: semanticTense,
             antecessive,
             futureEmbed,
+            purposiveVnc: input.operationFrame?.operation === "purposive",
             sentenceType: String(
               baseNormalizedRequest.sentenceOptions?.sentenceType
               || baseNormalizedRequest.sentenceType
@@ -2081,6 +2082,10 @@ export function createAdverbialAdjunctionGlobals(targetObject = globalThis, inst
         if (profile.relation === ADVERBIAL_ADJUNCTION_RELATION.purpose) {
           if (profile.purposeType === ADVERBIAL_ADJUNCTION_PURPOSE.unknown) {
             diagnostics.push("adverbial-adjunction-purpose-profile-required");
+          }
+          if (profile.purposeType === ADVERBIAL_ADJUNCTION_PURPOSE.purposiveVnc
+            && adjoinedSource?.features?.purposiveVnc !== true) {
+            diagnostics.push("adverbial-adjunction-purpose-purposive-vnc-source-required");
           }
           if (profile.purposeType === ADVERBIAL_ADJUNCTION_PURPOSE.maOptative
             && adjoinedSource?.features?.mood !== "optative") {

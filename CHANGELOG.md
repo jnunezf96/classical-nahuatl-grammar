@@ -1,3 +1,7 @@
+## 1.2.73 — Coordinated Event Relationships
+
+Clause relationship choices are checked together by their canonical owner. Explicit purposive-VNC requires the actual derived construction. Captured-clause replacement retains choices, updates its authentic Source binding and keeps accepted Results unchanged until Make.
+
 ## 1.2.72 — Coordinated Complement Choices
 
 Complement readiness follows the current canonical owner. Clearing or replacing a captured operand preserves explicit complement choices, refreshes the existing saved Result picker, and keeps Make unavailable until the current combination is valid.
