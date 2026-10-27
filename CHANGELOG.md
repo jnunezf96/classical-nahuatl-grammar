@@ -1,3 +1,7 @@
+## 1.2.83 — Current Source Continuity
+
+New clause operations show their authentic starting Source while a role is pending. Retained prior relationship captures and citations appear only when the current owner binding selects that relationship; draft memory and accepted Results remain intact.
+
 ## 1.2.82 — Native Construction Restoration
 
 Prepared denominal Results replay their actual class-choice maps and preserve pending verbal participants. Affective drafts ignore only owner-inapplicable stale source coordinates. Opaque quoted names restore their validated native context and matching accepted source baseline. Canonical authority and explicit Make boundaries remain unchanged.

@@ -33,3 +33,14 @@ export function contractReferences(contract) {
   return [...new Set((contract?.currentChoiceFrame?.provenance?.sourceReferences||[])
     .map(normalizeAndrewsReference).filter(Boolean))];
 }
+
+// A retained controller draft is not the newly selected operation's Source.
+// This is presentation currentness only; the binding getter retains authority.
+export function hasCurrentClauseProjection(binding, operation, relation) {
+ if(binding?.family!=='clause-relation'||binding.operationId!==operation)return false;
+ const owner=binding.ownerBindingFrame;
+ if(!owner||!relation)return false;
+ const roles=Array.isArray(owner.bindingChoices)?owner.bindingChoices:[];
+ if(roles.length)return roles.some(role=>role.id===binding.selectedBindingId&&role.relation===relation);
+ return owner.ownerChoicesRequired===false&&owner.relationIds?.includes(relation)===true;
+}

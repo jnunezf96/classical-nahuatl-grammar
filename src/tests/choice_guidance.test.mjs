@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createRuntimeInstance} from '../runtime/create_runtime.mjs';
-import {inputLabel,clauseReadinessGuidance as guidance,contractReferences,normalizeAndrewsReference} from '../ui/composition/choice_guidance.mjs';
+import {inputLabel,clauseReadinessGuidance as guidance,contractReferences,normalizeAndrewsReference,hasCurrentClauseProjection} from '../ui/composition/choice_guidance.mjs';
 import {constructionBackground as background,sourceAnalysisBackground} from '../ui/composition/andrews_choice_references.mjs';
 const r=(await createRuntimeInstance({documentObject:{getElementById:()=>null,addEventListener(){}}})).runtimeObject;
 const noun=(subject)=>{const s=r.buildClassicalNahuatlOrdinaryNncSourceFrame({stem:'tlāca',sourceClass:'tl-1-a'});return r.executeClassicalGrammarApplicationRequest({operationId:'nnc:ordinary',args:[s,r.buildClassicalNahuatlOrdinaryNncOperationFrame(s,{subject,state:'absolutive'})]}).canonicalResult;};
@@ -59,8 +59,8 @@ test('actual renderer projection is idempotent and withdraws construction refere
  const citation=node(),sourceCitation=node(),nodes=new Map([['classical-current-construction-reference',citation],['classical-source-analysis-reference',sourceCitation]]);
  const target={document:{createElement(){throw Error('Existing citation must be reused');},getElementById:id=>nodes.get(id)||null},getClassicalBasalUnitFromRuntime:()=> 'vnc',getActiveDerivationType:()=> 'applicative'};
  const accepted=Object.freeze({}),session={position:{accepted,construction:{route:{operation:'vnc:application'},sourcePending:false},choices:{owner:{requestedDerivation:'causative'}}}};
- const project=new Function('targetObject','ClassicalConstructionSession','ActiveClassicalGrammarResultBinding','ClassicalWritingSourceMode','constructionBackground','sourceAnalysisBackground','contractReferences',`${body};syncClassicalChoiceGuidance();`);
- const run=()=>project(target,session,null,false,background,sourceAnalysisBackground,contractReferences);
+ const project=new Function('targetObject','ClassicalConstructionSession','ActiveClassicalGrammarResultBinding','ClassicalWritingSourceMode','constructionBackground','sourceAnalysisBackground','contractReferences','getActiveClassicalGrammarResultBinding','hasCurrentClauseProjection','ClassicalClauseRelationSelections',`${body};syncClassicalChoiceGuidance();`);
+ const run=()=>project(target,session,null,false,background,sourceAnalysisBackground,contractReferences,()=>null,hasCurrentClauseProjection,{});
  run();assert.equal(citation.textContent,'Construction background: Andrews §25.');const prior=mutations;run();assert.equal(mutations,prior);
  session.position.choices.owner={};run();assert.equal(citation.textContent,'Construction background: Andrews §26.');
  session.position.construction.sourcePending=true;run();assert.equal(citation.hidden,true);assert.equal(citation.textContent,'');assert.equal(sourceCitation.hidden,false);assert.match(sourceCitation.textContent,/§§5–7/u);assert.equal(session.position.accepted,accepted);

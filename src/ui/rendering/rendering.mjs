@@ -1,6 +1,6 @@
 import {inactiveAffectiveReloadControl,prepareNativeReloadSourceContext,reconcileAcceptedQuotedSourceBaseline} from '../composition/native_reload_source.mjs?nativeReload=20261027-4';
 import {normalizeSourceEditorSignature} from '../composition/source_editor_signature.mjs';
-import {inputLabel,captureRoleLabel,clauseReadinessGuidance,contractReferences,normalizeAndrewsReference} from '../composition/choice_guidance.mjs?choiceGuidance=20261027-2';
+import {inputLabel,captureRoleLabel,clauseReadinessGuidance,contractReferences,normalizeAndrewsReference,hasCurrentClauseProjection} from '../composition/choice_guidance.mjs?choiceGuidance=20261027-3';
 import {constructionBackground, sourceAnalysisBackground} from '../composition/andrews_choice_references.mjs';
 import {createCardinalChoiceCoordinator} from '../../application/classical/cardinal_choice_coordination.mjs';
 import {createCompoundChoiceMemory} from '../../application/classical/compound_choice_coordination.mjs';
@@ -43661,7 +43661,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       }
       const slots = [];
       let slotOrder = "source-order";
-      if (binding?.family === "clause-relation") {
+      if (hasCurrentClauseProjection(binding, operation, ClassicalClauseRelationSelections.relation)) {
         const controller = getClassicalClauseRelationControllerForRendering();
         const structure = projectClauseStructure(targetObject, controller, ClassicalClauseRelationSelections, getClassicalOwnerIssuedResultProjection);
         const ordered = orderConstructionSlots(structure);
@@ -43788,9 +43788,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const setHidden = (node, hidden) => { if (node && node.hidden !== hidden) node.hidden = hidden; };
       const position = ClassicalConstructionSession.position;
       const operation = position.construction.route.operation || "";
-      const binding = ActiveClassicalGrammarResultBinding;
-      const controller = binding?.family === "clause-relation"
-        && binding.operationId === operation ? getClassicalClauseRelationControllerForRendering() : null;
+      const binding = getActiveClassicalGrammarResultBinding(operation);
+      const controller = hasCurrentClauseProjection(binding, operation, ClassicalClauseRelationSelections.relation)
+        ? getClassicalClauseRelationControllerForRendering() : null;
       const contract = controller?.buildDecisionContract({...ClassicalClauseRelationSelections});
       if (contract && !position.construction.sourcePending) {
         const roleSelect = doc.getElementById("classical-capability-navigator-binding");
@@ -54330,7 +54330,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
     function getClassicalComparisonSourceSummary() {
       const operation = targetObject.document?.getElementById?.("classical-capability-navigator-operation")?.value || "";
       const binding = getActiveClassicalGrammarResultBinding(operation);
-      if (binding?.family !== "clause-relation"
+      if (!hasCurrentClauseProjection(binding, operation, ClassicalClauseRelationSelections.relation)
         || ClassicalClauseRelationSelections.relation !== "comparison") return null;
       // Keep the original continuation for recapture, while every composition
       // summary describes only its current authenticated captured inputs.
@@ -54604,7 +54604,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
       if (sourcePending) return {sources: [], links: [], missingSources: [], sourceSurface, acceptedResult};
       const binding = getActiveClassicalGrammarResultBinding(operation);
       let sources = [], link = null, links = [], spatial = null;
-      if (binding?.family === "clause-relation") {
+      const currentClause = hasCurrentClauseProjection(binding, operation, ClassicalClauseRelationSelections.relation);
+      if (currentClause) {
         const controller = getClassicalClauseRelationControllerForRendering();
         const structure = projectClauseStructure(targetObject, controller, ClassicalClauseRelationSelections, getClassicalOwnerIssuedResultProjection);
         if (structure?.sources.some(record => record.exact === source)) {
@@ -54622,7 +54623,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         }
       }
       const diagram = projectCapturedOperationShape(
-        projectOperationShape(targetObject, navigator, operation), sources, ClassicalClauseRelationSelections.relation);
+        projectOperationShape(targetObject, navigator, operation), sources, currentClause ? ClassicalClauseRelationSelections.relation : "");
       return {sources, link, links, diagram, spatial, sourceSurface, acceptedResult,
         sourceScope: source, operation, bindingScope: binding?.ownerBindingFrame || null,
         bindingId: binding?.selectedBindingId || "", missingSources: getClassicalMissingSourceSlots(binding)};

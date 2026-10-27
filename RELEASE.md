@@ -1,14 +1,13 @@
-# Grammar OS v1.2.82 release
+# Grammar OS v1.2.83 release
 
-Release name: **Native Construction Restoration**
+Release name: **Current Source Continuity**
 
-Browser build: **20261027-native-restoration-101**
+Browser build: **20261028-current-source-102**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Prepared noun-derived verbs preserve accepted preparation and pending participant choices across reload.
-- Affective constructions restore valid pending readings without inactive source fields blocking recovery.
-- Quoted names restore their existing construction and accepted citation consistently.
-- Pending changes remain separate from accepted Results; reload does not Make a pending Result.
+- Starting a new relationship keeps the exact current Source visible while its role is chosen.
+- Previous relationship captures and references no longer appear as the new operation's active inputs.
+- Draft choices remain retained; accepted Results and explicit Make are unchanged.
