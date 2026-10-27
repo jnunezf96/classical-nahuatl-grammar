@@ -1,3 +1,4 @@
+import {createCardinalChoiceCoordinator} from '../../application/classical/cardinal_choice_coordination.mjs';
 import {createCompoundChoiceMemory} from '../../application/classical/compound_choice_coordination.mjs';
 import {getCompoundNonactiveScopeDomain} from '../../core/classical/compound_choice_contract.mjs';
 import {createDerivationChoiceCoordinator} from '../../application/classical/derivation_choice_coordination.mjs?derivationChoices=20261026-1';
@@ -29537,25 +29538,31 @@ export function createUiRenderingApi(targetObject = globalThis) {
       });
       targetObject.document.querySelectorAll("[data-cardinal-numeral-variant-choice]").forEach(wrapper => {
         const control = wrapper.querySelector?.("select");
-        const value = Number(getClassicalNominalConstructionControlValue(
-          "classical-cardinal-value",
-          "1"
-        ));
-        const terms = targetObject.evaluateClassicalNahuatlNominalConstruction?.({
-          constructionKind: "cardinal-numeral-nnc", value, classifier: "basic",
-          countKind: "ordinary", subject: "3common", state: "absolutive", animacy: "nonanimate",
-        })?.sourceFrame?.numeralSourceAnalysisFrame?.numeralTerms || [];
-        const variantValue = terms[0]?.order > 1 ? terms[0].multiplier : value;
-        const embedded = cardinalVncAdverb || classifier !== "basic" || terms[0]?.order > 1;
-        const variants = variantValue === 2 && embedded
-          ? [["short", "short embed · ōm with assimilation"], ["full", "full embed · ōme"]]
-          : variantValue === 3 && embedded
-            ? [["y-loss", "embed with y lost · ē"], ["y-retained", "embed with y retained · yē"], ["y-to-x", "embed with y realized as x · ēx"]]
-            : variantValue === 3
-              ? [["plain", "free form · ēyi"], ["initial-y", "free form with initial y · yēyi"]]
-              : [["automatic", "automatic shape"]];
-        const visible = selected === "cardinal-numeral-nnc"
-          && variants.length > 1;
+        const active = selected === "cardinal-numeral-nnc" && cardinalCountKind === "ordinary";
+        if (!active) {
+          wrapper.hidden = true;
+          wrapper.setAttribute("aria-hidden", "true");
+          if (control) control.disabled = true;
+          return;
+        }
+        const request = buildClassicalNominalConstructionUiRequest();
+        // Discover the current domain without forcing an old contextual variant.
+        const analysis = targetObject.evaluateClassicalNahuatlNominalConstruction?.({
+          ...request, ordinaryNumberVariant: "tin", numeralVariant: "",
+          source: {...request.source, numeralVariant: ""},
+        })?.sourceFrame?.numeralSourceAnalysisFrame;
+        const labels = {short:"short embed · ōm with assimilation",full:"full embed · ōme",
+          "y-loss":"embed with y lost · ē","y-retained":"embed with y retained · yē",
+          "y-to-x":"embed with y realized as x · ēx",plain:"free form · ēyi",
+          "initial-y":"free form with initial y · yēyi",automatic:"automatic shape"};
+        const variants = (analysis?.availableVariants || []).map(value => [value,labels[value] || value]);
+        if (!variants.length) {
+          wrapper.hidden = true;
+          wrapper.setAttribute("aria-hidden", "true");
+          if (control) control.disabled = true;
+          return;
+        }
+        const visible = variants.length > 1;
         wrapper.hidden = !visible;
         wrapper.setAttribute("aria-hidden", String(!visible));
         if (!control) return;
@@ -29573,6 +29580,12 @@ export function createUiRenderingApi(targetObject = globalThis) {
       });
       targetObject.document.querySelectorAll("[data-cardinal-ordinary-number-variant]").forEach(wrapper => {
         const control = wrapper.querySelector?.("select");
+        if (selected !== "cardinal-numeral-nnc" || cardinalCountKind !== "ordinary") {
+          wrapper.hidden = true;
+          wrapper.setAttribute("aria-hidden", "true");
+          if (control) control.disabled = true;
+          return;
+        }
         const request = selected === "cardinal-numeral-nnc"
           ? buildClassicalNominalConstructionUiRequest() : null;
         const preview = request ? targetObject.evaluateClassicalNahuatlNominalConstruction?.({
@@ -29601,7 +29614,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         const control = wrapper.querySelector?.("select");
         if (control) {
           control.disabled = !cardinalGrossPossessive;
-          if (!cardinalGrossPossessive) control.value = "animate";
+
         }
       });
       targetObject.document.querySelectorAll("[data-cardinal-gross-number-variant]").forEach(wrapper => {
@@ -29612,7 +29625,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         const control = wrapper.querySelector?.("select");
         if (control) {
           control.disabled = !visible;
-          if (!visible) control.value = "tin";
+
         }
       });
       targetObject.document.querySelectorAll("[data-cardinal-conjunction-form]").forEach(wrapper => {
@@ -29626,7 +29639,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         const control = wrapper.querySelector?.("select");
         if (control) {
           control.disabled = !visible;
-          if (!visible) control.value = "separate";
+
         }
       });
       targetObject.document.querySelectorAll("[data-affective-route-choice]").forEach(wrapper => {
@@ -34135,12 +34148,18 @@ export function createUiRenderingApi(targetObject = globalThis) {
         "classical-cardinal-count-kind",
         "ordinary"
       );
+      const grossPossessive = numeralOutputKind !== "vnc-embed" && countKind === "gross" && state === "possessive";
+      const grossKind = grossPossessive ? getClassicalNominalConstructionControlValue(
+        "classical-cardinal-gross-possessor-kind", "animate") : "animate";
+      const cardinalValue = Number(getClassicalNominalConstructionControlValue("classical-cardinal-value", "1"));
+      const conjunctionRelevant = numeralOutputKind !== "vnc-embed" && classifier === "basic"
+        && cardinalValue >= 11 && cardinalValue <= 14;
       return {
         constructionKind,
         numeralOutputKind,
-        ordinaryNumberVariant: getClassicalNominalConstructionControlValue(
+        ordinaryNumberVariant: countKind === "ordinary" ? getClassicalNominalConstructionControlValue(
           "classical-cardinal-ordinary-number-variant", "tin"
-        ),
+        ) : "tin",
         value: Number(getClassicalNominalConstructionControlValue("classical-cardinal-value", "1")),
         countKind,
         classifier,
@@ -34171,25 +34190,14 @@ export function createUiRenderingApi(targetObject = globalThis) {
           : {}),
         source: {
           matrixStem: numeralOutputKind === "vnc-embed" ? matrixStem || embedStem || wholeStem : "",
-          numeralVariant: getClassicalNominalConstructionControlValue(
-            "classical-cardinal-numeral-variant",
-            ""
-          ),
-          grossPossessorKind:
-            getClassicalNominalConstructionControlValue(
-              "classical-cardinal-gross-possessor-kind",
-              "animate"
-            ),
-          grossPossessiveNumberVariant:
-            getClassicalNominalConstructionControlValue(
-              "classical-cardinal-gross-number-variant",
-              "tin"
-            ),
-          conjunctionForm:
-            getClassicalNominalConstructionControlValue(
-              "classical-cardinal-conjunction-form",
-              "separate"
-            ),
+          numeralVariant: countKind === "ordinary" ? getClassicalNominalConstructionControlValue(
+            "classical-cardinal-numeral-variant", ""
+          ) : "",
+          grossPossessorKind: grossKind,
+          grossPossessiveNumberVariant: grossPossessive && grossKind === "nonanimate"
+            ? getClassicalNominalConstructionControlValue("classical-cardinal-gross-number-variant", "tin") : "tin",
+          conjunctionForm: conjunctionRelevant
+            ? getClassicalNominalConstructionControlValue("classical-cardinal-conjunction-form", "separate") : "separate",
           classifierSelectionExplicit: classifier !== "basic",
           matrixVerbClass: getClassicalNominalConstructionControlValue("classical-rule-logic-class", "A"),
           matrixValence: valence,
@@ -34210,11 +34218,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
             "classical-cardinal-measured-class",
             ""
           ),
-          possessorReferentPlural:
-            getClassicalNominalConstructionControlValue(
-              "classical-cardinal-gross-possessor-kind",
-              "animate"
-            ) === "nonanimate",
+          possessorReferentPlural: grossPossessive && grossKind === "nonanimate",
         },
         measureComposition: classifier === "measure"
           ? getClassicalNominalConstructionControlValue("classical-cardinal-measure-composition", "measure-only")
@@ -41065,6 +41069,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
             syncClassicalCapabilityApplyOperationState();
             return;
           }
+          nextBinding=ClassicalCardinalChoices.handoff(active,nextBinding,{choiceId,
+            explicitValidated:ownerOptions.some(option=>String(option.optionId)===selectedValue&&option.availabilityStatus==='available'),
+            issue:selections=>targetObject.issueClassicalGrammarTypedSourceOperationBindingFrame(active.navigator,active.operationId,selections)});
           nextBinding=ClassicalDerivationChoices.handoff(active,nextBinding,{choiceId,
             explicitValidated:ownerOptions.some(option=>String(option.optionId)===selectedValue&&option.availabilityStatus==='available'),
             issue:selections=>targetObject.issueClassicalGrammarTypedSourceOperationBindingFrame(active.navigator,active.operationId,selections)});
@@ -41324,6 +41331,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
     const ClassicalOrdinaryNncChoiceMemory = new WeakMap();
     const ClassicalSentenceChoices = createSentenceChoiceCoordinator(targetObject);
     const ClassicalDerivationChoices = createDerivationChoiceCoordinator(targetObject);
+    const ClassicalCardinalChoices = createCardinalChoiceCoordinator(targetObject);
     const ClassicalCompoundScopes = createCompoundChoiceMemory();
     const ClassicalCompoundPossessors = createCompoundChoiceMemory();
     const ClassicalCompoundAffinity = createCompoundChoiceMemory();
@@ -47361,6 +47369,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
         if (event) HandledClassicalContinuationChoiceEvents.add(event);
         syncClassicalNominalConstructionControlVisibility(selectedConstruction);
         syncClassicalCardinalParticipantChoices();
+        // Current numeral variants depend on the reconciled participants, not
+        // the temporarily incompatible draft seen before that reconciliation.
+        if (selectedConstruction === "cardinal-numeral-nnc") {
+          syncClassicalNominalConstructionControlVisibility(selectedConstruction);
+        }
         if (["affective-nnc", "compound-nnc"].includes(selectedConstruction)) {
           // The staged compound owns its outer reference, including when a
           // previous raw Source left nonanimate number options behind.

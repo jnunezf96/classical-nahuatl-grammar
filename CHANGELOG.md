@@ -1,3 +1,7 @@
+## 1.2.70 — Coordinated Counting Choices
+
+Current canonical numeral domains coordinate existing controls. Conditional count choices retain explicit intent through inactive routes without leaking into unrelated requests or bypassing Source and Make.
+
 ## 1.2.69 — Retained Nominal Choices
 
 Inactive nominal and name controls keep their draft choices until their current canonical owner can reconcile them. This preserves affective scope, patientive analogy, lexical endings and human action reference without adding panels or bypassing Source Apply and Make.

@@ -1,13 +1,13 @@
-# Grammar OS v1.2.69 release
+# Grammar OS v1.2.70 release
 
-Release name: **Retained Nominal Choices**
+Release name: **Coordinated Counting Choices**
 
-Browser build: **20261026-nominal-choices-88**
+Browser build: **20261026-counting-choices-89**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Personal-name affective scope, patientive analogy, lexical endings and active-action reference survive temporary inactive routes.
-- Returning choices remain subject to the current canonical Source and grammatical owner; unavailable active alternatives are still withdrawn.
-- Existing panels, explicit Source Apply and Make, and accepted Results while staging are preserved.
+- Numeral shapes, plural endings, gross-count possessor spelling and conjunction choices survive inactive routes when the current owner permits them.
+- Numeric Source bindings retain explicit conditional intent across ordinary/gross transitions while rejecting incompatible or unauthenticated reuse.
+- Existing panels, Source Apply, Make and accepted Results during staging remain unchanged.
