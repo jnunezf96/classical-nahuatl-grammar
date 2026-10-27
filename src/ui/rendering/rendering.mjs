@@ -26393,7 +26393,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const field = control.closest?.("label");
       if (field) {field.hidden = !visible; field.setAttribute("aria-hidden", String(!visible));}
       control.disabled = !visible;
-      if (!visible) {control.value = ""; control.classicalDenominalVerbalSource = null; return null;}
+      if (!visible) return null;
       const signature = JSON.stringify(inventory.options.map(option => [option.value, option.label]));
       if (control.dataset.denominalStemShapeSignature !== signature) {
         control.replaceChildren();
@@ -26584,7 +26584,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const objectControl = targetObject.document?.getElementById?.(
         "classical-denominal-vnc-result-object-1"
       );
-      syncClassicalDenominalNonspecificObjectOptions(objectControl,
+      if (Number(controlRequirements.resultObjectPeople || 0) > 0) syncClassicalDenominalNonspecificObjectOptions(objectControl,
         [...(controlRequirements.resultObjectKinds || []),
           ...(selectedPathChoice && Number(controlRequirements.resultObjectPeople) === 1
             ? ["reflexive", "3common"] : [])]);

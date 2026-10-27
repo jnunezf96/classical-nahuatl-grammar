@@ -1,3 +1,7 @@
+## 1.2.74 — Coordinated Denominal Choices
+
+Existing denominal controls preserve valid stem-shape and nonspecific-object intent across inactive operations. Current canonical owners still validate Source and formation, inactive objects stay out of requests, and accepted Results wait for explicit Make.
+
 ## 1.2.73 — Coordinated Event Relationships
 
 Clause relationship choices are checked together by their canonical owner. Explicit purposive-VNC requires the actual derived construction. Captured-clause replacement retains choices, updates its authentic Source binding and keeps accepted Results unchanged until Make.
