@@ -1,0 +1,21 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {createRuntimeInstance} from '../runtime/create_runtime.mjs';import {createConstructionSession} from '../ui/composition/construction_session.mjs';
+import {issueComparisonOperationSnapshot,transitionComparisonOperationSnapshot,isCurrentComparisonOperationSnapshot} from '../ui/composition/comparison_operation_transaction.mjs';
+const r=(await createRuntimeInstance({documentObject:{getElementById:()=>null,addEventListener(){}}})).runtimeObject;
+function noun(stem,sourceClass){const s=r.buildClassicalNahuatlOrdinaryNncSourceFrame({stem,sourceClass});return r.executeClassicalGrammarApplicationRequest({operationId:'nnc:ordinary',args:[s,r.buildClassicalNahuatlOrdinaryNncOperationFrame(s,{subject:'3common',state:'absolutive'})]}).canonicalResult;}
+const cal=noun('cal','tli-1'),coyote=noun('coyō','tl'),route='similarity-reduplicative-prefix';
+function setup(){const c=r.createClassicalClauseRelationController();c.captureCurrentResult('principal',cal);const s=issueComparisonOperationSnapshot(c,{relation:'comparison',comparisonRoute:route,continuationFamily:'ti-agentive',reduplicationShape:'long-cv'},cal);return {c,s};}
+test('reduplicative snapshot follows owner fixed facts and removes inapplicable explicit continuation choices',()=>{
+ const {c,s}=setup();assert.ok(s,'route admitted');assert.deepEqual(s.captures.map(x=>x.role),['principal']);assert.equal(s.contract.operationSelections.tiClass,'a');assert(!s.contract.decisions.some(x=>x.key==='tiClass'));
+ const explicit=transitionComparisonOperationSnapshot(s,{type:'set-choice',key:'tiClass',value:'a'},s.contract.currentChoiceFrame).snapshot;assert.ok(explicit);
+ const bare=transitionComparisonOperationSnapshot(explicit,{type:'set-choice',key:'continuationFamily',value:'bare'},explicit.contract.currentChoiceFrame).snapshot;assert.equal(bare.selections.tiClass,undefined);assert.equal(bare.selections.reduplicationShape,undefined);assert.equal(bare.contract.operationSelections.reduplicationShape,'short-cv');assert(!bare.contract.decisions.some(x=>x.key==='reduplicationShape'));
+ assert.equal(isCurrentComparisonOperationSnapshot(explicit),false);
+ const back=transitionComparisonOperationSnapshot(bare,{type:'set-choice',key:'continuationFamily',value:'ti-agentive'},bare.contract.currentChoiceFrame).snapshot;assert.equal(back.contract.operationSelections.tiClass,'a');assert.equal(back.contract.authorizationStatus,'blocked');
+ const chosen=transitionComparisonOperationSnapshot(back,{type:'set-choice',key:'reduplicationShape',value:'long-cv'},back.contract.currentChoiceFrame).snapshot;assert.equal(chosen.contract.authorizationStatus,'authorized');
+ const copied=transitionComparisonOperationSnapshot(chosen,{type:'capture',role:'principal',result:{...coyote}},chosen.contract.currentChoiceFrame);assert.equal(copied.authorizationStatus,'blocked');
+ const changed=transitionComparisonOperationSnapshot(chosen,{type:'capture',role:'principal',result:coyote},chosen.contract.currentChoiceFrame).snapshot;assert.deepEqual(changed.contract.decisions.find(x=>x.key==='tiClass').values,['a','b']);assert.equal(changed.contract.operationSelections.tiClass,'');assert.equal(changed.contract.authorizationStatus,'blocked');assert.equal(changed.captures[0].exact,coyote);
+});
+test('reduplicative explicit Make consumes the current citation choice and original canonical Source',()=>{
+ const {c,s}=setup();assert.ok(s);const end=transitionComparisonOperationSnapshot(s,{type:'set-choice',key:'continuationFamily',value:'absolutive-li'},s.contract.currentChoiceFrame).snapshot;
+ const session=createConstructionSession({isSource:x=>x===cal,isResult:x=>r.isClassicalComparisonResultFrame(x),execute:p=>c.compose(p.selections),present:()=>true});session.stage({source:cal,route:{operation:'clause:comparison'},slots:end.captures,choices:end.selections,operationContract:end,ready:end.contract.authorizationStatus==='authorized',execution:{selections:end.selections}});assert.equal(session.make(session.position.revision),true);const made=session.position.accepted.result;assert.equal(made.selectedResult,'cacalli');assert.equal(r.getClassicalComparisonCanonicalSourceResult(made.operationFrame.sourceSlots.source),cal);assert.equal(made.operationFrame.choices.reduplicationShape.id,'short-cv');
+});

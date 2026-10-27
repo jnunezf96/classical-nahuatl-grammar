@@ -1,5 +1,9 @@
 # Version History
 
+## v1.2.92 — Coordinated Similarity Continuations
+
+Similarity reduplication now coordinates continuation-specific choices and fixed facts through the shared contract, preserving exact Source and explicit Make.
+
 ## v1.2.91 — Coordinated Panahuia Choices
 
 Optional comparison-standard choices now stay coordinated when their Result is removed and restored. Exact inputs remain attached through preview and Make.
