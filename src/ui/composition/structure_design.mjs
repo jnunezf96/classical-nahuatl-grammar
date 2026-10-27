@@ -170,9 +170,9 @@ export function comparisonCapturePresentation(contract,role) {
   return input ? {required:input.requirement==='required',retainedOnly:input.contribution==='retained-not-included'}
     : {required:contract.derived.requiredCaptureRoles?.includes(role)===true,retainedOnly:false};
 }
-export function projectClauseStructure(r,controller,selections,project) {
+export function projectClauseStructure(r,controller,selections,project,currentContract=null) {
   if(!controller?.getCapturedCanonicalResult || !controller?.buildDecisionContract)return null;
-  const contract=controller.buildDecisionContract(selections);
+  const contract=currentContract || controller.buildDecisionContract(selections);
   const derived=contract.derived||{};
   let roles=derived.requiredCaptureRoles || (derived.operationFamily==='complement'
     ? ['principal','adjoined',...(derived.auxiliaryRequired?['dependent']:[])]

@@ -1,3 +1,4 @@
+import {installClauseSelectionReaders} from './helpers/clause_selection_reader_fixture.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
@@ -13,12 +14,12 @@ const n=(subject,kind='customary-agentive-full')=>r.executeClassicalGrammarAppli
 function ui(a,b,selections,id){
  const controller=r.createClassicalClauseRelationController();controller.captureCurrentResult('principal',a);controller.captureCurrentResult('adjoined',b);
  let executions=0;const session=createConstructionSession({isSource:x=>x===a||x===b,isResult:()=>true,execute:packet=>{executions++;return controller.compose(packet.choices);},present:()=>true});session.restore(a);
- const ctx={targetObject:{...r,document:{createElement:t=>new Element(t)}},ActiveClassicalGrammarResultBinding:null,ClassicalClauseRelationSelections:{...selections},ActiveClassicalClauseRelationResult:null,ClassicalExplicitClauseRelationIntent:'',ClassicalClauseRelationStatusMessage:'',formatClassicalClauseRelationValue:x=>x,compactClassicalChoiceMenu(){},
+ const ctx={getClassicalClauseRelationControllerForRendering:()=>controller,targetObject:{...r,document:{createElement:t=>new Element(t)}},ActiveClassicalGrammarResultBinding:null,ClassicalClauseRelationSelections:{...selections},ActiveClassicalClauseRelationResult:null,ClassicalExplicitClauseRelationIntent:'',ClassicalClauseRelationStatusMessage:'',formatClassicalClauseRelationValue:x=>x,compactClassicalChoiceMenu(){},
  refreshClassicalClauseRelationWorkflow(){const d=controller.buildDecisionContract(ctx.ClassicalClauseRelationSelections);session.stage({source:a,route:{operation:selections.relation},slots:[{role:'principal',exact:a},{role:'adjoined',exact:b}],choices:{...ctx.ClassicalClauseRelationSelections},legalMoves:[],ready:d.authorizationStatus==='authorized',execution:{choices:{...ctx.ClassicalClauseRelationSelections},signature:JSON.stringify(ctx.ClassicalClauseRelationSelections)}});}};
- vm.createContext(ctx);for(const name of ['CLASSICAL_CLAUSE_RELATION_DECISION_KEYS','CLASSICAL_CLAUSE_RELATION_DECISION_LABELS']){const start=source.indexOf(`    const ${name} = Object.freeze({`);vm.runInContext(source.slice(start,source.indexOf('\n    });',start)+8),ctx);}
- for(const name of ['setClassicalClauseRelationDecision','createClassicalClauseRelationDecisionControl'])vm.runInContext(extract(name),ctx);
- const decision=controller.buildDecisionContract(selections).decisions.find(x=>x.id===id);assert.ok(decision,id);
- const field=ctx.createClassicalClauseRelationDecisionControl(decision),select=field.children.find(x=>x.tagName==='SELECT');
+ vm.createContext(ctx);installClauseSelectionReaders(ctx);for(const name of ['CLASSICAL_CLAUSE_RELATION_DECISION_KEYS','CLASSICAL_CLAUSE_RELATION_DECISION_LABELS']){const start=source.indexOf(`    const ${name} = Object.freeze({`);vm.runInContext(source.slice(start,source.indexOf('\n    });',start)+8),ctx);}
+ for(const name of ['applyClassicalComparisonChoiceIntent','setClassicalClauseRelationDecision','createClassicalClauseRelationDecisionControl'])vm.runInContext(extract(name),ctx);
+ const contract=controller.buildDecisionContract(selections),decision=contract.decisions.find(x=>x.id===id);assert.ok(decision,id);
+ const field=ctx.createClassicalClauseRelationDecisionControl(decision,contract.currentChoiceFrame),select=field.children.find(x=>x.tagName==='SELECT');
  return {controller,session,select,field,get executions(){return executions;},change(value){select.value=value;select.listeners.change();}};
 }
 test('negative-standard control transports its own in decision without changing point in or accepted Result',()=>{

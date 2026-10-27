@@ -1,3 +1,4 @@
+import {installClauseSelectionReaders} from './helpers/clause_selection_reader_fixture.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
@@ -14,10 +15,10 @@ test('comparison summary follows authenticated captures when the original adjoin
  const preview={textContent:'',hidden:true,dataset:{}};
  const operation={value:'clause:comparison'};
  const navigator={exactSource:tepe};
- let binding={family:'clause-relation'},syncs=0;
+ let binding={family:'clause-relation',operationId:'clause:comparison',selectedBindingId:'comparison:principal',ownerBindingFrame:{bindingChoices:[{id:'comparison:principal',relation:'comparison'}]}},syncs=0;
  const ctx={targetObject:{...r,document:{getElementById:id=>id==='classical-continuation-target'?preview:id==='classical-capability-navigator-operation'?operation:null},isClassicalGrammarApplicationCapabilityNavigator:n=>n===navigator,syncClassicalSourceCommitPresentation(){syncs++;}},ActiveClassicalGrammarCapabilityNavigator:navigator,ActiveClassicalGrammarResultSourceCapture:null,
  ClassicalClauseRelationSelections:{relation:'comparison',comparisonRoute:'similarity-incorporated-nehnequi',degreeMarker:'achi',sentenceType:'none'},getActiveClassicalGrammarResultBinding:()=>binding,getClassicalClauseRelationControllerForRendering:()=>controller,getClassicalOwnerIssuedResultProjection:project,projectClauseStructure};
- vm.createContext(ctx);
+ vm.createContext(ctx);installClauseSelectionReaders(ctx);
  for(const name of ['getClassicalComparisonSourceSummary','syncClassicalContinuationTarget','getClassicalCommittedSourcePresentation']) {
  const start=code.indexOf(`    function ${name}(`);if(start<0)continue;
  vm.runInContext(code.slice(start,code.indexOf('\n    function ',start+20)),ctx);
@@ -34,6 +35,6 @@ test('comparison summary follows authenticated captures when the original adjoin
  ctx.syncClassicalContinuationTarget({onlyIfChanged:true});assert.equal(syncs,2,'unchanged projection does not resync');
  binding=null;ctx.syncClassicalContinuationTarget();
  assert.equal(preview.textContent,'Source used · Entire Result: tepetl','other operations retain their continuation Source');
- binding={family:'clause-relation'};controller.clearCapture('principal');ctx.syncClassicalContinuationTarget();
+ binding={family:'clause-relation',operationId:'clause:comparison',selectedBindingId:'comparison:principal',ownerBindingFrame:{bindingChoices:[{id:'comparison:principal',relation:'comparison'}]}};controller.clearCapture('principal');ctx.syncClassicalContinuationTarget();
  assert.equal(preview.hidden,true,'empty captures do not advertise the removed original as included');
 });

@@ -1,3 +1,4 @@
+import {installClauseSelectionReaders} from './helpers/clause_selection_reader_fixture.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
@@ -65,6 +66,7 @@ for (const [size,nounStem,verbStem] of [
  snapshotClassicalVncReloadControls:()=>[],getClassicalMixedReloadControls:()=>[],getClassicalVncBasalReloadControls:()=>[],snapshotClassicalVncPendingTypedSourceSelections:()=>null,snapshotClassicalConjunctEditChoices:()=>null,
  snapshotClassicalVncPendingResultContinuation:()=>null,CLASSICAL_VNC_RELOAD_SESSION_KEY:'test',showClassicalHistoryReloadNotice(){},
  });
+ installClauseSelectionReaders(context);
  const code=readFileSync(new URL('../ui/rendering/rendering.mjs',import.meta.url),'utf8'),a=code.indexOf('    function saveClassicalVncReloadSession()'),z=code.indexOf('\n    function ',a+1);vm.runInContext(code.slice(a,z),context);
  assert.equal(context.saveClassicalVncReloadSession(),true);
  assert.equal(context.ClassicalConstructionSession.position.accepted.result,root);

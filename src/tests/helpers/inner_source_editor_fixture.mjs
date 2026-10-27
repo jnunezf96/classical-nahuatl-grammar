@@ -1,3 +1,4 @@
+import {installClauseSelectionReaders} from './clause_selection_reader_fixture.mjs';
 import assert from 'node:assert/strict';
 import vm from 'node:vm';
 import {readFileSync} from 'node:fs';
@@ -44,6 +45,7 @@ export function createInnerSourceEditorFixture(r,root,unit='nnc',p=path){
   getClassicalResultEditHistoryNode:()=>'',ActiveClassicalNncReinflectionDraft:null,
  });
  Object.defineProperty(targetObject,'ClassicalSourcePartsCommittedSignature',{get:()=>ctx.ClassicalSourcePartsCommittedSignature,set:v=>ctx.ClassicalSourcePartsCommittedSignature=v});
+ installClauseSelectionReaders(ctx);
  for(const n of ['bindClassicalPositionMoves','readClassicalConstructionProposal','clearClassicalGrammarResultSourceContinuation','snapshotClassicalVncReloadSourceEditorState','restoreClassicalVncReloadSourceEditorState','saveClassicalVncReloadSession','getClassicalTypedSourceSelectionSignature','validateClassicalVncReloadApplicationSelections','restoreClassicalConjunctEditReload','handleClassicalResultAction','getClassicalNncReinflectionDraft','stageClassicalNncReinflection'])load(ctx,n);
  for(const n of ['retainClassicalResultEditForSourceMove','getClassicalResultEditSourceReplacement','restoreClassicalResultEditReplacementSource'])if(code.includes('    function '+n+'('))load(ctx,n);
  load(ctx,'commitClassicalSourcePartsEvaluation',composer);ctx.ClassicalSourcePartsCommittedSignature=targetObject.getClassicalSourcePartsEvaluationSignature();

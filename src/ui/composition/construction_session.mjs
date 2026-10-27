@@ -1,11 +1,11 @@
-import {createConstructionPosition,projectConstructionPosition} from './construction_position.mjs?stemReload=20261024-2&v=20261012-position-12&acceptedBuild=20261023-1';
+import {createConstructionPosition,projectConstructionPosition} from './construction_position.mjs?stemReload=20261024-2&v=20261012-position-12&acceptedBuild=20261023-1&operationPilot=20261027-1';
 
 // The only execution input is the current position's captured owner packet.
 export function createConstructionSession({isSource,isResult,execute,present,onChange=()=>{},onFailure=()=>{}}) {
   const store=createConstructionPosition({isSource,isResult});
   const notify=()=>onChange(store);
   const stage=(proposal,type)=>{const changed=store.stage(proposal,type);if(changed)notify();return changed;};
-  return Object.freeze({stage,
+  return Object.freeze({stage,canTransition:revision=>store.canTransition(revision),
     restore(result,receipt){const restored=store.restore(result,receipt);if(restored)notify();return restored;},
     dispatch(move,resolve){const changed=store.dispatch(move,resolve);if(changed)notify();return changed;},
     make(revision=store.position.revision) {

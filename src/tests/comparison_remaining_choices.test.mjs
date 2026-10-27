@@ -1,3 +1,4 @@
+import {installClauseSelectionReaders} from './helpers/clause_selection_reader_fixture.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createComparisonApi} from '../core/comparison/comparison.mjs';
@@ -103,7 +104,7 @@ test('saved picker admission and supply share Source-fact recovery after clearin
  const context={targetObject:{...r,document:{getElementById:()=>null}},ClassicalClauseRelationSelections:{...cleared.selections},ActiveClassicalGrammarResultBinding:binding,
  getClassicalClauseRelationControllerForRendering:()=>c,issueClassicalClauseRelationCurrentDiscourseSourceContextFrame:()=>null,
  ClassicalClauseRelationStatusMessage:'',enterClassicalGrammarResultBindingChoice(id,options){assert.equal(options.allowExecution,false);return true;},syncClassicalGrammarWorkspaceHistory(){},syncClassicalCapabilityApplyOperationState(){}};
- const code=readFileSync(new URL('../ui/rendering/rendering.mjs',import.meta.url),'utf8');vm.createContext(context);
+ const code=readFileSync(new URL('../ui/rendering/rendering.mjs',import.meta.url),'utf8');vm.createContext(context);installClauseSelectionReaders(context);
  for(const name of ['canClassicalSavedResultFillBinding','supplyClassicalGrammarWorkspaceResultToBinding']) {const a=code.indexOf(`    function ${name}(`);vm.runInContext(code.slice(a,code.indexOf('\n    function ',a+20)),context);}
  assert.equal(context.canClassicalSavedResultFillBinding(binding,replacement),true);assert.equal(c.getCapturedCanonicalResult('principal'),null);
  assert.equal(context.canClassicalSavedResultFillBinding(binding,{...replacement}),false);

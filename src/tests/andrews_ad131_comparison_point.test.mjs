@@ -1,3 +1,4 @@
+import {installClauseSelectionReaders} from './helpers/clause_selection_reader_fixture.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
@@ -55,7 +56,7 @@ function generatedChoice(c,choices){
       const d=c.buildDecisionContract(ctx.ClassicalClauseRelationSelections);
       session.stage({source:base,route:{operation:'comparison'},slots:[{role:'principal',exact:base},{role:'adjoined',exact:point}],choices:{...ctx.ClassicalClauseRelationSelections},legalMoves:[],ready:d.authorizationStatus==='authorized',execution:{choices:{...ctx.ClassicalClauseRelationSelections},signature:JSON.stringify(ctx.ClassicalClauseRelationSelections)}});
     }};
-  vm.createContext(ctx);
+  vm.createContext(ctx);installClauseSelectionReaders(ctx);
   for(const name of ['CLASSICAL_CLAUSE_RELATION_DECISION_KEYS','CLASSICAL_CLAUSE_RELATION_DECISION_LABELS']){
     const start=rendering.indexOf(`    const ${name} = Object.freeze({`);
     vm.runInContext(rendering.slice(start,rendering.indexOf('\n    });',start)+8),ctx);
@@ -152,7 +153,7 @@ test('AD131 comparison continuation explicitly retains the existing unsupported 
   const ctx={getClassicalClauseRelationControllerForRendering:()=>c,targetObject:{...r,document:{getElementById:id=>id==='classical-rule-logic-surface'?block:null,defaultView:{location:{href:url},sessionStorage:{setItem:(k,v)=>storage.set(k,v)}}}},classicalVncReloadPersistenceReady:true,classicalUnsupportedResultReloadPending:false,classicalVncAcceptedBasalReloadState:null,ActiveClassicalGrammarResultSourceCapture:{canonicalResult:point},PendingClassicalResultEdit:null,ActiveClassicalClauseRelationController:null,ActiveClassicalGrammarResultBinding:null,ActiveClassicalRuleLogicSurfaceFrame:null,ActiveClassicalCapabilityApplicationResult:null,
     CLASSICAL_VNC_RELOAD_SESSION_KEY:'test',exportClassicalResultReloadRecipe,
     exportClassicalGrammarWorkspaceHistoryReloadState:()=>null,getClassicalHistoryReloadSelection:()=>null,getActiveClassicalCapabilityApplicationResult:()=>null,getClassicalSgrOwnerIssuedProjection:()=>null,getClassicalVisibleAcceptedResult:()=>({canonicalResult:made.canonicalResult}),snapshotResultEditReload:()=>null,showClassicalHistoryReloadNotice(){},clearClassicalRuleLogicSurfaceBlock(){},clearClassicalGrammarResultSourceContinuation(){},syncClassicalCapabilityNavigator(){},syncClassicalCapabilityApplyOperationState(){}};
-  vm.createContext(ctx);
+  vm.createContext(ctx);installClauseSelectionReaders(ctx);
   for(const name of ['saveClassicalVncReloadSession','restoreClassicalUnsupportedResultReload','renderClassicalUnsupportedResultReload'])vm.runInContext(extract(name),ctx);
   assert.equal(ctx.saveClassicalVncReloadSession(),false);
   const saved=JSON.parse(storage.get('test'));

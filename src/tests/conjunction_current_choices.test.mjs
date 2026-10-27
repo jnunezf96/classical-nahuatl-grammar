@@ -1,3 +1,4 @@
+import {installClauseSelectionReaders} from './helpers/clause_selection_reader_fixture.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createConjunctionClauseGlobals} from '../core/clause/conjunction/conjunction.mjs';
@@ -79,6 +80,7 @@ test('conjunction refresh updates the required Result picker alongside bound cho
  targetObject:{isClassicalClauseRelationBindingFrame:()=>true},getClassicalClauseRelationControllerForRendering:()=>c,
  syncClassicalClauseRelationCapabilityChoices(contract){displayed=contract.currentChoiceFrame;},syncClassicalRequiredResultChooser(){picker++;},syncClassicalDiscourseContextControls(){},normalizeClassicalBasalUnitForRendering:x=>x,
  getActiveClassicalCapabilityApplicationResult:()=>({}),renderClassicalCapabilityApplicationResultForReview:()=>true,syncClassicalCapabilityApplyOperationState(){}};
+ installClauseSelectionReaders(ctx);
  const start=code.indexOf('    function refreshClassicalClauseRelationWorkflow(');vm.runInNewContext(code.slice(start,code.indexOf('\n    function ',start+20)),ctx);ctx.refreshClassicalClauseRelationWorkflow();
  assert.equal(picker,1);assert.equal(displayed.familyId,'conjunction');assert(ctx.ActiveClassicalGrammarResultBinding.requiredResultRoles.includes('adjoined'));
 });

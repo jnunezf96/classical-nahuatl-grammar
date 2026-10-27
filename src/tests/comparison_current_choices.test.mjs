@@ -1,3 +1,4 @@
+import {installClauseSelectionReaders} from './helpers/clause_selection_reader_fixture.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createComparisonApi} from '../core/comparison/comparison.mjs';
@@ -95,7 +96,7 @@ test('bound capability controls receive a fresh frame after each consecutive cho
   targetObject:{isClassicalClauseRelationBindingFrame:()=>true},getClassicalClauseRelationControllerForRendering:()=>c,
   syncClassicalClauseRelationCapabilityChoices(contract){displayed=contract.currentChoiceFrame;},syncClassicalDiscourseContextControls(){},normalizeClassicalBasalUnitForRendering:x=>x,
   getActiveClassicalCapabilityApplicationResult:()=>({}),renderClassicalCapabilityApplicationResultForReview:()=>true,syncClassicalCapabilityApplyOperationState(){},formatClassicalClauseRelationValue:x=>x};
- vm.createContext(ctx);for(const name of ['applyClassicalComparisonChoiceIntent','refreshClassicalClauseRelationWorkflow']){const start=code.indexOf(`    function ${name}(`);vm.runInContext(code.slice(start,code.indexOf('\n    function ',start+20)),ctx);}
+ vm.createContext(ctx);installClauseSelectionReaders(ctx);for(const name of ['applyClassicalComparisonChoiceIntent','refreshClassicalClauseRelationWorkflow']){const start=code.indexOf(`    function ${name}(`);vm.runInContext(code.slice(start,code.indexOf('\n    function ',start+20)),ctx);}
  const before=displayed;ctx.applyClassicalComparisonChoiceIntent(c,{type:'set-choice',key:'icRelation',value:'no'},displayed);
  assert.notEqual(displayed,before);assert.equal(ctx.ClassicalClauseRelationSelections.icRelation,'no');
  ctx.applyClassicalComparisonChoiceIntent(c,{type:'set-choice',key:'icRelation',value:'yes'},displayed);

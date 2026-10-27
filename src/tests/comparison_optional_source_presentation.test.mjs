@@ -1,3 +1,4 @@
+import {installClauseSelectionReaders} from './helpers/clause_selection_reader_fixture.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
@@ -27,7 +28,7 @@ test('captured optional comparison Source is inspectable and clears through the 
     appendClassicalWholeCanvasPanelActionRow(card,actions){for(const action of actions){const b=create('button');b.textContent=action.label;b.dataset.classicalUserAction=action.action;b.addEventListener('click',action.onClick);card.append(b);}},
     refreshClassicalClauseRelationWorkflow(){const contract=c.buildDecisionContract(ctx.ClassicalClauseRelationSelections);session.stage({source:cal,route:{operation:'comparison'},slots:[{role:'principal',exact:cal}],choices:{...ctx.ClassicalClauseRelationSelections},legalMoves:[],ready:contract.authorizationStatus==='authorized',execution:{choices:{...ctx.ClassicalClauseRelationSelections},signature:JSON.stringify(ctx.ClassicalClauseRelationSelections)}});state={...projectClauseStructure(r,c,ctx.ClassicalClauseRelationSelections,project),sourceScope:cal,bindingScope:binding,operation:'clause:comparison',bindingId:'comparison:principal'};},
   };
-  vm.createContext(ctx);
+  vm.createContext(ctx);installClauseSelectionReaders(ctx);
   for(const name of ['applyClassicalComparisonChoiceIntent','shouldPreserveClassicalComparisonCaptureChoices','resetClassicalClauseRelationSelections','appendClassicalClauseRelationCaptureCard']){const start=code.indexOf(`    function ${name}(`);assert.ok(start>=0);vm.runInContext(code.slice(start,code.indexOf('\n    function ',start+20)),ctx);}
   ctx.refreshClassicalClauseRelationWorkflow();
   assert.deepEqual(state.sources.map(s=>[s.role,s.exact]),[['principal',cal],['adjoined',tepe]]);

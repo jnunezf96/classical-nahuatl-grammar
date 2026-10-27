@@ -1,3 +1,4 @@
+import {installClauseSelectionReaders} from './helpers/clause_selection_reader_fixture.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
@@ -8,7 +9,7 @@ test('new unselected relation cannot display retained comparison captures as cur
  const oldPrincipal={},newSource={},binding={family:'clause-relation',operationId:'clause:composition',selectedBindingId:'',ownerBindingFrame:{bindingChoices:[{id:'conjunction:principal',relation:'conjunction'}]}};
  const controller={capture:oldPrincipal};
  const ctx=vm.createContext({targetObject:{document:{getElementById:()=>({value:'clause:composition'})}},getActiveClassicalGrammarResultBinding:()=>binding,ClassicalClauseRelationSelections:{relation:'comparison'},getClassicalClauseRelationControllerForRendering:()=>controller,getClassicalOwnerIssuedResultProjection:x=>x,projectClauseStructure:()=>({sources:[{exact:oldPrincipal,surface:'old principal'},{exact:newSource,surface:'new Source'}]}),hasCurrentClauseProjection:()=>false});
- vm.runInContext(code.slice(start,end),ctx);assert.equal(ctx.getClassicalComparisonSourceSummary(),null);assert.equal(controller.capture,oldPrincipal,'retained draft must not be cleared');
+ installClauseSelectionReaders(ctx);vm.runInContext(code.slice(start,end),ctx);assert.equal(ctx.getClassicalComparisonSourceSummary(),null);assert.equal(controller.capture,oldPrincipal,'retained draft must not be cleared');
 });
 test('actual owner role binds presentation; wrong, absent and withdrawn roles retain but hide draft',async()=>{
  const {createRuntimeInstance}=await import('../runtime/create_runtime.mjs');const {hasCurrentClauseProjection:current}=await import('../ui/composition/choice_guidance.mjs');

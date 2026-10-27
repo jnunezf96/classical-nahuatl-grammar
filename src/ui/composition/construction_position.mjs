@@ -3,11 +3,14 @@ const freezeRecord=value=>Object.freeze({...value});
 const equal=(a,b)=>a===b || Boolean(a && b && typeof a==='object' && typeof b==='object'
   && Object.keys(a).length===Object.keys(b).length && Object.keys(a).every(key=>equal(a[key],b[key])));
 const sameConstruction=(a,b)=>a.source===b.source && equal(a.route,b.route);
+const sameOperation=(a,b)=>a===b || Boolean(a&&b&&a.controller===b.controller&&a.source===b.source
+  &&equal(a.selections,b.selections)&&a.contract?.currentChoiceFrame?.captureRevision===b.contract?.currentChoiceFrame?.captureRevision
+  &&a.contract?.currentChoiceFrame?.stagedRevision===b.contract?.currentChoiceFrame?.stagedRevision);
 const sameSlots=(a,b)=>a.length===b.length && a.every((slot,i)=>slot.role===b[i].role && slot.exact===b[i].exact);
 
 export function createConstructionPosition({isSource,isResult}={}) {
   let position=Object.freeze({revision:0,construction:freezeRecord({source:null,sourcePending:false,route:freezeRecord({}),slots:Object.freeze([])}),
-    choices:freezeRecord({}),baseline:freezeRecord({}),pending:Object.freeze([]),accepted:freezeRecord({result:null,receipt:null}),
+    choices:freezeRecord({}),baseline:freezeRecord({}),pending:Object.freeze([]),accepted:freezeRecord({result:null,receipt:null}),operationContract:null,
     legalMoves:Object.freeze([]),ready:false,applied:false,failure:null,execution:null});
   let activeMake=null;
   const journal=[];
@@ -37,10 +40,10 @@ export function createConstructionPosition({isSource,isResult}={}) {
       && sameSlots(position.failure.construction.slots,construction.slots)
       && (proposal.execution?.signature===undefined ? equal(position.failure.choices,choices)
         : position.failure.executionSignature===proposal.execution.signature);
-    const next={...position,construction,choices,baseline,pending:pending(choices,baseline),legalMoves,
+    const next={...position,operationContract:Object.hasOwn(proposal,"operationContract") ? proposal.operationContract : (sameConstruction(position.construction,construction) ? position.operationContract : null),construction,choices,baseline,pending:pending(choices,baseline),legalMoves,
       ready:!construction.sourcePending && proposal.ready===true && !applied && !rejected,applied:Boolean(applied) && !construction.sourcePending,
       failure:rejected ? position.failure : null,execution:proposal.execution || null};
-    const changed=!sameConstruction(position.construction,construction)
+    const changed=!sameOperation(position.operationContract,next.operationContract) || !sameConstruction(position.construction,construction)
       || position.construction.sourcePending!==construction.sourcePending || !sameSlots(position.construction.slots,construction.slots)
       || !equal(position.construction.sourceDraft,construction.sourceDraft)
       || position.construction.slotOrder!==construction.slotOrder
@@ -106,7 +109,7 @@ export function createConstructionPosition({isSource,isResult}={}) {
       executionSignature:token.position.execution?.signature,blockReason});
     return publish({...position,ready:false,applied:false,failure},'make-rejected',{executedRevision:token.position.revision,blockReason});
   }
-  return Object.freeze({stage,dispatch,restore,beginMake,finishMake,rejectMake,cancelMake:token=>{
+  return Object.freeze({canTransition:revision=>!activeMake && revision===position.revision,stage,dispatch,restore,beginMake,finishMake,rejectMake,cancelMake:token=>{
     if(token!==activeMake)return false;activeMake=null;return true;
   },get position(){return position;},get journal(){return Object.freeze([...journal]);},
   replay(records) {
