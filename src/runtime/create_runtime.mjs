@@ -69,7 +69,7 @@ import { installPreteritApiGlobals } from "../core/preterit/api.mjs?v=20260920-p
 import { installSearchRuntimeGlobals } from "../core/search/runtime.mjs?v=20260818-lesson29-groups10-12-357";
 import { installAllomorphyGlobals } from "../core/vnc/allomorphy.mjs?v=20260920-causative-policy-528";
 import { installVncFacadeGlobals } from "../core/vnc/vnc.mjs?v=20260912-inherited-vnc-metadata-457";
-import { installUiComposerGlobals } from "../ui/composer/composer.mjs?locationChoices=20261026-1&deverbalReload=20261024-8&clickFeedback=20261023-1&v=20261010-reader-42-8-253&choices=20261013-build-constructions-2&audit=20261013-source-facts-1&sourceAdmission=20261014-3&writingSource=20261022-1&nominalSource=20261022-1&andrewsRelease=20261024-1&interfaceRelease=1.2.36";
+import { installUiComposerGlobals } from "../ui/composer/composer.mjs?locationChoices=20261026-1&deverbalReload=20261024-8&clickFeedback=20261023-1&v=20261010-reader-42-8-253&choices=20261013-build-constructions-2&audit=20261013-source-facts-1&sourceAdmission=20261014-3&writingSource=20261022-1&nominalSource=20261022-1&andrewsRelease=20261024-1&interfaceRelease=1.2.36&sourceNavigation=20261027-1";
 import { installUiExportGlobals } from "../ui/export/export.mjs?v=20260818-lesson29-groups10-12-357";
 import { installUiI18nGlobals } from "../ui/i18n/i18n.mjs?v=20260818-lesson29-groups10-12-357";
 import { installUiEventsGlobals } from "../ui/events/events.mjs?deverbalReload=20261024-8&clickFeedback=20261023-1&v=20261009-reader-42-7-233&interfaceRelease=1.2.36";

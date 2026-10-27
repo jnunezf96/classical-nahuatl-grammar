@@ -5569,6 +5569,11 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       if (!sourceLexemeRestorationApplied) {
         return false;
       }
+      // Explicit URL restoration replaces the Source editor as one transaction.
+      // Routine render synchronization must retain uncommitted user edits.
+      if (hasEntradaUrlExplicitField(normalized, "input")) {
+        syncClassicalSourcePartControlsFromRuntime({ restoredSnapshot: normalized, force: true });
+      }
       // Source reconstruction and its dependent controls are now stable.
       // Restore explicit NNC grammar choices before producing the Result.
       applyClassicalNncEntradaUrlStateToControls(normalized);
@@ -9936,15 +9941,15 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         }
       }
     }
-    function getClassicalEntradaUrlSourcePartsFromLocation() {
-      if (typeof targetObject.window === "undefined") {
+    function getClassicalEntradaUrlSourcePartsFromLocation(restoredSnapshot = null) {
+      if (!restoredSnapshot && typeof targetObject.window === "undefined") {
         return {
           sourceWholeStem: "",
           sourceEmbedStem: "",
           sourceMatrixStem: ""
         };
       }
-      const hash = String(targetObject.window.location?.hash || "");
+      const hash = String(targetObject.window?.location?.hash || "");
       const getHashPart = (key = "") => {
         const match = hash.match(new RegExp(`/${key}/([^/]+)`, "u"));
         if (!match?.[1]) {
@@ -9956,9 +9961,9 @@ export function createUiComposerRuntime(targetObject = globalThis) {
           return match[1];
         }
       };
-      const sourceEmbedStem = normalizeClassicalFuenteSourcePartStem(getHashPart("a-embed"));
-      const sourceMatrixStem = sourceEmbedStem ? normalizeClassicalFuenteSourcePartStem(getHashPart("a-stem")) : "";
-      const snapshot = typeof readEntradaUrlStateSnapshotFromLocation === "function" ? readEntradaUrlStateSnapshotFromLocation(targetObject.window.location) : null;
+      const sourceEmbedStem = normalizeClassicalFuenteSourcePartStem(restoredSnapshot ? restoredSnapshot.slots?.a?.embed || "" : getHashPart("a-embed"));
+      const sourceMatrixStem = sourceEmbedStem ? normalizeClassicalFuenteSourcePartStem(restoredSnapshot ? restoredSnapshot.slots?.a?.stem || "" : getHashPart("a-stem")) : "";
+      const snapshot = restoredSnapshot || (typeof readEntradaUrlStateSnapshotFromLocation === "function" ? readEntradaUrlStateSnapshotFromLocation(targetObject.window?.location) : null);
       const sourceWholeStem = normalizeClassicalFuenteSourcePartStem(stripClassicalSourceDisplayWrapping(snapshot?.input || getHashPart("verb") || ""), snapshot?.classicalNnc || null);
       return {
         sourceWholeStem,
@@ -10494,25 +10499,28 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       wholeInput?.focus?.();
       return true;
     }
-    function syncClassicalSourcePartControlsFromRuntime() {
+    function syncClassicalSourcePartControlsFromRuntime({ restoredSnapshot = null, force = false } = {}) {
       const {
         root,
         wholeInput,
         embedInput,
         matrixInput
       } = getClassicalSourcePartControlElements();
-      if (!root || root.dataset.classicalSourcePartsInitialized === "true") {
+      if (!root || !force && root.dataset.classicalSourcePartsInitialized === "true") {
         return;
       }
-      const restoredSnapshot =
-        typeof readEntradaUrlStateSnapshotFromLocation === "function"
-          ? readEntradaUrlStateSnapshotFromLocation(targetObject.window?.location)
-          : null;
+      restoredSnapshot ||= typeof readEntradaUrlStateSnapshotFromLocation === "function"
+        ? readEntradaUrlStateSnapshotFromLocation(targetObject.window?.location) : null;
       const {
         sourceWholeStem,
         sourceEmbedStem,
         sourceMatrixStem
-      } = getClassicalEntradaUrlSourcePartsFromLocation();
+      } = getClassicalEntradaUrlSourcePartsFromLocation(restoredSnapshot);
+      if (force) {
+        if (wholeInput) wholeInput.value = sourceEmbedStem || sourceMatrixStem ? "" : sourceWholeStem;
+        if (embedInput) embedInput.value = sourceEmbedStem;
+        if (matrixInput) matrixInput.value = sourceMatrixStem;
+      }
       if (wholeInput && sourceWholeStem && !sourceEmbedStem && !sourceMatrixStem) {
         wholeInput.value = sourceWholeStem;
       }
@@ -10522,9 +10530,9 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       if (matrixInput && sourceMatrixStem) {
         matrixInput.value = sourceMatrixStem;
       }
-      const directNncRoute = /(?:^|\/)cn\/1(?:\/|$)/u.test(
-        String(targetObject.window?.location?.hash || "")
-      );
+      const directNncRoute = restoredSnapshot
+        ? restoredSnapshot.classicalNnc?.active === true
+        : /(?:^|\/)cn\/1(?:\/|$)/u.test(String(targetObject.window?.location?.hash || ""));
       const sourceExampleSelect = getClassicalNncSourceGuideElements().select;
       const canonicalOptionFromParts =
         directNncRoute
