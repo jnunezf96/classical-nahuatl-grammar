@@ -1,15 +1,15 @@
-# Grammar OS v1.2.62 release
+# Grammar OS v1.2.63 release
 
-Release name: **Visible Embedded Choices**
+Release name: **Organic Continuation Choices**
 
-Browser build: **20261026-embedded-choices-81**
+Browser build: **20261026-organic-continuation-82**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- A required nonactive formation remains visible in the supported incorporated-adverb route.
-- The existing owner continues to validate the selected formation and exact Sources.
+- An explicit noun State is retained through an organic reading in the supported exact-Result continuation.
+- The owner still determines the organic possessive condition and validates the exact Source.
 - Source Apply, explicit Make and existing panels are retained.
 
 ## Review scope and current limits
@@ -37,7 +37,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.62/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.63/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.

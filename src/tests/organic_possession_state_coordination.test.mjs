@@ -5,9 +5,8 @@ import {readFileSync} from 'node:fs';
 import {createOrganicPossessionStateCoordinator} from '../application/classical/organic_possession_choice_coordination.mjs';
 
 const rendering=readFileSync(new URL('../ui/rendering/rendering.mjs',import.meta.url),'utf8');
-const marker=rendering.indexOf('"[data-deverbal-characteristic-reading]"');
-const start=rendering.lastIndexOf('      targetObject.document?.querySelectorAll?.(',marker);
-const end=rendering.indexOf('      const exactBinding = active',marker);
+const start=rendering.indexOf('      const characteristicReading =');
+const end=rendering.indexOf('      // Scope lexical controls first:',start);
 
 function fixture(){
  const reading={disabled:false};
@@ -60,4 +59,27 @@ test('leaving the characteristic family does not project its old state into a di
  assert.equal(f.state.value,'possessive');
  f.ctx.selectedFamily='patientive';f.ctx.reading='inherent-quality';f.run();
  assert.equal(f.state.value,'possessive');
+});
+
+test('exact-source owner projection cannot erase the state before organic coordination captures it',()=>{
+ const f=fixture();
+ f.ctx.retainedNominalSource={exactResult:{},selectedBindingId:'patientive:characteristic-property'};
+ f.ctx.frame={};
+ f.ctx.syncClassicalDeverbalNncStateOptions=(frame)=>{
+  if(f.ctx.reading==='organic-possession') f.state.value='possessive';
+  return frame;
+ };
+ const coordinationStart=start;
+ const coordinationEnd=end;
+ const projection='      if (active) frame = syncClassicalDeverbalNncStateOptions(frame) || frame;';
+ const projectionStart=rendering.indexOf(projection);
+ const steps=[
+  {position:coordinationStart,code:rendering.slice(coordinationStart,coordinationEnd)},
+  {position:projectionStart,code:projection},
+ ].sort((a,b)=>a.position-b.position);
+ const run=()=>vm.runInContext(`{${steps.map(s=>s.code).join('\n')}}`,f.ctx);
+ run();f.ctx.reading='organic-possession';run();
+ assert.equal(f.state.value,'possessive');
+ f.ctx.reading='inherent-quality';run();
+ assert.equal(f.state.value,'absolutive');
 });

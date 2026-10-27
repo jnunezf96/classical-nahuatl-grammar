@@ -27736,6 +27736,51 @@ export function createUiRenderingApi(targetObject = globalThis) {
           ) || selectedFamily === "ownerhood",
         });
       }
+      // Preserve the exact Source choice before owner projection forces the organic state.
+      const characteristicReading =
+        getClassicalNominalConstructionControlValue(
+          "classical-deverbal-nnc-characteristic-reading",
+          "inherent-quality"
+        );
+      const nncStateControl = targetObject.document?.getElementById(
+        "classical-rule-logic-nnc-state"
+      );
+      const nncStateWrapper = nncStateControl?.closest?.(
+        "label, [data-classical-rule-control]"
+      );
+      const organicStateRuleActive = active
+        && activeSourceUnit === "nnc"
+        && selectedFamily === "patientive"
+        && patientiveFamily === "characteristic-property"
+        && characteristicReading === "organic-possession";
+      if (nncStateControl && nncStateWrapper) {
+        coordinateOrganicPossessionState(nncStateControl, {
+          active: organicStateRuleActive,
+          restoreEligible: active && activeSourceUnit === "nnc"
+            && selectedFamily === "patientive"
+            && patientiveFamily === "characteristic-property",
+          sourceIdentity: retainedNominalSource?.exactResult
+            || targetObject.ClassicalSourcePartsCommittedSignature || null,
+          bindingId: retainedNominalSource?.selectedBindingId || "",
+        });
+        if (organicStateRuleActive) {
+          nncStateControl.disabled = true;
+          nncStateControl.dataset.classicalDerivedOrganicPossessionState =
+            "possessive-only";
+          nncStateWrapper.hidden = true;
+          nncStateWrapper.setAttribute("aria-hidden", "true");
+        } else if (
+          nncStateControl.dataset.classicalDerivedOrganicPossessionState
+        ) {
+          delete nncStateControl.dataset
+            .classicalDerivedOrganicPossessionState;
+          nncStateControl.disabled = false;
+          if (active && activeSourceUnit === "nnc") {
+            nncStateWrapper.hidden = false;
+            nncStateWrapper.setAttribute("aria-hidden", "false");
+          }
+        }
+      }
       // Scope lexical controls first: broad construction visibility may have
       // temporarily enabled a number realization belonging to the old route.
       // Only retry an unsuccessful preview; accepted Results are untouched.
@@ -28101,50 +28146,6 @@ export function createUiRenderingApi(targetObject = globalThis) {
           control.disabled = !visible;
         });
       });
-      const characteristicReading =
-        getClassicalNominalConstructionControlValue(
-          "classical-deverbal-nnc-characteristic-reading",
-          "inherent-quality"
-        );
-      const nncStateControl = targetObject.document?.getElementById(
-        "classical-rule-logic-nnc-state"
-      );
-      const nncStateWrapper = nncStateControl?.closest?.(
-        "label, [data-classical-rule-control]"
-      );
-      const organicStateRuleActive = active
-        && activeSourceUnit === "nnc"
-        && selectedFamily === "patientive"
-        && patientiveFamily === "characteristic-property"
-        && characteristicReading === "organic-possession";
-      if (nncStateControl && nncStateWrapper) {
-        coordinateOrganicPossessionState(nncStateControl, {
-          active: organicStateRuleActive,
-          restoreEligible: active && activeSourceUnit === "nnc"
-            && selectedFamily === "patientive"
-            && patientiveFamily === "characteristic-property",
-          sourceIdentity: retainedNominalSource?.exactResult
-            || targetObject.ClassicalSourcePartsCommittedSignature || null,
-          bindingId: retainedNominalSource?.selectedBindingId || "",
-        });
-        if (organicStateRuleActive) {
-          nncStateControl.disabled = true;
-          nncStateControl.dataset.classicalDerivedOrganicPossessionState =
-            "possessive-only";
-          nncStateWrapper.hidden = true;
-          nncStateWrapper.setAttribute("aria-hidden", "true");
-        } else if (
-          nncStateControl.dataset.classicalDerivedOrganicPossessionState
-        ) {
-          delete nncStateControl.dataset
-            .classicalDerivedOrganicPossessionState;
-          nncStateControl.disabled = false;
-          if (active && activeSourceUnit === "nnc") {
-            nncStateWrapper.hidden = false;
-            nncStateWrapper.setAttribute("aria-hidden", "false");
-          }
-        }
-      }
       const exactBinding = active
         ? getActiveClassicalGrammarResultBinding("nnc:deverbal-construction")
         : null;

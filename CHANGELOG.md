@@ -1,5 +1,10 @@
 # Version History
 
+## v1.2.63 — Organic Continuation Choices
+
+- Retains the earlier noun State when an organic reading temporarily fixes possessive in the supported exact-Result route.
+- Preserves canonical ownership, exact parents, explicit Make and existing panels.
+
 ## v1.2.62 — Visible Embedded Choices
 
 - Keeps the owner-required nonactive formation control visible in the supported incorporated-adverb route.
