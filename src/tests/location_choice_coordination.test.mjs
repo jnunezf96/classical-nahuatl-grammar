@@ -1,0 +1,22 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import vm from 'node:vm';
+import {readFileSync} from 'node:fs';
+import {createPossessiveFixture} from './helpers/deverbal_possessive_fixture.mjs';
+const code=readFileSync(new URL('../ui/composer/composer.mjs',import.meta.url),'utf8');
+const slice=(start,end)=>code.slice(code.indexOf(start),code.indexOf(end,code.indexOf(start)));
+test('relational affective draft survives an unrelated operation without entering its request',async()=>{
+ const {r}=await createPossessiveFixture('cuauh');
+ const elements={stem:{selectedOptions:[{dataset:{classicalRelationalStemId:'tlah-abundance-place'}}]},operation:{value:'relational-nnc'},option:{value:'option-two'},affective:{value:'pejorative'},affectiveField:{},state:{value:'absolutive'},subjectMode:{value:'adverbialized'},subject:{value:'3common'}};
+ const ctx=vm.createContext({elements,operation:'relational-nnc',targetObject:r,getClassicalRelationalNncUiElements:()=>elements,getClassicalSourcePartControlState:()=>({sourceEmbedStem:'cuauh',sourceMatrixStem:'tlah'}),CLASSICAL_SOURCE_PARTS_MODE:{wholeStem:'whole',embedMatrix:'embed-matrix'},issueClassicalRelationalNncUiSourceAdmission:()=>({selectedSourceKind:'nounstem'}),getClassicalRelationalNncUiSelectedImperfectSource:()=>null,buildClassicalRelationalNncDeverbalUpstreamResult:()=>null});
+ const projection=slice('      if (elements.affectiveField) {','      syncClassicalSourceReadout(CLASSICAL_BASAL_UNIT.nnc);');
+ const collector=slice('    function getClassicalRelationalNncUiRequest() {','    function applyClassicalRelationalNncSourceStructure(');
+ vm.runInContext(collector+'globalThis.collect=getClassicalRelationalNncUiRequest;',ctx);
+ ctx.operation='associated-entity';elements.operation.value=ctx.operation;vm.runInContext(projection,ctx);
+ assert.equal(elements.affective.value,'pejorative');assert.equal(elements.affective.disabled,true);assert.equal(ctx.collect().nounstem.affective,'none');
+ ctx.operation='relational-nnc';elements.operation.value=ctx.operation;vm.runInContext(projection,ctx);
+ assert.equal(elements.affective.value,'pejorative');assert.equal(elements.affective.disabled,false);
+ const request=ctx.collect();assert.equal(request.nounstem.affective,'pejorative');
+ const result=r.executeClassicalGrammarApplicationRequest({operationId:'nnc:relational',args:[JSON.parse(JSON.stringify(request))]});
+ assert.equal(result.authorizationStatus,'authorized',JSON.stringify(r.evaluateClassicalNahuatlRelationalNnc(JSON.parse(JSON.stringify(request))).diagnostics));assert.equal(result.canonicalResult.surface,'cuauhtlahtōnco');
+});

@@ -2517,6 +2517,42 @@ export function createUiRenderingApi(targetObject = globalThis) {
     function getClassicalCompoundNonactiveScopeValues(voiceOperation, voice, variant = "") {
       return getCompoundNonactiveScopeDomain({voiceOperation,voice,variant});
     }
+    function getClassicalPlaceChoiceContext() {
+      const exact=getActiveClassicalGrammarResultBinding("nnc:place-gentilic");
+      if(exact) return {source:exact.exactResult,matrix:null,route:"exact-place"};
+      // The special nominal-site Source has one owner-licensed kind/formation;
+      // its existing typed binding already owns that required choice.
+      if(getActiveClassicalGrammarTypedSourceOperationBinding()?.operationId==="nnc:place-gentilic") return null;
+      let applied;
+      try { applied=JSON.parse(targetObject.ClassicalSourcePartsCommittedSignature||"null"); } catch {}
+      const request=buildClassicalNominalConstructionUiRequest();
+      if(!applied || !request?.source || !["whole-stem","embed-matrix"].includes(applied.mode))return null;
+      const stem=applied.mode==="whole-stem"?applied.sourceWholeStem:applied.sourceEmbedStem;
+      if(!stem || request.source.embedStem!==stem || (applied.mode==="embed-matrix"&&request.source.matrixStem!==applied.sourceMatrixStem))return null;
+      return {source:ClassicalNativeCompoundChoiceSession,matrix:null,
+        route:JSON.stringify([targetObject.ClassicalSourcePartsCommittedSignature,request.nounClass])};
+    }
+    function coordinateClassicalPlaceFormation(control,resultKind) {
+      if(!control)return;
+      const context=getClassicalPlaceChoiceContext();
+      const offered=Array.from(control.options||[]).filter(o=>o.value&&!o.disabled&&!o.hidden).map(o=>o.value);
+      control.classicalPlaceChoiceContext={context,resultKind,offered};
+      if(!control.dataset.classicalPlaceChoiceMemoryBound) {
+        control.dataset.classicalPlaceChoiceMemoryBound="true";
+        control.addEventListener("change",()=>{
+          const info=control.classicalPlaceChoiceContext,current=getClassicalPlaceChoiceContext();
+          if(control.disabled||!current||!info?.context||current.source!==info.context.source||current.route!==info.context.route)return;
+          ClassicalPlaceFormations.record(current,info.resultKind,control.value,info.offered);
+        },true);
+      }
+      const restored=ClassicalPlaceFormations.restore(context,resultKind,offered,value=>{
+        const request=buildClassicalNominalConstructionUiRequest();
+        if(request?.constructionKind!==resultKind)return false;
+        const result=targetObject.evaluatePlaceGentilicNnc?.({...request,formation:value});
+        return targetObject.isPlaceGentilicNncFrame?.(result)===true&&result.authorizationStatus==="authorized";
+      });
+      if(restored)control.value=restored;
+    }
     function getClassicalRuleLogicSurfaceState(overrides = {}) {
       const basalUnit = normalizeClassicalBasalUnitForRendering(overrides.basalUnit || getClassicalBasalUnitFromSurfaceForRendering("vnc"));
       const exactCapabilityNncResultFrame = (() => {
@@ -30560,6 +30596,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           const firstAvailable = Array.from(formationControl.options).find(option => !option.disabled);
           if (firstAvailable) formationControl.value = firstAvailable.value;
         }
+        coordinateClassicalPlaceFormation(formationControl,placeGentilicResultKind);
         const placeGentilicFormation = getClassicalNominalConstructionControlValue(
           "classical-place-gentilic-formation",
           ""
@@ -41335,6 +41372,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
     const ClassicalCompoundScopes = createCompoundChoiceMemory();
     const ClassicalCompoundPossessors = createCompoundChoiceMemory();
     const ClassicalCompoundAffinity = createCompoundChoiceMemory();
+    const ClassicalPlaceFormations = createCompoundChoiceMemory();
     const ClassicalParticleHonorificChoices = createParticleHonorificChoiceCoordinator(targetObject);
     function getClassicalParticleHonorificSourceSession(binding) {
       if(targetObject.isClassicalGrammarTypedSourceOperationBindingFrame?.(binding)!==true)return null;

@@ -11585,7 +11585,8 @@ export function createUiComposerRuntime(targetObject = globalThis) {
                     .filter(Boolean)
                     .join("-"),
                 }),
-          affective: String(elements.affective?.value || "none"),
+          affective: operation === "relational-nnc"
+            ? String(elements.affective?.value || "none") : "none",
           ...(selectedImperfectPredicateSource ? {selectedImperfectPredicateSource} : {}),
           pertinencySourceKind: String(
             elements.pertinencySource?.value || "direct-relational"
@@ -11947,7 +11948,6 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       }
       if (elements.affective) {
         elements.affective.disabled = operation !== "relational-nnc";
-        if (elements.affective.disabled) elements.affective.value = "none";
       }
       syncClassicalSourceReadout(CLASSICAL_BASAL_UNIT.nnc);
       if (render && typeof targetObject.renderClassicalRuleLogicSurfaceBlock === "function") {

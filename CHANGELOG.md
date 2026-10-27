@@ -1,3 +1,7 @@
+## 1.2.71 — Coordinated Location Choices
+
+Relational affective choices remain staged across inactive operations without entering unrelated requests. Place and gentilic formation intent returns for the same Applied Source and Result kind only when the current canonical owner permits it.
+
 ## 1.2.70 — Coordinated Counting Choices
 
 Current canonical numeral domains coordinate existing controls. Conditional count choices retain explicit intent through inactive routes without leaking into unrelated requests or bypassing Source and Make.
