@@ -99,11 +99,11 @@ export const RUNTIME_INSTALLERS = new Map([
     ["src/core/classical/particle_grammar.mjs", installClassicalNahuatlParticlesGlobals],
     ["src/core/classical/particle_owner_catalog.mjs", installClassicalParticleSemanticOwnersGlobals],
     ["src/core/classical/adjectival_modification.mjs", installClassicalNahuatlClosureGlobals],
-    ["src/core/classical/nominal_construction.mjs?complexReload=20261027-1", installClassicalNahuatlNominalConstructionGlobals],
+    ["src/core/classical/nominal_construction.mjs", installClassicalNahuatlNominalConstructionGlobals],
     ["src/core/classical/vnc_layer_evaluator.mjs", installClassicalNahuatlVncLayerEvaluatorGlobals],
     ["src/core/classical/vnc_lessons27_29_33_closure.mjs", installClassicalNahuatlVncClosureGlobals],
     ["src/core/classical/vnc_late_operation_ui_contract.mjs", installClassicalNahuatlVncLateOperationUiContractGlobals],
-    ["src/core/classical/denominal_vnc_grammar.mjs?complexReload=20261027-1", installClassicalNahuatlDenominalVncGrammarGlobals],
+    ["src/core/classical/denominal_vnc_grammar.mjs", installClassicalNahuatlDenominalVncGrammarGlobals],
     ["src/core/classical/finite_vnc_slots.mjs", installClassicalNahuatlFiniteVncGlobals],
     ["src/core/classical/transitive_vnc_object.mjs", installClassicalNahuatlTransitiveVncObjectGlobals],
     ["src/core/classical/irregular_vnc.mjs", installClassicalNahuatlIrregularVncGlobals],
@@ -114,7 +114,7 @@ export const RUNTIME_INSTALLERS = new Map([
     ["src/core/classical/nuclear_semantic_owner_catalog.mjs", installClassicalNuclearSemanticOwnersGlobals],
     ["src/core/classical/vnc_derivation_evaluator.mjs", installClassicalNahuatlVncDerivationEvaluatorGlobals],
     ["src/core/classical/derived_vnc_layers.mjs", installClassicalNahuatlLaterLayersGlobals],
-    ["src/application/classical/vnc_application.mjs?complexReload=20261027-1", installClassicalNahuatlVncApplicationGlobals],
+    ["src/application/classical/vnc_application.mjs", installClassicalNahuatlVncApplicationGlobals],
     ["src/core/clause/clause.mjs", installClauseGlobals],
     ["src/core/clause/adjunction/adjunction.mjs", installAdverbialAdjunctionGlobals],
     ["src/core/clause/complement/complement.mjs", installComplementClauseGlobals],
@@ -126,7 +126,7 @@ export const RUNTIME_INSTALLERS = new Map([
     ["src/core/nnc/nnc.mjs", installNncGlobals],
     ["src/core/classical/adverbial_nuclear_grammar.mjs", installClassicalNahuatlAdverbialNuclearGlobals],
     ["src/core/classical/nnc_lessons45_47_closure.mjs", installClassicalNahuatlRelationalNncGlobals],
-    ["src/core/nnc/place_gentilic/place_gentilic.mjs?complexReload=20261027-1", installPlaceGentilicNncGlobals],
+    ["src/core/nnc/place_gentilic/place_gentilic.mjs", installPlaceGentilicNncGlobals],
     ["src/core/nnc/names/names.mjs", installPersonalNameNncGlobals],
     ["src/core/output/provenance.mjs", installOutputProvenanceGlobals],
     ["src/core/output/surface.mjs", installOutputSurfaceGlobals],
@@ -152,14 +152,14 @@ export const RUNTIME_INSTALLERS = new Map([
     ["src/application/classical/formation_result_binding.mjs", installClassicalNahuatlFormationResultBindingGlobals],
     ["src/application/classical/clause_relation_controller.mjs", installClassicalClauseRelationControllerGlobals],
     ["src/application/classical/grammar_application.mjs", installClassicalGrammarApplicationGlobals],
-    ["src/application/classical/grammar_workspace_history.mjs?complexReload=20261027-1", installClassicalGrammarWorkspaceHistoryGlobals],
+    ["src/application/classical/grammar_workspace_history.mjs", installClassicalGrammarWorkspaceHistoryGlobals],
     ["src/ui/diagnostics/classical_capability_closure_atlas.mjs", installClassicalCapabilityClosureAtlasGlobals],
     ["src/ui/composer/composer.mjs", installUiComposerGlobals],
     ["src/ui/i18n/i18n.mjs", installUiI18nGlobals],
     ["src/ui/export/export.mjs", installUiExportGlobals],
     ["src/ui/events/events.mjs", installUiEventsGlobals],
     ["src/ui/panels/panels.mjs", installUiPanelsGlobals],
-    ["src/ui/rendering/rendering.mjs?complexReload=20261027-1", installUiRenderingGlobals],
+    ["src/ui/rendering/rendering.mjs", installUiRenderingGlobals],
     ["src/ui/state.mjs", installUiStateGlobals],
     ["src/bootstrap/script_runtime.mjs", installScriptRuntimeGlobals],
     ["src/lessons/registry.mjs", installLessonRegistryGlobals],
@@ -197,7 +197,7 @@ const PRIVATE_INSTALLER_DEPENDENCIES = Object.freeze({
             "projectClassicalNahuatlAdjectivalModificationForIncorporation",
             "isClassicalNahuatlAdjectivalModificationIncorporationFrame",
         ]),
-        "src/core/classical/nominal_construction.mjs?complexReload=20261027-1": Object.freeze([
+        "src/core/classical/nominal_construction.mjs": Object.freeze([
             "issueClassicalNahuatlPatientiveMatrixConstituentFrame",
             "isClassicalNahuatlPatientiveMatrixConstituentFrame",
             "getClassicalNahuatlAdjectivalNncSourceConstituent",
@@ -242,7 +242,7 @@ const PRIVATE_INSTALLER_DEPENDENCIES = Object.freeze({
             "buildClassicalNahuatlSpellingChangeFrame",
         ]),
     }),
-    "src/core/classical/nominal_construction.mjs?complexReload=20261027-1": Object.freeze({
+    "src/core/classical/nominal_construction.mjs": Object.freeze({
         "src/core/classical/adjectival_modification.mjs": Object.freeze([
             "isClassicalNahuatlAdjectivalModificationIncorporationFrame",
         ]),
@@ -250,8 +250,8 @@ const PRIVATE_INSTALLER_DEPENDENCIES = Object.freeze({
             "resolveClassicalNahuatlLesson14ConnectorSelection",
         ]),
     }),
-    "src/core/classical/denominal_vnc_grammar.mjs?complexReload=20261027-1": Object.freeze({
-        "src/core/classical/nominal_construction.mjs?complexReload=20261027-1": Object.freeze([
+    "src/core/classical/denominal_vnc_grammar.mjs": Object.freeze({
+        "src/core/classical/nominal_construction.mjs": Object.freeze([
             "buildClassicalNahuatlAffectiveDenominalSourceFrame",
             "isClassicalNahuatlAffectiveDenominalSourceFrame",
         ]),
@@ -260,10 +260,10 @@ const PRIVATE_INSTALLER_DEPENDENCIES = Object.freeze({
         "src/core/classical/finite_vnc_slots.mjs": Object.freeze([
             "isClassicalNahuatlFiniteSubjectNumberDyad",
         ]),
-        "src/application/classical/vnc_application.mjs?complexReload=20261027-1": Object.freeze([
+        "src/application/classical/vnc_application.mjs": Object.freeze([
             "getClassicalNahuatlVncApplicationSourceObjectRequests",
         ]),
-        "src/core/classical/nominal_construction.mjs?complexReload=20261027-1": Object.freeze([
+        "src/core/classical/nominal_construction.mjs": Object.freeze([
             "isClassicalNahuatlNominalVncMatrixCoordinateFrame",
             "issueClassicalNahuatlPatientiveEmbedConstituentFrame",
             "isClassicalNahuatlPatientiveEmbedConstituentFrame",
@@ -297,14 +297,14 @@ const PRIVATE_INSTALLER_DEPENDENCIES = Object.freeze({
             "writeClassicalNahuatlLesson2Result",
             "isClassicalNahuatlLesson2WrittenResult",
         ]),
-        "src/application/classical/vnc_application.mjs?complexReload=20261027-1": Object.freeze([
+        "src/application/classical/vnc_application.mjs": Object.freeze([
             "getClassicalNahuatlVncContinuationSourceConstituents",
             "issueClassicalNahuatlVncTypedSourceApplicationBindingFrame",
             "isClassicalNahuatlVncTypedSourceApplicationBindingFrame",
             "issueClassicalNahuatlVncContinuationBindingFrame",
             "isClassicalNahuatlVncContinuationBindingFrame",
         ]),
-        "src/core/classical/nominal_construction.mjs?complexReload=20261027-1": Object.freeze([
+        "src/core/classical/nominal_construction.mjs": Object.freeze([
             "isClassicalNahuatlPatientiveMatrixConstituentFrame",
             "getClassicalNahuatlAdjectivalNncSourceConstituent",
             "isClassicalNahuatlAdjectivalNncSourceConstituentFrame",
@@ -324,7 +324,7 @@ const PRIVATE_INSTALLER_DEPENDENCIES = Object.freeze({
             "getClassicalNahuatlNncContinuationSourceConstituents",
         ]),
     }),
-    "src/application/classical/vnc_application.mjs?complexReload=20261027-1": Object.freeze({
+    "src/application/classical/vnc_application.mjs": Object.freeze({
         "src/core/classical/finite_vnc_slots.mjs": Object.freeze([
             "isClassicalNahuatlFiniteSubjectNumberDyad",
         ]),
@@ -356,7 +356,7 @@ const PRIVATE_INSTALLER_DEPENDENCIES = Object.freeze({
         "src/core/classical/nnc_lessons35_39_closure.mjs": Object.freeze([
             "getClassicalNahuatlOwnerhoodSourceAnalysis",
         ]),
-        "src/application/classical/vnc_application.mjs?complexReload=20261027-1": Object.freeze([
+        "src/application/classical/vnc_application.mjs": Object.freeze([
             "getClassicalNahuatlVncApplicationSourceInitialIAnalysis",
         ]),
         "src/core/classical/verbstem_classes.mjs": Object.freeze([
@@ -372,8 +372,8 @@ const PRIVATE_INSTALLER_DEPENDENCIES = Object.freeze({
             "isClassicalNahuatlLesson2WrittenResult",
         ]),
     }),
-    "src/ui/rendering/rendering.mjs?complexReload=20261027-1": Object.freeze({
-        "src/core/classical/nominal_construction.mjs?complexReload=20261027-1": Object.freeze([
+    "src/ui/rendering/rendering.mjs": Object.freeze({
+        "src/core/classical/nominal_construction.mjs": Object.freeze([
             "isClassicalNahuatlPatientiveMatrixConstituentFrame",
             "getClassicalNahuatlAdjectivalNncSourceConstituent",
             "isClassicalNahuatlAdjectivalNncSourceConstituentFrame",
@@ -393,7 +393,7 @@ const PRIVATE_INSTALLER_DEPENDENCIES = Object.freeze({
             "issueClassicalNahuatlFormationResultBindingCompletionFrame",
             "isClassicalNahuatlFormationResultBindingCompletionFrame",
         ]),
-        "src/application/classical/vnc_application.mjs?complexReload=20261027-1": Object.freeze([
+        "src/application/classical/vnc_application.mjs": Object.freeze([
             "getClassicalNahuatlVncContinuationSourceConstituents",
         ]),
         "src/application/classical/nnc_application.mjs": Object.freeze([
