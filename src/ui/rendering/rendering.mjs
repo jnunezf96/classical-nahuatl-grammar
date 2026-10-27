@@ -43,10 +43,10 @@ import { readClassicalSourceObjectRows, getClassicalSourceObjectControls,
   restoreClassicalSourceObjectRows, syncClassicalSourceObjectRows }
   from "../composer/source_objects.mjs?v=20261007-panel-source-objects-1&interfaceRelease=1.2.36";
 import { exportClassicalResultReloadRecipe, replayClassicalResultReloadRecipe, reissueClassicalAcceptedBuildBinding, matchesAcceptedVncContinuationBuild, matchesAcceptedNominalCompoundBuild, matchesAcceptedDeverbalBuild, supportsFutureObjectResultReload, supportsNominalCompoundResultReload }
-  from "../../application/classical/result_reload.mjs?deverbalReload=20261024-8&stemReload=20261024-2&innerParticle=20261024-1&remainingReload=20261024-1&conjunctReload=20261023-1&v=20261007-reader-40-2-175&acceptedBuild=20261023-1&nominalReload=20261024-4";
+  from "../../application/classical/result_reload.mjs?deverbalReload=20261024-8&stemReload=20261024-2&innerParticle=20261024-1&remainingReload=20261024-1&conjunctReload=20261023-1&v=20261007-reader-40-2-175&acceptedBuild=20261023-1&nominalReload=20261024-4&complexReload=20261027-1";
 import { exportClassicalGrammarWorkspaceHistoryReloadState,
   restoreClassicalGrammarWorkspaceHistoryReloadState }
-  from "../../application/classical/grammar_workspace_history.mjs?innerParticle=20261024-1&remainingReload=20261024-1&conjunctReload=20261023-1&v=20261006-history-reload-1&nominalReload=20261024-4";
+  from "../../application/classical/grammar_workspace_history.mjs?innerParticle=20261024-1&remainingReload=20261024-1&conjunctReload=20261023-1&v=20261006-history-reload-1&nominalReload=20261024-4&complexReload=20261027-1";
 // Canonical modern ESM module.
 
 import {
@@ -52957,7 +52957,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       return [...new Set([...getClassicalVncReloadChoiceControls(),
         targetObject.document.getElementById("classical-construction-operation"),
         ...targetObject.document.querySelectorAll(
-          'select[id^="classical-adverbial-"], select[id^="classical-rule-logic-nnc-"], select[id^="classical-nominal-"], input[id^="classical-nominal-"], select[id^="classical-deverbal-"], input[id^="classical-deverbal-"], select[id^="classical-double-nucleus-"], input[id^="classical-double-nucleus-"]')])].filter(Boolean);
+          'select[id^="classical-adverbial-"], select[id^="classical-rule-logic-nnc-"], select[id^="classical-nominal-"], input[id^="classical-nominal-"], select[id^="classical-deverbal-"], input[id^="classical-deverbal-"], select[id^="classical-double-nucleus-"], input[id^="classical-double-nucleus-"], select[id^="classical-cardinal-"], input[id^="classical-cardinal-"], select[id^="classical-calendar-"], select[id^="classical-place-"], input[id^="classical-place-"], select[id^="classical-denominal-"], input[id^="classical-denominal-"], select[id^="classical-personal-name-"], input[id^="classical-personal-name-"], select[id^="classical-affective-"], input[id^="classical-affective-"], select[id^="classical-adjectival-"], input[id^="classical-adjectival-"], select[id^="classical-compound-nnc-"], input[id^="classical-compound-nnc-"]')])].filter(Boolean);
     }
     function snapshotClassicalConjunctEditChoices() {
       const noun = getClassicalNncReinflectionDraft();
@@ -53110,6 +53110,39 @@ export function createUiRenderingApi(targetObject = globalThis) {
         syncClassicalCapabilityApplyOperationState();
         restoreClassicalReloadPosition(result);
       }
+      return true;
+    }
+    function restoreClassicalNativeBuildChoices(result, saved) {
+      if (ActiveClassicalGrammarResultSourceCapture) return false;
+      const supported = targetObject.getClassicalNahuatlNominalConstructionReloadInputs?.(result)
+        || targetObject.getClassicalNahuatlPlaceReloadInputs?.(result)
+        || targetObject.getClassicalNahuatlDenominalReloadInputs?.(result)
+        || targetObject.isPersonalNameNncResult?.(result) === true;
+      const control = targetObject.document.getElementById("classical-construction-operation");
+      const construction = saved.controls?.find(choice => choice.id === control?.id)?.value;
+      if (!supported || !control || !["cardinal-numeral-nnc", "calendar-date-nnc", "adjectival-nnc", "affective-nnc",
+        "personal-name-nnc", "place-gentilic-nnc", "denominal-vnc", "compound-nnc", "nominal-embed-vnc"].includes(construction)
+        || !Array.from(control.options || []).some(option => option.value === construction && !option.disabled)) return false;
+      // Re-enter the existing native staging path. Accepted authority was already
+      // replayed independently; no saved draft is executed by restoration.
+      clearClassicalGrammarTypedSourceOperationBinding("native-reload-draft");
+      ActiveClassicalGrammarResultBinding = null;
+      if (!restoreClassicalVncReloadSourceEditorState(saved.sourceEditorState)) return false;
+      const allowed = new Map([...getClassicalMixedReloadControls(), ...getClassicalVncBasalReloadControls()].map(item => [item.id,item]));
+      for (let pass = 0; pass < 2; pass += 1) {
+        control.value = construction;
+        syncClassicalNominalConstructionControlVisibility(construction);
+        for (const choice of Array.isArray(saved.controls) ? saved.controls : []) {
+          const item = allowed.get(choice.id);
+          if (!item) continue;
+          if (typeof choice.value === "string" && choice.value.length <= 4096
+            && (item.tagName === "SELECT" ? Array.from(item.options || []).some(option => option.value === choice.value && !option.disabled)
+              : ["text", "number", "search"].includes(item.type))) item.value = choice.value;
+          if (["checkbox", "radio"].includes(item.type) && typeof choice.checked === "boolean") item.checked = choice.checked;
+        }
+      }
+      handleClassicalCapabilityStagedGrammarControlChange(control);
+      restoreClassicalReloadPosition(result);
       return true;
     }
     function restoreClassicalAcceptedBuildChoices(result = null) {
@@ -53314,14 +53347,18 @@ export function createUiRenderingApi(targetObject = globalThis) {
         : "Whole Result and conjunct edit restored. Changes remain pending until Make Result.");
       return true;
     }
-    function restoreClassicalMixedReloadSession(saved) {
+    function restoreClassicalMixedReloadSession(saved, onReplayed = () => {}) {
       const roots = replayClassicalResultReloadRecipe(targetObject, saved.recipe);
       const reloadStatus = targetObject.document.getElementById("classical-grammar-workspace-history");
       if (reloadStatus) reloadStatus.dataset.classicalReloadStatus = roots ? "mixed-reissued" : "mixed-replay-rejected";
       const resultCapture = roots?.result
         ? targetObject.captureClassicalGrammarApplicationResult(roots.result, "reload-inputs") : null;
       if (!resultCapture || !targetObject.isClassicalGrammarApplicationResultCapture(resultCapture, "reload-inputs")) return false;
-      if (saved.edit) return restoreClassicalConjunctEditReload(roots, saved, resultCapture);
+      if (saved.edit) {
+        const restored = restoreClassicalConjunctEditReload(roots, saved, resultCapture);
+        if (restored) onReplayed(roots);
+        return restored;
+      }
       const controller = targetObject.createClassicalClauseRelationController();
       for (const role of ["principal", "adjoined", "dependent", "supplement", "marker"]) {
         if (roots[role] && controller.captureCurrentResult(role, roots[role]).authorizationStatus !== "authorized") return false;
@@ -53345,8 +53382,12 @@ export function createUiRenderingApi(targetObject = globalThis) {
           const allowed = new Map([...getClassicalMixedReloadControls(), ...getClassicalVncBasalReloadControls()].map(control => [control.id, control]));
           for (const choice of Array.isArray(saved.controls) ? saved.controls : []) {
             const control = allowed.get(choice.id);
-            if (control && typeof choice.value === "string" && Array.from(control.options || [])
-              .some(option => option.value === choice.value && !option.disabled)) control.value = choice.value;
+            if (control && typeof choice.value === "string" && choice.value.length <= 4096
+              && (control.tagName === "SELECT" ? Array.from(control.options || [])
+                .some(option => option.value === choice.value && !option.disabled)
+                : ["text", "number", "search"].includes(control.type))) control.value = choice.value;
+            if (control && ["checkbox", "radio"].includes(control.type)
+              && typeof choice.checked === "boolean") control.checked = choice.checked;
           }
           const ids=ActiveClassicalGrammarResultBinding?.bindingIds || [];
           const bindingId = ids.includes(saved.selectedBindingId) ? saved.selectedBindingId : ids[0];
@@ -53385,13 +53426,15 @@ export function createUiRenderingApi(targetObject = globalThis) {
       syncClassicalCapabilityNavigator(null);
       syncClassicalActiveResultBindingChoiceVisibility(ActiveClassicalGrammarResultBinding);
       if (!roots.source) {
-        if (!restoreClassicalDeverbalBuildChoices(roots.result,saved)) restoreClassicalAcceptedBuildChoices(roots.result);
+        if (!restoreClassicalDeverbalBuildChoices(roots.result,saved)
+          && !restoreClassicalNativeBuildChoices(roots.result,saved)) restoreClassicalAcceptedBuildChoices(roots.result);
       }
       else if (supportsFutureObjectResultReload(targetObject,roots.result)
         || supportsNominalCompoundResultReload(targetObject,roots.result)) restoreClassicalVncReloadChoices(saved);
       syncClassicalCapabilityApplyOperationState();
       setClassicalWholeCanvasActionStatus("Build restored.");
       if (reloadStatus) reloadStatus.dataset.classicalReloadStatus = "mixed-restored";
+      onReplayed(roots);
       return true;
     }
     let classicalHistoryReloadNotice = "";
@@ -53402,8 +53445,12 @@ export function createUiRenderingApi(targetObject = globalThis) {
           "classical-grammar-workspace-history-compare-node")?.value || "" };
     }
     function showClassicalHistoryReloadNotice(history, restored = false) {
-      classicalHistoryReloadNotice = history?.status === "unsupported"
-        ? "This build history cannot be restored after reload. Continue in this tab, or apply an underlying Source to rebuild."
+      classicalHistoryReloadNotice = history?.status === "partial"
+        ? `${history.nodes.length} earlier builds ${restored ? 'were restored' : 'can be restored'}; ${history.omitted.length} are unavailable after reload: ${history.omitted.map(row => row.label || row.nodeId).join(', ')}. Dependent branches are excluded; no missing build has been replaced.`
+        : history?.status === "unsupported"
+        ? history.reason === "combined-graph-limit"
+          ? "Your current build and pending choices are saved. Earlier build history exceeds the reload limit and will be unavailable after reload."
+          : "This build history cannot be restored after reload. Continue in this tab, or apply an underlying Source to rebuild."
         : history?.status === "rejected"
           ? "Saved build history could not be restored. Continue from the restored Result or apply an underlying Source to rebuild."
           : restored && history?.status !== "supported"
@@ -53411,8 +53458,19 @@ export function createUiRenderingApi(targetObject = globalThis) {
             : "";
       syncClassicalGrammarWorkspaceHistory();
     }
-    function restoreClassicalHistoryReloadState(saved) {
-      const restored = restoreClassicalGrammarWorkspaceHistoryReloadState(targetObject, saved.history);
+    function restoreClassicalHistoryReloadState(saved, replayedRoots = null) {
+      const mapping = saved.historyGraphRoots;
+      let sharedRoots = null;
+      if (mapping !== undefined) {
+        const nodes = saved.history?.nodes || [];
+        if (!replayedRoots || !mapping || typeof mapping !== "object" || Array.isArray(mapping)
+          || Object.keys(mapping).length !== nodes.length
+          || nodes.some((node,index) => mapping[node.nodeId] !== `historyEntry${index}` || !replayedRoots[mapping[node.nodeId]])) {
+          showClassicalHistoryReloadNotice({status:"rejected"},true);return false;
+        }
+        sharedRoots = Object.fromEntries(nodes.map(node => [node.nodeId,replayedRoots[mapping[node.nodeId]]]));
+      }
+      const restored = restoreClassicalGrammarWorkspaceHistoryReloadState(targetObject, saved.history, sharedRoots);
       showClassicalHistoryReloadNotice(restored || saved.history?.status === "unsupported"
         ? saved.history : saved.history ? {status: "rejected"} : null, true);
       const choices = saved.historySelection;
@@ -53438,6 +53496,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
       try {
         const history = exportClassicalGrammarWorkspaceHistoryReloadState(targetObject);
         const historySelection = getClassicalHistoryReloadSelection();
+        const historyEntries = ["supported", "partial"].includes(history?.status) ? history.nodes || [] : [];
+        const historyGraphRoots = Object.fromEntries(historyEntries.map((node,index)=>[node.nodeId,`historyEntry${index}`]));
+        const historyRoots = Object.fromEntries(historyEntries.map(node=>[historyGraphRoots[node.nodeId],
+          targetObject.recoverClassicalGrammarWorkspaceResult?.(node.nodeId)?.canonicalResult]));
         const activeCurrent=getActiveClassicalCapabilityApplicationResult()?.canonicalResult;
         const visible=getClassicalSgrOwnerIssuedProjection(ActiveClassicalRuleLogicSurfaceFrame)?.canonicalResult;
         const accepted = getClassicalVisibleAcceptedResult()?.canonicalResult;
@@ -53462,10 +53524,20 @@ export function createUiRenderingApi(targetObject = globalThis) {
         if (current && (edit || !recipe || Object.keys(captures).length || bindingOperands.length
           || supportsFutureObjectResultReload(targetObject,current)
           || supportsNominalCompoundResultReload(targetObject,current))) {
-          const mixedRecipe = exportClassicalResultReloadRecipe(targetObject, { result: current, source, ...captures, ...operandRoots });
+          const coreRoots = { result: current, source, ...captures, ...operandRoots };
+          let mixedRecipe = exportClassicalResultReloadRecipe(targetObject, {...coreRoots, ...historyRoots});
+          let mixedHistory = history, mixedHistoryRoots = historyGraphRoots;
+          if (!mixedRecipe && Object.keys(historyRoots).length) {
+            mixedRecipe = exportClassicalResultReloadRecipe(targetObject, coreRoots);
+            if (mixedRecipe) {
+              mixedHistory = {kind:"classical-grammar-workspace-history-reload",version:1,status:"unsupported",
+                nodeCount:historyEntries.length,reason:"combined-graph-limit"};
+              mixedHistoryRoots = undefined;
+            }
+          }
           if (mixedRecipe) {
             browserWindow?.sessionStorage?.setItem(CLASSICAL_VNC_RELOAD_SESSION_KEY,
-              JSON.stringify({ version: 2, url: browserWindow.location.href, recipe: mixedRecipe, history, historySelection,
+              JSON.stringify({ version: 2, url: browserWindow.location.href, recipe: mixedRecipe, history: mixedHistory, historySelection, historyGraphRoots: mixedHistoryRoots,
                 bindingOperands: bindingOperands.map(({role,root})=>({role,root})),
                 selectedBindingId: ActiveClassicalGrammarResultBinding?.selectedBindingId || "",
                 edit, pendingTypedSourceSelections: edit ? snapshotClassicalConjunctEditChoices() : null,
@@ -53478,7 +53550,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
                   : getClassicalMixedReloadControls()) }));
             const reloadStatus = targetObject.document.getElementById("classical-grammar-workspace-history");
             if (reloadStatus) reloadStatus.dataset.classicalReloadStatus = "mixed-saved";
-            showClassicalHistoryReloadNotice(history);
+            showClassicalHistoryReloadNotice(mixedHistory);
             return true;
           }
         }
@@ -53531,9 +53603,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
       }
       if (saved?.version === 2 && saved.url === (url || browserWindow.location.href)) {
         if (saved.edit) restoreClassicalVncReloadSourceEditorState(saved.sourceEditorState);
-        const restored = restoreClassicalMixedReloadSession(saved);
+        const restored = restoreClassicalMixedReloadSession(saved, roots => restoreClassicalHistoryReloadState(saved, roots));
         if (restored) {
-          restoreClassicalHistoryReloadState(saved);
           // Recipe and history restore accepted authority first. Editor replay
           // restores only the unaccepted draft and its committed coordinates.
           if (!saved.edit) restoreClassicalVncReloadSourceEditorState(saved.sourceEditorState);
@@ -55193,8 +55264,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         compareSelect.appendChild(compareOption);
       });
       const selectedId = nodes.some(node => node.nodeId === previousSelected)
-        ? previousSelected
-        : value?.currentNodeId || nodes.at(-1)?.nodeId || "";
+        ? previousSelected : value?.currentNodeId || "";
       nodeSelect.value = selectedId;
       compareSelect.value = nodes.some(
         node => node.nodeId === previousCompared

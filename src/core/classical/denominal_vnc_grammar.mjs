@@ -1,3 +1,4 @@
+import {snapshotGrammarInputs} from "../input_snapshot.mjs";
 import {reduplicate} from "./reduplicative_realization.mjs";
 import {CLASSICAL_NAHUATL_VNC_SEMANTIC_MOODS, CLASSICAL_NAHUATL_VNC_SEMANTIC_TENSES_BY_MOOD} from "./vnc_layer_evaluator.mjs?andrewsRelease=20261024-1";
 
@@ -1130,6 +1131,7 @@ function buildFiniteRequest(operationFrame, source, generatedPossessorInitialI =
 }
 
 export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = globalThis) {
+  const reloadInputs=new WeakMap();
   function resolveExactHuiBoundary(sourceFrame) {
     const projection = sourceFrame.canonicalNncSourceProjection;
     if (!projection) return null;
@@ -2866,7 +2868,7 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
       formulaStringAuthority: false,
       surfaceStringAuthority: false,
     });
-    if (authorized) issuedResultFrames.add(frame);
+    if (authorized) {issuedResultFrames.add(frame);reloadInputs.set(frame,snapshotGrammarInputs(request,new Set([request.canonicalNncResult,request.canonicalNncSourceFrame,request.canonicalBoundNominalSourceFrame,request.canonicalNominalRankCorrectionFrame,request.verbalStemPreparationFrame,request.sourceOperationFrame].filter(Boolean))));}
     return frame;
   }
 
@@ -3114,6 +3116,7 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
     deriveClassicalNahuatlDenominalVncOperationPath,
     isClassicalNahuatlDenominalVncOperationFrame,
     isClassicalNahuatlDenominalVncGrammarFrame,
+    getClassicalNahuatlDenominalReloadInputs: frame => reloadInputs.get(frame) || null,
     evaluateClassicalNahuatlDenominalVnc,
     isClassicalNahuatlDenominalVncResultFrame,
     prepareClassicalNahuatlDenominalVncParadigmPlan,

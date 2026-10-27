@@ -10221,6 +10221,12 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
               .filter(([key]) => !isForbiddenClassicalGrammarAuthorityKey(key))),
           ),
           impersonalDerivationPath: normalized.impersonalDerivationPath,
+          // These authored participant axes belong to the accepted input.
+          // A later continuation validates its source participant against them.
+          ...(normalized.subjectAnimacy || normalized.subjectHumanness ? {
+            subjectAnimacy: normalized.subjectAnimacy,
+            subjectHumanness: normalized.subjectHumanness,
+          } : {}),
         };
         if (!normalized.sourceSubjectExplicit) {
           delete request.sourceSubject;
@@ -11070,6 +11076,10 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       &&(c.source.sourceValence==="intransitive"?isClassicalNahuatlImperfectiveVncFiniteResult(c.finite)&&c.result.canonicalFiniteVncResult===c.finite:isClassicalNahuatlImperfectiveTransitiveVncMachineryFrame(c.transitiveMachinery)&&c.result.transitiveMachineryFrame===c.transitiveMachinery)
       &&c.app.resultFrame===c.result&&c.result.sourceMachineryFrame===c.source&&c.result.finalTypedVncSlotFrame===c.typed&&c.result.subjectParticipantFrame===c.participant);}
     function getImperfectiveVncContext(frame){const nucleus=isClassicalNahuatlVncSentenceResultFrame(frame)?frame.canonicalResultFrame:frame;return isClassicalNahuatlImperfectiveVncApplicationFrame(nucleus)?imperfectiveApplications.get(nucleus):null;}
+    function getClassicalNahuatlImperfectiveVncReloadInputs(frame) {
+      const c=getImperfectiveVncContext(frame);
+      return c && (frame===c.app || frame===c.result) ? Object.freeze({source:c.source,selections:c.effective,projection:frame===c.result?'nucleus':'application'}) : null;
+    }
     const preformedVncSources = new WeakMap();
     const preformedVncSourceContexts = new WeakMap();
     const preformedVncBindings = new WeakMap();
@@ -13579,6 +13589,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         resolveClassicalNahuatlImperfectiveVncSourceFrame,
         isClassicalNahuatlImperfectiveVncSourceFrame,
         isClassicalNahuatlRestrictedContainingVncFiniteResult,
+        getClassicalNahuatlImperfectiveVncReloadInputs,
         isClassicalNahuatlImperfectiveVncFiniteResult,
         isClassicalNahuatlImperfectiveTransitiveVncMachineryFrame,
         isClassicalNahuatlImperfectiveVncApplicationFrame,
@@ -13660,6 +13671,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         resolveClassicalNahuatlImperfectiveVncSourceFrame,
         isClassicalNahuatlImperfectiveVncSourceFrame,
         isClassicalNahuatlRestrictedContainingVncFiniteResult,
+        getClassicalNahuatlImperfectiveVncReloadInputs,
         isClassicalNahuatlImperfectiveVncFiniteResult,
         isClassicalNahuatlImperfectiveTransitiveVncMachineryFrame,
         isClassicalNahuatlImperfectiveVncApplicationFrame,
@@ -13898,6 +13910,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
     api.resolveClassicalNahuatlImperfectiveVncSourceFrame = resolveClassicalNahuatlImperfectiveVncSourceFrame;
     api.isClassicalNahuatlImperfectiveVncSourceFrame = isClassicalNahuatlImperfectiveVncSourceFrame;
     api.isClassicalNahuatlRestrictedContainingVncFiniteResult = isClassicalNahuatlRestrictedContainingVncFiniteResult;
+    api.getClassicalNahuatlImperfectiveVncReloadInputs = getClassicalNahuatlImperfectiveVncReloadInputs;
     api.isClassicalNahuatlImperfectiveVncFiniteResult = isClassicalNahuatlImperfectiveVncFiniteResult;
     api.isClassicalNahuatlImperfectiveTransitiveVncMachineryFrame = isClassicalNahuatlImperfectiveTransitiveVncMachineryFrame;
     api.isClassicalNahuatlImperfectiveVncApplicationFrame = isClassicalNahuatlImperfectiveVncApplicationFrame;

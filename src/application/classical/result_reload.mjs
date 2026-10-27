@@ -1,3 +1,8 @@
+import {exportImperfectiveReloadNode,replayImperfectiveReloadNode} from "./reload_imperfective.mjs";
+import {exportFormedReloadNode,replayFormedReloadNode} from "./reload_formed.mjs";
+import {exportNameReloadNode,replayNameReloadNode} from "./reload_names.mjs";
+import {exportConstructedReloadNode,replayConstructedReloadNode} from "./reload_constructed.mjs";
+import {exportComparisonReloadNode,replayComparisonReloadNode} from "./reload_comparison.mjs";
 import {exportNominalCompoundReloadNode, replayNominalCompoundReloadNode, supportsNominalCompoundResultReload} from "./reload_nominal_compound.mjs?nominalReload=20261024-4";
 export {supportsNominalCompoundResultReload};
 import {exportNncContextReloadNode, replayNncContextReloadNode, isNncReloadEvidence} from "./reload_nnc_context.mjs";
@@ -129,10 +134,15 @@ export function exportClassicalResultReloadRecipe(r, roots = {}, normalizePrimit
     let node = primitiveNnc ? {type:"nnc:ordinary",source:pick(value.sourceFrame,SOURCE_KEYS),
       choices:{...pick(value.operationFrame,NNC_KEYS),animacy:value.operationFrame.referentialAnimacy,
         humanness:value.operationFrame.referentialHumanness}}
-      : exportDeverbalReloadNode(r,value,child=>visit(child,depth+1))
+      : exportFormedReloadNode(r,value,child=>visit(child,depth+1))
+      ?? exportImperfectiveReloadNode(r,value)
+      ?? exportNameReloadNode(r,value,child=>visit(child,depth+1))
+      ?? exportComparisonReloadNode(r,value,child=>visit(child,depth+1))
+      ?? exportDeverbalReloadNode(r,value,child=>visit(child,depth+1))
       ?? exportNominalCompoundReloadNode(r,value,child=>visit(child,depth+1))
       ?? exportNncContextReloadNode(r,value,child=>visit(child,depth+1))
-      ?? exportClauseContextReloadNode(r,value,child=>visit(child,depth+1));
+      ?? exportClauseContextReloadNode(r,value,child=>visit(child,depth+1))
+      ?? exportConstructedReloadNode(r,value,child=>visit(child,depth+1));
     const vnc = r.exportClassicalNahuatlVncApplicationRecipe?.(value);
     if (node) {}
     else if (futureObjectReloadStep(r,value)) node = {type: "vnc:future-object",
@@ -227,10 +237,14 @@ export function replayClassicalResultReloadRecipe(r, recipe) {
   const prior = id => Number.isInteger(id) && id >= 0 && id < results.length ? results[id] : null;
   try {
     for (const node of recipe.nodes) {
-      let result = replayDeverbalReloadNode(r,node,prior);
+      let result = replayImperfectiveReloadNode(r,node) ?? replayFormedReloadNode(r,node,prior);
+      if (result === undefined) result = replayNameReloadNode(r,node,prior);
+      if (result === undefined) result = replayComparisonReloadNode(r,node,prior);
+      if (result === undefined) result = replayDeverbalReloadNode(r,node,prior);
       if (result === undefined) result = replayNominalCompoundReloadNode(r,node,prior);
       if (result === undefined) result = replayNncContextReloadNode(r,node,prior);
       if (result === undefined) result = replayClauseContextReloadNode(r,node,prior);
+      if (result === undefined) result = replayConstructedReloadNode(r,node,prior);
       if (result !== undefined) { if (!result) return null; }
       else if (node?.type === "vnc:future-object" && exact(node,["type","source","step"])
         && prior(node.source) && node.step?.operationId === "vnc:derivational-operation"

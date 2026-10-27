@@ -1,3 +1,4 @@
+import {snapshotGrammarInputs} from "../../input_snapshot.mjs";
 // Canonical modern ESM module.
 
 export function createPlaceGentilicNncApi(targetObject = globalThis, installationContext = null) {
@@ -2210,6 +2211,7 @@ export function createPlaceGentilicNncApi(targetObject = globalThis, installatio
         callerSuppliedLexicalizationAccepted: false
       });
     }
+    const placeReloadInputs=new WeakMap();
     function evaluatePlaceGentilicNnc(request = {}) {
       const hostileAuthorityRequest = hasPlaceGentilicNncExactResultField(request) || Object.hasOwn(request, "canonicalNominalSourceFrame")
         ? Object.fromEntries(Object.entries(request).filter(
@@ -2407,6 +2409,7 @@ export function createPlaceGentilicNncApi(targetObject = globalThis, installatio
       };
       const frozenFrame = Object.freeze(frame);
       issuedPlaceGentilicNncFrames.add(frozenFrame);
+      if(frozenFrame.authorizationStatus === "authorized")placeReloadInputs.set(frozenFrame,snapshotGrammarInputs(request,new Set([request.canonicalNncResult,request.canonicalVncResult,request.canonicalNominalSourceFrame].filter(Boolean))));
       return frozenFrame;
     }
     function isPlaceGentilicNncFrame(frame = null) {
@@ -2735,6 +2738,7 @@ export function createPlaceGentilicNncApi(targetObject = globalThis, installatio
     api.realizePlaceGentilicNncPlaceStem = realizePlaceGentilicNncPlaceStem;
     api.realizePlaceGentilicNncGentilicStem = realizePlaceGentilicNncGentilicStem;
     api.buildPlaceGentilicNncAgreementFrame = buildPlaceGentilicNncAgreementFrame;
+    api.getClassicalNahuatlPlaceReloadInputs = frame => placeReloadInputs.get(frame) || null;
     api.evaluatePlaceGentilicNnc = evaluatePlaceGentilicNnc;
     api.isPlaceGentilicNncFrame = isPlaceGentilicNncFrame;
     api.buildPlaceGentilicNncParadigmPlan = buildPlaceGentilicNncParadigmPlan;
