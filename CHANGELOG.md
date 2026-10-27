@@ -1,5 +1,10 @@
 ## 1.2.79 — Clear Choices and Andrews References
 
+## v1.2.80 — Consistent Source Navigation
+
+- Source addresses now replace the Source editor consistently, without changing accepted Results or making new ones.
+
+
 Completes the same semantic-role presentation in existing Clause details: Capture, Clear, and captured-input headings follow the selected construction's current input names. Grammar and execution remain unchanged.
 
 ## 1.2.78 — Clear Choices and Andrews References
