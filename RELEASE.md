@@ -1,13 +1,13 @@
-# Grammar OS v1.2.89 release
+# Grammar OS v1.2.90 release
 
-Release name: **Coordinated Similarity Choices**
+Release name: **Coordinated Comparative Choices**
 
-Browser build: **20261028-similarity-pilot-108**
+Browser build: **20261028-comparative-pilot-109**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Principal iuhqui similarity now uses the existing owner-backed construction-session contract.
-- Modifier and in selections stay coordinated while the īc dimension is omitted, required, removed or restored.
-- Preview and explicit Make use the same current request, preserving accepted work during staging. This adds one operation to the verified equality pilot.
+- Comparative tāchcāuh/huālcah choices now use the shared owner-backed construction-session contract.
+- Clearing a required comparison anchor preserves pending choices and permits restoring its original saved Result without executing automatically.
+- Independent negative-standard and comparison-point links stay coordinated through preview and explicit Make.

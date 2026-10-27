@@ -1,4 +1,4 @@
-import {issueComparisonOperationSnapshot,transitionComparisonOperationSnapshot,readComparisonOperationSelections,isCurrentComparisonOperationSnapshot} from '../composition/comparison_operation_transaction.mjs?operationPilot=20261027-1&similarityPilot=20261028-1';
+import {issueComparisonOperationSnapshot,transitionComparisonOperationSnapshot,readComparisonOperationSelections,isCurrentComparisonOperationSnapshot} from '../composition/comparison_operation_transaction.mjs?operationPilot=20261027-1&similarityPilot=20261028-1&comparativePilot=20261028-5';
 import {inactiveAffectiveReloadControl,prepareNativeReloadSourceContext,reconcileAcceptedQuotedSourceBaseline} from '../composition/native_reload_source.mjs?nativeReload=20261027-4';
 import {normalizeSourceEditorSignature} from '../composition/source_editor_signature.mjs';
 import {inputLabel,captureRoleLabel,clauseReadinessGuidance,contractReferences,normalizeAndrewsReference,hasCurrentClauseProjection} from '../composition/choice_guidance.mjs?choiceGuidance=20261027-3';
@@ -43743,12 +43743,17 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const clauseOwner = binding?.family === "clause-relation" ? binding.ownerBindingFrame : null;
       const clauseInput = clauseOwner?.bindingChoices?.find(choice => choice.id === binding.selectedBindingId);
       const clauseController = clauseOwner ? getClassicalClauseRelationControllerForRendering() : null;
+      const pendingComparison = getClassicalComparisonOperationSnapshot();
+      const missingComparisonAnchor = clauseInput && pendingComparison?.controller === clauseController
+        && pendingComparison.source === source && isCurrentComparisonOperationSnapshot(pendingComparison)
+        && !clauseController.getCapturedCanonicalResult(clauseInput.captureRole)
+        && pendingComparison.contract.missingCaptureRoles.includes(clauseInput.captureRole);
       const clauseContract = clauseInput
         && targetObject.isClassicalClauseRelationBindingFrame?.(clauseOwner) === true
         && clauseOwner.authorizationStatus === "authorized"
         && clauseOwner.operationId === operation && clauseOwner.exactResult === source
         && binding.exactResult === source
-        && clauseController?.getCapturedCanonicalResult(clauseInput.captureRole) === source
+        && (clauseController?.getCapturedCanonicalResult(clauseInput.captureRole) === source || missingComparisonAnchor)
         ? readClassicalClauseContract(clauseController) : null;
       // An incomplete tuple still has owner-normalized choices. Observe them
       // without manufacturing an executable packet or an accepted Result.
@@ -54432,7 +54437,16 @@ export function createUiRenderingApi(targetObject = globalThis) {
 
     function canClassicalSavedResultFillBinding(binding, exactResult) {
       const role = binding?.requiredResultRoles?.[0];
-      if (!role || !exactResult || exactResult === binding.exactResult) return false;
+      if (!role || !exactResult) return false;
+      if (exactResult === binding.exactResult) {
+        const snapshot = getClassicalComparisonOperationSnapshot();
+        const anchor = binding.ownerBindingFrame?.bindingChoices?.find(choice => choice.id === binding.selectedBindingId);
+        if (binding.family !== "clause-relation" || binding.operationId !== "clause:comparison"
+          || anchor?.captureRole !== role
+          || !snapshot || snapshot.source !== exactResult || !isCurrentComparisonOperationSnapshot(snapshot)
+          || snapshot.controller.getCapturedCanonicalResult(role)
+          || !snapshot.contract.missingCaptureRoles.includes(role)) return false;
+      }
       if (binding.family === "formation" && binding.operationId === "nnc:adverbial") {
         return Boolean(getClassicalAdverbialMatrixCandidateBinding(binding, exactResult));
       }
@@ -54910,7 +54924,6 @@ export function createUiRenderingApi(targetObject = globalThis) {
           const exactResult = capture?.canonicalResult || null;
           if (
             !exactResult
-            || exactResult === binding.exactResult
             || seenResults.has(exactResult)
           ) return null;
           if (!canClassicalSavedResultFillBinding(binding, exactResult)) return null;
@@ -55034,6 +55047,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         !binding
         || !capture?.canonicalResult
         || binding.exactResult === capture.canonicalResult
+          && !canClassicalSavedResultFillBinding(binding, capture.canonicalResult)
       ) return false;
       const exactAdditionalResult = capture.canonicalResult;
       const status = targetObject.document?.getElementById?.(
