@@ -1,3 +1,7 @@
+## 1.2.65 — Current Sentence Choices
+
+Sentence-dependent alternatives now use canonical domains and retain compatible explicit intent. Rumor fusion and particle honorific transitions recover their valid choices without changing the accepted Result while staging.
+
 # Version History
 
 ## v1.2.64 — Current Participant Domains

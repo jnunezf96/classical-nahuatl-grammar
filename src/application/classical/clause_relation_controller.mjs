@@ -1454,6 +1454,27 @@ export function createClassicalClauseRelationControllerGlobals(
       return Object.freeze({handled:true,authorizationStatus:"authorized",selections:Object.freeze(next),contract:buildDecisionContract(next)});
     }
 
+    function transitionSentenceChoice({selections={},expectedFrame=null,intent={}}={}) {
+      const current=["rumored-report","deleted-principal"].includes(selections.relation);
+      if(!current && !["rumored-report","deleted-principal"].includes(expectedFrame?.familyId)) return Object.freeze({handled:false});
+      const blocked=reason=>Object.freeze({handled:true,authorizationStatus:"blocked",blockReason:reason,selections,contract:buildDecisionContract(selections)});
+      if(!current || !isCurrentChoiceFrame(expectedFrame,selections)) return blocked("sentence-choice-stale-frame");
+      const next={...selections};
+      if(intent.type === "set-choice") {
+        if(!expectedFrame.decisions.some(d=>(d.key || (d.id === "rumor-mach" ? "mach" : d.id.replace(/-([a-z])/gu,(_,letter)=>letter.toUpperCase()))) === intent.key)) return blocked("sentence-choice-field-not-licensed");
+        if(intent.value) next[intent.key]=String(intent.value).trim(); else delete next[intent.key];
+      } else if(intent.type === "clear-capture" || intent.type === "capture") {
+        if(!CAPTURE_ROLES.includes(intent.role)) return blocked("sentence-choice-capture-role-not-licensed");
+        if(intent.type === "clear-capture") clearCapture(intent.role);
+        else {
+          const capture=captureCurrentResult(intent.role,intent.result,intent.context);
+          if(capture.authorizationStatus !== "authorized") return blocked(capture.blockReason);
+        }
+      } else return blocked("sentence-choice-intent-not-recognized");
+      choiceRevision += 1;
+      return Object.freeze({handled:true,authorizationStatus:"authorized",selections:Object.freeze(next),contract:buildDecisionContract(next)});
+    }
+
     function validateRole(role = "") {
       const normalizedRole = normalizeToken(role);
       return CAPTURE_ROLES.includes(normalizedRole) ? normalizedRole : "";
@@ -3202,11 +3223,7 @@ export function createClassicalClauseRelationControllerGlobals(
           }
           operationSelections.fuseQuilMach = selectedFusion;
         } else {
-          if (requestedFusion && requestedFusion !== "separate") {
-            diagnostics.push(
-              "classical-rumored-report-fusion-requires-mach",
-            );
-          }
+          // Retain inactive draft fusion, but submit only the separate boundary without mach.
           operationSelections.fuseQuilMach = "separate";
         }
       } else if (relation === "deleted-principal") {
@@ -4958,6 +4975,15 @@ export function createClassicalClauseRelationControllerGlobals(
         issuedChoiceFrames.set(currentChoiceFrame,{captureRevision,choiceRevision,signature:choiceSignature(selections)});
         contract=Object.freeze({...contract,currentChoiceFrame});
       }
+      if (["rumored-report","deleted-principal"].includes(contract.relation)) {
+        const currentChoiceFrame=buildCurrentChoiceFrame({familyId:contract.relation,routeId:contract.relation,
+          captureRevision,stagedRevision:choiceRevision,decisions:contract.decisions.filter(d=>d.id!=="relation"),
+          inputs:CAPTURE_ROLES.map(role=>({role,presence:getValidatedCapture(role)?"captured":"missing",applicability:[...(contract.derived?.requiredCaptureRoles||[]),...(contract.derived?.optionalCaptureRoles||[])].includes(role)?"relevant":"inactive",required:(contract.derived?.requiredCaptureRoles||[]).includes(role)})),
+          facts:contract.derived,outcome:{readyToMake:contract.authorizationStatus==="authorized",reasons:contract.diagnostics},
+          provenance:{owner:"supplementation",sourceReferences:["Andrews §§19.3–19.6"]}});
+        issuedChoiceFrames.set(currentChoiceFrame,{captureRevision,choiceRevision,signature:choiceSignature(selections)});
+        contract=Object.freeze({...contract,currentChoiceFrame});
+      }
       return contract;
     }
 
@@ -6181,6 +6207,7 @@ export function createClassicalClauseRelationControllerGlobals(
       buildDecisionContract,
       transitionComparisonChoice,
       transitionConjunctionChoice,
+      transitionSentenceChoice,
       preserveComparisonCaptureChoices(selections, role) {
         const contract = buildDecisionContract(selections);
         return contract.relation === "comparison" && (contract.currentChoiceFrame

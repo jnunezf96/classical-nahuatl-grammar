@@ -5464,6 +5464,88 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
       }
       return false;
     }
+    function firstSentenceChoice(value, values, fallback) { return values.includes(value) ? value : values.includes(fallback) ? fallback : values[0] || ""; }
+    function getClassicalNahuatlSentenceModifierChoiceContract({mood="",tense="",introductoryParticle=""}={}) {
+      const prefaces = mood === "optative" ? ["", "ihyo", "ye"].filter(particle => isClassicalNahuatlPrefaceParticleAuthorized({particle,introductoryParticle})) : [""];
+      const modifiers = mood === "optative" ? ["", "cuēl", "ye-cuēl", "cuēl-eh", "ye-cuēl-eh", "cuēl-yeh", "ye-cuēl-yeh", "tēl", "quin"].filter(modifier => isClassicalNahuatlIntroductoryModifierAuthorized({modifier,introductoryParticle,tense})) : [""];
+      return {prefaceParticleValues:prefaces.map(value=>value||"none"),prefaceParticleFallback:"none",introductoryModifierValues:modifiers.map(value=>value||"none"),introductoryModifierFallback:"none"};
+    }
+    function getClassicalNahuatlSentenceChoiceContract(options = {}) {
+      const mood = String(options.mood || "indicative");
+      const tense = String(options.tense || (mood === "indicative" ? "present" : "nonpast"));
+      const subject = String(options.subject || "1sg").trim();
+      const secondPersonSubject = /^2/u.test(subject);
+      if (mood === "optative") {
+        const nonpastSecondPersonCommand = tense === "nonpast" && secondPersonSubject;
+        const preteritOptativeBorrowedForm = tense === "preterit";
+        const introductoryParticleValues = nonpastSecondPersonCommand ? ["none", "mā", "tlā", "in-tlā"] : ["mā", "tlā", "in-tlā"];
+        const introductoryParticleFallback = nonpastSecondPersonCommand ? "none" : "mā";
+        const selectedIntroductoryParticle = firstSentenceChoice(normalizeClassicalNahuatlIntroductoryParticle(options.introductoryParticle || options.introParticle || ""), introductoryParticleValues, introductoryParticleFallback);
+        const modifierContract = getClassicalNahuatlSentenceModifierChoiceContract({
+          mood,
+          tense,
+          introductoryParticle: selectedIntroductoryParticle
+        });
+        return {
+          mood,
+          tenseValues: targetObject.getClassicalNahuatlVncParadigmTensesForMood("optative"),
+          tenseFallback: "nonpast",
+          introductoryParticleValues,
+          introductoryParticleFallback,
+          prefaceParticleValues: modifierContract.prefaceParticleValues,
+          prefaceParticleFallback: modifierContract.prefaceParticleFallback,
+          introductoryModifierValues: modifierContract.introductoryModifierValues,
+          introductoryModifierFallback: modifierContract.introductoryModifierFallback,
+          prefixStackValues: preteritOptativeBorrowedForm ? ["antecessive"] : tense === "past" ? ["none", "antecessive"] : ["none"],
+          prefixStackFallback: preteritOptativeBorrowedForm ? "antecessive" : "none",
+          sentenceSurfaceValues: ["statement", "question", "exclamation"],
+          sentenceSurfaceFallback: "statement",
+          polarityValues: ["positive", "negative"],
+          polarityFallback: "positive",
+          canvasRule: tense === "future" ? "canvas-lesson9-future-optative-borrows-future-indicative-form-by-use" : preteritOptativeBorrowedForm ? "canvas-lesson9-preterit-optative-borrows-preterit-indicative-form-with-obligatory-antecessive" : nonpastSecondPersonCommand ? "canvas-lesson9-second-person-nonpast-optative-may-omit-introductory-particle" : "canvas-lesson9-optative-requires-ma-or-tla-outside-vnc"
+        };
+      }
+      if (mood === "admonitive") {
+        const polarity = (options.negative === true ? "negative" : options.polarityMode || options.polarity || options.sentenceNegativeMode || options.negativeMode || "positive");
+        const negative = polarity === "negative";
+        return {
+          mood,
+          tenseValues: targetObject.getClassicalNahuatlVncParadigmTensesForMood("admonitive"),
+          tenseFallback: "nonpast",
+          introductoryParticleValues: ["mā"],
+          introductoryParticleFallback: "mā",
+          prefaceParticleValues: ["none"],
+          prefaceParticleFallback: "none",
+          introductoryModifierValues: negative ? ["nēn"] : ["none", "nēn"],
+          introductoryModifierFallback: negative ? "nēn" : "none",
+          prefixStackValues: ["none"],
+          prefixStackFallback: "none",
+          sentenceSurfaceValues: ["statement", "question", "exclamation"],
+          sentenceSurfaceFallback: "statement",
+          polarityValues: ["positive", "negative"],
+          polarityFallback: "positive",
+          canvasRule: negative ? "canvas-lesson10-negative-admonition-requires-ma-nen-and-keeps-ah" : "canvas-admonitive-nonpast-ma-introduced-sentence-force"
+        };
+      }
+      return {
+        mood,
+        tenseValues: targetObject.getClassicalNahuatlVncParadigmTensesForMood("indicative"),
+        tenseFallback: "present",
+        introductoryParticleValues: ["none"],
+        introductoryParticleFallback: "none",
+        prefaceParticleValues: ["none"],
+        prefaceParticleFallback: "none",
+        introductoryModifierValues: ["none"],
+        introductoryModifierFallback: "none",
+        prefixStackValues: ["preterit", "distant-past", "distant-past-as-past", "imperfect", "past"].includes(tense) ? ["none", "antecessive"] : ["none"],
+        prefixStackFallback: "none",
+        sentenceSurfaceValues: ["statement", "question", "exclamation"],
+        sentenceSurfaceFallback: "statement",
+        polarityValues: ["positive", "negative"],
+        polarityFallback: "positive",
+        canvasRule: "canvas-indicative-does-not-use-lesson9-introductory-particle"
+      };
+    }
     function isClassicalNahuatlNenAuthorized({
       modifier = "",
       negative = false
@@ -8610,6 +8692,8 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
     api.getClassicalNahuatlAdmonitionSentenceRules = getClassicalNahuatlAdmonitionSentenceRules;
     api.normalizeClassicalNahuatlQuestionMode = normalizeClassicalNahuatlQuestionMode;
     api.getClassicalNahuatlSentenceHostileFormulaSlots = getClassicalNahuatlSentenceHostileFormulaSlots;
+    api.getClassicalNahuatlSentenceChoiceContract = getClassicalNahuatlSentenceChoiceContract;
+    api.getClassicalNahuatlSentenceModifierChoiceContract = getClassicalNahuatlSentenceModifierChoiceContract;
     api.buildClassicalNahuatlSentencePrefixalStack = buildClassicalNahuatlSentencePrefixalStack;
     api.getClassicalNahuatlPriorVncFrame = getClassicalNahuatlPriorVncFrame;
     api.buildClassicalNahuatlVerbstemLogicProofFrame = buildClassicalNahuatlVerbstemLogicProofFrame;

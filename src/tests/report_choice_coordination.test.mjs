@@ -1,0 +1,40 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {createRuntimeInstance} from '../runtime/create_runtime.mjs';
+const r=(await createRuntimeInstance({documentObject:{getElementById:()=>null,addEventListener(){}}})).runtimeObject;
+test('rumor fusion is inactive with absent mach and returns with mach without a hidden blocking choice',()=>{
+ const c=r.createClassicalClauseRelationController();
+ const s={relation:'rumored-report',mach:'present',fuseQuilMach:'fused',reportAdjunctor:'in'};
+ const first=c.buildDecisionContract(s);
+ assert(first.currentChoiceFrame);
+ const next=c.transitionSentenceChoice({selections:s,expectedFrame:first.currentChoiceFrame,intent:{type:'set-choice',key:'mach',value:'absent'}});
+ assert.equal(next.authorizationStatus,'authorized');
+ assert.equal(next.selections.fuseQuilMach,'fused');
+ assert.equal(next.contract.operationSelections.fuseQuilMach,'separate');
+ assert(!next.contract.diagnostics.includes('classical-rumored-report-fusion-requires-mach'));
+ const back=c.transitionSentenceChoice({selections:next.selections,expectedFrame:next.contract.currentChoiceFrame,intent:{type:'set-choice',key:'mach',value:'present'}});
+ assert.equal(back.contract.operationSelections.fuseQuilMach,'fused');
+ assert.equal(c.transitionSentenceChoice({selections:back.selections,expectedFrame:{...back.contract.currentChoiceFrame},intent:{type:'set-choice',key:'mach',value:'absent'}}).authorizationStatus,'blocked');
+ assert.equal(c.transitionSentenceChoice({selections:back.selections,expectedFrame:first.currentChoiceFrame,intent:{type:'set-choice',key:'mach',value:'absent'}}).authorizationStatus,'blocked');
+});
+test('deleted-principal frame remains capture-gated and rejects a copied transition frame',()=>{
+ const c=r.createClassicalClauseRelationController(),s={relation:'deleted-principal'};
+ const contract=c.buildDecisionContract(s),frame=contract.currentChoiceFrame;
+ assert(frame);assert.equal(frame.outcome.readyToMake,false);
+ assert(frame.inputs.find(i=>i.role==='principal').required);
+ assert.equal(c.transitionSentenceChoice({selections:s,expectedFrame:{...frame},intent:{type:'clear-capture',role:'principal'}}).authorizationStatus,'blocked');
+ const next=c.transitionSentenceChoice({selections:s,expectedFrame:frame,intent:{type:'clear-capture',role:'principal'}});
+ assert.equal(next.authorizationStatus,'authorized');assert.equal(next.contract.authorizationStatus,'blocked');
+});
+test('the same owner-issued quil and reported VNC make absent and restored fused reports; copied inputs rejected',()=>{
+ const issue=(sourceStem,options={})=>r.executeClassicalGrammarApplicationRequest({operationId:'vnc:application',args:[{sourceStem,verbClass:'A',sourceValence:'intransitive',subject:'3sg',mood:'indicative',tense:'present',requestedDerivation:'direct',requestedVoice:'active',...options}]}).canonicalResult;
+ const quil=issue('il',{sourceInitialISelection:'real',sourceValence:'specific-projective',objectKind:'specific-projective',objectPerson:'3sg',tense:'preterit'}),reported=issue('chōca');
+ const c=r.createClassicalClauseRelationController();assert.equal(c.captureCurrentResult('principal',quil).authorizationStatus,'authorized');assert.equal(c.captureCurrentResult('adjoined',reported).authorizationStatus,'authorized');
+ let selections={relation:'rumored-report',mach:'present',fuseQuilMach:'fused',reportAdjunctor:'in'};
+ let contract=c.buildDecisionContract(selections);assert.equal(contract.authorizationStatus,'authorized');
+ let next=c.transitionSentenceChoice({selections,expectedFrame:contract.currentChoiceFrame,intent:{type:'set-choice',key:'mach',value:'absent'}});selections=next.selections;
+ assert.equal(c.compose(selections).authorizationStatus,'authorized');
+ next=c.transitionSentenceChoice({selections,expectedFrame:c.buildDecisionContract(selections).currentChoiceFrame,intent:{type:'set-choice',key:'mach',value:'present'}});
+ assert.equal(c.compose(next.selections).authorizationStatus,'authorized');
+ const hostile=r.createClassicalClauseRelationController();assert.notEqual(hostile.captureCurrentResult('principal',{...quil}).authorizationStatus,'authorized');
+});

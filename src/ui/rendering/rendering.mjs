@@ -1,3 +1,4 @@
+import {createSentenceChoiceCoordinator,createParticleHonorificChoiceCoordinator} from '../../application/classical/sentence_choice_coordination.mjs?sentenceChoices=20261026-1';
 import {resolveVncSourceClassChoice,resolveNncSourceClassValues,resolveIrregularSourceAlternatives,resolvePersonalNameSourceChoice,resolveCoarseNominalSourceFacts,resolveNncSourceChoiceDomain,resolveIrregularSourceRequest} from "../../application/classical/source_choice_coordination.mjs?sourceChoices=20261026-1";
 import {createOrganicPossessionStateCoordinator} from "../../application/classical/organic_possession_choice_coordination.mjs?organicChoices=20261026-1";
 import {createNominalEmbedVoiceChoiceCoordinator} from "../../application/classical/nominal_embed_voice_choice_coordination.mjs?participantChoices=20261026-1";
@@ -271,6 +272,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
     var ActiveClassicalLexicalizedPresentNncSource = null;
     var ActiveClassicalCapabilityCommittedTypedSource = null;
     var ActiveClassicalCapabilityCommittedTypedSourceSignature = "";
+    var ClassicalParticleHonorificSourceSession = null;
     var ActiveClassicalTypedSourceCapabilitySelection = null;
     const ClassicalCapabilityExactVncApplicationFrame = Symbol(
       "classical-capability-exact-vnc-application-frame"
@@ -639,7 +641,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         .buildClassicalNahuatlParticleHonorificSourceFrame?.({ particleSourceFrame });
       return formationSource?.authorizationStatus === "authorized";
     }
-    function syncClassicalSelectedParticleHonorificAvailability() {
+    function syncClassicalSelectedParticleHonorificAvailability(editedControl = null) {
       const control = targetObject.document?.getElementById?.('classical-rule-logic-sentence-particle-honorific');
       if (!control) return;
       // Reuse the full projector's owner gate on the current draft. Refresh only
@@ -648,7 +650,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const pureDeverbalNnc = getClassicalNominalConstructionControlValue('classical-construction-operation', '') === 'deverbal-nnc'
         && ['patientive', 'deverbal-action'].includes(getClassicalNominalConstructionControlValue('classical-deverbal-nnc-family', ''));
       const available = !pureDeverbalNnc && isClassicalSentenceParticleHonorificAvailable(state.requestedSentenceParticleId);
-      projectClassicalParticleHonorificAvailability(control, available, state.requestedSentenceParticleHonorificized);
+      const binding=ActiveClassicalGrammarResultBinding?.family === "vnc-continuation"
+        ? ActiveClassicalGrammarResultBinding.ownerBindingFrame : getActiveClassicalGrammarTypedSourceOperationBinding();
+      const coordinated=ClassicalParticleHonorificChoices.select({binding,session:getClassicalParticleHonorificSourceSession(binding),particleId:state.requestedSentenceParticleId,
+        requested:control.checked,explicit:editedControl===control && control.disabled!==true});
+      projectClassicalParticleHonorificAvailability(control, available, binding ? coordinated.selected : state.requestedSentenceParticleHonorificized);
       const field = control.closest('.classical-rule-control');
       for (const selector of ['[data-classical-vnc-authority-control-group]', '[data-classical-vnc-authority-disclosure]']) {
         const group = field?.closest?.(selector);
@@ -869,6 +875,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       ActiveClassicalCapabilityContinuedTypedSource = null;
       ActiveClassicalCapabilityCommittedTypedSource = null;
       ActiveClassicalCapabilityCommittedTypedSourceSignature = "";
+      ClassicalParticleHonorificSourceSession = null;
       removeClassicalVncResultSourceDynamicOptions();
       ClassicalVncResultSourceControlSnapshots.forEach(
         (snapshot, control) => {
@@ -954,6 +961,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       // A committed replacement Source withdraws the prior composition answer.
       // Controller captures remain available; editing a draft alone does not.
       if (reason === "typed-source-committed") {
+        ClassicalParticleHonorificSourceSession = null;
         ActiveClassicalClauseRelationResult = null;
         ClassicalClauseRelationStatusMessage = "";
       }
@@ -1878,22 +1886,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
     function normalizeClassicalRuleLogicSurfaceIntroductoryModifier(value = "") {
       return normalizeClassicalNahuatlIntroductoryModifier(value) || "none";
     }
-    function getClassicalRuleLogicSentenceModifierContract({
-      mood = "",
-      tense = "",
-      introductoryParticle = ""
-    } = {}) {
-      const optative = mood === "optative";
-      const hasIntroductoryParticle = ["mā", "tlā", "in-tlā"].includes(introductoryParticle);
-      const prefaceParticleValues = optative && hasIntroductoryParticle ? ["none", "ihyo", ...(introductoryParticle === "tlā" ? ["ye"] : [])] : ["none"];
-      const urgentWishModifiers = optative && hasIntroductoryParticle ? ["cuēl", "ye-cuēl", "cuēl-eh", "ye-cuēl-eh", "cuēl-yeh", "ye-cuēl-yeh"] : [];
-      const commandModifiers = optative && introductoryParticle === "mā" ? ["tēl", ...(tense === "future" ? ["quin"] : [])] : [];
-      return {
-        prefaceParticleValues,
-        prefaceParticleFallback: "none",
-        introductoryModifierValues: ["none", ...urgentWishModifiers, ...commandModifiers],
-        introductoryModifierFallback: "none"
-      };
+    function getClassicalRuleLogicSentenceModifierContract(options = {}) {
+      return targetObject.getClassicalNahuatlSentenceModifierChoiceContract(options);
     }
     function getClassicalRuleLogicSurfaceSentenceOptions(sentenceMode = "", sentenceNegativeMode = "") {
       const negative = normalizeClassicalRuleLogicSurfaceSentenceNegativeMode(sentenceNegativeMode) === "negative";
@@ -1932,82 +1926,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
       return state?.basalUnit === "vnc" && isClassicalRuleLogicAntecessivePrefixTenseAuthorized(state);
     }
     function getClassicalRuleLogicMoodBoundOptionContract(options = {}) {
-      const mood = normalizeClassicalRuleLogicSurfaceMood(options.mood || "", "indicative");
-      const tense = normalizeClassicalRuleLogicSurfaceTense(options.tense || "", mood === "indicative" ? "present" : "nonpast");
-      const subject = String(options.subject || "1sg").trim();
-      const secondPersonSubject = /^2/u.test(subject);
-      if (mood === "optative") {
-        const nonpastSecondPersonCommand = tense === "nonpast" && secondPersonSubject;
-        const preteritOptativeBorrowedForm = tense === "preterit";
-        const introductoryParticleValues = nonpastSecondPersonCommand ? ["none", "mā", "tlā", "in-tlā"] : ["mā", "tlā", "in-tlā"];
-        const introductoryParticleFallback = nonpastSecondPersonCommand ? "none" : "mā";
-        const selectedIntroductoryParticle = getClassicalRuleLogicFirstAllowedValue(normalizeClassicalRuleLogicSurfaceIntroductoryParticle(options.introductoryParticle || options.introParticle || ""), introductoryParticleValues, introductoryParticleFallback);
-        const modifierContract = getClassicalRuleLogicSentenceModifierContract({
-          mood,
-          tense,
-          introductoryParticle: selectedIntroductoryParticle
-        });
-        return {
-          mood,
-          tenseValues: getClassicalNahuatlVncParadigmTensesForMood("optative"),
-          tenseFallback: "nonpast",
-          introductoryParticleValues,
-          introductoryParticleFallback,
-          prefaceParticleValues: modifierContract.prefaceParticleValues,
-          prefaceParticleFallback: modifierContract.prefaceParticleFallback,
-          introductoryModifierValues: modifierContract.introductoryModifierValues,
-          introductoryModifierFallback: modifierContract.introductoryModifierFallback,
-          prefixStackValues: preteritOptativeBorrowedForm ? ["antecessive"] : tense === "past" ? ["none", "antecessive"] : ["none"],
-          prefixStackFallback: preteritOptativeBorrowedForm ? "antecessive" : "none",
-          sentenceSurfaceValues: ["statement", "question", "exclamation"],
-          sentenceSurfaceFallback: "statement",
-          polarityValues: ["positive", "negative"],
-          polarityFallback: "positive",
-          canvasRule: tense === "future" ? "canvas-lesson9-future-optative-borrows-future-indicative-form-by-use" : preteritOptativeBorrowedForm ? "canvas-lesson9-preterit-optative-borrows-preterit-indicative-form-with-obligatory-antecessive" : nonpastSecondPersonCommand ? "canvas-lesson9-second-person-nonpast-optative-may-omit-introductory-particle" : "canvas-lesson9-optative-requires-ma-or-tla-outside-vnc"
-        };
-      }
-      if (mood === "admonitive") {
-        const polarity = normalizeClassicalRuleLogicSurfaceSentenceNegativeMode(options.polarityMode || options.polarity || options.sentenceNegativeMode || options.negativeMode || "");
-        const negative = polarity === "negative";
-        return {
-          mood,
-          tenseValues: getClassicalNahuatlVncParadigmTensesForMood("admonitive"),
-          tenseFallback: "nonpast",
-          introductoryParticleValues: ["mā"],
-          introductoryParticleFallback: "mā",
-          prefaceParticleValues: ["none"],
-          prefaceParticleFallback: "none",
-          introductoryModifierValues: negative ? ["nēn"] : ["none", "nēn"],
-          introductoryModifierFallback: negative ? "nēn" : "none",
-          prefixStackValues: ["none"],
-          prefixStackFallback: "none",
-          sentenceSurfaceValues: ["statement", "question", "exclamation"],
-          sentenceSurfaceFallback: "statement",
-          polarityValues: ["positive", "negative"],
-          polarityFallback: "positive",
-          canvasRule: negative ? "canvas-lesson10-negative-admonition-requires-ma-nen-and-keeps-ah" : "canvas-admonitive-nonpast-ma-introduced-sentence-force"
-        };
-      }
-      return {
-        mood,
-        tenseValues: getClassicalNahuatlVncParadigmTensesForMood("indicative"),
-        tenseFallback: "present",
-        introductoryParticleValues: ["none"],
-        introductoryParticleFallback: "none",
-        prefaceParticleValues: ["none"],
-        prefaceParticleFallback: "none",
-        introductoryModifierValues: ["none"],
-        introductoryModifierFallback: "none",
-        prefixStackValues: isClassicalRuleLogicAntecessivePrefixTenseAuthorized({
-          tense
-        }) ? ["none", "antecessive"] : ["none"],
-        prefixStackFallback: "none",
-        sentenceSurfaceValues: ["statement", "question", "exclamation"],
-        sentenceSurfaceFallback: "statement",
-        polarityValues: ["positive", "negative"],
-        polarityFallback: "positive",
-        canvasRule: "canvas-indicative-does-not-use-lesson9-introductory-particle"
-      };
+      const mood=normalizeClassicalRuleLogicSurfaceMood(options.mood || "", "indicative");
+      return targetObject.getClassicalNahuatlSentenceChoiceContract({...options,mood,
+        tense:normalizeClassicalRuleLogicSurfaceTense(options.tense || "", mood === "indicative" ? "present" : "nonpast")});
     }
     function getClassicalRuleLogicFirstAllowedValue(value = "", allowedValues = [], fallback = "") {
       const normalizedValue = String(value || "").trim();
@@ -2835,7 +2756,12 @@ export function createUiRenderingApi(targetObject = globalThis) {
         : Object.prototype.hasOwnProperty.call(overrides, "sentenceParticleHonorific")
           ? overrides.sentenceParticleHonorific === true
           : targetObject.document?.getElementById?.("classical-rule-logic-sentence-particle-honorific")?.checked === true;
-      const requestedSentenceParticleHonorificized = rawRequestedSentenceParticleHonorificized
+      const honorificBinding=ActiveClassicalGrammarResultBinding?.family === "vnc-continuation"
+        ? ActiveClassicalGrammarResultBinding.ownerBindingFrame : getActiveClassicalGrammarTypedSourceOperationBinding();
+      const rememberedHonorific=!explicitSentenceParticleHonorificized && honorificBinding
+        ? ClassicalParticleHonorificChoices.select({binding:honorificBinding,session:getClassicalParticleHonorificSourceSession(honorificBinding),particleId:requestedSentenceParticleId,requested:rawRequestedSentenceParticleHonorificized}).selected
+        : rawRequestedSentenceParticleHonorificized;
+      const requestedSentenceParticleHonorificized = rememberedHonorific
         && (explicitSentenceParticleHonorificized || isClassicalSentenceParticleHonorificAvailable(requestedSentenceParticleId));
       const rawRequestedSentenceAdverbialId = String(particleCombinationShortcutEntry?.adverbialId || overrides.sentenceAdverbialId || overrides.sentenceAdverbial || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-sentence-adverbial", "none") || "none").trim();
       const requestedSentenceAdverbialId = rawRequestedSentenceAdverbialId === "none"
@@ -37791,7 +37717,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
       });
     }
     function applyClassicalComparisonChoiceIntent(controller, intent, expectedFrame = null) {
-      const conjunction = controller.transitionConjunctionChoice?.({selections:ClassicalClauseRelationSelections, expectedFrame, intent});
+      const sentence = controller.transitionSentenceChoice?.({selections:ClassicalClauseRelationSelections, expectedFrame, intent});
+      const conjunction = sentence?.handled ? sentence : controller.transitionConjunctionChoice?.({selections:ClassicalClauseRelationSelections, expectedFrame, intent});
       const transition = conjunction?.handled ? conjunction : controller.transitionComparisonChoice?.({selections:ClassicalClauseRelationSelections, expectedFrame, intent});
       if (!transition?.handled) return false;
       if (transition.authorizationStatus === "authorized") {
@@ -37799,7 +37726,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         ActiveClassicalClauseRelationResult = null;
         ClassicalClauseRelationStatusMessage = "Choices updated.";
       } else {
-        ClassicalClauseRelationStatusMessage = ["comparison-choice-stale-frame", "conjunction-choice-stale-frame"].includes(transition.blockReason)
+        ClassicalClauseRelationStatusMessage = ["comparison-choice-stale-frame", "conjunction-choice-stale-frame", "sentence-choice-stale-frame"].includes(transition.blockReason)
           ? "The inputs changed. Review the current choices and try again."
           : formatClassicalClauseRelationValue(transition.blockReason);
       }
@@ -41286,6 +41213,24 @@ export function createUiRenderingApi(targetObject = globalThis) {
     }
 
     const ClassicalOrdinaryNncChoiceMemory = new WeakMap();
+    const ClassicalSentenceChoices = createSentenceChoiceCoordinator(targetObject);
+    const ClassicalParticleHonorificChoices = createParticleHonorificChoiceCoordinator(targetObject);
+    function getClassicalParticleHonorificSourceSession(binding) {
+      if(targetObject.isClassicalGrammarTypedSourceOperationBindingFrame?.(binding)!==true)return null;
+      return ClassicalParticleHonorificSourceSession || (ClassicalParticleHonorificSourceSession=ClassicalParticleHonorificChoices.beginSession());
+    }
+    function coordinateClassicalSentenceChoices(previous,next,control,issue) {
+      const ids={"classical-rule-logic-introductory-particle":"introductoryParticle","classical-rule-logic-preface-particle":"prefaceParticle","classical-rule-logic-introductory-modifier":"introductoryModifier","classical-rule-logic-prefix-stack":"sentenceAntecessive"};
+      const choiceId=ids[control?.id] || "other";
+      const result=ClassicalSentenceChoices.handoff(previous,next,{choiceId,issue,
+        explicitValidated:!!control && control.isConnected!==false && control.disabled!==true
+          && (control.type==="checkbox" || Array.from(control.options||[]).some(option=>option.value===control.value&&!option.disabled&&!option.hidden))});
+      if(result!==next) for(const [id,key] of Object.entries(ids)) {
+        const field=targetObject.document?.getElementById?.(id),value=result.callerSelections?.sentenceOptions?.[key];
+        if(field) {if(key==="sentenceAntecessive")field.checked=value===true;else field.value=value||"none";}
+      }
+      return result;
+    }
     const ClassicalVncTenseChoices = createVncTenseCoordinator(targetObject);
     const ClassicalVncContinuationTenseChoices = createVncContinuationTenseCoordinator(targetObject);
     const ClassicalApplicativeChoices = createApplicativeChoiceCoordinator(targetObject);
@@ -47082,6 +47027,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
       event = null
     ) {
       if (event && HandledClassicalContinuationChoiceEvents.has(event)) return true;
+      if (ActiveClassicalGrammarResultBinding?.family === "vnc-continuation"
+        && ["classical-rule-logic-sentence-particle","classical-rule-logic-sentence-particle-honorific","classical-rule-logic-particle-combination"].includes(control?.id)) {
+        syncClassicalSelectedParticleHonorificAvailability(control);
+      }
       if (control?.id === "classical-rule-logic-nnc-source-use"
         && (control.value === "two-nucleus-nnc"
           || getClassicalNominalConstructionControlValue("classical-deverbal-nnc-family", "") === "double-nucleus-ownerhood")) {
@@ -47504,7 +47453,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         }
         if (["sentenceParticle", "sentenceParticleHonorific", "particleCombination"].some(choiceId =>
           getClassicalCapabilityBindingControlsForChoice(choiceId).includes(control))) {
-          syncClassicalSelectedParticleHonorificAvailability();
+          syncClassicalSelectedParticleHonorificAvailability(control);
         }
         if (String(control.id || "").startsWith("classical-rule-logic-vnc-subject-")
           && control.disabled !== true && !control.closest?.("[hidden]")) {
@@ -47628,6 +47577,14 @@ export function createUiRenderingApi(targetObject = globalThis) {
         let stagedVnc = stageClassicalGrammarTypedSourceOperationBinding(typedSourceBinding.operationId,
           applicativeStage?.selections || nextSelections);
         if (stagedVnc) {
+          const sentenceCoordinated=coordinateClassicalSentenceChoices(typedSourceBinding,stagedVnc,control,
+            selections=>targetObject.issueClassicalGrammarTypedSourceOperationBindingFrame(typedSourceBinding.navigator,typedSourceBinding.operationId,selections));
+          if(sentenceCoordinated!==stagedVnc) {
+            stagedVnc=sentenceCoordinated;ActiveClassicalGrammarTypedSourceOperationBinding=stagedVnc;
+            const signature=getClassicalTypedSourceSelectionSignature(stagedVnc.callerSelections);
+            if(signature!==null)ClassicalTypedSourceBindingSelectionSignatures.set(stagedVnc,signature);
+            syncClassicalGrammarTypedSourceOperationChoices(stagedVnc);
+          }
           const connectorChoice = editedChoiceIds.includes("finiteSingularConnector");
           const coordinated = ClassicalFiniteConnectorChoices.handoff(typedSourceBinding,stagedVnc,{
             choiceId:connectorChoice ? "finiteSingularConnector" : "other",
@@ -47653,6 +47610,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         if (editedChoiceIds.includes("subject") || editedChoiceIds.includes("objectInterpretation")) {
           syncClassicalObjectMeaningChoice(getClassicalRuleLogicSurfaceState({subject:nextSelections.subject}));
         }
+        if(editedChoiceIds.some(id=>["sentenceParticle","sentenceParticleHonorific","particleCombination"].includes(id))) syncClassicalSelectedParticleHonorificAvailability();
         syncClassicalCapabilityApplyOperationState();
         return true;
       }
@@ -47901,6 +47859,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       syncClassicalActiveResultBindingChoiceVisibility(
         ActiveClassicalGrammarResultBinding
       );
+      if(binding.family === "vnc-continuation" && ["classical-rule-logic-sentence-particle","classical-rule-logic-sentence-particle-honorific","classical-rule-logic-particle-combination"].includes(control.id)) syncClassicalSelectedParticleHonorificAvailability();
       if (binding.family === "vnc-continuation" && binding.operationId === "vnc:application"
         && (control.id === "classical-rule-logic-object-interpretation"
           || getClassicalCapabilityBindingControlsForChoice("subject").includes(control))) {
@@ -48398,6 +48357,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
           );
           if (voiceControl) voiceControl.value = requestedVoice;
         }
+        if(current.operationId==="vnc:application") nextFrame=coordinateClassicalSentenceChoices(current.ownerBindingFrame,nextFrame,editedControl,
+          selections=>targetObject.issueClassicalNahuatlVncContinuationBindingFrame(current.operationId,current.exactResult,selections,current.additionalResults||{}));
         const frame = targetObject
           .isClassicalNahuatlVncContinuationBindingFrame?.(nextFrame)
           ? nextFrame
@@ -49606,6 +49567,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       ) {
         ActiveClassicalCapabilityCommittedTypedSource = null;
         ActiveClassicalCapabilityCommittedTypedSourceSignature = "";
+      ClassicalParticleHonorificSourceSession = null;
         ActiveClassicalGrammarCapabilityNavigator = null;
         retainedCommittedTypedSourceSignature = "";
       }
