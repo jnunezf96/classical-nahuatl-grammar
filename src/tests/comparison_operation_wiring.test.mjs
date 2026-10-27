@@ -8,9 +8,9 @@ import {createRuntimeInstance} from '../runtime/create_runtime.mjs';
 const code=readFileSync(new URL('../ui/rendering/rendering.mjs',import.meta.url),'utf8');
 const r=(await createRuntimeInstance({documentObject:{getElementById:()=>null,addEventListener(){}}})).runtimeObject;
 function noun(stem){const s=r.buildClassicalNahuatlOrdinaryNncSourceFrame({stem,sourceClass:'zero'});return r.executeClassicalGrammarApplicationRequest({operationId:'nnc:ordinary',args:[s,r.buildClassicalNahuatlOrdinaryNncOperationFrame(s,{subject:'3sg',state:'absolutive'})]}).canonicalResult;}
-test('production pilot handler publishes session intent without writing legacy selections; reset ingress wins',()=>{
+for(const route of ['equality-iuhqui','similarity-iuhqui-principal']) test(`production ${route} handler publishes session intent without writing legacy selections; reset ingress wins`,()=>{
  const source=noun('canāhuac'),standard=noun('tomāhuac'),c=r.createClassicalClauseRelationController();c.captureCurrentResult('principal',source);c.captureCurrentResult('adjoined',standard);
- const legacy=Object.freeze({relation:'comparison',comparisonRoute:'equality-iuhqui'}),snapshot=adapter.issueComparisonOperationSnapshot(c,legacy,source);
+ const legacy=Object.freeze({relation:'comparison',comparisonRoute:route}),snapshot=adapter.issueComparisonOperationSnapshot(c,legacy,source);
  const session=createConstructionSession({isSource:x=>[source,standard].includes(x),isResult:()=>false});
  const proposal=s=>({source,route:{operation:'clause:comparison'},slots:s.captures,choices:s.selections,operationContract:s,ready:false});session.stage(proposal(snapshot));
  const ctx=vm.createContext({...adapter,ClassicalConstructionSession:session,ClassicalClauseRelationSelections:legacy,ClassicalComparisonTransitionDraft:null,ActiveClassicalGrammarCapabilityNavigator:{exactSource:source},ClassicalPositionExecuting:false,ClassicalPositionStaging:false,ActiveClassicalClauseRelationResult:null,ClassicalClauseRelationStatusMessage:'',getClassicalClauseRelationControllerForRendering:()=>c,refreshClassicalClauseRelationWorkflow:()=>session.stage(proposal(ctx.ClassicalComparisonTransitionDraft || session.position.operationContract))});

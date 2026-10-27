@@ -1,7 +1,7 @@
 // Non-authorizing coordination adapter. State lives only in construction position.
-export const COMPARISON_OPERATION_PILOT='equality-iuhqui';
+export const COMPARISON_OPERATION_ROUTES=Object.freeze(['equality-iuhqui','similarity-iuhqui-principal']);
 const issued=new WeakSet();
-const selected=s=>s?.relation==='comparison'&&s.comparisonRoute===COMPARISON_OPERATION_PILOT;
+const selected=s=>s?.relation==='comparison'&&COMPARISON_OPERATION_ROUTES.includes(s.comparisonRoute);
 export function issueComparisonOperationSnapshot(controller,selections,source,contract=null,prior=null,ingress=prior?.ingress || selections){
  if(!selected(selections))return null;
  const intent=Object.freeze({...selections});
@@ -9,7 +9,7 @@ export function issueComparisonOperationSnapshot(controller,selections,source,co
  if(!controller.isCurrentChoiceFrame(contract?.currentChoiceFrame,intent))return null;
  const captures=Object.freeze(['principal','adjoined','dependent'].map(role=>Object.freeze({role,exact:controller.getCapturedCanonicalResult(role)||null})));
  if(!captures.some(x=>x.exact===source)&&!(issued.has(prior)&&prior.source===source))return null;
- const snapshot=Object.freeze({kind:'comparison-operation-contract',routeId:COMPARISON_OPERATION_PILOT,controller,source,ingress,selections:intent,contract,captures});
+ const snapshot=Object.freeze({kind:'comparison-operation-contract',routeId:selections.comparisonRoute,controller,source,ingress,selections:intent,contract,captures});
  issued.add(snapshot);return snapshot;
 }
 export function isCurrentComparisonOperationSnapshot(snapshot){
