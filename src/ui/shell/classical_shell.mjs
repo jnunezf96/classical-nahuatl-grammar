@@ -5939,7 +5939,7 @@ ${steps}
           class="classical-grammar-workspace-history__actions"
           aria-label="Derivation history actions"
         >
-          <button type="button" id="classical-grammar-workspace-history-undo" disabled>Undo</button>
+          <button type="button" id="classical-grammar-workspace-history-undo" disabled title="Return to the previous accepted build; this does not undo pending choices.">Undo build</button>
           <button type="button" id="classical-grammar-workspace-history-fork" disabled>Fork</button>
           <button type="button" id="classical-grammar-workspace-history-continue" disabled>Continue</button>
           <button type="button" id="classical-grammar-workspace-history-supply" disabled>Add to pathway</button>

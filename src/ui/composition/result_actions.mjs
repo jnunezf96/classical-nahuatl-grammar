@@ -5,7 +5,7 @@ import {inventoryOptionReference} from './build_navigation_model.mjs?interfaceRe
 
 const ORDER_FIELD='clause-choice:sentence:supplementation:supplementation-order';
 const ACTIONS=['continue','change','add','reorder','remove','undo','clear'];
-const actionLabel=action=>action[0].toUpperCase()+action.slice(1);
+const actionLabel=action=>action==='undo'?'Undo build':action[0].toUpperCase()+action.slice(1);
 const text=(node,value)=>{if(node.textContent!==value)node.textContent=value;};
 const editAction=edit=>['reorder','remove'].includes(edit?.action)?edit.action
   : edit?.intent==='add'?'add':edit?.action||'';
@@ -88,7 +88,7 @@ export function createResultActions(doc,{selection,onSelect,onAction,onAdd,sched
   for(const action of ACTIONS){
     const button=doc.createElement('button');button.type='button';button.id=`classical-result-action-${action}`;
     button.textContent=actionLabel(action);button.dataset.inventoryFieldRef=`id:${button.id}`;
-    if(action==='undo')button.dataset.inventoryMirrorsFieldRef='id:classical-grammar-workspace-history-undo';
+    if(action==='undo'){button.dataset.inventoryMirrorsFieldRef='id:classical-grammar-workspace-history-undo';button.title='Return to the previous accepted build; this does not undo pending choices.';}
     if(action==='clear')button.dataset.inventoryMirrorsFieldRef='id:verb-entry-clear';
     button.addEventListener('click',()=>{
       const before=runtime.getClassicalConstructionPosition?.(),part=context();
@@ -166,7 +166,7 @@ export function createResultActions(doc,{selection,onSelect,onAction,onAdd,sched
       if(action==='continue')button.hidden=!available.continue;
       const enabled=Boolean(available[action]);
       if(button.disabled===enabled)button.disabled=!enabled;
-      const title=enabled?'':reasons[action];if(button.title!==title)button.title=title;
+      const title=enabled?(action==='undo'?'Return to the previous accepted build; this does not undo pending choices.':''):reasons[action];if(button.title!==title)button.title=title;
     }
     const unavailable=['change','add','reorder','remove'].filter(action=>!available[action]);
     const nextLimitsSignature=unavailable.join('|');

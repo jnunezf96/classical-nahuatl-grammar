@@ -1,12 +1,12 @@
-# Grammar OS v1.2.84 release
+# Grammar OS v1.2.85 release
 
-Release name: **Accepted Change Guidance**
+Release name: **Explicit Build Undo**
 
-Browser build: **20261028-change-guidance-103**
+Browser build: **20261028-undo-build-104**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Returning to an accepted Result now says Choose an operation until a change is selected.
-- Current owner readiness still governs Make; accepted work stays unchanged while choosing.
+- Workspace and History consistently name Undo build and explain its accepted-build scope.
+- Pending choices remain editable through their existing controls; history behavior is unchanged.

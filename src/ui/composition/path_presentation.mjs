@@ -93,13 +93,13 @@ export function createPathPresentation(doc) {
       && runtime.isClassicalGrammarApplicationResultCapture?.(selectedCapture)===true
       && runtime.isClassicalNahuatlTranscriptionFrame?.(selectedCapture.canonicalResult)===true
       && runtime.isClassicalNahuatlTranscriptionSourceFrame?.(selectedCapture.canonicalResult.sourceFrame)===true;
-    const labels={undo:'Undo last build',fork:'Branch from this',continue:writingTarget?'Edit Writing Source':'Use as Source',supply:'Add to pending sentence',compare:'Compare'};
+    const labels={undo:'Undo build',fork:'Branch from this',continue:writingTarget?'Edit Writing Source':'Use as Source',supply:'Add to pending sentence',compare:'Compare'};
     for(const [id,label] of Object.entries(labels)){
       const button=doc.getElementById('classical-grammar-workspace-history-'+id);if(!button)continue;
       if(button.textContent!==label)button.textContent=label;
       if(id!=='undo'&&!target?.nodeId&&!button.disabled)button.disabled=true;
       if(id==='supply'&&button.hidden!==button.disabled)button.hidden=button.disabled;
-      const title=id==='undo'?'Return to the previous build on the current branch.'
+      const title=id==='undo'?'Return to the previous accepted build; this does not undo pending choices.'
         :id==='fork'?'Start a new branch here; the accepted sentence stays unchanged.'
         :id==='continue'?writingTarget?'Edit this saved Writing Source.':'Restore this saved Result as the next Source.'
         :id==='supply'?'Fill the pending sentence’s required role with this saved Result.'

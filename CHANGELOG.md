@@ -1,3 +1,7 @@
+## v1.2.85 — Explicit Build Undo
+
+Clarify that Undo build restores a previous accepted build rather than undoing pending choices.
+
 ## v1.2.84 — Accepted Change Guidance
 
 Returning to accepted work names the missing operation before Make, without changing execution gates.
