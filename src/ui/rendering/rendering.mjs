@@ -27642,6 +27642,16 @@ export function createUiRenderingApi(targetObject = globalThis) {
           "label, [data-classical-rule-control]"
         );
         if (!control || !wrapper) return;
+        // An inactive family has no current inventory to project. Keep its
+        // draft value until the active owner can reconcile it again.
+        if (!active || !relevant) {
+          wrapper.hidden = true;
+          wrapper.setAttribute("aria-hidden", "true");
+          control.disabled = true;
+          control.required = false;
+          control.setAttribute("aria-required", "false");
+          return;
+        }
         const ownerValues = (
           lexicalFrame
           || ownerInventoryAuthorized
@@ -27813,7 +27823,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
         && getClassicalNominalConstructionControlValue("classical-rule-logic-nnc-state", "absolutive") === "possessive";
       if (referenceControl) {
         referenceControl.disabled = !activeActionReferenceAvailable;
-        if (!active || getClassicalNominalConstructionControlValue("classical-rule-logic-nnc-state", "absolutive") !== "possessive") referenceControl.value = "action";
+        if (active && selectedFamily === "predicate-nominalization" && nominalizationKind === "active-action"
+          && getClassicalNominalConstructionControlValue("classical-rule-logic-nnc-state", "absolutive") !== "possessive") referenceControl.value = "action";
         const wrapper = referenceControl.closest("label");
         if (wrapper) { wrapper.hidden = !activeActionReferenceAvailable;
           wrapper.setAttribute("aria-hidden", String(!activeActionReferenceAvailable)); }
@@ -28147,7 +28158,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
             passiveAvailable
           );
         }
-        if (analogyControl?.value === "passive" && !passiveAvailable) {
+        if (visible && analogyControl?.value === "passive" && !passiveAvailable) {
           analogyControl.value = "impersonal";
         }
       });
@@ -28514,7 +28525,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         option.disabled = !allowed;
       });
       if (
-        scopeControl
+        active && scopeControl
         && !allowedScopes.includes(String(scopeControl.value || ""))
       ) {
         scopeControl.value = "none";

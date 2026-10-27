@@ -1,14 +1,13 @@
-# Grammar OS v1.2.68 release
+# Grammar OS v1.2.69 release
 
-Release name: **Coordinated Compound Choices**
+Release name: **Retained Nominal Choices**
 
-Browser build: **20261026-compound-choices-87**
+Browser build: **20261026-nominal-choices-88**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Compound nonactive scope returns after an active-voice excursion when its Source owner permits it.
-- Integrated possessor orientation and affinity locus survive temporary changes within the same applied Source.
-- Exact active Source continuation now creates the selected nonactive embedded constituent rather than retaining its active form under a nonactive scope label.
+- Personal-name affective scope, patientive analogy, lexical endings and active-action reference survive temporary inactive routes.
+- Returning choices remain subject to the current canonical Source and grammatical owner; unavailable active alternatives are still withdrawn.
 - Existing panels, explicit Source Apply and Make, and accepted Results while staging are preserved.

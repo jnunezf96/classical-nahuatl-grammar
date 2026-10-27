@@ -1,3 +1,7 @@
+## 1.2.69 — Retained Nominal Choices
+
+Inactive nominal and name controls keep their draft choices until their current canonical owner can reconcile them. This preserves affective scope, patientive analogy, lexical endings and human action reference without adding panels or bypassing Source Apply and Make.
+
 ## 1.2.68 — Coordinated Compound Choices
 
 Compound nonactive scope, possessor orientation and affinity choices return after an inactive excursion when the current Source and grammatical owner still permit them. Exact active Source continuation now constructs the selected nonactive embed for compound scope. Explicit Source Apply and Make remain unchanged.
