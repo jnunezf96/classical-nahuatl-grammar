@@ -1,8 +1,8 @@
-# Grammar OS v1.2.76 release
+# Grammar OS v1.2.77 release
 
 Release name: **Complex Work Restoration**
 
-Browser build: **20261027-complex-reload-95**
+Browser build: **20261027-complex-reload-96**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 

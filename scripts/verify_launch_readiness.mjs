@@ -62,6 +62,13 @@ JSON.parse(await fs.readFile(path.join(ROOT, "site.webmanifest"), "utf8"));
 const runtimeUrl = `${pathToFileURL(path.join(ROOT, "src/runtime/create_runtime.mjs")).href}?launch=${Date.now()}`;
 const runtime = await import(runtimeUrl);
 const coverage = runtime.assertRuntimeInstallerCoverage();
+const bootstrapSource = await fs.readFile(path.join(ROOT, "src/bootstrap/bootstrap.mjs"), "utf8");
+const presentationMap = bootstrapSource.match(/const CACHE_CURRENT_PRESENTATION_INSTALLERS = Object\.freeze\(\[([\s\S]*?)\]\);/u)?.[1];
+assert(presentationMap, "presentation installer map is absent");
+for (const match of presentationMap.matchAll(/Object\.freeze\(\["([^"]+)"/gu)) {
+  assert(runtime.RUNTIME_INSTALLERS.has(match[1]), `presentation installer is outside canonical manifest: ${match[1]}`);
+}
+
 assert(runtime.RUNTIME_MODULE_PATHS.length === coverage.modulePaths.length, "runtime installer coverage differs");
 assert(new Set(runtime.RUNTIME_MODULE_PATHS).size === runtime.RUNTIME_MODULE_PATHS.length, "runtime manifest contains duplicates");
 for (const modulePath of runtime.RUNTIME_MODULE_PATHS) {

@@ -1,3 +1,7 @@
+## 1.2.77 — Complex Work Restoration
+
+Corrects a release76 startup packaging identifier. Complex-work restoration is unchanged; release76 is superseded before live acceptance.
+
 ## 1.2.76 — Complex Work Restoration
 
 Comparisons, calendar and number constructions, names, and other supported constructed Results restore through their original grammatical owners. Shared Sources and History retain identity; pending choices remain separate from accepted Results. Unavailable History is disclosed, and explicit Make remains required for pending changes.
