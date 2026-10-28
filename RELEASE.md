@@ -1,12 +1,13 @@
-# Grammar OS v1.2.106 release
+# Grammar OS v1.2.107 release
 
-Release name: **Typed Matrix Recovery**
+Release name: **Place and Gentilic Coordination**
 
-Browser build: **20261028-ready-matrix-125**
+Browser build: **20261028-place-coordination-126**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Clearing an inherited matrix in a typed compound now stages the empty choice and blocks Make until a matrix is restored.
-- The existing Source, accepted Result, and History remain unchanged while those choices are staged.
+- Place-name, gentilic, collective, adjectival and profession choices now share one current construction with preview and explicit Make.
+- Exact noun and imperfect verb continuations preserve their canonical parents; typed nominal-site choices recover safely from missing selections.
+- Formation memory stays scoped to the applied Source, while accepted Results and History remain unchanged during staging.

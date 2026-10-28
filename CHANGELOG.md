@@ -1,3 +1,8 @@
+## v1.2.107 — Place and Gentilic Coordination
+
+- Coordinate the existing 38 place/gentilic branches through one owner-backed snapshot for choices, preview and Make, including native, typed and exact Result ingresses.
+- Preserve Source-scoped formation intent and explicit accepted-result boundaries.
+
 ## 1.2.106 — Typed Matrix Recovery
 
 - Reconcile the existing typed compound matrix control when an inherited value is cleared, preserving owner validation and the explicit Make boundary.
