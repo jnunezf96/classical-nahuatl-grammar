@@ -1,5 +1,5 @@
 // Non-authorizing coordination adapter. State lives only in construction position.
-export const COMPARISON_OPERATION_ROUTES=Object.freeze(['equality-iuhqui','similarity-iuhqui-principal','comparative-tachcauh-hualcah','comparative-panahuia-unspecified','similarity-reduplicative-prefix','comparative-panahuia-specified']);
+export const COMPARISON_OPERATION_ROUTES=Object.freeze(['equality-iuhqui','similarity-iuhqui-principal','comparative-tachcauh-hualcah','comparative-panahuia-unspecified','similarity-reduplicative-prefix','comparative-panahuia-specified','equality-ihuan','size-ixquich','size-quezqui-no-izqui','size-more-more-correlative']);
 const issued=new WeakSet();
 const selected=s=>s?.relation==='comparison'&&COMPARISON_OPERATION_ROUTES.includes(s.comparisonRoute);
 export function issueComparisonOperationSnapshot(controller,selections,source,contract=null,prior=null,ingress=prior?.ingress || selections){

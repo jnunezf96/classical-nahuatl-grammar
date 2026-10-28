@@ -1,5 +1,9 @@
 # Version History
 
+## v1.2.94 — Coordinated Equality and Size
+
+Equality with īhuān, size with ixquich, and two size correlatives now coordinate their inputs, applicable choices, preview, and explicit Make through the shared session.
+
 ## v1.2.93 — Coordinated Specified Comparison
 
 Specified panahuia comparison now coordinates its principal eligibility and choices. Replacing the principal preserves exact Source identity, other inputs, and explicit Make.

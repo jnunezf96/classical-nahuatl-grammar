@@ -1,13 +1,13 @@
-# Grammar OS v1.2.93 release
+# Grammar OS v1.2.94 release
 
-Release name: **Coordinated Specified Comparison**
+Release name: **Coordinated Equality and Size**
 
-Browser build: **20261028-specified-pilot-112**
+Browser build: **20261028-equality-size-113**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Specified-object panahuia comparison uses the shared owner-backed choice contract.
-- Replacing its principal from saved Results updates the exact Source and binding while preserving other roles and staged choices.
-- Incompatible principals remain blocked; accepted work changes only on explicit Make.
+- Four equality and size comparison routes now share the owner-backed session contract.
+- Route changes preserve exact inputs while applying each route's own choices and role labels.
+- Pending choices remain separate from the accepted Result until explicit Make.
