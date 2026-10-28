@@ -1,5 +1,9 @@
 # Version History
 
+## v1.2.96 — Coordinated Similarity Sources
+
+Five similarity routes now share owner-backed input and choice coordination, including the exact principal-iuhqui Result handoff into a larger concatenate.
+
 ## v1.2.95 — Coordinated Comparison Degrees
 
 Adversative and negative comparisons, how-much-more questions, and three superlative strategies now share coordinated inputs, applicable choices, preview, and explicit Make.
