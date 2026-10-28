@@ -6290,6 +6290,22 @@ export function createClassicalClauseRelationControllerGlobals(
           && !contract.unresolvedDecisionIds.length) return null;
         return prepareRelationAnchorReplacement(bindingFrame, bindingId, role, exactResult, prior, "comparison-replacement-source");
       },
+      prepareConjunctionAnchorReplacement(bindingFrame, bindingId, role, exactResult, selections, expectedFrame) {
+        if (!CONJUNCTION_OPERATION_KINDS.includes(selections?.relation)
+          || !isCurrentChoiceFrame(expectedFrame, selections) || !isClassicalClauseRelationBindingFrame(bindingFrame)) return null;
+        const prior = bindingFrame.bindingChoices.find(choice => choice.id === bindingId);
+        if (!prior || prior.relation !== selections.relation || prior.captureRole !== role
+          || !expectedFrame.inputs.some(input=>input.role===role)) return null;
+        const probe = targetObject.createClassicalClauseRelationController();
+        for (const input of expectedFrame.inputs) {
+          const parent = input.role === role ? exactResult : getValidatedCapture(input.role)?.canonicalResult;
+          if (parent && probe.captureCurrentResult(input.role, parent).authorizationStatus !== "authorized") return null;
+        }
+        const contract = probe.buildDecisionContract(selections);
+        if (contract.authorizationStatus !== "authorized" && !contract.missingCaptureRoles.length
+          && !contract.unresolvedDecisionIds.length) return null;
+        return prepareRelationAnchorReplacement(bindingFrame, bindingId, role, exactResult, prior, "conjunction-replacement-source");
+      },
       preserveAdjunctionCaptureChoices(selections, role) {
         return Boolean(selections?.relation && !NON_ADJUNCTION_RELATIONS.includes(selections.relation)
           && ["principal", "adjoined", "marker"].includes(role));

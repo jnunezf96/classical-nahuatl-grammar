@@ -1,5 +1,9 @@
 # Version History
 
+## v1.2.99 — Coordinated Conjunction
+
+Four conjunction branches now use the common owner-backed snapshot protocol, including current-frame saved-input supply and explicit operation-family handback.
+
 ## v1.2.98 — Shared Owner Coordination
 
 Extracted a common operation snapshot protocol with owner-specific adapters. Comparison retains its grammar and exact input custody while the construction session delegates owner-frame equivalence.
