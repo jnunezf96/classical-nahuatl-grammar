@@ -1,6 +1,7 @@
 import {createOwnerOperationProtocol} from './owner_operation_protocol.mjs?issuedBinding=20261028-1';
 const scopes=new WeakSet(),events=new WeakMap(),snapshots=new WeakSet();
-const operations=new Set(['nnc:ordinary','vnc:application','vnc:ordered-voice-application','sentence:supplementation']);
+const operations=new Set(['nnc:ordinary','vnc:application','vnc:ordered-voice-application','sentence:supplementation','nnc:attested-cell','nnc:attested-place','clause:attested-collocation','nnc:quantitative-predicate','nnc:pronominal']);
+export const isFinalSourceOperation=id=>['nnc:attested-cell','nnc:attested-place','clause:attested-collocation','nnc:quantitative-predicate','nnc:pronominal'].includes(id);
 // Intent is ordinary data. Authentic Sources/bindings are separate references.
 function immutableIntent(value){
  if(value===null||['string','number','boolean','undefined'].includes(typeof value))return value;
@@ -97,4 +98,15 @@ export function matchesIssuedBindingExecutionPacket(snapshot,packet){
  return Array.isArray(args)&&Array.isArray(binding.executionArgs)&&args.length===binding.executionArgs.length
   &&args.every((value,index)=>value===binding.executionArgs[index])
   &&equal(packet.choices,binding.effectiveSelections||binding.callerSelections||{});
+}
+
+// The final source constructors execute exactly their current typed capability.
+// Their lexical/grammatical coordinates belong to that binding, not DOM mirrors.
+export function projectFinalSourceExecution(snapshot){
+ if(!snapshots.has(snapshot)||!isFinalSourceOperation(snapshot.controller.operationId)
+   ||snapshot.controller.ingressKind!=='typed'||snapshot.controller.getIngress()!==snapshot.ingress
+   ||!validBinding(snapshot.controller,snapshot.contract.binding)||snapshot.contract.binding.bindingStatus!=='ready')return null;
+ const binding=snapshot.contract.binding;
+ return Object.freeze({kind:'typed',operation:snapshot.controller.operationId,source:snapshot.source,binding,
+  choices:binding.effectiveSelections||binding.callerSelections||Object.freeze({}),layers:Object.freeze([]),sentenceOptions:null});
 }

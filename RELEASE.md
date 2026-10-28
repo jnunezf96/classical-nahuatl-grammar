@@ -1,12 +1,12 @@
-# Grammar OS v1.2.119 release
+# Grammar OS v1.2.120 release
 
-Release name: **Nuclear Sentence Coordination**
+Release name: **Final Source Choice Coordination**
 
-Browser build: **20261028-nuclear-sentence-session-138**
+Browser build: **20261028-final-source-session-139**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
-- Verb and noun sentence choices share current owner-issued requests, preview and explicit Make.
-- Sentence layers and polarity retain exact canonical Source and accepted Result while staging.
-- Wrapped noun sentence continuation retains its authentic owner context.
-- Pending multi-input restoration remains unclaimed.
+- Attested nominal cells, place names, clause collocations, quantitative predicates and pronouns share current owner-issued choices and explicit Make.
+- Required possessor recovery and pronominal dependency changes preserve exact Source and accepted Result.
+- Fixed source facts remain separate from choices.
+- Pending multi-input restoration remains unclaimed; existing session-only limits remain visible.
