@@ -10,8 +10,9 @@ const sameSlots=(a,b)=>a.length===b.length && a.every((slot,i)=>slot.role===b[i]
 export function createConstructionPosition({isSource,isResult}={}) {
   let position=Object.freeze({revision:0,construction:freezeRecord({source:null,sourcePending:false,route:freezeRecord({}),slots:Object.freeze([])}),
     choices:freezeRecord({}),baseline:freezeRecord({}),pending:Object.freeze([]),accepted:freezeRecord({result:null,receipt:null}),operationContract:null,
-    legalMoves:Object.freeze([]),ready:false,applied:false,failure:null,execution:null});
+    legalMoves:Object.freeze([]),ready:false,applied:false,failure:null,presentationFailure:null,execution:null});
   let activeMake=null;
+  const preparedMakes=new WeakMap();
   const journal=[];
   const publish=(next,type,detail={})=>{
     position=Object.freeze({...next,revision:position.revision+1});
@@ -21,7 +22,7 @@ export function createConstructionPosition({isSource,isResult}={}) {
   const pending=(choices,baseline)=>Object.freeze(Object.keys(choices)
     .filter(key=>!equal(choices[key],baseline[key])));
   function stage(proposal,type='owner-projection',detail={}) {
-    if(!proposal || proposal.source && isSource?.(proposal.source)!==true
+    if(activeMake || !proposal || proposal.source && isSource?.(proposal.source)!==true
       || (proposal.slots || []).some(slot=>slot.exact && isSource?.(slot.exact)!==true))return false;
     const construction=freezeRecord({source:proposal.source || null,sourcePending:proposal.sourcePending===true,sourceDraft:proposal.sourceDraft || null,slotOrder:proposal.slotOrder || 'source-order',
       route:freezeRecord(proposal.route || {}),slots:Object.freeze((proposal.slots || []).map(freezeRecord))});
@@ -40,7 +41,7 @@ export function createConstructionPosition({isSource,isResult}={}) {
       && (proposal.execution?.signature===undefined ? equal(position.failure.choices,choices)
         : position.failure.executionSignature===proposal.execution.signature);
     const next={...position,operationContract:Object.hasOwn(proposal,"operationContract") ? proposal.operationContract : (sameConstruction(position.construction,construction) ? position.operationContract : null),construction,choices,baseline,pending:pending(choices,baseline),legalMoves,
-      ready:!construction.sourcePending && proposal.ready===true && !applied && !rejected,applied:Boolean(applied) && !construction.sourcePending,
+      ready:!construction.sourcePending && proposal.ready===true && !applied && (!rejected || position.failure.retryable),applied:Boolean(applied) && !construction.sourcePending,
       failure:rejected ? position.failure : null,execution:proposal.execution || null};
     const changed=!sameOperation(position.operationContract,next.operationContract) || !sameConstruction(position.construction,construction)
       || position.construction.sourcePending!==construction.sourcePending || !sameSlots(position.construction.slots,construction.slots)
@@ -70,13 +71,13 @@ export function createConstructionPosition({isSource,isResult}={}) {
     }
     const proposal=resolve?.(Object.freeze(draft),position,move);
     if(move.type==='clear') {
-      if(!proposal || proposal.source)return false;
-      position=Object.freeze({...position,accepted:freezeRecord({result:null,receipt:null}),baseline:freezeRecord({}),choices:freezeRecord({})});
+      if(activeMake || !proposal || proposal.source)return false;
+      position=Object.freeze({...position,accepted:freezeRecord({result:null,receipt:null}),presentationFailure:null,baseline:freezeRecord({}),choices:freezeRecord({})});
     }
     return proposal ? stage(proposal,move.type,{id:move.id,value:move.value,fromRevision:move.revision}) : false;
   }
   function restore(result,receipt=null) {
-    if(isResult?.(result)!==true)return false;
+    if(activeMake || isResult?.(result)!==true)return false;
     const matchingReceipt=receipt?.construction && sameConstruction(receipt.construction,position.construction)
       && sameSlots(receipt.construction.slots,position.construction.slots)
       && equal(receipt.choices,position.choices);
@@ -84,31 +85,41 @@ export function createConstructionPosition({isSource,isResult}={}) {
     // Attach that editor's validated acknowledgement without accepting anew.
     if(position.accepted.result===result && (!matchingReceipt || position.accepted.receipt===receipt))return true;
     const baseline=matchingReceipt ? position.choices : position.baseline;
-    return publish({...position,accepted:freezeRecord({result,receipt}),baseline,
+    return publish({...position,accepted:freezeRecord({result,receipt}),presentationFailure:null,baseline,
       pending:pending(position.choices,baseline)},'restore');
   }
   function beginMake(revision) {
     if(activeMake || revision!==position.revision || !position.ready || !position.execution)return null;
     const token=Object.freeze({position});activeMake=token;return token;
   }
-  function finishMake(token,result,receipt=null) {
-    if(!token || token!==activeMake)return false;
-    activeMake=null;
-    if(isResult?.(result)!==true)return false;
-    const baseline=sameConstruction(position.construction,token.position.construction) ? token.position.choices : position.baseline;
+  function prepareMake(token,result,receipt=null) {
+    if(!token || token!==activeMake || token.position!==position || isResult?.(result)!==true)return null;
+    const baseline=token.position.choices;
     const executedReceipt=freezeRecord({...receipt,executedRevision:token.position.revision,construction:token.position.construction,
       choices:token.position.choices,executionSignature:token.position.execution?.signature});
-    return publish({...position,accepted:freezeRecord({result,receipt:executedReceipt}),baseline,pending:pending(position.choices,baseline),
-      ready:false,applied:position===token.position},'make',
-      {executedRevision:token.position.revision,construction:token.position.construction,choices:token.position.choices});
+    const next=Object.freeze({...position,revision:position.revision+1,accepted:freezeRecord({result,receipt:executedReceipt}),baseline,
+      pending:pending(position.choices,baseline),ready:false,applied:true,failure:null,presentationFailure:null});
+    const entry=Object.freeze({type:'make',detail:freezeRecord({executedRevision:token.position.revision,
+      construction:token.position.construction,choices:token.position.choices}),position:next});
+    const prepared=Object.freeze({kind:'prepared-construction-acceptance'});
+    preparedMakes.set(prepared,{token,next,entry});return prepared;
   }
-  function rejectMake(token,blockReason='') {
+  function commitMake(prepared) {
+    const value=preparedMakes.get(prepared);
+    if(!value || value.token!==activeMake || position!==value.token.position)return false;
+    preparedMakes.delete(prepared);activeMake=null;position=value.next;journal.push(value.entry);return true;
+  }
+  function finishMake(token,result,receipt=null) { return commitMake(prepareMake(token,result,receipt)); }
+  function presentationFailed(reason=null) {
+    return publish({...position,presentationFailure:reason?freezeRecord({blockReason:reason}):null},reason?'presentation-failed':'presentation-recovered');
+  }
+  function rejectMake(token,blockReason='',retryable=false) {
     if(token!==activeMake)return false;activeMake=null;
     const failure=freezeRecord({construction:token.position.construction,choices:token.position.choices,
-      executionSignature:token.position.execution?.signature,blockReason});
-    return publish({...position,ready:false,applied:false,failure},'make-rejected',{executedRevision:token.position.revision,blockReason});
+      executionSignature:token.position.execution?.signature,blockReason,retryable});
+    return publish({...position,ready:retryable,applied:false,failure},'make-rejected',{executedRevision:token.position.revision,blockReason});
   }
-  return Object.freeze({canTransition:revision=>!activeMake && revision===position.revision,stage,dispatch,restore,beginMake,finishMake,rejectMake,cancelMake:token=>{
+  return Object.freeze({canTransition:revision=>!activeMake && revision===position.revision,stage,dispatch,restore,beginMake,prepareMake,commitMake,finishMake,rejectMake,presentationFailed,cancelMake:token=>{
     if(token!==activeMake)return false;activeMake=null;return true;
   },get position(){return position;},get journal(){return Object.freeze([...journal]);},
   replay(records) {

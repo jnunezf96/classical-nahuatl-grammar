@@ -1,13 +1,13 @@
-# Grammar OS v1.2.99 release
+# Grammar OS v1.2.100 release
 
-Release name: **Coordinated Conjunction**
+Release name: **Reliable Acceptance and Recovery**
 
-Browser build: **20261028-conjunction-session-118**
+Browser build: **20261028-acceptance-recovery-119**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Ordinary, correlative and lexical conjunction, plus parallel structure, now share owner-backed session coordination.
-- Pending choices and saved-input recovery preserve exact Sources and accepted Results until Make.
-- Switching operation families retains the proper owner and explicit Source context.
+- Accepted Results and History now commit together before presentation.
+- Failed saves preserve the previous accepted Result and offer Retry Make.
+- Failed presentation offers Retry display without re-execution or duplicate History.

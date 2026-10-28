@@ -31,8 +31,9 @@ export function createClassicalGrammarWorkspaceHistory({
     );
   }
 
-  const records = new Map();
-  const branches = new Map();
+  let records = new Map();
+  let branches = new Map();
+  const preparedRecords = new WeakMap();
   const issuedSnapshots = new WeakSet();
   const issuedComparisons = new WeakSet();
   let nodeSequence = 0;
@@ -76,56 +77,47 @@ export function createClassicalGrammarWorkspaceHistory({
       : null;
   }
 
-  function record(value = null, options = {}) {
-    nodeSequence += 1;
-    const nodeId = `history-${nodeSequence}`;
+  function prepareRecord(value = null, options = {}) {
+    const nextSequence = nodeSequence + 1;
+    const nodeId = `history-${nextSequence}`;
     const capture = getCapture(value, nodeId);
     if (!capture) return null;
     const applicationResult = capture.applicationResult;
-    if (
-      !isClassicalGrammarApplicationResult(applicationResult)
-      || applicationResult.authorizationStatus !== "authorized"
-    ) {
-      return null;
-    }
-    // particle:result constructs its own canonical particle Source. It never
-    // consumes the currently selected Result, so its history node must not be
-    // attached to that Result merely because it was issued next in time.
-    const sourceIndependentRoot =
-      applicationResult.operationId === "particle:result";
-    const parentNodeId = sourceIndependentRoot
-      ? ""
-      : Object.prototype.hasOwnProperty.call(options, "parentNodeId")
-        ? String(options.parentNodeId || "")
-        : currentNodeId;
-    const branchId = sourceIndependentRoot
-      ? createBranch("", "Particle Result root")
-      : Object.prototype.hasOwnProperty.call(options, "branchId")
-        ? String(options.branchId || "")
-        : ensureBranch();
-    const label = sourceIndependentRoot
-      ? applicationResult.operationId
-      : String(options.label || "").trim();
+    if (!isClassicalGrammarApplicationResult(applicationResult)
+      || applicationResult.authorizationStatus !== "authorized") return null;
+    const independent = applicationResult.operationId === "particle:result";
+    const parentNodeId = independent ? "" : Object.hasOwn(options, "parentNodeId")
+      ? String(options.parentNodeId || "") : currentNodeId;
     if (parentNodeId && !records.has(parentNodeId)) return null;
-    if (!branches.has(branchId)) return null;
-    const parent = parentNodeId ? records.get(parentNodeId) : null;
-    const record = {
-      nodeId,
-      parentNodeId,
-      branchId,
-      depth: parent ? parent.depth + 1 : 1,
-      sequence: nodeSequence,
-      label,
-      capture,
-      childrenIds: [],
-    };
-    records.set(nodeId, record);
-    if (parent) parent.childrenIds.push(nodeId);
-    branches.get(branchId).nodeIds.push(nodeId);
-    currentNodeId = nodeId;
-    currentBranchId = branchId;
-    revision += 1;
-    return getNode(nodeId);
+    const newBranch = independent || (!Object.hasOwn(options, "branchId") && !currentBranchId);
+    const nextBranchSequence = branchSequence + (newBranch ? 1 : 0);
+    const branchId = newBranch ? `branch-${nextBranchSequence}` : Object.hasOwn(options, "branchId")
+      ? String(options.branchId || "") : currentBranchId;
+    if (!newBranch && !branches.has(branchId)) return null;
+    const nextRecords = new Map([...records].map(([key,row])=>[key,{...row,childrenIds:[...row.childrenIds]}]));
+    const nextBranches = new Map([...branches].map(([key,row])=>[key,{...row,nodeIds:[...row.nodeIds]}]));
+    if (newBranch) nextBranches.set(branchId,{branchId,anchorNodeId:"",label:independent?"Particle Result root":"Main",nodeIds:[]});
+    const parent = parentNodeId ? nextRecords.get(parentNodeId) : null;
+    nextRecords.set(nodeId,{nodeId,parentNodeId,branchId,depth:parent?parent.depth+1:1,sequence:nextSequence,
+      label:independent?applicationResult.operationId:String(options.label || "").trim(),capture,childrenIds:[]});
+    if(parent)parent.childrenIds.push(nodeId);
+    nextBranches.get(branchId).nodeIds.push(nodeId);
+    const token=Object.freeze({kind:"prepared-history-record",nodeId});
+    preparedRecords.set(token,{revision,nextRecords,nextBranches,nextSequence,nextBranchSequence,nodeId,branchId,newBranch});
+    return token;
+  }
+  function commitRecord(token) {
+    const prepared=preparedRecords.get(token);
+    if(!prepared || prepared.revision!==revision)return null;
+    preparedRecords.delete(token);
+    records=prepared.nextRecords;branches=prepared.nextBranches;
+    nodeSequence=prepared.nextSequence;branchSequence=prepared.nextBranchSequence;
+    currentNodeId=prepared.nodeId;currentBranchId=prepared.branchId;
+    revision+=prepared.newBranch?2:1;
+    return getNode(currentNodeId);
+  }
+  function record(value = null, options = {}) {
+    return commitRecord(prepareRecord(value,options));
   }
 
   // Metadata cannot grant grammar authority. All Results are authenticated
@@ -406,6 +398,8 @@ export function createClassicalGrammarWorkspaceHistory({
 
   return Object.freeze({
     record,
+    prepareRecord,
+    commitRecord,
     restore,
     recover,
     continueFrom,
@@ -501,6 +495,26 @@ export function installClassicalGrammarWorkspaceHistoryGlobals(
     dispatchHistoryUpdate();
     return node;
   };
+  const prepareUserAction = (token, exactResult, {recordExistingResult=false,parentNodeId}={}) => {
+    if (!token || !issuedUserActionTokens.has(token)) return null;
+    const applicationResult=getAuthorizedApplicationResult(exactResult);
+    if (!applicationResult || observedApplicationResults.has(applicationResult) && !recordExistingResult) return null;
+    const prepared=history.prepareRecord(applicationResult,{label:token.operationId || applicationResult.operationId,
+      ...(parentNodeId!==undefined?{parentNodeId,branchId:history.getNode(parentNodeId)?.branchId}: {})});
+    if (!prepared) return null;
+    let committed=false;
+    return Object.freeze({
+      commit() {
+        if(committed || !issuedUserActionTokens.has(token))return null;
+        const node=history.commitRecord(prepared);
+        if(!node)return null;
+        committed=true;issuedUserActionTokens.delete(token);observedApplicationResults.add(applicationResult);
+        return node;
+      },
+      publish() { if(committed)dispatchHistoryUpdate(); },
+      cancel() { if(!committed)issuedUserActionTokens.delete(token); }
+    });
+  };
   // Owner probes and projections may issue many internal application
   // receipts while one visible control is being evaluated. Build history is
   // the child's action history, so only the explicit user-action transaction
@@ -538,6 +552,7 @@ export function installClassicalGrammarWorkspaceHistoryGlobals(
     beginClassicalGrammarWorkspaceUserAction: operationId => (
       beginUserAction(operationId)
     ),
+    prepareClassicalGrammarWorkspaceUserAction: prepareUserAction,
     completeClassicalGrammarWorkspaceUserAction: (
       token,
       exactResult,
