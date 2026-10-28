@@ -1,3 +1,8 @@
+## v1.2.117 — Adjectival Choice Coordination
+
+- Coordinate description choices and exact parent Results through one current construction.
+- Preserve accepted Results while replacing a Source or restoring required inputs; show fixed modifier function as a fact.
+
 ## v1.2.116 — Canonical Marker Labels
 
 - Preserve owner-issued required marker labels through the existing interface projection.

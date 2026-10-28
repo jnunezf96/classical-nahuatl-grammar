@@ -1507,6 +1507,48 @@ export function createClassicalClauseRelationControllerGlobals(
       return Object.freeze({handled:true,authorizationStatus:"authorized",selections:Object.freeze(next),contract:buildDecisionContract(next)});
     }
 
+    function reconcileAdjectivalContextSelections(selections,previous,context,editedKey="") {
+      const next={...selections},principal=context.principal;
+      for(const [role,key] of [["adjoined","linkKind"],["dependent","dependentLinkKind"]]){
+        const modifier=context[role];
+        if(editedKey===key || !principal || !modifier || previous.principal===principal && previous[role]===modifier && previous.order===next.order && previous.topology===next.topology)continue;
+        const contacts=targetObject.getClassicalNahuatlAdjectivalModifierReferenceContacts?.(modifier,role==="adjoined"?{principal,order:next.order,topology:next.topology}:{order:"head-modifier"})||[];
+        const selected=String(next[key]||"");
+        if(!contacts.length || !selected || contacts.includes(selected))continue;
+        if(contacts.length===1)next[key]=contacts[0];else delete next[key];
+      }
+      if(principal && previous.principal!==principal && next.compoundHeadTarget){
+        const projected=context.buildContract({...next,compoundHeadTarget:""});
+        if(projected.derived?.compoundHeadTarget==="simple-head")next.compoundHeadTarget="simple-head";
+      }
+      return Object.freeze(next);
+    }
+
+    function reconcileAdjectivalCaptureChoices(selections={},expectedFrame=null,{editedKey=""}={}) {
+      const record=issuedChoiceFrames.get(expectedFrame);
+      if(expectedFrame?.familyId!==ADJECTIVAL_MODIFICATION_RELATION || !record?.adjectivalContext || record.choiceRevision!==choiceRevision)return Object.freeze({...selections});
+      return reconcileAdjectivalContextSelections(selections,record.adjectivalContext,{principal:getValidatedCapture("principal")?.canonicalResult,adjoined:getValidatedCapture("adjoined")?.canonicalResult,dependent:getValidatedCapture("dependent")?.canonicalResult,buildContract:buildDecisionContract},editedKey);
+    }
+
+    function transitionAdjectivalChoice({selections={},expectedFrame=null,intent={}}={}) {
+      const current=selections.relation===ADJECTIVAL_MODIFICATION_RELATION;
+      if(!current && expectedFrame?.familyId!==ADJECTIVAL_MODIFICATION_RELATION) return Object.freeze({handled:false});
+      const blocked=reason=>Object.freeze({handled:true,authorizationStatus:"blocked",blockReason:reason,selections,contract:buildDecisionContract(selections)});
+      if(!current || !isCurrentChoiceFrame(expectedFrame,selections))return blocked("adjectival-choice-stale-frame");
+      const next={...selections};
+      if(intent.type==="set-choice"){
+        if(!expectedFrame.decisions.some(d=>d.key===intent.key))return blocked("adjectival-choice-field-not-licensed");
+        if(intent.value)next[intent.key]=String(intent.value).trim();else delete next[intent.key];
+      } else if(intent.type==="capture" || intent.type==="clear-capture"){
+        if(!expectedFrame.inputs.some(x=>x.role===intent.role))return blocked("adjectival-choice-capture-role-not-licensed");
+        if(intent.type==="clear-capture")clearCapture(intent.role);
+        else {const capture=captureCurrentResult(intent.role,intent.result,intent.context);if(capture.authorizationStatus!=="authorized")return blocked(capture.blockReason);}
+      } else return blocked("adjectival-choice-intent-not-recognized");
+      const normalized=reconcileAdjectivalCaptureChoices(next,expectedFrame,{editedKey:intent.type==="set-choice"?intent.key:""});
+      choiceRevision+=1;
+      return Object.freeze({handled:true,authorizationStatus:"authorized",selections:normalized,contract:buildDecisionContract(normalized)});
+    }
+
     function transitionAdjunctionChoice({selections={},expectedFrame=null,intent={}}={}) {
       const current=ADJUNCTION_RELATIONS.includes(selections.relation);
       if(!current && !ADJUNCTION_RELATIONS.includes(expectedFrame?.familyId)) return Object.freeze({handled:false});
@@ -4404,10 +4446,6 @@ export function createClassicalClauseRelationControllerGlobals(
           && modifierContacts.includes(linkRole) ? "adjectival-modifier" : "";
         if (adjoinedFunction) {
           const requestedFunction = normalizeToken(selectionObject.adjoinedFunction);
-          decisions.push(buildDecision({id:"adjoined-function", values:[adjoinedFunction],
-            selectedValue:requestedFunction || adjoinedFunction,
-            inventoryFieldRef:"clause-choice:clause:composition:adjoined-function",
-            reason:"the canonical nominal head and modifier contact determine the adjectival-modifier function"}));
           if (requestedFunction && requestedFunction !== adjoinedFunction)
             diagnostics.push("classical-adjectival-modification-adjoined-function-not-licensed");
         } else if (normalizeToken(selectionObject.adjoinedFunction)) {
@@ -4585,6 +4623,7 @@ export function createClassicalClauseRelationControllerGlobals(
             "recursion",
             ...(orderValues.length ? [] : ["order"]),
             "modifier-clause-type",
+            "adjoined-function",
             "scope",
             ...(transitiveContactRequired ? [] : ["link-role"]),
             ...(dependentTransitiveContactRequired
@@ -5080,6 +5119,16 @@ export function createClassicalClauseRelationControllerGlobals(
           outcome:{readyToMake:contract.authorizationStatus==="authorized",reasons:contract.diagnostics},
           provenance:{owner:"adverbial-adjunction",sourceReferences:["Andrews §§49–50"]}});
         issuedChoiceFrames.set(currentChoiceFrame,{captureRevision,choiceRevision,signature:choiceSignature(selections)});
+        contract=Object.freeze({...contract,currentChoiceFrame});
+      }
+      if(contract.relation===ADJECTIVAL_MODIFICATION_RELATION){
+        const keys={topology:"topology",order:"order","modifier-adjunctor":"modifierAdjunctor","link-kind":"linkKind","dependent-link-kind":"dependentLinkKind","compound-head-target":"compoundHeadTarget"};
+        const currentChoiceFrame=buildCurrentChoiceFrame({familyId:contract.relation,routeId:contract.relation,
+          captureRevision,stagedRevision:choiceRevision,
+          decisions:contract.decisions.filter(d=>keys[d.id]).map(d=>Object.freeze({...d,key:keys[d.id]})),
+          inputs:["principal","adjoined","dependent"].map(role=>({role,presence:getValidatedCapture(role)?"captured":"missing",required:role!=="dependent"||["cooperating-preposed-nonpreposed","discontinuous"].includes(contract.topology),applicability:role!=="dependent"||["cooperating-preposed-nonpreposed","discontinuous"].includes(contract.topology)?"relevant":"inactive"})),
+          facts:contract.derived,outcome:{readyToMake:contract.authorizationStatus==="authorized",reasons:contract.diagnostics},provenance:{owner:"adjectival-modification",sourceReferences:["Andrews Lessons 42–43"]}});
+        issuedChoiceFrames.set(currentChoiceFrame,{captureRevision,choiceRevision,signature:choiceSignature(selections),adjectivalContext:Object.freeze({principal:getValidatedCapture("principal")?.canonicalResult,adjoined:getValidatedCapture("adjoined")?.canonicalResult,dependent:getValidatedCapture("dependent")?.canonicalResult,order:selections.order,topology:selections.topology})});
         contract=Object.freeze({...contract,currentChoiceFrame});
       }
       return contract;
@@ -6332,6 +6381,8 @@ export function createClassicalClauseRelationControllerGlobals(
       transitionComplementChoice,
       transitionSentenceChoice,
       transitionAdjunctionChoice,
+      transitionAdjectivalChoice,
+      reconcileAdjectivalCaptureChoices,
       prepareAdjunctionAnchorReplacement(bindingFrame, bindingId, role, exactResult, selections = null, expectedFrame = null) {
         if (selections && (!ADJUNCTION_RELATIONS.includes(selections.relation) || !isCurrentChoiceFrame(expectedFrame, selections))) return null;
         if (!isClassicalClauseRelationBindingFrame(bindingFrame)) return null;
@@ -6415,6 +6466,23 @@ export function createClassicalClauseRelationControllerGlobals(
         if (contract.authorizationStatus !== "authorized" && !contract.missingCaptureRoles.length
           && !contract.unresolvedDecisionIds.length) return null;
         return prepareRelationAnchorReplacement(bindingFrame, bindingId, role, exactResult, prior, "supplementation-replacement-source");
+      },
+      prepareAdjectivalAnchorReplacement(bindingFrame, bindingId, role, exactResult, selections, expectedFrame) {
+        if (selections?.relation!==ADJECTIVAL_MODIFICATION_RELATION
+          || !isCurrentChoiceFrame(expectedFrame, selections) || !isClassicalClauseRelationBindingFrame(bindingFrame)) return null;
+        const prior = bindingFrame.bindingChoices.find(choice => choice.id === bindingId);
+        if (!prior || prior.relation !== selections.relation || prior.captureRole !== role
+          || !expectedFrame.inputs.some(input=>input.role===role)) return null;
+        const probe = targetObject.createClassicalClauseRelationController();
+        for (const input of expectedFrame.inputs) {
+          const parent = input.role === role ? exactResult : getValidatedCapture(input.role)?.canonicalResult;
+          if (parent && probe.captureCurrentResult(input.role, parent, getDiscourseSourceContextFrame(input.role)).authorizationStatus !== "authorized") return null;
+        }
+        const normalized=reconcileAdjectivalContextSelections(selections,issuedChoiceFrames.get(expectedFrame).adjectivalContext,{principal:probe.getCapturedCanonicalResult("principal"),adjoined:probe.getCapturedCanonicalResult("adjoined"),dependent:probe.getCapturedCanonicalResult("dependent"),buildContract:probe.buildDecisionContract});
+        const contract = probe.buildDecisionContract(normalized);
+        if (contract.authorizationStatus !== "authorized" && !contract.missingCaptureRoles.length
+          && !contract.unresolvedDecisionIds.length) return null;
+        return prepareRelationAnchorReplacement(bindingFrame, bindingId, role, exactResult, prior, "adjectival-replacement-source");
       },
       preserveAdjunctionCaptureChoices(selections, role) {
         return Boolean(selections?.relation && !NON_ADJUNCTION_RELATIONS.includes(selections.relation)

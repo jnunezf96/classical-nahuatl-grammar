@@ -1,3 +1,4 @@
+import {ADJECTIVAL_OPERATION_ROUTES} from '../composition/adjectival_operation_transaction.mjs?adjectivalSession=20261028-1';
 import {ADJUNCTION_OPERATION_ROUTES} from '../composition/adjunction_operation_transaction.mjs?adjunctionSession=20261028-2';
 import {SUPPLEMENTATION_OPERATION_ROUTES} from '../composition/supplementation_operation_transaction.mjs?supplementationSession=20261028-1&utteranceProjection=20261028-1';
 import {createPersonalNameScope,issuePersonalNameSnapshot,projectPersonalNameExecution,isCurrentPersonalNameSnapshot,capturePersonalNameChoiceFrame} from '../composition/personal_name_transaction.mjs';
@@ -6,7 +7,7 @@ import {createPlaceGentilicScope,issuePlaceGentilicSnapshot,projectPlaceGentilic
 import {createVerbalDerivationScope,issueVerbalDerivationSnapshot,projectVerbalDerivationExecution,isCurrentVerbalDerivationSnapshot,captureVerbalDerivationChoiceFrame,adoptVerbalDerivationCandidate} from '../composition/verbal_derivation_transaction.mjs?verbalDerivation=20261028-1';
 import {isDerivedFormationOperation, createDerivedFormationScope, issueDerivedFormationSnapshot, projectDerivedFormationExecution, isCurrentDerivedFormationSnapshot, captureDerivedFormationChoiceFrame, adoptDerivedFormationCandidate} from '../composition/derived_formation_transaction.mjs?derivedFormation=20261028-1';
 import {createNominalOperationScope,issueNominalOperationSnapshot,isCurrentNominalOperationSnapshot,captureNominalOperationChoiceFrame,projectNominalOperationExecution,adoptNominalOperationCandidate} from '../composition/nominal_operation_transaction.mjs';
-import {issueClauseOperationSnapshot as issueComparisonOperationSnapshot,transitionClauseOperationSnapshot as transitionComparisonOperationSnapshot,readClauseOperationSelections as readComparisonOperationSelections,isCurrentClauseOperationSnapshot as isCurrentComparisonOperationSnapshot} from '../composition/clause_operation_transaction.mjs?conjunctionSession=20261028-1&complementSession=20261028-1&issuedBinding=20261028-1&supplementationSession=20261028-1&utteranceProjection=20261028-1&adjunctionSession=20261028-2';
+import {issueClauseOperationSnapshot as issueComparisonOperationSnapshot,transitionClauseOperationSnapshot as transitionComparisonOperationSnapshot,readClauseOperationSelections as readComparisonOperationSelections,isCurrentClauseOperationSnapshot as isCurrentComparisonOperationSnapshot} from '../composition/clause_operation_transaction.mjs?conjunctionSession=20261028-1&complementSession=20261028-1&issuedBinding=20261028-1&supplementationSession=20261028-1&utteranceProjection=20261028-1&adjunctionSession=20261028-2&adjectivalSession=20261028-1';
 import {inactiveAffectiveReloadControl,prepareNativeReloadSourceContext,reconcileAcceptedQuotedSourceBaseline} from '../composition/native_reload_source.mjs?nativeReload=20261027-4';
 import {normalizeSourceEditorSignature} from '../composition/source_editor_signature.mjs';
 import {inputLabel,captureRoleLabel,clauseReadinessGuidance,contractReferences,normalizeAndrewsReference,hasCurrentClauseProjection} from '../composition/choice_guidance.mjs?choiceGuidance=20261027-3';
@@ -351,7 +352,6 @@ export function createUiRenderingApi(targetObject = globalThis) {
         ? snapshot.contract : controller?.buildDecisionContract(readClassicalClauseSelections());
     }
 
-    const ClassicalAdjectivalContactCaptureContexts = new WeakMap();
     var ClassicalCompositionRequestedAction = "";
     var ClassicalExplicitClauseRelationIntent = "";
     var ClassicalClauseRelationStatusMessage = "";
@@ -37915,7 +37915,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         }
         return true;
       }
-      if ([...SUPPLEMENTATION_OPERATION_ROUTES,...ADJUNCTION_OPERATION_ROUTES].includes(readClassicalClauseSelections().relation)) {
+      if ([...SUPPLEMENTATION_OPERATION_ROUTES,...ADJUNCTION_OPERATION_ROUTES,...ADJECTIVAL_OPERATION_ROUTES].includes(readClassicalClauseSelections().relation)) {
         ClassicalClauseRelationStatusMessage = "The inputs changed. Review the current choices and try again.";
         refreshClassicalClauseRelationWorkflow();
         return true;
@@ -38031,41 +38031,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
       syncClassicalCapabilityApplyOperationState();
     }
     function syncClassicalAdjectivalContactSelectionsForCapturedSource(controller = null) {
-      if (!controller?.getCapturedCanonicalResult
-        || readClassicalClauseSelections().relation !== "adjectival-modification") return;
-      const principal = controller.getCapturedCanonicalResult("principal");
-      const previous = ClassicalAdjectivalContactCaptureContexts.get(controller);
-      const context = { principal, order: readClassicalClauseSelections().order,
-        topology: readClassicalClauseSelections().topology };
-      [
-        ["adjoined", "linkKind"],
-        ["dependent", "dependentLinkKind"],
-      ].forEach(([role, selectionKey]) => {
-        const modifier = controller.getCapturedCanonicalResult(role);
-        context[role] = modifier;
-        if (!principal || !modifier
-          || (previous?.principal === principal && previous?.[role] === modifier
-            && previous.order === context.order && previous.topology === context.topology)) return;
-        const contacts = targetObject.getClassicalNahuatlAdjectivalModifierReferenceContacts?.(
-          modifier, role === "adjoined" ? context : {order: "head-modifier"}
-        ) || [];
-        const selected = String(readClassicalClauseSelections()[selectionKey] || "");
-        // A changed authenticated capture or construction may release an inherited contact.
-        // Same-context explicit choices still pass unchanged to the owner.
-        if (!contacts.length || !selected || contacts.includes(selected)) return;
-        if (contacts.length === 1) ClassicalClauseRelationSelections[selectionKey] = contacts[0];
-        else delete ClassicalClauseRelationSelections[selectionKey];
-      });
-      if (principal && previous?.principal !== principal
-        && readClassicalClauseSelections().compoundHeadTarget) {
-        const projection = controller.buildDecisionContract?.({
-          ...readClassicalClauseSelections(), compoundHeadTarget: "",
-        });
-        if (projection?.derived?.compoundHeadTarget === "simple-head") {
-          ClassicalClauseRelationSelections.compoundHeadTarget = "simple-head";
-        }
-      }
-      ClassicalAdjectivalContactCaptureContexts.set(controller, context);
+      if(readClassicalClauseSelections().relation!=="adjectival-modification")return;
+      const prior=ClassicalConstructionSession.position.operationContract;
+      if(prior?.kind!=="adjectival-operation-contract" || prior.controller!==controller)return;
+      ClassicalClauseRelationSelections=Object.assign(Object.create(null),controller.reconcileAdjectivalCaptureChoices(readClassicalClauseSelections(),prior.contract.currentChoiceFrame));
     }
 
     function setClassicalClauseRelationDecision(decisionId = "", value = "", expectedFrame = null) {
@@ -39048,6 +39017,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         ["order", decisionContract.derived?.order],
         ["marker", decisionContract.derived?.marking],
         ["modifier type", decisionContract.derived?.modifierClauseType],
+        ["modifier function", decisionContract.derived?.adjoinedFunction],
         ["scope", decisionContract.derived?.scope],
         ["referent link", decisionContract.derived?.linkRole],
         ["ambiguity", decisionContract.derived?.ambiguityType],
@@ -39133,9 +39103,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
               === decisionContract.relation
             && ActiveClassicalGrammarResultBinding.clauseRelationExecutionBlockReason),
         onClick: () => {
-          if ([...SUPPLEMENTATION_OPERATION_ROUTES,...ADJUNCTION_OPERATION_ROUTES].includes(selectedRelation)) {
+          if ([...SUPPLEMENTATION_OPERATION_ROUTES,...ADJUNCTION_OPERATION_ROUTES,...ADJECTIVAL_OPERATION_ROUTES].includes(selectedRelation)) {
             const snapshot = getClassicalComparisonOperationSnapshot();
-            if(["supplementation-operation-contract","adjunction-operation-contract"].includes(snapshot?.kind) && snapshot.controller === controller
+            if(["supplementation-operation-contract","adjunction-operation-contract","adjectival-operation-contract"].includes(snapshot?.kind) && snapshot.controller === controller
               && snapshot.routeId === selectedRelation && isCurrentComparisonOperationSnapshot(snapshot))
               applyClassicalConstructionPosition();
             return;
@@ -44190,6 +44160,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       // A new Source/reset/import ingress must never be overwritten here.
       const departingOperation = departing?.kind === "comparison-operation-contract" ? "clause:comparison"
         : departing?.kind === "adjunction-operation-contract" ? "clause:adverbial-adjunction"
+        : departing?.kind === "adjectival-operation-contract" ? "nnc:adjectival-modification"
         : departing?.kind === "supplementation-operation-contract" ? "sentence:supplementation"
         : ["conjunction-operation-contract","complement-operation-contract"].includes(departing?.kind) ? "clause:composition" : "";
       if (selectedOperation !== departingOperation && departing
@@ -48707,9 +48678,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
           ||snapshot.contract.binding!==current.ownerBindingFrame||!isCurrentPersonalNameSnapshot(snapshot))return false;
         return applyClassicalConstructionPosition();
       }
-      if(["sentence:supplementation","clause:adverbial-adjunction"].includes(current.operationId) && current.family === "clause-relation" && allowExecution){
+      if(["sentence:supplementation","clause:adverbial-adjunction","nnc:adjectival-modification"].includes(current.operationId) && current.family === "clause-relation" && allowExecution){
         const snapshot=getClassicalComparisonOperationSnapshot();
-        if(snapshot?.kind!==(current.operationId === "sentence:supplementation" ? "supplementation-operation-contract":"adjunction-operation-contract")||snapshot.source!==current.exactResult
+        if(snapshot?.kind!==(current.operationId === "sentence:supplementation" ? "supplementation-operation-contract":current.operationId === "nnc:adjectival-modification" ? "adjectival-operation-contract":"adjunction-operation-contract")||snapshot.source!==current.exactResult
           ||!isCurrentComparisonOperationSnapshot(snapshot)||current.selectedBindingId!==normalizedBindingId)return false;
         return applyClassicalConstructionPosition();
       }
@@ -54856,6 +54827,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
         if(binding.operationId === "sentence:supplementation" && snapshot?.kind === "supplementation-operation-contract"
           && exactResult !== binding.exactResult && anchor?.captureRole === role && isCurrentComparisonOperationSnapshot(snapshot))
           return Boolean(snapshot.controller.prepareSupplementationAnchorReplacement(owner,binding.selectedBindingId,role,exactResult,snapshot.selections,snapshot.contract.currentChoiceFrame));
+        if(binding.operationId === "nnc:adjectival-modification" && snapshot?.kind === "adjectival-operation-contract"
+          && exactResult !== binding.exactResult && anchor?.captureRole === role && isCurrentComparisonOperationSnapshot(snapshot))
+          return Boolean(snapshot.controller.prepareAdjectivalAnchorReplacement(owner,binding.selectedBindingId,role,exactResult,snapshot.selections,snapshot.contract.currentChoiceFrame));
         // Probe a separate controller. Listing candidates never changes live captures.
         const probe = targetObject.createClassicalClauseRelationController?.();
         if (binding.clauseRelationRecovery) {
@@ -55472,6 +55446,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
           && binding.operationId === "sentence:supplementation" && comparisonSnapshot?.kind === "supplementation-operation-contract"
           && comparisonSnapshot.controller === controller && isCurrentComparisonOperationSnapshot(comparisonSnapshot)
           && binding.ownerBindingFrame?.bindingChoices?.some(choice=>choice.id === binding.selectedBindingId && choice.captureRole === role);
+        const anchoredAdjectival=exactAdditionalResult!==binding.exactResult && binding.operationId==="nnc:adjectival-modification"
+          && comparisonSnapshot?.kind==="adjectival-operation-contract" && comparisonSnapshot.controller===controller
+          && isCurrentComparisonOperationSnapshot(comparisonSnapshot)
+          && binding.ownerBindingFrame?.bindingChoices?.some(choice=>choice.id===binding.selectedBindingId&&choice.captureRole===role);
         const replacement = anchoredAdjunction ? controller.prepareAdjunctionAnchorReplacement(
           binding.ownerBindingFrame, binding.selectedBindingId, role, exactAdditionalResult,
           comparisonSnapshot.selections, comparisonSnapshot.contract.currentChoiceFrame)
@@ -55484,8 +55462,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
           : anchoredComplement ? controller.prepareComplementAnchorReplacement(
             binding.ownerBindingFrame, binding.selectedBindingId, role, exactAdditionalResult,
             comparisonSnapshot.selections, comparisonSnapshot.contract.currentChoiceFrame)
+          : anchoredAdjectival ? controller.prepareAdjectivalAnchorReplacement(binding.ownerBindingFrame,binding.selectedBindingId,role,exactAdditionalResult,comparisonSnapshot.selections,comparisonSnapshot.contract.currentChoiceFrame)
           : anchoredSupplementation ? controller.prepareSupplementationAnchorReplacement(binding.ownerBindingFrame,binding.selectedBindingId,role,exactAdditionalResult,comparisonSnapshot.selections,comparisonSnapshot.contract.currentChoiceFrame) : null;
-        if ((anchoredAdjunction || anchoredComparison || anchoredConjunction || anchoredComplement || anchoredSupplementation) && !replacement) return false;
+        if ((anchoredAdjunction || anchoredComparison || anchoredConjunction || anchoredComplement || anchoredSupplementation || anchoredAdjectival) && !replacement) return false;
         const result = role
           ? controller?.captureCurrentResult?.(
             role,
@@ -55516,9 +55495,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
           } : {}),
           requiredResultRoles: remainingRequiredResultRoles,
         });
-        if ((anchoredAdjunction || anchoredComparison || anchoredConjunction || anchoredComplement || anchoredSupplementation) && replacement) {
+        if ((anchoredAdjunction || anchoredComparison || anchoredConjunction || anchoredComplement || anchoredSupplementation || anchoredAdjectival) && replacement) {
+          const nextSelections=anchoredAdjectival ? controller.reconcileAdjectivalCaptureChoices(comparisonSnapshot.selections,comparisonSnapshot.contract.currentChoiceFrame) : comparisonSnapshot.selections;
           ClassicalComparisonTransitionDraft = issueComparisonOperationSnapshot(controller,
-            comparisonSnapshot.selections, exactAdditionalResult, null, null, ClassicalClauseRelationSelections);
+            nextSelections, exactAdditionalResult, null, null, ClassicalClauseRelationSelections);
         }
         try {
           if (replacement) syncClassicalContinuationTarget();
@@ -55548,7 +55528,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           }
           return reentered;
         } finally {
-          if ((anchoredAdjunction || anchoredComparison || anchoredConjunction || anchoredComplement || anchoredSupplementation) && replacement) ClassicalComparisonTransitionDraft = null;
+          if ((anchoredAdjunction || anchoredComparison || anchoredConjunction || anchoredComplement || anchoredSupplementation || anchoredAdjectival) && replacement) ClassicalComparisonTransitionDraft = null;
         }
       }
       if (binding.family === "vnc-continuation") {

@@ -1,12 +1,12 @@
-# Grammar OS v1.2.116 release
+# Grammar OS v1.2.117 release
 
-Release name: **Canonical Marker Labels**
+Release name: **Adjectival Choice Coordination**
 
-Browser build: **20261028-marker-label-135**
+Browser build: **20261028-adjectival-session-136**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
-- Fourteen clause-adjunction pathways coordinate captured inputs, choices, preview and explicit Make through one current construction.
-- Required marker labels follow the existing grammatical owners; clearing required inputs preserves the accepted Result.
-- Recursive constructions retain exact parent Results, and changing operation preserves accepted History.
+- Adjectival descriptions coordinate exact captured Results, current choices, preview and explicit Make.
+- Source replacement updates applicable contacts while preserving the accepted Result.
+- Fixed modifier function is shown as a fact; required-input recovery and recursive staging retain exact parents.
 - Mixed session restoration remains unclaimed.
