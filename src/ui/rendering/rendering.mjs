@@ -44256,7 +44256,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
         && snapshot.contract.binding === typed && isCurrentVerbalDerivationSnapshot(snapshot)
         && control.isConnected !== false && doc?.getElementById(control.id) === control
         && !control.disabled && !control.readOnly && !position.construction.sourcePending
-        && (typed.requiredChoiceIds || []).some(key => getClassicalCapabilityBindingControlsForChoice(key).includes(control))
+        && ((typed.requiredChoiceIds || []).some(key => getClassicalCapabilityBindingControlsForChoice(key).includes(control))
+          || targetObject.isClassicalNahuatlCompoundPredicateBindingFrame?.(typed.ownerBindingFrame) === true
+            && typed.ownerBindingFrame.exactSourceFrame === typed.exactSource
+            && getClassicalCapabilityBindingControlsForChoice("compoundMatrixStem").includes(control))
         && !position.legalMoves.some(move => move.type === "choice" && move.id === id)) {
         syncClassicalCapabilityApplyOperationState();
         return ClassicalConstructionSession.position.legalMoves.some(move => move.type === "choice" && move.id === id);

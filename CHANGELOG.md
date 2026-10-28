@@ -1,3 +1,7 @@
+## 1.2.106 — Typed Matrix Recovery
+
+- Reconcile the existing typed compound matrix control when an inherited value is cleared, preserving owner validation and the explicit Make boundary.
+
 ## 1.2.105 — Coordinated Verbal Derivations
 
 - Coordinate six verbal derivation branches and typed compound recovery through the shared construction session, preserving existing grammatical owners and explicit Make.

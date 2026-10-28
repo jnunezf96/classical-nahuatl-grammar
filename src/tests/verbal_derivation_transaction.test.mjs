@@ -77,19 +77,19 @@ test('typed compound control projection exposes required matrix from authentic o
  const source=owner.buildClassicalNahuatlCompoundPredicateSourceFrame({sourceStem:'cac'}),nav=owner.getClassicalGrammarApplicationCapabilityNavigator(source),binding=owner.issueClassicalGrammarTypedSourceOperationBindingFrame(nav,'vnc:derivational-operation',{}),surface={basalUnit:'vnc',state:{lateOperation:'none'}};
  const p=ctx.projectClassicalTypedLateDerivationSurface(surface,binding);assert.equal(p.state.lateOperation,'compound');assert.equal(p.state.stem,'cac');assert.equal(p.state.compoundPredicateSourceFrame,source);assert.equal(binding.bindingStatus,'choices-required');assert.equal(ctx.projectClassicalTypedLateDerivationSurface(surface,{...binding}),surface);
 });
-test('production move gate reconciles current required typed text but rejects stale and copied targets',async()=>{
+test('production move gate admits inherited ready typed matrix clearing and rejects stale or copied targets',async()=>{
  const {readFileSync}=await import('node:fs'),{default:vm}=await import('node:vm');
  const code=readFileSync(new URL('../ui/rendering/rendering.mjs',import.meta.url),'utf8');
  const extract=(name,next)=>code.slice(code.indexOf(`    function ${name}(`),code.indexOf(`    function ${next}(`));
- const source=owner.buildClassicalNahuatlCompoundPredicateSourceFrame({sourceStem:'cac'}),ingress=owner.getClassicalGrammarApplicationCapabilityNavigator(source),binding=owner.issueClassicalGrammarTypedSourceOperationBindingFrame(ingress,'vnc:derivational-operation',{});
- assert.ok(binding.requiredChoiceIds.includes('compoundMatrixStem'));
+ const source=owner.buildClassicalNahuatlCompoundPredicateSourceFrame({sourceStem:'cac'}),ingress=owner.getClassicalGrammarApplicationCapabilityNavigator(source),binding=owner.issueClassicalGrammarTypedSourceOperationBindingFrame(ingress,'vnc:derivational-operation',{compoundMatrixStem:'yāuh'});
+ assert.equal(binding.requiredChoiceIds.length,0,'inherited ready matrix no longer appears as missing');
  const session=createConstructionSession({isSource:x=>x===source}),scope=createVerbalDerivationScope({owner,source,session,getIngress:()=>ingress}),snapshot=issueVerbalDerivationSnapshot(scope,{ingress,binding});
  session.stage({source,route:{operation:'vnc:derivational-operation'},operationContract:snapshot,slots:snapshot.captures,choices:{},legalMoves:[],ready:false,execution:null});
- const control={id:'classical-rule-logic-compound-matrix',tagName:'INPUT',type:'text',value:'yāuh',dataset:{},isConnected:true,closest:()=>null};
+ const control={id:'classical-rule-logic-compound-matrix',tagName:'INPUT',type:'text',value:'',dataset:{},isConnected:true,closest:()=>null};
  const listeners={},queue=[];let reconciles=0;
  const doc={addEventListener:(type,fn)=>listeners[type]=fn,getElementById:id=>id===control.id?control:null};
  const {isCurrentVerbalDerivationSnapshot}=await import('../ui/composition/verbal_derivation_transaction.mjs');
- const ctx=vm.createContext({targetObject:{document:doc,queueMicrotask:fn=>queue.push(fn)},ClassicalConstructionSession:session,ClassicalPositionStaging:false,ClassicalPositionExecuting:false,PendingClassicalResultEdit:null,ClassicalChoicePreflightTransaction:null,ClassicalComparisonTransitionDraft:null,
+ const ctx=vm.createContext({targetObject:{document:doc,queueMicrotask:fn=>queue.push(fn),isClassicalNahuatlCompoundPredicateBindingFrame:owner.isClassicalNahuatlCompoundPredicateBindingFrame},ClassicalConstructionSession:session,ClassicalPositionStaging:false,ClassicalPositionExecuting:false,PendingClassicalResultEdit:null,ClassicalChoicePreflightTransaction:null,ClassicalComparisonTransitionDraft:null,
  getNativeGrammarControls:()=>[control],getActiveClassicalGrammarTypedSourceOperationBinding:()=>binding,isCurrentVerbalDerivationSnapshot,
  getClassicalCapabilityBindingControlsForChoice:key=>key==='compoundMatrixStem'?[control]:[],
  syncClassicalCapabilityApplyOperationState:()=>{reconciles++;session.stage({...session.position.construction,operationContract:snapshot,choices:{'compound-matrix':'yāuh'},legalMoves:[{type:'choice',id:'compound-matrix'}],ready:false,execution:null});}});
