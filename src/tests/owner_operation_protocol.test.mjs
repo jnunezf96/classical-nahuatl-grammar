@@ -44,3 +44,77 @@ test('adapter and position import one exact protocol URL',()=>{
 test('adapter isolates nested intent without cloning canonical captures',()=>{
  const f=fixture(),input={...f.select,meta:{value:'original'}},s=f.api.issue(f.owner,input,f.source);input.meta.value='changed';assert.equal(s.selections.meta.value,'original');assert.ok(Object.isFrozen(s.selections.meta));assert.equal(s.captures[0].exact,f.source);
 });
+
+// Synthetic engineering owner: tests protocol custody, not grammatical authority.
+function snapshotFixture() {
+ const source={},controller={},ingress={};
+ const store=createConstructionPosition({isSource:x=>x===source});
+ let checks=0,transitions=0;
+ const api=createOwnerOperationProtocol({kind:'snapshot-fixture',select:()=>true,
+  routeId:()=> 'fixture',projectIntent:s=>Object.freeze({...s}),
+  buildContract:()=>Object.freeze({}),isCurrentFrame:()=>true,
+  projectCaptures:()=>[{role:'source',exact:source}],
+  equivalent:(a,b)=>a.source===b.source&&a.ingress===b.ingress&&a.selections.value===b.selections.value,
+  isCurrentSnapshot(snapshot,expected=null) {
+   checks++;
+   return store.position.operationContract===snapshot && (!expected || (
+    expected.snapshot===snapshot && expected.revision===store.position.revision
+    && expected.ingress===snapshot.ingress));
+  },
+  transition:(c,s,intent,expected)=>{
+   transitions++;
+   assert.equal(expected.snapshot,store.position.operationContract);
+   return {authorizationStatus:'authorized',selections:{...s,value:intent.value}};
+  },staleReason:'snapshot-stale'});
+ const issue=()=>api.issue(controller,{value:'a'},source,null,null,ingress);
+ const stage=snapshot=>store.stage({source,route:{operation:'fixture'},operationContract:snapshot,
+  choices:snapshot.selections,slots:snapshot.captures});
+ const expectation=snapshot=>({snapshot,revision:store.position.revision,ingress});
+ return {api,store,issue,stage,expectation,get checks(){return checks;},get transitions(){return transitions;}};
+}
+
+test('snapshot currentness never prevents issuance before staging',()=>{
+ const f=snapshotFixture(),s=f.issue();
+ assert.ok(s);assert.equal(f.checks,0);
+ assert.equal(f.api.isCurrent(s),false);
+ f.stage(s);assert.equal(f.api.isCurrent(s,f.expectation(s)),true);
+ const t=f.api.transition(s,{value:'b'},f.expectation(s));
+ assert.equal(t.authorizationStatus,'authorized');assert.ok(t.snapshot);
+ assert.equal(t.snapshot.ingress,s.ingress);
+ assert.equal(f.api.isCurrent(t.snapshot),false);
+ f.stage(t.snapshot);assert.equal(f.api.isCurrent(t.snapshot),true);
+ assert.equal(f.api.isCurrent(s),false);
+});
+
+test('equivalent replacement invalidates old snapshot even at unchanged position revision',()=>{
+ const f=snapshotFixture(),a=f.issue();f.stage(a);
+ const expected=f.expectation(a),b=f.issue();
+ assert.equal(areOwnerOperationSnapshotsEquivalent(a,b),true);
+ f.stage(b);assert.equal(f.store.position.revision,expected.revision);
+ assert.equal(f.api.isCurrent(a,expected),false);
+ assert.equal(f.api.transition(a,{value:'b'},expected).blockReason,'snapshot-stale');
+ assert.equal(f.transitions,0);assert.equal(f.api.isCurrent(b,f.expectation(b)),true);
+});
+
+test('wrong event expectation and copied snapshot block before owner transition',()=>{
+ const f=snapshotFixture(),s=f.issue();f.stage(s);const expected=f.expectation(s);
+ for(const bad of [{...expected,revision:expected.revision-1},
+  {...expected,ingress:{}},{...expected,snapshot:{...s}}]) {
+  assert.equal(f.api.isCurrent(s,bad),false);
+  assert.equal(f.api.transition(s,{value:'b'},bad).blockReason,'snapshot-stale');
+ }
+ assert.equal(f.api.transition({...s},{value:'b'},expected).blockReason,'snapshot-stale');
+ assert.equal(f.transitions,0);
+ assert.equal(f.api.transition(s,{value:'b'},expected).authorizationStatus,'authorized');
+ assert.equal(f.transitions,1);
+});
+
+test('absent snapshot hook preserves owner frame expectation semantics',()=>{
+ const f=fixture('permit'),s=f.api.issue(f.owner,f.select,f.source);
+ assert.equal(f.api.isCurrent(s,{unrelated:'not an owner frame'}),true);
+ assert.equal(f.api.transition(s,{value:'b'},{permit:'wrong'}).blockReason,'fixture-stale');
+ assert.equal(f.owner.epoch,0);
+ const t=f.api.transition(s,{value:'b'},s.contract.permit);
+ assert.equal(t.authorizationStatus,'authorized');assert.equal(t.snapshot.selections.value,'b');
+ assert.equal(f.owner.epoch,1);
+});

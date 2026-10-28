@@ -19,8 +19,10 @@ export function createOwnerOperationProtocol(adapter) {
   const snapshot=Object.freeze({kind:adapter.kind,routeId:adapter.routeId(intent),controller,source,ingress,selections:intent,contract,captures});
   issued.set(snapshot,protocol);return snapshot;
  }
- function isCurrent(snapshot) {
+ function isCurrent(snapshot,expectation=null) {
   if(!owns(snapshot)||!adapter.isCurrentFrame(snapshot.controller,snapshot.contract,snapshot.selections))return false;
+  // Session currentness is separate from issuance: replacements are not staged yet.
+  if(adapter.isCurrentSnapshot && !adapter.isCurrentSnapshot(snapshot,expectation))return false;
   const captures=adapter.projectCaptures(snapshot.controller,snapshot.contract,snapshot.selections);
   return captures.length===snapshot.captures.length&&snapshot.captures.every((x,i)=>captures[i].role===x.role&&captures[i].exact===x.exact);
  }
@@ -28,7 +30,7 @@ export function createOwnerOperationProtocol(adapter) {
   return owns(snapshot)&&snapshot.ingress===legacy&&adapter.select(legacy)&&snapshot.source===source?snapshot.selections:legacy;
  }
  function transition(snapshot,intent,expectedFrame) {
-  if(!isCurrent(snapshot)||!adapter.isCurrentFrame(snapshot.controller,snapshot.contract,snapshot.selections,expectedFrame))
+  if(!isCurrent(snapshot,expectedFrame)||!adapter.isCurrentFrame(snapshot.controller,snapshot.contract,snapshot.selections,expectedFrame))
    return Object.freeze({handled:true,authorizationStatus:'blocked',blockReason:adapter.staleReason});
   const result=adapter.transition(snapshot.controller,snapshot.selections,intent,expectedFrame);
   if(result.authorizationStatus!=='authorized')return result;
