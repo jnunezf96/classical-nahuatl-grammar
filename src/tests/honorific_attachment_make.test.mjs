@@ -26,7 +26,7 @@ function harness({stem,sourceClass}){
  const ctx=vm.createContext({stageOrdinaryBindingIntent,ClassicalOrdinaryNncChoiceMemory:new WeakMap(),ClassicalVncSentenceControlKeys:{},getClassicalCapabilityBindingControlsForChoice:()=>[],ClassicalConstructionSession:createConstructionSession({isSource:x=>x===source}),targetObject:{...runtime,document:{getElementById:id=>controls[id]||null}},
   ActiveClassicalGrammarTypedSourceOperationBinding:binding,ClassicalTypedSourceBindingSelectionSignatures:new WeakMap(),ActiveClassicalGrammarCapabilityNavigator:navigator,ActiveClassicalGrammarResultBinding:null,ActiveClassicalGrammarResultSourceCapture:null,
   PendingClassicalOrdinaryGrammarBinding:null,PendingClassicalOrdinarySentenceOptions:null,
-  HandledClassicalContinuationChoiceEvents:new WeakSet(),CLASSICAL_CUSTOM_CONSTRUCTION_SOURCE_ANALYSIS_CONTROL_IDS:[],CLASSICAL_CAPABILITY_BINDING_CONTROL_IDS:{},
+  canClassicalNominalNativeChoice:()=>true,HandledClassicalContinuationChoiceEvents:new WeakSet(),CLASSICAL_CUSTOM_CONSTRUCTION_SOURCE_ANALYSIS_CONTROL_IDS:[],CLASSICAL_CAPABILITY_BINDING_CONTROL_IDS:{},
   stageClassicalSentenceRelationalMarkerRoute:()=>false,stageClassicalSentenceConjunctorRoute:()=>false,stageClassicalInactiveFiniteChoiceForParticleRoot:()=>false,
   getClassicalNominalConstructionControlValue:()=> 'none',handleClassicalIntermediateBuildTaskReset:()=>false,clearClassicalPreparedAttitudeResult(){},
   getActiveClassicalGrammarTypedSourceOperationBinding:()=>ctx.ActiveClassicalGrammarTypedSourceOperationBinding,getClassicalNncReinflectionDraft:()=>null,getClassicalRuleLogicSurfaceState:state,

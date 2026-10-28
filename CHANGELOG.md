@@ -1,5 +1,9 @@
 # Version History
 
+## v1.2.103 — Coordinated Nominal Constructions
+
+Nominal embedding, compounds, numbers, calendar dates, affective nouns and adjectival formations now share owner-authorized construction snapshots. Required inputs and dependent compound choices recover without changing the accepted Result before Make.
+
 ## v1.2.102 — Coordinated Foundations
 
 Ordinary noun clauses, direct/causative/applicative verb clauses, and ordered voice now share exact owner-binding coordination. Dependent choices retain their authorized context, and a saving failure can retry acceptance without repeating grammar execution.

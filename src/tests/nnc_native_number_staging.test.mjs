@@ -1,4 +1,5 @@
 import test from 'node:test';
+import {stageOrdinaryBindingIntent} from '../application/classical/ordinary_binding_intent.mjs';
 import assert from 'node:assert/strict';
 import vm from 'node:vm';
 import {readFileSync} from 'node:fs';
@@ -25,10 +26,10 @@ function harness(stem){
  const predicate={id:'classical-rule-logic-nnc-predicate-form',value:'source-stem',options:[{value:'source-stem',disabled:false},{value:'yo-matrix',disabled:false}]};
  let syncCalls=0,executions=0,lastProjection=null;
  const state=()=>({subject:number.value==='plural'?'3pl':'3sg',nncAnimacy:'animate',nncHumanness:'human',nncState:'absolutive',nncPredicateOptionId:'source-stem',nncStemRelation:'plain',nncMetaphoricalUse:false,nncPossessor:'',nncNumberForm:''});
- const ctx=vm.createContext({
+ const ctx=vm.createContext({projectVncChoiceEditControls:()=>null,PendingClassicalResultEdit:null,stageOrdinaryBindingIntent,ClassicalOrdinaryNncChoiceMemory:new WeakMap(),
   targetObject:{...runtime,document:{getElementById:id=>id===number.id?number:id===predicate.id?predicate:id==='classical-capability-operation-plan-status'?status:id==='classical-capability-navigator-operation'?{value:'nnc:ordinary'}:null}},
   ActiveClassicalGrammarResultBinding:null,ActiveClassicalGrammarResultSourceCapture:null,ActiveClassicalGrammarCapabilityNavigator:navigator,
-  HandledClassicalContinuationChoiceEvents:new WeakSet(),CLASSICAL_CUSTOM_CONSTRUCTION_SOURCE_ANALYSIS_CONTROL_IDS:[],CLASSICAL_CAPABILITY_BINDING_CONTROL_IDS:{},
+  getClassicalNncReinflectionDraft:()=>null,canClassicalNominalNativeChoice:()=>true,HandledClassicalContinuationChoiceEvents:new WeakSet(),CLASSICAL_CUSTOM_CONSTRUCTION_SOURCE_ANALYSIS_CONTROL_IDS:[],CLASSICAL_CAPABILITY_BINDING_CONTROL_IDS:{},
   stageClassicalSentenceRelationalMarkerRoute:()=>false,stageClassicalSentenceConjunctorRoute:()=>false,stageClassicalInactiveFiniteChoiceForParticleRoot:()=>false,
   getClassicalNominalConstructionControlValue:()=> 'none',handleClassicalIntermediateBuildTaskReset:()=>false,
   clearClassicalPreparedAttitudeResult(){},getActiveClassicalGrammarTypedSourceOperationBinding:()=>binding,
