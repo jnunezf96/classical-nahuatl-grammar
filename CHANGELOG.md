@@ -1,5 +1,9 @@
 # Version History
 
+## v1.2.102 — Coordinated Foundations
+
+Ordinary noun clauses, direct/causative/applicative verb clauses, and ordered voice now share exact owner-binding coordination. Dependent choices retain their authorized context, and a saving failure can retry acceptance without repeating grammar execution.
+
 ## v1.2.101 — Coordinated Complements
 
 Three complement branches now use owner-issued current choice frames and the common session, preserving exact inputs through saved-input recovery and staged changes.

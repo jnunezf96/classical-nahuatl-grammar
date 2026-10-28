@@ -71,3 +71,13 @@ test('exact rejected reflexive draft remains authentic and correctable without r
  b=c.reissue(b,{objectInterpretation:'reflexive'},{choiceId:'objectInterpretation',explicitValidated:true,issue});
  assert.equal(b.bindingStatus,'ready');assert.equal(b.callerSelections.subject,'1sg');assert.equal(b.exactInputResult,parent);
 });
+
+for(const exact of [false,true])test(`${exact?'exact':'typed'} carry preserves helper memory across an additional owner-issued final binding`,()=>{
+ const {c,bind,issue,base}=fixture(exact);const opt={...base,mood:'optative',tense:'nonpast'};
+ let b=c.reissue(bind(opt),{...opt,sentenceOptions:{introductoryParticle:'tlā',prefaceParticle:'ye'}},{choiceId:'prefaceParticle',explicitValidated:true,issue});
+ b=c.reissue(b,{...b.callerSelections,tense:'future'},{choiceId:'tense',explicitValidated:true,issue});
+ const next=issue({...b.callerSelections});assert.notEqual(next,b);assert.equal(c.carry(b,next),true);
+ assert.equal(c.carry({...b},next),false);assert.equal(c.carry(b,fixture(exact).bind({})),false);assert.equal(c.carry(b,fixture(!exact).bind({})),false);
+ b=c.reissue(next,base,{choiceId:'mood',issue});b=c.reissue(b,{...opt,sentenceOptions:{introductoryParticle:'tlā'}},{choiceId:'mood',issue});
+ assert.equal(b.callerSelections.tense,'future');assert.equal(b.callerSelections.sentenceOptions.prefaceParticle,'ye');
+});

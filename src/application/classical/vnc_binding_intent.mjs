@@ -67,5 +67,14 @@ export function createVncBindingIntentCoordinator(owner) {
   } else if(!proposal||!tense.commit(previousBinding,next,before.source,proposal.receipt))tense.carry(previousBinding,next,before.source);
   return next;
  }
- return Object.freeze({reissue});
+ function carry(previous,next) {
+  const before=describe(previous),after=describe(next);
+  if(!before||!after||before.source!==after.source||before.kind!==after.kind)return false;
+  derivation.carry(previous,next);
+  sentenceOrigins.set(next,sentenceOrigins.get(previous)||previous);
+  if(before.kind==='typed'){applicative.carry(previous,next);typedTense.carry(previous,next);}
+  else exactTense.carry(previous,next,before.source);
+  return true;
+ }
+ return Object.freeze({reissue,carry});
 }

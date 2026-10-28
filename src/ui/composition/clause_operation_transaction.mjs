@@ -1,6 +1,6 @@
-import * as comparison from './comparison_operation_transaction.mjs';
-import * as conjunction from './conjunction_operation_transaction.mjs';
-import * as complement from './complement_operation_transaction.mjs';
+import * as comparison from './comparison_operation_transaction.mjs?issuedBinding=20261028-1';
+import * as conjunction from './conjunction_operation_transaction.mjs?issuedBinding=20261028-1';
+import * as complement from './complement_operation_transaction.mjs?issuedBinding=20261028-1';
 const adapters={
  'complement-operation-contract':{issue:complement.issueComplementOperationSnapshot,current:complement.isCurrentComplementOperationSnapshot,read:complement.readComplementOperationSelections,transition:complement.transitionComplementOperationSnapshot},
  'comparison-operation-contract':{issue:comparison.issueComparisonOperationSnapshot,current:comparison.isCurrentComparisonOperationSnapshot,read:comparison.readComparisonOperationSelections,transition:comparison.transitionComparisonOperationSnapshot},

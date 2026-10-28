@@ -1,4 +1,4 @@
-import {areOwnerOperationSnapshotsEquivalent} from './owner_operation_protocol.mjs';
+import {areOwnerOperationSnapshotsEquivalent} from './owner_operation_protocol.mjs?issuedBinding=20261028-1';
 // A session position retains authentic owner objects. It never authorizes grammar.
 const freezeRecord=value=>Object.freeze({...value});
 const equal=(a,b)=>a===b || Boolean(a && b && typeof a==='object' && typeof b==='object'

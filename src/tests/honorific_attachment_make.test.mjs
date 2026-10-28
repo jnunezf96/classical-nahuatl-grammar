@@ -5,6 +5,7 @@ import {readFileSync} from 'node:fs';
 import {createRuntimeInstance} from '../runtime/create_runtime.mjs';
 import {previewConstructionPacket} from '../ui/composition/construction_preview.mjs';
 import {executeConstructionPacket,freezeConstructionData,getConstructionPacketOrigin} from '../ui/composition/construction_packet.mjs';
+import {stageOrdinaryBindingIntent} from '../application/classical/ordinary_binding_intent.mjs';
 import {createConstructionSession} from '../ui/composition/construction_session.mjs';
 const fixtures=JSON.parse(readFileSync(new URL('./fixtures/nonce_honorific_attachment_20261023.json',import.meta.url)));
 const code=readFileSync(new URL('../ui/rendering/rendering.mjs',import.meta.url),'utf8');
@@ -22,7 +23,7 @@ function harness({stem,sourceClass}){
  const controls={[honorific.id]:honorific,'classical-rule-logic-sentence-particle':{value:'l3-o-behold'},
   'classical-capability-navigator-operation':{value:'nnc:ordinary'},'classical-capability-operation-plan-status':status};
  const state=()=>({subject:'3sg',nncAnimacy:'animate',nncHumanness:'human',nncState:'absolutive',nncPredicateOptionId:'source-stem',nncStemRelation:'plain',nncMetaphoricalUse:false,nncPossessor:'',nncNumberForm:''});
- const ctx=vm.createContext({targetObject:{...runtime,document:{getElementById:id=>controls[id]||null}},
+ const ctx=vm.createContext({stageOrdinaryBindingIntent,ClassicalOrdinaryNncChoiceMemory:new WeakMap(),ClassicalVncSentenceControlKeys:{},getClassicalCapabilityBindingControlsForChoice:()=>[],ClassicalConstructionSession:createConstructionSession({isSource:x=>x===source}),targetObject:{...runtime,document:{getElementById:id=>controls[id]||null}},
   ActiveClassicalGrammarTypedSourceOperationBinding:binding,ClassicalTypedSourceBindingSelectionSignatures:new WeakMap(),ActiveClassicalGrammarCapabilityNavigator:navigator,ActiveClassicalGrammarResultBinding:null,ActiveClassicalGrammarResultSourceCapture:null,
   PendingClassicalOrdinaryGrammarBinding:null,PendingClassicalOrdinarySentenceOptions:null,
   HandledClassicalContinuationChoiceEvents:new WeakSet(),CLASSICAL_CUSTOM_CONSTRUCTION_SOURCE_ANALYSIS_CONTROL_IDS:[],CLASSICAL_CAPABILITY_BINDING_CONTROL_IDS:{},

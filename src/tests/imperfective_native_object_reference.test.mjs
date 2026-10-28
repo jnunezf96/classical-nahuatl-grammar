@@ -3,6 +3,9 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 import {createRuntimeInstance} from '../runtime/create_runtime.mjs';
+import * as adapter from '../ui/composition/issued_binding_operation_transaction.mjs';
+import {createVncBindingIntentCoordinator} from '../application/classical/vnc_binding_intent.mjs';
+import {createFiniteConnectorCoordinator} from '../application/classical/finite_connector_choice_coordination.mjs';
 import {createConstructionSession} from '../ui/composition/construction_session.mjs';
 const r=(await createRuntimeInstance({documentObject:{getElementById:()=>null,addEventListener(){}}})).runtimeObject;
 const code=readFileSync(new URL('../ui/rendering/rendering.mjs',import.meta.url),'utf8');
@@ -21,11 +24,13 @@ test('native object edits retain the exact class-independent owner subject choic
   const accepted=prior.canonicalResult;active=bind(choices);let executions=0;
   const session=createConstructionSession({isSource:v=>v===source,isResult:v=>r.isClassicalNahuatlVncApplicationFrame(v),execute:p=>{executions++;return r.executeClassicalGrammarTypedSourceOperationBindingFrame(p.binding);},present:()=>true});
   session.restore(accepted);
+  const scope=adapter.createIssuedBindingOperationScope({owner:r,source,operationId:'vnc:application',ingressKind:'typed',navigator:nav,session,getIngress:()=>nav,reissue:bind});
+  let snapshot=adapter.issueIssuedBindingOperationSnapshot(scope,active,nav);session.stage({source,route:{operation:'vnc:application'},operationContract:snapshot});
   const control={id:'classical-rule-logic-object',value:'specific-projective:2sg',disabled:false,readOnly:false,hasAttribute:()=>false,closest:s=>s==='#classical-rule-logic-controls'?{}:null};
-  const ctx={targetObject:{...r,document:{getElementById:id=>id===control.id?control:null}},ActiveClassicalGrammarCapabilityNavigator:nav,ActiveClassicalGrammarResultBinding:null,HandledClassicalContinuationChoiceEvents:new WeakSet(),
-   getActiveClassicalGrammarTypedSourceOperationBinding:()=>active,
+  const ctx={ClassicalVncBindingIntent:createVncBindingIntentCoordinator(r),ClassicalFiniteConnectorChoices:createFiniteConnectorCoordinator(r),ClassicalVncSentenceControlKeys:{},ClassicalTypedSourceBindingSelectionSignatures:new WeakMap(),getClassicalTypedSourceSelectionSignature:()=>null,projectClassicalVncIntentControls(){},syncClassicalGrammarTypedSourceOperationChoices(){},captureClassicalIssuedBindingEvent:binding=>binding===snapshot.contract.binding?{snapshot,event:adapter.captureIssuedBindingChoiceFrame(snapshot)}:null,retainClassicalIssuedBindingCandidate(context,binding){const next=adapter.adoptIssuedBindingOperationCandidate(context.snapshot,binding,context.event);if(!next)return false;snapshot=next;return true;},ActiveClassicalGrammarTypedSourceOperationBinding:active,targetObject:{...r,document:{getElementById:id=>id===control.id?control:null}},ActiveClassicalGrammarCapabilityNavigator:nav,ActiveClassicalGrammarResultBinding:null,HandledClassicalContinuationChoiceEvents:new WeakSet(),
+   getActiveClassicalGrammarTypedSourceOperationBinding:()=>ctx.ActiveClassicalGrammarTypedSourceOperationBinding,
    stageClassicalGrammarTypedSourceOperationBinding:(op,selected)=>{active=bind(selected);return active;},
-   syncClassicalCapabilityApplyOperationState:()=>session.stage({source,route:{operation:'vnc:application'},slots:[{role:'source',exact:source}],choices:{...active.callerSelections},legalMoves:[],ready:active.bindingStatus==='ready',execution:{binding:active,signature:JSON.stringify(active.callerSelections)}})};
+   syncClassicalCapabilityApplyOperationState:()=>{active=ctx.ActiveClassicalGrammarTypedSourceOperationBinding;return session.stage({source,operationContract:snapshot,route:{operation:'vnc:application'},slots:[{role:'source',exact:source}],choices:{...active.callerSelections},legalMoves:[],ready:active.bindingStatus==='ready',execution:{binding:active,signature:JSON.stringify(active.callerSelections)}});}};
   vm.createContext(ctx);
   const mapStart=code.indexOf('    const CLASSICAL_CAPABILITY_BINDING_CONTROL_IDS = Object.freeze({'),mapEnd=code.indexOf('\n    });',mapStart)+8;
   vm.runInContext(code.slice(mapStart,mapEnd),ctx);

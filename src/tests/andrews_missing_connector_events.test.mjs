@@ -3,6 +3,10 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 import {createRuntimeInstance} from '../runtime/create_runtime.mjs';
+import * as adapter from '../ui/composition/issued_binding_operation_transaction.mjs';
+import {createVncBindingIntentCoordinator} from '../application/classical/vnc_binding_intent.mjs';
+import {createFiniteConnectorCoordinator} from '../application/classical/finite_connector_choice_coordination.mjs';
+import {buildProspectiveVncTenseFrame} from '../application/classical/vnc_tense_choice_coordination.mjs';
 import {createConstructionSession} from '../ui/composition/construction_session.mjs';
 const {runtimeObject:r}=await createRuntimeInstance({documentObject:{getElementById:()=>null,addEventListener(){}}});
 const text=readFileSync(new URL('../ui/rendering/rendering.mjs',import.meta.url),'utf8');
@@ -39,7 +43,8 @@ function fixture(initial=bind(base)){
  const session=createConstructionSession({isSource:v=>v===source,isResult:v=>r.isClassicalNahuatlVncApplicationFrame(v),
   execute:packet=>{executions++;return r.executeClassicalGrammarTypedSourceOperationBindingFrame(packet.binding);},present:()=>true});
  session.restore(accepted);
- const ctx={targetObject:{...r,document:doc,getActiveDerivationType:()=> 'direct'},ActiveClassicalGrammarTypedSourceOperationBinding:initial,
+ const scope=adapter.createIssuedBindingOperationScope({owner:r,source,operationId:'vnc:application',ingressKind:'typed',navigator:nav,session,getIngress:()=>nav,reissue:bind});let snapshot=adapter.issueIssuedBindingOperationSnapshot(scope,initial,nav);session.stage({source,route:{operation:'vnc:application'},operationContract:snapshot});
+ const ctx={buildProspectiveVncTenseFrame,ClassicalVncBindingIntent:createVncBindingIntentCoordinator(r),ClassicalFiniteConnectorChoices:createFiniteConnectorCoordinator(r),ClassicalVncSentenceControlKeys:{},projectClassicalVncIntentControls(){},syncClassicalObjectMeaningChoice(){},getClassicalSpecializedTypedVncControlProjection:()=>null,getActiveClassicalRuleLogicSurfaceFrame:()=>null,getClassicalRuleLogicSurfaceState:()=>({}),getClassicalRuleLogicVncSubjectFrame:()=>({animacy:'animate',humanness:'human'}),getClassicalTypedVncControlProjection:()=>null,captureClassicalIssuedBindingEvent:binding=>binding===snapshot.contract.binding?{snapshot,event:adapter.captureIssuedBindingChoiceFrame(snapshot)}:null,retainClassicalIssuedBindingCandidate(context,binding){const next=adapter.adoptIssuedBindingOperationCandidate(context.snapshot,binding,context.event);if(!next)return false;snapshot=next;return true;},targetObject:{...r,document:doc,getActiveDerivationType:()=> 'direct'},ActiveClassicalGrammarTypedSourceOperationBinding:initial,
   ActiveClassicalGrammarResultBinding:null,ActiveClassicalGrammarCapabilityNavigator:nav,
   ClassicalTypedSourceBindingSelectionSignatures:new WeakMap(),HandledClassicalContinuationChoiceEvents:new WeakSet(),
   getActiveClassicalGrammarTypedSourceOperationBinding:()=>ctx.ActiveClassicalGrammarTypedSourceOperationBinding,
@@ -54,7 +59,7 @@ function fixture(initial=bind(base)){
   getClassicalRuleLogicSurfaceSentenceOptions:()=>({sentenceType:'affirmative-assertion'}),normalizeClassicalRuleLogicSurfaceDirectionalPrefix:x=>x,
   getClassicalCurrentGrammarControlSurfaceFrame:()=>null,syncClassicalRuleLogicMoodBoundControlOptions(){},syncClassicalRuleLogicLesson11TenseOptions(){},
   syncClassicalCapabilityApplyOperationState(){const b=ctx.ActiveClassicalGrammarTypedSourceOperationBinding;
-   session.stage({source,route:{operation:'vnc:application'},slots:[{role:'source',exact:source}],choices:{...b.callerSelections},legalMoves:[],ready:b.bindingStatus==='ready',execution:{binding:b,signature:JSON.stringify(b.callerSelections)}});},
+   session.stage({source,operationContract:snapshot,route:{operation:'vnc:application'},slots:[{role:'source',exact:source}],choices:{...b.callerSelections},legalMoves:[],ready:b.bindingStatus==='ready',execution:{binding:b,signature:JSON.stringify(b.callerSelections)}});},
   stageClassicalGrammarTypedSourceOperationBinding(operation,selections){ctx.ActiveClassicalGrammarTypedSourceOperationBinding=bind(selections);ctx.syncClassicalGrammarTypedSourceOperationChoices(ctx.ActiveClassicalGrammarTypedSourceOperationBinding);return ctx.ActiveClassicalGrammarTypedSourceOperationBinding;}
  };
  vm.createContext(ctx);
@@ -82,7 +87,7 @@ test('generated finite connector editor stages actual events and retires depende
  ui.edit('classical-rule-logic-tense','present');assert.equal(ui.active.bindingStatus,'ready',ui.active.blockReason);
  assert.equal(ui.active.callerSelections.finiteSingularConnector,undefined);assert.equal(ui.field('finiteSingularConnector'),undefined);
  assert.ok(ui.session.position.accepted.result===accepted);assert.equal(ui.executions,1);
- ui.edit('classical-rule-logic-tense','future');assert.equal(ui.field('finiteSingularConnector').value,'silent');
+ ui.edit('classical-rule-logic-tense','future');assert.equal(ui.field('finiteSingularConnector').value,'qui','existing coordinator restores the explicit licensed connector');
  ui.select('qui');ui.edit('classical-rule-logic-subject','1pl');
  assert.equal(ui.active.bindingStatus,'ready',ui.active.blockReason);assert.equal(ui.field('finiteSingularConnector'),undefined);
  assert.ok(ui.session.position.accepted.result===accepted);assert.equal(ui.executions,1);
