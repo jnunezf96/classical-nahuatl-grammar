@@ -1,4 +1,4 @@
-import {issueComparisonOperationSnapshot,transitionComparisonOperationSnapshot,readComparisonOperationSelections,isCurrentComparisonOperationSnapshot} from '../composition/comparison_operation_transaction.mjs?operationPilot=20261027-1&similarityPilot=20261028-1&comparativePilot=20261028-5&panahuiaPilot=20261028-1&reduplicativePilot=20261028-1&specifiedPilot=20261028-4&equalitySizePilot=20261028-1&degreePilot=20261028-1&sourceSimilarityPilot=20261028-1';
+import {issueComparisonOperationSnapshot,transitionComparisonOperationSnapshot,readComparisonOperationSelections,isCurrentComparisonOperationSnapshot} from '../composition/comparison_operation_transaction.mjs?operationPilot=20261027-1&similarityPilot=20261028-1&comparativePilot=20261028-5&panahuiaPilot=20261028-1&reduplicativePilot=20261028-1&specifiedPilot=20261028-4&equalitySizePilot=20261028-1&degreePilot=20261028-1&sourceSimilarityPilot=20261028-1&verbalSimilarityPilot=20261028-2';
 import {inactiveAffectiveReloadControl,prepareNativeReloadSourceContext,reconcileAcceptedQuotedSourceBaseline} from '../composition/native_reload_source.mjs?nativeReload=20261027-4';
 import {normalizeSourceEditorSignature} from '../composition/source_editor_signature.mjs';
 import {inputLabel,captureRoleLabel,clauseReadinessGuidance,contractReferences,normalizeAndrewsReference,hasCurrentClauseProjection} from '../composition/choice_guidance.mjs?choiceGuidance=20261027-3';
@@ -55110,32 +55110,36 @@ export function createUiRenderingApi(targetObject = globalThis) {
           ClassicalComparisonTransitionDraft = issueComparisonOperationSnapshot(controller,
             comparisonSnapshot.selections, exactAdditionalResult, null, null, ClassicalClauseRelationSelections);
         }
-        if (replacement) syncClassicalContinuationTarget();
-        const navigatorRoot = targetObject.document?.getElementById?.(
-          "classical-capability-navigator"
-        );
-        if (navigatorRoot?.dataset) {
-          navigatorRoot.dataset.classicalCapabilityBindingResults =
-            remainingRequiredResultRoles.join("|");
+        try {
+          if (replacement) syncClassicalContinuationTarget();
+          const navigatorRoot = targetObject.document?.getElementById?.(
+            "classical-capability-navigator"
+          );
+          if (navigatorRoot?.dataset) {
+            navigatorRoot.dataset.classicalCapabilityBindingResults =
+              remainingRequiredResultRoles.join("|");
+          }
+          ClassicalClauseRelationStatusMessage =
+            `Exact ${role} Result added to the active relation.`;
+          const selectedBindingId = ActiveClassicalGrammarResultBinding
+            .selectedBindingId
+            || ActiveClassicalGrammarResultBinding.bindingIds[0]
+            || "";
+          const reentered = selectedBindingId
+            ? enterClassicalGrammarResultBindingChoice(
+              selectedBindingId,
+              { allowExecution: false }
+            )
+            : false;
+          syncClassicalGrammarWorkspaceHistory();
+          syncClassicalCapabilityApplyOperationState();
+          if (!reentered && status) {
+            status.textContent = ClassicalClauseRelationStatusMessage;
+          }
+          return reentered;
+        } finally {
+          if (anchoredComparison && replacement) ClassicalComparisonTransitionDraft = null;
         }
-        ClassicalClauseRelationStatusMessage =
-          `Exact ${role} Result added to the active relation.`;
-        const selectedBindingId = ActiveClassicalGrammarResultBinding
-          .selectedBindingId
-          || ActiveClassicalGrammarResultBinding.bindingIds[0]
-          || "";
-        const reentered = selectedBindingId
-          ? enterClassicalGrammarResultBindingChoice(
-            selectedBindingId,
-            { allowExecution: false }
-          )
-          : false;
-        syncClassicalGrammarWorkspaceHistory();
-        syncClassicalCapabilityApplyOperationState();
-        if (!reentered && status) {
-          status.textContent = ClassicalClauseRelationStatusMessage;
-        }
-        return reentered;
       }
       if (binding.family === "vnc-continuation") {
         const role = binding.requiredResultRoles[0] || "";

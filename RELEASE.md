@@ -1,13 +1,13 @@
-# Grammar OS v1.2.96 release
+# Grammar OS v1.2.97 release
 
-Release name: **Coordinated Similarity Sources**
+Release name: **Coordinated Verbal Similarity**
 
-Browser build: **20261028-source-similarity-115**
+Browser build: **20261028-verbal-similarity-116**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Five source-special similarity routes now share the owner-backed session contract.
-- A principal iuhqui Result continues into a larger concatenate with exact child and head custody.
-- Pending choices remain separate from the accepted Result until explicit Make.
+- Resemblance verb clauses and ihui now share owner-backed input and choice coordination.
+- Authentic principal replacement now leaves subsequent input controls current.
+- Pending changes remain separate from accepted Results until explicit Make.

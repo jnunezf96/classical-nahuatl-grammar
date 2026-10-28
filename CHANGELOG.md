@@ -1,5 +1,9 @@
 # Version History
 
+## v1.2.97 — Coordinated Verbal Similarity
+
+The final two comparison routes now share owner-backed coordination. Principal replacement releases its temporary transition draft so later input controls use the current session.
+
 ## v1.2.96 — Coordinated Similarity Sources
 
 Five similarity routes now share owner-backed input and choice coordination, including the exact principal-iuhqui Result handoff into a larger concatenate.
