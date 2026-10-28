@@ -112,3 +112,15 @@ test('actual marker label rendering runs before later decisionContract declarati
   assert.equal(render(previewDecisionContract,markerLabel,relation,clauseMarkerResultLabel,{document:{getElementById:()=>({value:''})}}),relation==='reason'?'Required principal-clause introducer':relation==='time'?'Optional marker Result':'Required marker Result');
  }
 });
+
+test('composition projection preserves canonical required marker label',()=>{
+ const code=readFileSync(new URL('../ui/composition/sentence_composition.mjs',import.meta.url),'utf8');
+ const start=code.indexOf("    doc.querySelectorAll('[data-classical-clause-relation-marker-result]')");
+ const end=code.indexOf("    doc.querySelectorAll('[data-classical-clause-relation-decision=",start+10);
+ const project=new Function('doc','clauseMarkerResultLabel',code.slice(start,end));
+ for(const text of ['Required marker Result','Required principal-clause introducer','Optional marker Result']){
+  const label={textContent:text},control={parentNode:{querySelector:()=>label}};
+  project({querySelectorAll:()=>[control],querySelector:()=>({value:'condition'}),getElementById:()=>({value:'condition:adjoined'})},clauseMarkerResultLabel);
+  assert.equal(label.textContent,text);
+ }
+});

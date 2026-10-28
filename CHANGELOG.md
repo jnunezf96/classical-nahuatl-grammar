@@ -1,3 +1,7 @@
+## v1.2.116 — Canonical Marker Labels
+
+- Preserve owner-issued required marker labels through the existing interface projection.
+
 ## v1.2.115 — Clause Adjunction Display Recovery
 
 - Render current marker requirements after accepting a clause without interrupting the Result display.

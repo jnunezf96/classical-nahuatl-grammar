@@ -208,7 +208,8 @@ async function initializeCompositionWorkbench() {
     doc.querySelectorAll('[data-classical-clause-relation-marker-result]').forEach(control => {
       const relation = doc.querySelector('[data-classical-clause-relation-decision="relation"]')?.value;
       const label = control.parentNode.querySelector('.classical-whole-canvas-choice__label');
-      if (label) {
+      // Canonical rendering already owns marker requirements and their label.
+      if (label && !label.textContent.trim()) {
         const next = clauseMarkerResultLabel(relation, doc.getElementById('classical-capability-navigator-binding-choices')?.value);
         if (label.textContent !== next) label.textContent = next;
       }

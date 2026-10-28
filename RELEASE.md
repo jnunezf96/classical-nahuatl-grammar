@@ -1,8 +1,8 @@
-# Grammar OS v1.2.115 release
+# Grammar OS v1.2.116 release
 
-Release name: **Clause Adjunction Display Recovery**
+Release name: **Canonical Marker Labels**
 
-Browser build: **20261028-adjunction-display-134**
+Browser build: **20261028-marker-label-135**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
