@@ -38,7 +38,7 @@ test('production packet fails closed without snapshot and uses exact issued exec
  const source=owner.evaluateClassicalNahuatlVncApplication({sourceStem:'chōca',verbClass:'A',sourceValence:'intransitive',subject:'3sg',mood:'indicative',tense:'present',requestedDerivation:'direct',requestedVoice:'active'});
  const binding=owner.issueClassicalNahuatlVncContinuationBindingFrame('vnc:derivational-operation',source,{lateOperation:'frequentative',lateVariant:'ordinary-short-glottal'});
  const ingress={},session=createConstructionSession({isSource:x=>x===source}),scope=createVerbalDerivationScope({owner,source,session,getIngress:()=>ingress}),snapshot=issueVerbalDerivationSnapshot(scope,{ingress,binding});
- const ctx=vm.createContext({targetObject:owner,PendingClassicalOrdinaryGrammarBinding:null,captureClassicalPositionLayers:()=>[],projectVerbalDerivationExecution,ClassicalPositionSources:new WeakSet([source]),getClassicalOwnerIssuedResultProjection:()=>null,getClassicalPositionIdentity:()=>1,freezeConstructionData});vm.runInContext(fn,ctx);
+ const ctx=vm.createContext({isFinalSourceOperation:()=>false,isParticleOperation:()=>false,targetObject:owner,PendingClassicalOrdinaryGrammarBinding:null,captureClassicalPositionLayers:()=>[],projectVerbalDerivationExecution,ClassicalPositionSources:new WeakSet([source]),getClassicalOwnerIssuedResultProjection:()=>null,getClassicalPositionIdentity:()=>1,freezeConstructionData});vm.runInContext(fn,ctx);
  assert.equal(ctx.captureClassicalConstructionPacket('vnc:derivational-operation',source,null,null),null);
  const packet=ctx.captureClassicalConstructionPacket('vnc:derivational-operation',source,null,null,null,null,snapshot);
  assert.equal(packet.request.args[0],binding.executionArgs[0]);assert.equal(packet.source,source);
@@ -89,7 +89,7 @@ test('production move gate admits inherited ready typed matrix clearing and reje
  const listeners={},queue=[];let reconciles=0;
  const doc={addEventListener:(type,fn)=>listeners[type]=fn,getElementById:id=>id===control.id?control:null};
  const {isCurrentVerbalDerivationSnapshot}=await import('../ui/composition/verbal_derivation_transaction.mjs');
- const ctx=vm.createContext({targetObject:{document:doc,queueMicrotask:fn=>queue.push(fn),isClassicalNahuatlCompoundPredicateBindingFrame:owner.isClassicalNahuatlCompoundPredicateBindingFrame},ClassicalConstructionSession:session,ClassicalPositionStaging:false,ClassicalPositionExecuting:false,PendingClassicalResultEdit:null,ClassicalChoicePreflightTransaction:null,ClassicalComparisonTransitionDraft:null,
+ const ctx=vm.createContext({targetObject:{document:doc,queueMicrotask:fn=>queue.push(fn),isClassicalNahuatlCompoundPredicateBindingFrame:owner.isClassicalNahuatlCompoundPredicateBindingFrame},ClassicalConstructionSession:session,ClassicalPositionStaging:false,ClassicalPositionExecuting:false,PendingClassicalResultEdit:null,ClassicalChoicePreflightTransaction:null,ClassicalComparisonTransitionDraft:null,captureClassicalDenominalChoiceIntent:()=>{},
  getNativeGrammarControls:()=>[control],getActiveClassicalGrammarTypedSourceOperationBinding:()=>binding,isCurrentVerbalDerivationSnapshot,
  getClassicalCapabilityBindingControlsForChoice:key=>key==='compoundMatrixStem'?[control]:[],
  syncClassicalCapabilityApplyOperationState:()=>{reconciles++;session.stage({...session.position.construction,operationContract:snapshot,choices:{'compound-matrix':'yāuh'},legalMoves:[{type:'choice',id:'compound-matrix'}],ready:false,execution:null});}});

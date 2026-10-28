@@ -1,4 +1,4 @@
-import {getCompoundNonactiveScopeDomain} from './compound_choice_contract.mjs';
+import {getCompoundNonactiveScopeDomain,getCompoundEventOrderDomain} from './compound_choice_contract.mjs?eventOrder=20261028-1';
 // Canonical Andrews-only closure for Lessons 27, 28, 29, and 33.
 //
 // This production module contains executable typed grammar only. Source spans,
@@ -3294,7 +3294,7 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
       // Its subject is deleted; the finite compound uses the matrix dyad (§28.2).
       personDyad = matrixTyped?.slots?.subject;
       const selectedEventOrder = key(request.compoundEventOrder || "iconic");
-      if (!["iconic", "hysteron-proteron"].includes(selectedEventOrder)) {
+      if (!getCompoundEventOrderDomain().includes(selectedEventOrder)) {
         return blockedOperation(
           request,
           "licensed-compound-event-order-required",

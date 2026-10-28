@@ -1,12 +1,12 @@
-# Grammar OS v1.2.120 release
+# Grammar OS v1.2.121 release
 
-Release name: **Final Source Choice Coordination**
+Release name: **Compound Event Order Authority**
 
-Browser build: **20261028-final-source-session-139**
+Browser build: **20261028-compound-event-order-140**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
-- Attested nominal cells, place names, clause collocations, quantitative predicates and pronouns share current owner-issued choices and explicit Make.
-- Required possessor recovery and pronominal dependency changes preserve exact Source and accepted Result.
-- Fixed source facts remain separate from choices.
-- Pending multi-input restoration remains unclaimed; existing session-only limits remain visible.
+- Compound event-order choices use the canonical owner domain for presentation and validation.
+- The interface preserves a chosen reversed interpretation for ordinary compound matrices instead of silently replacing it.
+- Preview and explicit Make retain exact Source and accepted Result while choices are staged.
+- This repair removes the two event-order restrictions; it does not claim completion of all interface authority cleanup.

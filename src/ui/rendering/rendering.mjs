@@ -16,7 +16,7 @@ import {inputLabel,captureRoleLabel,clauseReadinessGuidance,contractReferences,n
 import {constructionBackground, sourceAnalysisBackground} from '../composition/andrews_choice_references.mjs';
 import {createCardinalChoiceCoordinator} from '../../application/classical/cardinal_choice_coordination.mjs';
 import {createCompoundChoiceMemory} from '../../application/classical/compound_choice_coordination.mjs';
-import {getCompoundNonactiveScopeDomain} from '../../core/classical/compound_choice_contract.mjs';
+import {getCompoundNonactiveScopeDomain,getCompoundEventOrderDomain} from '../../core/classical/compound_choice_contract.mjs?eventOrder=20261028-1';
 import {createParticleHonorificChoiceCoordinator} from '../../application/classical/sentence_choice_coordination.mjs?sentenceChoices=20261026-1';
 import {resolveVncSourceClassChoice,resolveNncSourceClassValues,resolveIrregularSourceAlternatives,resolvePersonalNameSourceChoice,resolveCoarseNominalSourceFacts,resolveNncSourceChoiceDomain,resolveIrregularSourceRequest} from "../../application/classical/source_choice_coordination.mjs?sourceChoices=20261026-1";
 import {createOrganicPossessionStateCoordinator} from "../../application/classical/organic_possession_choice_coordination.mjs?organicChoices=20261026-1";
@@ -3269,16 +3269,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const compoundMatrixNonactiveOptionId = String(overrides.compoundMatrixNonactiveOptionId ?? getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-compound-matrix-nonactive", "") ?? "").trim();
       const compoundMatrixInitialISelection = String(overrides.compoundMatrixInitialISelection ?? getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-compound-matrix-initial-i", "") ?? "").trim();
       const requestedCompoundEventOrder = String(overrides.compoundEventOrder || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-compound-event-order", "iconic") || "iconic").trim();
-      const compoundEventOrderChoiceAvailable = compoundMatrixStem === "huetzi"
-        || compoundMatrixStem === "ahci"
-        || (
-          compoundMatrixStem === "ē-hua"
-          && sourceValue.replace(/^\((.*)\)$/u, "$1") === "itz"
-          && String(overrides.compoundItzSense || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-compound-itz-sense", "") || "").trim() === "motion"
-        );
-      const compoundEventOrder = compoundEventOrderChoiceAvailable
-        ? requestedCompoundEventOrder
-        : "iconic";
+      // Pass authored intent through unchanged. The compound owner validates it.
+      const compoundEventOrder = requestedCompoundEventOrder;
       const requestedCompoundNonactiveScope = String(overrides.compoundNonactiveScope || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-compound-nonactive-scope", "none") || "none").trim();
       const licensedCompoundNonactiveScopes = getClassicalCompoundNonactiveScopeValues(
         vncVoiceOperation, vncVoice, lateVariant
@@ -19121,16 +19113,14 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const eventOrderControl = targetObject.document.getElementById(
         "classical-rule-logic-compound-event-order"
       );
-      const eventOrderChoiceAvailable = compoundMatrixStem === "huetzi"
-        || compoundMatrixStem === "ahci"
-        || (
-          compoundMatrixStem === "ē-hua"
-          && sourceStem === "itz"
-          && String(surfaceFrame?.state?.compoundItzSense || "") === "motion"
-        );
-      if (!eventOrderChoiceAvailable && eventOrderControl) {
-        eventOrderControl.value = "iconic";
+      const eventOrderValues = getCompoundEventOrderDomain();
+      const eventOrderChoiceAvailable = eventOrderValues.length > 1;
+      for (const option of Array.from(eventOrderControl?.options || [])) {
+        option.hidden = !eventOrderValues.includes(option.value);
+        option.disabled = option.hidden;
       }
+      // Never replace a requested interpretation here. Invalid input remains
+      // visible to owner validation instead of becoming a different valid request.
       const compoundVoiceOperation = String(
         surfaceFrame?.state?.vncVoiceOperation
         || surfaceFrame?.state?.vncVoice

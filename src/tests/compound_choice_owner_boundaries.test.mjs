@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createRuntimeInstance} from '../runtime/create_runtime.mjs';
 import {createCompoundChoiceMemory} from '../application/classical/compound_choice_coordination.mjs';
-import {getCompoundNonactiveScopeDomain} from '../core/classical/compound_choice_contract.mjs';
+import {getCompoundNonactiveScopeDomain} from '../core/classical/compound_choice_contract.mjs?eventOrder=20261028-1';
 const r=(await createRuntimeInstance({documentObject:{getElementById:()=>null,addEventListener(){}}})).runtimeObject;
 const noun={constructionKind:'compound-nnc',structure:'integrated',embedRole:'association',possessorOrientation:'matrix',subject:'3sg',state:'possessive',possessor:'1sg',animacy:'animate',source:{embedStem:'xōchi',embedClass:'zero',matrixStem:'mox',matrixClass:'zero'}};
 test('owner constrains restored possessor orientation after linked excursion',()=>{
