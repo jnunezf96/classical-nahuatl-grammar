@@ -1,0 +1,62 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {createPossessiveFixture} from './helpers/deverbal_possessive_fixture.mjs';
+import {createConstructionSession} from '../ui/composition/construction_session.mjs';
+const adapter=await import('../ui/composition/denominal_transaction.mjs').catch(()=>({}));
+const {r:owner}=await createPossessiveFixture('cal');
+function harness(source,stem='cal'){let ingress={},context;const session=createConstructionSession({isSource:x=>x===source});context={source,ingress,committed:true,declaration:{mode:'whole-stem',sourceWholeStem:stem}};const scope=adapter.createDenominalScope({owner,source,session,getIngress:()=>ingress,getSourceContext:()=>context});return{scope,session,ingress,context,revoke(){context=null;}};}
+test('committed native denominal request has one immutable owner-backed preview and execution request',()=>{
+ assert.equal(typeof adapter.createDenominalScope,'function','denominal shared adapter exists');
+ const source=owner.buildClassicalNahuatlOrdinaryNncSourceFrame({stem:'cal'}),h=harness(source),request={nounStem:'cal',sourceNounClass:'li',operationId:'inceptive-ti',operationPath:['inceptive-ti'],subject:'1sg',mood:'indicative',tense:'present',objectPeople:[],classChoices:{}};
+ const s=adapter.issueDenominalSnapshot(h.scope,{ingress:h.ingress,sourceContext:h.context,request});assert.equal(s?.contract.ready,true,s?.contract.blockReason);assert.equal(s.routeId,'inceptive-ti');assert.equal(adapter.projectDenominalExecution(s).request.args[0],owner.getClassicalNahuatlDenominalReloadInputs(s.contract.preview));
+ assert.equal(adapter.issueDenominalSnapshot(h.scope,{ingress:h.ingress,sourceContext:h.context,request:{...request,classChoices:{}}}),s,'unchanged repaint reuses snapshot');request.classChoices.injected='A';assert.deepEqual(s.contract.request.classChoices,{});h.revoke();assert.equal(adapter.projectDenominalExecution(s),null);
+});
+test('category-only operation remains nonexecutable rather than becoming a fabricated route',()=>{
+ assert.equal(typeof adapter.createDenominalScope,'function');const source=owner.buildClassicalNahuatlOrdinaryNncSourceFrame({stem:'cal'}),h=harness(source);
+ const inventory=owner.getClassicalNahuatlDenominalVncOperationPathInventory({nounStem:'cal',sourceNounClass:'li'});assert.equal(inventory.pathChoices.some(p=>p.operationPath.includes('o-a-to-a-l-huia')),false);
+ const s=adapter.issueDenominalSnapshot(h.scope,{ingress:h.ingress,sourceContext:h.context,request:{nounStem:'cal',sourceNounClass:'li',operationId:'o-a-to-a-l-huia',operationPath:['o-a-to-a-l-huia']}});assert.equal(Boolean(s?.contract.ready),false);assert.equal(adapter.projectDenominalExecution(s),null);
+});
+test('exact NNC selected path retains parent and rejects copied or differently selected requests',()=>{
+ const source=owner.buildClassicalNahuatlOrdinaryNncSourceFrame({stem:'mich'}),parent=owner.requestClassicalOrdinaryNncResult(source,owner.buildClassicalNahuatlOrdinaryNncOperationFrame(source,{state:'absolutive',subject:'3sg'})),h=harness(parent,'mich');
+ const inventory=owner.getClassicalNahuatlDenominalVncOperationPathInventory({canonicalNncResult:parent}),path=inventory.pathChoices.find(p=>p.operationPath.join('>')==='inceptive-ti'&&p.finalClassChoice==='A');assert.ok(path);
+ const binding=owner.issueClassicalGrammarFormationResultBindingFrame('vnc:denominal',parent,{denominalOperation:path.operationId,denominalOperationPath:path.pathChoiceId}),request={...path.sourceRequest,operationId:path.operationId,operationPath:path.operationPath,classChoices:path.classChoices,classChoice:path.finalClassChoice,subject:'3sg',mood:'indicative',tense:'present'};
+ const s=adapter.issueDenominalSnapshot(h.scope,{ingress:h.ingress,binding,request});assert.equal(s?.contract.ready,true,s?.contract.blockReason);assert.equal(s.contract.preview.sourceFrame.canonicalNncResult,parent);assert.equal(adapter.projectDenominalExecution(s).request.args[0].canonicalNncResult,parent);
+ assert.equal(adapter.issueDenominalSnapshot(h.scope,{ingress:h.ingress,binding:{...binding},request}),null);
+ assert.equal(adapter.issueDenominalSnapshot(h.scope,{ingress:h.ingress,binding,request:{...request,operationPath:['inceptive-hui']}}),null);
+ assert.equal(adapter.issueDenominalSnapshot(h.scope,{ingress:h.ingress,binding,request:{...request,canonicalNncResult:{...parent}}}),null);
+});
+test('prepared ordinary nominal Source retains genuine matching preparation and rejects copied preparation',()=>{
+ const source=owner.buildClassicalNahuatlOrdinaryNncSourceFrame({stem:'xō',sourceClass:'tl'}),h=harness(source,'xō'),preparation=owner.issueClassicalNahuatlDenominalVerbalStemPreparation(source,{stemShape:'short'});
+ const inventory=owner.getClassicalNahuatlDenominalVncOperationPathInventory({canonicalNncSourceFrame:source,verbalStemPreparationFrame:preparation}),path=inventory.pathChoices.find(p=>p.operationPath.join('>')==='inceptive-hui');assert.ok(path);
+ const request={canonicalNncSourceFrame:source,verbalStemPreparationFrame:preparation,operationId:path.operationId,operationPath:path.operationPath,classChoices:path.classChoices,classChoice:path.finalClassChoice,subject:'3sg',mood:'indicative',tense:'present'};
+ const s=adapter.issueDenominalSnapshot(h.scope,{ingress:h.ingress,request});assert.equal(s?.contract.ready,true,s?.contract.blockReason);assert.equal(s.contract.request.verbalStemPreparationFrame,preparation);assert.equal(s.contract.request.canonicalNncSourceFrame,source);
+ assert.equal(adapter.issueDenominalSnapshot(h.scope,{ingress:h.ingress,request:{...request,verbalStemPreparationFrame:{...preparation}}}),null);
+});
+test('bound typed source reissue retains authentic binding and missing choices remain nonexecuting',()=>{
+ const source=owner.buildClassicalNahuatlBoundNominalSourceFrame({nounStem:'ix'}),ingress=owner.getClassicalGrammarApplicationCapabilityNavigator(source),session=createConstructionSession({isSource:x=>x===source}),scope=adapter.createDenominalScope({owner,source,session,getIngress:()=>ingress}),bind=selections=>owner.issueClassicalGrammarTypedSourceOperationBindingFrame(ingress,'vnc:denominal',selections);
+ const missing=bind({}),s0=adapter.issueDenominalSnapshot(scope,{ingress,binding:missing});assert.equal(s0?.contract.ready,false);assert.equal(adapter.projectDenominalExecution(s0),null);
+ const path=missing.ownerBindingFrame.choiceOptionProjection.pathChoiceId[0].optionId,binding=bind({pathChoiceId:path,subject:'3sg',mood:'indicative',tense:'present'}),s=adapter.issueDenominalSnapshot(scope,{ingress,binding});assert.equal(s?.contract.ready,true,s?.contract.blockReason);assert.equal(s.contract.request.canonicalBoundNominalSourceFrame,source);assert.equal(adapter.projectDenominalExecution(s).binding,binding);assert.equal(adapter.issueDenominalSnapshot(scope,{ingress,binding:{...binding}}),null);
+});
+test('unselected genuine hui shape is a recoverable nonexecuting contract',()=>{
+ const source=owner.buildClassicalNahuatlOrdinaryNncSourceFrame({stem:'xō',sourceClass:'tl'}),h=harness(source,'xō');const s=adapter.issueDenominalSnapshot(h.scope,{ingress:h.ingress,request:{canonicalNncSourceFrame:source,verbalStemPreparationFrame:null,operationId:'inceptive-hui',operationPath:['inceptive-hui']}});assert.ok(s);assert.equal(s.contract.ready,false);assert.equal(adapter.projectDenominalExecution(s),null);assert.equal(s.contract.shapeInventory.canonicalNncSourceFrame,source);
+});
+test('dormant intent is a current-event candidate consumed by one dispatch, not a second staged store',()=>{
+ assert.equal(typeof adapter.recordDenominalIntent,'function');
+ const source=owner.buildClassicalNahuatlOrdinaryNncSourceFrame({stem:'cal'}),h=harness(source),request={nounStem:'cal',sourceNounClass:'li',operationId:'inceptive-ti',operationPath:['inceptive-ti'],subject:'1sg',mood:'indicative',tense:'present'};
+ const s=adapter.issueDenominalSnapshot(h.scope,{ingress:h.ingress,sourceContext:h.context,request});h.session.stage({source,route:{operation:'vnc:denominal'},operationContract:s,slots:s.captures,ready:true,execution:adapter.projectDenominalExecution(s)});const event=adapter.captureDenominalChoiceFrame(s),revision=h.session.position.revision,intent=adapter.recordDenominalIntent(s,'classical-denominal-vnc-result-object-1','non-specific-nonhuman',event,['3sg','non-specific-nonhuman']);assert.ok(intent);assert.equal(h.session.position.revision,revision);assert.equal(adapter.issueDenominalSnapshot(h.scope,{ingress:h.ingress,sourceContext:h.context,request,intent:{...intent}}),null);
+ const next=adapter.issueDenominalSnapshot(h.scope,{ingress:h.ingress,sourceContext:h.context,request,intent});assert.equal(next.contract.memory['classical-denominal-vnc-result-object-1'],'non-specific-nonhuman');assert.equal(next.contract.request.objectPeople,undefined,'dormant intent is not an executable object');assert.equal(h.session.position.accepted.result,null);
+});
+test('all forty executable inventory branches project the owner-retained request through their named source shape',async()=>{
+ const {readFileSync}=await import('node:fs'),cases=JSON.parse(readFileSync(new URL('./fixtures/denominal_coordination_cases.json',import.meta.url)));assert.equal(cases.length,40);assert.equal(new Set(cases.map(c=>c.request.operationId)).size,40);
+ for(const{stem,request}of cases){const source=owner.buildClassicalNahuatlOrdinaryNncSourceFrame({stem,sourceClass:'zero'}),h=harness(source,stem),s=adapter.issueDenominalSnapshot(h.scope,{ingress:h.ingress,sourceContext:h.context,request});assert.equal(s?.contract.ready,true,`${request.operationId}: ${s?.contract.blockReason}`);assert.equal(adapter.projectDenominalExecution(s).request.args[0],owner.getClassicalNahuatlDenominalReloadInputs(s.contract.preview));assert.equal(s.routeId,request.operationId);}
+});
+test('native and prepared requests cannot bypass their issued path or class projection',()=>{
+ const source=owner.buildClassicalNahuatlOrdinaryNncSourceFrame({stem:'cal'}),h=harness(source),base={nounStem:'cal',sourceNounClass:'li',operationId:'inceptive-ti',operationPath:['inceptive-ti'],classChoices:{'inceptive-ti':'A'},subject:'1sg',mood:'indicative',tense:'present'};
+ for(const delta of [{sourceKind:'relational-compound-or-predicate'},{classChoices:{'inceptive-ti':'C'}},{operationPath:['inceptive-ti','o-a-to-a-l-huia']}]){const s=adapter.issueDenominalSnapshot(h.scope,{ingress:h.ingress,sourceContext:h.context,request:{...base,...delta}});assert.equal(s.contract.ready,false);assert.equal(s.contract.blockReason,'denominal-owner-offered-path-required');assert.equal(adapter.projectDenominalExecution(s),null);}
+ const prepared=owner.buildClassicalNahuatlOrdinaryNncSourceFrame({stem:'xō',sourceClass:'tl'}),p=harness(prepared,'xō'),preparation=owner.issueClassicalNahuatlDenominalVerbalStemPreparation(prepared,{stemShape:'short'}),s=adapter.issueDenominalSnapshot(p.scope,{ingress:p.ingress,request:{canonicalNncSourceFrame:prepared,verbalStemPreparationFrame:preparation,operationId:'inceptive-ti',operationPath:['inceptive-ti']}});assert.equal(s.contract.ready,false);assert.equal(adapter.projectDenominalExecution(s),null);
+});
+test('rank-corrected typed source reissue retains authentic binding and missing choices remain nonexecuting',()=>{
+ const source=owner.resolveClassicalNahuatlNominalRankCorrectedSourceFrame({enteredStem:'yaca',valence:'intransitive'}),ingress=owner.getClassicalGrammarApplicationCapabilityNavigator(source),session=createConstructionSession({isSource:x=>x===source}),scope=adapter.createDenominalScope({owner,source,session,getIngress:()=>ingress}),bind=selections=>owner.issueClassicalGrammarTypedSourceOperationBindingFrame(ingress,'vnc:denominal',selections);
+ const missing=bind({}),s0=adapter.issueDenominalSnapshot(scope,{ingress,binding:missing});assert.equal(s0?.contract.ready,false);assert.equal(adapter.projectDenominalExecution(s0),null);
+ const path=missing.ownerBindingFrame.choiceOptionProjection.pathChoiceId[0].optionId,binding=bind({pathChoiceId:path,subject:'3sg',mood:'indicative',tense:'present'}),s=adapter.issueDenominalSnapshot(scope,{ingress,binding});assert.equal(s?.contract.ready,true,s?.contract.blockReason);assert.equal(s.contract.request.canonicalNominalRankCorrectionFrame,source);assert.equal(adapter.projectDenominalExecution(s).binding,binding);assert.equal(adapter.issueDenominalSnapshot(scope,{ingress,binding:{...binding}}),null);
+});

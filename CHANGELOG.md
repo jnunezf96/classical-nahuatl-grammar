@@ -1,3 +1,9 @@
+## v1.2.109 — Denominal Choice Coordination
+
+- Coordinate existing noun-to-verb choices, source paths and classes through one current construction.
+- Preserve inactive object and stem-shape intent, exact source parents and explicit Make.
+- Restore required typed-path availability and keep readiness guidance current.
+
 ## v1.2.108 — Atomic Place Choice Events
 
 - Commit formation memory and the current request together so the first visible choice immediately updates preview and Make readiness.

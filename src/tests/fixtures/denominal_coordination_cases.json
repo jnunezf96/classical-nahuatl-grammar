@@ -1,0 +1,1050 @@
+[
+  {
+    "stem": "cal",
+    "request": {
+      "nounStem": "cal",
+      "sourceNounClass": "",
+      "nounRoot": "",
+      "sourceVerbStem": "",
+      "sourceKind": "nounstem",
+      "sourceState": "absolutive",
+      "operationId": "inceptive-ti",
+      "operationPath": [
+        "inceptive-ti"
+      ],
+      "classChoices": {
+        "inceptive-ti": "A"
+      },
+      "classChoice": "A",
+      "subject": "1sg",
+      "mood": "indicative",
+      "tense": "present",
+      "objectPeople": []
+    },
+    "surface": "nicalti"
+  },
+  {
+    "stem": "cal",
+    "request": {
+      "nounStem": "cal",
+      "sourceNounClass": "",
+      "nounRoot": "",
+      "sourceVerbStem": "",
+      "sourceKind": "nounstem",
+      "sourceState": "absolutive",
+      "operationId": "inceptive-ti-ya",
+      "operationPath": [
+        "inceptive-ti",
+        "inceptive-ti-ya"
+      ],
+      "classChoices": {
+        "inceptive-ti": "A",
+        "inceptive-ti-ya": "A"
+      },
+      "classChoice": "A",
+      "subject": "1sg",
+      "mood": "indicative",
+      "tense": "present",
+      "objectPeople": []
+    },
+    "surface": "nicaltiya"
+  },
+  {
+    "stem": "cal",
+    "request": {
+      "nounStem": "cal",
+      "sourceNounClass": "",
+      "nounRoot": "",
+      "sourceVerbStem": "",
+      "sourceKind": "nounstem",
+      "sourceState": "absolutive",
+      "operationId": "ya-lia-causative",
+      "operationPath": [
+        "inceptive-ti",
+        "inceptive-ti-ya",
+        "ya-lia-causative"
+      ],
+      "classChoices": {
+        "inceptive-ti": "A",
+        "inceptive-ti-ya": "A",
+        "ya-lia-causative": "C"
+      },
+      "classChoice": "C",
+      "subject": "1sg",
+      "mood": "indicative",
+      "tense": "present",
+      "objectPeople": [
+        "3sg"
+      ]
+    },
+    "surface": "niccaltilia"
+  },
+  {
+    "stem": "cal",
+    "request": {
+      "nounStem": "cal",
+      "sourceNounClass": "",
+      "nounRoot": "",
+      "sourceVerbStem": "",
+      "sourceKind": "nounstem",
+      "sourceState": "absolutive",
+      "operationId": "ti-hui-lia-causative",
+      "operationPath": [
+        "inceptive-ti",
+        "ti-hui-lia-causative"
+      ],
+      "classChoices": {
+        "inceptive-ti": "A",
+        "ti-hui-lia-causative": "C"
+      },
+      "classChoice": "C",
+      "subject": "1sg",
+      "mood": "indicative",
+      "tense": "present",
+      "objectPeople": [
+        "3sg"
+      ]
+    },
+    "surface": "niccaltilia"
+  },
+  {
+    "stem": "cal",
+    "request": {
+      "nounStem": "cal",
+      "sourceNounClass": "",
+      "nounRoot": "",
+      "sourceVerbStem": "",
+      "sourceKind": "nounstem",
+      "sourceState": "absolutive",
+      "operationId": "ti-a-causative-single",
+      "operationPath": [
+        "inceptive-ti",
+        "ti-a-causative-single"
+      ],
+      "classChoices": {
+        "inceptive-ti": "A",
+        "ti-a-causative-single": "C"
+      },
+      "classChoice": "C",
+      "subject": "1sg",
+      "mood": "indicative",
+      "tense": "present",
+      "objectPeople": [
+        "3sg"
+      ]
+    },
+    "surface": "niccaltia"
+  },
+  {
+    "stem": "cal",
+    "request": {
+      "nounStem": "cal",
+      "sourceNounClass": "",
+      "nounRoot": "",
+      "sourceVerbStem": "",
+      "sourceKind": "nounstem",
+      "sourceState": "absolutive",
+      "operationId": "inceptive-hui",
+      "operationPath": [
+        "inceptive-hui"
+      ],
+      "classChoices": {
+        "inceptive-hui": "A"
+      },
+      "classChoice": "A",
+      "subject": "1sg",
+      "mood": "indicative",
+      "tense": "present",
+      "objectPeople": []
+    },
+    "surface": "nicalhui"
+  },
+  {
+    "stem": "cal",
+    "request": {
+      "nounStem": "cal",
+      "sourceNounClass": "",
+      "nounRoot": "",
+      "sourceVerbStem": "",
+      "sourceKind": "nounstem",
+      "sourceState": "absolutive",
+      "operationId": "inceptive-hui-ya",
+      "operationPath": [
+        "inceptive-hui",
+        "inceptive-hui-ya"
+      ],
+      "classChoices": {
+        "inceptive-hui": "A",
+        "inceptive-hui-ya": "B"
+      },
+      "classChoice": "B",
+      "subject": "1sg",
+      "mood": "indicative",
+      "tense": "present",
+      "objectPeople": []
+    },
+    "surface": "nicalhuiya"
+  },
+  {
+    "stem": "cal",
+    "request": {
+      "nounStem": "cal",
+      "sourceNounClass": "",
+      "nounRoot": "cal",
+      "sourceVerbStem": "",
+      "sourceKind": "nounroot-or-stem-as-root",
+      "sourceState": "absolutive",
+      "operationId": "inceptive-root-ya",
+      "operationPath": [
+        "inceptive-root-ya"
+      ],
+      "classChoices": {
+        "inceptive-root-ya": "A"
+      },
+      "classChoice": "A",
+      "subject": "1sg",
+      "mood": "indicative",
+      "tense": "present",
+      "objectPeople": []
+    },
+    "surface": "nicalla"
+  },
+  {
+    "stem": "cal",
+    "request": {
+      "nounStem": "cal",
+      "sourceNounClass": "",
+      "nounRoot": "",
+      "sourceVerbStem": "",
+      "sourceKind": "nounstem",
+      "sourceState": "absolutive",
+      "operationId": "possession-ti",
+      "operationPath": [
+        "possession-ti"
+      ],
+      "classChoices": {
+        "possession-ti": "A"
+      },
+      "classChoice": "A",
+      "subject": "1sg",
+      "mood": "indicative",
+      "tense": "present",
+      "objectPeople": []
+    },
+    "surface": "nicalti"
+  },
+  {
+    "stem": "cal",
+    "request": {
+      "nounStem": "cal",
+      "sourceNounClass": "",
+      "nounRoot": "",
+      "sourceVerbStem": "",
+      "sourceKind": "possessive-nnc-predicate",
+      "sourceState": "possessive",
+      "operationId": "ti-a-causative-double-inceptive",
+      "operationPath": [
+        "ti-a-causative-double-inceptive"
+      ],
+      "classChoices": {
+        "ti-a-causative-double-inceptive": "C"
+      },
+      "classChoice": "C",
+      "subject": "1sg",
+      "mood": "indicative",
+      "tense": "present",
+      "objectPeople": [
+        null,
+        "source-possessor"
+      ],
+      "possessor": "3sg",
+      "sourceSubject": "3sg"
+    },
+    "surface": "niccaltia"
+  },
+  {
+    "stem": "cal",
+    "request": {
+      "nounStem": "cal",
+      "sourceNounClass": "",
+      "nounRoot": "",
+      "sourceVerbStem": "",
+      "sourceKind": "possessive-nnc-predicate",
+      "sourceState": "possessive",
+      "operationId": "ti-a-causative-double-possession",
+      "operationPath": [
+        "ti-a-causative-double-possession"
+      ],
+      "classChoices": {
+        "ti-a-causative-double-possession": "C"
+      },
+      "classChoice": "C",
+      "subject": "1sg",
+      "mood": "indicative",
+      "tense": "present",
+      "objectPeople": [
+        null,
+        "source-possessor"
+      ],
+      "possessor": "3sg",
+      "sourceSubject": "3sg"
+    },
+    "surface": "nicnocaltia"
+  },
+  {
+    "stem": "cal",
+    "request": {
+      "nounStem": "cal",
+      "sourceNounClass": "",
+      "nounRoot": "",
+      "sourceVerbStem": "",
+      "sourceKind": "nounstem",
+      "sourceState": "absolutive",
+      "operationId": "applicative-huia-use",
+      "operationPath": [
+        "applicative-huia-use"
+      ],
+      "classChoices": {
+        "applicative-huia-use": "C"
+      },
+      "classChoice": "C",
+      "subject": "1sg",
+      "mood": "indicative",
+      "tense": "present",
+      "objectPeople": [
+        "3sg"
+      ]
+    },
+    "surface": "niccalhuia"
+  },
+  {
+    "stem": "cal",
+    "request": {
+      "nounStem": "cal",
+      "sourceNounClass": "",
+      "nounRoot": "",
+      "sourceVerbStem": "",
+      "sourceKind": "nounstem",
+      "sourceState": "absolutive",
+      "operationId": "denominal-i-hui",
+      "operationPath": [
+        "denominal-i-hui"
+      ],
+      "classChoices": {
+        "denominal-i-hui": "B"
+      },
+      "classChoice": "B",
+      "subject": "1sg",
+      "mood": "indicative",
+      "tense": "present",
+      "objectPeople": []
+    },
+    "surface": "nicalihui"
+  },
+  {
+    "stem": "cal",
+    "request": {
+      "nounStem": "cal",
+      "sourceNounClass": "",
+      "nounRoot": "",
+      "sourceVerbStem": "",
+      "sourceKind": "nounstem",
+      "sourceState": "absolutive",
+      "operationId": "denominal-a-hui",
+      "operationPath": [
+        "denominal-a-hui"
+      ],
+      "classChoices": {
+        "denominal-a-hui": "B"
+      },
+      "classChoice": "B",
+      "subject": "1sg",
+      "mood": "indicative",
+      "tense": "present",
+      "objectPeople": []
+    },
+    "surface": "nicalahui"
+  },
+  {
+    "stem": "tlīl",
+    "request": {
+      "nounStem": "tlīl",
+      "sourceNounClass": "",
+      "nounRoot": "",
+      "sourceVerbStem": "",
+      "sourceKind": "nounstem",
+      "sourceState": "absolutive",
+      "operationId": "i-hui-to-o-a",
+      "operationPath": [
+        "denominal-i-hui",
+        "i-hui-to-o-a"
+      ],
+      "classChoices": {
+        "denominal-i-hui": "B",
+        "i-hui-to-o-a": "C"
+      },
+      "classChoice": "C",
+      "subject": "1sg",
+      "mood": "indicative",
+      "tense": "present",
+      "objectPeople": [
+        "3sg"
+      ]
+    },
+    "surface": "nictlīloa"
+  },
+  {
+    "stem": "tlāhui",
+    "request": {
+      "nounStem": "tlāhui",
+      "sourceNounClass": "",
+      "nounRoot": "",
+      "sourceVerbStem": "",
+      "sourceKind": "nounstem",
+      "sourceState": "absolutive",
+      "operationId": "inceptive-a",
+      "operationPath": [
+        "inceptive-a"
+      ],
+      "classChoices": {
+        "inceptive-a": "C"
+      },
+      "classChoice": "C",
+      "subject": "1sg",
+      "mood": "indicative",
+      "tense": "present",
+      "objectPeople": []
+    },
+    "surface": "nitlāhuia"
+  },
+  {
+    "stem": "tlap-i-hui",
+    "request": {
+      "nounStem": "",
+      "sourceNounClass": "",
+      "nounRoot": "",
+      "sourceVerbStem": "tlap-i-hui",
+      "sourceKind": "destockal-ni-hui-vnc",
+      "sourceState": "derived",
+      "operationId": "destockal-ya",
+      "operationPath": [
+        "destockal-ya"
+      ],
+      "classChoices": {
+        "destockal-ya": "B"
+      },
+      "classChoice": "B",
+      "subject": "1sg",
+      "mood": "indicative",
+      "tense": "present",
+      "objectPeople": []
+    },
+    "surface": "nitlapihuiya"
+  },
+  {
+    "stem": "tlap-i-hui",
+    "request": {
+      "nounStem": "",
+      "sourceNounClass": "",
+      "nounRoot": "",
+      "sourceVerbStem": "tlap-i-hui",
+      "sourceKind": "destockal-ni-hui-vnc",
+      "sourceState": "derived",
+      "operationId": "destockal-a-causative",
+      "operationPath": [
+        "destockal-a-causative"
+      ],
+      "classChoices": {
+        "destockal-a-causative": "C"
+      },
+      "classChoice": "C",
+      "subject": "1sg",
+      "mood": "indicative",
+      "tense": "present",
+      "objectPeople": [
+        "3sg"
+      ]
+    },
+    "surface": "nictlapihuia"
+  },
+  {
+    "stem": "chōca-lō",
+    "request": {
+      "nounStem": "chōca-lō",
+      "sourceNounClass": "",
+      "nounRoot": "",
+      "sourceVerbStem": "",
+      "sourceKind": "deverbal-yo-nounstem",
+      "sourceState": "absolutive",
+      "operationId": "deverbal-yo-hua",
+      "operationPath": [
+        "deverbal-yo-hua"
+      ],
+      "classChoices": {
+        "deverbal-yo-hua": "A"
+      },
+      "classChoice": "A",
+      "subject": "1sg",
+      "mood": "indicative",
+      "tense": "present",
+      "objectPeople": []
+    },
+    "surface": "nichōcalōhua"
+  },
+  {
+    "stem": "pan",
+    "request": {
+      "nounStem": "pan",
+      "sourceNounClass": "",
+      "nounRoot": "",
+      "sourceVerbStem": "",
+      "sourceKind": "possessive-nnc-predicate",
+      "sourceState": "possessive",
+      "operationId": "included-possessor-ti",
+      "operationPath": [
+        "included-possessor-ti"
+      ],
+      "classChoices": {
+        "included-possessor-ti": "A"
+      },
+      "classChoice": "A",
+      "subject": "1sg",
+      "mood": "indicative",
+      "tense": "present",
+      "objectPeople": [],
+      "possessor": "3sg",
+      "includedPossessorFamily": "temporal-pan"
+    },
+    "surface": "nipanti"
+  },
+  {
+    "stem": "mahui-z",
+    "request": {
+      "nounStem": "mahui-z",
+      "sourceNounClass": "",
+      "nounRoot": "",
+      "sourceVerbStem": "",
+      "sourceKind": "nounstem",
+      "sourceState": "absolutive",
+      "operationId": "denominal-causative-tla",
+      "operationPath": [
+        "denominal-causative-tla"
+      ],
+      "classChoices": {
+        "denominal-causative-tla": "A"
+      },
+      "classChoice": "A",
+      "subject": "1sg",
+      "mood": "indicative",
+      "tense": "present",
+      "objectPeople": [
+        "3sg"
+      ]
+    },
+    "surface": "nicmahuiztla"
+  },
+  {
+    "stem": "mahui-z",
+    "request": {
+      "nounStem": "mahui-z",
+      "sourceNounClass": "",
+      "nounRoot": "",
+      "sourceVerbStem": "",
+      "sourceKind": "nounstem",
+      "sourceState": "absolutive",
+      "operationId": "causative-tla-ti-lia-applicative",
+      "operationPath": [
+        "denominal-causative-tla",
+        "causative-tla-ti-lia-applicative"
+      ],
+      "classChoices": {
+        "denominal-causative-tla": "A",
+        "causative-tla-ti-lia-applicative": "C"
+      },
+      "classChoice": "C",
+      "subject": "1sg",
+      "mood": "indicative",
+      "tense": "present",
+      "objectPeople": [
+        "3sg",
+        "3sg"
+      ]
+    },
+    "surface": "nicmahuiztilia"
+  },
+  {
+    "stem": "xō",
+    "request": {
+      "nounStem": "xō",
+      "sourceNounClass": "",
+      "nounRoot": "",
+      "sourceVerbStem": "",
+      "sourceKind": "nounstem",
+      "sourceState": "absolutive",
+      "operationId": "intransitive-tla",
+      "operationPath": [
+        "intransitive-tla"
+      ],
+      "classChoices": {
+        "intransitive-tla": "A"
+      },
+      "classChoice": "A",
+      "subject": "1sg",
+      "mood": "indicative",
+      "tense": "present",
+      "objectPeople": []
+    },
+    "surface": "nixōtla"
+  },
+  {
+    "stem": "xō",
+    "request": {
+      "nounStem": "xō",
+      "sourceNounClass": "",
+      "nounRoot": "",
+      "sourceVerbStem": "",
+      "sourceKind": "nounstem",
+      "sourceState": "absolutive",
+      "operationId": "intransitive-tla-ti-a-causative",
+      "operationPath": [
+        "intransitive-tla",
+        "intransitive-tla-ti-a-causative"
+      ],
+      "classChoices": {
+        "intransitive-tla": "A",
+        "intransitive-tla-ti-a-causative": "C"
+      },
+      "classChoice": "C",
+      "subject": "1sg",
+      "mood": "indicative",
+      "tense": "present",
+      "objectPeople": [
+        "3sg"
+      ]
+    },
+    "surface": "nicxōtia"
+  },
+  {
+    "stem": "xō",
+    "request": {
+      "nounStem": "xō",
+      "sourceNounClass": "",
+      "nounRoot": "",
+      "sourceVerbStem": "",
+      "sourceKind": "nounstem",
+      "sourceState": "absolutive",
+      "operationId": "intransitive-tla-ti-lia-applicative",
+      "operationPath": [
+        "intransitive-tla",
+        "intransitive-tla-ti-lia-applicative"
+      ],
+      "classChoices": {
+        "intransitive-tla": "A",
+        "intransitive-tla-ti-lia-applicative": "C"
+      },
+      "classChoice": "C",
+      "subject": "1sg",
+      "mood": "indicative",
+      "tense": "present",
+      "objectPeople": [
+        "3sg",
+        "3sg"
+      ]
+    },
+    "surface": "nicxōtilia"
+  },
+  {
+    "stem": "tepon-āz",
+    "request": {
+      "nounStem": "tepon-āz",
+      "sourceNounClass": "",
+      "nounRoot": "",
+      "sourceVerbStem": "",
+      "sourceKind": "nounstem",
+      "sourceState": "absolutive",
+      "operationId": "intransitive-o-a-use",
+      "operationPath": [
+        "intransitive-o-a-use"
+      ],
+      "classChoices": {
+        "intransitive-o-a-use": "C"
+      },
+      "classChoice": "C",
+      "subject": "1sg",
+      "mood": "indicative",
+      "tense": "present",
+      "objectPeople": []
+    },
+    "surface": "niteponāzoa"
+  },
+  {
+    "stem": "tepon-āz",
+    "request": {
+      "nounStem": "tepon-āz",
+      "sourceNounClass": "",
+      "nounRoot": "",
+      "sourceVerbStem": "",
+      "sourceKind": "nounstem",
+      "sourceState": "absolutive",
+      "operationId": "o-a-to-i-l-huia",
+      "operationPath": [
+        "intransitive-o-a-use",
+        "o-a-to-i-l-huia"
+      ],
+      "classChoices": {
+        "intransitive-o-a-use": "C",
+        "o-a-to-i-l-huia": "C"
+      },
+      "classChoice": "C",
+      "subject": "1sg",
+      "mood": "indicative",
+      "tense": "present",
+      "objectPeople": [
+        "3sg"
+      ]
+    },
+    "surface": "nicteponāzilhuia"
+  },
+  {
+    "stem": "tamal",
+    "request": {
+      "nounStem": "tamal",
+      "sourceNounClass": "",
+      "nounRoot": "",
+      "sourceVerbStem": "",
+      "sourceKind": "nounstem",
+      "sourceState": "absolutive",
+      "operationId": "intransitive-o-a-produce",
+      "operationPath": [
+        "intransitive-o-a-produce"
+      ],
+      "classChoices": {
+        "intransitive-o-a-produce": "C"
+      },
+      "classChoice": "C",
+      "subject": "1sg",
+      "mood": "indicative",
+      "tense": "present",
+      "objectPeople": []
+    },
+    "surface": "nitamaloa"
+  },
+  {
+    "stem": "cē-hua-l",
+    "request": {
+      "nounStem": "cē-hua-l",
+      "sourceNounClass": "",
+      "nounRoot": "",
+      "sourceVerbStem": "",
+      "sourceKind": "nounstem",
+      "sourceState": "absolutive",
+      "operationId": "applicative-huia-produce",
+      "operationPath": [
+        "applicative-huia-produce"
+      ],
+      "classChoices": {
+        "applicative-huia-produce": "C"
+      },
+      "classChoice": "C",
+      "subject": "1sg",
+      "mood": "indicative",
+      "tense": "present",
+      "objectPeople": [
+        "3sg"
+      ]
+    },
+    "surface": "niccēhualhuia"
+  },
+  {
+    "stem": "cuitla",
+    "request": {
+      "nounStem": "cuitla",
+      "sourceNounClass": "",
+      "nounRoot": "",
+      "sourceVerbStem": "",
+      "sourceKind": "possessive-nnc-predicate",
+      "sourceState": "possessive",
+      "operationId": "applicative-huia-double-object",
+      "operationPath": [
+        "applicative-huia-double-object"
+      ],
+      "classChoices": {
+        "applicative-huia-double-object": "C"
+      },
+      "classChoice": "C",
+      "subject": "1sg",
+      "mood": "indicative",
+      "tense": "present",
+      "objectPeople": [
+        null,
+        "source-possessor"
+      ],
+      "possessor": "3sg",
+      "sourceSubject": "3sg"
+    },
+    "surface": "niccuitlahuia"
+  },
+  {
+    "stem": "cōl-o-ā",
+    "request": {
+      "nounStem": "",
+      "sourceNounClass": "",
+      "nounRoot": "",
+      "sourceVerbStem": "cōl-o-ā",
+      "sourceKind": "lexical-o-a-vnc",
+      "sourceState": "derived",
+      "operationId": "patientive-chain-ti-a",
+      "operationPath": [
+        "patientive-chain-ti-a"
+      ],
+      "classChoices": {
+        "patientive-chain-ti-a": "C"
+      },
+      "classChoice": "C",
+      "subject": "1sg",
+      "mood": "indicative",
+      "tense": "present",
+      "objectPeople": [
+        "3sg"
+      ]
+    },
+    "surface": "niccōlōchtia"
+  },
+  {
+    "stem": "ōn-xihui",
+    "request": {
+      "nounStem": "ōn-xihui",
+      "sourceNounClass": "",
+      "nounRoot": "",
+      "sourceVerbStem": "",
+      "sourceKind": "temporal-compound-nounstem",
+      "sourceState": "absolutive",
+      "operationId": "temporal-tia",
+      "operationPath": [
+        "temporal-tia"
+      ],
+      "classChoices": {
+        "temporal-tia": "C"
+      },
+      "classChoice": "C",
+      "subject": "1sg",
+      "mood": "indicative",
+      "tense": "present",
+      "objectPeople": []
+    },
+    "surface": "nōnxiuhtia"
+  },
+  {
+    "stem": "ilihuiz",
+    "request": {
+      "nounStem": "ilihuiz",
+      "sourceNounClass": "",
+      "nounRoot": "",
+      "sourceVerbStem": "",
+      "sourceKind": "adverbial-nounstem",
+      "sourceState": "absolutive",
+      "sourceInitialISelection": "real",
+      "operationId": "adverbial-huia",
+      "operationPath": [
+        "adverbial-huia"
+      ],
+      "classChoices": {
+        "adverbial-huia": "C"
+      },
+      "classChoice": "C",
+      "subject": "1sg",
+      "mood": "indicative",
+      "tense": "present",
+      "objectPeople": [
+        "3sg"
+      ]
+    },
+    "surface": "niquilihuizhuia"
+  },
+  {
+    "stem": "tequi-pan",
+    "request": {
+      "nounStem": "tequi-pan",
+      "sourceNounClass": "",
+      "nounRoot": "",
+      "sourceVerbStem": "",
+      "sourceKind": "relational-compound-or-predicate",
+      "sourceState": "absolutive",
+      "operationId": "relational-o-a-transitive",
+      "operationPath": [
+        "relational-o-a-transitive"
+      ],
+      "classChoices": {
+        "relational-o-a-transitive": "C"
+      },
+      "classChoice": "C",
+      "subject": "1sg",
+      "mood": "indicative",
+      "tense": "present",
+      "objectPeople": [
+        "3sg"
+      ]
+    },
+    "surface": "nictequipanoa"
+  },
+  {
+    "stem": "tequi-pan",
+    "request": {
+      "nounStem": "tequi-pan",
+      "sourceNounClass": "",
+      "nounRoot": "",
+      "sourceVerbStem": "",
+      "sourceKind": "relational-compound-or-predicate",
+      "sourceState": "absolutive",
+      "operationId": "relational-o-a-intransitive",
+      "operationPath": [
+        "relational-o-a-intransitive"
+      ],
+      "classChoices": {
+        "relational-o-a-intransitive": "C"
+      },
+      "classChoice": "C",
+      "subject": "1sg",
+      "mood": "indicative",
+      "tense": "present",
+      "objectPeople": []
+    },
+    "surface": "nitequipanoa"
+  },
+  {
+    "stem": "quech-pan",
+    "request": {
+      "nounStem": "quech-pan",
+      "sourceNounClass": "",
+      "nounRoot": "",
+      "sourceVerbStem": "",
+      "sourceKind": "relational-compound-or-predicate",
+      "sourceState": "absolutive",
+      "operationId": "relational-huia",
+      "operationPath": [
+        "relational-huia"
+      ],
+      "classChoices": {
+        "relational-huia": "C"
+      },
+      "classChoice": "C",
+      "subject": "1sg",
+      "mood": "indicative",
+      "tense": "present",
+      "objectPeople": [
+        "3sg"
+      ]
+    },
+    "surface": "nicquechpanhuia"
+  },
+  {
+    "stem": "pil-i-ch",
+    "request": {
+      "nounStem": "pil-i-ch",
+      "sourceNounClass": "",
+      "nounRoot": "",
+      "sourceVerbStem": "",
+      "sourceKind": "nounstem",
+      "sourceState": "absolutive",
+      "operationId": "a-hui-to-o-a",
+      "operationPath": [
+        "denominal-a-hui",
+        "a-hui-to-o-a"
+      ],
+      "classChoices": {
+        "denominal-a-hui": "B",
+        "a-hui-to-o-a": "C"
+      },
+      "classChoice": "C",
+      "subject": "1sg",
+      "mood": "indicative",
+      "tense": "present",
+      "objectPeople": [
+        "3sg"
+      ]
+    },
+    "surface": "nicpilichoa"
+  },
+  {
+    "stem": "tlāl",
+    "request": {
+      "nounStem": "tlāl",
+      "sourceNounClass": "",
+      "nounRoot": "",
+      "sourceVerbStem": "",
+      "sourceKind": "nounstem-plus-stock-i",
+      "sourceState": "absolutive",
+      "operationId": "transitive-i-a",
+      "operationPath": [
+        "transitive-i-a"
+      ],
+      "classChoices": {
+        "transitive-i-a": "C"
+      },
+      "classChoice": "C",
+      "subject": "1sg",
+      "mood": "indicative",
+      "tense": "present",
+      "objectPeople": [
+        "3sg"
+      ]
+    },
+    "surface": "nictlālia"
+  },
+  {
+    "stem": "ce",
+    "request": {
+      "nounStem": "ce",
+      "sourceNounClass": "",
+      "nounRoot": "ce",
+      "sourceVerbStem": "",
+      "sourceKind": "nounroot-or-stem-as-root",
+      "sourceState": "absolutive",
+      "operationId": "ya-lia-applicative",
+      "operationPath": [
+        "inceptive-root-ya",
+        "ya-lia-applicative"
+      ],
+      "classChoices": {
+        "inceptive-root-ya": "A",
+        "ya-lia-applicative": "C"
+      },
+      "classChoice": "C",
+      "subject": "1sg",
+      "mood": "indicative",
+      "tense": "present",
+      "objectPeople": [
+        "3sg"
+      ]
+    },
+    "surface": "niccelia"
+  },
+  {
+    "stem": "cuica",
+    "request": {
+      "nounStem": "cuica",
+      "sourceNounClass": "",
+      "nounRoot": "",
+      "sourceVerbStem": "",
+      "sourceKind": "nounstem",
+      "sourceState": "absolutive",
+      "operationId": "ti-ia-applicative",
+      "operationPath": [
+        "inceptive-ti",
+        "ti-ia-applicative"
+      ],
+      "classChoices": {
+        "inceptive-ti": "A",
+        "ti-ia-applicative": "C"
+      },
+      "classChoice": "C",
+      "subject": "1sg",
+      "mood": "indicative",
+      "tense": "present",
+      "objectPeople": [
+        "3sg"
+      ]
+    },
+    "surface": "niccuicatia"
+  }
+]
