@@ -1,3 +1,4 @@
+import {isDerivedFormationOperation, createDerivedFormationScope, issueDerivedFormationSnapshot, projectDerivedFormationExecution, isCurrentDerivedFormationSnapshot, captureDerivedFormationChoiceFrame, adoptDerivedFormationCandidate} from '../composition/derived_formation_transaction.mjs?derivedFormation=20261028-1';
 import {createNominalOperationScope,issueNominalOperationSnapshot,isCurrentNominalOperationSnapshot,captureNominalOperationChoiceFrame,projectNominalOperationExecution,adoptNominalOperationCandidate} from '../composition/nominal_operation_transaction.mjs';
 import {issueClauseOperationSnapshot as issueComparisonOperationSnapshot,transitionClauseOperationSnapshot as transitionComparisonOperationSnapshot,readClauseOperationSelections as readComparisonOperationSelections,isCurrentClauseOperationSnapshot as isCurrentComparisonOperationSnapshot} from '../composition/clause_operation_transaction.mjs?conjunctionSession=20261028-1&complementSession=20261028-1&issuedBinding=20261028-1';
 import {inactiveAffectiveReloadControl,prepareNativeReloadSourceContext,reconcileAcceptedQuotedSourceBaseline} from '../composition/native_reload_source.mjs?nativeReload=20261027-4';
@@ -26871,16 +26872,36 @@ export function createUiRenderingApi(targetObject = globalThis) {
         hasMaterial: Boolean(selections.principal.stem || selections.supplement.stem),
         caption: ready ? source.canonicalSupplementationResult.embeddedSurface : ""};
     }
+    let ClassicalCommittedDoubleNucleusIngress = null;
     function applyClassicalDoubleNucleusSourceDraft() {
       const draft = getClassicalDoubleNucleusSourceDraft();
-      if (!draft?.ready) return false;
+      if (!draft?.ready || targetObject.isClassicalNahuatlSupplementationFrame?.(draft.source.canonicalSupplementationResult) !== true) return false;
       const accepted = ActiveClassicalCapabilityApplicationResult;
       clearClassicalGrammarResultSourceContinuation("two-nucleus-source-committed");
       ActiveClassicalCapabilityApplicationResult = accepted;
+      ClassicalCommittedDoubleNucleusIngress = Object.freeze({key:draft.key,source:draft.source.canonicalSupplementationResult});
       syncClassicalNominalConstructionControlVisibility("deverbal-nnc");
-      PendingClassicalRawConstructionRequest = {construction: "deverbal-nnc",
-        operationId: "nnc:deverbal-construction", request: buildClassicalNominalConstructionUiRequest()};
+      PendingClassicalRawConstructionRequest = {construction:"deverbal-nnc",operationId:"nnc:deverbal-construction",
+        request:{...buildClassicalNominalConstructionUiRequest(),source:draft.source}};
       return true;
+    }
+    function getClassicalCommittedDoubleNucleusIngress() {
+      const doc = targetObject.document, ingress = ClassicalCommittedDoubleNucleusIngress;
+      if (!ingress || ActiveClassicalGrammarCapabilityNavigator
+        || doc?.getElementById?.("classical-rule-logic-nnc-source-use")?.value !== "two-nucleus-nnc"
+        || doc?.getElementById?.("classical-source-parts")?.dataset?.classicalSourceCommitState !== "committed") return null;
+      let declaration;try {declaration=JSON.parse(targetObject.ClassicalSourcePartsCommittedSignature);}catch{return null;}
+      if (declaration.mode !== "two-nucleus-nnc" || JSON.stringify(declaration.sourceAnalysisChoices)!==ingress.key
+        || targetObject.isClassicalNahuatlSupplementationFrame?.(ingress.source)!==true) return null;
+      return ingress;
+    }
+    function getClassicalCommittedDoubleNucleusSource() {
+      const relation = getClassicalCommittedDoubleNucleusIngress()?.source;
+      if (!relation) return null;
+      return {principalNncResult:targetObject.getClassicalNahuatlSupplementationClauseSourceFrame(relation.principalClause),
+        supplementNncResult:targetObject.getClassicalNahuatlSupplementationClauseSourceFrame(relation.supplementClause),
+        canonicalSupplementationResult:relation,
+        supplementationAnalysis:`fixed-order-${relation.referenceFrame.headRole}-supplementation`};
     }
     function syncClassicalDoubleNucleusSourcePresentation(active = false) {
       const doc = targetObject.document;
@@ -33272,6 +33293,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
               : {}),
           };
         }
+        const committedDoubleSource = getClassicalCommittedDoubleNucleusSource();
+        if (committedDoubleSource) return {constructionKind:"double-nucleus-ownerhood",
+          source:committedDoubleSource,subject,state,possessor,animacy};
         const buildNucleus = role => {
           const value = (field, fallback = "") => getClassicalNominalConstructionControlValue(
             `classical-double-nucleus-${role}-${field}`, fallback);
@@ -41043,9 +41067,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
           const active = getActiveClassicalGrammarTypedSourceOperationBinding();
           const selectedValue = String(select.value || "").trim();
           if (!active) return;
-          const issuedEvent = ["nnc:ordinary", "vnc:application", "grammar:nominal-construction"].includes(active.operationId)
+          const issuedEvent = ["nnc:ordinary", "vnc:application", "grammar:nominal-construction", "nnc:relational"].includes(active.operationId)
             ? captureClassicalIssuedBindingEvent(binding) : null;
-          if (["nnc:ordinary", "vnc:application", "grammar:nominal-construction"].includes(active.operationId) && !issuedEvent) return;
+          if (["nnc:ordinary", "vnc:application", "grammar:nominal-construction", "nnc:relational"].includes(active.operationId) && !issuedEvent) return;
           if ((active.operationId === "nnc:ordinary"
             || active.operationId === "vnc:application" && ["applicativeObjectKind",
               "applicativeObjectPerson", "requestedDerivation", "finiteSingularConnector"].includes(choiceId)
@@ -41781,9 +41805,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
       }
       const retained = getActiveClassicalGrammarTypedSourceOperationBinding();
       const sessionBinding = ClassicalConstructionSession.position.operationContract;
-      const coordinatesCurrentBinding = ["issued-binding-operation-contract","nominal-operation-contract"].includes(sessionBinding?.kind)
+      const coordinatesCurrentBinding = ["issued-binding-operation-contract","nominal-operation-contract","derived-formation-contract"].includes(sessionBinding?.kind)
         && sessionBinding.source === exactNavigatorInput
-        && sessionBinding.controller.operationId === normalizedOperationId;
+        && (sessionBinding.controller.operationId || sessionBinding.controller.operation) === normalizedOperationId;
       const issuedEvent = coordinatesCurrentBinding ? captureClassicalIssuedBindingEvent(retained) : null;
       if (coordinatesCurrentBinding && !issuedEvent) return null;
       const requestedSelections = nncSelections || selections || {};
@@ -43241,7 +43265,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       return freezeConstructionData(layers);
     }
 
-    function captureClassicalConstructionPacket(operationId, source, binding, typed, nominalSnapshot = null) {
+    function captureClassicalConstructionPacket(operationId, source, binding, typed, nominalSnapshot = null, derivedSnapshot = null) {
       const layers = captureClassicalPositionLayers();
       const vncSentenceOptions = selections => {
         const options = selections?.sentenceOptions || {};
@@ -43253,7 +43277,12 @@ export function createUiRenderingApi(targetObject = globalThis) {
       };
       const packet = {operation: operationId, source, binding: null, kind: "request", layers: [], choices: {}};
       const ordinary = PendingClassicalOrdinaryGrammarBinding;
-      if (operationId === "grammar:nominal-construction") {
+      if (isDerivedFormationOperation(operationId)) {
+        const projection = projectDerivedFormationExecution(derivedSnapshot);
+        if (!projection) return null;
+        Object.assign(packet,projection);
+        packet.layers = layers;
+      } else if (operationId === "grammar:nominal-construction") {
         const projection = projectNominalOperationExecution(nominalSnapshot);
         if (!projection) return null;
         Object.assign(packet,projection);
@@ -43644,10 +43673,69 @@ export function createUiRenderingApi(targetObject = globalThis) {
       return true;
     }
 
+    let ClassicalNativeAdverbialIngress = null;
+    function getClassicalNativeDerivedIngress(operation) {
+      if (operation === "nnc:deverbal-construction") return getClassicalCommittedDoubleNucleusIngress();
+      if (operation !== "nnc:adverbial" || ActiveClassicalGrammarCapabilityNavigator
+        || targetObject.document?.getElementById?.("classical-source-parts")?.dataset?.classicalSourceCommitState !== "committed") return null;
+      const signature = targetObject.ClassicalSourcePartsCommittedSignature;
+      if (!signature) return null;
+      const potential = resolveClassicalAdverbialPotentialFromControls();
+      if (targetObject.isClassicalNahuatlAdverbialPotentialFrame?.(potential) !== true
+        || potential.authorizationStatus !== "authorized") return null;
+      const source = potential.lexicalNncSourceFrame || potential.lexicalVncSourceFrame || potential.primitiveAdverbialSourceFrame;
+      if (!source) return null;
+      if (ClassicalNativeAdverbialIngress?.source !== source || ClassicalNativeAdverbialIngress.signature !== signature
+        || ClassicalNativeAdverbialIngress.commitToken !== ClassicalNativeCompoundChoiceSession) {
+        ClassicalNativeAdverbialIngress = Object.freeze({source,potential,signature,commitToken:ClassicalNativeCompoundChoiceSession});
+      }
+      return ClassicalNativeAdverbialIngress;
+    }
+    const ClassicalDerivedFormationScopes = new WeakMap();
+    function readClassicalDerivedFormationSnapshot(operation, source, binding, typed) {
+      if (!isDerivedFormationOperation(operation) || !source) return null;
+      const nativeDoubleIngress = getClassicalNativeDerivedIngress(operation);
+      const ingress = nativeDoubleIngress || ActiveClassicalGrammarCapabilityNavigator;
+      if (!nativeDoubleIngress && targetObject.isClassicalGrammarApplicationCapabilityNavigator?.(ingress) !== true) return null;
+      const exactBinding = binding?.operationId === operation ? binding : null;
+      const typedBinding = typed?.operationId === operation ? typed : null;
+      const sourceContext = !exactBinding && !typedBinding ? readClassicalNominalSourceContext(source,ingress) : null;
+      let bySource = ClassicalDerivedFormationScopes.get(ingress);
+      if (!bySource) {bySource = new Map(); ClassicalDerivedFormationScopes.set(ingress,bySource);}
+      let byOperation = bySource.get(source);
+      if (!byOperation) {byOperation = new Map(); bySource.set(source,byOperation);}
+      let scope = byOperation.get(operation);
+      if (!scope) {
+        scope = createDerivedFormationScope({owner:targetObject,source,operation,session:ClassicalConstructionSession,
+          getIngress:()=>nativeDoubleIngress ? getClassicalNativeDerivedIngress(operation) : ActiveClassicalGrammarCapabilityNavigator,
+          getSourceContext:()=>readClassicalNominalSourceContext(source,ingress)});
+        byOperation.set(operation,scope);
+      }
+      if (typedBinding) return issueDerivedFormationSnapshot(scope,{ingress,binding:typedBinding});
+      let request;
+      if (operation === "nnc:adverbial" && exactBinding) {
+        const choices = getClassicalFormationResultBindingSelections(operation,exactBinding);
+        request = {canonicalSourceResult:exactBinding.exactResult,degree:choices.degree,scope:choices.scope,
+          ...(choices.canonicalMatrixResult ? {canonicalMatrixResult:choices.canonicalMatrixResult} : {}),
+          context:Object.fromEntries(Object.entries({precedingParticle:choices.precedingParticle,
+            negativeParticle:choices.negativeParticle,negationScope:choices.negationScope,
+            stressPartner:choices.stressPartner,variant:choices.surfaceVariant,
+            sentencePosition:choices.sentencePosition,clauseType:choices.clauseType}).filter(([,value])=>Boolean(value)))};
+      } else request = operation === "nnc:relational"
+        ? applyClassicalRelationalExactResultBinding(targetObject.getClassicalRelationalNncUiRequest?.(), exactBinding)
+        : buildClassicalNominalConstructionUiRequest(exactBinding);
+      if (request && ClassicalNominalSourceVncRefusals.has(request)) return null;
+      return issueDerivedFormationSnapshot(scope,{ingress,request,sourceContext,
+        binding:exactBinding?.ownerBindingFrame,selectedBindingId:exactBinding?.selectedBindingId,
+        additionalResults:exactBinding?.additionalResults || {}});
+    }
+
     const ClassicalNominalOperationScopes = new WeakMap();
     const ClassicalNominalSourceContexts = new WeakMap();
     function readClassicalNominalSourceContext(source, ingress) {
-      if (!ingress || ingress !== ActiveClassicalGrammarCapabilityNavigator) return null;
+      if (!ingress || (ingress !== ActiveClassicalGrammarCapabilityNavigator
+        && ingress !== getClassicalCommittedDoubleNucleusIngress()
+        && ingress !== getClassicalNativeDerivedIngress("nnc:adverbial"))) return null;
       const signature = targetObject.ClassicalSourcePartsCommittedSignature;
       if (!signature
         || targetObject.document?.getElementById?.("classical-source-parts")?.dataset?.classicalSourceCommitState === "pending") return null;
@@ -43705,8 +43793,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
     const ClassicalNominalNativeChoiceFrames = new WeakMap();
     function syncClassicalNominalNativeChoiceFrames() {
       const snapshot = ClassicalConstructionSession.position.operationContract;
-      if (snapshot?.kind !== "nominal-operation-contract" || !isCurrentNominalOperationSnapshot(snapshot)) return;
-      const frame = captureNominalOperationChoiceFrame(snapshot);
+      const derived = snapshot?.kind === "derived-formation-contract";
+      if (derived ? !isCurrentDerivedFormationSnapshot(snapshot)
+        : snapshot?.kind !== "nominal-operation-contract" || !isCurrentNominalOperationSnapshot(snapshot)) return;
+      const frame = derived ? captureDerivedFormationChoiceFrame(snapshot) : captureNominalOperationChoiceFrame(snapshot);
       const controls = new Set(getNativeGrammarControls(targetObject.document) || []);
       // These existing Build controls can be compact-menu targets or contain
       // "source" in their name; the general presentation inventory omits them.
@@ -43714,16 +43804,24 @@ export function createUiRenderingApi(targetObject = globalThis) {
         const control = targetObject.document?.getElementById?.(id);
         if (control?.closest?.("#classical-rule-logic-controls") && !control.closest("[hidden]")) controls.add(control);
       }
+      if (derived) for (const id of ["classical-deverbal-nnc-family", "classical-deverbal-nnc-nominalization-kind"]) {
+        const control = targetObject.document?.getElementById?.(id);
+        // Existing compact mirrors dispatch to these canonical originals.
+        // Disclosure visibility does not replace their current owner event.
+        if (control?.closest?.("#classical-rule-logic-controls")) controls.add(control);
+      }
       for (const control of controls) ClassicalNominalNativeChoiceFrames.set(control,{snapshot,frame});
     }
     function canClassicalNominalNativeChoice(control) {
       const snapshot = ClassicalConstructionSession.position.operationContract;
-      if (snapshot?.kind !== "nominal-operation-contract"
+      const derived = snapshot?.kind === "derived-formation-contract";
+      if ((!derived && snapshot?.kind !== "nominal-operation-contract")
         || !control?.closest?.("#classical-rule-logic-controls")
         || control.closest?.("[data-classical-source-identity-controls]")) return true;
       const rendered = ClassicalNominalNativeChoiceFrames.get(control);
       return control.isConnected !== false && control.disabled !== true && rendered?.snapshot === snapshot
-        && isCurrentNominalOperationSnapshot(snapshot,rendered.frame);
+        && (derived ? isCurrentDerivedFormationSnapshot(snapshot,rendered.frame)
+          : isCurrentNominalOperationSnapshot(snapshot,rendered.frame));
     }
 
     const ClassicalIssuedBindingSnapshots = new WeakMap();
@@ -43755,12 +43853,16 @@ export function createUiRenderingApi(targetObject = globalThis) {
     function captureClassicalIssuedBindingEvent(expectedBinding) {
       const snapshot = ClassicalConstructionSession.position.operationContract;
       if (snapshot?.contract?.binding !== expectedBinding) return null;
+      if (snapshot.kind === "derived-formation-contract") return isCurrentDerivedFormationSnapshot(snapshot)
+        ? {snapshot,event:captureDerivedFormationChoiceFrame(snapshot)} : null;
       if (snapshot.kind === "nominal-operation-contract") return isCurrentNominalOperationSnapshot(snapshot)
         ? {snapshot,event:captureNominalOperationChoiceFrame(snapshot)} : null;
       return isCurrentIssuedBindingOperationSnapshot(snapshot)
         ? {snapshot,event:captureIssuedBindingChoiceFrame(snapshot)} : null;
     }
     function retainClassicalIssuedBindingCandidate(context,candidate) {
+      if (context?.snapshot?.kind === "derived-formation-contract")
+        return Boolean(adoptDerivedFormationCandidate(context.snapshot,{binding:candidate},context.event));
       if (context?.snapshot?.kind === "nominal-operation-contract")
         return Boolean(adoptNominalOperationCandidate(context.snapshot,{binding:candidate},context.event));
       const snapshot = context && adoptIssuedBindingOperationCandidate(context.snapshot,candidate,context.event,ClassicalOrdinaryNncChoiceMemory.get(candidate) || null);
@@ -43782,6 +43884,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const binding = getActiveClassicalGrammarResultBinding(operation);
       const typed = getActiveClassicalGrammarTypedSourceOperationBinding();
       syncClassicalPositionFixedChoices(typed);
+      if (!source && isDerivedFormationOperation(operation)) source = getClassicalNativeDerivedIngress(operation)?.source || null;
+      const derivedSnapshot = readClassicalDerivedFormationSnapshot(operation, source, binding, typed);
       const nominalSnapshot = readClassicalNominalOperationSnapshot(operation, source, binding, typed);
       const issuedSnapshot = readClassicalIssuedBindingSnapshot(operation, ordinary?.operationId === operation ? ordinary.exactSource : source, binding, typed);
       if (source) ClassicalPositionSources.add(source);
@@ -43789,11 +43893,12 @@ export function createUiRenderingApi(targetObject = globalThis) {
       if (source) ClassicalPositionSources.add(source);
       const replacementEdit = PendingClassicalResultEdit?.sourceReplacement
         ? getClassicalResultEditSourceReplacement(source) : null;
-      let ready = operation === "grammar:nominal-construction"
+      let ready = isDerivedFormationOperation(operation) ? derivedSnapshot?.contract.ready === true
+        : operation === "grammar:nominal-construction"
         ? nominalSnapshot?.contract.ready === true
         : readiness?.ready === true || readiness?.disabled === false && readiness?.dataset?.classicalCapabilityApplyState === "ready";
       let packet = null;
-      if (ready) { try { packet = captureClassicalConstructionPacket(operation, source, binding, typed, nominalSnapshot); } catch { packet = null; } }
+      if (ready) { try { packet = captureClassicalConstructionPacket(operation, source, binding, typed, nominalSnapshot, derivedSnapshot); } catch { packet = null; } }
       let layerReadiness = getConstructionLayerReadiness(targetObject, packet);
       ready = ready && layerReadiness.ready;
       if (packet?.source) { source = packet.source; ClassicalPositionSources.add(source); }
@@ -43905,7 +44010,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       for (const slot of slots) if (!slot.exact) legalMoves.push({type: "slot", id: slot.role});
       return {source, sourcePending, slotOrder, route: {operation, binding: binding?.selectedBindingId || "typed-source", family: binding?.family || "typed-source"},
         slots, choices: semanticChoices, legalMoves, ready: ready && Boolean(packet), execution: packet, layerReadiness,
-        operationContract: nominalSnapshot || issuedSnapshot || (clauseController && clauseContract
+        operationContract: derivedSnapshot || nominalSnapshot || issuedSnapshot || (clauseController && clauseContract
           ? (getClassicalComparisonOperationSnapshot()?.contract === clauseContract
             ? getClassicalComparisonOperationSnapshot()
             : issueComparisonOperationSnapshot(clauseController, readClassicalClauseSelections(), source, clauseContract, null, ClassicalClauseRelationSelections)) : null)};

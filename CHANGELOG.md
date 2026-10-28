@@ -1,5 +1,9 @@
 # Version History
 
+## 1.2.104 — Coordinated Derived Formations
+
+Deverbal, relational, and adverbial choices now share one owner-backed construction snapshot for Source custody, preview, and explicit Make. Native two-nucleus and lexical-adverbial Source ingress retain their authentic owners; exact continuations and required matrix Results preserve their identities. Existing panels and grammatical authorities are unchanged.
+
 ## v1.2.103 — Coordinated Nominal Constructions
 
 Nominal embedding, compounds, numbers, calendar dates, affective nouns and adjectival formations now share owner-authorized construction snapshots. Required inputs and dependent compound choices recover without changing the accepted Result before Make.
