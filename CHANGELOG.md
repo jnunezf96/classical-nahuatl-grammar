@@ -1,5 +1,9 @@
 # Version History
 
+## v1.2.95 — Coordinated Comparison Degrees
+
+Adversative and negative comparisons, how-much-more questions, and three superlative strategies now share coordinated inputs, applicable choices, preview, and explicit Make.
+
 ## v1.2.94 — Coordinated Equality and Size
 
 Equality with īhuān, size with ixquich, and two size correlatives now coordinate their inputs, applicable choices, preview, and explicit Make through the shared session.
