@@ -1,8 +1,8 @@
-# Grammar OS v1.2.109 release
+# Grammar OS v1.2.110 release
 
 Release name: **Denominal Choice Coordination**
 
-Browser build: **20261028-denominal-session-128**
+Browser build: **20261028-denominal-path-129**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
@@ -10,3 +10,5 @@ Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 - Inactive object and stem-shape choices stay scoped to their Source; exact, prepared and typed sources retain their canonical authority.
 - Required typed paths recover consistently, and current readiness replaces obsolete blocked guidance.
 - The existing category-only formation remains nonexecuting.
+
+- Keep the same path control across bound-to-rank Source transitions and native departure.

@@ -40804,7 +40804,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           }));
           path.value = binding.callerSelections.pathChoiceId || "";path.disabled = false;
           path.setAttribute("aria-disabled", "false");
-          const field = path.closest?.("label");if (field) {field.hidden = false;field.setAttribute("aria-hidden", "false");field.setAttribute("aria-disabled", "false");choices.append(field);}
+          const field = path.closest?.("label");if (field) {field.hidden = false;field.setAttribute("aria-hidden", "false");field.setAttribute("aria-disabled", "false");plan.insertBefore(field,choices);}
           // The typed owner's path includes the operation. Native operation
           // choices would replace this binding and discard its required intent.
           const nativeOperationField = targetObject.document.getElementById("classical-denominal-vnc-operation")?.closest?.("label");

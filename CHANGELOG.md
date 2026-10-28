@@ -1,3 +1,7 @@
+## v1.2.110 — Typed Denominal Path Recovery
+
+- Preserve the existing path control when moving between typed nominal sources and back to native choices.
+
 ## v1.2.109 — Denominal Choice Coordination
 
 - Coordinate existing noun-to-verb choices, source paths and classes through one current construction.
