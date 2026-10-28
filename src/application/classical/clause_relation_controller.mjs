@@ -5236,8 +5236,8 @@ export function createClassicalClauseRelationControllerGlobals(
       return request;
     }
 
-    function buildComparisonOperationRequest(contract = null) {
-      const choices = Object.fromEntries(
+    function buildComparisonOperationChoices(contract = null) {
+      return Object.fromEntries(
         Object.entries(contract?.operationSelections || {})
           .filter(([field]) => field !== "comparisonRoute")
           .map(([field, value]) => [field,
@@ -5245,11 +5245,13 @@ export function createClassicalClauseRelationControllerGlobals(
               ? value === "yes" : value,
           ])
       );
+    }
+    function buildComparisonOperationRequest(contract = null) {
       return {
         routeId: contract?.derived?.comparisonRoute || "",
         relation: contract?.derived?.comparisonRelation || "",
         slots: buildComparisonSourceSlots(contract),
-        choices,
+        choices: buildComparisonOperationChoices(contract),
       };
     }
 
@@ -6219,6 +6221,22 @@ export function createClassicalClauseRelationControllerGlobals(
       });
     }
 
+    function prepareRelationAnchorReplacement(bindingFrame, bindingId, role, exactResult, prior, purpose) {
+        const navigator = targetObject.getClassicalGrammarApplicationCapabilityNavigator?.(exactResult);
+        if (targetObject.isClassicalGrammarApplicationCapabilityNavigator?.(navigator) !== true
+          || navigator.exactResult !== exactResult) return null;
+        const operation = navigator.operations?.find(item => item.operationId === bindingFrame.operationId);
+        const owner = operation?.ownerBindingFrame;
+        if (operation?.availabilityStatus !== "available" || operation.ownerBindingFrameValidated !== true
+          || operation.ownerBindingInputResult !== exactResult || !isClassicalClauseRelationBindingFrame(owner)
+          || owner.exactResult !== exactResult || !owner.bindingChoices.some(choice => choice.id === bindingId
+            && choice.relation === prior.relation && choice.captureRole === role)) return null;
+        const capture = targetObject.captureClassicalGrammarApplicationResult?.(exactResult, purpose);
+        if (targetObject.isClassicalGrammarApplicationResultCapture?.(capture, purpose) !== true
+          || capture.canonicalResult !== exactResult) return null;
+        return Object.freeze({navigator, operation, capture});
+    }
+
     return Object.freeze({
       kind: CONTROLLER_KIND,
       version: CONTROLLER_VERSION,
@@ -6242,19 +6260,35 @@ export function createClassicalClauseRelationControllerGlobals(
         const prior = bindingFrame.bindingChoices.find(choice => choice.id === bindingId);
         if (!prior || NON_ADJUNCTION_RELATIONS.includes(prior.relation)
           || prior.captureRole !== role || !["principal", "adjoined", "marker"].includes(role)) return null;
-        const navigator = targetObject.getClassicalGrammarApplicationCapabilityNavigator?.(exactResult);
-        if (targetObject.isClassicalGrammarApplicationCapabilityNavigator?.(navigator) !== true
-          || navigator.exactResult !== exactResult) return null;
-        const operation = navigator.operations?.find(item => item.operationId === bindingFrame.operationId);
-        const owner = operation?.ownerBindingFrame;
-        if (operation?.availabilityStatus !== "available" || operation.ownerBindingFrameValidated !== true
-          || operation.ownerBindingInputResult !== exactResult || !isClassicalClauseRelationBindingFrame(owner)
-          || owner.exactResult !== exactResult || !owner.bindingChoices.some(choice => choice.id === bindingId
-            && choice.relation === prior.relation && choice.captureRole === role)) return null;
-        const capture = targetObject.captureClassicalGrammarApplicationResult?.(exactResult, "adjunction-replacement-source");
-        if (targetObject.isClassicalGrammarApplicationResultCapture?.(capture, "adjunction-replacement-source") !== true
-          || capture.canonicalResult !== exactResult) return null;
-        return Object.freeze({navigator, operation, capture});
+        return prepareRelationAnchorReplacement(bindingFrame, bindingId, role, exactResult, prior, "adjunction-replacement-source");
+      },
+      prepareComparisonAnchorReplacement(bindingFrame, bindingId, role, exactResult, selections, expectedFrame) {
+        if (!isCurrentChoiceFrame(expectedFrame, selections) || selections.relation !== "comparison"
+          || !isClassicalClauseRelationBindingFrame(bindingFrame)) return null;
+        const prior = bindingFrame.bindingChoices.find(choice => choice.id === bindingId);
+        if (!prior || prior.relation !== "comparison" || prior.captureRole !== role
+          || !Object.hasOwn(COMPARISON_CAPTURE_SLOT_LAYOUTS[selections.comparisonRoute] || {}, role)) return null;
+        const source = targetObject.buildClassicalComparisonSourceUnit?.({sourceResult:exactResult});
+        if (targetObject.isClassicalComparisonSourceUnit?.(source) !== true || source.authorizationStatus !== "authorized") return null;
+        const probe = targetObject.createClassicalClauseRelationController();
+        for (const captureRole of Object.keys(COMPARISON_CAPTURE_SLOT_LAYOUTS[selections.comparisonRoute])) {
+          const parent = captureRole === role ? exactResult : getValidatedCapture(captureRole)?.canonicalResult;
+          if (parent && probe.captureCurrentResult(captureRole, parent).authorizationStatus !== "authorized") return null;
+        }
+        const slots = Object.fromEntries(Object.entries(COMPARISON_CAPTURE_SLOT_LAYOUTS[selections.comparisonRoute])
+          .map(([captureRole, slot]) => [slot, probe.getCapturedCanonicalResult(captureRole)])
+          .filter(([, parent]) => parent)
+          .map(([slot, parent]) => [slot, targetObject.buildClassicalComparisonSourceUnit({sourceResult:parent})]));
+        const contract = probe.buildDecisionContract(selections);
+        const ownerFrame = targetObject.buildClassicalComparisonOperationFrame({routeId:selections.comparisonRoute,
+          slots, choices:buildComparisonOperationChoices(contract)});
+        const missing = new Set((getComparisonRouteInventory().find(route=>route.id===selections.comparisonRoute)?.requiredSlots || [])
+          .filter(slot=>!slots[slot]).map(slot=>`comparison-${slot}-typed-source-required`));
+        if (ownerFrame.authorizationStatus !== "authorized"
+          && ownerFrame.diagnostics?.some(diagnostic=>!missing.has(diagnostic))) return null;
+        if (contract.authorizationStatus === "blocked" && !contract.missingCaptureRoles.length
+          && !contract.unresolvedDecisionIds.length) return null;
+        return prepareRelationAnchorReplacement(bindingFrame, bindingId, role, exactResult, prior, "comparison-replacement-source");
       },
       preserveAdjunctionCaptureChoices(selections, role) {
         return Boolean(selections?.relation && !NON_ADJUNCTION_RELATIONS.includes(selections.relation)

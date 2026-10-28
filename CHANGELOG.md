@@ -1,5 +1,9 @@
 # Version History
 
+## v1.2.93 — Coordinated Specified Comparison
+
+Specified panahuia comparison now coordinates its principal eligibility and choices. Replacing the principal preserves exact Source identity, other inputs, and explicit Make.
+
 ## v1.2.92 — Coordinated Similarity Continuations
 
 Similarity reduplication now coordinates continuation-specific choices and fixed facts through the shared contract, preserving exact Source and explicit Make.

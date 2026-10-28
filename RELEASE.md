@@ -1,13 +1,13 @@
-# Grammar OS v1.2.92 release
+# Grammar OS v1.2.93 release
 
-Release name: **Coordinated Similarity Continuations**
+Release name: **Coordinated Specified Comparison**
 
-Browser build: **20261028-reduplicative-pilot-111**
+Browser build: **20261028-specified-pilot-112**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Similarity reduplication uses the shared owner-backed choice contract.
-- Continuation changes remove inapplicable explicit choices while retaining the owner's fixed facts.
-- Preview and explicit Make preserve exact Source identity and the accepted Result while staging.
+- Specified-object panahuia comparison uses the shared owner-backed choice contract.
+- Replacing its principal from saved Results updates the exact Source and binding while preserving other roles and staged choices.
+- Incompatible principals remain blocked; accepted work changes only on explicit Make.

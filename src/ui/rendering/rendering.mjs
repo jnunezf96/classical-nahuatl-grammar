@@ -1,4 +1,4 @@
-import {issueComparisonOperationSnapshot,transitionComparisonOperationSnapshot,readComparisonOperationSelections,isCurrentComparisonOperationSnapshot} from '../composition/comparison_operation_transaction.mjs?operationPilot=20261027-1&similarityPilot=20261028-1&comparativePilot=20261028-5&panahuiaPilot=20261028-1&reduplicativePilot=20261028-1';
+import {issueComparisonOperationSnapshot,transitionComparisonOperationSnapshot,readComparisonOperationSelections,isCurrentComparisonOperationSnapshot} from '../composition/comparison_operation_transaction.mjs?operationPilot=20261027-1&similarityPilot=20261028-1&comparativePilot=20261028-5&panahuiaPilot=20261028-1&reduplicativePilot=20261028-1&specifiedPilot=20261028-4';
 import {inactiveAffectiveReloadControl,prepareNativeReloadSourceContext,reconcileAcceptedQuotedSourceBaseline} from '../composition/native_reload_source.mjs?nativeReload=20261027-4';
 import {normalizeSourceEditorSignature} from '../composition/source_editor_signature.mjs';
 import {inputLabel,captureRoleLabel,clauseReadinessGuidance,contractReferences,normalizeAndrewsReference,hasCurrentClauseProjection} from '../composition/choice_guidance.mjs?choiceGuidance=20261027-3';
@@ -54461,6 +54461,13 @@ export function createUiRenderingApi(targetObject = globalThis) {
           || owner.authorizationStatus !== "authorized"
           || owner.operationId !== binding.operationId || owner.exactResult !== binding.exactResult
           || !owner.bindingIds.includes(binding.selectedBindingId)) return false;
+        const snapshot = getClassicalComparisonOperationSnapshot();
+        const anchor = owner.bindingChoices.find(choice=>choice.id === binding.selectedBindingId);
+        if (binding.operationId === "clause:comparison" && exactResult !== binding.exactResult
+          && anchor?.captureRole === role && snapshot && isCurrentComparisonOperationSnapshot(snapshot)) {
+          return Boolean(snapshot.controller.prepareComparisonAnchorReplacement(owner, binding.selectedBindingId,
+            role, exactResult, snapshot.selections, snapshot.contract.currentChoiceFrame));
+        }
         // Probe a separate controller. Listing candidates never changes live captures.
         const probe = targetObject.createClassicalClauseRelationController?.();
         if (binding.clauseRelationRecovery) {
@@ -55058,9 +55065,17 @@ export function createUiRenderingApi(targetObject = globalThis) {
         const controller = getClassicalClauseRelationControllerForRendering();
         const anchoredAdjunction = controller?.preserveAdjunctionCaptureChoices?.(readClassicalClauseSelections(), role)
           && binding.ownerBindingFrame?.bindingChoices?.some(choice => choice.id === binding.selectedBindingId && choice.captureRole === role);
+        const comparisonSnapshot = getClassicalComparisonOperationSnapshot();
+        const anchoredComparison = exactAdditionalResult !== binding.exactResult
+          && binding.operationId === "clause:comparison" && comparisonSnapshot
+          && comparisonSnapshot.controller === controller && isCurrentComparisonOperationSnapshot(comparisonSnapshot)
+          && binding.ownerBindingFrame?.bindingChoices?.some(choice => choice.id === binding.selectedBindingId && choice.captureRole === role);
         const replacement = anchoredAdjunction ? controller.prepareAdjunctionAnchorReplacement(
-          binding.ownerBindingFrame, binding.selectedBindingId, role, exactAdditionalResult) : null;
-        if (anchoredAdjunction && !replacement) return false;
+          binding.ownerBindingFrame, binding.selectedBindingId, role, exactAdditionalResult)
+          : anchoredComparison ? controller.prepareComparisonAnchorReplacement(
+            binding.ownerBindingFrame, binding.selectedBindingId, role, exactAdditionalResult,
+            comparisonSnapshot.selections, comparisonSnapshot.contract.currentChoiceFrame) : null;
+        if ((anchoredAdjunction || anchoredComparison) && !replacement) return false;
         const result = role
           ? controller?.captureCurrentResult?.(
             role,
@@ -55091,6 +55106,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
           } : {}),
           requiredResultRoles: remainingRequiredResultRoles,
         });
+        if (anchoredComparison && replacement) {
+          ClassicalComparisonTransitionDraft = issueComparisonOperationSnapshot(controller,
+            comparisonSnapshot.selections, exactAdditionalResult, null, null, ClassicalClauseRelationSelections);
+        }
         if (replacement) syncClassicalContinuationTarget();
         const navigatorRoot = targetObject.document?.getElementById?.(
           "classical-capability-navigator"
