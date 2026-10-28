@@ -1,11 +1,10 @@
+import {areOwnerOperationSnapshotsEquivalent} from './owner_operation_protocol.mjs';
 // A session position retains authentic owner objects. It never authorizes grammar.
 const freezeRecord=value=>Object.freeze({...value});
 const equal=(a,b)=>a===b || Boolean(a && b && typeof a==='object' && typeof b==='object'
   && Object.keys(a).length===Object.keys(b).length && Object.keys(a).every(key=>equal(a[key],b[key])));
 const sameConstruction=(a,b)=>a.source===b.source && equal(a.route,b.route);
-const sameOperation=(a,b)=>a===b || Boolean(a&&b&&a.controller===b.controller&&a.source===b.source
-  &&equal(a.selections,b.selections)&&a.contract?.currentChoiceFrame?.captureRevision===b.contract?.currentChoiceFrame?.captureRevision
-  &&a.contract?.currentChoiceFrame?.stagedRevision===b.contract?.currentChoiceFrame?.stagedRevision);
+const sameOperation=(a,b)=>a===b || areOwnerOperationSnapshotsEquivalent(a,b);
 const sameSlots=(a,b)=>a.length===b.length && a.every((slot,i)=>slot.role===b[i].role && slot.exact===b[i].exact);
 
 export function createConstructionPosition({isSource,isResult}={}) {

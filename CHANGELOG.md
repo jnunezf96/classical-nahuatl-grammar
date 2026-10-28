@@ -1,5 +1,9 @@
 # Version History
 
+## v1.2.98 — Shared Owner Coordination
+
+Extracted a common operation snapshot protocol with owner-specific adapters. Comparison retains its grammar and exact input custody while the construction session delegates owner-frame equivalence.
+
 ## v1.2.97 — Coordinated Verbal Similarity
 
 The final two comparison routes now share owner-backed coordination. Principal replacement releases its temporary transition draft so later input controls use the current session.

@@ -20,7 +20,7 @@ test('similarity transaction retains independent choices through dependency loss
  step({type:'clear-capture',role:'principal'});assert.notEqual(current.contract.authorizationStatus,'authorized');assert.equal(c.preview(current.selections),null);
  step({type:'capture',role:'principal',result:parents.principal});assert.equal(current.contract.authorizationStatus,'authorized');assert.equal(current.selections.adjunctorIn,'no');
  assert.equal(readComparisonOperationSelections(current,ingress,parents.principal),current.selections);
- const other={relation:'comparison',comparisonRoute:'equality-ihuan'};assert.equal(issueComparisonOperationSnapshot(c,other,parents.principal),null);assert.equal(readComparisonOperationSelections(current,other,parents.principal),other);
+ const other={relation:'comparison',comparisonRoute:'unregistered-comparison-route'};assert.equal(issueComparisonOperationSnapshot(c,other,parents.principal),null);assert.equal(readComparisonOperationSelections(current,other,parents.principal),other);
  const newIngress={...current.selections};assert.equal(readComparisonOperationSelections(current,newIngress,parents.principal),newIngress);const reentered=issueComparisonOperationSnapshot(c,newIngress,parents.principal);assert.equal(reentered.routeId,route);assert.equal(reentered.selections.iuhquiModifier,'ca-zan');
 });
 test('similarity session publishes current request and Make preserves exact adjoined/topic/dimension',()=>{

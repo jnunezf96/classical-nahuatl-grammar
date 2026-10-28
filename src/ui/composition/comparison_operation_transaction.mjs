@@ -1,28 +1,23 @@
-// Non-authorizing coordination adapter. State lives only in construction position.
+import {createOwnerOperationProtocol} from './owner_operation_protocol.mjs';
+// Thin owner adapter; the construction session remains the sole state store.
 export const COMPARISON_OPERATION_ROUTES=Object.freeze(['equality-iuhqui','similarity-iuhqui-principal','comparative-tachcauh-hualcah','comparative-panahuia-unspecified','similarity-reduplicative-prefix','comparative-panahuia-specified','equality-ihuan','size-ixquich','size-quezqui-no-izqui','size-more-more-correlative','comparative-adversative','comparative-negative-adverbial','question-how-much-more','superlative-adverbial','superlative-incorporated','superlative-principal-ic','similarity-downgraded-possessive-tla','similarity-tloc-relational-nnc','similarity-same-as-pronominal','similarity-incorporated-nehnequi','similarity-iuhqui-larger-concatenate','similarity-resemblance-verbstem-nnc','similarity-ihui-vnc']);
-const issued=new WeakSet();
-const selected=s=>s?.relation==='comparison'&&COMPARISON_OPERATION_ROUTES.includes(s.comparisonRoute);
-export function issueComparisonOperationSnapshot(controller,selections,source,contract=null,prior=null,ingress=prior?.ingress || selections){
- if(!selected(selections))return null;
- const intent=Object.freeze({...selections});
- contract ||= controller.buildDecisionContract(intent);
- if(!controller.isCurrentChoiceFrame(contract?.currentChoiceFrame,intent))return null;
- const captures=Object.freeze(Object.keys(contract.derived.captureSlotLayout).map(role=>Object.freeze({role,exact:controller.getCapturedCanonicalResult(role)||null})));
- if(!captures.some(x=>x.exact===source)&&!(issued.has(prior)&&prior.source===source))return null;
- const snapshot=Object.freeze({kind:'comparison-operation-contract',routeId:selections.comparisonRoute,controller,source,ingress,selections:intent,contract,captures});
- issued.add(snapshot);return snapshot;
-}
-export function isCurrentComparisonOperationSnapshot(snapshot){
- return issued.has(snapshot)&&snapshot.controller.isCurrentChoiceFrame(snapshot.contract.currentChoiceFrame,snapshot.selections)
-  &&snapshot.captures.every(x=>(snapshot.controller.getCapturedCanonicalResult(x.role)||null)===x.exact);
-}
-export function readComparisonOperationSelections(snapshot,legacy,source){
- return issued.has(snapshot)&&snapshot.ingress===legacy&&selected(legacy)&&snapshot.source===source?snapshot.selections:legacy;
-}
-export function transitionComparisonOperationSnapshot(snapshot,intent,expectedFrame){
- if(!isCurrentComparisonOperationSnapshot(snapshot)||!snapshot.controller.isCurrentChoiceFrame(expectedFrame,snapshot.selections))
-  return Object.freeze({handled:true,authorizationStatus:'blocked',blockReason:'comparison-choice-stale-frame'});
- const transition=snapshot.controller.transitionComparisonChoice({selections:snapshot.selections,expectedFrame,intent});
- if(transition.authorizationStatus!=='authorized')return transition;
- return Object.freeze({...transition,snapshot:issueComparisonOperationSnapshot(snapshot.controller,transition.selections,snapshot.source,transition.contract,snapshot)});
-}
+const equal=(a,b)=>a===b || Boolean(a && b && typeof a==='object' && typeof b==='object'
+ && Object.keys(a).length===Object.keys(b).length && Object.keys(a).every(key=>equal(a[key],b[key])));
+const protocol=createOwnerOperationProtocol({
+ kind:'comparison-operation-contract',
+ select:s=>s?.relation==='comparison'&&COMPARISON_OPERATION_ROUTES.includes(s.comparisonRoute),
+ routeId:s=>s.comparisonRoute,
+ projectIntent:s=>Object.freeze({...s}), // Comparison owner selection fields are scalar.
+ buildContract:(c,s)=>c.buildDecisionContract(s),
+ isCurrentFrame:(c,contract,s,expected=contract?.currentChoiceFrame)=>c.isCurrentChoiceFrame(expected,s),
+ projectCaptures:(c,contract)=>Object.keys(contract.derived.captureSlotLayout).map(role=>({role,exact:c.getCapturedCanonicalResult(role)||null})),
+ transition:(c,selections,intent,expectedFrame)=>c.transitionComparisonChoice({selections,expectedFrame,intent}),
+ equivalent:(a,b)=>a.controller===b.controller&&a.source===b.source&&equal(a.selections,b.selections)
+  &&a.contract.currentChoiceFrame.captureRevision===b.contract.currentChoiceFrame.captureRevision
+  &&a.contract.currentChoiceFrame.stagedRevision===b.contract.currentChoiceFrame.stagedRevision,
+ staleReason:'comparison-choice-stale-frame'
+});
+export const issueComparisonOperationSnapshot=protocol.issue;
+export const isCurrentComparisonOperationSnapshot=protocol.isCurrent;
+export const readComparisonOperationSelections=protocol.readSelections;
+export const transitionComparisonOperationSnapshot=protocol.transition;
