@@ -2226,6 +2226,14 @@ export function createClassicalNahuatlSupplementationApi(
         authorizationStatus: "blocked", blockReason: "frozen-such-that-productive-clause-envelope-unavailable",
         formulaStringAuthority: false, surfaceStringAuthority: false});
     }
+    if (isClassicalNahuatlSupplementationFrame(sourceFrame)
+      && ["exclamatory-utterance", "such-that-adjunction"].includes(sourceFrame.operationKind)) {
+      // These issued utterances do not have a supplementation reference relation.
+      // Their constituents remain inspectable, but are not invented clause contacts.
+      return freezeDeep({kind: "classical-nahuatl-supplementation-clause-envelope",
+        authorizationStatus: "blocked", blockReason: "utterance-productive-clause-envelope-unavailable",
+        formulaStringAuthority: false, surfaceStringAuthority: false});
+    }
     if (isClassicalNahuatlSupplementationFrame(sourceFrame)) {
       const principalObjects = sourceFrame.principalClause.objects.filter(object =>
         !object.nestedObjectContactFrame

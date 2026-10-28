@@ -1,8 +1,8 @@
-# Grammar OS v1.2.112 release
+# Grammar OS v1.2.113 release
 
-Release name: **Supplementation Choice Coordination**
+Release name: **Utterance History Recovery**
 
-Browser build: **20261028-supplementation-131**
+Browser build: **20261028-utterance-projection-132**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 

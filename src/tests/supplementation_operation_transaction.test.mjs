@@ -126,3 +126,18 @@ test('frozen such-that accepted structure remains inspectable without inventing 
  assert.equal(r.buildClassicalNahuatlSupplementationClauseEnvelope(exact).authorizationStatus,'blocked');assert.equal(r.getCanonicalAdverbialAdjunctionSourceUnit(exact).ok,false);assert.equal(r.isClassicalNahuatlSupplementationFrame({...exact}),false);
  const ordinary=r.createClassicalClauseRelationController();ordinary.captureCurrentResult('principal',noun('3sg'));ordinary.captureCurrentResult('adjoined',noun('3sg'));const result=ordinary.compose({relation:'supplementation',supplementationReferenceMode:'shared',supplementationHeadRole:'subject',supplementationContactRole:'subject',supplementationOrder:'principal-first'});assert.equal(result.authorizationStatus,'authorized');assert.equal(r.isClassicalNahuatlSupplementationClauseEnvelope(r.buildClassicalNahuatlSupplementationClauseEnvelope(result.canonicalResult)),true);
 });
+test('all eight accepted operation shapes project safely through History without invented relation contacts',()=>{
+ const ordinary={relation:'supplementation',parents:()=>({principal:noun('3sg'),adjoined:noun('3sg')}),choices:{supplementationReferenceMode:'shared',supplementationHeadRole:'subject',supplementationContactRole:'subject',supplementationOrder:'principal-first'}};
+ const productive={relation:'such-that-adjunction',parents:()=>({principal:particle('l3-cuix'),adjoined:v('mati'),marker:particle('l3-mah')}),choices:{}};
+ for(const item of [ordinary,...cases,productive]){
+  const c=r.createClassicalClauseRelationController(),parents=item.parents();for(const [role,x]of Object.entries(parents))c.captureCurrentResult(role,x,item.context?c.issueDiscourseSourceContextFrame(item.context):null);
+  const made=c.compose({relation:item.relation,...item.choices});assert.equal(made.authorizationStatus,'authorized',`${item.relation}:${made.blockReason}`);const exact=made.canonicalResult;
+  const project=x=>({canonicalResult:x,surface:x.surfaceRealization||x.surface||'',operationId:'sentence:supplementation'});
+  const structure=projectCanonicalStructure(r,exact,project);assert.equal(structure.exact,exact,item.relation);
+  assert.doesNotThrow(()=>r.getCanonicalAdverbialAdjunctionSourceUnit(exact),item.relation);
+  if(['exclamatory-utterance','such-that-adjunction'].includes(item.relation)){
+   assert.deepEqual(structure.endpoints,[]);assert.equal(r.buildClassicalNahuatlSupplementationClauseEnvelope(exact).authorizationStatus,'blocked');assert.equal(r.getCanonicalAdverbialAdjunctionSourceUnit(exact).ok,false);
+   assert.equal(r.isClassicalNahuatlSupplementationFrame({...exact}),false);assert.equal(structure.children[0].exact,parents.principal);
+  }
+ }
+});

@@ -1,3 +1,9 @@
+## v1.2.113 — Utterance History Recovery
+
+- Keep accepted exclamatory and such-that utterances inspectable in History without fabricating supplementation contacts.
+- Restore later saved-input choices after an accepted exclamation.
+- Preserve all previously verified supplementation choices and explicit Make boundaries.
+
 ## v1.2.112 — Supplementation Choice Coordination
 
 - Coordinate eight supplementation pathways through current Source, choices and explicit Make.

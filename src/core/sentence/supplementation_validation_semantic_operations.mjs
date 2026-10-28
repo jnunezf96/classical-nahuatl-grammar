@@ -21,7 +21,7 @@ export function supplementationValidationEvidenceScope() {
 
 import {
   createClassicalNahuatlSupplementationApi,
-} from "./supplementation.mjs?andrewsRelease=20261024-1&supplementationSession=20261028-1";
+} from "./supplementation.mjs?andrewsRelease=20261024-1&supplementationSession=20261028-1&utteranceProjection=20261028-1";
 
 function cloneValue(value, seen = new WeakMap()) {
   if (!value || typeof value !== "object") return value;

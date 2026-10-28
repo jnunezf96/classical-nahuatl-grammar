@@ -1462,7 +1462,7 @@ import { createClassicalVncValidationSemanticOperationsApi } from "./vnc_lessons
 import { createClassicalNncValidationSemanticOperationsApi } from "./nnc_lessons12_13_semantic_operations.mjs";
 import { createClassicalNounstemValidationSemanticOperationsApi } from "./nnc_nounstem_semantic_operations.mjs";
 import { createClassicalHigherPronominalNncValidationSemanticOperationsApi } from "./nnc_higher_pronominal_semantic_operations.mjs?andrewsRelease=20261024-1";
-import { createClassicalSupplementationValidationSemanticOperationsApi } from "../sentence/supplementation_validation_semantic_operations.mjs?v=20260816-lesson29-groups1-3-012&andrewsRelease=20261024-1&supplementationSession=20261028-1";
+import { createClassicalSupplementationValidationSemanticOperationsApi } from "../sentence/supplementation_validation_semantic_operations.mjs?v=20260816-lesson29-groups1-3-012&andrewsRelease=20261024-1&supplementationSession=20261028-1&utteranceProjection=20261028-1";
 import { createClassicalNonactiveVoiceObjectValidationSemanticOperationsApi } from "./nonactive_voice_object_validation_semantic_operations.mjs?v=20260904-ni-stock-ocr-corrections-414";
 import { createClassicalObjectRelationshipValidationSemanticOperationsApi } from "./object_relationship_validation_semantic_operations.mjs?v=20260902-result-partition-375";
 import { createClassicalVncDerivationValidationSemanticOperationsApi } from "./vnc_derivation_validation_semantic_operations.mjs?v=20261001-reader-24-8-subject-1";

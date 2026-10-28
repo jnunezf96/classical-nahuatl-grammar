@@ -1,4 +1,4 @@
-import * as supplementation from './supplementation_operation_transaction.mjs?supplementationSession=20261028-1';
+import * as supplementation from './supplementation_operation_transaction.mjs?supplementationSession=20261028-1&utteranceProjection=20261028-1';
 import * as comparison from './comparison_operation_transaction.mjs?issuedBinding=20261028-1';
 import * as conjunction from './conjunction_operation_transaction.mjs?issuedBinding=20261028-1';
 import * as complement from './complement_operation_transaction.mjs?issuedBinding=20261028-1';

@@ -834,8 +834,8 @@ export function createAdverbialAdjunctionGlobals(targetObject = globalThis, inst
         && targetObject.isClassicalNahuatlSupplementationFrame(input) === true
         && input.authorizationStatus === "authorized"
       );
-      if (issuedSupplementation && input.operationKind === "such-that-adjunction"
-        && input.frozenEllipsis === true) {
+      if (issuedSupplementation
+        && ["exclamatory-utterance", "such-that-adjunction"].includes(input.operationKind)) {
         return getCanonicalAdverbialAdjunctionSourceUnit(null, role);
       }
       if (issuedSupplementation
