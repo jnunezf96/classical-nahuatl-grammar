@@ -210,6 +210,12 @@ const COMPLEMENT_SEMANTIC_CATEGORIES = Object.freeze({
     "relational-lexicalized",
   ]),
 });
+const COMPLEMENT_DECISION_KEYS = Object.freeze({
+  "semantic-category":"semanticCategory", "complement-order":"complementOrder",
+  "link-kind":"linkKind", "designation-structure":"designationStructure",
+  "principal-object-id":"principalObjectId", "contact-kind":"contactKind",
+  "relational-pair":"relationalPairId",
+});
 const COMPLEMENT_ORDERS = Object.freeze([
   "complement-principal",
   "principal-complement",
@@ -1452,6 +1458,24 @@ export function createClassicalClauseRelationControllerGlobals(
           if(capture.authorizationStatus !== "authorized") return blocked(capture.blockReason);
         }
       } else return blocked("conjunction-choice-intent-not-recognized");
+      choiceRevision += 1;
+      return Object.freeze({handled:true,authorizationStatus:"authorized",selections:Object.freeze(next),contract:buildDecisionContract(next)});
+    }
+
+    function transitionComplementChoice({selections={},expectedFrame=null,intent={}}={}) {
+      const current=COMPLEMENT_OPERATION_KINDS.includes(selections.relation);
+      if(!current && !COMPLEMENT_OPERATION_KINDS.includes(expectedFrame?.familyId)) return Object.freeze({handled:false});
+      const blocked=reason=>Object.freeze({handled:true,authorizationStatus:"blocked",blockReason:reason,selections,contract:buildDecisionContract(selections)});
+      if(!current || !isCurrentChoiceFrame(expectedFrame,selections)) return blocked("complement-choice-stale-frame");
+      const next={...selections};
+      if(intent.type === "set-choice") {
+        if(!expectedFrame.decisions.some(d=>d.key===intent.key)) return blocked("complement-choice-field-not-licensed");
+        if(intent.value) next[intent.key]=String(intent.value).trim(); else delete next[intent.key];
+      } else if(intent.type === "capture" || intent.type === "clear-capture") {
+        if(!expectedFrame.inputs.some(input=>input.role===intent.role)) return blocked("complement-choice-capture-role-not-licensed");
+        if(intent.type === "clear-capture") clearCapture(intent.role);
+        else {const capture=captureCurrentResult(intent.role,intent.result,intent.context);if(capture.authorizationStatus!=="authorized")return blocked(capture.blockReason);}
+      } else return blocked("complement-choice-intent-not-recognized");
       choiceRevision += 1;
       return Object.freeze({handled:true,authorizationStatus:"authorized",selections:Object.freeze(next),contract:buildDecisionContract(next)});
     }
@@ -4999,6 +5023,24 @@ export function createClassicalClauseRelationControllerGlobals(
         issuedChoiceFrames.set(currentChoiceFrame,{captureRevision,choiceRevision,signature:choiceSignature(selections)});
         contract=Object.freeze({...contract,currentChoiceFrame});
       }
+      if (COMPLEMENT_OPERATION_KINDS.includes(contract.relation)) {
+        const auxiliary=contract.relation === "object-complement"
+          && contract.operationSelections.designationStructure === "tla-locative-supplement-plus-place-name";
+        const decisions=contract.decisions.filter(d=>COMPLEMENT_DECISION_KEYS[d.id])
+          .map(d=>Object.freeze({...d,key:COMPLEMENT_DECISION_KEYS[d.id]}));
+        const derivedContact=!decisions.some(d=>d.key === "principalObjectId")
+          ? contract.operationSelections.principalObjectId || "" : "";
+        const currentChoiceFrame=buildCurrentChoiceFrame({familyId:contract.relation,routeId:contract.relation,
+          captureRevision,stagedRevision:choiceRevision,decisions,
+          inputs:CAPTURE_ROLES.map(role=>({role,presence:getValidatedCapture(role)?"captured":"missing",
+            applicability:["principal","adjoined"].includes(role) || role === "dependent" && auxiliary ? "relevant":"inactive",
+            required:["principal","adjoined"].includes(role) || role === "dependent" && auxiliary})),
+          facts:{...contract.derived,derivedPrincipalObjectId:derivedContact},
+          outcome:{readyToMake:contract.authorizationStatus === "authorized",reasons:contract.diagnostics},
+          provenance:{owner:"complement",sourceReferences:[({"object-complement":"Andrews §51.2","subject-complement":"Andrews §51.3","adverbial-complement":"Andrews §51.4"})[contract.relation]]}});
+        issuedChoiceFrames.set(currentChoiceFrame,{captureRevision,choiceRevision,signature:choiceSignature(selections)});
+        contract=Object.freeze({...contract,currentChoiceFrame});
+      }
       if (["rumored-report","deleted-principal"].includes(contract.relation)) {
         const currentChoiceFrame=buildCurrentChoiceFrame({familyId:contract.relation,routeId:contract.relation,
           captureRevision,stagedRevision:choiceRevision,decisions:contract.decisions.filter(d=>d.id!=="relation"),
@@ -6254,6 +6296,7 @@ export function createClassicalClauseRelationControllerGlobals(
       buildDecisionContract,
       transitionComparisonChoice,
       transitionConjunctionChoice,
+      transitionComplementChoice,
       transitionSentenceChoice,
       prepareAdjunctionAnchorReplacement(bindingFrame, bindingId, role, exactResult) {
         if (!isClassicalClauseRelationBindingFrame(bindingFrame)) return null;
@@ -6305,6 +6348,22 @@ export function createClassicalClauseRelationControllerGlobals(
         if (contract.authorizationStatus !== "authorized" && !contract.missingCaptureRoles.length
           && !contract.unresolvedDecisionIds.length) return null;
         return prepareRelationAnchorReplacement(bindingFrame, bindingId, role, exactResult, prior, "conjunction-replacement-source");
+      },
+      prepareComplementAnchorReplacement(bindingFrame, bindingId, role, exactResult, selections, expectedFrame) {
+        if (!COMPLEMENT_OPERATION_KINDS.includes(selections?.relation)
+          || !isCurrentChoiceFrame(expectedFrame, selections) || !isClassicalClauseRelationBindingFrame(bindingFrame)) return null;
+        const prior = bindingFrame.bindingChoices.find(choice => choice.id === bindingId);
+        if (!prior || prior.relation !== selections.relation || prior.captureRole !== role
+          || !expectedFrame.inputs.some(input=>input.role===role)) return null;
+        const probe = targetObject.createClassicalClauseRelationController();
+        for (const input of expectedFrame.inputs) {
+          const parent = input.role === role ? exactResult : getValidatedCapture(input.role)?.canonicalResult;
+          if (parent && probe.captureCurrentResult(input.role, parent).authorizationStatus !== "authorized") return null;
+        }
+        const contract = probe.buildDecisionContract(selections);
+        if (contract.authorizationStatus !== "authorized" && !contract.missingCaptureRoles.length
+          && !contract.unresolvedDecisionIds.length) return null;
+        return prepareRelationAnchorReplacement(bindingFrame, bindingId, role, exactResult, prior, "complement-replacement-source");
       },
       preserveAdjunctionCaptureChoices(selections, role) {
         return Boolean(selections?.relation && !NON_ADJUNCTION_RELATIONS.includes(selections.relation)

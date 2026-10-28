@@ -1,4 +1,4 @@
-import {issueClauseOperationSnapshot as issueComparisonOperationSnapshot,transitionClauseOperationSnapshot as transitionComparisonOperationSnapshot,readClauseOperationSelections as readComparisonOperationSelections,isCurrentClauseOperationSnapshot as isCurrentComparisonOperationSnapshot} from '../composition/clause_operation_transaction.mjs?conjunctionSession=20261028-1';
+import {issueClauseOperationSnapshot as issueComparisonOperationSnapshot,transitionClauseOperationSnapshot as transitionComparisonOperationSnapshot,readClauseOperationSelections as readComparisonOperationSelections,isCurrentClauseOperationSnapshot as isCurrentComparisonOperationSnapshot} from '../composition/clause_operation_transaction.mjs?conjunctionSession=20261028-1&complementSession=20261028-1';
 import {inactiveAffectiveReloadControl,prepareNativeReloadSourceContext,reconcileAcceptedQuotedSourceBaseline} from '../composition/native_reload_source.mjs?nativeReload=20261027-4';
 import {normalizeSourceEditorSignature} from '../composition/source_editor_signature.mjs';
 import {inputLabel,captureRoleLabel,clauseReadinessGuidance,contractReferences,normalizeAndrewsReference,hasCurrentClauseProjection} from '../composition/choice_guidance.mjs?choiceGuidance=20261027-3';
@@ -37920,7 +37920,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
         return true;
       }
       const sentence = controller.transitionSentenceChoice?.({selections:readClassicalClauseSelections(), expectedFrame, intent});
-      const conjunction = sentence?.handled ? sentence : controller.transitionConjunctionChoice?.({selections:readClassicalClauseSelections(), expectedFrame, intent});
+      const complement = sentence?.handled ? sentence : controller.transitionComplementChoice?.({selections:readClassicalClauseSelections(), expectedFrame, intent});
+      const conjunction = complement?.handled ? complement : controller.transitionConjunctionChoice?.({selections:readClassicalClauseSelections(), expectedFrame, intent});
       const transition = conjunction?.handled ? conjunction : controller.transitionComparisonChoice?.({selections:readClassicalClauseSelections(), expectedFrame, intent});
       if (!transition?.handled) return false;
       if (transition.authorizationStatus === "authorized") {
@@ -37928,7 +37929,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         ActiveClassicalClauseRelationResult = null;
         ClassicalClauseRelationStatusMessage = "Choices updated.";
       } else {
-        ClassicalClauseRelationStatusMessage = ["comparison-choice-stale-frame", "conjunction-choice-stale-frame", "sentence-choice-stale-frame"].includes(transition.blockReason)
+        ClassicalClauseRelationStatusMessage = ["comparison-choice-stale-frame", "conjunction-choice-stale-frame", "complement-choice-stale-frame", "sentence-choice-stale-frame"].includes(transition.blockReason)
           ? "The inputs changed. Review the current choices and try again."
           : formatClassicalClauseRelationValue(transition.blockReason);
       }
@@ -43830,7 +43831,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       // Explicit operation departure hands intent back to the legacy lane.
       // A new Source/reset/import ingress must never be overwritten here.
       const departingOperation = departing?.kind === "comparison-operation-contract" ? "clause:comparison"
-        : departing?.kind === "conjunction-operation-contract" ? "clause:composition" : "";
+        : ["conjunction-operation-contract","complement-operation-contract"].includes(departing?.kind) ? "clause:composition" : "";
       if (selectedOperation !== departingOperation && departing
         && readComparisonOperationSelections(departing, ClassicalClauseRelationSelections, source) === departing.selections)
         ClassicalClauseRelationSelections = Object.assign(Object.create(null), departing.selections);
@@ -54492,7 +54493,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         const anchor = binding.ownerBindingFrame?.bindingChoices?.find(choice => choice.id === binding.selectedBindingId);
         if (binding.family !== "clause-relation"
           || !(binding.operationId === "clause:comparison" && snapshot?.kind === "comparison-operation-contract"
-            || binding.operationId === "clause:composition" && snapshot?.kind === "conjunction-operation-contract")
+            || binding.operationId === "clause:composition" && ["conjunction-operation-contract","complement-operation-contract"].includes(snapshot?.kind))
           || anchor?.captureRole !== role
           || !snapshot || snapshot.source !== exactResult || !isCurrentComparisonOperationSnapshot(snapshot)
           || snapshot.controller.getCapturedCanonicalResult(role)
@@ -54519,9 +54520,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
           return Boolean(snapshot.controller.prepareComparisonAnchorReplacement(owner, binding.selectedBindingId,
             role, exactResult, snapshot.selections, snapshot.contract.currentChoiceFrame));
         }
-        if (binding.operationId === "clause:composition" && snapshot?.kind === "conjunction-operation-contract"
+        if (binding.operationId === "clause:composition" && ["conjunction-operation-contract","complement-operation-contract"].includes(snapshot?.kind)
           && exactResult !== binding.exactResult && anchor?.captureRole === role && isCurrentComparisonOperationSnapshot(snapshot)) {
-          return Boolean(snapshot.controller.prepareConjunctionAnchorReplacement(owner, binding.selectedBindingId,
+          return Boolean((snapshot.kind === "complement-operation-contract" ? snapshot.controller.prepareComplementAnchorReplacement : snapshot.controller.prepareConjunctionAnchorReplacement)(owner, binding.selectedBindingId,
             role, exactResult, snapshot.selections, snapshot.contract.currentChoiceFrame));
         }
         // Probe a separate controller. Listing candidates never changes live captures.
@@ -55130,6 +55131,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
           && binding.operationId === "clause:composition" && comparisonSnapshot?.kind === "conjunction-operation-contract"
           && comparisonSnapshot.controller === controller && isCurrentComparisonOperationSnapshot(comparisonSnapshot)
           && binding.ownerBindingFrame?.bindingChoices?.some(choice => choice.id === binding.selectedBindingId && choice.captureRole === role);
+        const anchoredComplement = exactAdditionalResult !== binding.exactResult
+          && binding.operationId === "clause:composition" && comparisonSnapshot?.kind === "complement-operation-contract"
+          && comparisonSnapshot.controller === controller && isCurrentComparisonOperationSnapshot(comparisonSnapshot)
+          && binding.ownerBindingFrame?.bindingChoices?.some(choice=>choice.id === binding.selectedBindingId && choice.captureRole === role);
         const replacement = anchoredAdjunction ? controller.prepareAdjunctionAnchorReplacement(
           binding.ownerBindingFrame, binding.selectedBindingId, role, exactAdditionalResult)
           : anchoredComparison ? controller.prepareComparisonAnchorReplacement(
@@ -55137,8 +55142,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
             comparisonSnapshot.selections, comparisonSnapshot.contract.currentChoiceFrame)
           : anchoredConjunction ? controller.prepareConjunctionAnchorReplacement(
             binding.ownerBindingFrame, binding.selectedBindingId, role, exactAdditionalResult,
+            comparisonSnapshot.selections, comparisonSnapshot.contract.currentChoiceFrame)
+          : anchoredComplement ? controller.prepareComplementAnchorReplacement(
+            binding.ownerBindingFrame, binding.selectedBindingId, role, exactAdditionalResult,
             comparisonSnapshot.selections, comparisonSnapshot.contract.currentChoiceFrame) : null;
-        if ((anchoredAdjunction || anchoredComparison || anchoredConjunction) && !replacement) return false;
+        if ((anchoredAdjunction || anchoredComparison || anchoredConjunction || anchoredComplement) && !replacement) return false;
         const result = role
           ? controller?.captureCurrentResult?.(
             role,
@@ -55169,7 +55177,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           } : {}),
           requiredResultRoles: remainingRequiredResultRoles,
         });
-        if ((anchoredComparison || anchoredConjunction) && replacement) {
+        if ((anchoredComparison || anchoredConjunction || anchoredComplement) && replacement) {
           ClassicalComparisonTransitionDraft = issueComparisonOperationSnapshot(controller,
             comparisonSnapshot.selections, exactAdditionalResult, null, null, ClassicalClauseRelationSelections);
         }
@@ -55201,7 +55209,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           }
           return reentered;
         } finally {
-          if ((anchoredComparison || anchoredConjunction) && replacement) ClassicalComparisonTransitionDraft = null;
+          if ((anchoredComparison || anchoredConjunction || anchoredComplement) && replacement) ClassicalComparisonTransitionDraft = null;
         }
       }
       if (binding.family === "vnc-continuation") {

@@ -1,5 +1,9 @@
 # Version History
 
+## v1.2.101 — Coordinated Complements
+
+Three complement branches now use owner-issued current choice frames and the common session, preserving exact inputs through saved-input recovery and staged changes.
+
 ## v1.2.100 — Reliable Acceptance and Recovery
 
 Prepared owner-authorized acceptance and History commit together. Precommit failures preserve accepted state; display recovery uses the existing Make control without repeating execution or History.
