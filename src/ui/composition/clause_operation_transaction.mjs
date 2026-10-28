@@ -1,7 +1,9 @@
+import * as supplementation from './supplementation_operation_transaction.mjs?supplementationSession=20261028-1';
 import * as comparison from './comparison_operation_transaction.mjs?issuedBinding=20261028-1';
 import * as conjunction from './conjunction_operation_transaction.mjs?issuedBinding=20261028-1';
 import * as complement from './complement_operation_transaction.mjs?issuedBinding=20261028-1';
 const adapters={
+ 'supplementation-operation-contract':{issue:supplementation.issueSupplementationOperationSnapshot,current:supplementation.isCurrentSupplementationOperationSnapshot,read:supplementation.readSupplementationOperationSelections,transition:supplementation.transitionSupplementationOperationSnapshot},
  'complement-operation-contract':{issue:complement.issueComplementOperationSnapshot,current:complement.isCurrentComplementOperationSnapshot,read:complement.readComplementOperationSelections,transition:complement.transitionComplementOperationSnapshot},
  'comparison-operation-contract':{issue:comparison.issueComparisonOperationSnapshot,current:comparison.isCurrentComparisonOperationSnapshot,read:comparison.readComparisonOperationSelections,transition:comparison.transitionComparisonOperationSnapshot},
  'conjunction-operation-contract':{issue:conjunction.issueConjunctionOperationSnapshot,current:conjunction.isCurrentConjunctionOperationSnapshot,read:conjunction.readConjunctionOperationSelections,transition:conjunction.transitionConjunctionOperationSnapshot}
@@ -9,6 +11,7 @@ const adapters={
 export function issueClauseOperationSnapshot(controller,selections,...args){
  const adapter=selections?.relation==='comparison'?adapters['comparison-operation-contract']
   :conjunction.CONJUNCTION_OPERATION_ROUTES.includes(selections?.relation)?adapters['conjunction-operation-contract']
+  :supplementation.SUPPLEMENTATION_OPERATION_ROUTES.includes(selections?.relation)?adapters['supplementation-operation-contract']
   :complement.COMPLEMENT_OPERATION_ROUTES.includes(selections?.relation)?adapters['complement-operation-contract']:null;
  return adapter?.issue(controller,selections,...args)||null;
 }

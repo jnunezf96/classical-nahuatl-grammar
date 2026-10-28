@@ -1,3 +1,9 @@
+## v1.2.112 — Supplementation Choice Coordination
+
+- Coordinate eight supplementation pathways through current Source, choices and explicit Make.
+- Preserve exact reported/deleted-speech inputs and optional report choices.
+- Keep frozen such-that utterances displayable without inventing productive clause structure.
+
 ## v1.2.111 — Personal-name Choice Coordination
 
 - Coordinate name formation and name uses through one current construction and explicit Make.

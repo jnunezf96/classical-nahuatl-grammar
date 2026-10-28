@@ -35,7 +35,7 @@ test('position delegates equivalent issued snapshots without reading frame field
  f.owner.epoch++;p.stage(proposal(f.api.issue(f.owner,f.select,f.source)));assert.equal(p.position.revision,rev+1);
 });
 test('adapter and position import one exact protocol URL',()=>{
- const paths=['comparison_operation_transaction.mjs','conjunction_operation_transaction.mjs','complement_operation_transaction.mjs','issued_binding_operation_transaction.mjs','nominal_operation_transaction.mjs','derived_formation_transaction.mjs','verbal_derivation_transaction.mjs','place_gentilic_transaction.mjs','denominal_transaction.mjs','personal_name_transaction.mjs','construction_position.mjs'];
+ const paths=['comparison_operation_transaction.mjs','conjunction_operation_transaction.mjs','complement_operation_transaction.mjs','issued_binding_operation_transaction.mjs','nominal_operation_transaction.mjs','derived_formation_transaction.mjs','verbal_derivation_transaction.mjs','place_gentilic_transaction.mjs','denominal_transaction.mjs','personal_name_transaction.mjs','supplementation_operation_transaction.mjs','construction_position.mjs'];
  const urls=paths.map(path=>{const url=new URL(`../ui/composition/${path}`,import.meta.url),code=readFileSync(url,'utf8');const specifier=code.match(/from ['"]([^'"]*owner_operation_protocol\.mjs[^'"]*)['"]/)[1];return new URL(specifier,url).href;});
  for(const url of urls)assert.equal(url,urls[0]);
  const ownSpecifier=readFileSync(new URL(import.meta.url),'utf8').match(/from ['"]([^'"]*owner_operation_protocol\.mjs[^'"]*)['"]/)[1];assert.equal(urls[0],new URL(ownSpecifier,import.meta.url).href);

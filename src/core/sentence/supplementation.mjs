@@ -2218,6 +2218,14 @@ export function createClassicalNahuatlSupplementationApi(
       clauseEnvelopeSources.set(issued, sourceFrame);
       return issued;
     }
+    if (isClassicalNahuatlSupplementationFrame(sourceFrame)
+      && sourceFrame.operationKind === "such-that-adjunction" && sourceFrame.frozenEllipsis === true) {
+      // The fixed particle utterance has no productive second nucleus/contact.
+      // Keep its issued Result displayable without fabricating a clause envelope.
+      return freezeDeep({kind: "classical-nahuatl-supplementation-clause-envelope",
+        authorizationStatus: "blocked", blockReason: "frozen-such-that-productive-clause-envelope-unavailable",
+        formulaStringAuthority: false, surfaceStringAuthority: false});
+    }
     if (isClassicalNahuatlSupplementationFrame(sourceFrame)) {
       const principalObjects = sourceFrame.principalClause.objects.filter(object =>
         !object.nestedObjectContactFrame

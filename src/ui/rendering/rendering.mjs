@@ -1,10 +1,11 @@
+import {SUPPLEMENTATION_OPERATION_ROUTES} from '../composition/supplementation_operation_transaction.mjs?supplementationSession=20261028-1';
 import {createPersonalNameScope,issuePersonalNameSnapshot,projectPersonalNameExecution,isCurrentPersonalNameSnapshot,capturePersonalNameChoiceFrame} from '../composition/personal_name_transaction.mjs';
 import {createDenominalScope,issueDenominalSnapshot,projectDenominalExecution,isCurrentDenominalSnapshot,captureDenominalChoiceFrame,adoptDenominalCandidate,recordDenominalIntent,readDenominalIntent} from '../composition/denominal_transaction.mjs';
 import {createPlaceGentilicScope,issuePlaceGentilicSnapshot,projectPlaceGentilicExecution,isCurrentPlaceGentilicSnapshot,capturePlaceGentilicChoiceFrame,adoptPlaceGentilicCandidate,recordPlaceGentilicFormation,getRememberedPlaceGentilicFormation} from '../composition/place_gentilic_transaction.mjs?placeSession=20261028-2';
 import {createVerbalDerivationScope,issueVerbalDerivationSnapshot,projectVerbalDerivationExecution,isCurrentVerbalDerivationSnapshot,captureVerbalDerivationChoiceFrame,adoptVerbalDerivationCandidate} from '../composition/verbal_derivation_transaction.mjs?verbalDerivation=20261028-1';
 import {isDerivedFormationOperation, createDerivedFormationScope, issueDerivedFormationSnapshot, projectDerivedFormationExecution, isCurrentDerivedFormationSnapshot, captureDerivedFormationChoiceFrame, adoptDerivedFormationCandidate} from '../composition/derived_formation_transaction.mjs?derivedFormation=20261028-1';
 import {createNominalOperationScope,issueNominalOperationSnapshot,isCurrentNominalOperationSnapshot,captureNominalOperationChoiceFrame,projectNominalOperationExecution,adoptNominalOperationCandidate} from '../composition/nominal_operation_transaction.mjs';
-import {issueClauseOperationSnapshot as issueComparisonOperationSnapshot,transitionClauseOperationSnapshot as transitionComparisonOperationSnapshot,readClauseOperationSelections as readComparisonOperationSelections,isCurrentClauseOperationSnapshot as isCurrentComparisonOperationSnapshot} from '../composition/clause_operation_transaction.mjs?conjunctionSession=20261028-1&complementSession=20261028-1&issuedBinding=20261028-1';
+import {issueClauseOperationSnapshot as issueComparisonOperationSnapshot,transitionClauseOperationSnapshot as transitionComparisonOperationSnapshot,readClauseOperationSelections as readComparisonOperationSelections,isCurrentClauseOperationSnapshot as isCurrentComparisonOperationSnapshot} from '../composition/clause_operation_transaction.mjs?conjunctionSession=20261028-1&complementSession=20261028-1&issuedBinding=20261028-1&supplementationSession=20261028-1';
 import {inactiveAffectiveReloadControl,prepareNativeReloadSourceContext,reconcileAcceptedQuotedSourceBaseline} from '../composition/native_reload_source.mjs?nativeReload=20261027-4';
 import {normalizeSourceEditorSignature} from '../composition/source_editor_signature.mjs';
 import {inputLabel,captureRoleLabel,clauseReadinessGuidance,contractReferences,normalizeAndrewsReference,hasCurrentClauseProjection} from '../composition/choice_guidance.mjs?choiceGuidance=20261027-3';
@@ -26,28 +27,28 @@ import {syncFutureObjectChoices} from '../composition/future_object_choices.mjs?
 import {getDoubleNucleusEditChildren} from '../../application/classical/double_nucleus_edit.mjs?nucleusEdit=20261024-9';
 import {syncStemLayerChoices} from '../composition/stem_layer_choices.mjs?stemNominal=20261024-2';
 import {syncNounstemOperationChoices,groupDeverbalFamilyOptions} from '../composition/nounstem_operation_choices.mjs?v=20261024-1&nominalReload=20261024-4';
-import {snapshotResultEditReload,restoreResultEditReload} from '../composition/result_edit_reload.mjs?nucleusEdit=20261024-9&innerSource=20261024-1&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-1&interfaceRelease=1.2.36&choiceGuidance=20261027-2';
+import {snapshotResultEditReload,restoreResultEditReload} from '../composition/result_edit_reload.mjs?nucleusEdit=20261024-9&innerSource=20261024-1&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-1&interfaceRelease=1.2.36&choiceGuidance=20261027-2&supplementationSession=20261028-1';
 import {getVncChoiceEditContext, getVncVoiceEditSubject, projectVncChoiceEditControls} from '../composition/vnc_choice_edit.mjs?v=20261023-3';
 import {runCompositionAction} from '../composition/action_feedback.mjs?v=20261023-1';
 import {getAuthorityControl, projectAuthoredChoice} from '../composition/authority_control.mjs?v=20261023-2';
 import {clearOwnerChoicePortals,findOwnerChoice,ownerChoiceRoots} from '../composition/owner_choice_roots.mjs?v=20261023-core-1';
 import {appendValenceAnalysis} from '../composition/valence_analysis.mjs?v=20261023-slots-16';
-import {previewConstructionPacket} from '../composition/construction_preview.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1&interfaceRelease=1.2.36&choiceGuidance=20261027-2';
+import {previewConstructionPacket} from '../composition/construction_preview.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1&interfaceRelease=1.2.36&choiceGuidance=20261027-2&supplementationSession=20261028-1';
 import {isIntermediateBuildTaskReset} from '../composition/build_task_menu.mjs?deverbalReload=20261024-8&operationFirst=20261023-2&clickFeedback=20261023-1&v=20261021-ending-reference-2&writingSource=20261022-2&fixedChoices=20261022-1&interfaceRelease=1.2.36';
 import { normalizeClassicalNahuatlIntroductoryModifier }
   from "../../core/classical/verbstem_classes.mjs?v=20261008-reader-40-9-190&modifier=canonical-20261009-1&quantityClass=20261022-1&andrewsRelease=20261024-1";
 import {createClassicalWorkspaceProvenanceProjector}
   from '../composer/result_provenance.mjs?v=20261012-position-provenance-7';
 import {resolvePathTargets, setPathHistoryPresentation} from '../composition/path_presentation.mjs?v=20261011-path-targets-7&routeShapes=20261021-1&writtenPreview=20261022-1&writingSource=20261022-1';
-import {setStructureDesignContext, setStructureComparison, projectCanonicalStructure, projectClauseStructure, comparisonCapturePresentation, projectOperationShape, projectCapturedOperationShape, compareCanonicalStructures} from '../composition/structure_design.mjs?historyCompare=20261028-1&choiceArchitecture=20261026-6&icDimension=20261026-1&reasonPresentation=20261026-1&nucleusEdit=20261024-9&clauseHarmony=20261023-5&v=20261011-structure-15&routeShapes=20261021-1&clauseCoordinate=20261021-1&resetEligibility=20261022-1&writingSource=20261022-1&makePreview=20261022-1&fixedChoices=20261022-1&interfaceRelease=1.2.36&choiceGuidance=20261027-2&operationPilot=20261027-1';
+import {setStructureDesignContext, setStructureComparison, projectCanonicalStructure, projectClauseStructure, comparisonCapturePresentation, projectOperationShape, projectCapturedOperationShape, compareCanonicalStructures} from '../composition/structure_design.mjs?historyCompare=20261028-1&choiceArchitecture=20261026-6&icDimension=20261026-1&reasonPresentation=20261026-1&nucleusEdit=20261024-9&clauseHarmony=20261023-5&v=20261011-structure-15&routeShapes=20261021-1&clauseCoordinate=20261021-1&resetEligibility=20261022-1&writingSource=20261022-1&makePreview=20261022-1&fixedChoices=20261022-1&interfaceRelease=1.2.36&choiceGuidance=20261027-2&operationPilot=20261027-1&supplementationSession=20261028-1';
 import {setSourceCandidatePresentation, projectSavedSourceCandidate, setRouteChoicePresentation, projectOfferedOperationShapes} from '../composition/candidate_design.mjs?v=20261021-route-shapes-1';
 import {notifyExplicitMakeResult,focusNativeChoice} from '../composition/flow_design.mjs?v=20261022-reset-eligibility-1&writingSource=20261022-1&makePreview=20261022-1&fixedChoices=20261022-1';
 import {getBuildOperationGroup,getBuildOperationOrder,inventoryOptionReference,formatBuildOperationLabel} from '../composition/build_navigation_model.mjs?v=20261021-ending-reference-2&nominalReload=20261024-4&interfaceRelease=1.2.36';
-import {createIssuedBindingOperationScope,issueIssuedBindingOperationSnapshot,isCurrentIssuedBindingOperationSnapshot,captureIssuedBindingChoiceFrame,adoptIssuedBindingOperationCandidate,matchesIssuedBindingExecutionPacket} from '../composition/issued_binding_operation_transaction.mjs';
+import {createIssuedBindingOperationScope,issueIssuedBindingOperationSnapshot,isCurrentIssuedBindingOperationSnapshot,captureIssuedBindingChoiceFrame,adoptIssuedBindingOperationCandidate,matchesIssuedBindingExecutionPacket} from '../composition/issued_binding_operation_transaction.mjs?supplementationSession=20261028-1';
 import {createConstructionSession} from '../composition/construction_session.mjs?stemReload=20261024-2&v=20261012-position-12&acceptedBuild=20261023-1&operationPilot=20261027-1&ownerProtocol=20261028-1&acceptanceRecovery=20261028-1&issuedBinding=20261028-1';
 import {projectConstructionValue} from '../composition/construction_position.mjs?stemReload=20261024-2&v=20261012-position-12&acceptedBuild=20261023-1&operationPilot=20261027-1&ownerProtocol=20261028-1&acceptanceRecovery=20261028-1&issuedBinding=20261028-1';
-import {executeConstructionPacket, freezeConstructionData, getConstructionPacketOrigin, captureConstructionParents, matchesConstructionWitness, orderConstructionSlots, getConstructionFixedChoices, getConstructionLayerReadiness, getConstructionParticleHostInput} from '../composition/construction_packet.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1&interfaceRelease=1.2.36&choiceGuidance=20261027-2';
-import {resolveResultEditTarget} from '../composition/result_editing.mjs?choiceArchitecture=20261026-6&nucleusEdit=20261024-9&innerParticle=20261024-1&v=20261023-conjunction-1&interfaceRelease=1.2.36&choiceGuidance=20261027-2';
+import {executeConstructionPacket, freezeConstructionData, getConstructionPacketOrigin, captureConstructionParents, matchesConstructionWitness, orderConstructionSlots, getConstructionFixedChoices, getConstructionLayerReadiness, getConstructionParticleHostInput} from '../composition/construction_packet.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1&interfaceRelease=1.2.36&choiceGuidance=20261027-2&supplementationSession=20261028-1';
+import {resolveResultEditTarget} from '../composition/result_editing.mjs?choiceArchitecture=20261026-6&nucleusEdit=20261024-9&innerParticle=20261024-1&v=20261023-conjunction-1&interfaceRelease=1.2.36&choiceGuidance=20261027-2&supplementationSession=20261028-1';
 import {canRebuildResultEdit,getResultEditReorder} from '../composition/result_edit_rebuild.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1&interfaceRelease=1.2.36';
 import {getNativeGrammarControls, getWritingSourcePresentation, setChoiceDesignContext, setAppliedRoutePresentation} from '../composition/choice_design.mjs?clickFeedback=20261023-1&coreStem=20261023-1&v=20261022-reset-eligibility-1&writingSource=20261022-1&fixedChoices=20261022-1';
 import { readClassicalSourceObjectRows, getClassicalSourceObjectControls,
@@ -37894,8 +37895,12 @@ export function createUiRenderingApi(targetObject = globalThis) {
         }
         return true;
       }
-      const sentence = controller.transitionSentenceChoice?.({selections:readClassicalClauseSelections(), expectedFrame, intent});
-      const complement = sentence?.handled ? sentence : controller.transitionComplementChoice?.({selections:readClassicalClauseSelections(), expectedFrame, intent});
+      if (SUPPLEMENTATION_OPERATION_ROUTES.includes(readClassicalClauseSelections().relation)) {
+        ClassicalClauseRelationStatusMessage = "The inputs changed. Review the current choices and try again.";
+        refreshClassicalClauseRelationWorkflow();
+        return true;
+      }
+      const complement = controller.transitionComplementChoice?.({selections:readClassicalClauseSelections(), expectedFrame, intent});
       const conjunction = complement?.handled ? complement : controller.transitionConjunctionChoice?.({selections:readClassicalClauseSelections(), expectedFrame, intent});
       const transition = conjunction?.handled ? conjunction : controller.transitionComparisonChoice?.({selections:readClassicalClauseSelections(), expectedFrame, intent});
       if (!transition?.handled) return false;
@@ -39105,6 +39110,13 @@ export function createUiRenderingApi(targetObject = globalThis) {
               === decisionContract.relation
             && ActiveClassicalGrammarResultBinding.clauseRelationExecutionBlockReason),
         onClick: () => {
+          if (SUPPLEMENTATION_OPERATION_ROUTES.includes(selectedRelation)) {
+            const snapshot = getClassicalComparisonOperationSnapshot();
+            if(snapshot?.kind === "supplementation-operation-contract" && snapshot.controller === controller
+              && snapshot.routeId === selectedRelation && isCurrentComparisonOperationSnapshot(snapshot))
+              applyClassicalConstructionPosition();
+            return;
+          }
           ActiveClassicalClauseRelationResult = composeClassicalClauseRelationFromUserAction(controller, {
             ...readClassicalClauseSelections()
           });
@@ -43909,7 +43921,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
 
     const ClassicalIssuedBindingSnapshots = new WeakMap();
     function readClassicalIssuedBindingSnapshot(operation, source, binding, typed) {
-      if (!["nnc:ordinary", "vnc:application", "vnc:ordered-voice-application"].includes(operation)) return null;
+      if (!["nnc:ordinary", "vnc:application", "vnc:ordered-voice-application"].includes(operation)
+        && !(operation === "sentence:supplementation" && typed && targetObject.isClassicalNahuatlLexicalizedNncSourceFrame?.(source))) return null;
       const ingress = ActiveClassicalGrammarCapabilityNavigator;
       const ordinary = PendingClassicalOrdinaryGrammarBinding;
       const draft = operation === "nnc:ordinary" ? getClassicalNncReinflectionDraft() : null;
@@ -44019,7 +44032,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
           signature: `${packet.signature}:edit:${getClassicalPositionIdentity(PendingClassicalResultEdit.root)}:${PendingClassicalResultEdit.path.join("/")}`,
           edit: PendingClassicalResultEdit, inner: packet});
       }
-      if (["nnc:ordinary","vnc:application","vnc:ordered-voice-application"].includes(operation)
+      if ((["nnc:ordinary","vnc:application","vnc:ordered-voice-application"].includes(operation)
+          || operation === "sentence:supplementation" && typed && targetObject.isClassicalNahuatlLexicalizedNncSourceFrame?.(source))
         && packet && !matchesIssuedBindingExecutionPacket(issuedSnapshot,packet)) {
         packet = null; ready = false;
       }
@@ -44152,6 +44166,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       // Explicit operation departure hands intent back to the legacy lane.
       // A new Source/reset/import ingress must never be overwritten here.
       const departingOperation = departing?.kind === "comparison-operation-contract" ? "clause:comparison"
+        : departing?.kind === "supplementation-operation-contract" ? "sentence:supplementation"
         : ["conjunction-operation-contract","complement-operation-contract"].includes(departing?.kind) ? "clause:composition" : "";
       if (selectedOperation !== departingOperation && departing
         && readComparisonOperationSelections(departing, ClassicalClauseRelationSelections, source) === departing.selections)
@@ -48666,6 +48681,12 @@ export function createUiRenderingApi(targetObject = globalThis) {
         const snapshot=ClassicalConstructionSession.position.operationContract;
         if(snapshot?.kind!=="personal-name-contract"||snapshot.source!==current.exactResult
           ||snapshot.contract.binding!==current.ownerBindingFrame||!isCurrentPersonalNameSnapshot(snapshot))return false;
+        return applyClassicalConstructionPosition();
+      }
+      if(current.operationId === "sentence:supplementation" && current.family === "clause-relation" && allowExecution){
+        const snapshot=getClassicalComparisonOperationSnapshot();
+        if(snapshot?.kind!=="supplementation-operation-contract"||snapshot.source!==current.exactResult
+          ||!isCurrentComparisonOperationSnapshot(snapshot)||current.selectedBindingId!==normalizedBindingId)return false;
         return applyClassicalConstructionPosition();
       }
       syncClassicalSelectedResultBindingRole(current, normalizedBindingId);
@@ -54774,7 +54795,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
         const anchor = binding.ownerBindingFrame?.bindingChoices?.find(choice => choice.id === binding.selectedBindingId);
         if (binding.family !== "clause-relation"
           || !(binding.operationId === "clause:comparison" && snapshot?.kind === "comparison-operation-contract"
-            || binding.operationId === "clause:composition" && ["conjunction-operation-contract","complement-operation-contract"].includes(snapshot?.kind))
+            || binding.operationId === "clause:composition" && ["conjunction-operation-contract","complement-operation-contract"].includes(snapshot?.kind)
+            || binding.operationId === "sentence:supplementation" && snapshot?.kind === "supplementation-operation-contract")
           || anchor?.captureRole !== role
           || !snapshot || snapshot.source !== exactResult || !isCurrentComparisonOperationSnapshot(snapshot)
           || snapshot.controller.getCapturedCanonicalResult(role)
@@ -54806,6 +54828,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
           return Boolean((snapshot.kind === "complement-operation-contract" ? snapshot.controller.prepareComplementAnchorReplacement : snapshot.controller.prepareConjunctionAnchorReplacement)(owner, binding.selectedBindingId,
             role, exactResult, snapshot.selections, snapshot.contract.currentChoiceFrame));
         }
+        if(binding.operationId === "sentence:supplementation" && snapshot?.kind === "supplementation-operation-contract"
+          && exactResult !== binding.exactResult && anchor?.captureRole === role && isCurrentComparisonOperationSnapshot(snapshot))
+          return Boolean(snapshot.controller.prepareSupplementationAnchorReplacement(owner,binding.selectedBindingId,role,exactResult,snapshot.selections,snapshot.contract.currentChoiceFrame));
         // Probe a separate controller. Listing candidates never changes live captures.
         const probe = targetObject.createClassicalClauseRelationController?.();
         if (binding.clauseRelationRecovery) {
@@ -55416,6 +55441,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
           && binding.operationId === "clause:composition" && comparisonSnapshot?.kind === "complement-operation-contract"
           && comparisonSnapshot.controller === controller && isCurrentComparisonOperationSnapshot(comparisonSnapshot)
           && binding.ownerBindingFrame?.bindingChoices?.some(choice=>choice.id === binding.selectedBindingId && choice.captureRole === role);
+        const anchoredSupplementation = exactAdditionalResult !== binding.exactResult
+          && binding.operationId === "sentence:supplementation" && comparisonSnapshot?.kind === "supplementation-operation-contract"
+          && comparisonSnapshot.controller === controller && isCurrentComparisonOperationSnapshot(comparisonSnapshot)
+          && binding.ownerBindingFrame?.bindingChoices?.some(choice=>choice.id === binding.selectedBindingId && choice.captureRole === role);
         const replacement = anchoredAdjunction ? controller.prepareAdjunctionAnchorReplacement(
           binding.ownerBindingFrame, binding.selectedBindingId, role, exactAdditionalResult)
           : anchoredComparison ? controller.prepareComparisonAnchorReplacement(
@@ -55426,8 +55455,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
             comparisonSnapshot.selections, comparisonSnapshot.contract.currentChoiceFrame)
           : anchoredComplement ? controller.prepareComplementAnchorReplacement(
             binding.ownerBindingFrame, binding.selectedBindingId, role, exactAdditionalResult,
-            comparisonSnapshot.selections, comparisonSnapshot.contract.currentChoiceFrame) : null;
-        if ((anchoredAdjunction || anchoredComparison || anchoredConjunction || anchoredComplement) && !replacement) return false;
+            comparisonSnapshot.selections, comparisonSnapshot.contract.currentChoiceFrame)
+          : anchoredSupplementation ? controller.prepareSupplementationAnchorReplacement(binding.ownerBindingFrame,binding.selectedBindingId,role,exactAdditionalResult,comparisonSnapshot.selections,comparisonSnapshot.contract.currentChoiceFrame) : null;
+        if ((anchoredAdjunction || anchoredComparison || anchoredConjunction || anchoredComplement || anchoredSupplementation) && !replacement) return false;
         const result = role
           ? controller?.captureCurrentResult?.(
             role,
@@ -55458,7 +55488,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           } : {}),
           requiredResultRoles: remainingRequiredResultRoles,
         });
-        if ((anchoredComparison || anchoredConjunction || anchoredComplement) && replacement) {
+        if ((anchoredComparison || anchoredConjunction || anchoredComplement || anchoredSupplementation) && replacement) {
           ClassicalComparisonTransitionDraft = issueComparisonOperationSnapshot(controller,
             comparisonSnapshot.selections, exactAdditionalResult, null, null, ClassicalClauseRelationSelections);
         }
@@ -55490,7 +55520,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           }
           return reentered;
         } finally {
-          if ((anchoredComparison || anchoredConjunction || anchoredComplement) && replacement) ClassicalComparisonTransitionDraft = null;
+          if ((anchoredComparison || anchoredConjunction || anchoredComplement || anchoredSupplementation) && replacement) ClassicalComparisonTransitionDraft = null;
         }
       }
       if (binding.family === "vnc-continuation") {

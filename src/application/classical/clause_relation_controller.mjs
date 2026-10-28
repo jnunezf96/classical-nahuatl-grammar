@@ -4,7 +4,7 @@ import {resolveComparisonChoices, projectComparisonChoiceFrame} from './comparis
 // results. It owns presentation decisions only; the clause engine remains the
 // sole owner of relation validation, formulas, realization, and surfaces.
 
-import { installClassicalLateValidationOwnersGlobals } from "../../core/classical/late_validation_owner_catalog.mjs?v=20260826-relational-role-340&andrewsRelease=20261024-1&interfaceRelease=1.2.37";
+import { installClassicalLateValidationOwnersGlobals } from "../../core/classical/late_validation_owner_catalog.mjs?v=20260826-relational-role-340&andrewsRelease=20261024-1&interfaceRelease=1.2.37&supplementationSession=20261028-1";
 
 const CONTROLLER_KIND = "classical-clause-relation-controller";
 const CONTROLLER_RESULT_KIND = "classical-clause-relation-controller-result";
@@ -52,6 +52,10 @@ const SUPPLEMENTATION_RELATIONS = Object.freeze([
   "exclamatory-utterance",
   "such-that-adjunction",
 ]);
+// Existing public decision aliases; owner facts remain outside this map.
+const SUPPLEMENTATION_DECISION_KEYS=Object.freeze({
+ "vocative-final-i":"finalIRealization", "rumor-mach":"mach"
+});
 const NON_ADJUNCTION_RELATIONS = Object.freeze([
   ADJECTIVAL_MODIFICATION_RELATION,
   ...COMPLEMENT_OPERATION_KINDS,
@@ -1481,16 +1485,16 @@ export function createClassicalClauseRelationControllerGlobals(
     }
 
     function transitionSentenceChoice({selections={},expectedFrame=null,intent={}}={}) {
-      const current=["rumored-report","deleted-principal"].includes(selections.relation);
-      if(!current && !["rumored-report","deleted-principal"].includes(expectedFrame?.familyId)) return Object.freeze({handled:false});
+      const current=SUPPLEMENTATION_RELATIONS.includes(selections.relation);
+      if(!current && !SUPPLEMENTATION_RELATIONS.includes(expectedFrame?.familyId)) return Object.freeze({handled:false});
       const blocked=reason=>Object.freeze({handled:true,authorizationStatus:"blocked",blockReason:reason,selections,contract:buildDecisionContract(selections)});
       if(!current || !isCurrentChoiceFrame(expectedFrame,selections)) return blocked("sentence-choice-stale-frame");
       const next={...selections};
       if(intent.type === "set-choice") {
-        if(!expectedFrame.decisions.some(d=>(d.key || (d.id === "rumor-mach" ? "mach" : d.id.replace(/-([a-z])/gu,(_,letter)=>letter.toUpperCase()))) === intent.key)) return blocked("sentence-choice-field-not-licensed");
+        if(!expectedFrame.decisions.some(d=>d.key === intent.key)) return blocked("sentence-choice-field-not-licensed");
         if(intent.value) next[intent.key]=String(intent.value).trim(); else delete next[intent.key];
       } else if(intent.type === "clear-capture" || intent.type === "capture") {
-        if(!CAPTURE_ROLES.includes(intent.role)) return blocked("sentence-choice-capture-role-not-licensed");
+        if(!expectedFrame.inputs.some(input=>input.role===intent.role)) return blocked("sentence-choice-capture-role-not-licensed");
         if(intent.type === "clear-capture") clearCapture(intent.role);
         else {
           const capture=captureCurrentResult(intent.role,intent.result,intent.context);
@@ -5041,12 +5045,12 @@ export function createClassicalClauseRelationControllerGlobals(
         issuedChoiceFrames.set(currentChoiceFrame,{captureRevision,choiceRevision,signature:choiceSignature(selections)});
         contract=Object.freeze({...contract,currentChoiceFrame});
       }
-      if (["rumored-report","deleted-principal"].includes(contract.relation)) {
+      if (SUPPLEMENTATION_RELATIONS.includes(contract.relation)) {
         const currentChoiceFrame=buildCurrentChoiceFrame({familyId:contract.relation,routeId:contract.relation,
-          captureRevision,stagedRevision:choiceRevision,decisions:contract.decisions.filter(d=>d.id!=="relation"),
+          captureRevision,stagedRevision:choiceRevision,decisions:contract.decisions.filter(d=>d.id!=="relation").map(d=>Object.freeze({...d,key:SUPPLEMENTATION_DECISION_KEYS[d.id] || d.id.replace(/-([a-z])/gu,(_,letter)=>letter.toUpperCase())})),
           inputs:CAPTURE_ROLES.map(role=>({role,presence:getValidatedCapture(role)?"captured":"missing",applicability:[...(contract.derived?.requiredCaptureRoles||[]),...(contract.derived?.optionalCaptureRoles||[])].includes(role)?"relevant":"inactive",required:(contract.derived?.requiredCaptureRoles||[]).includes(role)})),
           facts:contract.derived,outcome:{readyToMake:contract.authorizationStatus==="authorized",reasons:contract.diagnostics},
-          provenance:{owner:"supplementation",sourceReferences:["Andrews §§19.3–19.6"]}});
+          provenance:{owner:"supplementation",sourceReferences:[({supplementation:"Andrews Lessons17–19",vocative:"Andrews §18.11","rumored-report":"Andrews §19.5","deleted-principal":"Andrews §19.6","negative-ac-plural":"Andrews §19.2.2","contextual-first-person-realization":"Andrews §57.6 note","exclamatory-utterance":"Andrews §58.3","such-that-adjunction":"Andrews §§58.4–58.6"})[contract.relation]]}});
         issuedChoiceFrames.set(currentChoiceFrame,{captureRevision,choiceRevision,signature:choiceSignature(selections)});
         contract=Object.freeze({...contract,currentChoiceFrame});
       }
@@ -6285,6 +6289,7 @@ export function createClassicalClauseRelationControllerGlobals(
       issueDiscourseSourceContextFrame,
       captureCurrentResult,
       getCapturedCanonicalResult: role => getValidatedCapture(role)?.canonicalResult || null,
+      getCapturedDiscourseSourceContext: getDiscourseSourceContextFrame,
       continueCapturedIntervener,
       clearCapture,
       getState,
@@ -6364,6 +6369,22 @@ export function createClassicalClauseRelationControllerGlobals(
         if (contract.authorizationStatus !== "authorized" && !contract.missingCaptureRoles.length
           && !contract.unresolvedDecisionIds.length) return null;
         return prepareRelationAnchorReplacement(bindingFrame, bindingId, role, exactResult, prior, "complement-replacement-source");
+      },
+      prepareSupplementationAnchorReplacement(bindingFrame, bindingId, role, exactResult, selections, expectedFrame) {
+        if (!SUPPLEMENTATION_RELATIONS.includes(selections?.relation)
+          || !isCurrentChoiceFrame(expectedFrame, selections) || !isClassicalClauseRelationBindingFrame(bindingFrame)) return null;
+        const prior = bindingFrame.bindingChoices.find(choice => choice.id === bindingId);
+        if (!prior || prior.relation !== selections.relation || prior.captureRole !== role
+          || !expectedFrame.inputs.some(input=>input.role===role)) return null;
+        const probe = targetObject.createClassicalClauseRelationController();
+        for (const input of expectedFrame.inputs) {
+          const parent = input.role === role ? exactResult : getValidatedCapture(input.role)?.canonicalResult;
+          if (parent && probe.captureCurrentResult(input.role, parent, getDiscourseSourceContextFrame(input.role)).authorizationStatus !== "authorized") return null;
+        }
+        const contract = probe.buildDecisionContract(selections);
+        if (contract.authorizationStatus !== "authorized" && !contract.missingCaptureRoles.length
+          && !contract.unresolvedDecisionIds.length) return null;
+        return prepareRelationAnchorReplacement(bindingFrame, bindingId, role, exactResult, prior, "supplementation-replacement-source");
       },
       preserveAdjunctionCaptureChoices(selections, role) {
         return Boolean(selections?.relation && !NON_ADJUNCTION_RELATIONS.includes(selections.relation)

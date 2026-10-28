@@ -528,6 +528,12 @@ function buildClassicalLesson2OwnedWriting(
         : null
     )
     || candidateResult;
+  if (targetObject.isClassicalNahuatlSupplementationFrame?.(writingCandidate) === true
+    && writingCandidate.operationKind === "such-that-adjunction" && writingCandidate.frozenEllipsis === true) {
+    const principal=targetObject.getClassicalNahuatlSupplementationClauseSourceFrame?.(writingCandidate.principalClause);
+    if(targetObject.isClassicalNahuatlParticleResultFrame?.(principal) === true)
+      return buildClassicalLesson2OwnedWriting(principal,expectedOutput,targetObject,writingConstituents);
+  }
   if (targetObject.isClassicalComparisonResultFrame?.(writingCandidate) === true
     && writingCandidate.authorizationStatus === "authorized"
     && writingCandidate.routeId === "similarity-ihui-vnc"

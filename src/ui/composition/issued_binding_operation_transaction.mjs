@@ -1,6 +1,6 @@
 import {createOwnerOperationProtocol} from './owner_operation_protocol.mjs?issuedBinding=20261028-1';
 const scopes=new WeakSet(),events=new WeakMap(),snapshots=new WeakSet();
-const operations=new Set(['nnc:ordinary','vnc:application','vnc:ordered-voice-application']);
+const operations=new Set(['nnc:ordinary','vnc:application','vnc:ordered-voice-application','sentence:supplementation']);
 // Intent is ordinary data. Authentic Sources/bindings are separate references.
 function immutableIntent(value){
  if(value===null||['string','number','boolean','undefined'].includes(typeof value))return value;
@@ -11,6 +11,7 @@ function immutableIntent(value){
 }
 function validBinding(scope,binding){
  if(!scopes.has(scope)||!binding||binding.operationId!==scope.operationId)return false;
+ if(scope.operationId==='sentence:supplementation'&&(scope.ingressKind!=='typed'||scope.owner.isClassicalNahuatlLexicalizedNncSourceFrame?.(scope.source)!==true))return false;
  if(scope.ingressKind==='nnc-exact'){
   const context=scope.owner.getClassicalNahuatlOrdinaryNncReinflectionContext?.(scope.source);
   return scope.operationId==='nnc:ordinary'&&Boolean(context)

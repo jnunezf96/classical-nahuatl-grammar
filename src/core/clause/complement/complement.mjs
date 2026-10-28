@@ -1,5 +1,5 @@
 // Canonical modern ESM module.
-import {areClassicalNahuatlPersonNumberFeaturesCompatible} from "../../sentence/supplementation.mjs?andrewsRelease=20261024-1";
+import {areClassicalNahuatlPersonNumberFeaturesCompatible} from "../../sentence/supplementation.mjs?andrewsRelease=20261024-1&supplementationSession=20261028-1";
 
 export function createComplementClauseGlobals(targetObject = globalThis, installationContext = null) {
     const grammarFrameOwnerCapability = installationContext?.grammarFrameOwnerCapability || null;

@@ -74,7 +74,7 @@ import classical_late_grammar_active_incorporated_noun_adverbial from "./nuclear
 import classical_late_grammar_nonactive_incorporated_means_instrument from "./nuclear-owner-specs/classical-late-grammar-nonactive-incorporated-means-instrument.mjs";
 import classical_late_grammar_textual_reanalysis_diagnostic from "./nuclear-owner-specs/classical-late-grammar-textual-reanalysis-diagnostic.mjs";
 import { createClassicalPersonalNameNncValidationSemanticOperationsApi } from "./personal_name_nnc_validation_semantic_operations.mjs?v=20260826-relational-role-340&andrewsRelease=20261024-1&interfaceRelease=1.2.36";
-import { createClassicalLateGrammarValidationSemanticOperationsApi } from "./late_grammar_validation_semantic_operations.mjs?v=20260826-relational-role-340&andrewsRelease=20261024-1&interfaceRelease=1.2.37";
+import { createClassicalLateGrammarValidationSemanticOperationsApi } from "./late_grammar_validation_semantic_operations.mjs?v=20260826-relational-role-340&andrewsRelease=20261024-1&interfaceRelease=1.2.37&supplementationSession=20261028-1";
 import { createRoutineSemanticOwnerMechanicsApi } from "./transcription_owner_mechanics.mjs";
 const OWNER_SPECS = Object.freeze([
   classical_personal_name_nnc_source_opacity_analysis,

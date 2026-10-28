@@ -78,6 +78,7 @@ function structureFacts(r,exact) {
       return [['Person',title(operation.subjectPerson)],['Subject realization',title(operation.pers1Realization)],
         ['Reflexive carrier',operation.reflexiveObjectCarrier],['Scope',exact.linearizationFrame.punctuation?'Sentence':'Unit']];
     }
+    if(exact.operationKind==='such-that-adjunction' && exact.frozenEllipsis===true)return [];
     const ref=exact.referenceFrame;
     return [['Reference',title(ref.referenceMode)],['Contact',`${title(ref.headRole)} ↔ ${title(ref.supplementContactRole)}`],['Head',title(ref.headRole)],
       ['Principal contact',ref.principalHead.id],['Adjunct contact',ref.supplementContact.id],['Order',title(exact.linearizationFrame?.order||exact.order)],

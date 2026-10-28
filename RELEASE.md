@@ -1,13 +1,13 @@
-# Grammar OS v1.2.111 release
+# Grammar OS v1.2.112 release
 
-Release name: **Personal-name Choice Coordination**
+Release name: **Supplementation Choice Coordination**
 
-Browser build: **20261028-personal-name-130**
+Browser build: **20261028-supplementation-131**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
-- Personal-name formation and eight name uses share current Source, choices, preview and explicit Make.
-- God-name place embedding accepts its required matrix through the existing controls.
-- Name-use Results retain their exact name parent and clearly identify the owner-issued use or source descriptor.
-- Source Apply preserves declared name intent; changing uses preserves committed source facts.
-- Sentence-use descriptor restoration remains unclaimed.
+- Eight supplementation pathways use one current construction snapshot for choices, preview and explicit Make.
+- Exact captured Results and discourse contexts remain authoritative; staging preserves the accepted Result.
+- Lexicalized-NNC typed ingress uses the same shared acceptance boundary.
+- Frozen such-that utterances retain their exact particle parent and writing; productive whole-clause continuation is unsupported.
+- Mixed session restoration remains unclaimed.

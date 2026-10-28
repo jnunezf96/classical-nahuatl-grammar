@@ -1,6 +1,6 @@
 import {previewRebuiltResultEdit} from './result_edit_rebuild.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1&interfaceRelease=1.2.36';
 import {getConstructionParticleHostInput,getConstructionLayerReadiness} from './construction_layers.mjs?v=20261023-conjunct-edit-1&interfaceRelease=1.2.36';
-import {resolveResultEditTarget,projectResultForEditing} from './result_editing.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&v=20261023-conjunction-1&interfaceRelease=1.2.36&choiceGuidance=20261027-2';
+import {resolveResultEditTarget,projectResultForEditing} from './result_editing.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&v=20261023-conjunction-1&interfaceRelease=1.2.36&choiceGuidance=20261027-2&supplementationSession=20261028-1';
 
 // Owner evaluation only. No application receipt, History write or acceptance.
 export function previewConstructionPacket(runtime,packet) {
