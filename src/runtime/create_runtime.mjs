@@ -150,7 +150,7 @@ export const RUNTIME_INSTALLERS = new Map([
     ["src/application/classical/nnc_application.mjs", installClassicalNahuatlNncApplicationGlobals],
     ["src/core/classical/nnc_lessons35_39_closure.mjs", installClassicalNahuatlDeverbalNncGlobals],
     ["src/application/classical/formation_result_binding.mjs", installClassicalNahuatlFormationResultBindingGlobals],
-    ["src/application/classical/clause_relation_controller.mjs?adjectivalSession=20261028-1", installClassicalClauseRelationControllerGlobals],
+    ["src/application/classical/clause_relation_controller.mjs", installClassicalClauseRelationControllerGlobals],
     ["src/application/classical/grammar_application.mjs", installClassicalGrammarApplicationGlobals],
     ["src/application/classical/grammar_workspace_history.mjs", installClassicalGrammarWorkspaceHistoryGlobals],
     ["src/ui/diagnostics/classical_capability_closure_atlas.mjs", installClassicalCapabilityClosureAtlasGlobals],
@@ -159,7 +159,7 @@ export const RUNTIME_INSTALLERS = new Map([
     ["src/ui/export/export.mjs", installUiExportGlobals],
     ["src/ui/events/events.mjs", installUiEventsGlobals],
     ["src/ui/panels/panels.mjs", installUiPanelsGlobals],
-    ["src/ui/rendering/rendering.mjs?adjectivalSession=20261028-1", installUiRenderingGlobals],
+    ["src/ui/rendering/rendering.mjs", installUiRenderingGlobals],
     ["src/ui/state.mjs", installUiStateGlobals],
     ["src/bootstrap/script_runtime.mjs", installScriptRuntimeGlobals],
     ["src/lessons/registry.mjs", installLessonRegistryGlobals],
@@ -171,7 +171,7 @@ export const RUNTIME_INSTALLERS = new Map([
 // without publishing them as public runtime controls. This is routing only:
 // the provider retains authority, and the consumer cannot add capabilities.
 const PRIVATE_INSTALLER_DEPENDENCIES = Object.freeze({
-    "src/application/classical/clause_relation_controller.mjs?adjectivalSession=20261028-1": Object.freeze({
+    "src/application/classical/clause_relation_controller.mjs": Object.freeze({
         "src/core/clause/conjunction/conjunction.mjs": Object.freeze([
             "getClassicalNahuatlParallelRephraseAxisContract",
             "getClassicalConjunctionChoiceContract",
@@ -372,7 +372,7 @@ const PRIVATE_INSTALLER_DEPENDENCIES = Object.freeze({
             "isClassicalNahuatlLesson2WrittenResult",
         ]),
     }),
-    "src/ui/rendering/rendering.mjs?adjectivalSession=20261028-1": Object.freeze({
+    "src/ui/rendering/rendering.mjs": Object.freeze({
         "src/core/classical/nominal_construction.mjs": Object.freeze([
             "isClassicalNahuatlPatientiveMatrixConstituentFrame",
             "getClassicalNahuatlAdjectivalNncSourceConstituent",
@@ -413,7 +413,7 @@ const PRIVATE_INSTALLER_DEPENDENCIES = Object.freeze({
             "presentPreparedClassicalCanvasGrammarFactForPresentation",
             "isPreparedClassicalCanvasGrammarFactProjectionForPresentation",
         ]),
-        "src/application/classical/clause_relation_controller.mjs?adjectivalSession=20261028-1": Object.freeze([
+        "src/application/classical/clause_relation_controller.mjs": Object.freeze([
             "presentPreparedClassicalLateCanvasGrammarFactForPresentation",
             "isPreparedClassicalLateCanvasGrammarFactProjectionForPresentation",
         ]),

@@ -36,7 +36,7 @@ const REQUIRED_STATIC_ROOT_IDS = Object.freeze([
 const CACHE_CURRENT_PRESENTATION_INSTALLERS = Object.freeze([
     Object.freeze(["src/ui/composer/composer.mjs", installUiComposerGlobals]),
     Object.freeze(["src/ui/panels/panels.mjs", installUiPanelsGlobals]),
-    Object.freeze(["src/ui/rendering/rendering.mjs?adjectivalSession=20261028-1", installUiRenderingGlobals]),
+    Object.freeze(["src/ui/rendering/rendering.mjs", installUiRenderingGlobals]),
     Object.freeze(["src/ui/shell/classical_shell.mjs", installClassicalShellGlobals]),
     Object.freeze(["src/ui/state.mjs", installUiStateGlobals]),
 ]);
