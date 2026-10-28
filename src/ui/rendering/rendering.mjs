@@ -1,3 +1,4 @@
+import {createPersonalNameScope,issuePersonalNameSnapshot,projectPersonalNameExecution,isCurrentPersonalNameSnapshot,capturePersonalNameChoiceFrame} from '../composition/personal_name_transaction.mjs';
 import {createDenominalScope,issueDenominalSnapshot,projectDenominalExecution,isCurrentDenominalSnapshot,captureDenominalChoiceFrame,adoptDenominalCandidate,recordDenominalIntent,readDenominalIntent} from '../composition/denominal_transaction.mjs';
 import {createPlaceGentilicScope,issuePlaceGentilicSnapshot,projectPlaceGentilicExecution,isCurrentPlaceGentilicSnapshot,capturePlaceGentilicChoiceFrame,adoptPlaceGentilicCandidate,recordPlaceGentilicFormation,getRememberedPlaceGentilicFormation} from '../composition/place_gentilic_transaction.mjs?placeSession=20261028-2';
 import {createVerbalDerivationScope,issueVerbalDerivationSnapshot,projectVerbalDerivationExecution,isCurrentVerbalDerivationSnapshot,captureVerbalDerivationChoiceFrame,adoptVerbalDerivationCandidate} from '../composition/verbal_derivation_transaction.mjs?verbalDerivation=20261028-1';
@@ -24742,6 +24743,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
           makeClassicalCustomFormationPlacement("sentence"),
         "classical-personal-name-sentence-operation-status":
           makeClassicalCustomFormationPlacement("sentence"),
+        "classical-personal-name-locative-matrix":
+          makeClassicalCustomFormationPlacement("sentence"),
 
         // Deverbal NNC formation. Lexical Source alternatives remain in #1.
         "classical-deverbal-nnc-family":
@@ -28406,10 +28409,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         const pairedOperation = index > 0
           ? rerankingOperations[index - 1] || null
           : null;
-        const typedDependencyMissing = Boolean(
-          pairedOperation
-          && pairedOperation === locativeOperation
-        );
+        const typedDependencyMissing = false;
         option.value = value;
         option.textContent = `${getClassicalPersonalNameChoiceLabel(value)}${
           typedDependencyMissing
@@ -28482,19 +28482,13 @@ export function createUiRenderingApi(targetObject = globalThis) {
         "aria-disabled",
         String(rerankingControl.disabled)
       );
-      status.textContent = sentenceControl.value === "vocative-collocation"
-        ? "Make the name first. Then Continue entire Result → Combine Results → Vocative; choose the speaker before Make."
-        : locativeOperation
-        ? forcedOperation
-          ? `Derived sentence operation: ${getClassicalPersonalNameChoiceLabel(
-            forcedOperation.id
-          )}. Place-name embedding remains unavailable until a typed locative-matrix Source exists.`
-          : "Choose an owner-licensed sentence operation, or keep the personal-name Result. Place-name embedding remains unavailable until a typed locative-matrix Source exists."
-        : forcedOperation
-          ? `Derived sentence operation: ${getClassicalPersonalNameChoiceLabel(
-            forcedOperation.id
-          )}.`
-          : "Choose an owner-licensed sentence operation, or keep the personal-name Result.";
+      const matrixControl=targetObject.document?.getElementById?.("classical-personal-name-locative-matrix");
+      if(matrixControl){const shown=active&&sentenceControl.value==="god-name-to-place-name-embed";matrixControl.closest("label").hidden=!shown;matrixControl.disabled=!shown;}
+      status.textContent = sentenceControl.value === "god-name-to-place-name-embed"
+        ? "Choose the locative matrix for the god-name embed source."
+        : sentenceControl.value === "vocative-collocation"
+          ? "Make records the name’s vocative use. For a realized vocative, use the personal-name Result → Combine Results → Vocative and choose the speaker."
+          : "Choose a name use, or keep the personal-name Result.";
       return {
         inventoryId: String(inventory.id || ""),
         reranking: retainedReranking,
@@ -28522,11 +28516,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const operationSpec = ownerInventory?.sentenceOperations.find(
         candidate => candidate.id === operation
       ) || null;
-      const dependencyBlocked = Boolean(
-        operationSpec
-        && String(operationSpec.outputKind || "")
-          === "place-name-embed-source"
-      );
+      const dependencyBlocked = false;
       return {
         inventoryId: String(ownerInventory?.inventory?.id || ""),
         reranking,
@@ -31850,7 +31840,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
         const committedNameSource = ActiveClassicalCapabilityCommittedTypedSource;
         const sourceFrame = targetObject.isPersonalNameNncSourceFrame?.(constructedNameSource) === true
           && targetObject.isPersonalNameNncSourceFrame?.(committedNameSource) === true
-          && JSON.stringify(constructedNameSource) === JSON.stringify(committedNameSource)
+          && (JSON.stringify(constructedNameSource) === JSON.stringify(committedNameSource)
+            || !sentenceSelection.requiresGodSource && committedNameSource.referentKind === "god"
+              && JSON.stringify({...constructedNameSource,referentKind:"god"}) === JSON.stringify(committedNameSource))
           ? committedNameSource : constructedNameSource;
         const affectiveScope =
           getClassicalNominalConstructionControlValue(
@@ -35226,74 +35218,6 @@ export function createUiRenderingApi(targetObject = globalThis) {
         return false;
       }
     }
-    function requestClassicalPersonalNameSentenceOperation(
-      personalNameResult = null
-    ) {
-      const selection = getClassicalPersonalNameSentenceSelection();
-      if (
-        !selection.operation
-        || selection.dependencyBlocked
-        || personalNameResult?.authorizationStatus !== "authorized"
-      ) {
-        return {
-          selection,
-          applicationResult: null,
-          canonicalResult: null,
-          status: selection.dependencyBlocked
-            ? "dependency-blocked"
-            : selection.operation
-              ? "scalar-result-required"
-              : "not-requested",
-        };
-      }
-      if (
-        typeof targetObject.executeClassicalGrammarApplicationRequest
-          !== "function"
-      ) {
-        return {
-          selection,
-          applicationResult: null,
-          canonicalResult: null,
-          status: "canonical-application-boundary-unavailable",
-        };
-      }
-      const operationRequest = {
-        personalNameResult,
-        operation: selection.operation,
-        ...(String(selection.operationSpec?.outputKind || "")
-          === "ordinary-nnc-source"
-          ? { ordinaryNncSubject: personalNameResult.outerSubject }
-          : {}),
-      };
-      try {
-        const applicationResult =
-          targetObject.executeClassicalGrammarApplicationRequest({
-            operationId: "nnc:personal-name",
-            outputKind: "sentence-operation",
-            args: [operationRequest],
-          });
-        const canonicalResult =
-          applicationResult?.authorizationStatus === "authorized"
-          && applicationResult?.outputKind === "sentence-operation"
-            ? applicationResult.canonicalResult || null
-            : null;
-        return {
-          selection,
-          applicationResult,
-          canonicalResult,
-          status: canonicalResult
-            ? "authorized"
-            : String(applicationResult?.blockReason || "blocked"),
-        };
-      } catch (error) {
-        return {
-          selection,
-          applicationResult: null,
-          canonicalResult: null,
-          status: String(error?.message || error || "blocked"),
-        };
-      }
-    }
     function clearClassicalNominalConstructionMaterialMirrors() {
       if (!targetObject.window) return;
       targetObject.window.__CLASSICAL_NOMINAL_CONSTRUCTION_FRAME__ = null;
@@ -35630,11 +35554,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
           exactBlockReason
         );
       }
-      const personalNameSentenceOperation =
-        selectedConstruction === "personal-name-nnc"
-          && !ownerIssuedApplicationResult
-          ? requestClassicalPersonalNameSentenceOperation(frame)
-          : null;
+      // Rendering never executes a second operation from mutable controls.
+      const personalNameSentenceOperation = ownerIssuedApplicationResult?.outputKind === "sentence-operation"
+        ? {applicationResult:ownerIssuedApplicationResult,canonicalResult:ownerIssuedApplicationResult.canonicalResult,status:"authorized"}
+        : null;
       const personalNameSentenceStatus = targetObject.document.getElementById(
         "classical-personal-name-sentence-operation-status"
       );
@@ -37706,6 +37629,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
       )) {
         return null;
       }
+      const nameUseDescriptor = targetObject.isPersonalNameSentenceOperation?.(canonical) === true
+        && targetObject.isPersonalNameNncResult?.(canonical.personalNameResult) === true ? canonical : null;
       const nestedResult = canonical.resultFrame
         && typeof canonical.resultFrame === "object"
         ? canonical.resultFrame
@@ -37727,6 +37652,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         canonical.wordRealization,
         canonical.canonicalNuclearSurface,
         canonical.nuclearSurface,
+        nameUseDescriptor?.personalNameResult.surfaceRealization,
         nestedResult?.sentenceSurfaceDisplay,
         nestedResult?.sentenceSurface,
         nestedResult?.surface,
@@ -37741,6 +37667,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         canonical.formulaRealization,
         canonical.structuralFormula,
         canonical.selectedFormula,
+        nameUseDescriptor?.personalNameResult.formulaRealization,
         nestedResult?.formula,
         nestedResult?.formulaRealization,
         nestedResult?.structuralFormula,
@@ -37768,6 +37695,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         sentenceFormula,
         formulaDerivedFromSurface: false,
         surfaceDerivedFromFormula: false,
+        nameUseDescriptor,
         ownerIssued: true
       });
     }
@@ -43297,7 +43225,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       return freezeConstructionData(layers);
     }
 
-    function captureClassicalConstructionPacket(operationId, source, binding, typed, nominalSnapshot = null, derivedSnapshot = null, verbalSnapshot = null, placeSnapshot = null, denominalSnapshot = null) {
+    function captureClassicalConstructionPacket(operationId, source, binding, typed, nominalSnapshot = null, derivedSnapshot = null, verbalSnapshot = null, placeSnapshot = null, denominalSnapshot = null, personalNameSnapshot = null) {
       const layers = captureClassicalPositionLayers();
       const vncSentenceOptions = selections => {
         const options = selections?.sentenceOptions || {};
@@ -43309,7 +43237,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
       };
       const packet = {operation: operationId, source, binding: null, kind: "request", layers: [], choices: {}};
       const ordinary = PendingClassicalOrdinaryGrammarBinding;
-      if (operationId === "vnc:denominal") {
+      if (operationId === "nnc:personal-name") {
+        const projection = projectPersonalNameExecution(personalNameSnapshot);
+        if (!projection) return null;
+        Object.assign(packet,projection); packet.layers = layers;
+      } else if (operationId === "vnc:denominal") {
         const projection = projectDenominalExecution(denominalSnapshot);
         if (!projection) return null;
         Object.assign(packet,projection); packet.layers = layers;
@@ -43735,6 +43667,34 @@ export function createUiRenderingApi(targetObject = globalThis) {
       }
       return ClassicalNativeAdverbialIngress;
     }
+    let ClassicalNativePersonalNameIngress = null;
+    function getClassicalNativePersonalNameIngress() {
+      if(ActiveClassicalGrammarCapabilityNavigator || targetObject.document?.getElementById?.("classical-source-parts")?.dataset?.classicalSourceCommitState!=="committed")return null;
+      const source=ActiveClassicalCapabilityCommittedTypedSource,signature=targetObject.ClassicalSourcePartsCommittedSignature;
+      if(!signature||targetObject.isPersonalNameNncSourceFrame?.(source)!==true)return null;
+      if(ClassicalNativePersonalNameIngress?.source!==source||ClassicalNativePersonalNameIngress.signature!==signature||ClassicalNativePersonalNameIngress.commitToken!==ClassicalNativeCompoundChoiceSession)
+        ClassicalNativePersonalNameIngress=Object.freeze({source,signature,commitToken:ClassicalNativeCompoundChoiceSession});
+      return ClassicalNativePersonalNameIngress;
+    }
+    const ClassicalPersonalNameScopes = new WeakMap();
+    function readClassicalPersonalNameSnapshot(operation, source, binding) {
+      if(operation !== "nnc:personal-name" || !source)return null;
+      const native=getClassicalNativePersonalNameIngress();
+      const ingress=ActiveClassicalGrammarCapabilityNavigator||native;
+      if(!native&&targetObject.isClassicalGrammarApplicationCapabilityNavigator?.(ingress)!==true)return null;
+      let bySource=ClassicalPersonalNameScopes.get(ingress);
+      if(!bySource){bySource=new Map();ClassicalPersonalNameScopes.set(ingress,bySource);}
+      let scope=bySource.get(source);
+      if(!scope){scope=createPersonalNameScope({owner:targetObject,source,session:ClassicalConstructionSession,
+        getIngress:()=>ActiveClassicalGrammarCapabilityNavigator||getClassicalNativePersonalNameIngress(),getSourceContext:()=>readClassicalNominalSourceContext(source,ingress)});bySource.set(source,scope);}
+      const exact=binding?.operationId===operation?binding:null;
+      const request=buildClassicalNominalConstructionUiRequest(exact);
+      const selection=getClassicalPersonalNameSentenceSelection();
+      return issuePersonalNameSnapshot(scope,{ingress,binding:exact?.ownerBindingFrame,request,
+        sourceContext:exact?null:readClassicalNominalSourceContext(source,ingress),
+        sentence:{operation:selection.operation,locativeMatrix:getClassicalNominalConstructionControlValue("classical-personal-name-locative-matrix",""),
+          ...(selection.operation==="god-name-to-normal-nnc"?{ordinaryNncSubject:request?.outerSubject}:{})}});
+    }
     const ClassicalDenominalScopes = new WeakMap();
     function readClassicalDenominalSnapshot(operation, source, binding, typed) {
       if(operation !== "vnc:denominal" || !source)return null;
@@ -43837,7 +43797,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
     function readClassicalNominalSourceContext(source, ingress) {
       if (!ingress || (ingress !== ActiveClassicalGrammarCapabilityNavigator
         && ingress !== getClassicalCommittedDoubleNucleusIngress()
-        && ingress !== getClassicalNativeDerivedIngress("nnc:adverbial"))) return null;
+        && ingress !== getClassicalNativeDerivedIngress("nnc:adverbial")
+        && ingress !== getClassicalNativePersonalNameIngress())) return null;
       const signature = targetObject.ClassicalSourcePartsCommittedSignature;
       if (!signature
         || targetObject.document?.getElementById?.("classical-source-parts")?.dataset?.classicalSourceCommitState === "pending") return null;
@@ -43895,16 +43856,18 @@ export function createUiRenderingApi(targetObject = globalThis) {
     const ClassicalNominalNativeChoiceFrames = new WeakMap();
     function syncClassicalNominalNativeChoiceFrames() {
       const snapshot = ClassicalConstructionSession.position.operationContract;
+      const personalName = snapshot?.kind === "personal-name-contract";
       const derived = snapshot?.kind === "derived-formation-contract";
       const denominal = snapshot?.kind === "denominal-contract";
       const place = snapshot?.kind === "place-gentilic-contract";
       const verbal = snapshot?.kind === "verbal-derivation-contract";
-      if (denominal ? !isCurrentDenominalSnapshot(snapshot)
+      if (personalName ? !isCurrentPersonalNameSnapshot(snapshot)
+        : denominal ? !isCurrentDenominalSnapshot(snapshot)
         : place ? !isCurrentPlaceGentilicSnapshot(snapshot)
         : verbal ? !isCurrentVerbalDerivationSnapshot(snapshot)
         : derived ? !isCurrentDerivedFormationSnapshot(snapshot)
         : snapshot?.kind !== "nominal-operation-contract" || !isCurrentNominalOperationSnapshot(snapshot)) return;
-      const frame = denominal ? captureDenominalChoiceFrame(snapshot) : place ? capturePlaceGentilicChoiceFrame(snapshot) : verbal ? captureVerbalDerivationChoiceFrame(snapshot) : derived ? captureDerivedFormationChoiceFrame(snapshot) : captureNominalOperationChoiceFrame(snapshot);
+      const frame = personalName ? capturePersonalNameChoiceFrame(snapshot) : denominal ? captureDenominalChoiceFrame(snapshot) : place ? capturePlaceGentilicChoiceFrame(snapshot) : verbal ? captureVerbalDerivationChoiceFrame(snapshot) : derived ? captureDerivedFormationChoiceFrame(snapshot) : captureNominalOperationChoiceFrame(snapshot);
       const controls = new Set(getNativeGrammarControls(targetObject.document) || []);
       // These existing Build controls can be compact-menu targets or contain
       // "source" in their name; the general presentation inventory omits them.
@@ -43921,20 +43884,23 @@ export function createUiRenderingApi(targetObject = globalThis) {
       if(denominal)for(const control of targetObject.document?.querySelectorAll?.('[id^="classical-denominal-vnc-"]')||[]){if(control?.closest?.("#classical-rule-logic-controls")&&!control.closest?.("[data-classical-source-identity-controls]"))controls.add(control);}
       if(place)for(const id of ["classical-place-gentilic-result-kind","classical-place-gentilic-formation","classical-place-gentilic-lexical-record","classical-gentilic-source-place-matrix","classical-place-affective-analysis","classical-place-affective-matrix","classical-gentilic-collectivity-ending"]){const control=targetObject.document?.getElementById?.(id);if(control?.closest?.("#classical-rule-logic-controls"))controls.add(control);}
       if(verbal)for(const id of ["classical-rule-logic-late-operation","classical-rule-logic-late-variant","classical-rule-logic-purposive-series","classical-rule-logic-compound-matrix"]){const control=targetObject.document?.getElementById?.(id);if(control?.closest?.("#classical-rule-logic-controls"))controls.add(control);}
+      if(personalName)for(const control of targetObject.document?.querySelectorAll?.('[id^="classical-personal-name-"]')||[]){if(control?.closest?.("#classical-rule-logic-controls"))controls.add(control);}
       for (const control of controls) ClassicalNominalNativeChoiceFrames.set(control,{snapshot,frame});
     }
     function canClassicalNominalNativeChoice(control) {
       const snapshot = ClassicalConstructionSession.position.operationContract;
+      const personalName = snapshot?.kind === "personal-name-contract";
       const derived = snapshot?.kind === "derived-formation-contract";
       const denominal = snapshot?.kind === "denominal-contract";
       const place = snapshot?.kind === "place-gentilic-contract";
       const verbal = snapshot?.kind === "verbal-derivation-contract";
-      if ((!denominal && !place && !verbal && !derived && snapshot?.kind !== "nominal-operation-contract")
+      if ((!personalName && !denominal && !place && !verbal && !derived && snapshot?.kind !== "nominal-operation-contract")
         || !control?.closest?.("#classical-rule-logic-controls")
         || control.closest?.("[data-classical-source-identity-controls]")) return true;
       const rendered = ClassicalNominalNativeChoiceFrames.get(control);
       return control.isConnected !== false && control.disabled !== true && rendered?.snapshot === snapshot
-        && (denominal ? isCurrentDenominalSnapshot(snapshot,rendered.frame)
+        && (personalName ? isCurrentPersonalNameSnapshot(snapshot,rendered.frame)
+          : denominal ? isCurrentDenominalSnapshot(snapshot,rendered.frame)
           : place ? isCurrentPlaceGentilicSnapshot(snapshot,rendered.frame)
           : verbal ? isCurrentVerbalDerivationSnapshot(snapshot,rendered.frame)
           : derived ? isCurrentDerivedFormationSnapshot(snapshot,rendered.frame)
@@ -44014,6 +43980,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const typed = getActiveClassicalGrammarTypedSourceOperationBinding();
       syncClassicalPositionFixedChoices(typed);
       if (!source && isDerivedFormationOperation(operation)) source = getClassicalNativeDerivedIngress(operation)?.source || null;
+      if(!source&&operation==="nnc:personal-name")source=getClassicalNativePersonalNameIngress()?.source||null;
+      const personalNameSnapshot = readClassicalPersonalNameSnapshot(operation, source, binding);
       const denominalSnapshot = readClassicalDenominalSnapshot(operation, source, binding, typed);
       const placeSnapshot = readClassicalPlaceGentilicSnapshot(operation, source, binding, typed);
       const verbalSnapshot = readClassicalVerbalDerivationSnapshot(operation, source, binding, typed);
@@ -44025,7 +43993,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
       if (source) ClassicalPositionSources.add(source);
       const replacementEdit = PendingClassicalResultEdit?.sourceReplacement
         ? getClassicalResultEditSourceReplacement(source) : null;
-      let ready = operation === "vnc:denominal" ? denominalSnapshot?.contract.ready === true
+      let ready = operation === "nnc:personal-name" ? personalNameSnapshot?.contract.ready === true
+        : operation === "vnc:denominal" ? denominalSnapshot?.contract.ready === true
         : operation === "nnc:place-gentilic" ? placeSnapshot?.contract.ready === true
         : operation === "vnc:derivational-operation" ? verbalSnapshot?.contract.ready === true
         : isDerivedFormationOperation(operation) ? derivedSnapshot?.contract.ready === true
@@ -44033,7 +44002,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         ? nominalSnapshot?.contract.ready === true
         : readiness?.ready === true || readiness?.disabled === false && readiness?.dataset?.classicalCapabilityApplyState === "ready";
       let packet = null;
-      if (ready) { try { packet = captureClassicalConstructionPacket(operation, source, binding, typed, nominalSnapshot, derivedSnapshot, verbalSnapshot, placeSnapshot, denominalSnapshot); } catch { packet = null; } }
+      if (ready) { try { packet = captureClassicalConstructionPacket(operation, source, binding, typed, nominalSnapshot, derivedSnapshot, verbalSnapshot, placeSnapshot, denominalSnapshot, personalNameSnapshot); } catch { packet = null; } }
       let layerReadiness = getConstructionLayerReadiness(targetObject, packet);
       ready = ready && layerReadiness.ready;
       if (packet?.source) { source = packet.source; ClassicalPositionSources.add(source); }
@@ -44145,7 +44114,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       for (const slot of slots) if (!slot.exact) legalMoves.push({type: "slot", id: slot.role});
       return {source, sourcePending, slotOrder, route: {operation, binding: binding?.selectedBindingId || "typed-source", family: binding?.family || "typed-source"},
         slots, choices: semanticChoices, legalMoves, ready: ready && Boolean(packet), execution: packet, layerReadiness,
-        operationContract: denominalSnapshot || placeSnapshot || verbalSnapshot || derivedSnapshot || nominalSnapshot || issuedSnapshot || (clauseController && clauseContract
+        operationContract: personalNameSnapshot || denominalSnapshot || placeSnapshot || verbalSnapshot || derivedSnapshot || nominalSnapshot || issuedSnapshot || (clauseController && clauseContract
           ? (getClassicalComparisonOperationSnapshot()?.contract === clauseContract
             ? getClassicalComparisonOperationSnapshot()
             : issueComparisonOperationSnapshot(clauseController, readClassicalClauseSelections(), source, clauseContract, null, ClassicalClauseRelationSelections)) : null)};
@@ -44744,6 +44713,18 @@ export function createUiRenderingApi(targetObject = globalThis) {
           ? "Flawed subject requires absolutive state."
           : formatClassicalClauseRelationValue(preview?.blockReason || "Complete Build choices.");
         return { ready, operationId: "grammar:nominal-construction", blockReason };
+      }
+      if (operationSelect?.value === "nnc:personal-name"
+        || getClassicalNominalConstructionControlValue("classical-construction-operation", "none") === "personal-name-nnc") {
+        const navigator=ActiveClassicalGrammarCapabilityNavigator, source=navigator?.exactSource||navigator?.exactResult;
+        const snapshot=readClassicalPersonalNameSnapshot("nnc:personal-name",source||getClassicalNativePersonalNameIngress()?.source,getActiveClassicalGrammarResultBinding("nnc:personal-name"));
+        const ready=snapshot?.contract.ready===true;
+        button.disabled=!ready;button.textContent=ready?"Make Result":"Complete Build choices";
+        button.setAttribute("aria-label","Make Result: Personal name");
+        button.dataset.classicalCapabilityApplyOperationId="nnc:personal-name";
+        button.dataset.classicalCapabilityApplyState=ready?"ready":"needs-choices";
+        button.dataset.classicalCapabilityOwnerExecutable=String(ready);
+        return {ready,operationId:"nnc:personal-name",blockReason:snapshot?.contract.blockReason||(!snapshot?"Apply the current Source.":"")};
       }
       if (operationSelect?.value === "vnc:denominal"
         || getClassicalNominalConstructionControlValue("classical-construction-operation", "none") === "denominal-vnc") {
@@ -48681,6 +48662,12 @@ export function createUiRenderingApi(targetObject = globalThis) {
         || !normalizedBindingId
         || !current.bindingIds.includes(normalizedBindingId)
       ) return false;
+      if(current.operationId === "nnc:personal-name" && allowExecution){
+        const snapshot=ClassicalConstructionSession.position.operationContract;
+        if(snapshot?.kind!=="personal-name-contract"||snapshot.source!==current.exactResult
+          ||snapshot.contract.binding!==current.ownerBindingFrame||!isCurrentPersonalNameSnapshot(snapshot))return false;
+        return applyClassicalConstructionPosition();
+      }
       syncClassicalSelectedResultBindingRole(current, normalizedBindingId);
       // Capture the draft before visibility restoration reprojects the accepted owner choices.
       const stagedVncSelections = ["vnc:sentence-result", "vnc:application", "vnc:derivational-operation"].includes(current.operationId)
@@ -49470,67 +49457,6 @@ export function createUiRenderingApi(targetObject = globalThis) {
         }
         syncClassicalCapabilityApplyOperationState();
         return presented;
-      }
-      if (
-        current.family === "formation"
-        && current.operationId === "nnc:personal-name"
-        && allowExecution
-      ) {
-        const activeBinding = ActiveClassicalGrammarResultBinding;
-        const selections = getClassicalFormationResultBindingSelections(
-          current.operationId,
-          activeBinding
-        );
-        if (
-          activeBinding?.exactResult !== current.exactResult
-          || activeBinding.requiredChoiceIds.length
-          || activeBinding.requiredResultRoles.length
-          || activeBinding.ownerBindingFrame?.ownerPreflightValidated
-            !== true
-          || !selections.sourceFamily
-          || !selections.outerSubject
-        ) {
-          syncClassicalCapabilityApplyOperationState();
-          return false;
-        }
-        const ownerRequest = Object.freeze({
-          canonicalSourceResult: current.exactResult,
-          sourceFamily: selections.sourceFamily,
-          outerSubject: selections.outerSubject,
-          affectiveScope: selections.affectiveScope,
-          affectiveMatrix: selections.affectiveMatrix,
-        });
-        const applicationResult = targetObject
-          .executeClassicalGrammarApplicationRequest?.({
-            operationId: current.operationId,
-            args: [ownerRequest],
-          }) || null;
-        const resultBlock = targetObject.document?.getElementById?.(
-          "classical-rule-logic-surface"
-        ) || null;
-        const presented = Boolean(
-          resultBlock
-          && renderClassicalNominalConstructionSurfaceBlock(
-            resultBlock,
-            Object.freeze({
-              applicationResult,
-              canonicalResult: applicationResult?.canonicalResult || null,
-              selectedConstruction: "personal-name-nnc",
-              request: ownerRequest,
-            })
-          )
-          && resultBlock.dataset.classicalCapabilityAppliedOperation
-            === current.operationId
-          && resultBlock.dataset.classicalCapabilityAppliedResult
-            === "exact-owner-issued"
-        );
-        if (status) {
-          status.textContent = presented
-            ? "Applied by the canonical personal-name owner. Review the exact Result, then Continue."
-            : "The personal-name owner did not issue a displayable exact Result.";
-        }
-        syncClassicalCapabilityApplyOperationState();
-        return Boolean(presented);
       }
       if (current.operationId === "nnc:relational") {
         const parts = normalizedBindingId.split(":");
@@ -51665,6 +51591,12 @@ export function createUiRenderingApi(targetObject = globalThis) {
         const sessionNote = createGrammarInspectorChip("Session only");
         sessionNote.dataset.classicalSavedStateCapability = "deliberately-unsupported";
         selectedOutput.appendChild(sessionNote);
+      }
+      if(projection.nameUseDescriptor){
+        const descriptor=projection.nameUseDescriptor;
+        const note=createGrammarInspectorChip(`${descriptor.operation.replaceAll("-"," ")} · ${descriptor.outputKind.replaceAll("-"," ")}${descriptor.operation==="god-name-to-place-name-embed"?` · matrix ${descriptor.locativeMatrix}`:""}`);
+        note.dataset.classicalPersonalNameUse=descriptor.operation;
+        selectedOutput.appendChild(note);
       }
       primary.append(primaryHeading, selectedOutput);
       const honorificExistentialSpelling = canonical?.operationFrames?.find(

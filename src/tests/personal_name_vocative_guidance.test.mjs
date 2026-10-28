@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 
-test('selected name vocative points to the existing explicit continuation without pretending Make finishes it',()=>{
+test('name-use descriptor keeps realized vocative continuation distinct',()=>{
  const code=readFileSync(new URL('../ui/rendering/rendering.mjs',import.meta.url),'utf8');
  const start=code.indexOf('    function syncClassicalPersonalNameSentenceControls(');
  const end=code.indexOf('    function getClassicalPersonalNameSentenceSelection(',start);
@@ -15,7 +15,7 @@ test('selected name vocative points to the existing explicit continuation withou
  vm.runInContext(code.slice(start,end),ctx);
  const selected=ctx.syncClassicalPersonalNameSentenceControls(true);
  assert.equal(selected.operation,'vocative-collocation');assert.equal(sentence.disabled,false);
- assert.match(status.textContent,/Make the name first/);assert.match(status.textContent,/Continue entire Result → Combine Results → Vocative/);assert.match(status.textContent,/speaker/);
+ assert.match(status.textContent,/Make records/);assert.match(status.textContent,/personal-name Result → Combine Results → Vocative/);assert.match(status.textContent,/speaker/);
  sentence.value='sentence-name-use';ctx.syncClassicalPersonalNameSentenceControls(true);
- assert.doesNotMatch(status.textContent,/Make the name first/,'unrelated sentence routes keep their prior presentation');
+ assert.doesNotMatch(status.textContent,/Make records/,'unrelated sentence routes keep their prior presentation');
 });

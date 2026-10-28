@@ -10275,7 +10275,8 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       const declaredNameRequest = targetObject.document?.getElementById?.("classical-construction-operation")?.value === "personal-name-nnc"
         ? targetObject.buildClassicalNominalConstructionUiRequest?.() : null;
       const nameSourceDeclarations = targetObject.isPersonalNameNncSourceFrame?.(declaredNameRequest?.sourceFrame) === true
-        ? ["classical-construction-operation", "classical-personal-name-source-family"]
+        ? ["classical-construction-operation", "classical-personal-name-source-family",
+          "classical-personal-name-reranking", "classical-personal-name-sentence-operation", "classical-personal-name-locative-matrix"]
           .map(id => [id, targetObject.document.getElementById(id)?.value || ""]) : [];
       const relationalDeclarations = typeof isClassicalRelationalNncUiModeEnabled === "function" && isClassicalRelationalNncUiModeEnabled()
         ? ["classical-nnc-source-example", "classical-rule-logic-nnc-clause-position", ...Array.from(targetObject.document.querySelectorAll("[data-classical-relational-nnc-control]")).map(control=>control.id)]

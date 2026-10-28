@@ -1962,7 +1962,7 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
     if (spec.id.startsWith("god-name-") && sourceFrame.referentKind !== "god") {
       return freeze({ kind: "classical-nahuatl-personal-name-sentence-operation", version: VERSION, authorizationStatus: "blocked", blockReason: "god-name-source-required", typedFrameAuthority: true, callerSuppliedFormulaAuthority: false, callerSuppliedSurfaceAuthority: false });
     }
-    if (spec.id === "god-name-to-place-name-embed" && !normalizeMorph(locativeMatrix)) {
+    if (spec.id === "god-name-to-place-name-embed" && (!String(locativeMatrix || "").trim() || !normalizeMorph(locativeMatrix) || normalizeMorph(locativeMatrix) === "Ø")) {
       return freeze({ kind: "classical-nahuatl-personal-name-sentence-operation", version: VERSION, authorizationStatus: "blocked", blockReason: "locative-matrix-required", typedFrameAuthority: true, callerSuppliedFormulaAuthority: false, callerSuppliedSurfaceAuthority: false });
     }
     const sentenceResult = freeze({

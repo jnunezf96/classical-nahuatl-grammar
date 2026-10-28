@@ -1307,6 +1307,10 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
                             <option value="">No sentence continuation</option>
                           </select>
                         </label>
+                        <label class="classical-rule-control" data-construction-for="personal-name-nnc" hidden>
+                          <span>Locative matrix</span>
+                          <input id="classical-personal-name-locative-matrix" data-classical-rule-logic-control="personal-name-locative-matrix" type="text" autocomplete="off" disabled>
+                        </label>
                         <p
                           class="classical-rule-control"
                           data-construction-for="personal-name-nnc"

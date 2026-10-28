@@ -1,3 +1,9 @@
+## v1.2.111 — Personal-name Choice Coordination
+
+- Coordinate name formation and name uses through one current construction and explicit Make.
+- Supply the required locative matrix for a god-name embed source, with exact parent custody.
+- Keep name-use descriptors distinct from realized sentences and place names.
+
 ## v1.2.110 — Typed Denominal Path Recovery
 
 - Preserve the existing path control when moving between typed nominal sources and back to native choices.

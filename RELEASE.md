@@ -1,14 +1,13 @@
-# Grammar OS v1.2.110 release
+# Grammar OS v1.2.111 release
 
-Release name: **Denominal Choice Coordination**
+Release name: **Personal-name Choice Coordination**
 
-Browser build: **20261028-denominal-path-129**
+Browser build: **20261028-personal-name-130**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
-- Existing denominal operations share one current owner-backed request for choices, preview and explicit Make.
-- Inactive object and stem-shape choices stay scoped to their Source; exact, prepared and typed sources retain their canonical authority.
-- Required typed paths recover consistently, and current readiness replaces obsolete blocked guidance.
-- The existing category-only formation remains nonexecuting.
-
-- Keep the same path control across bound-to-rank Source transitions and native departure.
+- Personal-name formation and eight name uses share current Source, choices, preview and explicit Make.
+- God-name place embedding accepts its required matrix through the existing controls.
+- Name-use Results retain their exact name parent and clearly identify the owner-issued use or source descriptor.
+- Source Apply preserves declared name intent; changing uses preserves committed source facts.
+- Sentence-use descriptor restoration remains unclaimed.
