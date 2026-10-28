@@ -41,8 +41,9 @@ test('formation intent belongs to current snapshot and restores only offered own
  const source=owner.buildClassicalNahuatlOrdinaryNncSourceFrame({stem:'cal'}),h=harness(source),request={constructionKind:'place-name',formation:'n-yan',source:{embedStem:'cal'},usage:'adverbial'};
  const s=issuePlaceGentilicSnapshot(h.scope,{ingress:h.ingress,sourceContext:h.context,request});
  h.session.stage({source,route:{operation:'nnc:place-gentilic'},operationContract:s,slots:s.captures,choices:{},ready:false,execution:null});
- const event=capturePlaceGentilicChoiceFrame(s);assert.ok(event);assert.equal(recordPlaceGentilicFormation(s,'co',event,['co','n-yan']),true);
- const current=h.session.position.operationContract;assert.equal(current.contract.memory['place-name'],'co');assert.equal(Object.isFrozen(current.contract.memory),true);
+ const event=capturePlaceGentilicChoiceFrame(s);assert.ok(event);const revision=h.session.position.revision,intent=recordPlaceGentilicFormation(s,'co',event,['co','n-yan']);assert.ok(intent);assert.equal(h.session.position.revision,revision,'intent capture must not invalidate the scheduled choice revision');
+ assert.equal(issuePlaceGentilicSnapshot(h.scope,{ingress:h.ingress,sourceContext:h.context,request:{...request,formation:'co'},intent:{...intent}}),null,'copied intent cannot authorize remembered choices');
+ const current=issuePlaceGentilicSnapshot(h.scope,{ingress:h.ingress,sourceContext:h.context,request:{...request,formation:'co'},intent});h.session.stage({source,route:{operation:'nnc:place-gentilic'},operationContract:current,slots:current.captures,ready:true,execution:projectPlaceGentilicExecution(current)});assert.equal(current.contract.memory['place-name'],'co');assert.equal(Object.isFrozen(current.contract.memory),true);
  assert.equal(getRememberedPlaceGentilicFormation(current,'place-name',['co'],request),'co');assert.equal(getRememberedPlaceGentilicFormation(current,'place-name',['n-yan'],request),'');
  assert.equal(recordPlaceGentilicFormation(s,'n-yan',event,['n-yan']),false,'old event cannot rewrite newer snapshot');assert.equal(h.session.position.accepted.result,null);
  h.revoke();assert.equal(getRememberedPlaceGentilicFormation(current,'place-name',['co'],request),'');

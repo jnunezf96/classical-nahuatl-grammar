@@ -1,3 +1,7 @@
+## v1.2.108 — Atomic Place Choice Events
+
+- Commit formation memory and the current request together so the first visible choice immediately updates preview and Make readiness.
+
 ## v1.2.107 — Place and Gentilic Coordination
 
 - Coordinate the existing 38 place/gentilic branches through one owner-backed snapshot for choices, preview and Make, including native, typed and exact Result ingresses.

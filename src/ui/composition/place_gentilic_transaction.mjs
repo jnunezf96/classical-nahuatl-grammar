@@ -1,14 +1,14 @@
 import {createOwnerOperationProtocol} from './owner_operation_protocol.mjs?issuedBinding=20261028-1';
 const operation='nnc:place-gentilic';
 const kinds=new Set(['place-name','gentilic','gentilic-collective','profession-place-association','profession-pertinency','gentilic-adjectival-use']);
-const scopes=new WeakSet(),contracts=new WeakSet(),snapshots=new WeakSet(),events=new WeakMap(),cache=new WeakMap();
+const scopes=new WeakSet(),contracts=new WeakSet(),snapshots=new WeakSet(),events=new WeakMap(),cache=new WeakMap(),intents=new WeakSet();
 const same=(a,b)=>a===b||Boolean(a&&b&&typeof a==='object'&&typeof b==='object'&&!a.kind&&!b.kind&&Object.keys(a).length===Object.keys(b).length&&Object.keys(a).every(k=>same(a[k],b[k])));
 function immutable(value,refs){if(!value||typeof value!=='object'||refs.has(value))return value;if(value.kind?.startsWith('classical-'))throw Error('unrecognized-canonical-parent');return Object.freeze(Array.isArray(value)?value.map(v=>immutable(v,refs)):Object.fromEntries(Object.entries(value).map(([k,v])=>[k,immutable(v,refs)])));}
 export function createPlaceGentilicScope({owner,source,session,getIngress,getSourceContext=null}){if(!owner||!source||!session||typeof getIngress!=='function')return null;const scope=Object.freeze({owner,source,session,getIngress,getSourceContext,operationId:operation});scopes.add(scope);return scope;}
 function current(scope,c){return scopes.has(scope)&&contracts.has(c)&&c.scope===scope&&(!c.sourceContext||scope.getSourceContext?.()===c.sourceContext);}
 const protocol=createOwnerOperationProtocol({kind:'place-gentilic-contract',select:s=>s.operationId===operation,routeId:s=>s.routeId,projectIntent:s=>Object.freeze({...s}),buildContract:()=>null,isCurrentFrame:current,projectCaptures:(_s,c)=>c.captures,
  isCurrentSnapshot:(s,event)=>{const p=s.controller.session.position,e=events.get(event);return p.operationContract===s&&!p.construction.sourcePending&&p.construction.source===s.source&&s.controller.getIngress()===s.ingress&&(!event||Boolean(e&&e.snapshot===s&&e.revision===p.revision));},transition:()=>Object.freeze({handled:true,authorizationStatus:'blocked',blockReason:'place-owner-reissue-required'}),equivalent:(a,b)=>a===b,staleReason:'place-choice-stale-frame'});
-export function issuePlaceGentilicSnapshot(scope,{ingress,binding,request,sourceContext=null}={}){
+export function issuePlaceGentilicSnapshot(scope,{ingress,binding,request,sourceContext=null,intent=null}={}){
  if(!scopes.has(scope)||scope.getIngress()!==ingress)return null;
  const owner=scope.owner,typed=owner.isClassicalGrammarTypedSourceOperationBindingFrame?.(binding)===true;
  if(typed){
@@ -32,7 +32,8 @@ export function issuePlaceGentilicSnapshot(scope,{ingress,binding,request,source
   if(request.source?.embedStem!==embed||declaration.mode==='embed-matrix'&&request.source?.matrixStem!==declaration.sourceMatrixStem)return null;
  }
  const prior=scope.session.position.operationContract;
- const memory=prior?.controller===scope&&current(scope,prior.contract)&&prior.contract.sourceContext===sourceContext?prior.contract.memory||Object.freeze({}):Object.freeze({});
+ if(intent&&(!intents.has(intent)||intent.snapshot!==prior||prior?.controller!==scope||!protocol.isCurrent(prior,intent.event)))return null;
+ const memory=intent?intent.memory:prior?.controller===scope&&current(scope,prior.contract)&&prior.contract.sourceContext===sourceContext?prior.contract.memory||Object.freeze({}):Object.freeze({});
  const old=cache.get(scope);if(old&&old.binding===binding&&old.ingress===ingress&&old.sourceContext===sourceContext&&same(old.request,request)&&same(old.memory,memory))return old.snapshot;
  let declared,preview;try{declared=immutable(request,refs);preview=owner.evaluatePlaceGentilicNnc(declared);}catch{return null;}
  if(owner.isPlaceGentilicNncFrame?.(preview)!==true)return null;
@@ -54,14 +55,12 @@ export function projectPlaceGentilicExecution(snapshot){if(!snapshots.has(snapsh
 export function recordPlaceGentilicFormation(snapshot,formation,event,offered=[]){
  if(!protocol.isCurrent(snapshot,event)||!formation||!offered.includes(formation)||!snapshot.contract.request)return false;
  const kind=snapshot.contract.request.constructionKind;
- const memory=Object.freeze({...snapshot.contract.memory,[kind]:formation});
- const contract=Object.freeze({...snapshot.contract,memory,ready:false});contracts.add(contract);
- const next=protocol.issue(snapshot.controller,snapshot.selections,snapshot.source,contract,null,snapshot.ingress);if(!next)return false;snapshots.add(next);
- const session=snapshot.controller.session;
- return session.stage({...session.position.construction,operationContract:next,ready:false,execution:null});
+ const intent=Object.freeze({snapshot,event,memory:Object.freeze({...snapshot.contract.memory,[kind]:formation})});
+ intents.add(intent);return intent;
 }
-export function getRememberedPlaceGentilicFormation(snapshot,kind,offered,request){
+export function getRememberedPlaceGentilicFormation(snapshot,kind,offered,request,intent=null){
  if(!protocol.isCurrent(snapshot)||!request)return '';
- const value=snapshot.contract.memory?.[kind];if(!value||!offered.includes(value))return '';
+ if(intent&&(!intents.has(intent)||intent.snapshot!==snapshot||!protocol.isCurrent(snapshot,intent.event)))return '';
+ const value=(intent?.memory||snapshot.contract.memory)?.[kind];if(!value||!offered.includes(value))return '';
  try{const p=snapshot.controller.owner.evaluatePlaceGentilicNnc({...request,formation:value});return snapshot.controller.owner.isPlaceGentilicNncFrame(p)&&p.authorizationStatus==='authorized'?value:'';}catch{return '';}
 }

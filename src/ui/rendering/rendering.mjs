@@ -1,4 +1,4 @@
-import {createPlaceGentilicScope,issuePlaceGentilicSnapshot,projectPlaceGentilicExecution,isCurrentPlaceGentilicSnapshot,capturePlaceGentilicChoiceFrame,adoptPlaceGentilicCandidate,recordPlaceGentilicFormation,getRememberedPlaceGentilicFormation} from '../composition/place_gentilic_transaction.mjs?placeSession=20261028-1';
+import {createPlaceGentilicScope,issuePlaceGentilicSnapshot,projectPlaceGentilicExecution,isCurrentPlaceGentilicSnapshot,capturePlaceGentilicChoiceFrame,adoptPlaceGentilicCandidate,recordPlaceGentilicFormation,getRememberedPlaceGentilicFormation} from '../composition/place_gentilic_transaction.mjs?placeSession=20261028-2';
 import {createVerbalDerivationScope,issueVerbalDerivationSnapshot,projectVerbalDerivationExecution,isCurrentVerbalDerivationSnapshot,captureVerbalDerivationChoiceFrame,adoptVerbalDerivationCandidate} from '../composition/verbal_derivation_transaction.mjs?verbalDerivation=20261028-1';
 import {isDerivedFormationOperation, createDerivedFormationScope, issueDerivedFormationSnapshot, projectDerivedFormationExecution, isCurrentDerivedFormationSnapshot, captureDerivedFormationChoiceFrame, adoptDerivedFormationCandidate} from '../composition/derived_formation_transaction.mjs?derivedFormation=20261028-1';
 import {createNominalOperationScope,issueNominalOperationSnapshot,isCurrentNominalOperationSnapshot,captureNominalOperationChoiceFrame,projectNominalOperationExecution,adoptNominalOperationCandidate} from '../composition/nominal_operation_transaction.mjs';
@@ -2583,7 +2583,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const snapshot=ClassicalConstructionSession.position.operationContract;
       if(snapshot?.kind!=="place-gentilic-contract")return;
       const offered=Array.from(control.options||[]).filter(o=>o.value&&!o.disabled&&!o.hidden).map(o=>o.value);
-      const restored=getRememberedPlaceGentilicFormation(snapshot,resultKind,offered,buildClassicalNominalConstructionUiRequest());
+      const restored=getRememberedPlaceGentilicFormation(snapshot,resultKind,offered,buildClassicalNominalConstructionUiRequest(),ClassicalChoicePreflightTransaction?.placeIntent);
       if(restored)control.value=restored;
     }
     function getClassicalRuleLogicSurfaceState(overrides = {}) {
@@ -43709,7 +43709,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       if(typed?.operationId===operation)return issuePlaceGentilicSnapshot(scope,{ingress,binding:typed});
       const exact=binding?.operationId===operation?binding:null;
       return issuePlaceGentilicSnapshot(scope,{ingress,binding:exact?.ownerBindingFrame,
-        request:buildClassicalNominalConstructionUiRequest(exact),sourceContext:exact?null:readClassicalNominalSourceContext(source,ingress)});
+        request:buildClassicalNominalConstructionUiRequest(exact),sourceContext:exact?null:readClassicalNominalSourceContext(source,ingress),intent:ClassicalChoicePreflightTransaction?.placeIntent});
     }
     const ClassicalVerbalDerivationScopes = new WeakMap();
     function readClassicalVerbalDerivationSnapshot(operation, source, binding, typed) {
@@ -47707,7 +47707,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
         const snapshot=ClassicalConstructionSession.position.operationContract;
         if(snapshot?.kind==="place-gentilic-contract") {
           const offered=Array.from(control.options||[]).filter(o=>!o.disabled&&!o.hidden).map(o=>o.value);
-          recordPlaceGentilicFormation(snapshot,control.value,capturePlaceGentilicChoiceFrame(snapshot),offered);
+          if(ClassicalChoicePreflightTransaction) ClassicalChoicePreflightTransaction.placeIntent=
+            recordPlaceGentilicFormation(snapshot,control.value,capturePlaceGentilicChoiceFrame(snapshot),offered);
         }
       }
       if (ActiveClassicalGrammarResultBinding?.family === "vnc-continuation"
