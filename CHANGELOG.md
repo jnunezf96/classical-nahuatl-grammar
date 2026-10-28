@@ -1,3 +1,8 @@
+## v1.2.115 — Clause Adjunction Display Recovery
+
+- Render current marker requirements after accepting a clause without interrupting the Result display.
+- Preserve accepted Results and History during presentation recovery.
+
 ## v1.2.114 — Clause Adjunction Coordination
 
 - Coordinate fourteen clause relationships through current inputs and explicit Make.

@@ -102,3 +102,13 @@ test('marker labels use current requirement while retaining reason and optional 
  assert.equal(clauseMarkerResultLabel(relation,'',required),relation==='reason'?'Required principal-clause introducer':relation==='time'?'Optional marker Result':'Required marker Result');}
  const code=readFileSync(new URL('../ui/rendering/rendering.mjs',import.meta.url),'utf8');assert.match(code,/: comparisonCapture\?\.required \|\| adjunctionInput\?\.required \? "Required · not captured"/u);assert.match(code,/clauseMarkerResultLabel\(selectedRelation,[^;]*currentChoiceFrame\?\.inputs.find/u);
 });
+
+test('actual marker label rendering runs before later decisionContract declaration',()=>{
+ const code=readFileSync(new URL('../ui/rendering/rendering.mjs',import.meta.url),'utf8');
+ const line=code.split('\n').find(x=>x.includes('markerLabel.textContent = clauseMarkerResultLabel'));
+ for(const relation of ['time','condition','proviso','reason']){
+  const f=fixture(relation),previewDecisionContract=f.c.buildDecisionContract(f.selections),markerLabel={};
+  const render=new Function('previewDecisionContract','markerLabel','selectedRelation','clauseMarkerResultLabel','targetObject',line+'\n const decisionContract=previewDecisionContract; return markerLabel.textContent;');
+  assert.equal(render(previewDecisionContract,markerLabel,relation,clauseMarkerResultLabel,{document:{getElementById:()=>({value:''})}}),relation==='reason'?'Required principal-clause introducer':relation==='time'?'Optional marker Result':'Required marker Result');
+ }
+});

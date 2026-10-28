@@ -1,7 +1,7 @@
 import {orderVncSubjectFields,presentNncBuildOptions} from './build_composition.mjs?v=20261023-1';
 import {nativeChoiceAddress,CONDITIONAL_NATIVE_FIELDS} from './build_choice_catalog.mjs?v=20261023-all-build-2&andrewsRelease=20261024-1';
 import {ownerChoiceRoots,findOwnerChoice} from './owner_choice_roots.mjs?v=20261023-core-1';
-import {arrangeNuclearClauseSlots,arrangeProjectedFormulaChoices,stemCollectorCaption,vncSubjectCaption,uniteCoreStemChoices,uniteNounstemChoices,arrangeProjectedClauseChoices,preserveDisclosureChoice} from './formula_layout.mjs?clauseHarmony=20261023-5&v=20261023-slots-17&andrewsRelease=20261024-1&interfaceRelease=1.2.36&adjunctionSession=20261028-1';
+import {arrangeNuclearClauseSlots,arrangeProjectedFormulaChoices,stemCollectorCaption,vncSubjectCaption,uniteCoreStemChoices,uniteNounstemChoices,arrangeProjectedClauseChoices,preserveDisclosureChoice} from './formula_layout.mjs?clauseHarmony=20261023-5&v=20261023-slots-17&andrewsRelease=20261024-1&interfaceRelease=1.2.36&adjunctionSession=20261028-2';
 import {validateWorkspaceOrganization,DEFAULT_WORKSPACE_ORGANIZATION,loadWorkspaceOrganization} from './workspace_organization_model.mjs?v=20261013-canvas-workspace-1&choicesLayout=20261014-4&startupDelivery=20261022-1';
 import {createParticleChoices} from './particle_choices.mjs?v=20261021-particle-clear-2';
 

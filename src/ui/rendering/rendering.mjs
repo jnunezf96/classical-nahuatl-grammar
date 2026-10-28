@@ -1,4 +1,4 @@
-import {ADJUNCTION_OPERATION_ROUTES} from '../composition/adjunction_operation_transaction.mjs?adjunctionSession=20261028-1';
+import {ADJUNCTION_OPERATION_ROUTES} from '../composition/adjunction_operation_transaction.mjs?adjunctionSession=20261028-2';
 import {SUPPLEMENTATION_OPERATION_ROUTES} from '../composition/supplementation_operation_transaction.mjs?supplementationSession=20261028-1&utteranceProjection=20261028-1';
 import {createPersonalNameScope,issuePersonalNameSnapshot,projectPersonalNameExecution,isCurrentPersonalNameSnapshot,capturePersonalNameChoiceFrame} from '../composition/personal_name_transaction.mjs';
 import {createDenominalScope,issueDenominalSnapshot,projectDenominalExecution,isCurrentDenominalSnapshot,captureDenominalChoiceFrame,adoptDenominalCandidate,recordDenominalIntent,readDenominalIntent} from '../composition/denominal_transaction.mjs';
@@ -6,7 +6,7 @@ import {createPlaceGentilicScope,issuePlaceGentilicSnapshot,projectPlaceGentilic
 import {createVerbalDerivationScope,issueVerbalDerivationSnapshot,projectVerbalDerivationExecution,isCurrentVerbalDerivationSnapshot,captureVerbalDerivationChoiceFrame,adoptVerbalDerivationCandidate} from '../composition/verbal_derivation_transaction.mjs?verbalDerivation=20261028-1';
 import {isDerivedFormationOperation, createDerivedFormationScope, issueDerivedFormationSnapshot, projectDerivedFormationExecution, isCurrentDerivedFormationSnapshot, captureDerivedFormationChoiceFrame, adoptDerivedFormationCandidate} from '../composition/derived_formation_transaction.mjs?derivedFormation=20261028-1';
 import {createNominalOperationScope,issueNominalOperationSnapshot,isCurrentNominalOperationSnapshot,captureNominalOperationChoiceFrame,projectNominalOperationExecution,adoptNominalOperationCandidate} from '../composition/nominal_operation_transaction.mjs';
-import {issueClauseOperationSnapshot as issueComparisonOperationSnapshot,transitionClauseOperationSnapshot as transitionComparisonOperationSnapshot,readClauseOperationSelections as readComparisonOperationSelections,isCurrentClauseOperationSnapshot as isCurrentComparisonOperationSnapshot} from '../composition/clause_operation_transaction.mjs?conjunctionSession=20261028-1&complementSession=20261028-1&issuedBinding=20261028-1&supplementationSession=20261028-1&utteranceProjection=20261028-1&adjunctionSession=20261028-1';
+import {issueClauseOperationSnapshot as issueComparisonOperationSnapshot,transitionClauseOperationSnapshot as transitionComparisonOperationSnapshot,readClauseOperationSelections as readComparisonOperationSelections,isCurrentClauseOperationSnapshot as isCurrentComparisonOperationSnapshot} from '../composition/clause_operation_transaction.mjs?conjunctionSession=20261028-1&complementSession=20261028-1&issuedBinding=20261028-1&supplementationSession=20261028-1&utteranceProjection=20261028-1&adjunctionSession=20261028-2';
 import {inactiveAffectiveReloadControl,prepareNativeReloadSourceContext,reconcileAcceptedQuotedSourceBaseline} from '../composition/native_reload_source.mjs?nativeReload=20261027-4';
 import {normalizeSourceEditorSignature} from '../composition/source_editor_signature.mjs';
 import {inputLabel,captureRoleLabel,clauseReadinessGuidance,contractReferences,normalizeAndrewsReference,hasCurrentClauseProjection} from '../composition/choice_guidance.mjs?choiceGuidance=20261027-3';
@@ -23,7 +23,7 @@ import {stageOrdinaryBindingIntent} from "../../application/classical/ordinary_b
 import {resolveReflexiveInterpretationChoice,resolveRejectedReflexiveDraft} from "../../application/classical/reflexive_choice_coordination.mjs?participantChoices=20261026-1";
 import {buildProspectiveVncTenseFrame} from "../../application/classical/vnc_tense_choice_coordination.mjs?participantChoices=20261026-1";
 import {createFiniteConnectorCoordinator,createFiniteConnectorContinuationCoordinator} from "../../application/classical/finite_connector_choice_coordination.mjs?participantChoices=20261026-2";
-import {clauseMarkerResultLabel} from '../composition/clause_composition.mjs?reasonPresentation=20261026-1&adjunctionSession=20261028-1';
+import {clauseMarkerResultLabel} from '../composition/clause_composition.mjs?reasonPresentation=20261026-1&adjunctionSession=20261028-2';
 import {syncFutureObjectChoices} from '../composition/future_object_choices.mjs?futureObject=20261024-3';
 import {getDoubleNucleusEditChildren} from '../../application/classical/double_nucleus_edit.mjs?nucleusEdit=20261024-9';
 import {syncStemLayerChoices} from '../composition/stem_layer_choices.mjs?stemNominal=20261024-2';
@@ -38825,7 +38825,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         markerField.dataset.classicalDisplayAuthority = "false";
         const markerLabel = targetObject.document.createElement("span");
         markerLabel.className = "classical-whole-canvas-choice__label";
-        markerLabel.textContent = clauseMarkerResultLabel(selectedRelation, targetObject.document.getElementById("classical-capability-navigator-binding-choices")?.value, decisionContract.currentChoiceFrame?.inputs.find(input=>input.role==="marker")?.required===true);
+        markerLabel.textContent = clauseMarkerResultLabel(selectedRelation, targetObject.document.getElementById("classical-capability-navigator-binding-choices")?.value, previewDecisionContract.currentChoiceFrame?.inputs.find(input=>input.role==="marker")?.required===true);
         const markerSelect = targetObject.document.createElement("select");
         markerSelect.className = "classical-whole-canvas-choice__control";
         markerSelect.dataset.classicalClauseRelationMarkerResult = "particle";

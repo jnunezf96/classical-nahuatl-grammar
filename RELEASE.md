@@ -1,8 +1,8 @@
-# Grammar OS v1.2.114 release
+# Grammar OS v1.2.115 release
 
-Release name: **Clause Adjunction Coordination**
+Release name: **Clause Adjunction Display Recovery**
 
-Browser build: **20261028-adjunction-session-133**
+Browser build: **20261028-adjunction-display-134**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 

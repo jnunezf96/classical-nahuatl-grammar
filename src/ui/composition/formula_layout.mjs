@@ -1,4 +1,4 @@
-import {clauseDecisionSlot,CLAUSE_CHOICE_LABELS,CLAUSE_CHOICE_ORDER} from './clause_composition.mjs?v=20261023-4&andrewsRelease=20261024-1&adjunctionSession=20261028-1';
+import {clauseDecisionSlot,CLAUSE_CHOICE_LABELS,CLAUSE_CHOICE_ORDER} from './clause_composition.mjs?v=20261023-4&andrewsRelease=20261024-1&adjunctionSession=20261028-2';
 import {declaredChoiceAddress,BUILD_SLOT_LABELS,BUILD_SLOT_ORDER} from './build_choice_catalog.mjs?v=20261023-all-build-2&andrewsRelease=20261024-1';
 import {ownerChoiceRoots,registerOwnerChoicePortal,releaseOwnerChoicePortal} from './owner_choice_roots.mjs?v=20261023-core-1';
 // Andrews §§4.3–4.5. This is a layout of existing native collectors, never a
