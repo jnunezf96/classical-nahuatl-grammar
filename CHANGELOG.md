@@ -1,5 +1,9 @@
 # Version History
 
+## v1.2.100 — Reliable Acceptance and Recovery
+
+Prepared owner-authorized acceptance and History commit together. Precommit failures preserve accepted state; display recovery uses the existing Make control without repeating execution or History.
+
 ## v1.2.99 — Coordinated Conjunction
 
 Four conjunction branches now use the common owner-backed snapshot protocol, including current-frame saved-input supply and explicit operation-family handback.

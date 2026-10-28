@@ -38,8 +38,8 @@ import {setStructureDesignContext, setStructureComparison, projectCanonicalStruc
 import {setSourceCandidatePresentation, projectSavedSourceCandidate, setRouteChoicePresentation, projectOfferedOperationShapes} from '../composition/candidate_design.mjs?v=20261021-route-shapes-1';
 import {notifyExplicitMakeResult,focusNativeChoice} from '../composition/flow_design.mjs?v=20261022-reset-eligibility-1&writingSource=20261022-1&makePreview=20261022-1&fixedChoices=20261022-1';
 import {getBuildOperationGroup,getBuildOperationOrder,inventoryOptionReference,formatBuildOperationLabel} from '../composition/build_navigation_model.mjs?v=20261021-ending-reference-2&nominalReload=20261024-4&interfaceRelease=1.2.36';
-import {createConstructionSession} from '../composition/construction_session.mjs?stemReload=20261024-2&v=20261012-position-12&acceptedBuild=20261023-1&operationPilot=20261027-1&ownerProtocol=20261028-1';
-import {projectConstructionValue} from '../composition/construction_position.mjs?stemReload=20261024-2&v=20261012-position-12&acceptedBuild=20261023-1&operationPilot=20261027-1&ownerProtocol=20261028-1';
+import {createConstructionSession} from '../composition/construction_session.mjs?stemReload=20261024-2&v=20261012-position-12&acceptedBuild=20261023-1&operationPilot=20261027-1&ownerProtocol=20261028-1&acceptanceRecovery=20261028-1';
+import {projectConstructionValue} from '../composition/construction_position.mjs?stemReload=20261024-2&v=20261012-position-12&acceptedBuild=20261023-1&operationPilot=20261027-1&ownerProtocol=20261028-1&acceptanceRecovery=20261028-1';
 import {executeConstructionPacket, freezeConstructionData, getConstructionPacketOrigin, captureConstructionParents, matchesConstructionWitness, orderConstructionSlots, getConstructionFixedChoices, getConstructionLayerReadiness, getConstructionParticleHostInput} from '../composition/construction_packet.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1&interfaceRelease=1.2.36&choiceGuidance=20261027-2';
 import {resolveResultEditTarget} from '../composition/result_editing.mjs?choiceArchitecture=20261026-6&nucleusEdit=20261024-9&innerParticle=20261024-1&v=20261023-conjunction-1&interfaceRelease=1.2.36&choiceGuidance=20261027-2';
 import {canRebuildResultEdit,getResultEditReorder} from '../composition/result_edit_rebuild.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1&interfaceRelease=1.2.36';
@@ -51,7 +51,7 @@ import { exportClassicalResultReloadRecipe, replayClassicalResultReloadRecipe, r
   from "../../application/classical/result_reload.mjs?deverbalReload=20261024-8&stemReload=20261024-2&innerParticle=20261024-1&remainingReload=20261024-1&conjunctReload=20261023-1&v=20261007-reader-40-2-175&acceptedBuild=20261023-1&nominalReload=20261024-4&complexReload=20261027-1&placeReload=20261027-2";
 import { exportClassicalGrammarWorkspaceHistoryReloadState,
   restoreClassicalGrammarWorkspaceHistoryReloadState }
-  from "../../application/classical/grammar_workspace_history.mjs?placeReload=20261027-2&innerParticle=20261024-1&remainingReload=20261024-1&conjunctReload=20261023-1&v=20261006-history-reload-1&nominalReload=20261024-4&complexReload=20261027-1";
+  from "../../application/classical/grammar_workspace_history.mjs?placeReload=20261027-2&innerParticle=20261024-1&remainingReload=20261024-1&conjunctReload=20261023-1&v=20261006-history-reload-1&nominalReload=20261024-4&complexReload=20261027-1&acceptanceRecovery=20261028-1";
 // Canonical modern ESM module.
 
 import {
@@ -204,6 +204,20 @@ export function createUiRenderingApi(targetObject = globalThis) {
       isSource: exact => ClassicalPositionSources.has(exact),
       isResult: exact => getClassicalOwnerIssuedResultProjection(exact)?.canonicalResult === exact,
       execute: packet => executeConstructionPacket(targetObject, packet),
+      prepareCommit: (application, packet, position, context) => {
+        const token=targetObject.beginClassicalGrammarWorkspaceUserAction?.(position.construction.route.operation);
+        const transaction=targetObject.prepareClassicalGrammarWorkspaceUserAction?.(token,application,{
+          recordExistingResult:context.recordExistingResult===true,
+          ...(context.historyParentNodeId?{parentNodeId:context.historyParentNodeId}:{})
+        });
+        if(!transaction)targetObject.cancelClassicalGrammarWorkspaceUserAction?.(token);
+        return transaction;
+      },
+      recover: application => {
+        const shown=Boolean(renderClassicalCapabilityApplicationResultForReview(application,application.operationId));
+        if(shown)clearClassicalAcceptanceRecoveryStatus();
+        return shown;
+      },
       present: (application, packet) => {
         ClassicalPositionExecuting = true;
         try {
@@ -238,7 +252,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
       },
       onFailure: (application, error) => {
         const status = targetObject.document?.getElementById?.("classical-capability-operation-plan-status");
-        if (status) status.textContent = application?.blockReason || error?.message || "Review the required Build choices.";
+        if (status) {
+          status.textContent = application?.blockReason || error?.message || "Review the required Build choices.";
+          if(error?.acceptanceRecovery)status.dataset.classicalAcceptanceRecoveryMessage=status.textContent;
+        }
       },
     });
     var ActiveClassicalRuleLogicSurfaceFrame = null;
@@ -43442,12 +43459,13 @@ export function createUiRenderingApi(targetObject = globalThis) {
       button.dataset.classicalCapabilityApplyBound = "true";
       button.addEventListener("click", () => {
         const position = ClassicalConstructionSession.position;
+        const recovering=Boolean(position.presentationFailure);
         runCompositionAction(targetObject.document, button, () => {
           const before = getClassicalVisibleAcceptedResult()?.canonicalResult || null;
           const made = applyClassicalConstructionPosition();
-          if (made) notifyExplicitMakeResult(targetObject.document.getElementById("classical-workbench"),
+          if (made && !recovering && !ClassicalConstructionSession.position.presentationFailure) notifyExplicitMakeResult(targetObject.document.getElementById("classical-workbench"),
             before, getClassicalVisibleAcceptedResult()?.canonicalResult || null);
-        }, {label: "Making Result…", isCurrent: () => ClassicalConstructionSession.position === position});
+        }, {label: recovering?"Restoring display…":"Making Result…", isCurrent: () => ClassicalConstructionSession.position === position});
       });
     }
 
@@ -43788,7 +43806,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       // follows native preflight, including a stale completed position.
       if (completedPosition && completedPosition === ClassicalConstructionSession.position
         && completedPosition.applied && !completedPosition.pending.length
-        && !completedPosition.construction.sourcePending) {
+        && !completedPosition.construction.sourcePending && !completedPosition.presentationFailure) {
         const button = targetObject.document?.getElementById?.("classical-capability-apply-operation");
         if (button) {
           button.disabled = true;
@@ -43801,6 +43819,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
         const plan = targetObject.document?.getElementById?.("classical-capability-operation-plan");
         if (plan) plan.dataset.classicalCapabilityOperationPlanStatus = "applied";
         return null;
+      }
+      if (ClassicalConstructionSession.position.presentationFailure) {
+        syncClassicalConstructionPositionApplyState();return null;
       }
       const selectedOperation = (select || targetObject.document?.getElementById?.("classical-capability-navigator-operation"))?.value || "";
       const navigator = ActiveClassicalGrammarCapabilityNavigator;
@@ -43895,6 +43916,16 @@ export function createUiRenderingApi(targetObject = globalThis) {
     function syncClassicalConstructionPositionApplyState(proposal = null) {
       syncClassicalChoiceGuidance();
       const button = targetObject.document?.getElementById?.("classical-capability-apply-operation");
+      const recovery=ClassicalConstructionSession.position.presentationFailure;
+      const retry=ClassicalConstructionSession.position.failure?.retryable;
+      if(button && (recovery || retry)) {
+        button.disabled=false;button.textContent=recovery?"Retry display":"Retry Make";
+        button.setAttribute("aria-label",button.textContent);
+        button.dataset.classicalCapabilityApplyState=recovery?"display-recovery":"retry";
+        button.dataset.classicalCapabilityOwnerExecutable=recovery?"false":"true";
+        button.dataset.classicalConstructionPositionRevision=String(ClassicalConstructionSession.position.revision);
+        return;
+      }
       if (button) button.disabled = !ClassicalConstructionSession.position.ready;
       if (button && !ClassicalConstructionSession.position.ready) {
         button.dataset.classicalCapabilityOwnerExecutable = "false";
@@ -44013,19 +44044,15 @@ export function createUiRenderingApi(targetObject = globalThis) {
       return changed;
     }
 
-    function applyClassicalConstructionPosition() {
-      const position = ClassicalConstructionSession.position;
-      const edit = PendingClassicalResultEdit;
-      if (position.execution?.kind === "result-edit" && edit?.historyNodeId
-        && targetObject.recoverClassicalGrammarWorkspaceResult?.(edit.historyNodeId)?.canonicalResult === edit.root) {
-        targetObject.continueClassicalGrammarWorkspaceFrom?.(edit.historyNodeId);
-      }
-      const token = targetObject.beginClassicalGrammarWorkspaceUserAction?.(position.construction.route.operation);
-      const made = ClassicalConstructionSession.make(position.revision);
-      if (made) {
-        const application = ClassicalConstructionSession.position.accepted.receipt.application;
-        targetObject.completeClassicalGrammarWorkspaceUserAction?.(token, application,
-          {recordExistingResult: position.execution?.kind === "result-edit" && edit?.action === "remove"});
+    function clearClassicalAcceptanceRecoveryStatus() {
+      const status=targetObject.document?.getElementById?.("classical-capability-operation-plan-status");
+      if(!status?.dataset?.classicalAcceptanceRecoveryMessage)return;
+      if(status.textContent===status.dataset.classicalAcceptanceRecoveryMessage)status.textContent="Accepted Result ready.";
+      delete status.dataset.classicalAcceptanceRecoveryMessage;
+    }
+
+    function completeClassicalConstructionPresentation(position, edit, application, completion) {
+      if(!completion.core) {
         if (edit?.intent === "add" && position.execution?.kind !== "result-edit") {
           retainClassicalResultEditMaterial(edit, application, position.execution);
         } else {
@@ -44042,11 +44069,30 @@ export function createUiRenderingApi(targetObject = globalThis) {
             } finally { ClassicalPositionStaging = false; }
           }
         }
+        completion.core=true;
+      }
         syncClassicalGrammarWorkspaceHistory();
         targetObject.setLeftPanelStackMode?.("output");
-      } else targetObject.cancelClassicalGrammarWorkspaceUserAction?.(token);
-      syncClassicalCapabilityApplyOperationState(null,
-        made ? ClassicalConstructionSession.position : null);
+        clearClassicalAcceptanceRecoveryStatus();
+    }
+
+    function applyClassicalConstructionPosition() {
+      const position = ClassicalConstructionSession.position;
+      if(position.presentationFailure) {
+        const recovered=ClassicalConstructionSession.recoverPresentation();
+        syncClassicalCapabilityApplyOperationState(null,ClassicalConstructionSession.position);
+        return recovered;
+      }
+      const edit = PendingClassicalResultEdit;
+      const historyParentNodeId=position.execution?.kind === "result-edit" && edit?.historyNodeId
+        && targetObject.recoverClassicalGrammarWorkspaceResult?.(edit.historyNodeId)?.canonicalResult === edit.root
+        ? edit.historyNodeId : "";
+      const completion={core:false};
+      const made = ClassicalConstructionSession.make(position.revision,{
+        historyParentNodeId,recordExistingResult:position.execution?.kind === "result-edit" && edit?.action === "remove",
+        afterPresent:application=>completeClassicalConstructionPresentation(position,edit,application,completion)
+      });
+      syncClassicalCapabilityApplyOperationState(null,made?ClassicalConstructionSession.position:null);
       return made;
     }
 
