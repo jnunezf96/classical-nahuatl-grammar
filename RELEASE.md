@@ -1,13 +1,13 @@
-# Grammar OS v1.2.104 release
+# Grammar OS v1.2.105 release
 
-Release name: **Coordinated Derived Formations**
+Release name: **Coordinated Verbal Derivations**
 
-Browser build: **20261028-derived-formation-123**
+Browser build: **20261028-verbal-derivation-124**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Sixteen deverbal, relational, and adverbial operation branches share one owner-backed Source, choice, preview, and Make snapshot.
-- Two-nucleus and lexical-adverbial Source declarations retain their authentic owner inputs through Apply.
-- Exact continuations and required saved matrix inputs preserve canonical identity and keep the accepted Result unchanged until Make.
+- Six verbal derivation branches share an owner-backed Source, choice, preview, and Make snapshot.
+- Prepared attitude Results and exact continuation parents retain their authority and identity.
+- Required typed compound matrix choices recover through the existing interface without changing the accepted Result before Make.

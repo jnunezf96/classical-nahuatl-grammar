@@ -1,3 +1,7 @@
+## 1.2.105 — Coordinated Verbal Derivations
+
+- Coordinate six verbal derivation branches and typed compound recovery through the shared construction session, preserving existing grammatical owners and explicit Make.
+
 # Version History
 
 ## 1.2.104 — Coordinated Derived Formations

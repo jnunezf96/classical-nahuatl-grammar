@@ -1,3 +1,4 @@
+import {createVerbalDerivationScope,issueVerbalDerivationSnapshot,projectVerbalDerivationExecution,isCurrentVerbalDerivationSnapshot,captureVerbalDerivationChoiceFrame,adoptVerbalDerivationCandidate} from '../composition/verbal_derivation_transaction.mjs?verbalDerivation=20261028-1';
 import {isDerivedFormationOperation, createDerivedFormationScope, issueDerivedFormationSnapshot, projectDerivedFormationExecution, isCurrentDerivedFormationSnapshot, captureDerivedFormationChoiceFrame, adoptDerivedFormationCandidate} from '../composition/derived_formation_transaction.mjs?derivedFormation=20261028-1';
 import {createNominalOperationScope,issueNominalOperationSnapshot,isCurrentNominalOperationSnapshot,captureNominalOperationChoiceFrame,projectNominalOperationExecution,adoptNominalOperationCandidate} from '../composition/nominal_operation_transaction.mjs';
 import {issueClauseOperationSnapshot as issueComparisonOperationSnapshot,transitionClauseOperationSnapshot as transitionComparisonOperationSnapshot,readClauseOperationSelections as readComparisonOperationSelections,isCurrentClauseOperationSnapshot as isCurrentComparisonOperationSnapshot} from '../composition/clause_operation_transaction.mjs?conjunctionSession=20261028-1&complementSession=20261028-1&issuedBinding=20261028-1';
@@ -18974,8 +18975,22 @@ export function createUiRenderingApi(targetObject = globalThis) {
       }
       return true;
     }
+    function projectClassicalTypedLateDerivationSurface(surfaceFrame, typed) {
+      const typedOwner = typed?.ownerBindingFrame;
+      if (typed?.operationId === "vnc:derivational-operation"
+        && targetObject.isClassicalGrammarTypedSourceOperationBindingFrame?.(typed) === true
+        && targetObject.isClassicalNahuatlCompoundPredicateBindingFrame?.(typedOwner) === true
+        && typedOwner.exactSourceFrame === typed.exactSource && typedOwner.ownerRequest) {
+        const request = typedOwner.ownerRequest;
+        return {...surfaceFrame, basalUnit:"vnc", state:{...surfaceFrame?.state,...request,
+          stem:request.sourceStem,vncVoice:request.requestedVoice || "active"},
+          vncLateOperationClosureFrame:typedOwner.ownerPreflightResult};
+      }
+      return surfaceFrame;
+    }
     function syncClassicalLessons27282933Closure(surfaceFrame = null) {
       if (typeof targetObject.document === "undefined") return null;
+      surfaceFrame = projectClassicalTypedLateDerivationSurface(surfaceFrame, getActiveClassicalGrammarTypedSourceOperationBinding());
       syncClassicalPurposiveCoordinateControls(null, {restore: true});
       const active = surfaceFrame?.basalUnit === "vnc"
         && surfaceFrame?.state?.lateOperation
@@ -40663,13 +40678,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         if (operationControl) operationControl.value = binding.effectiveSelections?.lateOperation || "compound";
         if (variantControl) variantControl.value = binding.effectiveSelections?.lateVariant || "connective-t";
         const surface = ActiveClassicalRuleLogicSurfaceFrame;
-        if (surface?.state) syncClassicalLessons27282933Closure({
-          ...surface, state: { ...surface.state,
-            lateOperation: binding.effectiveSelections?.lateOperation || "compound",
-            lateVariant: binding.effectiveSelections?.lateVariant || "connective-t",
-            compoundMatrixStem: binding.effectiveSelections?.compoundMatrixStem || "",
-          },
-        });
+        syncClassicalLessons27282933Closure(projectClassicalTypedLateDerivationSurface(surface, binding));
         for (const id of requiredChoiceIds) {
           const control = getClassicalCapabilityBindingControl(id);
           const disclosure = control?.closest?.("details");
@@ -41067,9 +41076,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
           const active = getActiveClassicalGrammarTypedSourceOperationBinding();
           const selectedValue = String(select.value || "").trim();
           if (!active) return;
-          const issuedEvent = ["nnc:ordinary", "vnc:application", "grammar:nominal-construction", "nnc:relational"].includes(active.operationId)
+          const issuedEvent = ["nnc:ordinary", "vnc:application", "vnc:derivational-operation", "grammar:nominal-construction", "nnc:relational"].includes(active.operationId)
             ? captureClassicalIssuedBindingEvent(binding) : null;
-          if (["nnc:ordinary", "vnc:application", "grammar:nominal-construction", "nnc:relational"].includes(active.operationId) && !issuedEvent) return;
+          if (["nnc:ordinary", "vnc:application", "vnc:derivational-operation", "grammar:nominal-construction", "nnc:relational"].includes(active.operationId) && !issuedEvent) return;
           if ((active.operationId === "nnc:ordinary"
             || active.operationId === "vnc:application" && ["applicativeObjectKind",
               "applicativeObjectPerson", "requestedDerivation", "finiteSingularConnector"].includes(choiceId)
@@ -43265,7 +43274,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       return freezeConstructionData(layers);
     }
 
-    function captureClassicalConstructionPacket(operationId, source, binding, typed, nominalSnapshot = null, derivedSnapshot = null) {
+    function captureClassicalConstructionPacket(operationId, source, binding, typed, nominalSnapshot = null, derivedSnapshot = null, verbalSnapshot = null) {
       const layers = captureClassicalPositionLayers();
       const vncSentenceOptions = selections => {
         const options = selections?.sentenceOptions || {};
@@ -43277,7 +43286,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
       };
       const packet = {operation: operationId, source, binding: null, kind: "request", layers: [], choices: {}};
       const ordinary = PendingClassicalOrdinaryGrammarBinding;
-      if (isDerivedFormationOperation(operationId)) {
+      if (operationId === "vnc:derivational-operation") {
+        const projection = projectVerbalDerivationExecution(verbalSnapshot);
+        if (!projection) return null;
+        Object.assign(packet,projection); packet.layers = layers;
+      } else if (isDerivedFormationOperation(operationId)) {
         const projection = projectDerivedFormationExecution(derivedSnapshot);
         if (!projection) return null;
         Object.assign(packet,projection);
@@ -43691,6 +43704,23 @@ export function createUiRenderingApi(targetObject = globalThis) {
       }
       return ClassicalNativeAdverbialIngress;
     }
+    const ClassicalVerbalDerivationScopes = new WeakMap();
+    function readClassicalVerbalDerivationSnapshot(operation, source, binding, typed) {
+      if(operation !== "vnc:derivational-operation" || !source)return null;
+      const ingress=ActiveClassicalGrammarCapabilityNavigator;
+      if(targetObject.isClassicalGrammarApplicationCapabilityNavigator?.(ingress)!==true)return null;
+      let bySource=ClassicalVerbalDerivationScopes.get(ingress);
+      if(!bySource){bySource=new Map();ClassicalVerbalDerivationScopes.set(ingress,bySource);}
+      let scope=bySource.get(source);
+      if(!scope){scope=createVerbalDerivationScope({owner:targetObject,source,session:ClassicalConstructionSession,
+        getIngress:()=>ActiveClassicalGrammarCapabilityNavigator,getSourceContext:()=>readClassicalNominalSourceContext(source,ingress)});bySource.set(source,scope);}
+      const ownerBinding=typed?.operationId===operation?typed:binding?.operationId===operation?binding.ownerBindingFrame:null;
+      if(ownerBinding)return issueVerbalDerivationSnapshot(scope,{ingress,binding:ownerBinding});
+      const request=PendingClassicalRawAttitudeRequest;
+      const prepared=PendingClassicalPreparedAttitudeResult?.raw===request?PendingClassicalPreparedAttitudeResult.prepared:null;
+      return issueVerbalDerivationSnapshot(scope,{ingress,request,prepared,sourceContext:readClassicalNominalSourceContext(source,ingress)});
+    }
+
     const ClassicalDerivedFormationScopes = new WeakMap();
     function readClassicalDerivedFormationSnapshot(operation, source, binding, typed) {
       if (!isDerivedFormationOperation(operation) || !source) return null;
@@ -43794,9 +43824,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
     function syncClassicalNominalNativeChoiceFrames() {
       const snapshot = ClassicalConstructionSession.position.operationContract;
       const derived = snapshot?.kind === "derived-formation-contract";
-      if (derived ? !isCurrentDerivedFormationSnapshot(snapshot)
+      const verbal = snapshot?.kind === "verbal-derivation-contract";
+      if (verbal ? !isCurrentVerbalDerivationSnapshot(snapshot)
+        : derived ? !isCurrentDerivedFormationSnapshot(snapshot)
         : snapshot?.kind !== "nominal-operation-contract" || !isCurrentNominalOperationSnapshot(snapshot)) return;
-      const frame = derived ? captureDerivedFormationChoiceFrame(snapshot) : captureNominalOperationChoiceFrame(snapshot);
+      const frame = verbal ? captureVerbalDerivationChoiceFrame(snapshot) : derived ? captureDerivedFormationChoiceFrame(snapshot) : captureNominalOperationChoiceFrame(snapshot);
       const controls = new Set(getNativeGrammarControls(targetObject.document) || []);
       // These existing Build controls can be compact-menu targets or contain
       // "source" in their name; the general presentation inventory omits them.
@@ -43810,17 +43842,20 @@ export function createUiRenderingApi(targetObject = globalThis) {
         // Disclosure visibility does not replace their current owner event.
         if (control?.closest?.("#classical-rule-logic-controls")) controls.add(control);
       }
+      if(verbal)for(const id of ["classical-rule-logic-late-operation","classical-rule-logic-late-variant","classical-rule-logic-purposive-series","classical-rule-logic-compound-matrix"]){const control=targetObject.document?.getElementById?.(id);if(control?.closest?.("#classical-rule-logic-controls"))controls.add(control);}
       for (const control of controls) ClassicalNominalNativeChoiceFrames.set(control,{snapshot,frame});
     }
     function canClassicalNominalNativeChoice(control) {
       const snapshot = ClassicalConstructionSession.position.operationContract;
       const derived = snapshot?.kind === "derived-formation-contract";
-      if ((!derived && snapshot?.kind !== "nominal-operation-contract")
+      const verbal = snapshot?.kind === "verbal-derivation-contract";
+      if ((!verbal && !derived && snapshot?.kind !== "nominal-operation-contract")
         || !control?.closest?.("#classical-rule-logic-controls")
         || control.closest?.("[data-classical-source-identity-controls]")) return true;
       const rendered = ClassicalNominalNativeChoiceFrames.get(control);
       return control.isConnected !== false && control.disabled !== true && rendered?.snapshot === snapshot
-        && (derived ? isCurrentDerivedFormationSnapshot(snapshot,rendered.frame)
+        && (verbal ? isCurrentVerbalDerivationSnapshot(snapshot,rendered.frame)
+          : derived ? isCurrentDerivedFormationSnapshot(snapshot,rendered.frame)
           : isCurrentNominalOperationSnapshot(snapshot,rendered.frame));
     }
 
@@ -43853,6 +43888,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
     function captureClassicalIssuedBindingEvent(expectedBinding) {
       const snapshot = ClassicalConstructionSession.position.operationContract;
       if (snapshot?.contract?.binding !== expectedBinding) return null;
+      if (snapshot.kind === "verbal-derivation-contract") return isCurrentVerbalDerivationSnapshot(snapshot)
+        ? {snapshot,event:captureVerbalDerivationChoiceFrame(snapshot)} : null;
       if (snapshot.kind === "derived-formation-contract") return isCurrentDerivedFormationSnapshot(snapshot)
         ? {snapshot,event:captureDerivedFormationChoiceFrame(snapshot)} : null;
       if (snapshot.kind === "nominal-operation-contract") return isCurrentNominalOperationSnapshot(snapshot)
@@ -43861,6 +43898,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
         ? {snapshot,event:captureIssuedBindingChoiceFrame(snapshot)} : null;
     }
     function retainClassicalIssuedBindingCandidate(context,candidate) {
+      if (context?.snapshot?.kind === "verbal-derivation-contract")
+        return Boolean(adoptVerbalDerivationCandidate(context.snapshot,candidate,context.event));
       if (context?.snapshot?.kind === "derived-formation-contract")
         return Boolean(adoptDerivedFormationCandidate(context.snapshot,{binding:candidate},context.event));
       if (context?.snapshot?.kind === "nominal-operation-contract")
@@ -43885,6 +43924,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const typed = getActiveClassicalGrammarTypedSourceOperationBinding();
       syncClassicalPositionFixedChoices(typed);
       if (!source && isDerivedFormationOperation(operation)) source = getClassicalNativeDerivedIngress(operation)?.source || null;
+      const verbalSnapshot = readClassicalVerbalDerivationSnapshot(operation, source, binding, typed);
       const derivedSnapshot = readClassicalDerivedFormationSnapshot(operation, source, binding, typed);
       const nominalSnapshot = readClassicalNominalOperationSnapshot(operation, source, binding, typed);
       const issuedSnapshot = readClassicalIssuedBindingSnapshot(operation, ordinary?.operationId === operation ? ordinary.exactSource : source, binding, typed);
@@ -43893,12 +43933,13 @@ export function createUiRenderingApi(targetObject = globalThis) {
       if (source) ClassicalPositionSources.add(source);
       const replacementEdit = PendingClassicalResultEdit?.sourceReplacement
         ? getClassicalResultEditSourceReplacement(source) : null;
-      let ready = isDerivedFormationOperation(operation) ? derivedSnapshot?.contract.ready === true
+      let ready = operation === "vnc:derivational-operation" ? verbalSnapshot?.contract.ready === true
+        : isDerivedFormationOperation(operation) ? derivedSnapshot?.contract.ready === true
         : operation === "grammar:nominal-construction"
         ? nominalSnapshot?.contract.ready === true
         : readiness?.ready === true || readiness?.disabled === false && readiness?.dataset?.classicalCapabilityApplyState === "ready";
       let packet = null;
-      if (ready) { try { packet = captureClassicalConstructionPacket(operation, source, binding, typed, nominalSnapshot, derivedSnapshot); } catch { packet = null; } }
+      if (ready) { try { packet = captureClassicalConstructionPacket(operation, source, binding, typed, nominalSnapshot, derivedSnapshot, verbalSnapshot); } catch { packet = null; } }
       let layerReadiness = getConstructionLayerReadiness(targetObject, packet);
       ready = ready && layerReadiness.ready;
       if (packet?.source) { source = packet.source; ClassicalPositionSources.add(source); }
@@ -44010,7 +44051,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       for (const slot of slots) if (!slot.exact) legalMoves.push({type: "slot", id: slot.role});
       return {source, sourcePending, slotOrder, route: {operation, binding: binding?.selectedBindingId || "typed-source", family: binding?.family || "typed-source"},
         slots, choices: semanticChoices, legalMoves, ready: ready && Boolean(packet), execution: packet, layerReadiness,
-        operationContract: derivedSnapshot || nominalSnapshot || issuedSnapshot || (clauseController && clauseContract
+        operationContract: verbalSnapshot || derivedSnapshot || nominalSnapshot || issuedSnapshot || (clauseController && clauseContract
           ? (getClassicalComparisonOperationSnapshot()?.contract === clauseContract
             ? getClassicalComparisonOperationSnapshot()
             : issueComparisonOperationSnapshot(clauseController, readClassicalClauseSelections(), source, clauseContract, null, ClassicalClauseRelationSelections)) : null)};
@@ -44205,6 +44246,21 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const position = ClassicalConstructionSession.position;
       const id = getClassicalPositionChoiceId(control);
       const doc = targetObject.document;
+      // An owner-required text field may become visible after the prior
+      // proposal. Reconcile that actual current control before move admission;
+      // the existing issued-frame handler still validates and stages its value.
+      const snapshot = position.operationContract;
+      const typed = getActiveClassicalGrammarTypedSourceOperationBinding();
+      if (control?.tagName === "INPUT" && control.type === "text"
+        && snapshot?.kind === "verbal-derivation-contract"
+        && snapshot.contract.binding === typed && isCurrentVerbalDerivationSnapshot(snapshot)
+        && control.isConnected !== false && doc?.getElementById(control.id) === control
+        && !control.disabled && !control.readOnly && !position.construction.sourcePending
+        && (typed.requiredChoiceIds || []).some(key => getClassicalCapabilityBindingControlsForChoice(key).includes(control))
+        && !position.legalMoves.some(move => move.type === "choice" && move.id === id)) {
+        syncClassicalCapabilityApplyOperationState();
+        return ClassicalConstructionSession.position.legalMoves.some(move => move.type === "choice" && move.id === id);
+      }
       if (!id || control?.tagName !== "SELECT" || control.disabled || control.readOnly
         || Object.hasOwn(position.choices, id)
         || position.legalMoves.some(move => move.type === "choice" && move.id === id)
@@ -44535,8 +44591,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
           blockReason: getClassicalSourceOperationBlockMessage(pending.construction, preview?.blockReason || "")};
       }
       if (PendingClassicalRawAttitudeRequest) {
-        clearClassicalPreparedAttitudeResult();
-        const prepared = targetObject.prepareClassicalGrammarApplicationRequest?.({
+        if (PendingClassicalPreparedAttitudeResult?.raw !== PendingClassicalRawAttitudeRequest) clearClassicalPreparedAttitudeResult();
+        const prepared = PendingClassicalPreparedAttitudeResult?.prepared || targetObject.prepareClassicalGrammarApplicationRequest?.({
           operationId: "vnc:derivational-operation", args: [PendingClassicalRawAttitudeRequest],
         });
         PendingClassicalPreparedAttitudeResult = prepared
@@ -48025,6 +48081,21 @@ export function createUiRenderingApi(targetObject = globalThis) {
           ? applyReady ? "Choices updated. Make Result to apply them."
             : readiness?.blockReason || "Complete Build choices before Make Result."
           : "The canonical owner could not stage these choices for this exact Source.";
+        return true;
+      }
+      if (typedSourceBinding?.operationId === "vnc:derivational-operation"
+        && control?.closest?.("#classical-rule-logic-controls")
+        && !control.closest?.("[data-classical-source-identity-controls]")) {
+        const context=captureClassicalIssuedBindingEvent(typedSourceBinding);
+        if(!context)return true;
+        const selections=getClassicalVncContinuationBindingSelections(typedSourceBinding);
+        const candidate=targetObject.issueClassicalGrammarTypedSourceOperationBindingFrame(
+          typedSourceBinding.navigator,typedSourceBinding.operationId,selections);
+        if(!retainClassicalIssuedBindingCandidate(context,candidate))return true;
+        ActiveClassicalGrammarTypedSourceOperationBinding=candidate;
+        if(event)HandledClassicalContinuationChoiceEvents.add(event);
+        syncClassicalGrammarTypedSourceOperationChoices(candidate);
+        syncClassicalCapabilityApplyOperationState();
         return true;
       }
       const typedDerivationButtonChoice = typedSourceBinding?.operationId === "vnc:application"
