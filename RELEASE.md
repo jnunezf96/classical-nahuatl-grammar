@@ -1,13 +1,12 @@
-# Grammar OS v1.2.113 release
+# Grammar OS v1.2.114 release
 
-Release name: **Utterance History Recovery**
+Release name: **Clause Adjunction Coordination**
 
-Browser build: **20261028-utterance-projection-132**
+Browser build: **20261028-adjunction-session-133**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
-- Eight supplementation pathways use one current construction snapshot for choices, preview and explicit Make.
-- Exact captured Results and discourse contexts remain authoritative; staging preserves the accepted Result.
-- Lexicalized-NNC typed ingress uses the same shared acceptance boundary.
-- Frozen such-that utterances retain their exact particle parent and writing; productive whole-clause continuation is unsupported.
+- Fourteen clause-adjunction pathways coordinate captured inputs, choices, preview and explicit Make through one current construction.
+- Required marker labels follow the existing grammatical owners; clearing required inputs preserves the accepted Result.
+- Recursive constructions retain exact parent Results, and changing operation preserves accepted History.
 - Mixed session restoration remains unclaimed.

@@ -1,3 +1,9 @@
+## v1.2.114 — Clause Adjunction Coordination
+
+- Coordinate fourteen clause relationships through current inputs and explicit Make.
+- Identify required markers and preserve accepted Results while recovering missing inputs.
+- Keep recursive clause parents exact across continuation and operation changes.
+
 ## v1.2.113 — Utterance History Recovery
 
 - Keep accepted exclamatory and such-that utterances inspectable in History without fabricating supplementation contacts.

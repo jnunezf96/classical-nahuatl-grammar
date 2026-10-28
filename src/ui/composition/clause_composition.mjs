@@ -76,10 +76,10 @@ export function presentIdleClauseComposition(doc,context){
  }
 }
 
-export function clauseMarkerResultLabel(relation,bindingId='') {
+export function clauseMarkerResultLabel(relation,bindingId='',required=false) {
   if(!relation && /^reason:(principal|adjoined)$/u.test(bindingId))relation='reason';
   if(relation==='reason')return 'Required principal-clause introducer';
   if(relation==='supplementation')return 'Boundary: ca → principal · in → adjunct';
   if(['exclamatory-utterance','such-that-adjunction'].includes(relation))return 'Particle Source Result';
-  return 'Optional marker Result';
+  return required ? 'Required marker Result' : 'Optional marker Result';
 }

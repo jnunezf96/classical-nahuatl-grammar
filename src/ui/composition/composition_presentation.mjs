@@ -1,6 +1,6 @@
 import {syncOperationChoiceGate} from './operation_choice_gate.mjs?v=20261023-2';
-import {organizeClauseWorkflow,presentIdleClauseComposition} from './clause_composition.mjs?v=20261023-4&andrewsRelease=20261024-1';
-import {preserveDisclosureChoice} from './formula_layout.mjs?clauseHarmony=20261023-5&v=20261023-slots-17&andrewsRelease=20261024-1&interfaceRelease=1.2.36';
+import {organizeClauseWorkflow,presentIdleClauseComposition} from './clause_composition.mjs?v=20261023-4&andrewsRelease=20261024-1&adjunctionSession=20261028-1';
+import {preserveDisclosureChoice} from './formula_layout.mjs?clauseHarmony=20261023-5&v=20261023-slots-17&andrewsRelease=20261024-1&interfaceRelease=1.2.36&adjunctionSession=20261028-1';
 import {organizeSourceComposition} from './source_composition.mjs?embedVoiceVisibility=20261026-1&v=20261023-source-composition-1&interfaceRelease=1.2.36';
 import {createFlowDesign} from './flow_design.mjs?v=20261022-reset-eligibility-1&writingSource=20261022-1&makePreview=20261022-1&fixedChoices=20261022-1';
 import {createLiveDesign} from './live_design.mjs?v=20261008-apple-panel-navigation-7';
@@ -12,7 +12,7 @@ import {createPathPresentation} from './path_presentation.mjs?undoBuild=20261028
 import {createRouteDesign} from './route_design.mjs?clauseHarmony=20261023-5&clickFeedback=20261023-1&v=20261014-task-menu-1&routeShapes=20261021-1';
 import {createStructureDesign,readStructureDesignContext} from './structure_design.mjs?historyCompare=20261028-1&choiceArchitecture=20261026-6&icDimension=20261026-1&reasonPresentation=20261026-1&nucleusEdit=20261024-9&clauseHarmony=20261023-5&v=20261011-structure-15&routeShapes=20261021-1&clauseCoordinate=20261021-1&resetEligibility=20261022-1&writingSource=20261022-1&makePreview=20261022-1&fixedChoices=20261022-1&interfaceRelease=1.2.36&choiceGuidance=20261027-2&operationPilot=20261027-1&supplementationSession=20261028-1&utteranceProjection=20261028-1';
 import {createChoiceDesign} from './choice_design.mjs?clickFeedback=20261023-1&coreStem=20261023-1&v=20261022-reset-eligibility-1&writingSource=20261022-1&fixedChoices=20261022-1';
-import {createWorkspaceOrganization} from './workspace_organization.mjs?clauseHarmony=20261023-5&formulaSlots=20261023-22&v=20261014-task-menu-1&choicesLayout=20261014-4&objectsPlacement=20261014-1&ownerOrganization=20261024-andrews-decisions&startupDelivery=20261022-1&andrewsRelease=20261024-1&interfaceRelease=1.2.36';
+import {createWorkspaceOrganization} from './workspace_organization.mjs?clauseHarmony=20261023-5&formulaSlots=20261023-22&v=20261014-task-menu-1&choicesLayout=20261014-4&objectsPlacement=20261014-1&ownerOrganization=20261024-andrews-decisions&startupDelivery=20261022-1&andrewsRelease=20261024-1&interfaceRelease=1.2.36&adjunctionSession=20261028-1';
 import {createBuildConstructionPresentation} from './build_constructions.mjs?v=20261014-construction-click-1&choicesLayout=20261014-4';
 import {createBuildNavigation} from './build_navigation.mjs?sourceLabel=20261026-1&deverbalReload=20261024-8&operationFirst=20261023-4&clickFeedback=20261023-1&v=20261021-ending-reference-2&writingSource=20261022-2&fixedChoices=20261022-1&interfaceRelease=1.2.36&negativeAttachment=20261025-1';
 import {presentParticleComposition} from './particle_composition.mjs?v=20261023-particle-composition-2&negativeAttachment=20261025-1';
