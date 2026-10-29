@@ -1017,6 +1017,17 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
     "occasion",
     "place",
   ]);
+  const EMPTY_COMPOUND_YA_SYNCOPATION_CHOICES = freeze({values: []});
+  function buildCompoundYaSyncopationChoices(realizedMatrixStem) {
+    return freeze({values: /^(?:yā|ya|yah)$/u.test(realizedMatrixStem)
+      ? [false, true] : [false]});
+  }
+  function getClassicalNahuatlCompoundYaSyncopationChoices(closure = null) {
+    return isClassicalNahuatlClosureFrame(closure)
+      ? closure.operationFrame?.operationFacts?.yaSyncopationChoices
+        || EMPTY_COMPOUND_YA_SYNCOPATION_CHOICES
+      : EMPTY_COMPOUND_YA_SYNCOPATION_CHOICES;
+  }
   const EMPTY_FREQUENTATIVE_SCOPE_CHOICES = freeze({values: [], patientScopeAvailable: false});
   function buildFrequentativeScopeChoices(baseTyped, shape) {
     if (targetObject.isClassicalNahuatlVncSlotFrame?.(baseTyped) !== true)
@@ -3556,6 +3567,7 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
           "compound-irregular-embed"
         );
       }
+      let yaSyncopationChoices = EMPTY_COMPOUND_YA_SYNCOPATION_CHOICES;
       if (variant === "huītz-carry") {
         if (matrixStem !== "huī-tz") {
           return blockedOperation(
@@ -3603,12 +3615,14 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
           specialCarryStemDerivedFromShape: true
         };
       } else if (variant === "connective-t" || variant === "reflexive-matrix" || variant === "shared-object" || variant === "accompanying-possession") {
+        yaSyncopationChoices = buildCompoundYaSyncopationChoices(realizedMatrixStem);
         const syncopatedYa = request.compoundYaSyncopation === true;
-        if (syncopatedYa && !/^(?:yā|ya|yah)$/u.test(realizedMatrixStem)) {
+        if (syncopatedYa && !yaSyncopationChoices.values.includes(true)) {
           return blockedOperation(
             request,
             "syncopated-ta-requires-ya-matrix-shape",
-            "compound-connective-t"
+            "compound-connective-t",
+            {yaSyncopationChoices}
           );
         }
         const connector = syncopatedYa
@@ -4042,17 +4056,15 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
           && key(request.tense || "present") === "present"
           && /pl$/u.test(text(request.subject || "3sg"))
           && realizedMatrixStem === "hui",
-        yaSyncopationAvailable: matrixStem === "ya-uh"
-          && /^(?:yā|ya|yah)$/u.test(matrixPredicateStem),
-        yaSyncopationSelected: matrixStem === "ya-uh"
+        yaSyncopationChoices,
+        yaSyncopationAvailable: yaSyncopationChoices.values.includes(true),
+        yaSyncopationSelected: yaSyncopationChoices.values.includes(true)
           && request.compoundYaSyncopation === true,
-        yaUnsyncopatedSequence: matrixStem === "ya-uh"
-          && /^(?:yā|ya|yah)$/u.test(matrixPredicateStem)
-          ? `ti-${matrixPredicateStem}`
+        yaUnsyncopatedSequence: yaSyncopationChoices.values.includes(true)
+          ? `ti-${realizedMatrixStem}`
           : "",
-        yaSyncopatedSequence: matrixStem === "ya-uh"
-          && /^(?:yā|ya|yah)$/u.test(matrixPredicateStem)
-          ? matrixPredicateStem === "yah" ? "t-ah" : "t-ā"
+        yaSyncopatedSequence: yaSyncopationChoices.values.includes(true)
+          ? realizedMatrixStem === "yah" ? "t-ah" : "t-ā"
           : "",
         connectiveCausativeStructurallyDistinct: true,
         traditionalSpellingMayNeutralizeDistinction: matrixStem === "ya-uh",
@@ -7425,6 +7437,7 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
     getClassicalNahuatlCompoundAttitudeMemberContext,
     getClassicalNahuatlCompoundMatrixClassChoices,
     getClassicalNahuatlFrequentativeScopeChoices,
+    getClassicalNahuatlCompoundYaSyncopationChoices,
     prefixClassicalNahuatlCompoundWithNominal,
     buildClassicalNahuatlNominalIhStockFormation,
     buildClassicalNahuatlNominalVncMatrixCoordinateResult,

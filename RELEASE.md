@@ -1,12 +1,12 @@
-# Grammar OS v1.2.124 release
+# Grammar OS v1.2.125 release
 
-Release name: **Canonical Frequentative Scope**
+Release name: **Canonical Compound Syncopation**
 
-Browser build: **20261028-frequentative-scope-143**
+Browser build: **20261028-compound-syncopation-144**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
-- Frequentative scope choices project the canonical owner's effective typed Source facts.
-- Authored incompatible scope reaches owner rejection instead of silently becoming an open reading.
-- Explicit correction preserves accepted work until Make.
-- Existing source-continuation limitations and grammatical validation remain unchanged.
+- Compound syncopation choices follow the canonical owner's realized matrix shape.
+- Present uh no longer offers the unavailable syncopated formation; yā and yah retain their licensed choice.
+- Changing tense preserves authored choices and accepted work; an incompatible checked choice stays visible for explicit correction.
+- Execution remains explicit through Make, with existing grammar and Source custody retained.

@@ -19107,6 +19107,14 @@ export function createUiRenderingApi(targetObject = globalThis) {
         )) {
         compoundNonactiveScopeControl.value = licensedNonactiveScopes[0];
       }
+      const compoundYaSyncopationControl = targetObject.document.getElementById(
+        "classical-rule-logic-compound-ya-syncopation"
+      );
+      const compoundYaSyncopationChoices = targetObject.getClassicalNahuatlCompoundYaSyncopationChoices(targetClosure);
+      if (compoundYaSyncopationControl) {
+        compoundYaSyncopationControl.disabled = !compoundYaSyncopationChoices.values.includes(false);
+      }
+      // Keep rejected authored true visible so it can be explicitly unchecked.
       const familyControls = {
         "classical-rule-logic-late-variant":
           licensedVariants.size > 0,
@@ -19122,7 +19130,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
         "classical-rule-logic-compound-itz-sense":
           operation === "compound" && sourceStem === "itz",
         "classical-rule-logic-compound-ya-syncopation":
-          operation === "compound" && compoundMatrixStem === "ya-uh",
+          operation === "compound"
+          && (compoundYaSyncopationChoices.values.includes(true)
+            || (compoundYaSyncopationControl?.checked === true
+              && compoundYaSyncopationChoices.values.includes(false))),
         "classical-rule-logic-compound-event-order":
           operation === "compound" && eventOrderChoiceAvailable,
         "classical-rule-logic-compound-nonactive-scope":
