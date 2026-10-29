@@ -16,7 +16,7 @@ import {
 } from "./linguistic_structure_owners.mjs";
 import {
   createCarrierStructureOwnersApi,
-} from "./carrier_structure_chain.mjs?v=20260912-carrier-rank-prerequisites-481";
+} from "./carrier_structure_chain.mjs?v=20260912-carrier-rank-prerequisites-481&ownerDecision=20261029-12";
 import {
   CLASSICAL_PHONE_REPERTORY_OPTIONALITY_FACTS,
 } from "./phone_repertory_facts.mjs";

@@ -1,4 +1,4 @@
-import {createOwnerOperationProtocol} from './owner_operation_protocol.mjs?issuedBinding=20261028-1';
+import {createOwnerOperationProtocol} from './owner_operation_protocol.mjs?issuedBinding=20261028-1&ownerDecision=20261029-12';
 const operation='nnc:place-gentilic';
 const kinds=new Set(['place-name','gentilic','gentilic-collective','profession-place-association','profession-pertinency','gentilic-adjectival-use']);
 const scopes=new WeakSet(),contracts=new WeakSet(),snapshots=new WeakSet(),events=new WeakMap(),cache=new WeakMap(),intents=new WeakSet();

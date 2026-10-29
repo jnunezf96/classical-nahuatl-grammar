@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createRuntimeInstance} from '../runtime/create_runtime.mjs';
+import {getOwnerOperationDecisionControls,findOwnerOperationControlChoice,isOwnerOperationChoiceAllowed,readOwnerOperationControlValue} from '../ui/composition/owner_operation_protocol.mjs?issuedBinding=20261028-1&ownerDecision=20261029-12';
 import {createConstructionSession} from '../ui/composition/construction_session.mjs';
 import {createVerbalDerivationScope,issueVerbalDerivationSnapshot,projectVerbalDerivationExecution} from '../ui/composition/verbal_derivation_transaction.mjs';
 const owner=(await createRuntimeInstance({documentObject:{getElementById:()=>null,addEventListener(){}}})).runtimeObject;
@@ -89,11 +90,11 @@ test('production move gate admits inherited ready typed matrix clearing and reje
  const listeners={},queue=[];let reconciles=0;
  const doc={addEventListener:(type,fn)=>listeners[type]=fn,getElementById:id=>id===control.id?control:null};
  const {isCurrentVerbalDerivationSnapshot}=await import('../ui/composition/verbal_derivation_transaction.mjs');
- const ctx=vm.createContext({targetObject:{document:doc,queueMicrotask:fn=>queue.push(fn),isClassicalNahuatlCompoundPredicateBindingFrame:owner.isClassicalNahuatlCompoundPredicateBindingFrame},ClassicalConstructionSession:session,ClassicalPositionStaging:false,ClassicalPositionExecuting:false,PendingClassicalResultEdit:null,ClassicalChoicePreflightTransaction:null,ClassicalComparisonTransitionDraft:null,captureClassicalDenominalChoiceIntent:()=>{},
+ const ctx=vm.createContext({getOwnerOperationDecisionControls,findOwnerOperationControlChoice,isOwnerOperationChoiceAllowed,readOwnerOperationControlValue,targetObject:{document:doc,queueMicrotask:fn=>queue.push(fn),isClassicalNahuatlCompoundPredicateBindingFrame:owner.isClassicalNahuatlCompoundPredicateBindingFrame},ClassicalConstructionSession:session,ClassicalPositionStaging:false,ClassicalPositionExecuting:false,PendingClassicalResultEdit:null,ClassicalChoicePreflightTransaction:null,ClassicalComparisonTransitionDraft:null,captureClassicalDenominalChoiceIntent:()=>{},
  getNativeGrammarControls:()=>[control],getActiveClassicalGrammarTypedSourceOperationBinding:()=>binding,isCurrentVerbalDerivationSnapshot,
  getClassicalCapabilityBindingControlsForChoice:key=>key==='compoundMatrixStem'?[control]:[],
  syncClassicalCapabilityApplyOperationState:()=>{reconciles++;session.stage({...session.position.construction,operationContract:snapshot,choices:{'compound-matrix':'yāuh'},legalMoves:[{type:'choice',id:'compound-matrix'}],ready:false,execution:null});}});
- vm.runInContext(extract('getClassicalPositionChoiceId','captureClassicalPositionLayers')+extract('reconcileClassicalNewNativeChoiceOffer','dispatchClassicalConstructionChoice')+extract('bindClassicalPositionMoves','getClassicalPositionIdentity'),ctx);
+ vm.runInContext(extract('getClassicalPositionChoiceId','captureClassicalPositionLayers')+extract('reconcileClassicalNewNativeChoiceOffer','dispatchClassicalConstructionChoice')+extract('captureClassicalVerbalChoiceIntent','getClassicalPositionIdentity'),ctx);
  ctx.bindClassicalPositionMoves();let stopped=false;
  listeners.input({target:control,type:'input',preventDefault(){},stopImmediatePropagation(){stopped=true;}});
  assert.equal(stopped,false);assert.equal(reconciles,1);assert.equal(queue.length,1);assert.equal(session.position.construction.source,source);assert.equal(session.position.accepted.result,null);

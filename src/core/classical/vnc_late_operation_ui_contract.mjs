@@ -895,3 +895,55 @@ export function installClassicalNahuatlVncLateOperationUiContractGlobals(
   Object.defineProperties(targetObject, Object.getOwnPropertyDescriptors(api));
   return api;
 }
+
+// Presentation addresses only. Permission and values are supplied by the
+// current semantic owner's choice projection, never by this control map.
+export const CLASSICAL_NAHUATL_VNC_LATE_CHOICE_CONTROLS = freeze({
+ subject:['classical-rule-logic-subject','enum','shared'],
+ subjectAnimacy:['classical-rule-logic-vnc-subject-animacy','fixed','shared'],
+ subjectHumanness:['classical-rule-logic-vnc-subject-humanness','fixed','shared'],
+ directionalPrefix:['classical-rule-logic-directional','enum','shared'],
+ mood:['classical-rule-logic-mood','enum','shared'],
+ tense:['classical-rule-logic-tense','enum','shared'],
+ requestedVoice:['classical-rule-logic-vnc-voice','enum','shared'],
+ requestedDerivation:['derivation-type','fixed','shared'],
+ nonactiveOptionId:['classical-rule-logic-nonactive-family','enum','shared'],
+ compoundAttitudeStructure:['classical-rule-logic-compound-attitude-analysis','enum'],
+ honorificDerivationOptionId:['classical-rule-logic-derivation-option','enum','shared'],
+ lateOperation:['classical-rule-logic-late-operation','enum'],
+ lateVariant:['classical-rule-logic-late-variant','enum'],
+ compoundRecursiveRole:['classical-rule-logic-compound-recursive-role','enum'],
+ compoundMatrixStem:['classical-rule-logic-compound-matrix','text'],
+ compoundMatrixClass:['classical-rule-logic-compound-matrix-class','enum'],
+ compoundMatrixInitialISelection:['classical-rule-logic-compound-matrix-initial-i','enum'],
+ compoundMatrixNonactiveOptionId:['classical-rule-logic-compound-matrix-nonactive','enum'],
+ compoundItzSense:['classical-rule-logic-compound-itz-sense','enum'],
+ compoundYaSyncopation:['classical-rule-logic-compound-ya-syncopation','enum'],
+ compoundEventOrder:['classical-rule-logic-compound-event-order','enum'],
+ compoundNonactiveScope:['classical-rule-logic-compound-nonactive-scope','enum'],
+ compoundSubjectAnimacy:['classical-rule-logic-compound-subject-animacy','fixed'],
+ compoundPossessiveStem:['classical-rule-logic-compound-possessive-stem','text'],
+ compoundPossessor:['classical-rule-logic-compound-possessor','enum'],
+ frequentativeRepetitions:['classical-rule-logic-frequentative-repetitions','enum'],
+ frequentativeTarget:['classical-rule-logic-frequentative-target','enum'],
+ frequentativeInitialITreatment:['classical-rule-logic-frequentative-initial-i-treatment','enum'],
+ frequentativeScope:['classical-rule-logic-frequentative-scope','enum'],
+ purposiveSeries:['classical-rule-logic-purposive-series','enum'],
+ purposiveIrregularPluralN:['classical-rule-logic-purposive-irregular-n','enum'],
+ purposiveExternalDirectional:['classical-rule-logic-purposive-external','enum'],
+ purposiveSoundedFutureMorph:['classical-rule-logic-purposive-sounded-future','enum'],
+ purposiveEarlySingularGlottal:['classical-rule-logic-purposive-early-singular-glottal','enum'],
+ honoredParticipant:['classical-rule-logic-honored-participant','enum'],
+ honorificStemAlternative:['classical-rule-logic-honorific-stem-alternative','enum'],
+});
+export function createClassicalLateChoicePresentation(choiceId, selectedValue, values=[], settings={}) {
+ const [controlId,inputKind,presentationLifetime='operation']=CLASSICAL_NAHUATL_VNC_LATE_CHOICE_CONTROLS[choiceId]||['','exact-source'];
+ const labels=CLASSICAL_NAHUATL_VNC_LATE_OPERATION_UI_CONTROL_CONTRACTS[controlId]||[];
+ return {choiceId,controlId,inputKind,presentationLifetime,selectedValue,authoredValue:selectedValue,
+  ...(choiceId==='subject'?{controlParts:[{controlId:'classical-rule-logic-vnc-subject-person',part:'person'},{controlId:'classical-rule-logic-vnc-subject-number',part:'number'}]}:{}),
+  applicable:false,editable:false,required:false,
+  options:values.map(value=>({optionId:value,
+   label:labels.find(record=>String(record.value)===String(value))?.label||String(value),
+   availabilityStatus:'available'})),...settings,
+  ...(settings.options?{options:settings.options.map(x=>({optionId:x.optionId,label:x.label||x.targetStem||String(x.optionId),availabilityStatus:x.availabilityStatus||'available',...(x.blockReason?{blockReason:x.blockReason}:{})}))}:{})};
+}

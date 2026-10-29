@@ -2427,9 +2427,7 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
         displayTextAuthority: false
       };
     }
-    function normalizeClassicalNahuatlNncPossessor(value = "") {
-      const key = normalizeClassicalNahuatlNncToken(value).toLowerCase().replace(/[\s_-]/gu, "");
-      const aliases = {
+    const CLASSICAL_NNC_POSSESSOR_ALIASES = Object.freeze({
         ne: "reciprocal",
         reciprocal: "reciprocal",
         te: "nonspecific-human",
@@ -2444,8 +2442,11 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
         "1pl": "1pl",
         "2pl": "2pl",
         "3pl": "3pl"
-      };
-      return aliases[key] || "";
+    });
+    function normalizeClassicalNahuatlNncPossessor(value = "") {
+      const key = normalizeClassicalNahuatlNncToken(value).toLowerCase().replace(/[\s_-]/gu, "");
+
+      return CLASSICAL_NNC_POSSESSOR_ALIASES[key] || "";
     }
     function buildClassicalNahuatlPossessiveStateFrame({
       possessor = "",
@@ -2526,6 +2527,8 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
       } else {
         blockReason = "unknown-possessor-selection";
       }
+      const possessorChoices = Object.freeze([...new Set(Object.values(CLASSICAL_NNC_POSSESSOR_ALIASES))]
+        .filter(value => value !== '3pl' || resolveClassicalNahuatlThirdPluralPossessorSt2(normalizedStem).authorizationStatus === 'authorized'));
       const complete = Boolean(arity && slots.length && slots.every(slot => slot.carrier) && !blockReason);
       const possessorParticipantFrame = buildClassicalNahuatlParticipantFrame({
         role: "possessor",
@@ -2542,6 +2545,7 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
       });
       return {
         kind: "classical-nahuatl-possessive-nnc-possessive-state-frame",
+        possessorChoices,
         sourceAuthority: "Andrews transcription",
         sourceDocument: CLASSICAL_NAHUATL_NNC_SOURCE_DOCUMENT,
         authorizationStatus: complete ? "authorized" : "blocked",

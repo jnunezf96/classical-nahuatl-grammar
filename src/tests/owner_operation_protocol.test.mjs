@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {createOwnerOperationProtocol,areOwnerOperationSnapshotsEquivalent} from '../ui/composition/owner_operation_protocol.mjs?issuedBinding=20261028-1';
+import {createOwnerOperationProtocol,areOwnerOperationSnapshotsEquivalent} from '../ui/composition/owner_operation_protocol.mjs?issuedBinding=20261028-1&ownerDecision=20261029-12';
 import {createConstructionPosition} from '../ui/composition/construction_position.mjs';
 import {readFileSync} from 'node:fs';
 function fixture(shape='ticket'){

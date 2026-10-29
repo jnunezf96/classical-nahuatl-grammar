@@ -1,4 +1,4 @@
-import { capitalizeClassicalNahuatlNncSentenceInitial } from "./nnc_layer_evaluator.mjs?andrewsRelease=20261024-1";
+import { capitalizeClassicalNahuatlNncSentenceInitial } from "./nnc_layer_evaluator.mjs?andrewsRelease=20261024-1&ownerDecision=20261029-12";
 // Andrews Lesson 2 owns the passage from ordered grammatical parts to a
 // finished written Classical Nahuatl form. Other grammar owners select and
 // order morphs; this owner alone joins them and realizes their boundaries.

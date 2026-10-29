@@ -1,4 +1,4 @@
-import {createOwnerOperationProtocol} from './owner_operation_protocol.mjs?issuedBinding=20261028-1';
+import {createOwnerOperationProtocol} from './owner_operation_protocol.mjs?issuedBinding=20261028-1&ownerDecision=20261029-12';
 // Shared session custody. Canonical formation owners retain all grammatical decisions.
 const operations=new Set(['nnc:deverbal-construction','nnc:relational','nnc:adverbial']);
 const scopes=new WeakSet(),contracts=new WeakSet(),snapshots=new WeakSet(),events=new WeakMap(),cache=new WeakMap();

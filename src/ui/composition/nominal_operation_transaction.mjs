@@ -1,4 +1,4 @@
-import {createOwnerOperationProtocol} from './owner_operation_protocol.mjs?issuedBinding=20261028-1';
+import {createOwnerOperationProtocol} from './owner_operation_protocol.mjs?issuedBinding=20261028-1&ownerDecision=20261029-12';
 // Custody of existing nominal owner requests, never nominal grammatical authority.
 const scopes=new WeakSet(),events=new WeakMap(),contracts=new WeakSet(),snapshots=new WeakSet();
 const operationId='grammar:nominal-construction';

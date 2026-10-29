@@ -5,7 +5,7 @@ import { CLASSICAL_RESULT_OUTPUT_SCOPE_CONTROL_CONTRACTS } from "../../core/outp
 import { PLACE_GENTILIC_NNC_UI_CONTROL_CONTRACTS } from "../../core/nnc/place_gentilic/ui_contract.mjs?v=20260726-lessons2-58-one-system-094&interfaceRelease=1.2.36";
 import {
   CLASSICAL_NAHUATL_VNC_LATE_OPERATION_UI_CONTROL_CONTRACTS,
-} from "../../core/classical/vnc_late_operation_ui_contract.mjs?futureObject=20261024-3&v=20261001-reader-27-2-copy-i-1&interfaceRelease=1.2.36&lateVariantInventory=20261028-1";
+} from "../../core/classical/vnc_late_operation_ui_contract.mjs?futureObject=20261024-3&v=20261001-reader-27-2-copy-i-1&interfaceRelease=1.2.36&lateVariantInventory=20261028-1&ownerDecision=20261029-12";
 import {
   installClassicalPlayWitness,
 } from "../diagnostics/classical_play_witness.mjs?v=20260828-private-play-study-handoff-364";

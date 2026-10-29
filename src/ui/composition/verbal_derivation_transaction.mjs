@@ -1,11 +1,11 @@
 import {isClassicalNahuatlParticipantFrame} from '../../core/classical/participant_frame.mjs';
-import {createOwnerOperationProtocol} from './owner_operation_protocol.mjs?issuedBinding=20261028-1';
+import {createOwnerOperationProtocol,projectOwnerOperationDecision} from './owner_operation_protocol.mjs?issuedBinding=20261028-1&ownerDecision=20261029-12';
 const operation='vnc:derivational-operation';
 const routes=new Set(['frequentative','compound','purposive','honorific','reverential','pejorative']);
 const scopes=new WeakSet(),contracts=new WeakSet(),snapshots=new WeakSet(),cache=new WeakMap(),events=new WeakMap();
-export function createVerbalDerivationScope({owner,source,session,getIngress,getSourceContext=null}){
+export function createVerbalDerivationScope({owner,source,session,getIngress,getSourceContext=null,presentation=null}){
  if(!owner||!source||!session||typeof getIngress!=='function')return null;
- const scope=Object.freeze({owner,source,session,getIngress,getSourceContext});scopes.add(scope);return scope;
+ const scope=Object.freeze({owner,source,session,getIngress,getSourceContext,presentation});scopes.add(scope);return scope;
 }
 function current(scope,c){return scopes.has(scope)&&contracts.has(c)&&c.scope===scope&&(!c.sourceContext||scope.getSourceContext?.()===c.sourceContext);}
 const protocol=createOwnerOperationProtocol({kind:'verbal-derivation-contract',select:s=>s.operationId===operation,routeId:s=>s.routeId,
@@ -19,9 +19,9 @@ export function issueVerbalDerivationSnapshot(scope,{ingress,binding,request,sou
  const exact=owner.isClassicalNahuatlVncContinuationBindingFrame?.(binding)===true&&binding.exactInputResult===scope.source;
  const typed=owner.isClassicalGrammarTypedSourceOperationBindingFrame?.(binding)===true&&binding.exactSource===scope.source&&binding.navigator===ingress;
  if((!exact&&!typed)||binding.operationId!==operation)return null;
- const ownerRequest=exact?binding.executionArgs?.[0]:binding.ownerBindingFrame?.ownerRequest;
+ const ownerRequest=exact?binding.ownerRequest:binding.ownerBindingFrame?.ownerRequest;
  const routeId=ownerRequest?.lateOperation||binding.effectiveSelections?.lateOperation||binding.callerSelections?.lateOperation;
- if(!routes.has(routeId))return null;
+ if(routeId && routeId!=="none" && !routes.has(routeId))return null;
  const old=cache.get(scope);if(old?.binding===binding&&old.ingress===ingress)return old.snapshot;
  const contract=Object.freeze({scope,binding,ingressKind:typed?'typed':'exact',request:ownerRequest,ready:binding.bindingStatus==='ready',blockReason:binding.blockReason,
   preview:binding.ownerPreflightResult||binding.ownerBindingFrame?.ownerPreflightResult,
@@ -32,7 +32,7 @@ export function issueVerbalDerivationSnapshot(scope,{ingress,binding,request,sou
 }
 export function projectVerbalDerivationExecution(snapshot){
  if(!snapshots.has(snapshot)||!snapshot.contract.ready||!current(snapshot.controller,snapshot.contract)||snapshot.controller.getIngress()!==snapshot.ingress)return null;
- const c=snapshot.contract,b=c.binding;
+ const c=projectOwnerOperationDecision(snapshot);if(!c)return null;const b=c.binding;
  if(c.ingressKind==='raw')return Object.freeze({kind:'request',operation,source:snapshot.source,choices:c.request,request:c.executionRequest,...(c.prepared?{prepared:c.prepared}:{})});
  return c.ingressKind==='typed'?Object.freeze({kind:'typed',operation,source:snapshot.source,binding:b,choices:b.effectiveSelections||b.callerSelections||{}})
   :Object.freeze({kind:'request',operation,source:snapshot.source,choices:b.effectiveSelections||b.callerSelections||{},request:Object.freeze({operationId:operation,args:b.executionArgs})});
@@ -56,7 +56,7 @@ function authored(value,refs=new Set()){
 }
 const same=(a,b)=>a===b||Boolean(a&&b&&typeof a==='object'&&typeof b==='object'&&((!a.kind&&!b.kind)||(isClassicalNahuatlParticipantFrame(a)&&isClassicalNahuatlParticipantFrame(b)))&&Object.keys(a).length===Object.keys(b).length&&Object.keys(a).every(k=>same(a[k],b[k])));
 function issueRaw(scope,{ingress,request,sourceContext,prepared}){
- if(!request||!routes.has(request.lateOperation)||!sourceContext||sourceContext.source!==scope.source||sourceContext.ingress!==ingress||sourceContext.committed!==true||scope.getSourceContext?.()!==sourceContext)return null;
+ if(!request||!routes.has(request.lateOperation)||scope.presentation?.operationIds&&!scope.presentation.operationIds.includes(request.lateOperation)||!sourceContext||sourceContext.source!==scope.source||sourceContext.ingress!==ingress||sourceContext.committed!==true||scope.getSourceContext?.()!==sourceContext)return null;
  const refs=new Set(),captures=[Object.freeze({role:'source',exact:scope.source})];
  for(const [key,validator]of [['attitudeCompoundClosureFrame','isClassicalNahuatlClosureFrame'],['sourceApplicationFrame','isClassicalNahuatlVncApplicationFrame']]){
   const exact=request[key];if(!exact)continue;
@@ -82,7 +82,7 @@ function issueRaw(scope,{ingress,request,sourceContext,prepared}){
  const facts=preview.operationFrame?.operationFacts;
  if(request.attitudeCompoundClosureFrame&&facts?.typedCompoundSourceFrame!==request.attitudeCompoundClosureFrame)return null;
  if(request.sourceApplicationFrame&&facts?.derivedSourceApplicationFrame!==request.sourceApplicationFrame&&preview.baseApplicationFrame!==request.sourceApplicationFrame)return null;
- const contract=Object.freeze({scope,sourceContext,ingressKind:'raw',request:declared,executionRequest,prepared,preview,ready:preview.authorizationStatus==='authorized',blockReason:preview.blockReason,choices:Object.freeze({}),captures:Object.freeze(captures)});contracts.add(contract);
+ const contract=Object.freeze({scope,sourceContext,ingressKind:'raw',presentation:scope.presentation,request:declared,executionRequest,prepared,preview,ready:preview.authorizationStatus==='authorized',blockReason:preview.blockReason,choices:preview.choiceOptionProjection||Object.freeze({}),captures:Object.freeze(captures)});contracts.add(contract);
  const snapshot=protocol.issue(scope,{operationId:operation,routeId:declared.lateOperation},scope.source,contract,null,ingress);
  if(snapshot){snapshots.add(snapshot);cache.set(scope,{raw:declared,prepared,ingress,sourceContext,snapshot});}return snapshot;
 }

@@ -1,4 +1,4 @@
-import {createOwnerOperationProtocol} from './owner_operation_protocol.mjs?issuedBinding=20261028-1';
+import {createOwnerOperationProtocol} from './owner_operation_protocol.mjs?issuedBinding=20261028-1&ownerDecision=20261029-12';
 export const CONJUNCTION_OPERATION_ROUTES=Object.freeze(['conjunction','correlative-conjunction','lexical-conjunction','parallel-structure']);
 const equal=(a,b)=>a===b || Boolean(a&&b&&typeof a==='object'&&typeof b==='object'
  &&Object.keys(a).length===Object.keys(b).length&&Object.keys(a).every(k=>equal(a[k],b[k])));

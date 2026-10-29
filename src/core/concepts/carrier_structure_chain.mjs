@@ -11,7 +11,7 @@ import classicalSyllableStructure from "./carrier-structure-owner-specs/classica
 import carrierVocableStructure from "./carrier-structure-owner-specs/carrier-vocable-structure.mjs";
 import carrierVocableProsody from "./carrier-structure-owner-specs/carrier-vocable-prosody.mjs";
 import carrierPhonotacticSurfaceConstraints from "./carrier-structure-owner-specs/carrier-phonotactic-surface-constraints.mjs";
-import nuclearClauseMorphosyntaxDomain from "./carrier-structure-owner-specs/nuclear-clause-morphosyntax-domain.mjs";
+import nuclearClauseMorphosyntaxDomain from "./carrier-structure-owner-specs/nuclear-clause-morphosyntax-domain.mjs?ownerDecision=20261029-12";
 import nahuatlSyntaxDomainOnset from "./carrier-structure-owner-specs/nahuatl-syntax-domain-onset.mjs";
 import nahuatlGroupComposition from "./carrier-structure-owner-specs/nahuatl-group-composition.mjs";
 import nahuatlStructureLevelDistribution from "./carrier-structure-owner-specs/nahuatl-structure-level-distribution.mjs";

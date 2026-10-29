@@ -1,4 +1,4 @@
-import {createOwnerOperationProtocol} from './owner_operation_protocol.mjs?issuedBinding=20261028-1';
+import {createOwnerOperationProtocol} from './owner_operation_protocol.mjs?issuedBinding=20261028-1&ownerDecision=20261029-12';
 const scopes=new WeakSet(),events=new WeakMap(),snapshots=new WeakSet();
 const operations=new Set(['nnc:ordinary','vnc:application','vnc:ordered-voice-application','sentence:supplementation','nnc:attested-cell','nnc:attested-place','clause:attested-collocation','nnc:quantitative-predicate','nnc:pronominal']);
 export const isFinalSourceOperation=id=>['nnc:attested-cell','nnc:attested-place','clause:attested-collocation','nnc:quantitative-predicate','nnc:pronominal'].includes(id);

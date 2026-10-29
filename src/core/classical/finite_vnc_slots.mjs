@@ -25,6 +25,8 @@ const SUBJECTS = Object.freeze([
   "3pl",
 ]);
 
+export function getClassicalNahuatlFiniteSubjectIds() { return SUBJECTS; }
+
 const TENSE_FILLERS = Object.freeze({
   "indicative:present": Object.freeze({
     mood: "indicative",
@@ -797,7 +799,7 @@ export function createClassicalNahuatlFiniteVncRuntime(
     mood = "",
     options = {},
   ) {
-    return SUBJECTS.map((subject) => {
+    return getClassicalNahuatlFiniteSubjectIds().map((subject) => {
       const dyad = getClassicalNahuatlFiniteSubjectPersonDyad(
         subject,
         mood,
@@ -844,6 +846,7 @@ export function createClassicalNahuatlFiniteVncRuntime(
     buildClassicalNahuatlFiniteVncResult,
     isClassicalNahuatlFiniteVncResult,
     getClassicalNahuatlFiniteVncSlotSource,
+    getClassicalNahuatlFiniteSubjectIds,
     getClassicalNahuatlFiniteSubjectOptions,
     getClassicalNahuatlFiniteTenseOptions,
   });

@@ -1,4 +1,4 @@
-import {createOwnerOperationProtocol} from './owner_operation_protocol.mjs?issuedBinding=20261028-1';
+import {createOwnerOperationProtocol} from './owner_operation_protocol.mjs?issuedBinding=20261028-1&ownerDecision=20261029-12';
 export const SUPPLEMENTATION_OPERATION_ROUTES=Object.freeze(['supplementation','vocative','rumored-report','deleted-principal','negative-ac-plural','contextual-first-person-realization','exclamatory-utterance','such-that-adjunction']);
 const same=(a,b)=>Object.keys(a).length===Object.keys(b).length&&Object.keys(a).every(k=>a[k]===b[k]);
 const protocol=createOwnerOperationProtocol({

@@ -1,4 +1,4 @@
-import {createOwnerOperationProtocol} from './owner_operation_protocol.mjs?issuedBinding=20261028-1';
+import {createOwnerOperationProtocol} from './owner_operation_protocol.mjs?issuedBinding=20261028-1&ownerDecision=20261029-12';
 const scopes=new WeakSet(),contracts=new WeakSet(),snapshots=new WeakSet(),events=new WeakMap(),cache=new WeakMap();
 export const PARTICLE_OPERATIONS=Object.freeze(['particle:result','sentence:adverbial-adjunction','sentence:particle-adjunction','particle:negative-selection','particle:negative-attachment']);
 export const isParticleOperation=id=>PARTICLE_OPERATIONS.includes(id);

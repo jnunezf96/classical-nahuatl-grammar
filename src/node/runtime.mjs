@@ -2,9 +2,9 @@ import path from "path";
 import vm from "vm";
 import { fileURLToPath } from "url";
 
-import { installRuntimeBridge } from "../bootstrap/runtime_bridge.mjs?andrewsRelease=20261024-1&ad102=20261024-1&andrewsCorrections=20261024-1&supplementationSession=20261028-1&utteranceProjection=20261028-1&adjunctionSession=20261028-2";
+import { installRuntimeBridge } from "../bootstrap/runtime_bridge.mjs?andrewsRelease=20261024-1&ad102=20261024-1&andrewsCorrections=20261024-1&supplementationSession=20261028-1&utteranceProjection=20261028-1&adjunctionSession=20261028-2&ownerDecision=20261029-12";
 import { createRuntimeConfigSnapshot } from "../bootstrap/runtime_config.mjs";
-import { attachRuntimeBindings, createRuntimeInstance } from "../runtime/create_runtime.mjs?andrewsRelease=20261024-1&ad102=20261024-1&andrewsCorrections=20261024-1&supplementationSession=20261028-1&utteranceProjection=20261028-1&adjunctionSession=20261028-2";
+import { attachRuntimeBindings, createRuntimeInstance } from "../runtime/create_runtime.mjs?andrewsRelease=20261024-1&ad102=20261024-1&andrewsCorrections=20261024-1&supplementationSession=20261028-1&utteranceProjection=20261028-1&adjunctionSession=20261028-2&ownerDecision=20261029-12";
 
 const noop = () => {};
 

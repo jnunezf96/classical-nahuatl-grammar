@@ -1,16 +1,17 @@
-import {getClassicalNahuatlVncLateVariantOptions} from "../../core/classical/vnc_late_operation_ui_contract.mjs?futureObject=20261024-3&v=20261001-reader-27-2-copy-i-1&interfaceRelease=1.2.36&lateVariantInventory=20261028-1";
-import {isNuclearSentenceOperation,createNuclearSentenceScope,issueNuclearSentenceSnapshot,projectNuclearSentenceExecution,isCurrentNuclearSentenceSnapshot,captureNuclearSentenceChoiceFrame,retainNuclearSentenceBinding} from '../composition/nuclear_sentence_transaction.mjs';
-import {isParticleOperation,createParticleOperationScope,issueParticleOperationSnapshot,projectParticleOperationExecution,isCurrentParticleOperationSnapshot,captureParticleOperationChoiceFrame,adoptParticleOperationCandidate} from '../composition/particle_operation_transaction.mjs';
-import {ADJECTIVAL_OPERATION_ROUTES} from '../composition/adjectival_operation_transaction.mjs?adjectivalSession=20261028-1';
-import {ADJUNCTION_OPERATION_ROUTES} from '../composition/adjunction_operation_transaction.mjs?adjunctionSession=20261028-2';
-import {SUPPLEMENTATION_OPERATION_ROUTES} from '../composition/supplementation_operation_transaction.mjs?supplementationSession=20261028-1&utteranceProjection=20261028-1';
-import {createPersonalNameScope,issuePersonalNameSnapshot,projectPersonalNameExecution,isCurrentPersonalNameSnapshot,capturePersonalNameChoiceFrame} from '../composition/personal_name_transaction.mjs';
-import {createDenominalScope,issueDenominalSnapshot,projectDenominalExecution,isCurrentDenominalSnapshot,captureDenominalChoiceFrame,adoptDenominalCandidate,recordDenominalIntent,readDenominalIntent} from '../composition/denominal_transaction.mjs';
-import {createPlaceGentilicScope,issuePlaceGentilicSnapshot,projectPlaceGentilicExecution,isCurrentPlaceGentilicSnapshot,capturePlaceGentilicChoiceFrame,adoptPlaceGentilicCandidate,recordPlaceGentilicFormation,getRememberedPlaceGentilicFormation} from '../composition/place_gentilic_transaction.mjs?placeSession=20261028-2';
-import {createVerbalDerivationScope,issueVerbalDerivationSnapshot,projectVerbalDerivationExecution,isCurrentVerbalDerivationSnapshot,captureVerbalDerivationChoiceFrame,adoptVerbalDerivationCandidate} from '../composition/verbal_derivation_transaction.mjs?verbalDerivation=20261028-1';
-import {isDerivedFormationOperation, createDerivedFormationScope, issueDerivedFormationSnapshot, projectDerivedFormationExecution, isCurrentDerivedFormationSnapshot, captureDerivedFormationChoiceFrame, adoptDerivedFormationCandidate} from '../composition/derived_formation_transaction.mjs?derivedFormation=20261028-1';
-import {createNominalOperationScope,issueNominalOperationSnapshot,isCurrentNominalOperationSnapshot,captureNominalOperationChoiceFrame,projectNominalOperationExecution,adoptNominalOperationCandidate} from '../composition/nominal_operation_transaction.mjs';
-import {issueClauseOperationSnapshot as issueComparisonOperationSnapshot,transitionClauseOperationSnapshot as transitionComparisonOperationSnapshot,readClauseOperationSelections as readComparisonOperationSelections,isCurrentClauseOperationSnapshot as isCurrentComparisonOperationSnapshot} from '../composition/clause_operation_transaction.mjs?conjunctionSession=20261028-1&complementSession=20261028-1&issuedBinding=20261028-1&supplementationSession=20261028-1&utteranceProjection=20261028-1&adjunctionSession=20261028-2&adjectivalSession=20261028-1';
+import {getOwnerOperationDecisionControls,projectOwnerOperationDecision,findOwnerOperationControlChoice,isOwnerOperationChoiceAllowed,projectOwnerOperationChoiceMove,projectOwnerOperationControlMove,readOwnerOperationControlValue,syncOwnerOperationDecisionControls,restoreOwnerOperationDecisionControls,readOwnerOperationControlIntent} from '../composition/owner_operation_protocol.mjs?issuedBinding=20261028-1&ownerDecision=20261029-12';
+import {getClassicalNahuatlVncLateVariantOptions} from "../../core/classical/vnc_late_operation_ui_contract.mjs?futureObject=20261024-3&v=20261001-reader-27-2-copy-i-1&interfaceRelease=1.2.36&lateVariantInventory=20261028-1&ownerDecision=20261029-12";
+import {isNuclearSentenceOperation,createNuclearSentenceScope,issueNuclearSentenceSnapshot,projectNuclearSentenceExecution,isCurrentNuclearSentenceSnapshot,captureNuclearSentenceChoiceFrame,retainNuclearSentenceBinding} from '../composition/nuclear_sentence_transaction.mjs?ownerDecision=20261029-12';
+import {isParticleOperation,createParticleOperationScope,issueParticleOperationSnapshot,projectParticleOperationExecution,isCurrentParticleOperationSnapshot,captureParticleOperationChoiceFrame,adoptParticleOperationCandidate} from '../composition/particle_operation_transaction.mjs?ownerDecision=20261029-12';
+import {ADJECTIVAL_OPERATION_ROUTES} from '../composition/adjectival_operation_transaction.mjs?adjectivalSession=20261028-1&ownerDecision=20261029-12';
+import {ADJUNCTION_OPERATION_ROUTES} from '../composition/adjunction_operation_transaction.mjs?adjunctionSession=20261028-2&ownerDecision=20261029-12';
+import {SUPPLEMENTATION_OPERATION_ROUTES} from '../composition/supplementation_operation_transaction.mjs?supplementationSession=20261028-1&utteranceProjection=20261028-1&ownerDecision=20261029-12';
+import {createPersonalNameScope,issuePersonalNameSnapshot,projectPersonalNameExecution,isCurrentPersonalNameSnapshot,capturePersonalNameChoiceFrame} from '../composition/personal_name_transaction.mjs?ownerDecision=20261029-12';
+import {createDenominalScope,issueDenominalSnapshot,projectDenominalExecution,isCurrentDenominalSnapshot,captureDenominalChoiceFrame,adoptDenominalCandidate,recordDenominalIntent,readDenominalIntent} from '../composition/denominal_transaction.mjs?ownerDecision=20261029-12';
+import {createPlaceGentilicScope,issuePlaceGentilicSnapshot,projectPlaceGentilicExecution,isCurrentPlaceGentilicSnapshot,capturePlaceGentilicChoiceFrame,adoptPlaceGentilicCandidate,recordPlaceGentilicFormation,getRememberedPlaceGentilicFormation} from '../composition/place_gentilic_transaction.mjs?placeSession=20261028-2&ownerDecision=20261029-12';
+import {createVerbalDerivationScope,issueVerbalDerivationSnapshot,projectVerbalDerivationExecution,isCurrentVerbalDerivationSnapshot,captureVerbalDerivationChoiceFrame,adoptVerbalDerivationCandidate} from '../composition/verbal_derivation_transaction.mjs?verbalDerivation=20261028-1&ownerDecision=20261029-12';
+import {isDerivedFormationOperation, createDerivedFormationScope, issueDerivedFormationSnapshot, projectDerivedFormationExecution, isCurrentDerivedFormationSnapshot, captureDerivedFormationChoiceFrame, adoptDerivedFormationCandidate} from '../composition/derived_formation_transaction.mjs?derivedFormation=20261028-1&ownerDecision=20261029-12';
+import {createNominalOperationScope,issueNominalOperationSnapshot,isCurrentNominalOperationSnapshot,captureNominalOperationChoiceFrame,projectNominalOperationExecution,adoptNominalOperationCandidate} from '../composition/nominal_operation_transaction.mjs?ownerDecision=20261029-12';
+import {issueClauseOperationSnapshot as issueComparisonOperationSnapshot,transitionClauseOperationSnapshot as transitionComparisonOperationSnapshot,readClauseOperationSelections as readComparisonOperationSelections,isCurrentClauseOperationSnapshot as isCurrentComparisonOperationSnapshot} from '../composition/clause_operation_transaction.mjs?conjunctionSession=20261028-1&complementSession=20261028-1&issuedBinding=20261028-1&supplementationSession=20261028-1&utteranceProjection=20261028-1&adjunctionSession=20261028-2&adjectivalSession=20261028-1&ownerDecision=20261029-12';
 import {inactiveAffectiveReloadControl,prepareNativeReloadSourceContext,reconcileAcceptedQuotedSourceBaseline} from '../composition/native_reload_source.mjs?nativeReload=20261027-4';
 import {normalizeSourceEditorSignature} from '../composition/source_editor_signature.mjs';
 import {inputLabel,captureRoleLabel,clauseReadinessGuidance,contractReferences,normalizeAndrewsReference,hasCurrentClauseProjection} from '../composition/choice_guidance.mjs?choiceGuidance=20261027-3';
@@ -30,7 +31,7 @@ import {createFiniteConnectorCoordinator,createFiniteConnectorContinuationCoordi
 import {clauseMarkerResultLabel} from '../composition/clause_composition.mjs?reasonPresentation=20261026-1&adjunctionSession=20261028-2';
 import {syncFutureObjectChoices} from '../composition/future_object_choices.mjs?futureObject=20261024-3';
 import {getDoubleNucleusEditChildren} from '../../application/classical/double_nucleus_edit.mjs?nucleusEdit=20261024-9';
-import {syncStemLayerChoices} from '../composition/stem_layer_choices.mjs?stemNominal=20261024-2';
+import {syncStemLayerChoices} from '../composition/stem_layer_choices.mjs?stemNominal=20261024-2&ownerDecision=20261029-12';
 import {syncNounstemOperationChoices,groupDeverbalFamilyOptions} from '../composition/nounstem_operation_choices.mjs?v=20261024-1&nominalReload=20261024-4';
 import {snapshotResultEditReload,restoreResultEditReload} from '../composition/result_edit_reload.mjs?nucleusEdit=20261024-9&innerSource=20261024-1&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-1&interfaceRelease=1.2.36&choiceGuidance=20261027-2&supplementationSession=20261028-1&utteranceProjection=20261028-1';
 import {getVncChoiceEditContext, getVncVoiceEditSubject, projectVncChoiceEditControls} from '../composition/vnc_choice_edit.mjs?v=20261023-3';
@@ -49,9 +50,9 @@ import {setStructureDesignContext, setStructureComparison, projectCanonicalStruc
 import {setSourceCandidatePresentation, projectSavedSourceCandidate, setRouteChoicePresentation, projectOfferedOperationShapes} from '../composition/candidate_design.mjs?v=20261021-route-shapes-1';
 import {notifyExplicitMakeResult,focusNativeChoice} from '../composition/flow_design.mjs?v=20261022-reset-eligibility-1&writingSource=20261022-1&makePreview=20261022-1&fixedChoices=20261022-1';
 import {getBuildOperationGroup,getBuildOperationOrder,inventoryOptionReference,formatBuildOperationLabel} from '../composition/build_navigation_model.mjs?v=20261021-ending-reference-2&nominalReload=20261024-4&interfaceRelease=1.2.36';
-import {projectFinalSourceExecution,isFinalSourceOperation,createIssuedBindingOperationScope,issueIssuedBindingOperationSnapshot,isCurrentIssuedBindingOperationSnapshot,captureIssuedBindingChoiceFrame,adoptIssuedBindingOperationCandidate,matchesIssuedBindingExecutionPacket} from '../composition/issued_binding_operation_transaction.mjs?supplementationSession=20261028-1&finalSourceSession=20261028-1';
-import {createConstructionSession} from '../composition/construction_session.mjs?stemReload=20261024-2&v=20261012-position-12&acceptedBuild=20261023-1&operationPilot=20261027-1&ownerProtocol=20261028-1&acceptanceRecovery=20261028-1&issuedBinding=20261028-1';
-import {projectConstructionValue} from '../composition/construction_position.mjs?stemReload=20261024-2&v=20261012-position-12&acceptedBuild=20261023-1&operationPilot=20261027-1&ownerProtocol=20261028-1&acceptanceRecovery=20261028-1&issuedBinding=20261028-1';
+import {projectFinalSourceExecution,isFinalSourceOperation,createIssuedBindingOperationScope,issueIssuedBindingOperationSnapshot,isCurrentIssuedBindingOperationSnapshot,captureIssuedBindingChoiceFrame,adoptIssuedBindingOperationCandidate,matchesIssuedBindingExecutionPacket} from '../composition/issued_binding_operation_transaction.mjs?supplementationSession=20261028-1&finalSourceSession=20261028-1&ownerDecision=20261029-12';
+import {createConstructionSession} from '../composition/construction_session.mjs?stemReload=20261024-2&v=20261012-position-12&acceptedBuild=20261023-1&operationPilot=20261027-1&ownerProtocol=20261028-1&acceptanceRecovery=20261028-1&issuedBinding=20261028-1&ownerDecision=20261029-12';
+import {projectConstructionValue} from '../composition/construction_position.mjs?stemReload=20261024-2&v=20261012-position-12&acceptedBuild=20261023-1&operationPilot=20261027-1&ownerProtocol=20261028-1&acceptanceRecovery=20261028-1&issuedBinding=20261028-1&ownerDecision=20261029-12';
 import {executeConstructionPacket, freezeConstructionData, getConstructionPacketOrigin, captureConstructionParents, matchesConstructionWitness, orderConstructionSlots, getConstructionFixedChoices, getConstructionLayerReadiness, getConstructionParticleHostInput} from '../composition/construction_packet.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1&interfaceRelease=1.2.36&choiceGuidance=20261027-2&supplementationSession=20261028-1&utteranceProjection=20261028-1';
 import {resolveResultEditTarget} from '../composition/result_editing.mjs?choiceArchitecture=20261026-6&nucleusEdit=20261024-9&innerParticle=20261024-1&v=20261023-conjunction-1&interfaceRelease=1.2.36&choiceGuidance=20261027-2&supplementationSession=20261028-1&utteranceProjection=20261028-1';
 import {canRebuildResultEdit,getResultEditReorder} from '../composition/result_edit_rebuild.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1&interfaceRelease=1.2.36';
@@ -3258,11 +3259,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const requestedCompoundRecursiveRole = basalUnit === "vnc"
         ? String(overrides.compoundRecursiveRole || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-compound-recursive-role", "embed") || "embed").trim()
         : "embed";
-      const compoundRecursiveRole = ["embed", "matrix"].includes(
-        requestedCompoundRecursiveRole
-      )
-        ? requestedCompoundRecursiveRole
-        : "embed";
+      const compoundRecursiveRole = requestedCompoundRecursiveRole;
       const compoundMatrixStem = basalUnit === "vnc"
         ? String(overrides.compoundMatrixStem || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-compound-matrix", "") || "").trim()
         : "";
@@ -3273,14 +3270,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       // Pass authored intent through unchanged. The compound owner validates it.
       const compoundEventOrder = requestedCompoundEventOrder;
       const requestedCompoundNonactiveScope = String(overrides.compoundNonactiveScope || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-compound-nonactive-scope", "none") || "none").trim();
-      const licensedCompoundNonactiveScopes = getClassicalCompoundNonactiveScopeValues(
-        vncVoiceOperation, vncVoice, lateVariant
-      );
-      const compoundNonactiveScope = licensedCompoundNonactiveScopes.includes(
-        requestedCompoundNonactiveScope
-      )
-        ? requestedCompoundNonactiveScope
-        : licensedCompoundNonactiveScopes[0];
+      const compoundNonactiveScope = requestedCompoundNonactiveScope;
       const compoundSubjectAnimacy = String(overrides.compoundSubjectAnimacy || vncSubjectFrame.animacy || "nonanimate").trim();
       const compoundPossessiveStem = String(overrides.compoundPossessiveStem || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-compound-possessive-stem", "") || "").trim();
       const compoundPossessor = String(overrides.compoundPossessor || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-compound-possessor", "") || "").trim();
@@ -18823,133 +18813,26 @@ export function createUiRenderingApi(targetObject = globalThis) {
         )
       };
     }
-    function syncClassicalLateVariantControlForOperation(
-      operation = "none"
-    ) {
-      const normalizedOperation = String(operation || "none");
-      const licensedVariants = new Set(
-        getClassicalNahuatlVncLateVariantOptions(normalizedOperation).map(option => option.value)
-      );
-      const variantControl = targetObject.document?.getElementById?.(
-        "classical-rule-logic-late-variant"
-      ) || null;
-      Array.from(variantControl?.options || []).forEach(option => {
-        if (!option.value) {
-          option.hidden = false;
-          option.disabled = false;
-          return;
-        }
-        const licensed = licensedVariants.has(option.value);
-        option.hidden = !licensed;
-        option.disabled = !licensed;
-      });
-      if (
-        variantControl?.value
-        && !licensedVariants.has(variantControl.value)
-      ) {
-        variantControl.value = "";
-      }
-      Array.from(variantControl?.querySelectorAll?.("optgroup") || [])
-        .forEach(group => {
-          const visibleOption = Array.from(group.querySelectorAll("option"))
-            .some(option => !option.hidden);
-          group.hidden = !visibleOption;
-          group.disabled = !visibleOption;
-        });
-      return Object.freeze({ variantControl, licensedVariants });
+    function readClassicalLateOwnerDecisionSnapshot() {
+      const binding = getActiveClassicalGrammarResultBinding('vnc:derivational-operation');
+      const typed = getActiveClassicalGrammarTypedSourceOperationBinding();
+      const source = binding?.exactResult || (typed?.operationId === 'vnc:derivational-operation' ? typed.exactSource : null)
+        || ClassicalConstructionSession.position.construction.source;
+      return readClassicalVerbalDerivationSnapshot('vnc:derivational-operation', source, binding, typed);
     }
-
-    function syncClassicalCompoundMatrixFormation(surfaceFrame = null, binding = null) {
-      const control = targetObject.document?.getElementById?.("classical-rule-logic-compound-matrix-nonactive");
-      const host = control?.closest?.(".classical-rule-control");
-      if (!control || !host) return false;
-      const owner = binding?.ownerBindingFrame;
-      const validBinding = binding?.operationId === "vnc:derivational-operation"
-        && targetObject.isClassicalNahuatlVncContinuationBindingFrame?.(owner)
-        && owner.exactInputResult === binding.exactResult
-        && owner.ownerInputAcceptanceProven === true;
-      const closure = validBinding ? owner.ownerPreflightResult
-        : surfaceFrame?.vncLateOperationClosureFrame;
-      const validClosure = targetObject.isClassicalNahuatlClosureFrame?.(closure) === true;
-      const matrix = validClosure ? closure.matrixApplicationFrame : null;
-      const inventory = matrix?.controlFrame?.nonactiveOptionInventory;
-      const validInventory = targetObject.isClassicalNahuatlVncApplicationFrame?.(matrix) === true
-        && inventory?.kind === "classical-nahuatl-vnc-nonactive-formation-option-inventory"
-        && inventory.authorizationStatus === "authorized";
-      const request = validBinding ? owner.ownerRequest : surfaceFrame?.state;
-      const matrixStem = String(request?.compoundMatrixStem || "");
-      const needsNonactive = request?.lateOperation === "compound"
-        && ["matrix", "both"].includes(request?.compoundNonactiveScope);
-      const options = validInventory && needsNonactive
-        ? inventory.options.filter(option => option.formationKind === "lesson20-nonactive-stem") : [];
-      const previous = control.value;
-      const changedMatrix = control.dataset.classicalMatrixStem !== matrixStem;
-      const visible = options.length > 1;
-      host.hidden = !visible;
-      host.setAttribute("aria-hidden", String(!visible));
-      control.disabled = !visible;
-      if (visible) {
-        control.replaceChildren(...[["", "Choose a formation"], ...options.map(option => [option.optionId, option.label])].map(([value, label]) => {
-          const option = targetObject.document.createElement("option");
-          option.value = value; option.textContent = label; return option;
-        }));
-        const explicit = String(request?.compoundMatrixNonactiveOptionId || "");
-        control.value = options.some(option => option.optionId === explicit) ? explicit
-          : !changedMatrix && options.some(option => option.optionId === previous) ? previous : "";
-      } else if (changedMatrix || needsNonactive && validInventory && !options.some(option => option.optionId === previous)) {
-        control.value = "";
-      }
-      control.dataset.classicalMatrixStem = matrixStem;
-      control.required = visible && inventory.selectionRequired;
-      control.setAttribute("aria-required", String(control.required));
-      return visible;
+    function syncClassicalLateVariantControlForOperation() {
+      const snapshot=readClassicalLateOwnerDecisionSnapshot();
+      syncOwnerOperationDecisionControls(snapshot,targetObject.document);
+      const field=projectOwnerOperationDecision(snapshot)?.choices?.lateVariant;
+      return {variantControl:targetObject.document?.getElementById('classical-rule-logic-late-variant'),
+        licensedVariants:new Set((field?.options||[]).filter(x=>x.availabilityStatus==='available').map(x=>x.optionId))};
     }
-
-    function syncClassicalPurposiveCoordinateControls(surfaceFrame = null, {restore = false} = {}) {
-      const fields = ["classical-rule-logic-mood", "classical-rule-logic-tense"]
-        .map(id => targetObject.document?.getElementById?.(id)).filter(Boolean);
-      if (restore) {
-        for (const control of fields) {
-          const saved = control.classicalPurposiveChoiceSnapshot;
-          if (!saved) continue;
-          saved.wrapper.hidden = saved.hidden;
-          saved.wrapper.setAttribute("aria-hidden", String(saved.hidden));
-          control.disabled = saved.disabled;
-          control.required = saved.required;
-          control.setAttribute?.("aria-disabled", String(saved.disabled));
-          control.setAttribute?.("aria-required", String(saved.required));
-          delete control.classicalPurposiveChoiceSnapshot;
-        }
-        return false;
-      }
-      const binding = getActiveClassicalGrammarResultBinding("vnc:derivational-operation");
-      const owner = binding?.ownerBindingFrame;
-      const stagedPurposive = binding?.operationId === "vnc:derivational-operation"
-        && binding.family === "vnc-continuation"
-        && targetObject.isClassicalNahuatlVncContinuationBindingFrame?.(owner) === true
-        && owner.exactInputResult === binding.exactResult
-        && owner.ownerInputAcceptanceProven === true
-        && owner.ownerRequest?.lateOperation === "purposive";
-      const rawPurposive = !ActiveClassicalGrammarResultBinding
-        && !ActiveClassicalGrammarResultSourceCapture
-        && surfaceFrame?.basalUnit === "vnc"
-        && surfaceFrame.state?.lateOperation === "purposive";
-      if (!stagedPurposive && !rawPurposive) return false;
-      // The series owns direction, mood and tense together (§29.2).
-      for (const control of fields) {
-        const wrapper = control.closest?.("label, [data-classical-rule-control]");
-        if (!wrapper) continue;
-        control.classicalPurposiveChoiceSnapshot ||= {
-          wrapper, hidden: wrapper.hidden, disabled: control.disabled, required: control.required,
-        };
-        wrapper.hidden = true;
-        wrapper.setAttribute("aria-hidden", "true");
-        control.disabled = true;
-        control.required = false;
-        control.setAttribute?.("aria-disabled", "true");
-        control.setAttribute?.("aria-required", "false");
-      }
-      return true;
+    function syncClassicalCompoundMatrixFormation() {
+      return syncOwnerOperationDecisionControls(readClassicalLateOwnerDecisionSnapshot(),targetObject.document);
+    }
+    function syncClassicalPurposiveCoordinateControls(surfaceFrame=null,{restore=false}={}) {
+      return restore ? restoreOwnerOperationDecisionControls(targetObject.document)
+        : syncOwnerOperationDecisionControls(readClassicalLateOwnerDecisionSnapshot(),targetObject.document);
     }
     function projectClassicalTypedLateDerivationSurface(surfaceFrame, typed) {
       const typedOwner = typed?.ownerBindingFrame;
@@ -18964,320 +18847,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
       }
       return surfaceFrame;
     }
-    function syncClassicalLessons27282933Closure(surfaceFrame = null) {
-      if (typeof targetObject.document === "undefined") return null;
-      surfaceFrame = projectClassicalTypedLateDerivationSurface(surfaceFrame, getActiveClassicalGrammarTypedSourceOperationBinding());
-      syncClassicalPurposiveCoordinateControls(null, {restore: true});
-      const active = surfaceFrame?.basalUnit === "vnc"
-        && surfaceFrame?.state?.lateOperation
-        && surfaceFrame.state.lateOperation !== "none";
-      const operation = String(surfaceFrame?.state?.lateOperation || "none");
-      const variant = String(surfaceFrame?.state?.lateVariant || "");
-      const sourceStem = String(surfaceFrame?.state?.stem || "")
-        .replace(/^\((.*)\)$/u, "$1");
-      // §27.2.1 impersonal tla belongs to the derived stem; §27.3.1
-      // fused object tla has a different role. Labels and inherited-target
-      // visibility follow issued grammar; the owner's option domain is unchanged.
-      const targetBinding = ActiveClassicalGrammarResultBinding;
-      const targetOwner = targetBinding?.ownerBindingFrame;
-      const validTargetBinding = targetBinding?.operationId === "vnc:derivational-operation"
-        && targetObject.isClassicalNahuatlVncContinuationBindingFrame?.(targetOwner) === true
-        && targetOwner.exactInputResult === targetBinding.exactResult
-        && targetOwner.ownerInputAcceptanceProven === true;
-      const targetClosure = targetBinding
-        ? validTargetBinding ? targetOwner.ownerPreflightResult : null
-        : surfaceFrame?.vncLateOperationClosureFrame;
-      const validTargetClosure = targetObject.isClassicalNahuatlClosureFrame?.(targetClosure) === true
-        && targetClosure.authorizationStatus === "authorized";
-      const targetSourceVoice = validTargetClosure
-        ? targetClosure.operationFrame?.operationFacts?.sourceVoice
-          || targetClosure.baseApplicationFrame?.controlFrame?.selectedVoiceOperation
-          || targetClosure.baseApplicationFrame?.controlFrame?.selectedVoice
-        : "";
-      const tlaTargetLabel = targetSourceVoice === "tla-impersonal"
-        && targetClosure.operationFrame?.sourceTypedVncSlotFrame?.valenceArity === "vacant"
-        ? "impersonal tla"
-        : validTargetClosure && targetClosure.operationFrame?.operationFacts?.objectPronounReduplicated === true
-          ? "fused object tla" : "tla prefix";
-      const frequentativeSourceStem = validTargetBinding && validTargetClosure
-        ? String(targetClosure.operationFrame?.sourceTypedVncSlotFrame?.slots?.predicate?.stem || sourceStem)
-        : sourceStem;
-      const compoundMatrixStem = String(
-        surfaceFrame?.state?.compoundMatrixStem || ""
-      );
-      const recursiveCompoundAvailable = Boolean(
-        operation === "compound"
-        && isClassicalRecursiveCompoundContinuationFrame(
-          ActiveClassicalVncResultSourceContinuation
-        )
-      );
-      const recursiveCompoundRole = String(
-        surfaceFrame?.state?.compoundRecursiveRole || "embed"
-      );
-      const purposiveSeries = String(
-        surfaceFrame?.state?.purposiveSeries || ""
-      );
-      const pluralSubject = /pl$/u.test(
-        String(surfaceFrame?.state?.subject || "")
-      );
-      // Release this Source's temporary restrictions before the ordinary owner
-      // recomputes which variants are eligible for the next Source/operation.
-      for (const control of ["classical-rule-logic-late-operation", "classical-rule-logic-late-variant"]
-        .map(id => targetObject.document.getElementById(id))) {
-        for (const option of Array.from(control?.options || [])) {
-          if (option.dataset.classicalCompoundPredicateRestricted) {
-            option.hidden = false; option.disabled = false;
-            delete option.dataset.classicalCompoundPredicateRestricted;
-          }
-        }
-      }
-      const {
-        variantControl,
-        licensedVariants,
-      } = syncClassicalLateVariantControlForOperation(operation);
-      const compoundPredicate = targetObject.isClassicalNahuatlCompoundPredicateSourceFrame?.(surfaceFrame?.state?.vncCompoundPredicateSourceFrame) === true;
-      const lateControl = targetObject.document.getElementById("classical-rule-logic-late-operation");
-      for (const [control, permitted] of [[lateControl, "compound"], [variantControl, "connective-t"]]) {
-        for (const option of Array.from(control?.options || [])) {
-          if (compoundPredicate && option.value !== permitted) {
-            option.hidden = true; option.disabled = true; option.dataset.classicalCompoundPredicateRestricted = "true";
-          } else if (!compoundPredicate && option.dataset.classicalCompoundPredicateRestricted) {
-            option.hidden = false; option.disabled = false; delete option.dataset.classicalCompoundPredicateRestricted;
-          }
-        }
-      }
-      for (const button of targetObject.document.querySelectorAll("[data-derivation-type]")) {
-        if (compoundPredicate && button.dataset.derivationType !== "direct") {
-          button.hidden = true; button.disabled = true; button.style.display = "none"; button.dataset.classicalCompoundPredicateRestricted = "true";
-        } else if (!compoundPredicate && button.dataset.classicalCompoundPredicateRestricted) {
-          button.hidden = false; button.disabled = false; button.style.display = ""; delete button.dataset.classicalCompoundPredicateRestricted;
-        }
-      }
-      const matrixClassControl = targetObject.document.getElementById(
-        "classical-rule-logic-compound-matrix-class"
-      );
-      const matrixClassChoices = targetObject.getClassicalNahuatlCompoundMatrixClassChoices({
-        ...surfaceFrame?.state,
-        compoundMatrixStem,
-        lateVariant: variant,
-        compoundMatrixClass: matrixClassControl?.value || surfaceFrame?.state?.compoundMatrixClass || "",
-        ...(validTargetBinding ? targetOwner.executionArgs?.[0] : {})
-      });
-      for (const option of Array.from(matrixClassControl?.options || [])) {
-        option.hidden = !matrixClassChoices.values.includes(option.value);
-        option.disabled = option.hidden;
-      }
-      if (matrixClassControl) matrixClassControl.value = matrixClassChoices.selected;
-      const eventOrderControl = targetObject.document.getElementById(
-        "classical-rule-logic-compound-event-order"
-      );
-      const eventOrderValues = getCompoundEventOrderDomain();
-      const eventOrderChoiceAvailable = eventOrderValues.length > 1;
-      for (const option of Array.from(eventOrderControl?.options || [])) {
-        option.hidden = !eventOrderValues.includes(option.value);
-        option.disabled = option.hidden;
-      }
-      // Never replace a requested interpretation here. Invalid input remains
-      // visible to owner validation instead of becoming a different valid request.
-      const compoundVoiceOperation = String(
-        surfaceFrame?.state?.vncVoiceOperation
-        || surfaceFrame?.state?.vncVoice
-        || "active"
-      );
-      const compoundNonactiveScopeControl = targetObject.document.getElementById(
-        "classical-rule-logic-compound-nonactive-scope"
-      );
-      const licensedNonactiveScopes = getClassicalCompoundNonactiveScopeValues(
-        compoundVoiceOperation,
-        String(surfaceFrame?.state?.vncVoice || "active"),
-        variant
-      );
-      const fixedFutureEmbedScope = variant === "future-embed"
-        && licensedNonactiveScopes[0] === "embed";
-      Array.from(compoundNonactiveScopeControl?.options || []).forEach(option => {
-        const licensed = licensedNonactiveScopes.includes(option.value);
-        option.hidden = fixedFutureEmbedScope ? false : !licensed;
-        option.disabled = !licensed;
-      });
-      coordinateClassicalCompoundControl(compoundNonactiveScopeControl,'scope',compoundVoiceOperation,
-        licensedNonactiveScopes,operation==='compound'&&compoundVoiceOperation!=='active');
-      if (compoundNonactiveScopeControl
-        && !licensedNonactiveScopes.includes(
-          compoundNonactiveScopeControl.value
-        )) {
-        compoundNonactiveScopeControl.value = licensedNonactiveScopes[0];
-      }
-      const compoundYaSyncopationControl = targetObject.document.getElementById(
-        "classical-rule-logic-compound-ya-syncopation"
-      );
-      const compoundYaSyncopationChoices = targetObject.getClassicalNahuatlCompoundYaSyncopationChoices(targetClosure);
-      if (compoundYaSyncopationControl) {
-        compoundYaSyncopationControl.disabled = !compoundYaSyncopationChoices.values.includes(false);
-      }
-      // Keep rejected authored true visible so it can be explicitly unchecked.
-      const familyControls = {
-        "classical-rule-logic-late-variant":
-          licensedVariants.size > 0,
-        "classical-rule-logic-compound-recursive-role":
-          recursiveCompoundAvailable,
-        "classical-rule-logic-compound-matrix":
-          operation === "compound"
-          && (!recursiveCompoundAvailable || recursiveCompoundRole === "embed"),
-        "classical-rule-logic-compound-matrix-initial-i":
-          operation === "compound" && /^i/u.test(compoundMatrixStem),
-        "classical-rule-logic-compound-matrix-class":
-          operation === "compound" && matrixClassChoices.selectionRequired,
-        "classical-rule-logic-compound-itz-sense":
-          operation === "compound" && sourceStem === "itz",
-        "classical-rule-logic-compound-ya-syncopation":
-          operation === "compound"
-          && (compoundYaSyncopationChoices.values.includes(true)
-            || (compoundYaSyncopationControl?.checked === true
-              && compoundYaSyncopationChoices.values.includes(false))),
-        "classical-rule-logic-compound-event-order":
-          operation === "compound" && eventOrderChoiceAvailable,
-        "classical-rule-logic-compound-nonactive-scope":
-          operation === "compound"
-          && ["passive", "impersonal"].includes(
-            String(surfaceFrame?.state?.vncVoice || "active")
-          )
-          && (licensedNonactiveScopes.length > 1 || fixedFutureEmbedScope),
-        "classical-rule-logic-compound-subject-animacy": false,
-        "classical-rule-logic-compound-possessive-stem": operation === "compound" && variant === "accompanying-possession",
-        "classical-rule-logic-compound-possessor": operation === "compound" && variant === "accompanying-possession",
-        "classical-rule-logic-frequentative-repetitions":
-          operation === "frequentative"
-          && [
-            "ordinary-short-glottal", "ordinary-long", "ordinary-short",
-            "destockal-intransitive", "destockal-causative"
-          ].includes(variant),
-        "classical-rule-logic-frequentative-target":
-          operation === "frequentative"
-          && [
-            "ordinary-short-glottal", "ordinary-long", "ordinary-short",
-          ].includes(variant)
-          && (
-            /^tla-/u.test(frequentativeSourceStem)
-            || (
-              String(surfaceFrame?.state?.valence || "")
-                === "mainline-reflexive"
-              && /^i/u.test(sourceStem)
-            )
-          ),
-        "classical-rule-logic-frequentative-initial-i-treatment":
-          operation === "frequentative"
-          && ["ordinary-short-glottal", "ordinary-long", "ordinary-short"].includes(variant)
-          && !["mainline-reflexive", "fused-tla"].includes(String(surfaceFrame?.state?.frequentativeTarget || "lexical-stem"))
-          && String(surfaceFrame?.state?.sourceInitialISelection || "") === "supportive"
-          && /^(?:tla-)?i/u.test(sourceStem),
-        "classical-rule-logic-frequentative-scope":
-          operation === "frequentative"
-          && variant === "ordinary-short-glottal",
-        "classical-rule-logic-purposive-series": operation === "purposive",
-        "classical-rule-logic-purposive-irregular-n":
-          operation === "purposive"
-          && pluralSubject
-          && purposiveSeries === "outbound-nonpast-optative",
-        "classical-rule-logic-purposive-external":
-          operation === "purposive",
-        "classical-rule-logic-purposive-sounded-future":
-          operation === "purposive",
-        "classical-rule-logic-purposive-early-singular-glottal":
-          operation === "purposive"
-          && !pluralSubject
-          && purposiveSeries === "outbound-nonpast-optative",
-        "classical-rule-logic-honored-participant":
-          ["honorific", "reverential"].includes(operation),
-        "classical-rule-logic-honorific-stem-alternative":
-          operation === "honorific"
-          && getClassicalAttitudeLexicalAlternatives(sourceStem, variant).length > 1
-      };
-      const honorificAlternativeControl = targetObject.document.getElementById(
-        "classical-rule-logic-honorific-stem-alternative"
-      );
-      if (operation === "honorific" && honorificAlternativeControl) {
-        const alternatives = getClassicalAttitudeLexicalAlternatives(sourceStem, variant);
-        const previous = honorificAlternativeControl.value;
-        honorificAlternativeControl.replaceChildren(...alternatives.map(([value, label]) => {
-          const option = targetObject.document.createElement("option");
-          option.value = value;
-          option.textContent = label;
-          return option;
-        }));
-        honorificAlternativeControl.value = alternatives.some(([value]) => value === previous)
-          ? previous : alternatives[0]?.[0] || "";
-        honorificAlternativeControl.disabled = alternatives.length < 2;
-      }
-      Object.entries(familyControls).forEach(([id, visible]) => {
-        const control = targetObject.document.getElementById(id);
-        const host = control?.closest?.(".classical-rule-control");
-        if (!host) return;
-        host.hidden = !visible;
-        host.setAttribute("aria-hidden", String(!visible));
-        if (id === "classical-rule-logic-compound-subject-animacy") {
-          control.disabled = true;
-          control.required = false;
-        }
-      });
-      const initialICopyControl = targetObject.document.getElementById("classical-rule-logic-frequentative-initial-i-treatment");
-      if (initialICopyControl && !familyControls["classical-rule-logic-frequentative-initial-i-treatment"]) initialICopyControl.value = "ordinary";
-      const frequentativeScopeControl = targetObject.document.getElementById(
-        "classical-rule-logic-frequentative-scope"
-      );
-      const frequentativeScopeChoices = targetObject.getClassicalNahuatlFrequentativeScopeChoices(targetClosure);
-      for (const option of Array.from(frequentativeScopeControl?.options || [])) {
-        option.hidden = !frequentativeScopeChoices.values.includes(option.value);
-        option.disabled = option.hidden;
-      }
-      // A rejected authored scope stays selected until explicitly corrected.
-      const frequentativeTargetControl = targetObject.document.getElementById(
-        "classical-rule-logic-frequentative-target"
-      );
-      const fusedTlaSource = /^tla-/u.test(frequentativeSourceStem);
-      const supportiveReflexiveSource = String(
-        surfaceFrame?.state?.valence || "",
-      ) === "mainline-reflexive"
-        && /^i/u.test(sourceStem)
-        && String(surfaceFrame?.state?.sourceInitialISelection || "")
-          === "supportive";
-      const glottalOrLong = [
-        "ordinary-short-glottal",
-        "ordinary-long",
-      ].includes(variant);
-      Array.from(frequentativeTargetControl?.options || []).forEach(option => {
-        if (option.value === "fused-tla") option.textContent = tlaTargetLabel;
-        if (option.value === "fused-tla-and-lexical-stem") {
-          option.textContent = `${tlaTargetLabel} and lexical stem`;
-        }
-        const available = option.value === "lexical-stem"
-          ? fusedTlaSource
-          : option.value === "mainline-reflexive"
-            ? supportiveReflexiveSource
-              && variant === "ordinary-short-glottal"
-            : fusedTlaSource && glottalOrLong;
-        option.hidden = !available;
-        option.disabled = !available;
-      });
-      const selectedTargetOption = Array.from(
-        frequentativeTargetControl?.options || [],
-      ).find(option => (
-        option.value === frequentativeTargetControl?.value
-      ));
-      if (frequentativeTargetControl && (
-        !selectedTargetOption
-        || selectedTargetOption.disabled
-      )) {
-        frequentativeTargetControl.value = fusedTlaSource
-          ? "lexical-stem"
-          : supportiveReflexiveSource
-            ? "mainline-reflexive"
-            : "lexical-stem";
-      }
-      syncFutureObjectChoices(targetObject.document, surfaceFrame?.state);
+    function syncClassicalLessons27282933Closure() {
+      const snapshot=readClassicalLateOwnerDecisionSnapshot();
+      const active=syncOwnerOperationDecisionControls(snapshot,targetObject.document);
       syncClassicalStemLayerChoices();
-      syncClassicalCompoundMatrixFormation(surfaceFrame, ActiveClassicalGrammarResultBinding);
-      syncClassicalPurposiveCoordinateControls(surfaceFrame);
-      return { active };
+      return {active};
     }
     function syncClassicalStemLayerChoices() {
       const nominalOperation = ActiveClassicalGrammarCapabilityNavigator?.operations?.find(item => item.operationId === "grammar:nominal-construction");
@@ -30019,321 +29593,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
           control.disabled = hidden;
         });
       }
-      if (selected === "attitude-vnc") {
-        const attitudeControl = targetObject.document.getElementById(
-          "classical-attitude-operation"
-        );
-        const reverentialSourceAvailable = Boolean(
-          ActiveClassicalVncResultSourceContinuation
-          && ActiveClassicalVncResultSourceContinuation.authorizationStatus
-            === "authorized"
-          && ActiveClassicalVncResultSourceContinuation.operationFrame
-            ?.operation === "honorific"
-        );
-        Array.from(attitudeControl?.options || []).forEach(option => {
-          const available = option.value === ""
-            ? reverentialSourceAvailable
-            : option.value === "reverential"
-              ? reverentialSourceAvailable
-              : option.value === "honorific"
-                ? !reverentialSourceAvailable
-                : true;
-          option.hidden = !available;
-          option.disabled = !available;
-        });
-        if (attitudeControl) {
-          if (reverentialSourceAvailable
-            && attitudeControl.value === "honorific") {
-            attitudeControl.value = "";
-          } else if (!reverentialSourceAvailable
-            && (attitudeControl.value === ""
-              || attitudeControl.selectedOptions?.[0]?.disabled)) {
-            attitudeControl.value = "honorific";
-          }
-        }
-        const attitude = String(attitudeControl?.value || "honorific");
-        const attitudeSourceStem = String(
-          targetObject.document.getElementById("classical-source-matrix")?.value
-          || targetObject.document.getElementById("classical-source-embed")?.value
-          || targetObject.document.getElementById("classical-source-whole")?.value
-          || ""
-        ).normalize("NFC").trim().toLowerCase().replace(/^\((.*)\)$/u, "$1");
-        const sourceAnalysisControl = targetObject.document.getElementById(
-          "classical-attitude-source-analysis"
-        );
-        const sourceAnalysisWrapper = sourceAnalysisControl?.closest?.(
-          "label, [data-classical-rule-control]"
-        );
-        const productiveHonorificSource = attitude === "honorific"
-          && nominalEmbedMatrixValence !== "mainline-reflexive";
-        if (sourceAnalysisControl && sourceAnalysisWrapper) {
-          sourceAnalysisWrapper.hidden = true;
-          sourceAnalysisWrapper.setAttribute(
-            "aria-hidden",
-            "true"
-          );
-          sourceAnalysisControl.disabled = true;
-          sourceAnalysisControl.required = false;
-          sourceAnalysisControl.setAttribute(
-            "aria-required",
-            "false"
-          );
-          if (!productiveHonorificSource) sourceAnalysisControl.value = "";
-        }
-        const sourceAnalysis = getClassicalAttitudeFormationAnalysis(
-          attitudeSourceStem,
-          nominalEmbedMatrixValence,
-        );
-        const formationControl = targetObject.document.getElementById(
-          "classical-attitude-formation"
-        );
-        const licensedFormations = attitude === "honorific"
-          ? nominalEmbedMatrixValence === "mainline-reflexive"
-            ? new Set(["preterit-embed"])
-            : new Set(sourceAnalysis?.availableFormations || [])
-          : new Set(["preterit-embed"]);
-        Array.from(formationControl?.options || []).forEach(option => {
-          const licensed = licensedFormations.has(option.value);
-          option.hidden = !licensed;
-          option.disabled = !licensed;
-          option.dataset.classicalAttitudePreferred = String(
-            option.value === sourceAnalysis?.preferredFormation
-          );
-          if (!option.dataset.classicalAttitudeBaseLabel) {
-            option.dataset.classicalAttitudeBaseLabel = option.textContent;
-          }
-          option.textContent = option.dataset.classicalAttitudeBaseLabel
-            + (option.value === sourceAnalysis?.preferredFormation
-              && licensedFormations.size > 1
-              ? " · preferred"
-              : "");
-        });
-        if (
-          formationControl
-          && !licensedFormations.has(String(formationControl.value || ""))
-        ) {
-          formationControl.value = licensedFormations.values().next().value || "";
-        }
-        const formationWrapper = formationControl?.closest?.(
-          "label, [data-classical-rule-control]"
-        );
-        if (formationControl && formationWrapper) {
-          const formationChoiceVisible = licensedFormations.size > 1;
-          formationWrapper.hidden = !formationChoiceVisible;
-          formationWrapper.setAttribute(
-            "aria-hidden",
-            String(!formationChoiceVisible)
-          );
-          formationControl.disabled = !formationChoiceVisible;
-          formationWrapper.dataset.classicalAttitudeRouteChoiceRequired =
-            String(formationChoiceVisible);
-          formationWrapper.dataset.classicalAttitudeAutomaticFormation =
-            formationChoiceVisible
-              ? ""
-              : String(formationControl.value || "");
-        }
-        const lexicalAlternativeControl = targetObject.document.getElementById(
-          "classical-attitude-stem-alternative"
-        );
-        const lexicalAlternativeWrapper = lexicalAlternativeControl?.closest?.(
-          "label, [data-classical-rule-control]"
-        );
-        const lexicalAlternatives = getClassicalAttitudeLexicalAlternatives(
-          attitudeSourceStem,
-          String(formationControl?.value || ""),
-        );
-        if (lexicalAlternativeControl && lexicalAlternativeWrapper) {
-          const previousAlternative = String(
-            lexicalAlternativeControl.value || "default"
-          );
-          lexicalAlternativeControl.replaceChildren();
-          lexicalAlternatives.forEach(([value, label]) => {
-            const option = targetObject.document.createElement("option");
-            option.value = value;
-            option.textContent = label;
-            lexicalAlternativeControl.appendChild(option);
-          });
-          const alternativeChoiceVisible = lexicalAlternatives.length > 1;
-          lexicalAlternativeWrapper.hidden = !alternativeChoiceVisible;
-          lexicalAlternativeWrapper.setAttribute(
-            "aria-hidden",
-            String(!alternativeChoiceVisible)
-          );
-          lexicalAlternativeControl.disabled = !alternativeChoiceVisible;
-          lexicalAlternativeControl.value = lexicalAlternatives.some(
-            ([value]) => value === previousAlternative
-          ) ? previousAlternative : lexicalAlternatives[0]?.[0] || "default";
-          lexicalAlternativeWrapper.dataset.classicalAttitudeAlternativeChoiceRequired =
-            String(alternativeChoiceVisible);
-        }
-        const derivationOptionControl = targetObject.document.getElementById(
-          "classical-attitude-derivation-option"
-        );
-        const derivationOptionWrapper = derivationOptionControl?.closest?.(
-          "label, [data-classical-rule-control]"
-        );
-        let derivationOptions = [];
-        if (
-          attitude === "honorific"
-          && ["causative", "applicative"].includes(
-            String(formationControl?.value || "")
-          )
-          && lexicalAlternatives.length === 0
-          && attitudeSourceStem
-          && typeof targetObject.evaluateClassicalNahuatlVncApplication
-            === "function"
-        ) {
-          const derivationType = String(formationControl.value);
-          const sourceSubject = getClassicalNominalConstructionControlValue(
-            "classical-rule-logic-subject",
-            "3sg"
-          );
-          try {
-            const preview = targetObject.evaluateClassicalNahuatlVncApplication({
-              sourceStem: attitudeSourceStem,
-              sourceValence: nominalEmbedMatrixValence,
-              verbClass: getClassicalNominalConstructionControlValue(
-                "classical-rule-logic-class",
-                "A"
-              ),
-              sourceSubject,
-              subject: sourceSubject,
-              mood: getClassicalNominalConstructionControlValue(
-                "classical-rule-logic-mood",
-                "indicative"
-              ),
-              tense: getClassicalNominalConstructionControlValue(
-                "classical-rule-logic-tense",
-                "present"
-              ),
-              requestedDerivation: derivationType,
-              derivationType,
-              requestedVoice: "active",
-              ...(derivationType === "causative"
-                ? { causativeObjectKind: "reflexive" }
-                : {
-                    applicativeObjectKind: "reflexive",
-                    applicativeObjectPerson: "",
-                  }),
-            });
-            derivationOptions = preview.controlFrame
-              ?.derivationOptionInventory?.options || [];
-          } catch {
-            derivationOptions = [];
-          }
-        }
-        if (derivationOptionControl && derivationOptionWrapper) {
-          const previousOptionId = String(
-            derivationOptionControl.value || ""
-          );
-          derivationOptionControl.replaceChildren();
-          derivationOptions.forEach(record => {
-            const option = targetObject.document.createElement("option");
-            option.value = String(record.optionId || "");
-            option.textContent = String(
-              record.label || record.targetStem || record.optionId || ""
-            );
-            derivationOptionControl.appendChild(option);
-          });
-          const shapeChoiceVisible = derivationOptions.length > 1;
-          derivationOptionWrapper.hidden = !shapeChoiceVisible;
-          derivationOptionWrapper.setAttribute(
-            "aria-hidden",
-            String(!shapeChoiceVisible)
-          );
-          derivationOptionControl.disabled = !shapeChoiceVisible;
-          derivationOptionControl.value = derivationOptions.some(record => (
-            String(record.optionId || "") === previousOptionId
-          ))
-            ? previousOptionId
-            : String(derivationOptions[0]?.optionId || "");
-          derivationOptionWrapper.dataset.classicalAttitudeShapeChoiceRequired =
-            String(shapeChoiceVisible);
-          derivationOptionWrapper.dataset.classicalAttitudeAutomaticShape =
-            shapeChoiceVisible
-              ? ""
-              : String(derivationOptions[0]?.targetStem || "");
-        }
-        const participantControl = targetObject.document.getElementById(
-          "classical-attitude-participant"
-        );
-        const participantWrapper = participantControl?.closest?.(
-          "label, [data-classical-rule-control]"
-        );
-        const participantLabel = participantWrapper?.querySelector?.(
-          "[data-classical-attitude-participant-label]"
-        );
-        const projectiveHonorificSource = [
-          "specific-projective",
-          "projective-human",
-          "projective-nonhuman",
-        ].includes(nominalEmbedMatrixValence);
-        const honorificSubject = getClassicalNominalConstructionControlValue(
-          "classical-rule-logic-subject",
-          "3sg"
-        );
-        const firstPersonHonorificSubject = /^1/u.test(honorificSubject);
-        const priorParticipantFacts =
-          ActiveClassicalRuleLogicSurfaceFrame?.operationFrame
-            ?.operation === attitude
-          && String(
-            ActiveClassicalRuleLogicSurfaceFrame.normalizedRequest
-              ?.sourceStem || ""
-          ) === attitudeSourceStem
-            ? ActiveClassicalRuleLogicSurfaceFrame.operationFrame
-              .operationFacts
-            : null;
-        const participantFacts =
-          frame?.operationFrame?.operationFacts
-          || priorParticipantFacts;
-        const canonicalParticipantChoiceKnown = attitude === "pejorative"
-          ? typeof participantFacts?.disparagedParticipantChoiceRequired
-            === "boolean"
-          : typeof participantFacts?.honoredParticipantChoiceRequired
-            === "boolean";
-        const objectParticipantAvailable = attitude === "pejorative"
-          ? canonicalParticipantChoiceKnown
-            ? participantFacts.disparagedParticipantChoiceRequired === true
-              && participantFacts.possibleDisparagedParticipants
-                ?.includes("object")
-            : projectiveHonorificSource
-          : attitude === "honorific"
-            && (canonicalParticipantChoiceKnown
-              ? participantFacts.honoredParticipantChoiceRequired === true
-                && participantFacts.possibleHonoredParticipants
-                  ?.includes("object")
-              : projectiveHonorificSource
-                && !firstPersonHonorificSubject);
-        if (participantControl && participantWrapper) {
-          if (participantLabel) {
-            participantLabel.textContent = attitude === "pejorative"
-              ? "Disparaged participant"
-              : "Respected participant";
-          }
-          participantWrapper.hidden = !objectParticipantAvailable;
-          participantWrapper.setAttribute(
-            "aria-hidden",
-            String(!objectParticipantAvailable)
-          );
-          participantControl.disabled = !objectParticipantAvailable;
-          if (!objectParticipantAvailable) {
-            const ownerAutomaticParticipant = attitude === "reverential"
-              ? participantFacts?.outerHonoredParticipant
-              : attitude === "honorific"
-                ? participantFacts?.honoredParticipantAutomaticallySelected
-                : "";
-            participantControl.value = ownerAutomaticParticipant
-              || (attitude === "honorific"
-              && firstPersonHonorificSubject
-              && projectiveHonorificSource
-              ? "object"
-              : "subject");
-          }
-          participantWrapper.dataset.classicalAttitudeParticipantChoiceRequired =
-            String(objectParticipantAvailable);
-          participantWrapper.dataset.classicalAttitudeAutomaticParticipant =
-            objectParticipantAvailable ? "" : participantControl.value;
-        }
+      if (selected === 'attitude-vnc') {
+        const snapshot=readClassicalLateOwnerDecisionSnapshot();
+        if(snapshot?.contract.ingressKind==='raw')syncOwnerOperationDecisionControls(snapshot,targetObject.document);
+        const sourceAnalysis=targetObject.document.getElementById('classical-attitude-source-analysis');
+        if(sourceAnalysis){sourceAnalysis.disabled=true;const host=sourceAnalysis.closest('label');if(host)host.hidden=true;}
       }
       if (selected) {
         const deverbalVocative = selected === "deverbal-nnc"
@@ -34483,10 +33747,6 @@ export function createUiRenderingApi(targetObject = globalThis) {
           ? request.attitude
           : "honorific"
       ).trim();
-      const inheritedReverentialParticipant = String(
-        ActiveClassicalVncResultSourceContinuation?.operationFrame
-          ?.operationFacts?.honoredParticipant || ""
-      ).trim();
       const derivedSourceApplicationFrame =
         lateOperation === "honorific"
         && ActiveClassicalVncResultSourceApplicationFrame?.resultFrame
@@ -34498,30 +33758,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const compoundSourceSelected = Boolean(
         sourceEmbedStem && sourceMatrixStem
       );
-      const compoundSourceFrame = compoundSourceSelected
-        && typeof targetObject.requestClassicalLateVncOperation === "function"
-        ? targetObject.requestClassicalLateVncOperation({
-          sourceStem: sourceEmbedStem,
-          sourceValence: String(
-            source.sourceValence || "intransitive"
-          ).trim(),
-          verbClass: String(source.verbClass || "A").trim(),
-          subject: String(request.subject || "3sg").trim(),
-          mood: String(request.mood || "indicative").trim(),
-          tense: String(request.tense || "present").trim(),
-          derivationType: "direct",
-          voice: String(request.voice || "active").trim(),
-          objectKind: String(source.objectKind || "").trim(),
-          objectPerson: String(source.objectPerson || "").trim(),
-          lateOperation: "compound",
-          lateVariant: "connective-t",
-          compoundMatrixStem: sourceMatrixStem,
-        })
-        : null;
       return {
         sourceStem: String(
-          compoundSourceFrame?.operationFrame?.targetStem
-          || source.sourceStem
+          source.sourceStem
           || ""
         ).trim(),
         sourceValence: source.sourceObjectRequests?.length > 1
@@ -34529,8 +33768,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           : String(source.sourceValence || "intransitive").trim(),
         sourceInitialISelection: String(source.sourceInitialISelection || "").trim(),
         verbClass: String(
-          compoundSourceFrame?.operationFrame?.targetClass
-          || source.verbClass
+          source.verbClass
           || "A"
         ).trim(),
         subject: String(request.subject || "3sg").trim(),
@@ -34550,25 +33788,14 @@ export function createUiRenderingApi(targetObject = globalThis) {
           : {}),
         lateOperation,
         lateVariant: String(request.attitudeFormation || "").trim(),
-        honoredParticipant: lateOperation === "reverential"
-          ? inheritedReverentialParticipant
-            || String(request.honoredParticipant || "subject").trim()
-          : String(request.honoredParticipant || "subject").trim(),
-        honorificFormationAnalysis:
-          request.honorificFormationAnalysis || undefined,
+        honoredParticipant: String(request.honoredParticipant || 'subject').trim(),
         honorificStemAlternative: String(
           request.honorificStemAlternative || "default"
         ).trim(),
         honorificDerivationOptionId: String(
           request.honorificDerivationOptionId || ""
         ).trim(),
-        ...(compoundSourceFrame?.authorizationStatus === "authorized"
-          ? {
-            attitudeCompoundClosureFrame: compoundSourceFrame,
-            sourceEmbedStem,
-            sourceMatrixStem,
-          }
-          : {}),
+        ...(compoundSourceSelected ? {sourceEmbedStem,sourceMatrixStem} : {}),
         ...(derivedSourceApplicationFrame
           ? {
             sourceApplicationFrame: derivedSourceApplicationFrame,
@@ -34615,9 +33842,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       if (selectedConstruction !== "attitude-vnc") return null;
       syncClassicalNominalConstructionControlVisibility(selectedConstruction);
       const sourceOperationRequest = buildClassicalNominalConstructionUiRequest();
-      const operationRequest = buildClassicalAttitudeVncOperationRequest(
-        sourceOperationRequest
-      );
+      const operationRequest = PendingClassicalRawAttitudeRequest || buildClassicalAttitudeVncOperationRequest(sourceOperationRequest);
       const lateOperationOwnerContext = Object.freeze(
         Object.fromEntries([
           "attitudeCompoundClosureFrame",
@@ -42173,6 +41398,13 @@ export function createUiRenderingApi(targetObject = globalThis) {
     function getClassicalVncContinuationBindingSelections(
       binding = null, {editedControl = null, ignoreRejected = false, subjectOverride = ""} = {}
     ) {
+      if(binding?.operationId==='vnc:derivational-operation') {
+        const snapshot=readClassicalLateOwnerDecisionSnapshot();
+        const transaction=ClassicalChoicePreflightTransaction?.verbalIntent;
+        if(transaction?.snapshot===snapshot && transaction.binding===(binding.ownerBindingFrame||binding))return transaction.intent;
+        const prior=binding.callerSelections||binding.ownerBindingFrame?.callerSelections||{};
+        return readOwnerOperationControlIntent(snapshot,targetObject.document,prior,editedControl)||Object.freeze({...prior});
+      }
       const rejectedDraft = !ignoreRejected && binding?.family === "vnc-continuation"
         ? resolveRejectedReflexiveDraft(targetObject, binding.exactResult, binding.ownerBindingFrame) : null;
       if (rejectedDraft) {
@@ -42418,132 +41650,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       if (operationId !== "vnc:derivational-operation") {
         return Object.freeze({});
       }
-      if (binding?.ownerBindingFrame?.inputResultKind === "ownerhood-fixed-preterit-result") return Object.freeze({
-        lateOperation: "compound", lateVariant: "connective-t",
-        compoundMatrixStem: value("classical-rule-logic-compound-matrix"),
-        compoundMatrixInitialISelection: value("classical-rule-logic-compound-matrix-initial-i"),
-        subject: getClassicalNominalVncSubjectSelection() || "3sg",
-        mood: value("classical-rule-logic-mood", "indicative"),
-        tense: value("classical-rule-logic-tense", "present"),
-        requestedVoice: "active",
-      });
-      const lateOperation = value(
-        "classical-rule-logic-late-operation",
-        "none"
-      );
-      const booleanValue = id => {
-        const selected = getClassicalRuleLogicSurfaceControlValue(id, "");
-        return selected === "" ? undefined : selected === "true";
-      };
-      const compoundSource = binding?.ownerBindingFrame?.ownerRequest?.attitudeCompoundClosureFrame;
-      const compoundFacts = compoundSource?.operationFrame?.operationFacts;
-      const compoundMeaning = value("classical-rule-logic-compound-attitude-analysis", "compositional");
-      const selections = {
-        ...(targetObject.isClassicalNahuatlClosureFrame?.(compoundSource)
-          && compoundSource.operationFrame.variant === "connective-t"
-          && ["honorific", "pejorative"].includes(lateOperation) ? {
-            compoundLexicalizationAnalysis: {
-              lexicalStatus: "compound-verbstem-lexicalization-analysis",
-              sourceEmbedStem: compoundFacts.specialPerfectiveEmbedSource || compoundSource.baseApplicationFrame.normalizedRequest.sourceStem,
-              sourceMatrixStem: compoundFacts.matrixSuppliedStem || compoundFacts.matrixSelectionStem,
-              availableStructures: ["compositional", "lexicalized"], selectedStructure: compoundMeaning,
-              ...(compoundMeaning === "lexicalized" ? {lexicalMeaningId: "user-declared-idiomatic-compound"} : {}),
-            },
-          } : {}),
-        // Compound Subject controls belong to the finite matrix, not the retained embed.
-        ...(lateOperation === "compound" ? {
-          subject: value("classical-rule-logic-subject", "3sg"),
-          mood: value("classical-rule-logic-mood", "indicative"),
-          tense: value("classical-rule-logic-tense", "present"),
-          requestedVoice: value("classical-rule-logic-vnc-voice", "active"),
-        } : {}),
-        // The incorporated predicate keeps its own perfective history while
-        // the new honorific matrix receives the visible finite tense.
-        ...(["honorific", "pejorative"].includes(lateOperation) ? {
-          mood: value("classical-rule-logic-mood", "indicative"),
-          tense: value("classical-rule-logic-tense", "present"),
-        } : {}),
-        ...(lateOperation && lateOperation !== "none"
-          ? { lateOperation }
-          : {}),
-        // Purposives express their formation choice through the series
-        // control, not the hidden generic variant selector.
-        lateVariant: lateOperation === "reverential" ? ""
-          : lateOperation === "purposive"
-          ? value("classical-rule-logic-purposive-series")
-          : value("classical-rule-logic-late-variant"),
-        ...(lateOperation === "purposive" ? {
-          subject: value("classical-rule-logic-subject", "3sg"),
-          purposiveSeries: value("classical-rule-logic-purposive-series"),
-        } : {}),
-        ...(lateOperation === "honorific" ? {
-          // The ordinary formation selector describes the preceding Source.
-          // A retained derived target has its own formation inventory.
-          honorificDerivationOptionId:
-            !binding?.ownerBindingFrame?.ownerRequest?.attitudeCompoundClosureFrame
-              && binding?.ownerBindingFrame?.continuationSourceProjection?.sourceStem
-              && binding.ownerBindingFrame.continuationSourceProjection.sourceStem
-                !== (binding.ownerBindingFrame?.outerVncApplicationFrame
-                  ?.normalizedRequest?.sourceStem || value("classical-source-whole"))
-              ? "" : value("classical-rule-logic-derivation-option"),
-          honorificFormationAnalysis: getClassicalAttitudeFormationAnalysis(
-                binding?.ownerBindingFrame?.ownerRequest?.sourceStem
-                  || binding?.ownerBindingFrame?.outerVncApplicationFrame
-                    ?.normalizedRequest?.sourceStem || "",
-                binding?.ownerBindingFrame?.ownerRequest?.sourceValence
-                  || binding?.ownerBindingFrame?.outerVncApplicationFrame
-                    ?.normalizedRequest?.sourceValence || "",
-                binding?.ownerBindingFrame?.outerVncApplicationFrame || null,
-                binding?.ownerBindingFrame?.ownerRequest?.honorificFormationAnalysis || null
-              ) || undefined,
-        } : {}),
-        frequentativeRepetitions: value(
-          "classical-rule-logic-frequentative-repetitions"
-        ),
-        compoundMatrixStem: value(
-          "classical-rule-logic-compound-matrix"
-        ),
-        compoundRecursiveRole: value("classical-rule-logic-compound-recursive-role"),
-        // Empty typing uses an exact saved matrix; hidden lexical defaults
-        // cannot contradict that Result's owner-derived class or initial i.
-        compoundMatrixClass: value("classical-rule-logic-compound-matrix")
-          ? value("classical-rule-logic-compound-matrix-class") : "",
-        compoundMatrixInitialISelection: value("classical-rule-logic-compound-matrix")
-          ? value("classical-rule-logic-compound-matrix-initial-i") : "",
-        compoundMatrixNonactiveOptionId: value("classical-rule-logic-compound-matrix-nonactive"),
-        compoundNonactiveScope: value("classical-rule-logic-compound-nonactive-scope"),
-        compoundSubjectAnimacy: getClassicalRuleLogicVncSubjectFrame().animacy,
-        compoundPossessiveStem: value("classical-rule-logic-compound-possessive-stem"),
-        compoundPossessor: value("classical-rule-logic-compound-possessor"),
-        compoundItzSense: value("classical-rule-logic-compound-itz-sense"),
-        compoundYaSyncopation: booleanValue("classical-rule-logic-compound-ya-syncopation"),
-        purposiveIrregularPluralN: booleanValue("classical-rule-logic-purposive-irregular-n"),
-        purposiveSoundedFutureMorph: booleanValue("classical-rule-logic-purposive-sounded-future"),
-        purposiveEarlySingularGlottal: booleanValue("classical-rule-logic-purposive-early-singular-glottal"),
-        honoredParticipant: lateOperation === "reverential" ? ""
-          : value("classical-rule-logic-honored-participant"),
-        compoundEventOrder: value(
-          "classical-rule-logic-compound-event-order"
-        ),
-        frequentativeInitialITreatment: value("classical-rule-logic-frequentative-initial-i-treatment") || "ordinary",
-        frequentativeScope: value(
-          "classical-rule-logic-frequentative-scope"
-        ),
-        frequentativeTarget: value(
-          "classical-rule-logic-frequentative-target"
-        ),
-        purposiveExternalDirectional: value(
-          "classical-rule-logic-purposive-external"
-        ),
-        honorificStemAlternative: value(
-          "classical-rule-logic-honorific-stem-alternative"
-        ),
-      };
-      return Object.freeze(Object.fromEntries(
-        Object.entries(selections).filter(([, selected]) => (
-          selected !== "" && selected != null
-        ))
-      ));
+      return Object.freeze({});
     }
 
     function getClassicalNncSubjectSelection(
@@ -43070,6 +42177,18 @@ export function createUiRenderingApi(targetObject = globalThis) {
       if(intent)ClassicalChoicePreflightTransaction.denominalIntent=intent;
     }
 
+    function captureClassicalVerbalChoiceIntent(control,value,event=null) {
+      const snapshot=ClassicalConstructionSession.position.operationContract;
+      if(snapshot?.kind!=='verbal-derivation-contract'||!ClassicalChoicePreflightTransaction)return;
+      const field=findOwnerOperationControlChoice(snapshot,control?.id,{current:true});
+      const parsed=readOwnerOperationControlValue(field,value,targetObject.document);
+      if(!field||!isOwnerOperationChoiceAllowed(snapshot,field.choiceId,parsed,{current:true}))return;
+      const prior=snapshot.contract.ingressKind==='raw'?snapshot.contract.request
+        :snapshot.contract.binding?.callerSelections||{};
+      ClassicalChoicePreflightTransaction.verbalIntent={snapshot,event,binding:snapshot.contract.binding,
+        intent:Object.freeze({...prior,[field.choiceId]:parsed})};
+    }
+
     function bindClassicalPositionMoves() {
       const doc = targetObject.document;
       if (!doc?.addEventListener || doc.classicalPositionMovesBound) return;
@@ -43077,6 +42196,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const begin = event => {
         if (ClassicalPositionStaging || ClassicalPositionExecuting) return;
         const eventControl = event.target;
+        // This existing menu entry delegates to the nominal route owner.
+        if (eventControl?.id === 'classical-stem-layer' && eventControl.value === 'nominal-incorporation') return;
         // Browsing filters carry no Source or grammar intent. A compact select
         // forwards its deliberate change; its preceding input is display only.
         if (eventControl?.dataset?.classicalChoiceGroup === "true"
@@ -43100,7 +42221,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         } else if (control.id === "classical-capability-navigator-operation") move = {type: "route", id: value};
         else if (control.id === "classical-capability-navigator-binding") move = {type: "role", id: value};
         else if (control.closest?.("#classical-source-panel")) move = {type: "source-edit", id: "source"};
-        else if ((ClassicalConstructionSession.position.operationContract?.kind === "nuclear-sentence-operation-contract" ? Array.from(getClassicalNuclearSentenceControls()) : getNativeGrammarControls(doc)).some(item => item === control || item === eventControl)) move = {type: "choice", id: getClassicalPositionChoiceId(control),
+        else if ((ClassicalConstructionSession.position.operationContract?.kind === 'verbal-derivation-contract' ? getOwnerOperationDecisionControls(ClassicalConstructionSession.position.operationContract,doc) : ClassicalConstructionSession.position.operationContract?.kind === "nuclear-sentence-operation-contract" ? Array.from(getClassicalNuclearSentenceControls()) : getNativeGrammarControls(doc)).some(item => item === control || item === eventControl)) move = {type: "choice", id: getClassicalPositionChoiceId(control),
           value: control.type === "checkbox" ? control.checked : value};
         if (!move) return;
         if (PendingClassicalResultEdit && ["source-edit", "source", "clear"].includes(move.type)
@@ -43126,7 +42247,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         if (move.type === "clear") ClassicalPositionCleared = true;
         const previousChoiceTransaction = ClassicalChoicePreflightTransaction;
         ClassicalChoicePreflightTransaction = {};
-        if(move.type === "choice"){if(position.operationContract?.kind==="nuclear-sentence-operation-contract")captureClassicalNuclearSentenceChoiceIntent(control,move.value);captureClassicalDenominalChoiceIntent(control,value);if(position.operationContract?.kind==="particle-operation-contract")captureClassicalParticleChoiceIntent(control,move.value);}
+        if(move.type === "choice"){captureClassicalVerbalChoiceIntent(control,move.value,event);if(position.operationContract?.kind==="nuclear-sentence-operation-contract")captureClassicalNuclearSentenceChoiceIntent(control,move.value);captureClassicalDenominalChoiceIntent(control,value);if(position.operationContract?.kind==="particle-operation-contract")captureClassicalParticleChoiceIntent(control,move.value);}
         ClassicalPositionStaging = true;
         const enqueue = targetObject.queueMicrotask || (callback => Promise.resolve().then(callback));
         enqueue(() => {
@@ -43754,6 +42875,22 @@ export function createUiRenderingApi(targetObject = globalThis) {
       return issuePlaceGentilicSnapshot(scope,{ingress,binding:exact?.ownerBindingFrame,
         request:buildClassicalNominalConstructionUiRequest(exact),sourceContext:exact?null:readClassicalNominalSourceContext(source,ingress),intent:ClassicalChoicePreflightTransaction?.placeIntent});
     }
+    const ClassicalRawAttitudeSourceControlIds=Object.freeze(['classical-rule-logic-subject',
+      'classical-rule-logic-vnc-subject-person','classical-rule-logic-vnc-subject-number',
+      'classical-rule-logic-vnc-subject-animacy','classical-rule-logic-vnc-subject-humanness']);
+    function getClassicalRawAttitudePresentation() {
+      const operationIds=targetObject.getClassicalNahuatlAttitudeOperations();
+      return Object.freeze({operationIds,sourceControlIds:ClassicalRawAttitudeSourceControlIds,
+        choices:Object.freeze({
+          lateOperation:{controlId:'classical-attitude-operation',optionIds:operationIds},
+          lateVariant:{controlId:'classical-attitude-formation'},
+          honoredParticipant:{controlId:'classical-attitude-participant'},
+          honorificStemAlternative:{controlId:'classical-attitude-stem-alternative'},
+          honorificDerivationOptionId:{controlId:'classical-attitude-derivation-option',presentationLifetime:'operation'},
+          subject:{controlId:'',controlParts:[]},subjectAnimacy:{controlId:''},subjectHumanness:{controlId:''},
+        })});
+    }
+
     const ClassicalVerbalDerivationScopes = new WeakMap();
     function readClassicalVerbalDerivationSnapshot(operation, source, binding, typed) {
       if(operation !== "vnc:derivational-operation" || !source)return null;
@@ -43762,8 +42899,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
       let bySource=ClassicalVerbalDerivationScopes.get(ingress);
       if(!bySource){bySource=new Map();ClassicalVerbalDerivationScopes.set(ingress,bySource);}
       let scope=bySource.get(source);
-      if(!scope){scope=createVerbalDerivationScope({owner:targetObject,source,session:ClassicalConstructionSession,
-        getIngress:()=>ActiveClassicalGrammarCapabilityNavigator,getSourceContext:()=>readClassicalNominalSourceContext(source,ingress)});bySource.set(source,scope);}
+      const rawAttitude=Boolean(PendingClassicalRawAttitudeRequest && !binding && typed?.operationId!==operation);
+      if(!scope || Boolean(scope.presentation)!==rawAttitude){scope=createVerbalDerivationScope({owner:targetObject,source,session:ClassicalConstructionSession,
+        getIngress:()=>ActiveClassicalGrammarCapabilityNavigator,getSourceContext:()=>readClassicalNominalSourceContext(source,ingress),presentation:rawAttitude?getClassicalRawAttitudePresentation():null});bySource.set(source,scope);}
       const ownerBinding=typed?.operationId===operation?typed:binding?.operationId===operation?binding.ownerBindingFrame:null;
       if(ownerBinding)return issueVerbalDerivationSnapshot(scope,{ingress,binding:ownerBinding});
       const request=PendingClassicalRawAttitudeRequest;
@@ -43905,7 +43043,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       }
       if(denominal)for(const control of targetObject.document?.querySelectorAll?.('[id^="classical-denominal-vnc-"]')||[]){if(control?.closest?.("#classical-rule-logic-controls")&&!control.closest?.("[data-classical-source-identity-controls]"))controls.add(control);}
       if(place)for(const id of ["classical-place-gentilic-result-kind","classical-place-gentilic-formation","classical-place-gentilic-lexical-record","classical-gentilic-source-place-matrix","classical-place-affective-analysis","classical-place-affective-matrix","classical-gentilic-collectivity-ending"]){const control=targetObject.document?.getElementById?.(id);if(control?.closest?.("#classical-rule-logic-controls"))controls.add(control);}
-      if(verbal)for(const id of ["classical-rule-logic-late-operation","classical-rule-logic-late-variant","classical-rule-logic-purposive-series","classical-rule-logic-compound-matrix"]){const control=targetObject.document?.getElementById?.(id);if(control?.closest?.("#classical-rule-logic-controls"))controls.add(control);}
+      if(verbal)for(const control of getOwnerOperationDecisionControls(snapshot,targetObject.document))controls.add(control);
       if(personalName)for(const control of targetObject.document?.querySelectorAll?.('[id^="classical-personal-name-"]')||[]){if(control?.closest?.("#classical-rule-logic-controls"))controls.add(control);}
       if(particle)for(const id of ["classical-rule-logic-sentence-surface","classical-rule-logic-sentence-adverbial","classical-rule-logic-sentence-particle-honorific","classical-source-context-speaker-gender"]){const control=targetObject.document?.getElementById?.(id);if(control)controls.add(control);}
       if(nuclear)for(const control of getClassicalNuclearSentenceControls())controls.add(control);
@@ -43925,6 +43063,13 @@ export function createUiRenderingApi(targetObject = globalThis) {
         || (!control?.closest?.("#classical-rule-logic-controls") && !((particle||nuclear) && control?.id==="classical-source-context-speaker-gender"))
         || control.closest?.("[data-classical-source-identity-controls]")) return true;
       const rendered = ClassicalNominalNativeChoiceFrames.get(control);
+      if(verbal) {
+        if(snapshot.contract.presentation?.sourceControlIds?.includes(control?.id))return true;
+        const field=findOwnerOperationControlChoice(snapshot,control.id,{current:true});
+        const value=control.type==='checkbox'?control.checked:control.value;
+        const parsed=readOwnerOperationControlValue(field,value,targetObject.document);
+        if(!field||!isOwnerOperationChoiceAllowed(snapshot,field.choiceId,parsed,{current:true,event:rendered?.frame}))return false;
+      }
       return control.isConnected !== false && control.disabled !== true && rendered?.snapshot === snapshot
         && (finalSource ? isCurrentIssuedBindingOperationSnapshot(snapshot,rendered.frame) : nuclear ? isCurrentNuclearSentenceSnapshot(snapshot,rendered.frame) : particle ? isCurrentParticleOperationSnapshot(snapshot,rendered.frame) : personalName ? isCurrentPersonalNameSnapshot(snapshot,rendered.frame)
           : denominal ? isCurrentDenominalSnapshot(snapshot,rendered.frame)
@@ -44108,12 +43253,18 @@ export function createUiRenderingApi(targetObject = globalThis) {
           route: current.construction.route, slots: current.construction.slots, slotOrder: current.construction.slotOrder,
           choices: current.choices, legalMoves: [{type: "source-edit", id: "source"}, {type: "source", id: "source"}, {type: "clear", id: "construction"}, {type: "reset", id: "choices"}], ready: false, execution: null};
       }
-      const controls = nuclearSnapshot ? Array.from(getClassicalNuclearSentenceControls()) : typeof getNativeGrammarControls === "function" ? getNativeGrammarControls(doc) : [];
+      const controls = operation === 'vnc:derivational-operation' ? getOwnerOperationDecisionControls(verbalSnapshot,doc) : nuclearSnapshot ? Array.from(getClassicalNuclearSentenceControls()) : typeof getNativeGrammarControls === "function" ? getNativeGrammarControls(doc) : [];
       const choices = {}, legalMoves = [{type: "source-edit", id: "source"}, {type: "source", id: "source"}, {type: "clear", id: "construction"}, {type: "reset", id: "choices"}];
       for (const control of controls) {
         const id = getClassicalPositionChoiceId(control);
         if (["classical-capability-navigator-operation", "classical-capability-navigator-binding"].includes(id)) continue;
         choices[id] = control.type === "checkbox" ? control.checked : control.value;
+        if (operation === "vnc:derivational-operation") {
+          const field=findOwnerOperationControlChoice(verbalSnapshot,control.id);
+          const move=field&&projectOwnerOperationControlMove(verbalSnapshot,control);
+          if(move)legalMoves.push({...move,id});
+          continue;
+        }
         if (control.disabled || control.readOnly) continue;
         const values = control.tagName === "SELECT" ? Array.from(control.options || []).filter(option => !option.disabled && !option.hidden).map(option => option.value)
           : control.type === "checkbox" ? [false, true]
@@ -44342,7 +43493,27 @@ export function createUiRenderingApi(targetObject = globalThis) {
         : readiness?.blockReason || "Complete Build choices.";
     }
 
+    function stageClassicalCapturedVerbalIntent() {
+      const captured=ClassicalChoicePreflightTransaction?.verbalIntent;
+      if(!captured||captured.consumed||!projectOwnerOperationDecision(captured.snapshot,{current:true}))return false;
+      captured.consumed=true;
+      const contract=captured.snapshot.contract;
+      if(contract.ingressKind==='raw') {
+        PendingClassicalRawAttitudeRequest=captured.intent;
+      } else if(contract.ingressKind==='typed') {
+        if(getActiveClassicalGrammarTypedSourceOperationBinding()!==captured.binding)return false;
+        stageClassicalGrammarTypedSourceOperationBinding('vnc:derivational-operation',captured.intent);
+      } else {
+        const binding=getActiveClassicalGrammarResultBinding('vnc:derivational-operation');
+        if(binding?.ownerBindingFrame!==captured.binding)return false;
+        enterClassicalGrammarResultBindingChoice(binding.selectedBindingId,{allowExecution:false,vncSelections:captured.intent});
+      }
+      if(captured.event)HandledClassicalContinuationChoiceEvents.add(captured.event);
+      return true;
+    }
+
     function getClassicalChoiceDispatchReadiness() {
+      stageClassicalCapturedVerbalIntent();
       // Check the final draft after every native listener has run. No owner
       // result or readiness answer is cached across this choice boundary.
       const readiness = updateClassicalNativeApplyOperationState();
@@ -44363,19 +43534,13 @@ export function createUiRenderingApi(targetObject = globalThis) {
       // proposal. Reconcile that actual current control before move admission;
       // the existing issued-frame handler still validates and stages its value.
       const snapshot = position.operationContract;
-      const typed = getActiveClassicalGrammarTypedSourceOperationBinding();
-      if (control?.tagName === "INPUT" && control.type === "text"
-        && snapshot?.kind === "verbal-derivation-contract"
-        && snapshot.contract.binding === typed && isCurrentVerbalDerivationSnapshot(snapshot)
-        && control.isConnected !== false && doc?.getElementById(control.id) === control
-        && !control.disabled && !control.readOnly && !position.construction.sourcePending
-        && ((typed.requiredChoiceIds || []).some(key => getClassicalCapabilityBindingControlsForChoice(key).includes(control))
-          || targetObject.isClassicalNahuatlCompoundPredicateBindingFrame?.(typed.ownerBindingFrame) === true
-            && typed.ownerBindingFrame.exactSourceFrame === typed.exactSource
-            && getClassicalCapabilityBindingControlsForChoice("compoundMatrixStem").includes(control))
-        && !position.legalMoves.some(move => move.type === "choice" && move.id === id)) {
-        syncClassicalCapabilityApplyOperationState();
-        return ClassicalConstructionSession.position.legalMoves.some(move => move.type === "choice" && move.id === id);
+      if(snapshot?.kind === 'verbal-derivation-contract') {
+        const field=findOwnerOperationControlChoice(snapshot,control?.id,{current:true});
+        const parsed=readOwnerOperationControlValue(field,value,targetObject.document);
+        if(control?.isConnected===false || doc?.getElementById(control.id)!==control || !field
+          || !isOwnerOperationChoiceAllowed(snapshot,field.choiceId,parsed,{current:true}))return false;
+        if(!position.legalMoves.some(move=>move.type==='choice'&&move.id===id)) syncClassicalCapabilityApplyOperationState();
+        return ClassicalConstructionSession.position.legalMoves.some(move=>move.type==='choice'&&move.id===id);
       }
       if (!id || control?.tagName !== "SELECT" || control.disabled || control.readOnly
         || Object.hasOwn(position.choices, id)
@@ -44401,6 +43566,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const type = id === "classical-capability-navigator-operation" ? "route"
         : id === "classical-capability-navigator-binding" ? "role" : "choice";
       const position = ClassicalConstructionSession.position;
+      if(type==='choice' && position.operationContract?.kind==='verbal-derivation-contract') {
+        const field=findOwnerOperationControlChoice(position.operationContract,control.id,{current:true});
+        const parsed=readOwnerOperationControlValue(field,value,targetObject.document);
+        if(!field || !isOwnerOperationChoiceAllowed(position.operationContract,field.choiceId,parsed,{current:true}))return false;
+      }
       const currentValue = control.type === "checkbox" ? control.checked : control.value;
       const offered = control.tagName !== "SELECT" || Array.from(control.options || []).some(option =>
         option.value === value && !option.disabled && !option.hidden
@@ -44421,7 +43591,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         const previousChoiceTransaction = ClassicalChoicePreflightTransaction;
         const previousStaging = ClassicalPositionStaging;
         ClassicalChoicePreflightTransaction = {};
-        if(type === "choice"){if(ClassicalConstructionSession.position.operationContract?.kind==="nuclear-sentence-operation-contract")captureClassicalNuclearSentenceChoiceIntent(control,value);captureClassicalDenominalChoiceIntent(control,value);if(ClassicalConstructionSession.position.operationContract?.kind==="particle-operation-contract")captureClassicalParticleChoiceIntent(control,value);}
+        if(type === "choice"){captureClassicalVerbalChoiceIntent(control,value);if(ClassicalConstructionSession.position.operationContract?.kind==="nuclear-sentence-operation-contract")captureClassicalNuclearSentenceChoiceIntent(control,value);captureClassicalDenominalChoiceIntent(control,value);if(ClassicalConstructionSession.position.operationContract?.kind==="particle-operation-contract")captureClassicalParticleChoiceIntent(control,value);}
         ClassicalPositionStaging = true;
         try {
           try {
@@ -45067,19 +44237,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
           "introductoryParticle", "introductoryModifier", "prefaceParticle", "directionalPrefix", "tlaFusion"]
           .forEach(id => bindingChoiceIds.add(id));
       }
-      const frequentativeRepetitions = targetObject.document
-        ?.getElementById?.(
-          "classical-rule-logic-frequentative-repetitions"
-        ) || null;
-      if (
-        binding?.operationId === "vnc:derivational-operation"
-        && frequentativeRepetitions
-        && frequentativeRepetitions.disabled !== true
-        && frequentativeRepetitions.closest?.(
-          "label, [data-classical-rule-control]"
-        )?.hidden !== true
-      ) {
-        bindingChoiceIds.add("frequentativeRepetitions");
+      if(binding?.operationId === 'vnc:derivational-operation') {
+        for(const key of Object.keys(binding.ownerBindingFrame?.ownerChoiceOptionProjection || {})) bindingChoiceIds.add(key);
       }
       bindingChoiceIds.forEach(choiceId => {
         getClassicalCapabilityBindingControlsForChoice(choiceId)
@@ -45118,6 +44277,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
       choiceId = ""
     ) {
       const normalized = String(choiceId || "").trim();
+      const lateField=projectOwnerOperationDecision(readClassicalLateOwnerDecisionSnapshot())?.choices?.[normalized];
+      if(lateField?.controlId) return [lateField.controlId,...(lateField.controlParts||[]).map(x=>x.controlId)].map(id=>targetObject.document?.getElementById(id)).filter(Boolean);
       if (normalized === "sentenceType") {
         return ["classical-rule-logic-sentence-surface", "classical-rule-logic-optative-use"]
           .map(id => targetObject.document?.getElementById?.(id)).filter(Boolean);
@@ -45220,64 +44381,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
     }
 
     function syncClassicalStagedLateOperationPrompt(binding = null) {
-      const control = targetObject.document?.getElementById?.(
-        "classical-rule-logic-late-operation"
-      ) || null;
-      if (!control) return false;
-      const stagedRequired = Boolean(
-        binding?.operationId === "vnc:derivational-operation"
-        && binding.family === "vnc-continuation"
-        && binding.requiredChoiceIds?.includes("lateOperation")
-      );
-      const options = Array.from(control.options || []);
-      if (binding?.operationId === "vnc:derivational-operation"
-        && binding.family === "vnc-continuation") {
-        options.filter(option => ["honorific", "reverential", "pejorative"].includes(option.value))
-          .forEach(option => { option.hidden = false; option.disabled = false; });
-      }
-      let prompt = options.find(option => (
-        option.dataset?.classicalCapabilityStagedLateOperationPrompt
-          === "true"
-      )) || null;
-      const noAddedLayer = options.find(option => (
-        option !== prompt && option.value === "none"
-      )) || null;
-      if (!stagedRequired) {
-        const retainedValue = String(control.value || "").trim();
-        prompt?.remove?.();
-        if (noAddedLayer) {
-          noAddedLayer.hidden = false;
-          noAddedLayer.disabled = false;
-        }
-        control.required = false;
-        control.removeAttribute?.("aria-required");
-        if (!retainedValue && noAddedLayer) control.value = "none";
-        return false;
-      }
-      if (!prompt) {
-        prompt = targetObject.document.createElement("option");
-        prompt.value = "";
-        prompt.dataset.classicalCapabilityStagedLateOperationPrompt =
-          "true";
-        control.prepend(prompt);
-      }
-      prompt.textContent = "Choose the next VNC derivation layer";
-      prompt.hidden = false;
-      prompt.disabled = true;
-      if (noAddedLayer) {
-        noAddedLayer.hidden = true;
-        noAddedLayer.disabled = true;
-      }
-      if (![...options].some(option => (
-        option.value === control.value
-        && option.value !== "none"
-        && option.disabled !== true
-      ))) {
-        control.value = "";
-      }
-      control.required = true;
-      control.setAttribute?.("aria-required", "true");
-      return true;
+      return binding?.operationId === 'vnc:derivational-operation'
+        ? syncOwnerOperationDecisionControls(readClassicalLateOwnerDecisionSnapshot(),targetObject.document) : false;
     }
 
     function syncClassicalStagedPersonalNameOuterSubjectPrompt(
@@ -45462,47 +44567,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
       return layer2Count > 0;
     }
 
-    function syncClassicalFrequentativeResultBindingChoice(
-      binding = null
-    ) {
-      if (
-        binding?.operationId !== "vnc:derivational-operation"
-        || binding.family !== "vnc-continuation"
-      ) return false;
-      const operation = String(
-        targetObject.document?.getElementById?.(
-          "classical-rule-logic-late-operation"
-        )?.value || "none"
-      ).trim();
-      const variant = String(
-        targetObject.document?.getElementById?.(
-          "classical-rule-logic-late-variant"
-        )?.value || ""
-      ).trim();
-      const visible = operation === "frequentative"
-        && [
-          "ordinary-short-glottal",
-          "ordinary-long",
-          "ordinary-short",
-          "destockal-intransitive",
-          "destockal-causative",
-        ].includes(variant);
-      const control = targetObject.document?.getElementById?.(
-        "classical-rule-logic-frequentative-repetitions"
-      ) || null;
-      const wrapper = control?.closest?.(
-        "label, [data-classical-rule-control]"
-      ) || null;
-      if (wrapper) {
-        wrapper.hidden = !visible;
-        wrapper.setAttribute("aria-hidden", String(!visible));
-        wrapper.setAttribute("aria-disabled", String(!visible));
-      }
-      if (control) {
-        control.disabled = !visible;
-        control.setAttribute?.("aria-disabled", String(!visible));
-      }
-      return visible;
+    function syncClassicalFrequentativeResultBindingChoice(binding=null) {
+      return binding?.operationId === 'vnc:derivational-operation'
+        ? syncOwnerOperationDecisionControls(readClassicalLateOwnerDecisionSnapshot(),targetObject.document) : false;
     }
 
     function stageClassicalRelationalResultBindingChoicePrompts(
@@ -46174,84 +45241,15 @@ export function createUiRenderingApi(targetObject = globalThis) {
       return true;
     }
 
-    function getClassicalVncContinuationHonorificControlFrame() {
-      const binding = ActiveClassicalGrammarResultBinding;
-      const owner = binding?.ownerBindingFrame;
-      const request = owner?.ownerRequest;
-      if (binding?.operationId !== "vnc:derivational-operation"
-        || !targetObject.isClassicalNahuatlVncContinuationBindingFrame?.(owner)
-        || owner.exactInputResult !== binding.exactResult
-        || owner.ownerInputAcceptanceProven !== true
-        || request?.lateOperation !== "honorific"
-        || !["causative", "applicative"].includes(request.lateVariant)
-        || !targetObject.isClassicalNahuatlVncApplicationFrame?.(request.sourceApplicationFrame)) {
-        return null;
-      }
-      const compoundContext = targetObject.getClassicalNahuatlCompoundAttitudeMemberContext?.(
-        request.attitudeCompoundClosureFrame, request,
-      );
-      if (compoundContext?.sourceApplicationFrame?.authorizationStatus === "authorized") {
-        const application = targetObject.evaluateClassicalNahuatlVncApplication({
-          ...compoundContext.sourceRequest,
-          requestedDerivation: request.lateVariant, derivationType: request.lateVariant,
-          derivationOptionId: request.honorificDerivationOptionId || "",
-          ...(request.lateVariant === "causative"
-            ? {causativeObjectKind: "reflexive"}
-            : {applicativeObjectKind: "reflexive", applicativeObjectPerson: ""}),
-        });
-        return targetObject.isClassicalNahuatlVncDerivationOptionInventory?.(
-          application?.controlFrame?.derivationOptionInventory,
-        ) ? application.controlFrame : null;
-      }
-      // Use the same ordinary derivation and exact parent as the honor owner.
-      // The basal editor's former Direct inventory cannot supply these choices.
-      const application = targetObject.evaluateClassicalNahuatlVncApplication({
-        ...request,
-        requestedDerivation: request.lateVariant,
-        derivationType: request.lateVariant,
-        derivationOptionId: request.honorificDerivationOptionId || "",
-        ...(request.lateVariant === "causative"
-          ? { causativeObjectKind: "reflexive" }
-          : { applicativeObjectKind: "reflexive", applicativeObjectPerson: "" }),
-      }, request.sourceApplicationFrame.resultFrame);
-      const controls = application?.controlFrame;
-      return targetObject.isClassicalNahuatlVncDerivationOptionInventory?.(
-        controls?.derivationOptionInventory,
-      ) ? controls : null;
-    }
-
     function syncClassicalVncContinuationFormationChoice() {
-      const owner = ActiveClassicalGrammarResultBinding?.ownerBindingFrame;
-      const compound = owner?.ownerRequest?.attitudeCompoundClosureFrame;
-      const meaningControl = targetObject.document?.getElementById?.("classical-rule-logic-compound-attitude-analysis");
-      const meaningWrapper = meaningControl?.closest?.("label, [data-classical-rule-control]");
-      const meaningVisible = targetObject.isClassicalNahuatlClosureFrame?.(compound) === true
-        && compound.operationFrame.variant === "connective-t"
-        && ["honorific", "pejorative"].includes(owner.ownerRequest.lateOperation);
-      if (meaningWrapper) {meaningWrapper.hidden = !meaningVisible; meaningWrapper.setAttribute("aria-hidden", String(!meaningVisible));}
-      if (meaningControl) {
-        meaningControl.disabled = !meaningVisible;
-        if (meaningVisible) meaningControl.value = owner.ownerRequest.compoundLexicalizationAnalysis?.selectedStructure || "compositional";
-        if (!meaningControl.dataset.classicalCompoundMeaningBound) {
-          meaningControl.dataset.classicalCompoundMeaningBound = "true";
-          meaningControl.addEventListener("change", event => handleClassicalCapabilityStagedGrammarControlChange(meaningControl, event));
-        }
-      }
-      const honorificControls = getClassicalVncContinuationHonorificControlFrame();
-      const controls = honorificControls || getClassicalVncContinuationControlFrame();
+      if (ActiveClassicalGrammarResultBinding?.operationId === 'vnc:derivational-operation')
+        return syncOwnerOperationDecisionControls(readClassicalLateOwnerDecisionSnapshot(),targetObject.document);
+      const controls = getClassicalVncContinuationControlFrame();
       const inventory = controls?.derivationOptionInventory;
       const control = targetObject.document?.getElementById?.(
         "classical-rule-logic-derivation-option"
       );
       if (!control || !controls) return;
-      if (honorificControls) {
-        const wrapper = control.closest?.("label, [data-classical-rule-control]");
-        if (wrapper) {
-          wrapper.hidden = inventory.options.length < 2;
-          wrapper.setAttribute("aria-hidden", String(wrapper.hidden));
-          wrapper.setAttribute("aria-disabled", "false");
-        }
-      }
       if (!inventory?.options?.length) {
         const prompt = targetObject.document.createElement("option");
         prompt.value = "";
@@ -46353,70 +45351,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
       return true;
     }
 
-    function syncClassicalVncContinuationHonorificParticipantChoice(binding = null) {
-      const owner = binding?.ownerBindingFrame;
-      const preview = owner?.ownerPreflightResult;
-      if (binding?.family !== "vnc-continuation"
-        || binding.operationId !== "vnc:derivational-operation"
-        || targetObject.isClassicalNahuatlVncContinuationBindingFrame?.(owner) !== true
-        || owner.exactInputResult !== binding.exactResult
-        || owner.ownerInputAcceptanceProven !== true
-        || targetObject.isClassicalNahuatlClosureFrame?.(preview) !== true
-        || preview.authorizationStatus !== "authorized"
-        || !["honorific", "reverential", "pejorative"].includes(preview.operationFrame?.operation)) return false;
-      const facts = preview.operationFrame.operationFacts;
-      const route = targetObject.document?.getElementById?.("classical-rule-logic-late-variant");
-      const reverential = preview.operationFrame.operation === "reverential";
-      const pejorative = preview.operationFrame.operation === "pejorative";
-      if (route && (reverential || pejorative || facts?.mainlineReflexiveTopologySelectsRouteAutomatically === true)) {
-        route.value = "preterit-embed";
-        route.disabled = true;
-        route.setAttribute?.("aria-disabled", "true");
-        const wrapper = route.closest?.("label, [data-classical-rule-control]");
-        if (wrapper) {
-          wrapper.hidden = true;
-          wrapper.setAttribute("aria-hidden", "true");
-          wrapper.setAttribute("aria-disabled", "true");
-        }
-      }
-      if (reverential) {
-        const participant = targetObject.document?.getElementById?.("classical-rule-logic-honored-participant");
-        if (participant) {
-          participant.value = facts.innerHonoredParticipant;
-          participant.disabled = true;
-          participant.setAttribute?.("aria-disabled", "true");
-          const wrapper = participant.closest?.("label, [data-classical-rule-control]");
-          if (wrapper) {
-            wrapper.hidden = true;
-            wrapper.setAttribute("aria-hidden", "true");
-          }
-        }
-        return true;
-      }
-      const allowed = pejorative ? facts.possibleDisparagedParticipants : facts?.possibleHonoredParticipants;
-      if (!Array.isArray(allowed) || !allowed.length) return false;
-      const control = targetObject.document?.getElementById?.(
-        "classical-rule-logic-honored-participant"
-      );
-      if (!control) return false;
-      const choiceRequired = (pejorative ? facts.disparagedParticipantChoiceRequired : facts.honoredParticipantChoiceRequired) === true;
-      const wrapper = control.closest?.("label, [data-classical-rule-control]");
-      if (wrapper) {
-        const label = wrapper.querySelector?.(".classical-rule-control__label");
-        if (label) label.textContent = pejorative ? "Disparaged participant" : "Respected participant";
-        wrapper.hidden = !choiceRequired;
-        wrapper.setAttribute("aria-hidden", String(!choiceRequired));
-        wrapper.setAttribute("aria-disabled", String(!choiceRequired));
-      }
-      control.disabled = !choiceRequired;
-      control.setAttribute?.("aria-disabled", String(!choiceRequired));
-      for (const option of Array.from(control.options || [])) {
-        option.disabled = !allowed.includes(option.value);
-      }
-      if (!choiceRequired) control.value = pejorative
-        ? facts.disparagedParticipantAutomaticallySelected || facts.disparagedParticipant
-        : facts.honoredParticipantAutomaticallySelected || facts.honoredParticipant;
-      return true;
+    function syncClassicalVncContinuationHonorificParticipantChoice(binding=null) {
+      return binding?.operationId === 'vnc:derivational-operation'
+        ? syncOwnerOperationDecisionControls(readClassicalLateOwnerDecisionSnapshot(),targetObject.document) : false;
     }
 
     function syncClassicalOwnerhoodConnectiveChoices(binding = null) {
@@ -46632,6 +45569,12 @@ export function createUiRenderingApi(targetObject = globalThis) {
         // The retained Result supplies this operation. Withdraw controls for
         // an earlier Source construction before presenting its owner choices.
         syncClassicalNominalConstructionControlVisibility("none");
+      }
+      if (binding.operationId === 'vnc:derivational-operation') {
+        syncClassicalRetainedVncGrammarOrganizer(binding);
+        syncClassicalLessons27282933Closure();
+        syncClassicalRejectedVncDraft(binding);
+        return true;
       }
       if (binding.operationId === "nnc:adverbial") {
         syncClassicalCustomConstructionGrammarPresentation(
@@ -47985,10 +46928,14 @@ export function createUiRenderingApi(targetObject = globalThis) {
         && !control.closest?.("[data-classical-source-identity-controls]");
       if (rawAttitude) {
         if (event) HandledClassicalContinuationChoiceEvents.add(event);
-        syncClassicalNominalConstructionControlVisibility("attitude-vnc");
-        PendingClassicalRawAttitudeRequest = buildClassicalAttitudeVncOperationRequest(
-          buildClassicalNominalConstructionUiRequest()
-        );
+        const snapshot=ClassicalConstructionSession.position.operationContract;
+        const captured=ClassicalChoicePreflightTransaction?.verbalIntent;
+        PendingClassicalRawAttitudeRequest = captured?.snapshot===snapshot
+          ? captured.intent
+          : snapshot?.contract.ingressKind==='raw' && !ClassicalRawAttitudeSourceControlIds.includes(control?.id)
+            ? readOwnerOperationControlIntent(snapshot,targetObject.document,snapshot.contract.request,control)
+            : buildClassicalAttitudeVncOperationRequest(buildClassicalNominalConstructionUiRequest());
+        syncClassicalNominalConstructionControlVisibility('attitude-vnc');
         if (ClassicalChoicePreflightTransaction) {
           // This request is still being prepared by native listeners. Its
           // dispatcher performs the mandatory current-owner check once settled.
@@ -48227,7 +47174,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         && !control.closest?.("[data-classical-source-identity-controls]")) {
         const context=captureClassicalIssuedBindingEvent(typedSourceBinding);
         if(!context)return true;
-        const selections=getClassicalVncContinuationBindingSelections(typedSourceBinding);
+        const selections=getClassicalVncContinuationBindingSelections(typedSourceBinding,{editedControl:control});
         const candidate=targetObject.issueClassicalGrammarTypedSourceOperationBindingFrame(
           typedSourceBinding.navigator,typedSourceBinding.operationId,selections);
         if(!retainClassicalIssuedBindingCandidate(context,candidate))return true;
@@ -48472,7 +47419,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
         || "";
       if (!control || !binding || !selectedBindingId) return false;
       const familyChoiceIds = binding.family === "vnc-continuation"
-        ? Object.keys(CLASSICAL_CAPABILITY_BINDING_CONTROL_IDS)
+        ? binding.operationId === "vnc:derivational-operation"
+          ? Object.keys(projectOwnerOperationDecision(readClassicalLateOwnerDecisionSnapshot())?.choices || {})
+          : Object.keys(CLASSICAL_CAPABILITY_BINDING_CONTROL_IDS)
         : ["formation-result", "formation"].includes(binding.family)
             ? Object.freeze([
                 ...new Set([
@@ -48588,35 +47537,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       }
       if (binding.family === "vnc-continuation"
         && binding.operationId === "vnc:derivational-operation") {
-        const current = ActiveClassicalGrammarResultBinding || binding;
-        const request = current.ownerBindingFrame?.ownerRequest
-          || current.ownerBindingFrame?.outerVncApplicationFrame?.normalizedRequest
-          || {};
-        const pendingSurfaceFrame = {
-          basalUnit: "vnc",
-          state: {
-            ...request,
-            ...getClassicalVncContinuationBindingSelections(current),
-            stem: request.sourceStem || "",
-            valence: request.sourceValence || "intransitive",
-            vncVoice: request.requestedVoice || request.voice || "active",
-            vncVoiceOperation: request.requestedVoice || request.voice || "active",
-          },
-        };
-        syncClassicalLessons27282933Closure(pendingSurfaceFrame);
-        const moodContract = syncClassicalRuleLogicMoodBoundControlOptions(pendingSurfaceFrame);
-        syncClassicalRuleLogicLesson11TenseOptions(pendingSurfaceFrame, moodContract);
-        const finalSelections = getClassicalVncContinuationBindingSelections(current);
-        if (finalSelections.mood !== pendingSurfaceFrame.state.mood
-          || finalSelections.tense !== pendingSurfaceFrame.state.tense
-          || finalSelections.compoundNonactiveScope !== pendingSurfaceFrame.state.compoundNonactiveScope
-          || finalSelections.compoundMatrixNonactiveOptionId !== pendingSurfaceFrame.state.compoundMatrixNonactiveOptionId) {
-          // Availability may select a legal fallback. Stage that displayed
-          // choice once; changing a menu never executes the pending Result.
-          enterClassicalGrammarResultBindingChoice(selectedBindingId, {
-            allowExecution: false
-          });
-        }
+        syncClassicalLessons27282933Closure();
       }
       syncClassicalActiveResultBindingChoiceVisibility(
         ActiveClassicalGrammarResultBinding

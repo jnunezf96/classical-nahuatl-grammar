@@ -1162,6 +1162,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
           ? "unlisted-source"
           : "unlisted-source-unresolved",
         defaultedToReal: false,
+        allowedResolvedKinds: CLASSICAL_NAHUATL_VNC_APPLICATION_SOURCE_INITIAL_I_KINDS,
         userSelectionAccepted: Boolean(selectedKind)
       });
     }
@@ -12940,7 +12941,8 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
             requiredResultRoles.push("attitude-source-closure");
           }
         }
-        if (requiredResultRoles.length) {
+        if (normalizedOperationId === 'vnc:derivational-operation') requiredChoiceIds = [];
+        if (requiredResultRoles.length && normalizedOperationId !== 'vnc:derivational-operation') {
           bindingStatus = "additional-result-required";
           blockReason = "classical-vnc-continuation-additional-result-required";
         } else if (requiredChoiceIds.length) {
@@ -13277,6 +13279,14 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
               );
             requiredChoiceIds = sourceRecord.compoundPredicateSourceFrame && ownerBlockReason === "typed-compound-matrix-required"
               ? ["compoundMatrixStem"] : [...requirements.choiceIds];
+            if (normalizedOperationId === 'vnc:derivational-operation' && ownerPreflightValidated) {
+              requiredChoiceIds.push(...Object.values(ownerPreflightResult.choiceOptionProjection || {})
+                .filter(field => field.required === true && field.applicable === true
+                  && (field.inputKind === 'enum' ? !field.options?.some(option => option.availabilityStatus === 'available'
+                    && option.optionId === (field.authoredValue ?? field.selectedValue))
+                    : !String(field.authoredValue ?? field.selectedValue ?? '').trim()))
+                .map(field => field.choiceId));
+            }
             requiredResultRoles = sourceRecord.compoundPredicateSourceFrame && ownerBlockReason === "typed-compound-matrix-required"
               ? [] : [...requirements.resultRoles];
             if (requiredResultRoles.length) {
@@ -13329,7 +13339,9 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       const bindingIds = Object.freeze(sourceAccepted
         ? [`${normalizedOperationId}:source-result`]
         : []);
-      const ownerChoiceOptionProjection = deepFreezeClassicalNahuatlVncApplicationValue({
+      const ownerChoiceOptionProjection = normalizedOperationId === 'vnc:derivational-operation'
+        && ownerPreflightValidated && ownerPreflightResult?.choiceOptionProjection
+        ? ownerPreflightResult.choiceOptionProjection : deepFreezeClassicalNahuatlVncApplicationValue({
         ...(finiteConnectorOptions ? {finiteSingularConnector: finiteConnectorOptions} : {}),
         ...(admonitiveNumberFrame ? {
           admonitivePluralEnding: admonitiveNumberFrame.num2Variants.map(optionId => (

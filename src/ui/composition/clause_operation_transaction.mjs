@@ -1,9 +1,9 @@
-import * as adjectival from './adjectival_operation_transaction.mjs?adjectivalSession=20261028-1';
-import * as adjunction from './adjunction_operation_transaction.mjs?adjunctionSession=20261028-2';
-import * as supplementation from './supplementation_operation_transaction.mjs?supplementationSession=20261028-1&utteranceProjection=20261028-1';
-import * as comparison from './comparison_operation_transaction.mjs?issuedBinding=20261028-1';
-import * as conjunction from './conjunction_operation_transaction.mjs?issuedBinding=20261028-1';
-import * as complement from './complement_operation_transaction.mjs?issuedBinding=20261028-1';
+import * as adjectival from './adjectival_operation_transaction.mjs?adjectivalSession=20261028-1&ownerDecision=20261029-12';
+import * as adjunction from './adjunction_operation_transaction.mjs?adjunctionSession=20261028-2&ownerDecision=20261029-12';
+import * as supplementation from './supplementation_operation_transaction.mjs?supplementationSession=20261028-1&utteranceProjection=20261028-1&ownerDecision=20261029-12';
+import * as comparison from './comparison_operation_transaction.mjs?issuedBinding=20261028-1&ownerDecision=20261029-12';
+import * as conjunction from './conjunction_operation_transaction.mjs?issuedBinding=20261028-1&ownerDecision=20261029-12';
+import * as complement from './complement_operation_transaction.mjs?issuedBinding=20261028-1&ownerDecision=20261029-12';
 const adapters={
  'adjectival-operation-contract':{issue:adjectival.issueAdjectivalOperationSnapshot,current:adjectival.isCurrentAdjectivalOperationSnapshot,read:adjectival.readAdjectivalOperationSelections,transition:adjectival.transitionAdjectivalOperationSnapshot},
  'adjunction-operation-contract':{issue:adjunction.issueAdjunctionOperationSnapshot,current:adjunction.isCurrentAdjunctionOperationSnapshot,read:adjunction.readAdjunctionOperationSelections,transition:adjunction.transitionAdjunctionOperationSnapshot},

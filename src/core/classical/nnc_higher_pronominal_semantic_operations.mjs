@@ -6,7 +6,7 @@
 
 import {
   createClassicalNahuatlNncLayerEvaluatorApi,
-} from "./nnc_layer_evaluator.mjs?andrewsRelease=20261024-1";
+} from "./nnc_layer_evaluator.mjs?andrewsRelease=20261024-1&ownerDecision=20261029-12";
 
 function cloneValue(value, seen = new WeakMap()) {
   if (!value || typeof value !== "object") return value;

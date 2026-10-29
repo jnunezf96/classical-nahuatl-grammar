@@ -1,7 +1,7 @@
 // Non-authorizing validation projection for the independent semantic owners in
 // Lessons 57-58. The projection shares typed construction mechanics only.
 
-import { createClassicalNahuatlVncApplicationModule } from "../../application/classical/vnc_application.mjs?v=20260826-relational-role-340&andrewsRelease=20261024-1&interfaceRelease=1.2.36";
+import { createClassicalNahuatlVncApplicationModule } from "../../application/classical/vnc_application.mjs?v=20260826-relational-role-340&andrewsRelease=20261024-1&interfaceRelease=1.2.36&ownerDecision=20261029-12";
 import { createClassicalNahuatlSourceStemInventoryApi } from "./source_stem_inventory.mjs?interfaceRelease=1.2.36";
 import { createClassicalNahuatlSupplementationApi } from "../sentence/supplementation.mjs?andrewsRelease=20261024-1&supplementationSession=20261028-1&utteranceProjection=20261028-1";
 import { createClassicalNahuatlDenominalVncGrammarApi } from "./denominal_vnc_grammar.mjs?v=20260826-relational-role-340&andrewsRelease=20261024-1&interfaceRelease=1.2.36";

@@ -1,4 +1,4 @@
-import {createOwnerOperationProtocol} from './owner_operation_protocol.mjs?issuedBinding=20261028-1';
+import {createOwnerOperationProtocol} from './owner_operation_protocol.mjs?issuedBinding=20261028-1&ownerDecision=20261029-12';
 const operation='nnc:personal-name',scopes=new WeakSet(),contracts=new WeakSet(),issued=new WeakSet(),events=new WeakMap(),cache=new WeakMap();
 const same=(a,b)=>a===b||Boolean(a&&b&&typeof a==='object'&&typeof b==='object'&&!a.kind&&!b.kind&&Object.keys(a).length===Object.keys(b).length&&Object.keys(a).every(k=>same(a[k],b[k])));
 function immutable(x,refs){if(!x||typeof x!=='object'||refs.has(x))return x;if(x.kind?.startsWith('classical-'))throw Error('unrecognized-parent');return Object.freeze(Array.isArray(x)?x.map(v=>immutable(v,refs)):Object.fromEntries(Object.entries(x).map(([k,v])=>[k,immutable(v,refs)])));}

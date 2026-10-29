@@ -5,7 +5,7 @@ import classical_personal_name_nnc_two_tier_statement_downgrade from "./nuclear-
 import classical_personal_name_nnc_fixed_outer_number from "./nuclear-owner-specs/classical-personal-name-nnc-fixed-outer-number.mjs";
 import classical_personal_name_nnc_inner_subject_barrier from "./nuclear-owner-specs/classical-personal-name-nnc-inner-subject-barrier.mjs";
 import classical_personal_name_nnc_quoted_predicate_translation_boundary from "./nuclear-owner-specs/classical-personal-name-nnc-quoted-predicate-translation-boundary.mjs";
-import classical_personal_name_nnc_vnc_or_nnc_source_domain from "./nuclear-owner-specs/classical-personal-name-nnc-vnc-or-nnc-source-domain.mjs";
+import classical_personal_name_nnc_vnc_or_nnc_source_domain from "./nuclear-owner-specs/classical-personal-name-nnc-vnc-or-nnc-source-domain.mjs?ownerDecision=20261029-12";
 import classical_personal_name_nnc_preterit_agentive_source from "./nuclear-owner-specs/classical-personal-name-nnc-preterit-agentive-source.mjs";
 import classical_personal_name_nnc_honorific_inner_number_shield from "./nuclear-owner-specs/classical-personal-name-nnc-honorific-inner-number-shield.mjs";
 import classical_personal_name_nnc_general_use_honorific_alternative from "./nuclear-owner-specs/classical-personal-name-nnc-general-use-honorific-alternative.mjs";
@@ -42,7 +42,7 @@ import classical_late_grammar_future_imminence_with_ye from "./nuclear-owner-spe
 import classical_late_grammar_true_valence_exception from "./nuclear-owner-specs/classical-late-grammar-true-valence-exception.mjs";
 import classical_late_grammar_compound_object_not_valence_exception from "./nuclear-owner-specs/classical-late-grammar-compound-object-not-valence-exception.mjs";
 import classical_late_grammar_absolute_topic from "./nuclear-owner-specs/classical-late-grammar-absolute-topic.mjs";
-import classical_late_grammar_specificity_mismatch_domain from "./nuclear-owner-specs/classical-late-grammar-specificity-mismatch-domain.mjs";
+import classical_late_grammar_specificity_mismatch_domain from "./nuclear-owner-specs/classical-late-grammar-specificity-mismatch-domain.mjs?ownerDecision=20261029-12";
 import classical_late_grammar_nonspecific_subject_specific_supplement from "./nuclear-owner-specs/classical-late-grammar-nonspecific-subject-specific-supplement.mjs";
 import classical_late_grammar_nonspecific_object_specific_supplement from "./nuclear-owner-specs/classical-late-grammar-nonspecific-object-specific-supplement.mjs";
 import classical_late_grammar_same_extralinguistic_referent from "./nuclear-owner-specs/classical-late-grammar-same-extralinguistic-referent.mjs";
@@ -53,7 +53,7 @@ import classical_late_grammar_lexical_nounstem_l from "./nuclear-owner-specs/cla
 import classical_late_grammar_instrumental_az_matrix from "./nuclear-owner-specs/classical-late-grammar-instrumental-az-matrix.mjs";
 import classical_late_grammar_instrumental_connective_hu from "./nuclear-owner-specs/classical-late-grammar-instrumental-connective-hu.mjs";
 import classical_late_grammar_instrumental_huia_continuation from "./nuclear-owner-specs/classical-late-grammar-instrumental-huia-continuation.mjs";
-import classical_late_grammar_closed_construction_domain from "./nuclear-owner-specs/classical-late-grammar-closed-construction-domain.mjs";
+import classical_late_grammar_closed_construction_domain from "./nuclear-owner-specs/classical-late-grammar-closed-construction-domain.mjs?ownerDecision=20261029-12";
 import classical_late_grammar_solid_spelling_supplement from "./nuclear-owner-specs/classical-late-grammar-solid-spelling-supplement.mjs";
 import classical_late_grammar_connective_t_nounstem_embed_vnc from "./nuclear-owner-specs/classical-late-grammar-connective-t-nounstem-embed-vnc.mjs";
 import classical_late_grammar_preterit_agentive_object_complement from "./nuclear-owner-specs/classical-late-grammar-preterit-agentive-object-complement.mjs";
@@ -74,7 +74,7 @@ import classical_late_grammar_active_incorporated_noun_adverbial from "./nuclear
 import classical_late_grammar_nonactive_incorporated_means_instrument from "./nuclear-owner-specs/classical-late-grammar-nonactive-incorporated-means-instrument.mjs";
 import classical_late_grammar_textual_reanalysis_diagnostic from "./nuclear-owner-specs/classical-late-grammar-textual-reanalysis-diagnostic.mjs";
 import { createClassicalPersonalNameNncValidationSemanticOperationsApi } from "./personal_name_nnc_validation_semantic_operations.mjs?v=20260826-relational-role-340&andrewsRelease=20261024-1&interfaceRelease=1.2.36";
-import { createClassicalLateGrammarValidationSemanticOperationsApi } from "./late_grammar_validation_semantic_operations.mjs?v=20260826-relational-role-340&andrewsRelease=20261024-1&interfaceRelease=1.2.37&supplementationSession=20261028-1&utteranceProjection=20261028-1";
+import { createClassicalLateGrammarValidationSemanticOperationsApi } from "./late_grammar_validation_semantic_operations.mjs?v=20260826-relational-role-340&andrewsRelease=20261024-1&interfaceRelease=1.2.37&supplementationSession=20261028-1&utteranceProjection=20261028-1&ownerDecision=20261029-12";
 import { createRoutineSemanticOwnerMechanicsApi } from "./transcription_owner_mechanics.mjs";
 const OWNER_SPECS = Object.freeze([
   classical_personal_name_nnc_source_opacity_analysis,

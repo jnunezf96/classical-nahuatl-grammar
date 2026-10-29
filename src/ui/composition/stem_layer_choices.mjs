@@ -10,6 +10,7 @@ export function syncStemLayerChoices(document, state = {}) {
     menu = document.createElement('select');
     menu.id = 'classical-stem-layer';
     menu.dataset.buildTaskDisplay = 'true';
+    menu.dataset.classicalCompactChoiceDisplay = 'true';
     menu.dataset.classicalMirrorsControl = native.id;
     menu.setAttribute('aria-label', 'Change the verb stem');
     native.after(menu);
@@ -31,6 +32,7 @@ export function syncStemLayerChoices(document, state = {}) {
   }
   states.set(menu, state);
   const host = native.closest?.('label');
+  if (host) host.htmlFor = menu.id;
   if (host && state.nominalActive && !nominalHosts.has(host)) {
     nominalHosts.set(host, host.hidden);
     host.hidden = true;

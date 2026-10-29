@@ -1,4 +1,4 @@
-import {createOwnerOperationProtocol} from './owner_operation_protocol.mjs?issuedBinding=20261028-1';
+import {createOwnerOperationProtocol} from './owner_operation_protocol.mjs?issuedBinding=20261028-1&ownerDecision=20261029-12';
 // Thin owner adapter; the construction session remains the sole state store.
 export const COMPARISON_OPERATION_ROUTES=Object.freeze(['equality-iuhqui','similarity-iuhqui-principal','comparative-tachcauh-hualcah','comparative-panahuia-unspecified','similarity-reduplicative-prefix','comparative-panahuia-specified','equality-ihuan','size-ixquich','size-quezqui-no-izqui','size-more-more-correlative','comparative-adversative','comparative-negative-adverbial','question-how-much-more','superlative-adverbial','superlative-incorporated','superlative-principal-ic','similarity-downgraded-possessive-tla','similarity-tloc-relational-nnc','similarity-same-as-pronominal','similarity-incorporated-nehnequi','similarity-iuhqui-larger-concatenate','similarity-resemblance-verbstem-nnc','similarity-ihui-vnc']);
 const equal=(a,b)=>a===b || Boolean(a && b && typeof a==='object' && typeof b==='object'
