@@ -92,9 +92,11 @@ const lateVariant = ({
   lineStart,
   lineEnd,
   family,
+  operationIds = [],
+  requestAlias = false,
   canvasStatus = "conditioned-optional",
   selected = false,
-}) => option({
+}) => freeze({ ...option({
   controlId: "classical-rule-logic-late-variant",
   value,
   label,
@@ -110,7 +112,7 @@ const lateVariant = ({
   outputBehavior: value
     ? "selects one semantic operation variant; the evaluator derives the typed result"
     : "leaves the request visibly incomplete and cannot authorize generation",
-});
+}), operationIds, requestAlias });
 
 export const CLASSICAL_NAHUATL_VNC_LATE_OPERATION_UI_CONTROL_CONTRACTS =
   freeze({
@@ -135,6 +137,7 @@ export const CLASSICAL_NAHUATL_VNC_LATE_OPERATION_UI_CONTROL_CONTRACTS =
         label: "choose when required",
         lineStart: 9005,
         lineEnd: 12221,
+        operationIds: [],
         family: "",
         canvasStatus: "required",
         selected: true,
@@ -144,6 +147,7 @@ export const CLASSICAL_NAHUATL_VNC_LATE_OPERATION_UI_CONTROL_CONTRACTS =
         label: "short vowel + h",
         lineStart: 9020,
         lineEnd: 9044,
+        operationIds: ["frequentative"],
         family: "Frequentative formations",
       }),
       lateVariant({
@@ -151,6 +155,7 @@ export const CLASSICAL_NAHUATL_VNC_LATE_OPERATION_UI_CONTROL_CONTRACTS =
         label: "long vowel",
         lineStart: 9063,
         lineEnd: 9073,
+        operationIds: ["frequentative"],
         family: "Frequentative formations",
       }),
       lateVariant({
@@ -158,6 +163,7 @@ export const CLASSICAL_NAHUATL_VNC_LATE_OPERATION_UI_CONTROL_CONTRACTS =
         label: "short vowel",
         lineStart: 9074,
         lineEnd: 9086,
+        operationIds: ["frequentative"],
         family: "Frequentative formations",
       }),
       lateVariant({
@@ -165,6 +171,8 @@ export const CLASSICAL_NAHUATL_VNC_LATE_OPERATION_UI_CONTROL_CONTRACTS =
         label: "tlah-tla",
         lineStart: 9105,
         lineEnd: 9120,
+        operationIds: ["frequentative"],
+        requestAlias: true,
         family: "Frequentative formations",
       }),
       lateVariant({
@@ -172,6 +180,8 @@ export const CLASSICAL_NAHUATL_VNC_LATE_OPERATION_UI_CONTROL_CONTRACTS =
         label: "tlā-tla",
         lineStart: 9105,
         lineEnd: 9120,
+        operationIds: ["frequentative"],
+        requestAlias: true,
         family: "Frequentative formations",
       }),
       lateVariant({
@@ -179,6 +189,8 @@ export const CLASSICAL_NAHUATL_VNC_LATE_OPERATION_UI_CONTROL_CONTRACTS =
         label: "tlah-tla plus stem reduplication",
         lineStart: 9105,
         lineEnd: 9120,
+        operationIds: ["frequentative"],
+        requestAlias: true,
         family: "Frequentative formations",
       }),
       lateVariant({
@@ -186,6 +198,8 @@ export const CLASSICAL_NAHUATL_VNC_LATE_OPERATION_UI_CONTROL_CONTRACTS =
         label: "tlā-tla plus stem reduplication",
         lineStart: 9105,
         lineEnd: 9120,
+        operationIds: ["frequentative"],
+        requestAlias: true,
         family: "Frequentative formations",
       }),
       lateVariant({
@@ -193,6 +207,8 @@ export const CLASSICAL_NAHUATL_VNC_LATE_OPERATION_UI_CONTROL_CONTRACTS =
         label: "partial reflexive",
         lineStart: 9121,
         lineEnd: 9138,
+        operationIds: ["frequentative"],
+        requestAlias: true,
         family: "Frequentative formations",
       }),
       lateVariant({
@@ -200,6 +216,7 @@ export const CLASSICAL_NAHUATL_VNC_LATE_OPERATION_UI_CONTROL_CONTRACTS =
         label: "destockal intransitive",
         lineStart: 9143,
         lineEnd: 9178,
+        operationIds: ["frequentative"],
         family: "Frequentative formations",
       }),
       lateVariant({
@@ -207,6 +224,7 @@ export const CLASSICAL_NAHUATL_VNC_LATE_OPERATION_UI_CONTROL_CONTRACTS =
         label: "destockal causative",
         lineStart: 9179,
         lineEnd: 9193,
+        operationIds: ["frequentative"],
         family: "Frequentative formations",
       }),
       lateVariant({
@@ -214,6 +232,7 @@ export const CLASSICAL_NAHUATL_VNC_LATE_OPERATION_UI_CONTROL_CONTRACTS =
         label: "tz-a: applicative interpretation",
         lineStart: 9213,
         lineEnd: 9218,
+        operationIds: ["frequentative"],
         family: "Frequentative formations",
       }),
       lateVariant({
@@ -221,6 +240,7 @@ export const CLASSICAL_NAHUATL_VNC_LATE_OPERATION_UI_CONTROL_CONTRACTS =
         label: "tz-a: causative interpretation",
         lineStart: 9213,
         lineEnd: 9218,
+        operationIds: ["frequentative"],
         family: "Frequentative formations",
       }),
       lateVariant({
@@ -228,6 +248,7 @@ export const CLASSICAL_NAHUATL_VNC_LATE_OPERATION_UI_CONTROL_CONTRACTS =
         label: "destockal applicative",
         lineStart: 9219,
         lineEnd: 9233,
+        operationIds: ["frequentative"],
         family: "Frequentative formations",
       }),
       lateVariant({
@@ -235,6 +256,7 @@ export const CLASSICAL_NAHUATL_VNC_LATE_OPERATION_UI_CONTROL_CONTRACTS =
         label: "destockal type-two causative",
         lineStart: 9234,
         lineEnd: 9237,
+        operationIds: ["frequentative"],
         family: "Frequentative formations",
       }),
       lateVariant({
@@ -242,6 +264,7 @@ export const CLASSICAL_NAHUATL_VNC_LATE_OPERATION_UI_CONTROL_CONTRACTS =
         label: "extinct or fused destockal",
         lineStart: 9194,
         lineEnd: 9212,
+        operationIds: ["frequentative"],
         family: "Frequentative formations",
       }),
       lateVariant({
@@ -249,6 +272,7 @@ export const CLASSICAL_NAHUATL_VNC_LATE_OPERATION_UI_CONTROL_CONTRACTS =
         label: "uncertain ca type",
         lineStart: 9241,
         lineEnd: 9268,
+        operationIds: ["frequentative"],
         family: "Frequentative formations",
       }),
       lateVariant({
@@ -256,6 +280,7 @@ export const CLASSICAL_NAHUATL_VNC_LATE_OPERATION_UI_CONTROL_CONTRACTS =
         label: "uncertain ca: causative tz-a",
         lineStart: 9241,
         lineEnd: 9268,
+        operationIds: ["frequentative"],
         family: "Frequentative formations",
       }),
       lateVariant({
@@ -263,6 +288,7 @@ export const CLASSICAL_NAHUATL_VNC_LATE_OPERATION_UI_CONTROL_CONTRACTS =
         label: "uncertain ca: applicative tz-a",
         lineStart: 9241,
         lineEnd: 9268,
+        operationIds: ["frequentative"],
         family: "Frequentative formations",
       }),
       lateVariant({
@@ -270,6 +296,7 @@ export const CLASSICAL_NAHUATL_VNC_LATE_OPERATION_UI_CONTROL_CONTRACTS =
         label: "uncertain ca: fused tla",
         lineStart: 9241,
         lineEnd: 9268,
+        operationIds: ["frequentative"],
         family: "Frequentative formations",
       }),
       lateVariant({
@@ -277,6 +304,7 @@ export const CLASSICAL_NAHUATL_VNC_LATE_OPERATION_UI_CONTROL_CONTRACTS =
         label: "uncertain tz-ca type",
         lineStart: 9269,
         lineEnd: 9287,
+        operationIds: ["frequentative"],
         family: "Frequentative formations",
       }),
       lateVariant({
@@ -284,6 +312,7 @@ export const CLASSICAL_NAHUATL_VNC_LATE_OPERATION_UI_CONTROL_CONTRACTS =
         label: "connective-t matrix",
         lineStart: 9403,
         lineEnd: 9434,
+        operationIds: ["compound"],
         family: "Compound formations",
       }),
       lateVariant({
@@ -291,6 +320,7 @@ export const CLASSICAL_NAHUATL_VNC_LATE_OPERATION_UI_CONTROL_CONTRACTS =
         label: "reflexive matrix",
         lineStart: 9782,
         lineEnd: 9839,
+        operationIds: ["compound"],
         family: "Compound formations",
       }),
       lateVariant({
@@ -298,6 +328,7 @@ export const CLASSICAL_NAHUATL_VNC_LATE_OPERATION_UI_CONTROL_CONTRACTS =
         label: "shared object",
         lineStart: 9840,
         lineEnd: 9882,
+        operationIds: ["compound"],
         family: "Compound formations",
       }),
       lateVariant({
@@ -305,6 +336,7 @@ export const CLASSICAL_NAHUATL_VNC_LATE_OPERATION_UI_CONTROL_CONTRACTS =
         label: "special huītz carry · no connective",
         lineStart: 9435,
         lineEnd: 9577,
+        operationIds: ["compound"],
         family: "Compound formations",
       }),
       lateVariant({
@@ -312,6 +344,7 @@ export const CLASSICAL_NAHUATL_VNC_LATE_OPERATION_UI_CONTROL_CONTRACTS =
         label: "integrated future embed",
         lineStart: 9883,
         lineEnd: 9946,
+        operationIds: ["compound"],
         family: "Compound formations",
       }),
       lateVariant({
@@ -319,6 +352,7 @@ export const CLASSICAL_NAHUATL_VNC_LATE_OPERATION_UI_CONTROL_CONTRACTS =
         label: "accompanying possession",
         lineStart: 9761,
         lineEnd: 9781,
+        operationIds: ["compound"],
         family: "Compound formations",
       }),
       lateVariant({
@@ -326,6 +360,7 @@ export const CLASSICAL_NAHUATL_VNC_LATE_OPERATION_UI_CONTROL_CONTRACTS =
         label: "causative honorific",
         lineStart: 11895,
         lineEnd: 12066,
+        operationIds: ["honorific"],
         family: "Attitude formations",
       }),
       lateVariant({
@@ -333,6 +368,7 @@ export const CLASSICAL_NAHUATL_VNC_LATE_OPERATION_UI_CONTROL_CONTRACTS =
         label: "applicative honorific",
         lineStart: 11995,
         lineEnd: 12051,
+        operationIds: ["honorific"],
         family: "Attitude formations",
       }),
       lateVariant({
@@ -340,6 +376,7 @@ export const CLASSICAL_NAHUATL_VNC_LATE_OPERATION_UI_CONTROL_CONTRACTS =
         label: "preterit-embed attitude",
         lineStart: 12067,
         lineEnd: 12175,
+        operationIds: ["honorific", "reverential", "pejorative"],
         family: "Attitude formations",
       }),
     ],
@@ -728,6 +765,17 @@ export const CLASSICAL_NAHUATL_VNC_LATE_OPERATION_UI_AUTHORITY_TAGS =
       CLASSICAL_NAHUATL_VNC_LATE_OPERATION_UI_SWITCH_CONTRACTS
     ).flatMap(contract => [contract.checked, contract.unchecked]),
   ]);
+
+// Structural offerings belong to these owner records. A listed variant still
+// requires canonical Source/participant validation; metadata is not execution
+// authority. Legacy request aliases remain accepted by their grammar owner but
+// are represented by the separate shape/target controls, not duplicate options.
+export function getClassicalNahuatlVncLateVariantOptions(operation = "") {
+  return CLASSICAL_NAHUATL_VNC_LATE_OPERATION_UI_CONTROL_CONTRACTS[
+    "classical-rule-logic-late-variant"
+  ].filter(record => record.value && !record.disabled && !record.requestAlias
+    && record.operationIds.includes(String(operation).trim()));
+}
 
 export function getClassicalNahuatlVncLateOperationUiControlOptions(
   controlId = ""

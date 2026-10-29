@@ -1,3 +1,4 @@
+import {getClassicalNahuatlVncLateVariantOptions} from "../../core/classical/vnc_late_operation_ui_contract.mjs?futureObject=20261024-3&v=20261001-reader-27-2-copy-i-1&interfaceRelease=1.2.36&lateVariantInventory=20261028-1";
 import {isNuclearSentenceOperation,createNuclearSentenceScope,issueNuclearSentenceSnapshot,projectNuclearSentenceExecution,isCurrentNuclearSentenceSnapshot,captureNuclearSentenceChoiceFrame,retainNuclearSentenceBinding} from '../composition/nuclear_sentence_transaction.mjs';
 import {isParticleOperation,createParticleOperationScope,issueParticleOperationSnapshot,projectParticleOperationExecution,isCurrentParticleOperationSnapshot,captureParticleOperationChoiceFrame,adoptParticleOperationCandidate} from '../composition/particle_operation_transaction.mjs';
 import {ADJECTIVAL_OPERATION_ROUTES} from '../composition/adjectival_operation_transaction.mjs?adjectivalSession=20261028-1';
@@ -18824,33 +18825,12 @@ export function createUiRenderingApi(targetObject = globalThis) {
         )
       };
     }
-    const CLASSICAL_LATE_VARIANT_IDS_BY_OPERATION = Object.freeze({
-      frequentative: Object.freeze([
-        "ordinary-short-glottal", "ordinary-long", "ordinary-short",
-        "destockal-intransitive", "destockal-causative",
-        "destockal-causative-force", "destockal-applicative-force",
-        "destockal-lexicalized", "destockal-applicative",
-        "destockal-type-two", "uncertain-ca", "uncertain-ca-causative",
-        "uncertain-ca-applicative", "uncertain-ca-fused-tla",
-        "uncertain-tzca"
-      ]),
-      compound: Object.freeze([
-        "connective-t", "reflexive-matrix", "shared-object",
-        "huītz-carry", "future-embed", "accompanying-possession"
-      ]),
-      honorific: Object.freeze([
-        "causative", "applicative", "preterit-embed"
-      ]),
-      reverential: Object.freeze(["preterit-embed"]),
-      pejorative: Object.freeze(["preterit-embed"]),
-    });
-
     function syncClassicalLateVariantControlForOperation(
       operation = "none"
     ) {
       const normalizedOperation = String(operation || "none");
       const licensedVariants = new Set(
-        CLASSICAL_LATE_VARIANT_IDS_BY_OPERATION[normalizedOperation] || []
+        getClassicalNahuatlVncLateVariantOptions(normalizedOperation).map(option => option.value)
       );
       const variantControl = targetObject.document?.getElementById?.(
         "classical-rule-logic-late-variant"
