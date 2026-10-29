@@ -1,12 +1,12 @@
-# Grammar OS v1.2.123 release
+# Grammar OS v1.2.124 release
 
-Release name: **Canonical Compound Matrix Classes**
+Release name: **Canonical Frequentative Scope**
 
-Browser build: **20261028-compound-matrix-class-142**
+Browser build: **20261028-frequentative-scope-143**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
-- Compound matrix class choices now use the canonical owner's derivation descriptor.
-- Fixed classes stay fixed; genuine class alternatives remain available through existing controls.
-- Exact recursive and nominal Result matrices retain their inherited class and source custody.
-- This removes one interface class policy; source validation and existing grammatical defaults remain with the owner.
+- Frequentative scope choices project the canonical owner's effective typed Source facts.
+- Authored incompatible scope reaches owner rejection instead of silently becoming an open reading.
+- Explicit correction preserves accepted work until Make.
+- Existing source-continuation limitations and grammatical validation remain unchanged.

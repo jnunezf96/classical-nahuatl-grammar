@@ -3292,10 +3292,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const frequentativeTarget = String(overrides.frequentativeTarget || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-frequentative-target", "lexical-stem") || "lexical-stem").trim();
       const frequentativeInitialITreatment = String(overrides.frequentativeInitialITreatment || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-frequentative-initial-i-treatment", "ordinary") || "ordinary").trim();
       const requestedFrequentativeScope = String(overrides.frequentativeScope || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-frequentative-scope", "open") || "open").trim();
-      const frequentativeScope = requestedFrequentativeScope === "patient"
-        && requestedValence === "intransitive"
-        ? "open"
-        : requestedFrequentativeScope;
+      // Preserve authored scope so the effective typed owner can reject it.
+      const frequentativeScope = requestedFrequentativeScope;
       const purposiveSeries = String(overrides.purposiveSeries || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-purposive-series", "outbound-nonpast-indicative") || "outbound-nonpast-indicative").trim();
       const purposiveIrregularPluralN = Object.prototype.hasOwnProperty.call(overrides, "purposiveIrregularPluralN")
         ? overrides.purposiveIrregularPluralN === true
@@ -19215,22 +19213,12 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const frequentativeScopeControl = targetObject.document.getElementById(
         "classical-rule-logic-frequentative-scope"
       );
-      const patientScopeOption = Array.from(
-        frequentativeScopeControl?.options || []
-      ).find(option => option.value === "patient") || null;
-      const patientScopeAvailable = String(
-        surfaceFrame?.state?.valence || "intransitive"
-      ) !== "intransitive";
-      if (patientScopeOption) {
-        patientScopeOption.hidden = !patientScopeAvailable;
-        patientScopeOption.disabled = !patientScopeAvailable;
+      const frequentativeScopeChoices = targetObject.getClassicalNahuatlFrequentativeScopeChoices(targetClosure);
+      for (const option of Array.from(frequentativeScopeControl?.options || [])) {
+        option.hidden = !frequentativeScopeChoices.values.includes(option.value);
+        option.disabled = option.hidden;
       }
-      if (
-        frequentativeScopeControl?.value === "patient"
-        && !patientScopeAvailable
-      ) {
-        frequentativeScopeControl.value = "open";
-      }
+      // A rejected authored scope stays selected until explicitly corrected.
       const frequentativeTargetControl = targetObject.document.getElementById(
         "classical-rule-logic-frequentative-target"
       );

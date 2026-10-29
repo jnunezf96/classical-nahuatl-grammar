@@ -1017,6 +1017,23 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
     "occasion",
     "place",
   ]);
+  const EMPTY_FREQUENTATIVE_SCOPE_CHOICES = freeze({values: [], patientScopeAvailable: false});
+  function buildFrequentativeScopeChoices(baseTyped, shape) {
+    if (targetObject.isClassicalNahuatlVncSlotFrame?.(baseTyped) !== true)
+      return EMPTY_FREQUENTATIVE_SCOPE_CHOICES;
+    const patientScopeAvailable = Array.isArray(baseTyped.slots?.prePredicate)
+      && baseTyped.slots.prePredicate.some(slot =>
+        ["monadic-valence", "dyadic-valence"].includes(slot?.kind));
+    return freeze({values: shape === "short-glottal"
+      ? FREQUENTATIVE_SCOPES.filter(value => value !== "patient" || patientScopeAvailable)
+      : ["open"], patientScopeAvailable});
+  }
+  function getClassicalNahuatlFrequentativeScopeChoices(closure = null) {
+    return isClassicalNahuatlClosureFrame(closure)
+      ? closure.operationFrame?.operationFacts?.frequentativeScopeChoices
+        || EMPTY_FREQUENTATIVE_SCOPE_CHOICES
+      : EMPTY_FREQUENTATIVE_SCOPE_CHOICES;
+  }
   const FREQUENTATIVE_TARGETS = Object.freeze([
     "lexical-stem",
     "fused-tla",
@@ -2151,7 +2168,7 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
       || applicationFrame?.resultFrame?.selectedMachineryFrame?.proofFrame?.conclusion?.finalTypedVncSlotFrame
       || null;
   }
-  function blockedOperation(request, reason, ruleFamily = "") {
+  function blockedOperation(request, reason, ruleFamily = "", operationFacts = null) {
     const frame = freeze({
       kind: "classical-nahuatl-late-vnc-derivation-operation-frame",
       version: VERSION,
@@ -2160,6 +2177,7 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
       operation: key(request?.lateOperation),
       variant: key(request?.lateVariant),
       ruleFamily,
+      ...(operationFacts ? {operationFacts} : {}),
       typedSourceAuthority: true,
       callerFormulaAuthority: false,
       callerSurfaceAuthority: false
@@ -2470,30 +2488,17 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
               ? "short"
               : "short-glottal");
         const requestedScope = key(request.frequentativeScope || "open");
+        const frequentativeScopeChoices = buildFrequentativeScopeChoices(baseTyped, shape);
+        const rejectScope = reason => blockedOperation(request, reason,
+          "frequentative-prefix-shape", {frequentativeScopeChoices});
         if (!FREQUENTATIVE_SCOPES.includes(requestedScope)) {
-          return blockedOperation(
-            request,
-            "licensed-frequentative-scope-required",
-            "frequentative-prefix-shape"
-          );
+          return rejectScope("licensed-frequentative-scope-required");
         }
         if (shape !== "short-glottal" && requestedScope !== "open") {
-          return blockedOperation(
-            request,
-            "frequentative-scope-requires-short-glottal-formation",
-            "frequentative-prefix-shape"
-          );
+          return rejectScope("frequentative-scope-requires-short-glottal-formation");
         }
-        const sourceHasPatient = Array.isArray(baseTyped.slots?.prePredicate)
-          && baseTyped.slots.prePredicate.some(slot => (
-            ["monadic-valence", "dyadic-valence"].includes(slot?.kind)
-          ));
-        if (requestedScope === "patient" && !sourceHasPatient) {
-          return blockedOperation(
-            request,
-            "patient-scope-requires-typed-source-object",
-            "frequentative-prefix-shape"
-          );
+        if (requestedScope === "patient" && !frequentativeScopeChoices.values.includes("patient")) {
+          return rejectScope("patient-scope-requires-typed-source-object");
         }
         if (requestedTarget === "mainline-reflexive") {
           if (shape !== "short-glottal") {
@@ -2540,6 +2545,7 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
           ruleFamily = "frequentative-reflexive";
           operationFacts = {
             reduplicationTarget: requestedTarget,
+            frequentativeScopeChoices,
             shape,
             shapeFormula: "mainline reflexive carrier + short vowel + h",
             reflexiveCarrier: text(reflexiveSlot.carrier),
@@ -2664,7 +2670,8 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
           } : {}),
           semanticScope: requestedScope,
           availableSemanticScopes: FREQUENTATIVE_SCOPES,
-          patientScopeAvailable: sourceHasPatient,
+          patientScopeAvailable: frequentativeScopeChoices.patientScopeAvailable,
+          frequentativeScopeChoices,
           initialIAnalysis: sourceInitialISelection || "not-applicable",
           copiedInitialITreatment,
           supportiveIDeleted: deleteSupportiveI,
@@ -7417,6 +7424,7 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
     reissueClassicalNahuatlCompoundCoordinate,
     getClassicalNahuatlCompoundAttitudeMemberContext,
     getClassicalNahuatlCompoundMatrixClassChoices,
+    getClassicalNahuatlFrequentativeScopeChoices,
     prefixClassicalNahuatlCompoundWithNominal,
     buildClassicalNahuatlNominalIhStockFormation,
     buildClassicalNahuatlNominalVncMatrixCoordinateResult,
