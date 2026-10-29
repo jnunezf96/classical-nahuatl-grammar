@@ -1,12 +1,12 @@
-# Grammar OS v1.2.122 release
+# Grammar OS v1.2.123 release
 
-Release name: **Canonical Formation Offerings**
+Release name: **Canonical Compound Matrix Classes**
 
-Browser build: **20261028-late-variant-inventory-141**
+Browser build: **20261028-compound-matrix-class-142**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
-- Verb formation menus read operation membership from existing canonical owner records.
-- Frequentative, compound and attitude choices retain their existing options and operation-switch behavior.
-- Legacy request aliases remain accepted by the grammar owner and represented through the existing shape and target controls.
-- This consolidates structural offerings; source-specific grammatical validation remains with the canonical evaluator.
+- Compound matrix class choices now use the canonical owner's derivation descriptor.
+- Fixed classes stay fixed; genuine class alternatives remain available through existing controls.
+- Exact recursive and nominal Result matrices retain their inherited class and source custody.
+- This removes one interface class policy; source validation and existing grammatical defaults remain with the owner.

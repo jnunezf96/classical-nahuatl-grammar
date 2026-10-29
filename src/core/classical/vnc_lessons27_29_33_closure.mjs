@@ -1924,30 +1924,59 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
         : "want-desire-or-hope",
     });
   }
-  function deriveCompoundMatrixClass(matrixStem = "", requestedClass = "") {
-    const stem = text(matrixStem);
-    const requested = text(requestedClass).toUpperCase();
-    if (stem === "ē-hua") {
-      return ["A", "B"].includes(requested) ? requested : "A";
+  // This descriptor projects the same class decision used by matrix derivation.
+  // It does not authorize a Source or replace exact-parent validation.
+  function getClassicalNahuatlCompoundMatrixClassChoices(request = {}) {
+    const variant = key(request.lateVariant);
+    const recursive = isAuthorizedClosureFrame(request.compoundMatrixClosureFrame)
+      ? request.compoundMatrixClosureFrame : null;
+    const nominal = request.compoundMatrixVncResultFrame;
+    const nominalProjection = nominal
+      && targetObject.isClassicalNahuatlNominalConstructionResult?.(nominal) === true
+      && nominal.authorizationStatus === "authorized"
+      && nominal.constructionKind === "nominal-embed-vnc"
+      ? targetObject.getClassicalNahuatlVncContinuationSourceConstituents?.(
+          nominal.canonicalResult?.resultFrame
+        ) : null;
+    const suppliedStem = text(recursive?.operationFrame?.targetStem
+      || nominalProjection?.sourceStem || request.compoundMatrixStem || request.matrixStem);
+    const stem = variant === "reflexive-matrix"
+      ? normalizeReflexiveMatrixAnalysis(suppliedStem).coreStem : suppliedStem;
+    const requested = text(request.compoundMatrixClass).toUpperCase();
+    const future = variant === "future-embed" ? analyzeFutureEmbedMatrix(suppliedStem) : null;
+    const inherited = future?.fixedMatrixClass
+      || text(recursive?.operationFrame?.targetClass)
+      || nominalProjection?.verbClass;
+    let values = [], selected = "A", fixed = true;
+    if (inherited) {
+      values = [inherited]; selected = inherited;
+    } else if (stem === "ē-hua") {
+      values = ["A", "B"]; selected = values.includes(requested) ? requested : "A"; fixed = false;
+    } else if (stem) {
+      const knownMatrixClass = ({quiza: "B", quīza: "B", huetzi: "B", "cal-aqui": "B"})[stem];
+      const profile = knownMatrixClass ? null
+        : targetObject.inferClassicalNahuatlLesson7ClassProfile?.(stem);
+      const inferred = text(knownMatrixClass || profile?.classId).toUpperCase();
+      if (["A", "B", "C", "D"].includes(inferred)) {
+        values = [inferred]; selected = inferred;
+      } else {
+        values = profile?.classClaimAllowedClassIds || [];
+        selected = values.includes(requested) ? requested : "A";
+        fixed = false;
+      }
     }
-    const knownMatrixClass = ({
-      quiza: "B",
-      quīza: "B",
-      huetzi: "B",
-      "cal-aqui": "B"
-    })[stem];
-    if (knownMatrixClass) return knownMatrixClass;
-    const profile = typeof targetObject.inferClassicalNahuatlLesson7ClassProfile
-      === "function"
-      ? targetObject.inferClassicalNahuatlLesson7ClassProfile(stem)
-      : null;
-    const inferred = text(profile?.classId).toUpperCase();
-    if (["A", "B", "C", "D"].includes(inferred)) return inferred;
-    // An unresolved matrix follows the same typed class choice as a basal
-    // stem. Fixed Lesson 7 facts above cannot be replaced by that choice.
-    const eligibleClasses = profile?.classClaimAllowedClassIds || [];
-    if (eligibleClasses.includes(requested)) return requested;
-    return "A";
+    const derivedClass = selected;
+    // The operation owner rejects an explicit incompatible ē-hua history.
+    // Keep that authored value inspectable; deriving its fallback never licenses it.
+    if (!inherited && suppliedStem === "ē-hua" && requested
+      && !values.includes(requested)) selected = requested;
+    return freeze({values, selected, derivedClass,
+      selectionRequired: Boolean(stem && variant !== "future-embed" && !fixed && values.length > 1)});
+  }
+  function deriveCompoundMatrixClass(matrixStem = "", requestedClass = "", variant = "") {
+    return getClassicalNahuatlCompoundMatrixClassChoices({
+      compoundMatrixStem: matrixStem, compoundMatrixClass: requestedClass, lateVariant: variant
+    }).derivedClass;
   }
   function cloneObjectFrameFromTyped(typedFrame = null, transform = null) {
     const slots = (
@@ -6747,7 +6776,7 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
       ? text(recursiveMatrixClosureFrame.operationFrame?.targetClass)
       : nominalMatrixProjection?.verbClass || deriveCompoundMatrixClass(
           reflexiveMatrixAnalysis?.coreStem || matrixStem,
-          request.compoundMatrixClass
+          request.compoundMatrixClass, lateVariant
         ));
     const matrixApplicationSourceStem = lateVariant === "future-embed"
       ? futureMatrixAnalysis?.lexicalStem || matrixStem
@@ -7387,6 +7416,7 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
     VERSION,
     reissueClassicalNahuatlCompoundCoordinate,
     getClassicalNahuatlCompoundAttitudeMemberContext,
+    getClassicalNahuatlCompoundMatrixClassChoices,
     prefixClassicalNahuatlCompoundWithNominal,
     buildClassicalNahuatlNominalIhStockFormation,
     buildClassicalNahuatlNominalVncMatrixCoordinateResult,

@@ -19055,41 +19055,21 @@ export function createUiRenderingApi(targetObject = globalThis) {
           button.hidden = false; button.disabled = false; button.style.display = ""; delete button.dataset.classicalCompoundPredicateRestricted;
         }
       }
-      const automaticCompoundMatrixClasses = new Set([
-        "ca", "nemi", "ya-uh", "huāl-la-uh", "huī-tz", "ahci", "mani",
-        "ihca", "o", "quiza", "quīza", "huetzi", "tlehcō", "cal-aqui", "pil-ca",
-        "m-o-cāhua", "m-o-tēca", "m-o-tlāl-i-ā", "m-o-man-a",
-        "m-o-quetza", "man-a", "tlāl-i-ā", "quetza", "tēca", "cāhua", "quix-tiā",
-        "māy-a-hui", "tla-nequi", "tla-qui"
-      ]);
       const matrixClassControl = targetObject.document.getElementById(
         "classical-rule-logic-compound-matrix-class"
       );
-      const matrixClassStem = variant === "reflexive-matrix"
-        ? compoundMatrixStem.replace(/^(?:[ntm]-o-)+/u, "")
-        : variant === "shared-object" ? compoundMatrixStem : "";
-      const matrixClassProfile = matrixClassStem
-        ? targetObject.inferClassicalNahuatlLesson7ClassProfile?.(matrixClassStem)
-        : null;
-      const matrixClassChoices = matrixClassProfile
-        ?.classClaimAllowedClassIds || [];
-      Array.from(matrixClassControl?.options || []).forEach(option => {
-        const licensed = matrixClassProfile
-          ? matrixClassChoices.includes(option.value)
-          : compoundMatrixStem !== "ē-hua"
-            || ["A", "B"].includes(option.value);
-        option.hidden = !licensed;
-        option.disabled = !licensed;
+      const matrixClassChoices = targetObject.getClassicalNahuatlCompoundMatrixClassChoices({
+        ...surfaceFrame?.state,
+        compoundMatrixStem,
+        lateVariant: variant,
+        compoundMatrixClass: matrixClassControl?.value || surfaceFrame?.state?.compoundMatrixClass || "",
+        ...(validTargetBinding ? targetOwner.executionArgs?.[0] : {})
       });
-      if (matrixClassProfile && matrixClassControl
-        && !matrixClassChoices.includes(matrixClassControl.value)) {
-        matrixClassControl.value = matrixClassProfile.classId
-          || matrixClassChoices[0] || "";
+      for (const option of Array.from(matrixClassControl?.options || [])) {
+        option.hidden = !matrixClassChoices.values.includes(option.value);
+        option.disabled = option.hidden;
       }
-      if (compoundMatrixStem === "ē-hua"
-        && !["A", "B"].includes(matrixClassControl?.value)) {
-        matrixClassControl.value = "A";
-      }
+      if (matrixClassControl) matrixClassControl.value = matrixClassChoices.selected;
       const eventOrderControl = targetObject.document.getElementById(
         "classical-rule-logic-compound-event-order"
       );
@@ -19140,14 +19120,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         "classical-rule-logic-compound-matrix-initial-i":
           operation === "compound" && /^i/u.test(compoundMatrixStem),
         "classical-rule-logic-compound-matrix-class":
-          operation === "compound" && variant !== "future-embed"
-          && Boolean(compoundMatrixStem)
-          && (
-            matrixClassProfile
-              ? matrixClassProfile.classSelectionRequired
-              : compoundMatrixStem === "ē-hua"
-                || !automaticCompoundMatrixClasses.has(compoundMatrixStem)
-          ),
+          operation === "compound" && matrixClassChoices.selectionRequired,
         "classical-rule-logic-compound-itz-sense":
           operation === "compound" && sourceStem === "itz",
         "classical-rule-logic-compound-ya-syncopation":
