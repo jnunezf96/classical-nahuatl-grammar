@@ -2025,7 +2025,7 @@ function evaluateIncorporatedRecord(record, request, target, exactMatrix = null)
   if (typeof target.requestClassicalNominalConstructionResult !== "function") {
     return { authorizationStatus: "blocked", blockReason: "canonical-nominal-construction-application-route-unavailable" };
   }
-  const canonicalResult = target.requestClassicalNominalConstructionResult({
+  const receivingRequest = deepFreeze({
     constructionKind: "nominal-embed-vnc",
     relation: "adverb",
     route: "direct-adverb",
@@ -2050,7 +2050,10 @@ function evaluateIncorporatedRecord(record, request, target, exactMatrix = null)
     voice: normalizeKey(matrix.voice || "active"),
     outputKind: normalizeKey(request.outputKind || "single"),
   });
+  const canonicalResult=target.requestClassicalNominalConstructionResult(receivingRequest);
+  const receivingDecision=Object.freeze({request:receivingRequest,result:canonicalResult});
   return {
+    receivingDecision,
     authorizationStatus: canonicalResult?.authorizationStatus || "blocked",
     blockReason: canonicalResult?.blockReason || "",
     canonicalTargetEvaluator: "grammar:nominal-construction",
@@ -2106,6 +2109,23 @@ function buildAdverbialChoiceProjection(potential, record, request, exactMatrix)
   return deepFreeze(fields);
 }
 
+function inheritAdverbialMatrixChoices(fields, receivingDecision, request, exactMatrix) {
+  if(exactMatrix || !receivingDecision?.result?.choiceOptionProjection)return fields;
+  const forwarded=new Set(["subject","mood","tense","voice"]);
+  const mapPath=path=>Array.isArray(path)&&path.length===1&&forwarded.has(path[0])?["matrix",path[0]]:null;
+  const result={...fields};
+  for(const key of forwarded){
+    const field=receivingDecision.result.choiceOptionProjection[key];if(!field)continue;
+    const authoredValue=request.matrix?.[key];
+    result[key]={...field,choiceId:key,requestPath:["matrix",key],authoredValue,
+      selectedValue:authoredValue===undefined||authoredValue===""?field.selectedValue:authoredValue,
+      options:field.options.map(option=>({...option,
+        ...(option.writeRequestValues?{writeRequestValues:option.writeRequestValues.flatMap(write=>{const path=mapPath(write.path);return path?[{...write,path}]:[];})}:{}),
+        ...(option.withdrawRequestPaths?{withdrawRequestPaths:option.withdrawRequestPaths.map(mapPath).filter(Boolean)}:{})}))};
+  }
+  return deepFreeze(result);
+}
+
 function evaluateClassicalNahuatlAdverbialNuclear(request = {}, target = globalThis) {
   const exactSourceRequested = hasAdverbialExactSourceResultField(request);
   const exactMatrixRequested = request.canonicalMatrixResult != null;
@@ -2154,7 +2174,7 @@ function evaluateClassicalNahuatlAdverbialNuclear(request = {}, target = globalT
   }
   const record = ADVERBIAL_POTENTIAL_RECORDS.get(adverbialPotentialFrame);
   if (!record) return buildBlockedFrame("adverbial-potential-lexical-receipt-missing", request);
-  const choiceOptionProjection = buildAdverbialChoiceProjection(adverbialPotentialFrame, record, request, exactMatrix);
+  let choiceOptionProjection = buildAdverbialChoiceProjection(adverbialPotentialFrame, record, request, exactMatrix);
   const blocked = (reason, _request, extra={}) => buildBlockedFrame(reason, request, {
     adverbialPotentialFrame, canonicalSourceResult:adverbialPotentialFrame.canonicalSourceResult || null,
     canonicalMatrixResult:exactMatrix?.exactResult || null, choiceOptionProjection, ...extra,
@@ -2234,8 +2254,11 @@ function evaluateClassicalNahuatlAdverbialNuclear(request = {}, target = globalT
   const incorporation = scope === "incorporated-predicate"
     ? evaluateIncorporatedRecord(record, request, target, exactMatrix)
     : null;
+  const receivingDecision=incorporation?.receivingDecision||null;
+  if(receivingDecision)choiceOptionProjection=inheritAdverbialMatrixChoices(choiceOptionProjection,receivingDecision,request,exactMatrix);
   if (incorporation && incorporation.authorizationStatus !== "authorized") {
     return blocked(incorporation.blockReason, request, {
+      receivingDecision,
       lexicalEntryId: record.id,
       sourceFrame: deepClone(adverbialPotentialFrame.sourceConstituents),
       subjectOperationFrame,
@@ -2272,6 +2295,7 @@ function evaluateClassicalNahuatlAdverbialNuclear(request = {}, target = globalT
     authorizationStatus: "authorized",
     blockReason: "",
     choiceOptionProjection,
+    receivingDecision,
     lexicalEntryId: record.id,
     sourceFrame: deepClone(adverbialPotentialFrame.sourceConstituents),
     sourceInputMode: adverbialPotentialFrame.sourceInputMode,

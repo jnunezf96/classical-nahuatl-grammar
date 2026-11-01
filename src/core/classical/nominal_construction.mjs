@@ -28,6 +28,9 @@ const COMPOUND_INITIAL_I_VARIANTS = Object.freeze(["retain", "absent"]);
 const COMPOUND_EMBED_INTENSIFICATIONS = Object.freeze(["none", "long-vowel-quality"]);
 const COMPOUND_MATRIX_EXPANSIONS = Object.freeze(["none", "internal-heavy"]);
 const COMPOUND_MATRIX_EXPANSION_ROOTS = Object.freeze({"pah-ti":"palalah", "cal-ti":"calalah"});
+const ADJECTIVAL_OPERATIONS = Object.freeze(["quality-intensification", "distribution-variety"]);
+const CARDINAL_MODIFIERS = Object.freeze({none:"",canah:"Canah",quēn:"Quēn","ahzo-quēn":"Ahzo quēn",oc:"Oc"});
+const CARDINAL_MEASURE_COMPOSITIONS = Object.freeze(["measure-only", "with-measured-nnc"]);
 const CALENDAR_DATE_BOUNDARIES = Object.freeze(["double-nucleus", "single-nucleus"]);
 const GCD_IDENTITY = "typed-ordered-source-constituents+licensed-relation+matrix-governance+canonical-target-evaluator";
 const ISSUED_CONSTRUCTION_FRAMES = new WeakSet();
@@ -1517,11 +1520,7 @@ function issueAdjectivalNncSourceAuthorization(request, target) {
   const reading = normalizeKey(request.adjectivalOperation);
   const quality = source && getAdjectivalQualityConstitution(parent, target);
   const blockReason = !source ? "adjectival-exact-nnc-source-required"
-    : !["quality-intensification", "distribution-variety"].includes(reading)
-      ? "adjectival-semantic-operation-required"
-      : !quality ? "adjectival-qualitative-source-constitution-required"
-        : request.operationScope && request.operationScope !== "whole"
-          ? "adjectival-whole-operation-scope-required" : "";
+    : !quality ? "adjectival-qualitative-source-constitution-required" : "";
   const frame = deepFreeze({
     kind: "classical-nahuatl-nominal-construction-source-authorization-frame",
     version: VERSION, constructionKind: "adjectival-nnc",
@@ -1544,10 +1543,8 @@ function reenterAdjectivalSourceInflection(parent, request, target) {
   const choices = {subject:request.subject, state:request.state, animacy:request.animacy,
     ...(request.possessor ? {possessor:request.possessor} : {})};
   if (target.isClassicalNahuatlOrdinaryNncResult?.(parent)) {
-    const operation = target.buildClassicalNahuatlOrdinaryNncOperationFrame(parent.sourceFrame,
-      {...parent.operationFrame, ...choices, predicateFormation:parent.stemOperation?.predicateFormation || "source-stem",
-        stemFormation:parent.stemOperation?.stemFormation || "plain"});
-    return target.evaluateClassicalNahuatlOrdinaryNnc(parent.sourceFrame, operation);
+    const {animacy,...ordinaryChoices}=choices;
+    return target.evaluateClassicalNahuatlOrdinaryNnc(parent,ordinaryChoices);
   }
   if (target.isClassicalNahuatlPronominalNncResult?.(parent)) {
     const operation = target.buildClassicalNahuatlPronominalNncOperationFrame(parent.sourceFrame,
@@ -1557,37 +1554,57 @@ function reenterAdjectivalSourceInflection(parent, request, target) {
   const original = NOMINAL_CONSTRUCTION_REQUESTS.get(parent);
   if (original) return evaluateNominalConstruction({...original,...choices},target);
   if (target.isClassicalNahuatlDeverbalNncGrammarFrame?.(parent)) {
-    const operation=parent.operationFrame, source=parent.sourceFrame;
-    return target.evaluateClassicalNahuatlDeverbalNnc({
-      constructionKind:operation.constructionKind,
-      nominalizationKind:operation.nominalizationKind,
-      canonicalVncResult:source.canonicalVncResult,
-      ...(source.sourceCapturedFromExactNncResult ? {canonicalNncResult:source.canonicalNncResult} : {}),
-      patientiveSourceFamily:operation.patientiveSourceFamily,
-      patientiveKind:operation.patientiveKind,
-      rootStockAllomorph:operation.rootStockAllomorph,
-      patientiveAnalogy:operation.patientiveAnalogy,
-      preteritSourceAnalysis:operation.preteritSourceAnalysis,
-      numberConnector:operation.singularConnectorChoice,
-      ...(operation.constructionKind === "ownerhood" ? {source:{ownerhoodMatrix:operation.ownerhoodMatrix},
-        characteristicMatrixRealization:operation.characteristicMatrixRealization,
-        ownerhoodBoundaryVariant:operation.ownerhoodBoundaryFrame?.boundaryVariant} : {}),
-      ...choices});
+    const original=target.getClassicalNahuatlDeverbalNncReloadInputs?.(parent);
+    return original?target.evaluateClassicalNahuatlDeverbalNnc({...original,...choices}):null;
   }
   return null;
 }
 
-function evaluateAdjectivalNncConstruction(request, target, authorization) {
+function evaluateAdjectivalNncConstruction(request, target, authorization, decision) {
+  decision.field("adjectivalOperation",ADJECTIVAL_OPERATIONS,normalizeKey(request.adjectivalOperation),{required:true});
+  decision.field("operationScope",["whole"],"whole",{fixed:true});
+  if(!ADJECTIVAL_OPERATIONS.includes(normalizeKey(request.adjectivalOperation))) return buildBlockedFrame("adjectival-nnc","adjectival-semantic-operation-required",request);
+  if(request.operationScope && request.operationScope !== "whole") return buildBlockedFrame("adjectival-nnc","adjectival-whole-operation-scope-required",request);
   const parent = request.source.canonicalNncResult;
   let source = getOwnedAdjectivalNncConstitution(parent, target);
   const originalSource = source;
+  const targetChoices={subject:request.subject||source.subject,state:request.state||source.state,
+    animacy:request.animacy||source.slots.subjectAnimacy,...(request.possessor?{possessor:request.possessor}:{})};
+  const ordinary=target.isClassicalNahuatlOrdinaryNncResult?.(parent),pronominal=target.isClassicalNahuatlPronominalNncResult?.(parent);
+  let familyResult=parent, familyFields=parent.choiceOptionProjection, familyBinding=null;
+  const sourceChanged=Object.entries(targetChoices).some(([key,value])=>value!==({subject:source.subject,state:source.state,animacy:source.slots.subjectAnimacy,possessor:source.slots.slots.state.possessor})[key]);
+  if(ordinary||pronominal){
+    const navigator=target.getClassicalGrammarApplicationCapabilityNavigator?.(parent.sourceFrame);
+    const inherited=ordinary?target.getClassicalNahuatlOrdinaryNncReinflectionContext?.(parent)?.selections:null;
+    const selections={...(inherited||{}),...targetChoices};
+    // The actual binding schema accepts declarations, not operation metadata.
+    const binding=target.issueClassicalGrammarTypedSourceOperationBindingFrame?.(navigator,ordinary?"nnc:ordinary":"nnc:pronominal",
+      selections);
+
+    familyFields=binding?.choiceOptionProjection;familyBinding=binding;
+  }else if(sourceChanged){
+    familyResult=reenterAdjectivalSourceInflection(parent,{...request,...targetChoices},target);
+    familyFields=familyResult?.choiceOptionProjection;
+  }
+  const consumed=new Set(["subject","state","animacy","possessor"]);
+  for(const key of consumed){
+    const field=familyFields?.[key];
+    if(!field){decision.field(key,[],targetChoices[key],{applicable:false});continue;}
+    const options=Array.isArray(field)?field:field.options;
+    decision.fields[key]={...(Array.isArray(field)?{choiceId:key,inputKind:"enum",applicable:options.length>0,editable:true}:field),requestPath:[key],authoredValue:request[key],selectedValue:request[key]||targetChoices[key],
+      options:options.map(({nextSelections,...option})=>({...option,...(nextSelections?{writeRequestValues:Object.entries(nextSelections).filter(([key])=>consumed.has(key)).map(([key,value])=>({path:[key],value}))}:{}),
+        ...(option.writeRequestValues?{writeRequestValues:option.writeRequestValues.filter(write=>write.path.length===1&&consumed.has(write.path[0]))}:{}),
+        ...(option.withdrawRequestPaths?{withdrawRequestPaths:option.withdrawRequestPaths.filter(path=>path.length===1&&consumed.has(path[0]))}:{})}))};
+  }
+  if(familyBinding&&(familyBinding.bindingStatus==="rejected"||request.subject&&familyBinding.effectiveSelections?.subject!==request.subject))
+    return buildBlockedFrame("adjectival-nnc",familyBinding.blockReason||"adjectival-source-family-reference-correction-required",request);
   const subject = normalizeSubject(request.subject || source.subject);
   const state = normalizeKey(request.state || source.state);
   // Inflection belongs to the original family; no generic zero-number
   // fallback may replace the parent's patientive or agentive contract.
   let sourceNumberResult = parent;
-  if (subject !== source.subject || state !== source.state) {
-    sourceNumberResult = reenterAdjectivalSourceInflection(parent,{...request,subject,state},target);
+  if (sourceChanged) {
+    sourceNumberResult = familyResult!==parent?familyResult:reenterAdjectivalSourceInflection(parent,{...request,subject,state},target);
     const reissued = getOwnedAdjectivalNncConstitution(sourceNumberResult,target);
     if (!reissued || reissued.subject !== subject || reissued.state !== state) return buildBlockedFrame(
       "adjectival-nnc", sourceNumberResult?.blockReason || "adjectival-source-family-inflection-reentry-required", request);
@@ -1611,6 +1628,7 @@ function evaluateAdjectivalNncConstruction(request, target, authorization) {
     ...source.slots.slots.number, canonicalSourceSlotFrame: source.slots });
   const result = buildNncTarget({target, constructionFamily: "adjectival-nominal",
     sourceFrame, stem, nounClass: source.nounClass, subject, state,
+    possessor:sourceNumberResult.stateFrame?.possessor||source.operationFrame?.possessor||request.possessor,
     animacy: request.animacy || source.slots.subjectAnimacy || "nonanimate",
     numberFrameOverride: retainedNumber,
     operationIds: ["adjectival-source", request.adjectivalOperation],
@@ -4564,7 +4582,7 @@ function projectNominalTransferredPossessorReference(decision,reference) {
   const field=decision?.field("embedPossessorCorefersWithSubject",reference.values,reference.effectiveValue,{required:reference.required});
   if(field){field.valueKind="boolean";if(reference.required&&reference.authored===undefined)field.selectedValue=undefined;}
 }
-function createNominalEmbedDecision(request) {
+function createNominalTargetDecision(request) {
   const fields={};
   const decision={fields,field(choiceId,values,effectiveValue,{required=false,applicable=true,fixed=false,path=[choiceId]}={}){
     const authoredValue=path.reduce((value,key)=>value?.[key],request);
@@ -4574,6 +4592,10 @@ function createNominalEmbedDecision(request) {
       editable:applicable&&(!fixed&&values.length>1||!values.includes(selectedValue)),
       options:applicable?values.map(optionId=>({optionId,availabilityStatus:"available"})):[]};
   }};
+  return decision;
+}
+function createNominalEmbedDecision(request) {
+  const decision=createNominalTargetDecision(request);
   for(const key of ["relation","route","adverbRole","orientation","complementKind","complementTargetReferenceId",
     "embedPossessorCorefersWithSubject","incorporatedObjectId","supplementObjectId","possessorReferenceId","embedShapeVariant",
     "embedBoundarySpelling","embedReduplication","similarityReduplicationShape","matrixFormation","matrixReduplication",
@@ -10784,6 +10806,13 @@ function buildOrderConjunctionEmbed(multiplier, order, source, target) {
   return frame;
 }
 
+function getCardinalClassifierValueBlockReason(classifier,value) {
+  if(classifier==="cob"&&value>39)return "cob-classifier-is-not-licensed-beyond-thirty-nine";
+  if(["tecpan","ipil","quimil"].includes(classifier)&&!(Math.floor(value/20)>=1&&Math.floor(value/20)<=19))
+    return "special-twenty-classifier-requires-one-through-nineteen-groups-of-twenty";
+  return "";
+}
+
 function realizeNumeralConstruction(
   value,
   classifier,
@@ -10792,9 +10821,8 @@ function realizeNumeralConstruction(
   selection = {}
 ) {
   const restrictions = [];
-  if (classifier === "cob" && value > 39) {
-    return { authorizationStatus: "blocked", blockReason: "cob-classifier-is-not-licensed-beyond-thirty-nine" };
-  }
+  const classifierValueBlockReason=getCardinalClassifierValueBlockReason(classifier,value);
+  if(classifierValueBlockReason)return {authorizationStatus:"blocked",blockReason:classifierValueBlockReason};
   if (classifier === "cob" && value >= 20) {
     const gross = selection.countKind === "gross";
     if (gross && value > 20) {
@@ -10901,9 +10929,6 @@ function realizeNumeralConstruction(
   if (["tecpan", "ipil", "quimil"].includes(classifier)) {
     const multiplier = Math.floor(value / 20);
     const remainder = value % 20;
-    if (multiplier < 1 || multiplier > 19) {
-      return { authorizationStatus: "blocked", blockReason: "special-twenty-classifier-requires-one-through-nineteen-groups-of-twenty" };
-    }
     const matrix = classifierMatrix(classifier, source);
     const groupStem = joinNumeralClassifierStem(
       simpleNumeralStem(multiplier, {
@@ -11113,7 +11138,7 @@ function reduplicateNumeral(
   };
 }
 
-function evaluateCardinalNominalConstruction(request, target) {
+function evaluateCardinalNominalConstruction(request, target, decision=null) {
   const source = request.source && typeof request.source === "object" ? request.source : request;
   const value = Number(request.value ?? source.value);
   const compatibleClassifiers = Array.isArray(source.compatibleClassifiers)
@@ -11137,6 +11162,20 @@ function evaluateCardinalNominalConstruction(request, target) {
     || (numeralOutputKind === "vnc-embed" ? "3sg" : countKind === "gross" ? "3pl" : "3common"));
   const animacy = normalizeKey(request.animacy || source.animacy || "nonanimate");
   const state = normalizeKey(request.state || "absolutive");
+  const countKinds=numeralOutputKind!=="vnc-embed"&&value>=2?["ordinary","gross"]:["ordinary"];
+  const outputKinds=value>=1&&value<=4&&classifier==="basic"&&countKind==="ordinary"?["nnc","vnc-embed"]:["nnc"];
+  const subjectValues=numeralOutputKind==="vnc-embed"?NOMINAL_SUBJECTS:countKind==="gross"?NOMINAL_SUBJECTS.filter(value=>value.endsWith("pl")):animacy==="nonanimate"?["3common"]:NOMINAL_SUBJECTS.filter(value=>value!=="3common");
+  decision?.field("countKind",countKinds,countKind);
+  decision?.field("classifier",CARDINAL_NOMINAL_CLASSIFIERS.filter(classifier=>!getCardinalClassifierValueBlockReason(classifier,value)&&(numeralOutputKind!=="vnc-embed"||classifier==="basic")&&(!compatibleClassifiers.length||compatibleClassifiers.includes(classifier))),classifier);
+  decision?.field("numeralOutputKind",outputKinds,numeralOutputKind);
+  decision?.field("subject",subjectValues,subject);
+  decision?.field("animacy",["animate","nonanimate"],animacy,{applicable:numeralOutputKind==="nnc"});
+  decision?.field("humanness",[],undefined,{applicable:false});
+  decision?.field("state",countKind==="gross"?["absolutive","possessive"]:["absolutive"],state,{applicable:numeralOutputKind==="nnc"});
+  decision?.field("reduplication",COMPOUND_REDUPLICATIONS,normalizeKey(request.reduplication||"none"),{applicable:numeralOutputKind==="nnc"});
+  decision?.field("modifier",Object.keys(CARDINAL_MODIFIERS),normalizeKey(request.modifier||"none"),{applicable:numeralOutputKind==="nnc"});
+  decision?.field("measureComposition",classifier==="measure"?CARDINAL_MEASURE_COMPOSITIONS:["measure-only"],normalizeKey(request.measureComposition||"measure-only"),{applicable:numeralOutputKind==="nnc"});
+  if(decision)decision.fields.value={choiceId:"value",inputKind:"text",valueKind:"number",requestPath:["value"],authoredValue:request.value,selectedValue:request.value??source.value,effectiveValue:value,editable:true,applicable:true,minimum:1,integer:true};
   if (!Number.isInteger(value) || value < 1) return buildBlockedFrame("cardinal-numeral-nnc", "positive-integer-numeral-value-required", request);
   if (!CARDINAL_NOMINAL_CLASSIFIERS.includes(classifier)) return buildBlockedFrame("cardinal-numeral-nnc", "cardinal-nominal-classifier-required", request);
   if (!["ordinary", "gross"].includes(countKind)) return buildBlockedFrame("cardinal-numeral-nnc", "cardinal-nominal-count-kind-required", request);
@@ -11164,13 +11203,25 @@ function evaluateCardinalNominalConstruction(request, target) {
   const silentNumberAvailable = numeralOutputKind === "nnc"
     && countKind === "ordinary" && classifier === "basic"
     && ((value >= 2 && value <= 4) || separatedPronominalRightward) && subject.endsWith("pl");
-  if (!["tin", "zero", ...(reduplicatedOnePlural ? ["meh"] : [])].includes(ordinaryNumberVariant)
-    || (ordinaryNumberVariant === "zero" && !silentNumberAvailable)) {
+  const availableOrdinaryNumberVariants=Object.freeze(reduplicatedOnePlural?["tin","meh"]:silentNumberAvailable?["tin","zero"]:["tin"]);
+  decision?.field("ordinaryNumberVariant",availableOrdinaryNumberVariants,ordinaryNumberVariant,{applicable:numeralOutputKind==="nnc"&&countKind==="ordinary"});
+  const variantTerm=decomposeVigesimal(value)[0];
+  const numeralVariantValues=availableNumeralVariants(variantTerm?.order>1?variantTerm.multiplier:value,numeralOutputKind==="vnc-embed"||classifier!=="basic"||variantTerm?.order>1);
+  decision?.field("numeralVariant",numeralVariantValues,normalizeKey(request.numeralVariant||source.numeralVariant)||numeralVariantValues[0],{path:Object.hasOwn(request,"numeralVariant")?["numeralVariant"]:["source","numeralVariant"],applicable:countKind==="ordinary"});
+  const conjunctionValues=classifier==="basic"&&value>=11&&value<=14?["separate","compound"]:["separate"];
+  decision?.field("conjunctionForm",conjunctionValues,normalizeKey(source.conjunctionForm||"separate"),{path:["source","conjunctionForm"],applicable:numeralOutputKind==="nnc"});
+  const possessive=state==="possessive"&&numeralOutputKind==="nnc",possessorKind=normalizeKey(request.grossPossessorKind||source.grossPossessorKind||source.possessorAnimacy||"animate");
+  const possessorKindField=decision?.field("grossPossessorKind",["animate","nonanimate"],possessorKind,{path:Object.hasOwn(request,"grossPossessorKind")?["grossPossessorKind"]:["source","grossPossessorKind"],applicable:possessive});
+  // This existing contextual choice declares a nonanimate plural referent;
+  // agreement shape alone still cannot establish that declaration.
+  if(possessorKindField)possessorKindField.options=possessorKindField.options.map(option=>({...option,
+    label:option.optionId==="nonanimate"?"nonanimate plural referent":"animate plural",
+    ...(option.optionId==="nonanimate"?{writeRequestValues:[{path:["source","possessorReferentPlural"],value:true}]}:{})}));
+  decision?.field("possessor",possessorKind==="nonanimate"?["3sg"]:["1pl","2pl","3pl"],normalizeKey(request.possessor||"3pl"),{applicable:possessive});
+  decision?.field("grossPossessiveNumberVariant",possessorKind==="nonanimate"?["tin","ti"]:["tin"],normalizeKey(request.grossPossessiveNumberVariant||source.grossPossessiveNumberVariant||"tin"),{path:Object.hasOwn(request,"grossPossessiveNumberVariant")?["grossPossessiveNumberVariant"]:["source","grossPossessiveNumberVariant"],applicable:possessive});
+  if (!availableOrdinaryNumberVariants.includes(ordinaryNumberVariant)) {
     return buildBlockedFrame("cardinal-numeral-nnc", "ordinary-cardinal-number-variant-not-licensed", request);
   }
-  const availableOrdinaryNumberVariants = Object.freeze(
-    reduplicatedOnePlural ? ["tin", "meh"] : silentNumberAvailable ? ["tin", "zero"] : ["tin"]
-  );
   if (numeralOutputKind === "vnc-embed") {
     if (![1, 2, 3, 4].includes(value)
       || classifier !== "basic" || countKind !== "ordinary") {
@@ -11223,11 +11274,10 @@ function evaluateCardinalNominalConstruction(request, target) {
         nominalEmbedRequest,
         target
       );
-    const nominalEmbed = evaluateNominalEmbedConstruction(
-      nominalEmbedRequest,
-      target,
-      nominalEmbedSourceAuthorization
-    );
+    const receivingDecision=createNominalEmbedDecision(nominalEmbedRequest);
+    const nominalEmbed = evaluateNominalEmbedConstruction(nominalEmbedRequest,target,nominalEmbedSourceAuthorization,receivingDecision);
+    for(const key of ["subject","mood","tense","voice"]){const field=receivingDecision.fields[key];if(field&&decision)decision.fields[key]={...field,authoredValue:request[key],selectedValue:request[key]||field.selectedValue,
+      options:field.options.map(option=>({...option,...(option.writeRequestValues?{writeRequestValues:option.writeRequestValues.filter(write=>write.path.length===1&&["subject","mood","tense","voice"].includes(write.path[0]))}:{}),...(option.withdrawRequestPaths?{withdrawRequestPaths:option.withdrawRequestPaths.filter(path=>path.length===1&&["subject","mood","tense","voice"].includes(path[0]))}:{})}))};}
     const authorized = nominalEmbed.authorizationStatus === "authorized";
     return Object.freeze({
       ...nominalEmbed,
@@ -11291,18 +11341,18 @@ function evaluateCardinalNominalConstruction(request, target) {
   }
   if (!["absolutive", "possessive"].includes(state)) return buildBlockedFrame("cardinal-numeral-nnc", "cardinal-nominal-state-required", request);
   if (state === "possessive" && countKind !== "gross") return buildBlockedFrame("cardinal-numeral-nnc", "cardinal-numeral-nnc-is-absolutive-only-except-gross-count", request);
-  if (countKind === "gross" && value < 2) {
+  if (countKind === "gross" && !countKinds.includes(countKind)) {
     return buildBlockedFrame(
       "cardinal-numeral-nnc",
       "gross-count-requires-a-numeral-value-of-two-or-more",
       request
     );
   }
-  if (countKind === "gross" && !subject.endsWith("pl")) return buildBlockedFrame("cardinal-numeral-nnc", "gross-count-requires-plural-subject", request);
-  if (countKind === "ordinary" && animacy === "nonanimate" && subject !== "3common") {
+  if (countKind === "gross" && !subjectValues.includes(subject)) return buildBlockedFrame("cardinal-numeral-nnc", "gross-count-requires-plural-subject", request);
+  if (countKind === "ordinary" && animacy === "nonanimate" && !subjectValues.includes(subject)) {
     return buildBlockedFrame("cardinal-numeral-nnc", "ordinary-nonanimate-count-requires-common-number-subject", request);
   }
-  if (countKind === "ordinary" && animacy === "animate" && subject === "3common") {
+  if (countKind === "ordinary" && animacy === "animate" && !subjectValues.includes(subject)) {
     return buildBlockedFrame("cardinal-numeral-nnc", "ordinary-animate-count-requires-singular-or-plural-subject", request);
   }
   const possessor = normalizeKey(request.possessor || "3pl");
@@ -11427,13 +11477,7 @@ function evaluateCardinalNominalConstruction(request, target) {
     ? reduplicationRealization.conjunctStems[0]
     : reduplicationRealization.stem;
   const modifier = normalizeKey(request.modifier || "none");
-  const modifierSurface = {
-    none: "",
-    canah: "Canah",
-    quēn: "Quēn",
-    "ahzo-quēn": "Ahzo quēn",
-    oc: "Oc",
-  }[modifier];
+  const modifierSurface = CARDINAL_MODIFIERS[modifier];
   if (modifierSurface === undefined) return buildBlockedFrame("cardinal-numeral-nnc", "cardinal-nominal-numeral-modifier-invalid", request);
   const measureMeaning = classifier === "measure"
     ? normalizeKey(source.measureMeaning || "amount")
@@ -11971,7 +12015,7 @@ function evaluateCardinalNominalConstruction(request, target) {
       surfaceStringAuthority: false,
     });
   const measureComposition = normalizeKey(request.measureComposition || "measure-only");
-  if (!["measure-only", "with-measured-nnc"].includes(measureComposition)) {
+  if (!CARDINAL_MEASURE_COMPOSITIONS.includes(measureComposition)) {
     return buildBlockedFrame("cardinal-numeral-nnc", "recognized-measure-composition-required", request);
   }
   if (measureComposition === "with-measured-nnc" && classifier !== "measure") {
@@ -13100,9 +13144,10 @@ function evaluateNominalConstruction(request = {}, target = globalThis) {
       { sourceAuthorizationFrame }
     );
   }
-  const embedDecision=constructionKind === "nominal-embed-vnc"?createNominalEmbedDecision(request):null;
+  const embedDecision=constructionKind === "nominal-embed-vnc"?createNominalEmbedDecision(request)
+    :["adjectival-nnc","cardinal-numeral-nnc"].includes(constructionKind)?createNominalTargetDecision(request):null;
   const frame = constructionKind === "adjectival-nnc"
-    ? evaluateAdjectivalNncConstruction(request, target, sourceAuthorizationFrame)
+    ? evaluateAdjectivalNncConstruction(request, target, sourceAuthorizationFrame,embedDecision)
     : constructionKind === "calendar-date-nnc"
     ? evaluateCalendarDateConstruction(request, target, sourceAuthorizationFrame)
     : constructionKind === "nominal-embed-vnc"
@@ -13111,7 +13156,7 @@ function evaluateNominalConstruction(request = {}, target = globalThis) {
       ? evaluateNominalCompoundConstruction(request, target, sourceAuthorizationFrame)
       : constructionKind === "affective-nnc"
         ? evaluateAffectiveNominalConstruction(request, target, sourceAuthorizationFrame)
-        : evaluateCardinalNominalConstruction(request, target);
+        : evaluateCardinalNominalConstruction(request, target,embedDecision);
   const completedFrame = {
     ...frame,
     kind: "classical-nahuatl-nominal-construction-result-frame",

@@ -224,8 +224,8 @@ test('affective address intent is captured once and survives old DOM values with
  const captured=decision.readOwnerOperationControlIntent(snapshot,{getElementById:()=>control},snapshot.contract.request,control,'none');
  assert.equal(captured.state,'possessive');assert.equal(captured.vocativeForm,'full');assert.equal(captured.source.embedConstituent.resultFrame,parent);
  const code=readFileSync(new URL('../ui/rendering/rendering.mjs',import.meta.url),'utf8'),start=code.indexOf('    function buildClassicalNominalConstructionUiRequest('),end=code.indexOf('    function readClassicalNominalConstructionDraft(',start);
- const context=vm.createContext({ClassicalConstructionSession:session,readClassicalNominalConstructionDraft:()=>request,getClassicalRetainedOwnerRequest:()=>captured});
- const read=vm.runInContext(code.slice(start,end)+'buildClassicalNominalConstructionUiRequest',context),retained=read();
+ const context=vm.createContext({ClassicalConstructionSession:session,getClassicalRetainedDeverbalRequest:()=>null,readClassicalNominalConstructionDraft:()=>request,getClassicalRetainedOwnerRequest:()=>captured});
+ const read=vm.compileFunction('return '+code.slice(start,end)+'buildClassicalNominalConstructionUiRequest',[],{contextExtensions:[context]})(),retained=read();
  assert.equal(retained.state,'possessive');assert.equal(retained.source.embedConstituent.resultFrame,parent);
  const recovered=adapter.issueNominalOperationSnapshot(scope,{ingress,binding,selectedBindingId,request:{...retained}});assert.equal(recovered.contract.ready,true,recovered.contract.blockReason);
  assert.equal(session.position.accepted,accepted);assert.equal(snapshot.contract.request.state,'vocative');

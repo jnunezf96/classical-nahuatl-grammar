@@ -5587,7 +5587,7 @@ function createDeverbalDecision(request) {
   }};
   // Request coordinates are covered even when this operation does not consume
   // them. Empty domains are explicit nonapplicability, never a DOM fallback.
-  if (["predicate-nominalization","deverbal-action","patientive","ownerhood","nominal-continuation","verbal-continuation","patientive-embed-continuation","patientive-matrix-continuation"].includes(normalizeKey(request.constructionKind))) {
+  if (CONSTRUCTION_KINDS.includes(normalizeKey(request.constructionKind))) {
     for(const key of ["subject","state","animacy","humanness","possessor","actionKind","actionSuffix","actionReference",
       "actionStemVariant","supportiveInitialIVariant","patientiveNounVowelVariant","activatedObjectPerson","numberConnector","affinity",
       "preteritSourceAnalysis","nominalSpelling","preteritAgentiveBoundarySpelling","preteritAgentiveVariant","finalIBoundary",
@@ -5595,7 +5595,7 @@ function createDeverbalDecision(request) {
       "patientiveCompoundRelation","rootStockAllomorph","rootStockSourceAnalysis","rootStockNounClass","patientiveNounSourceClass",
       "ownerhoodPatientiveReading","ownerhoodMatrix","ownerhoodBoundaryVariant","characteristicMatrixRealization",
       "relation","compoundTargetKind","embedRole","possessorOrientation","adverbRole","orientation","complementKind","complementTargetReferenceId",
-      "embedPossessorCorefersWithSubject","mood","tense","voice","nonactiveOptionId"])
+      "embedPossessorCorefersWithSubject","mood","tense","voice","nonactiveOptionId","hToYVariant"])
       decision.field(key,[],undefined,{applicable:false});
   }
   return decision;
@@ -6512,6 +6512,10 @@ function buildNncTarget(target, sourceFrame, operationFrame, request = {}, decis
   const humanField=decision?.field("humanness",humannessConsumed?referenceChoices.humanness.map(choice=>choice.value):[],humanness,{applicable:humannessConsumed,fixed:Boolean(operationFrame.humanActionReferenceFrame)});
   if(humanField&&humannessConsumed)humanField.options=humanField.options.map(option=>({...option,writeRequestValues:[{path:["animacy"],value:referenceChoices.humanness.find(choice=>choice.value===option.optionId).selections.animacy}]}));
   decision?.field("possessor",[],possessor,{applicable:false});
+  if (operationFrame.constructionKind === "predicate-citation"
+    && (request.subject && request.subject !== operationFrame.fixedTargetSubject
+      || request.animacy && request.animacy !== operationFrame.fixedTargetAnimacy))
+    return deepFreeze({authorizationStatus:"blocked",blockReason:"36.6-citation-fixed-target-required"});
   if (!subject) {
     return deepFreeze({ authorizationStatus: "blocked", blockReason: "unknown-nnc-subject" });
   }
@@ -16207,6 +16211,7 @@ function buildVocativeOperation(
   request = {},
   preparedSourceFrame = null,
   target = globalThis,
+  decision = null,
 ) {
   const suppliedResult = request.canonicalNncResult
     || request.canonicalNncGrammarFrame
@@ -16225,6 +16230,10 @@ function buildVocativeOperation(
     ? getClassicalNahuatlCustomaryAgentiveFinalIBoundaryFacts(suppliedResult, {useKind: "vocative"}, target) : null;
   const finalIRealization = normalizeKey(request.finalIRealization
     || finalIFacts?.selectedRealization || "preserve");
+  const finalIValues=customary&&finalIFacts?.authorizationStatus==="authorized"?finalIFacts.availableRealizations:["preserve"];
+  const finalIOptions=finalIValues.map(value=>({optionId:value==="drop"?"drop-vocative":"preserve",availabilityStatus:"available",writeRequestValues:[{path:["finalIRealization"],value}]}));
+  const finalIField=decision?.field("finalIBoundary",finalIOptions,finalIRealization==="drop"?"drop-vocative":finalIRealization,{path:["finalIRealization"]});
+  if(finalIField){finalIField.selectedValue=finalIRealization==="drop"?"drop-vocative":finalIRealization;finalIField.authoredValue=request.finalIRealization?finalIField.selectedValue:undefined;finalIField.editable=finalIValues.length>1||!finalIValues.includes(finalIRealization);}
   if ((customary && (finalIFacts.authorizationStatus !== "authorized"
       || !finalIFacts.availableRealizations.includes(finalIRealization)))
     || (!customary && finalIRealization !== "preserve")) return {
@@ -16274,6 +16283,10 @@ function buildVocativeOperation(
   } else {
     boundaryRule = "35.13-no-special-vocative-boundary";
   }
+  const hToYValues=/h$/u.test(vocativeStem)?[false,true]:[false];
+  decision?.field("hToYVariant",hToYValues,request.hToYVariant===true,{fixed:hToYValues.length===1});
+  if(request.hToYVariant!==undefined&&!hToYValues.includes(request.hToYVariant))return {sourceFrame,operationFrame:null,
+    blockReason:typeof request.hToYVariant!=="boolean"?"35.13-vocative-boolean-variant-required":"35.13-h-to-y-vocative-requires-final-glottal"};
   if (request.hToYVariant === true && /h$/u.test(vocativeStem)) {
     vocativeStem = `${vocativeStem.slice(0, -1)}y`;
     boundaryRule += "+35.13-h-to-y-variant";
@@ -16499,7 +16512,7 @@ function evaluateGrammar(request = {}, target = globalThis, internalContext = nu
   } else if (["nominal-continuation", "verbal-continuation"].includes(constructionKind)) {
     built = buildContinuationOperation(request, target, preparedSourceFrame, decision);
   } else if (constructionKind === "vocative") {
-    built = buildVocativeOperation(request, preparedSourceFrame, target);
+    built = buildVocativeOperation(request, preparedSourceFrame, target, decision);
   } else {
     built = buildDoubleNucleusOwnerhoodOperation(request, target);
   }

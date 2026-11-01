@@ -4074,35 +4074,17 @@ export function createUiRenderingApi(targetObject = globalThis) {
       }).typedSourceFrame || null;
     }
     function getClassicalCardinalParticipantChoices(request = null) {
-      if (request?.constructionKind !== "cardinal-numeral-nnc"
-        || request.numeralOutputKind && request.numeralOutputKind !== "nnc") return null;
-      // The cardinal owner already enumerates its admitted subjects. The
-      // lexical Source's ordinary noun agreement is not this construction.
-      const plan = targetObject.buildClassicalNahuatlNominalConstructionParadigmPlan?.({
-        ...request, state: "absolutive",
-      });
-      if (!targetObject.isClassicalNahuatlNominalConstructionParadigmPlan?.(plan)
-        || plan.authorizationStatus !== "authorized") return null;
-      const subjectValues = [...new Set(plan.coordinates.map(coordinate => coordinate.subject))];
-      const person = String(request.subject || "3").slice(0, 1);
-      const selectedSubject = subjectValues.includes(request.subject)
-        ? request.subject : subjectValues.find(subject => subject.startsWith(person))
-          || subjectValues[0];
-      const number = subject => subject.endsWith("pl") ? "plural"
-        : subject === "3common" ? "common" : "singular";
-      return {
-        cardinalParticipantPlan: plan,
-        subjectValues,
-        selectedSubject,
-        subjectPersonValues: [...new Set(subjectValues.map(subject => subject.slice(0, 1)))],
-        selectedSubjectPerson: selectedSubject.slice(0, 1),
-        subjectNumberValues: [...new Set(subjectValues.map(number))],
-        selectedSubjectNumber: number(selectedSubject),
-        animacyValues: ["animate", "nonanimate"],
-        selectedAnimacy: request.animacy || "nonanimate",
-        stateValues: request.countKind === "gross" ? ["absolutive", "possessive"] : ["absolutive"],
-        nncState: request.countKind === "gross" ? request.state : "absolutive",
-      };
+      if(request?.constructionKind!=="cardinal-numeral-nnc"||request.numeralOutputKind&&request.numeralOutputKind!=="nnc")return null;
+      const snapshot=ClassicalConstructionSession.position.operationContract;
+      if(snapshot?.controller?.operationId!=="grammar:nominal-construction")return null;
+      const subject=projectOwnerOperationChoice(snapshot,"subject"),animacy=projectOwnerOperationChoice(snapshot,"animacy"),state=projectOwnerOperationChoice(snapshot,"state");
+      if(!subject?.applicable)return null;
+      const values=field=>(field?.options||[]).filter(option=>option.availabilityStatus==="available").map(option=>option.optionId);
+      const subjectValues=values(subject),selectedSubject=subject.selectedValue||request.subject;
+      const number=value=>String(value).endsWith("pl")?"plural":value==="3common"?"common":"singular";
+      return {subjectValues,selectedSubject,subjectPersonValues:[...new Set(subjectValues.map(value=>value[0]))],selectedSubjectPerson:String(selectedSubject)[0],
+        subjectNumberValues:[...new Set(subjectValues.map(number))],selectedSubjectNumber:number(selectedSubject),
+        animacyValues:values(animacy),selectedAnimacy:animacy?.selectedValue,stateValues:values(state),nncState:state?.selectedValue};
     }
     function getClassicalPlaceGentilicParticipantChoices(request = null) {
       if (request?.constructionKind !== "gentilic") return null;
@@ -25564,7 +25546,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
     function getClassicalAdverbialChoicePresentation() {
       return {choices:{...Object.fromEntries(Object.entries(ClassicalAdverbialChoiceAddresses).map(([key,address])=>
         [key,{controlId:`classical-adverbial-${address}`,presentationLifetime:'operation'}])),
-        polarity:{controlId:'classical-rule-logic-polarity',presentationLifetime:'shared'}}};
+        polarity:{controlId:'classical-rule-logic-polarity',presentationLifetime:'shared'},
+        ...Object.fromEntries(Object.entries({subject:'classical-rule-logic-subject',mood:'classical-rule-logic-mood',tense:'classical-rule-logic-tense',voice:'classical-rule-logic-vnc-voice'})
+          .map(([key,controlId])=>[key,{controlId,presentationLifetime:'shared',...(key==='subject'?{controlParts:[{controlId:'classical-rule-logic-vnc-subject-person',part:'person'},{controlId:'classical-rule-logic-vnc-subject-number',part:'number'}]}:{})}]))}};
     }
     function getClassicalRetainedOwnerRequest(operation,binding=null,constructionKind='') {
       const snapshot=ClassicalConstructionSession.position.operationContract;
@@ -28233,115 +28217,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
         const control = wrapper.querySelector?.("select, input, button");
         if (control) control.disabled = !visible;
       });
-      targetObject.document.querySelectorAll("[data-cardinal-numeral-variant-choice]").forEach(wrapper => {
-        const control = wrapper.querySelector?.("select");
-        const active = selected === "cardinal-numeral-nnc" && cardinalCountKind === "ordinary";
-        if (!active) {
-          wrapper.hidden = true;
-          wrapper.setAttribute("aria-hidden", "true");
-          if (control) control.disabled = true;
-          return;
-        }
-        const request = buildClassicalNominalConstructionUiRequest();
-        // Discover the current domain without forcing an old contextual variant.
-        const analysis = targetObject.evaluateClassicalNahuatlNominalConstruction?.({
-          ...request, ordinaryNumberVariant: "tin", numeralVariant: "",
-          source: {...request.source, numeralVariant: ""},
-        })?.sourceFrame?.numeralSourceAnalysisFrame;
-        const labels = {short:"short embed · ōm with assimilation",full:"full embed · ōme",
-          "y-loss":"embed with y lost · ē","y-retained":"embed with y retained · yē",
-          "y-to-x":"embed with y realized as x · ēx",plain:"free form · ēyi",
-          "initial-y":"free form with initial y · yēyi",automatic:"automatic shape"};
-        const variants = (analysis?.availableVariants || []).map(value => [value,labels[value] || value]);
-        if (!variants.length) {
-          wrapper.hidden = true;
-          wrapper.setAttribute("aria-hidden", "true");
-          if (control) control.disabled = true;
-          return;
-        }
-        const visible = variants.length > 1;
-        wrapper.hidden = !visible;
-        wrapper.setAttribute("aria-hidden", String(!visible));
-        if (!control) return;
-        const previous = control.value;
-        control.replaceChildren(...variants.map(([variantValue, label]) => {
-          const option = targetObject.document.createElement("option");
-          option.value = variantValue;
-          option.textContent = label;
-          return option;
-        }));
-        control.value = variants.some(([variantValue]) => (
-          variantValue === previous
-        )) ? previous : variants[0][0];
-        control.disabled = !visible;
-      });
-      targetObject.document.querySelectorAll("[data-cardinal-ordinary-number-variant]").forEach(wrapper => {
-        const control = wrapper.querySelector?.("select");
-        if (selected !== "cardinal-numeral-nnc" || cardinalCountKind !== "ordinary") {
-          wrapper.hidden = true;
-          wrapper.setAttribute("aria-hidden", "true");
-          if (control) control.disabled = true;
-          return;
-        }
-        const request = selected === "cardinal-numeral-nnc"
-          ? buildClassicalNominalConstructionUiRequest() : null;
-        const preview = request ? targetObject.evaluateClassicalNahuatlNominalConstruction?.({
-          ...request, ordinaryNumberVariant: "tin",
-        }) : null;
-        const choices = preview?.sourceFrame?.availableOrdinaryNumberVariants || ["tin"];
-        const visible = choices.length > 1;
-        wrapper.hidden = !visible;
-        wrapper.setAttribute("aria-hidden", String(!visible));
-        if (control) {
-          const previous = control.value;
-          control.replaceChildren(...choices.map(value => {
-            const option = targetObject.document.createElement("option");
-            option.value = value;
-            option.textContent = {tin: "t-in", zero: "silent", meh: "m-eh"}[value];
-            return option;
-          }));
-          control.value = choices.includes(previous) ? previous : choices[0];
-          if (!choices.includes(control.value)) control.value = "tin";
-          control.disabled = !visible;
-        }
-      });
-      targetObject.document.querySelectorAll("[data-cardinal-gross-possessor-kind]").forEach(wrapper => {
-        wrapper.hidden = !cardinalGrossPossessive;
-        wrapper.setAttribute("aria-hidden", String(!cardinalGrossPossessive));
-        const control = wrapper.querySelector?.("select");
-        if (control) {
-          control.disabled = !cardinalGrossPossessive;
-
-        }
-      });
-      targetObject.document.querySelectorAll("[data-cardinal-gross-number-variant]").forEach(wrapper => {
-        const visible = cardinalGrossPossessive
-          && cardinalGrossPossessorKind === "nonanimate";
-        wrapper.hidden = !visible;
-        wrapper.setAttribute("aria-hidden", String(!visible));
-        const control = wrapper.querySelector?.("select");
-        if (control) {
-          control.disabled = !visible;
-
-        }
-      });
-      targetObject.document.querySelectorAll("[data-cardinal-conjunction-form]").forEach(wrapper => {
-        const visible = selected === "cardinal-numeral-nnc"
-          && !cardinalVncAdverb
-          && classifier === "basic"
-          && cardinalValue >= 11
-          && cardinalValue <= 14;
-        wrapper.hidden = !visible;
-        wrapper.setAttribute("aria-hidden", String(!visible));
-        const control = wrapper.querySelector?.("select");
-        if (control) {
-          control.disabled = !visible;
-
-        }
-      });
-
-
-
+      // Cardinal target variants, agreement and possession are projected from
+      // the same owner decision used by preview and Make.
       targetObject.document.querySelectorAll("[data-affective-lexical-analysis-control]").forEach(wrapper => {
         const visible = selected === "affective-nnc"
           && !affectiveDenominal
@@ -32217,7 +32094,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           "classical-cardinal-modifier",
           "none"
         ),
-        subject: countKind === "gross" ? `${nominalSubjectPerson}pl` : subject,
+        subject,
         state,
         possessor,
         animacy,
@@ -32281,23 +32158,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
         syncOwnerOperationDecisionControls(snapshot,targetObject.document);
     }
     function syncClassicalCardinalParticipantChoices() {
-      const choices = getClassicalCardinalParticipantChoices(buildClassicalNominalConstructionUiRequest());
-      if (!choices) return;
-      for (const [control, values, selected] of [
-        ["subject-person", choices.subjectPersonValues, choices.selectedSubjectPerson],
-          ["subject-number", choices.subjectNumberValues, choices.selectedSubjectNumber],
-        ["subject-animacy", choices.animacyValues, choices.selectedAnimacy],
-        ["state", choices.stateValues, choices.nncState],
-      ]) applyClassicalRuleLogicSelectOptionAvailability(
-        `classical-rule-logic-nnc-${control}`, values, selected);
-      const canonicalSubject = targetObject.document?.getElementById?.("classical-rule-logic-subject");
-      if (canonicalSubject) canonicalSubject.value = choices.selectedSubject;
-      // Cardinal agreement has no humanness choice; the old lexical Source
-      // control must not contradict the selected numeral's reference.
-      const humanness = targetObject.document?.getElementById?.("classical-rule-logic-nnc-subject-humanness");
-      const field = humanness?.closest?.("label, [data-classical-rule-control]");
-      if (humanness) humanness.disabled = true;
-      if (field) { field.hidden = true; field.setAttribute("aria-hidden", "true"); }
+      const snapshot=ClassicalConstructionSession.position.operationContract;
+      if(snapshot?.controller?.operationId==="grammar:nominal-construction"&&snapshot.contract.request?.constructionKind==="cardinal-numeral-nnc")
+        syncOwnerOperationDecisionControls(snapshot,targetObject.document);
     }
     function applyClassicalNncTargetParticipantControlChoices(choices = null) {
       if (!choices) return;
@@ -41236,7 +41099,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
         request=getClassicalAdverbialDecisionRequest(exactBinding);
         const matrix=exactBinding.additionalResults?.['adverbial-matrix-vnc-result'];
         if(matrix && request.scope==='incorporated-predicate')request={...request,canonicalMatrixResult:matrix};
-      } else request = operation === "nnc:relational"
+      } else if(operation==="nnc:adverbial")request=getClassicalRetainedOwnerRequest(operation,exactBinding)||buildClassicalNominalConstructionUiRequest(exactBinding);
+      else request = operation === "nnc:relational"
         ? getClassicalRetainedOwnerRequest(operation,exactBinding)||applyClassicalRelationalExactResultBinding(targetObject.getClassicalRelationalNncUiRequest?.(), exactBinding)
         : getClassicalRetainedDeverbalRequest(exactBinding)||buildClassicalNominalConstructionUiRequest(exactBinding);
       if (request && ClassicalNominalSourceVncRefusals.has(request)) return null;
@@ -41301,6 +41165,13 @@ export function createUiRenderingApi(targetObject = globalThis) {
           pilChildRoute:'pil-child-route',pilGenderSpecification:'pil-gender',pilPossessorDistribution:'pil-possessor-distribution',defectAnalysis:'defect-analysis',
           nonanimateReduplicationReading:'nonanimate-reduplication-reading',affinityEmbedSelected:'embed-affinity-selected',possessiveAffinityPlural:'possessive-affinity-plural'})
           .map(([key,address])=>[key,{controlId:`classical-affective-${address}`,presentationLifetime:'operation'}])),
+        adjectivalOperation:{controlId:'classical-adjectival-nnc-operation',presentationLifetime:'operation'},
+        ...(kind==='cardinal-numeral-nnc'?{
+          ...Object.fromEntries(Object.entries({value:'value',countKind:'count-kind',classifier:'classifier',ordinaryNumberVariant:'ordinary-number-variant',numeralVariant:'numeral-variant',
+            conjunctionForm:'conjunction-form',modifier:'modifier',grossPossessorKind:'gross-possessor-kind',grossPossessiveNumberVariant:'gross-number-variant',measureComposition:'measure-composition'})
+            .map(([key,address])=>[key,{controlId:`classical-cardinal-${address}`,presentationLifetime:'operation'}])),
+          ...(getClassicalBasalUnitFromSurfaceForRendering()==='vnc'?Object.fromEntries(Object.entries(getClassicalNominalEmbedChoicePresentation().choices).filter(([key])=>['subject','mood','tense','voice'].includes(key))):{})
+        }:{}),
         ...(kind==='affective-nnc' ? {reduplication:{controlId:'classical-affective-nonanimate-reduplication-shape',presentationLifetime:'operation'}} : {})}};
     }
     function readClassicalNominalOperationSnapshot(operation, source, binding, typed) {
@@ -43914,19 +43785,6 @@ export function createUiRenderingApi(targetObject = globalThis) {
         if (control.value && !values.includes(control.value)) control.value = values.includes(fallback) ? fallback : "";
         if (!visible) control.value = fallback;
       };
-      const probe = request => {
-        if (!request) return false;
-        try {
-          const frame = targetObject.evaluateClassicalNahuatlNominalConstruction?.(request);
-          return targetObject.isClassicalNahuatlNominalConstructionResult?.(frame) === true
-            && frame.authorizationStatus === "authorized";
-        } catch { return false; }
-      };
-      const quality = valid && selected === "adjectival-nnc"
-        ? ["quality-intensification", "distribution-variety"].filter(adjectivalOperation => probe({
-            ...buildClassicalNominalConstructionUiRequest(binding), adjectivalOperation,
-          })) : [];
-      setOptions("classical-adjectival-nnc-operation", quality, "", true);
       const parent = valid && selected === "compound-nnc"
         ? binding.selectedBindingId === "compound-nnc:matrix-result"
           ? binding.additionalResults?.["compound-embed-constituent"]
