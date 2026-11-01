@@ -1,6 +1,6 @@
 import {exportImperfectiveReloadNode,replayImperfectiveReloadNode} from "./reload_imperfective.mjs";
 import {exportFormedReloadNode,replayFormedReloadNode} from "./reload_formed.mjs?placeReload=20261027-2";
-import {exportNameReloadNode,replayNameReloadNode} from "./reload_names.mjs";
+import {exportNameReloadNode,replayNameReloadNode} from "./reload_names.mjs?ownerDecision=20261031-1";
 import {exportConstructedReloadNode,replayConstructedReloadNode} from "./reload_constructed.mjs";
 import {exportComparisonReloadNode,replayComparisonReloadNode} from "./reload_comparison.mjs";
 import {exportNominalCompoundReloadNode, replayNominalCompoundReloadNode, supportsNominalCompoundResultReload} from "./reload_nominal_compound.mjs?nominalReload=20261024-4";

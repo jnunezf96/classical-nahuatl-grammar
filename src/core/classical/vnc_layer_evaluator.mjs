@@ -21,7 +21,7 @@ import {
   buildClassicalNahuatlParticipantRoleTransitionFrame,
   buildClassicalNahuatlParticipantFrame,
   isClassicalNahuatlParticipantFrame,
-} from "./participant_frame.mjs?v=20260823-passive-formation-continuity-238";
+} from "./participant_frame.mjs?v=20260823-passive-formation-continuity-238&ownerDecision=20261031-1";
 
 export const CLASSICAL_NAHUATL_VNC_TARGET_VOICES = Object.freeze([
   "active",

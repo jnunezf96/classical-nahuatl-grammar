@@ -1,4 +1,4 @@
-import {stageOrdinaryNncDependencies} from './participant_choice_coordination.mjs';
+import {stageOrdinaryNncDependencies} from './participant_choice_coordination.mjs?ownerDecision=20261031-1';
 
 // Immutable, nonauthorizing intent; the construction session owns currentness.
 const memories = new WeakMap();

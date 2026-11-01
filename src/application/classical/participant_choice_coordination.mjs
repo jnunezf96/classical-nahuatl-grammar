@@ -7,6 +7,29 @@ const dependentDomains = Object.freeze({
 });
 const issuedMemories = new WeakSet();
 
+// Resolve a deliberate edit from the existing Source owner's selection frame.
+// This is also used by that owner's option admission, so presentation does not
+// independently infer reference or inactive dependencies.
+export function resolveOrdinaryNncActiveSelections(owner, source, selections = {}, {
+  preserveDependent = false, resolveReference = true,
+} = {}) {
+  const active = {...selections};
+  const frame = owner.getCanonicalNncOperationSelectionFrame?.(source, active);
+  if (frame?.authorizationStatus !== 'authorized' || frame.sourceFrame !== source
+    || frame.sourceKind !== 'ordinary') return Object.freeze(active);
+  if (resolveReference && frame.selectedSubject === active.subject && frame.humannessValues?.length === 1
+    && ['', 'unspecified', 'human', 'nonhuman'].includes(active.humanness || '')) {
+    active.humanness = frame.selectedHumanness;
+  }
+  if (!preserveDependent) {
+    for (const [id, [domain]] of Object.entries(dependentDomains)) {
+      const applicable = typeof frame[domain] === 'boolean' ? frame[domain] : frame[domain]?.length > 0;
+      if (!applicable) delete active[id];
+    }
+  }
+  return Object.freeze(active);
+}
+
 export function stageOrdinaryNncDependencies(owner, source, selections = {}, {
   choiceId = '', previousMemory = null, previousSelections = null, explicitValidated = false,
 } = {}) {

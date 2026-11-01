@@ -21,6 +21,8 @@ test('preferred irregular matrix stays exact through public application envelope
  assert.equal(a.canonicalResult.sourceAuthorizationFrame.lexicalFacts.capturedMatrixVncResult,m);
  assert.equal(coordinateFrame.exactMatrixResult,m, 'the whole application remains the original parent');
  assert.equal(coordinateFrame.exactNounResult,n);
+ assert.deepEqual(a.canonicalResult.choiceOptionProjection.tense.options.map(x=>x.optionId),coordinateFrame.matrixCoordinate.choiceOptionProjection.tense.options.map(x=>x.optionId));
+ assert.equal(a.canonicalResult.choiceOptionProjection.tense.selectedValue,'preterit');
  assert.equal(coordinateFrame.matrixCoordinate.resultFrame.selectedMachineryFrame.lesson11ParadigmPlan.selectedStemOverride,'mah');
  assert.equal(m.resultFrame.surfaceRealization,'quimmah', 'the original coordinate remains unchanged');
  assert.equal(r.isClassicalNahuatlNominalVncMatrixCoordinateFrame(coordinateFrame),true);

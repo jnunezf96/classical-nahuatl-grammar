@@ -3064,6 +3064,17 @@ export function createUiStateModule(targetObject = globalThis) {
       if (!select && !buttons.length) {
         return;
       }
+      if(targetObject.isClassicalRuleLogicControlOwnerProjected?.(select)) {
+        const current=String(select?.value||'');
+        for(const button of buttons) {
+          const type=button.getAttribute('data-derivation-type')||'';
+          const option=Array.from(select.options||[]).find(item=>item.value===type);
+          const disabled=select.disabled||!option||option.disabled||option.hidden;
+          button.disabled=disabled;button.setAttribute('aria-disabled',String(disabled));
+          button.classList.toggle('is-active',type===current);button.setAttribute('aria-pressed',String(type===current));
+        }
+        return;
+      }
       const isVerbMode = getActiveTenseMode() === targetObject.TENSE_MODE.verbo;
       const isNounMode = targetObject.isNominalTenseMode(getActiveTenseMode());
       const canUseControl = isVerbMode || isNounMode;
@@ -3177,6 +3188,10 @@ export function createUiStateModule(targetObject = globalThis) {
       }
       if (select) {
         select.addEventListener("change", event => {
+          if(targetObject.isClassicalRuleLogicControlOwnerProjected?.(select)) {
+            targetObject.handleClassicalCapabilityStagedGrammarControlChange?.(select,event);
+            updateDerivationTypeControl();return;
+          }
           setActiveDerivationType(select.value);
           preserveViewportAnchorPosition(select, () => {
             updateDerivationTypeControl();
@@ -3200,6 +3215,10 @@ export function createUiStateModule(targetObject = globalThis) {
             const type = button.getAttribute("data-derivation-type");
             if (!type) {
               return;
+            }
+            if(targetObject.isClassicalRuleLogicControlOwnerProjected?.(select)) {
+              targetObject.dispatchClassicalConstructionChoice?.(select,type);
+              updateDerivationTypeControl();return;
             }
             setActiveDerivationType(type);
             if (select) {

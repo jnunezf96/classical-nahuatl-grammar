@@ -1,3 +1,10 @@
+## v1.2.127 — Shared Owner Decisions
+
+- Reuse canonical choices, recovery and prepared execution across the verified noun, particle, sentence, finite, relational and deverbal paths.
+- Preserve exact Source, accepted Results and History while staging; retain explicit Make.
+- Keep nominal receiving choices and possessor-reference declarations consistent with the canonical owner.
+- Continue remaining family and Source consolidation separately; this release does not claim whole-interface completion.
+
 ## v1.2.117 — Adjectival Choice Coordination
 
 - Coordinate description choices and exact parent Results through one current construction.

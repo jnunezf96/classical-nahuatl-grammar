@@ -11,7 +11,7 @@ import {
 } from "./root_stock_vowel_coalescence.mjs";
 import { getFrequentativeDestockalConstitution } from "./frequentative_destockal_structure.mjs";
 import { getReduplicationParts, reduplicate } from "./reduplicative_realization.mjs";
-import { isClassicalNahuatlParticipantFrame } from "./participant_frame.mjs?v=20260823-passive-formation-continuity-238";
+import { isClassicalNahuatlParticipantFrame } from "./participant_frame.mjs?v=20260823-passive-formation-continuity-238&ownerDecision=20261031-1";
 
 const ATTITUDE_OPERATIONS = Object.freeze(['honorific','reverential','pejorative']);
 export const getClassicalNahuatlAttitudeOperations = () => ATTITUDE_OPERATIONS;
@@ -5978,7 +5978,7 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
   }
   // Internal continuation operation: consume an issued external tla, rather
   // than readmitting the already derived predicate as a new lexical Source.
-  function buildClassicalNahuatlVncTlaFusionContinuationMachinery(sourceMachineryFrame, choices = {}) {
+  function getClassicalNahuatlVncTlaFusionContinuationChoice(sourceMachineryFrame) {
     if (targetObject.isClassicalNahuatlVncDerivationSourceMachineryFrame?.(sourceMachineryFrame) !== true) return null;
     const analysis = targetObject.buildClassicalNahuatlVncDerivationSourceAnalysisFrame(sourceMachineryFrame);
     if (targetObject.isClassicalNahuatlVncDerivationSourceAnalysisFrame?.(analysis) !== true
@@ -6021,6 +6021,12 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
     if (fusion.authorizationStatus !== "authorized" || fusion.fused !== true
       || fusion.sourceStemVariant !== sourceStem
       || fusion.ruleVariables?.targetValence !== "intransitive") return null;
+    return Object.freeze({analysis,sourceTyped,slots,consumedObject,consumedSlot,retainedObjects,targetValence,sourceStem,sourceClass,initialVowelKind,fusion});
+  }
+  function buildClassicalNahuatlVncTlaFusionContinuationMachinery(sourceMachineryFrame, choices = {}) {
+    const decision=getClassicalNahuatlVncTlaFusionContinuationChoice(sourceMachineryFrame);
+    if(!decision)return null;
+    const {analysis,sourceTyped,slots,consumedObject,consumedSlot,retainedObjects,targetValence,sourceStem,sourceClass,initialVowelKind,fusion}=decision;
     const targetCoordinate = {subject: choices.subject, mood: choices.mood, tense: choices.tense};
     const lower = targetObject.buildClassicalNahuatlVerbstemClassFrame(fusion.derivedStem, {
       ...choices.sentenceOptions, ...targetCoordinate,
@@ -6267,7 +6273,9 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
     const optionIds = ["ordinary", ...(caSource ? ["destockal-ca"] : []), ...(tzSource ? ["destockal-tz-a"] : [])];
     if (selected === "ordinary") return freeze({kind: "classical-nahuatl-nominal-ih-stock-selection-frame",
       optionIds, sourceAuthorization, grammaticalOutputAuthority: false});
-    if (!optionIds.includes(selected)) return null;
+    if (!optionIds.includes(selected)) return freeze({kind: "classical-nahuatl-nominal-ih-stock-selection-frame",
+      authorizationStatus:"blocked", blockReason:"ih-nominal-stock-formation-not-admitted",
+      optionIds, sourceAuthorization, grammaticalOutputAuthority:false});
     const intransitive = selected === "destockal-ca";
     const parsed = intransitive ? caSource : tzSource;
     const underlyingSuffix = intransitive ? parsed.sourceSuffix : parsed.underlyingStemFormative;
@@ -7602,6 +7610,7 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
     isClassicalNahuatlOperationFrame: frame => withParentValidationTransaction(() => isClassicalNahuatlOperationFrame(frame)),
     buildClassicalNahuatlMachineryFrame,
     buildClassicalNahuatlVncTlaFusionContinuationMachinery,
+    getClassicalNahuatlVncTlaFusionContinuationChoice,
     isClassicalNahuatlMachineryFrame: frame => withParentValidationTransaction(() => isClassicalNahuatlMachineryFrame(frame)),
     evaluateClassicalNahuatlLateVncDerivation,
     isClassicalNahuatlClosureFrame: frame => withParentValidationTransaction(() => isClassicalNahuatlClosureFrame(frame)),

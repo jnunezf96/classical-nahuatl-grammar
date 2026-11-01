@@ -7,7 +7,7 @@ const r=(await createRuntimeInstance({documentObject:{getElementById:()=>null,ad
 const s=r.buildClassicalNahuatlPronominalNncSourceFrame({stem:'cā'}),nav=r.getClassicalGrammarApplicationCapabilityNavigator(s);
 const bind=q=>r.issueClassicalGrammarTypedSourceOperationBindingFrame(nav,'nnc:pronominal',q);
 const code=readFileSync(new URL('../ui/rendering/rendering.mjs',import.meta.url),'utf8'),ctx=vm.createContext({targetObject:r});
-for(const name of ['getClassicalPronominalSpecialHumanTransitionSelections','getClassicalPronominalSubjectTransitionSelections','getClassicalPronominalNextChoiceProjection','getClassicalOrdinaryNncNextChoiceProjection']){const a=code.indexOf(`    function ${name}(`);vm.runInContext(code.slice(a,code.indexOf('\n    function ',a+1)),ctx);}
+for(const name of ['getClassicalPronominalSpecialHumanTransitionSelections','getClassicalPronominalSubjectTransitionSelections','getClassicalPronominalNextChoiceProjection','getClassicalOrdinaryNncNextChoiceProjection']){const a=code.indexOf(`    function ${name}(`);vm.runInContext(code.slice(a,code.indexOf('\n    }',a+1)+6),ctx);}
 test('compound cā derives plural subject domain; return to simple withdraws only recognized old subject',()=>{
  const simple=bind({subject:'3sg'}),forward=ctx.getClassicalPronominalSubjectTransitionSelections(simple,{...simple.callerSelections,compoundMatrix:'tl-e-in'},'compoundMatrix');
  assert.equal(bind(forward).bindingStatus,'ready');assert.equal(forward.subject,'3sg');assert.ok(bind(forward).ownerBindingFrame.ownerSelectionFrame.subjectValues.includes('3pl'));

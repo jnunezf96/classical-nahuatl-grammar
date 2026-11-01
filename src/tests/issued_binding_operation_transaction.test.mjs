@@ -52,6 +52,7 @@ test('exact ordinary reinflection keeps the Result as Source while its typed own
  const issue=intent=>owner.issueClassicalGrammarTypedSourceOperationBindingFrame(nav,'nnc:ordinary',intent);
  const scope=a.createIssuedBindingOperationScope({owner,source:result,operationId:'nnc:ordinary',ingressKind:'nnc-exact',navigator:nav,session,getIngress:()=>nav,reissue:issue}),binding=issue(context.selections),snapshot=a.issueIssuedBindingOperationSnapshot(scope,binding,nav);
  assert.ok(snapshot);assert.equal(snapshot.source,result);assert.equal(snapshot.captures[0].exact,result);assert.equal(snapshot.contract.binding.exactSource,source);
+ const packet=a.projectOrdinaryNncExecution(snapshot);assert(packet);assert.equal(packet.request.args[0],result);assert.equal(packet.prepared.request,packet.request);assert.equal(owner.previewClassicalGrammarApplicationRequest(packet.request,packet.prepared).canonicalResult,packet.prepared.canonicalResult);assert.equal(owner.executeClassicalGrammarApplicationRequest(packet.request,packet.prepared).canonicalResult,packet.prepared.canonicalResult);
  const fake=a.createIssuedBindingOperationScope({owner,source:{...result},operationId:'nnc:ordinary',ingressKind:'nnc-exact',navigator:nav,session,getIngress:()=>nav,reissue:issue});assert.equal(a.issueIssuedBindingOperationSnapshot(fake,binding,nav),null);
 });
 
@@ -69,7 +70,7 @@ test('a coordinated native candidate must match the current event and exact bind
 
 test('a ready execution packet must belong to the same issued binding, Source and intent',()=>{
  const session=createConstructionSession({isSource:x=>x===source}),scope=a.createIssuedBindingOperationScope({owner,source,operationId:'nnc:ordinary',ingressKind:'typed',navigator,session,getIngress:()=>navigator,reissue:issue});
- const binding=issue({...base,predicateFormation:'source-stem'}),snapshot=a.issueIssuedBindingOperationSnapshot(scope,binding,navigator),packet={kind:'typed',operation:'nnc:ordinary',source,binding,choices:binding.effectiveSelections};
+ const binding=issue({...base,predicateFormation:'source-stem'}),snapshot=a.issueIssuedBindingOperationSnapshot(scope,binding,navigator),packet=a.projectOrdinaryNncExecution(snapshot);
  assert.equal(a.matchesIssuedBindingExecutionPacket(snapshot,packet),true);
  for(const candidate of [{...packet,source:{...source}},{...packet,binding:issue(base)},{...packet,choices:{...packet.choices,state:'possessive'}},{...packet,operation:'vnc:application'}])assert.equal(a.matchesIssuedBindingExecutionPacket(snapshot,candidate),false);
  assert.equal(a.matchesIssuedBindingExecutionPacket(null,packet),false);assert.equal(a.matchesIssuedBindingExecutionPacket({...snapshot},packet),false);

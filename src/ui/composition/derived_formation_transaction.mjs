@@ -1,13 +1,13 @@
-import {createOwnerOperationProtocol} from './owner_operation_protocol.mjs?issuedBinding=20261028-1&ownerDecision=20261029-12';
+import {createOwnerOperationProtocol} from './owner_operation_protocol.mjs?issuedBinding=20261028-1&ownerDecision=20261031-1';
 // Shared session custody. Canonical formation owners retain all grammatical decisions.
 const operations=new Set(['nnc:deverbal-construction','nnc:relational','nnc:adverbial']);
 const scopes=new WeakSet(),contracts=new WeakSet(),snapshots=new WeakSet(),events=new WeakMap(),cache=new WeakMap();
 export function isDerivedFormationOperation(operation){return operations.has(operation);}
-export function createDerivedFormationScope({owner,source,operation,session,getIngress,getSourceContext=null}){
+export function createDerivedFormationScope({owner,source,operation,session,getIngress,getSourceContext=null,presentation=null}){
  if(!owner||!source||!operations.has(operation)||!session||typeof getIngress!=='function')return null;
- const scope=Object.freeze({owner,source,operation,session,getIngress,getSourceContext});scopes.add(scope);return scope;
+ const scope=Object.freeze({owner,source,operation,session,getIngress,getSourceContext,presentation:immutableIntent(presentation,new Set())});scopes.add(scope);return scope;
 }
-function currentFrame(scope,contract){return scopes.has(scope)&&contracts.has(contract)&&contract.scope===scope&&(!contract.sourceContext||scope.getSourceContext?.()===contract.sourceContext);}
+function currentFrame(scope,contract){return scopes.has(scope)&&contracts.has(contract)&&contract.scope===scope&&scope.owner.isClassicalGrammarPreparedApplicationRequest?.(contract.prepared)===true&&(!contract.sourceContext||scope.getSourceContext?.()===contract.sourceContext);}
 const protocol=createOwnerOperationProtocol({kind:'derived-formation-contract',select:s=>operations.has(s?.operationId),routeId:s=>s.routeId,projectIntent:s=>Object.freeze({...s}),buildContract:()=>null,isCurrentFrame:currentFrame,projectCaptures:(_s,c)=>c.captures,
  isCurrentSnapshot:(s,event)=>{const scope=s.controller,p=scope.session.position,e=event&&events.get(event);return p.operationContract===s&&!p.construction.sourcePending&&p.construction.source===s.source&&scope.getIngress()===s.ingress&&(!event||Boolean(e&&e.snapshot===s&&e.revision===p.revision));},
  transition:()=>Object.freeze({handled:true,authorizationStatus:'blocked',blockReason:'derived-owner-reissue-required'}),equivalent:(a,b)=>a===b,staleReason:'derived-choice-stale-frame'});
@@ -24,12 +24,18 @@ function buildDerivedFormationSnapshot(scope,{ingress,binding,request,sourceCont
  const old=cache.get(scope);if(old?.binding===binding&&old.ingress===ingress)return old.snapshot;
  const routeId=scope.source.sourceFrame?.constructionKind;
  if(!['relational-nnc','compound-embed','associated-entity','pertinency'].includes(routeId))return null;
- const contract=Object.freeze({scope,binding,request:null,captures:Object.freeze([Object.freeze({role:'source',exact:scope.source})]),ready:binding.bindingStatus==='ready',blockReason:binding.blockReason,choices:binding.choiceOptionProjection,requiredChoiceIds:binding.requiredChoiceIds,requiredResultRoles:Object.freeze([])});contracts.add(contract);
+ const prepared=owner.prepareClassicalGrammarApplicationRequest?.(binding);if(!prepared)return null;
+ const contract=Object.freeze({scope,binding,typedBinding:true,prepared,preview:prepared.canonicalResult,request:prepared.request.args[0],captures:Object.freeze([Object.freeze({role:'source',exact:scope.source})]),ready:binding.bindingStatus==='ready',blockReason:binding.blockReason,choices:prepared.canonicalResult.choiceOptionProjection||binding.choiceOptionProjection,presentation:scope.presentation,requiredChoiceIds:binding.requiredChoiceIds,requiredResultRoles:Object.freeze([])});contracts.add(contract);
  const snapshot=protocol.issue(scope,{operationId:scope.operation,routeId},scope.source,contract,null,ingress);if(snapshot){snapshots.add(snapshot);cache.set(scope,{binding,ingress,snapshot});}return snapshot;
 }
 export const isCurrentDerivedFormationSnapshot=protocol.isCurrent;
 export function captureDerivedFormationChoiceFrame(snapshot){if(!protocol.isCurrent(snapshot))return null;const event=Object.freeze({});events.set(event,{snapshot,revision:snapshot.controller.session.position.revision});return event;}
-export function projectDerivedFormationExecution(snapshot){if(!snapshots.has(snapshot)||!snapshot.contract.ready||!currentFrame(snapshot.controller,snapshot.contract)||snapshot.controller.getIngress()!==snapshot.ingress)return null;return snapshot.contract.request?Object.freeze({kind:'request',operation:snapshot.controller.operation,source:snapshot.source,choices:snapshot.contract.request,request:Object.freeze({operationId:snapshot.controller.operation,args:Object.freeze([snapshot.contract.request])})}):Object.freeze({kind:'typed',operation:snapshot.controller.operation,source:snapshot.source,binding:snapshot.contract.binding,choices:snapshot.contract.binding.effectiveSelections||Object.freeze({})});}
+export function projectDerivedFormationExecution(snapshot){
+ if(!snapshots.has(snapshot)||!snapshot.contract.ready||!currentFrame(snapshot.controller,snapshot.contract)||snapshot.controller.getIngress()!==snapshot.ingress)return null;
+ const {prepared,binding,typedBinding,request}=snapshot.contract;
+ return Object.freeze({kind:typedBinding?'typed':'request',operation:snapshot.controller.operation,source:snapshot.source,
+  binding,prepared,request:prepared.request,choices:typedBinding?binding.effectiveSelections||Object.freeze({}):request});
+}
 
 // Exact roles follow the existing formation binding's named input, never an
 // arbitrary occurrence of a parent in a request's unused authored fields.
@@ -69,6 +75,10 @@ function matchesDeverbalBinding(selected,request){
  return false;
 }
 function immutableIntent(value,refs){if(!value||typeof value!=='object'||refs.has(value))return value;return Array.isArray(value)?Object.freeze(value.map(x=>immutableIntent(x,refs))):Object.freeze(Object.fromEntries(Object.entries(value).map(([k,v])=>[k,immutableIntent(v,refs)])));}
+function derivedPresentation(presentation,request){
+ const family=presentation?.byConstructionKind?.[request.constructionKind]||presentation;
+ return family?.byTargetKind?.[request.compoundTargetKind]||family;
+}
 function issueDeverbal(scope,{ingress,binding,request,sourceContext,selectedBindingId,additionalResults}){
  const owner=scope.owner;if(!request||typeof request!=='object')return null;
  const captures=[],requiredResultRoles=[],completions=[];
@@ -95,9 +105,9 @@ function issueDeverbal(scope,{ingress,binding,request,sourceContext,selectedBind
     ||request.source.supplementNncResult!==owner.getClassicalNahuatlSupplementationClauseSourceFrame(scope.source.supplementClause)))return null;
   captures.push(Object.freeze({role:'source',exact:scope.source}));
  }
- let preview=null;try{preview=owner.evaluateClassicalNahuatlDeverbalNnc(request);}catch{}
- if(owner.isClassicalNahuatlDeverbalNncGrammarFrame?.(preview)!==true)return null;
- const retained=owner.getClassicalNahuatlDeverbalNncReloadInputs?.(preview);
+ const prepared=owner.prepareClassicalGrammarApplicationRequest?.({operationId:scope.operation,args:[request]});
+ if(!prepared)return null;
+ const preview=prepared.canonicalResult,retained=prepared.request.args[0];
  const authorized=preview.authorizationStatus==='authorized';
  if(!binding&&authorized){
   // These are named dependencies retained by the canonical owner, not objects
@@ -118,7 +128,7 @@ function issueDeverbal(scope,{ingress,binding,request,sourceContext,selectedBind
    return false;
   });
  const ready=authorized&&Boolean(retained)&&custody&&!requiredResultRoles.length;
- const contract=Object.freeze({scope,sourceContext,binding,selectedBindingId,request:retained||immutableIntent(request,new Set(captures.map(c=>c.exact))),preview,captures:Object.freeze(captures),ready,blockReason:requiredResultRoles.length?'derived-required-input-missing':!custody?'derived-owner-input-custody-mismatch':preview.blockReason,requiredResultRoles:Object.freeze(requiredResultRoles),requiredChoiceIds:selected?.requiredChoiceIds||Object.freeze([])});contracts.add(contract);
+ const contract=Object.freeze({scope,sourceContext,binding,selectedBindingId,prepared,request:retained,preview,choices:preview.choiceOptionProjection,presentation:derivedPresentation(scope.presentation,retained),additionalResults:Object.freeze({...additionalResults}),captures:Object.freeze(captures),ready,blockReason:requiredResultRoles.length?'derived-required-input-missing':!custody?'derived-owner-input-custody-mismatch':preview.blockReason,requiredResultRoles:Object.freeze(requiredResultRoles),requiredChoiceIds:selected?.requiredChoiceIds||Object.freeze([])});contracts.add(contract);
  const snapshot=protocol.issue(scope,{operationId:scope.operation,routeId:request.constructionKind},scope.source,contract,null,ingress);if(snapshot)snapshots.add(snapshot);return snapshot;
 }
 
@@ -149,10 +159,11 @@ function issueAdverbial(scope,{ingress,binding,request,sourceContext}){
    refs.add(request.canonicalMatrixResult);captures.push(Object.freeze({role:'adverbial-matrix-vnc-result',exact:request.canonicalMatrixResult}));
   }
  }
- const retained=immutableIntent(request,refs);let preview=null;try{preview=owner.evaluateClassicalNahuatlAdverbialNuclear(retained);}catch{}
+ const prepared=owner.prepareClassicalGrammarApplicationRequest?.({operationId:scope.operation,args:[request]});if(!prepared)return null;
+ const retained=prepared.request.args[0],preview=prepared.canonicalResult;
  const authorized=owner.isClassicalNahuatlAdverbialNuclearResult?.(preview)===true&&preview.authorizationStatus==='authorized';
  const custody=authorized&&(binding?preview.canonicalSourceResult===scope.source:preview.adverbialPotentialFrame===request.adverbialPotentialFrame)&&(!request.canonicalMatrixResult||preview.canonicalMatrixResult===request.canonicalMatrixResult);
- const contract=Object.freeze({scope,sourceContext,binding,request:retained,preview,captures:Object.freeze(captures),ready:custody,blockReason:preview?.blockReason||(!custody?'adverbial-owner-input-custody-mismatch':''),requiredResultRoles:binding?.requiredResultRoles||Object.freeze([]),requiredChoiceIds:binding?.requiredChoiceIds||Object.freeze([])});contracts.add(contract);
+ const contract=Object.freeze({scope,sourceContext,binding,prepared,request:retained,preview,choices:owner.isClassicalNahuatlAdverbialNuclearResult?.(preview)===true?preview.choiceOptionProjection:null,presentation:scope.presentation,captures:Object.freeze(captures),ready:custody,blockReason:preview?.blockReason||(!custody?'adverbial-owner-input-custody-mismatch':''),requiredResultRoles:binding?.requiredResultRoles||Object.freeze([]),requiredChoiceIds:binding?.requiredChoiceIds||Object.freeze([])});contracts.add(contract);
  const snapshot=protocol.issue(scope,{operationId:scope.operation,routeId:'adverbialize-nuclear-clause'},scope.source,contract,null,ingress);if(snapshot)snapshots.add(snapshot);return snapshot;
 }
 
@@ -166,10 +177,12 @@ function issueRelationalExact(scope,{ingress,binding,request,selectedBindingId})
   ||request.nounstem.stemId!==(associated?scope.source.stemId:stem)
   ||associated&&request.nounstem.pertinencySourceKind!=='associated-entity')return null;
  const declared=immutableIntent(request,new Set([scope.source]));
- const typedSource=owner.buildClassicalNahuatlRelationalNncTypedSourceFrame?.(declared);
- const sourceAuthorized=owner.isClassicalNahuatlRelationalNncTypedSourceFrame?.(typedSource)===true;
- let preview=null;try{preview=owner.evaluateClassicalNahuatlRelationalNnc(sourceAuthorized?typedSource:declared);}catch{}
- const custody=sourceAuthorized&&owner.isClassicalNahuatlRelationalResult?.(preview)===true&&preview.authorizationStatus==='authorized'&&preview.navigatorSourceFrame===typedSource&&preview.sourceFrame.upstreamSourceCarrier?.ownerResult===scope.source;
- const contract=Object.freeze({scope,binding,selectedBindingId,request:sourceAuthorized?typedSource:declared,intent:declared,preview,captures:Object.freeze([Object.freeze({role:selected.inputRole,exact:scope.source})]),ready:custody,blockReason:preview?.blockReason||(!custody?'relational-owner-input-custody-mismatch':''),requiredResultRoles:selected.requiredResultRoles,requiredChoiceIds:selected.requiredChoiceIds});contracts.add(contract);
+ const prepared=owner.prepareClassicalGrammarApplicationRequest?.({operationId:scope.operation,args:[declared]});if(!prepared)return null;
+ const preview=prepared.canonicalResult;
+ const custody=owner.isClassicalNahuatlRelationalResult?.(preview)===true&&preview.authorizationStatus==='authorized'
+  &&preview.sourceFrame.upstreamSourceCarrier?.ownerResult===scope.source;
+ const contract=Object.freeze({scope,binding,selectedBindingId,prepared,request:prepared.request.args[0],preview,
+  choices:preview.choiceOptionProjection,presentation:scope.presentation,captures:Object.freeze([Object.freeze({role:selected.inputRole,exact:scope.source})]),
+  ready:custody,blockReason:custody?'':preview.blockReason||preview.diagnostics?.join(' ')||'relational-owner-input-custody-mismatch',requiredResultRoles:selected.requiredResultRoles,requiredChoiceIds:selected.requiredChoiceIds});contracts.add(contract);
  const snapshot=protocol.issue(scope,{operationId:scope.operation,routeId:request.nounstem.operation},scope.source,contract,null,ingress);if(snapshot)snapshots.add(snapshot);return snapshot;
 }

@@ -7,7 +7,7 @@ import {
 import {
   normalizeClassicalNahuatlVncParadigmTense,
   normalizeClassicalNahuatlVncSemanticTense,
-} from "./vnc_layer_evaluator.mjs?v=20261001-reader-26-4-optional-weather-2&andrewsRelease=20261024-1";
+} from "./vnc_layer_evaluator.mjs?v=20261001-reader-26-4-optional-weather-2&andrewsRelease=20261024-1&ownerDecision=20261031-1";
 import {
   getClassicalNahuatlPhoneRepertoryRelation,
 } from "../concepts/phone_repertory_facts.mjs?v=20260810-atom099-001";
@@ -15,7 +15,7 @@ import {
   buildClassicalNahuatlParticipantFrame,
   buildClassicalNahuatlParticipantRoleTransitionFrame,
   isClassicalNahuatlParticipantFrame,
-} from "./participant_frame.mjs?v=20260823-passive-formation-continuity-238";
+} from "./participant_frame.mjs?v=20260823-passive-formation-continuity-238&ownerDecision=20261031-1";
 
 // This participant transition is shared by suffixal and nominal causatives.
 // Callers retain the original owned Source; these are its transformed objects.
@@ -7415,6 +7415,32 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
         ? `${depthSection}.2`
         : `${depthSection}.1`;
     }
+    function buildClassicalNahuatlApplicativeParticipantChoiceDecision(sourceDescriptor,options={}) {
+      const targetSubject=normalizeClassicalNahuatlVncDerivationToken(options.targetSubject)||sourceDescriptor.sourceSubject;
+      const selected=options.selectedOption;
+      const objectKind=normalizeClassicalNahuatlVncDerivationObjectKind(options.applicativeObjectKind||'specific-projective');
+      const objectPerson=normalizeClassicalNahuatlVncDerivationToken(options.applicativeObjectPerson);
+      const kindReason=kind=>kind==='reflexive'&&hasClassicalNahuatlVncDerivationLexicalKey(sourceDescriptor.sourceStem,'miqui')&&hasClassicalNahuatlVncDerivationLexicalKey(selected?.targetStem,'miqui-liā')
+        ?'classical-vnc-miqui-reflexive-applicative-requires-honorific':!CLASSICAL_NAHUATL_VNC_DERIVATION_OBJECT_KINDS.includes(kind)?'classical-vnc-applicative-object-kind-not-authorized':'';
+      const personReason=(kind,person)=>kind==='specific-projective'&&!CLASSICAL_NAHUATL_VNC_DERIVATION_PERSONS.includes(person)?'classical-vnc-applicative-specific-object-person-required'
+        :kind==='specific-projective'&&['1sg','2sg','1pl','2pl'].includes(sourceDescriptor.sourceSubject)&&person===sourceDescriptor.sourceSubject?'classical-vnc-applicative-coreferential-specific-object-must-be-reflexive'
+        :sourceDescriptor.classIndependentApplicativeSource&&kind==='reflexive'&&person&&person!==sourceDescriptor.sourceSubject?'classical-vnc-class-independent-reflexive-subject-reference-required':'';
+      const attestation=selected?.sourceAttestationFrame;
+      const attestedKind=kind=>!attestation||(sourceDescriptor.sourceVoice==='active'&&sourceDescriptor.sourceSubject===attestation.targetScope.subject&&(sourceDescriptor.sourceObjectRequests||[]).length===0&&kind===attestation.observedObjectKind);
+      return Object.freeze({objectKind,objectPerson,targetSubject:sourceDescriptor.sourceSubject,
+        blockReason:targetSubject!==sourceDescriptor.sourceSubject?'classical-vnc-applicative-target-subject-must-preserve-source-subject':kindReason(objectKind)||personReason(objectKind,objectPerson),
+        objectKinds:Object.freeze(CLASSICAL_NAHUATL_VNC_DERIVATION_OBJECT_KINDS.filter(kind=>!kindReason(kind)&&attestedKind(kind))),
+        objectPersons:Object.freeze(CLASSICAL_NAHUATL_VNC_DERIVATION_PERSONS.filter(person=>!personReason('specific-projective',person)&&(!attestation||person===attestation.observedObjectPerson)))});
+    }
+    function getClassicalNahuatlApplicativeParticipantChoiceDecision(sourceMachineryFrame,options={}) {
+      const context=createClassicalNahuatlVncDerivationValidationContext();
+      const source=getClassicalNahuatlVncDerivationSourceDescriptor(sourceMachineryFrame,0,context);
+      if(source.authorizationStatus!=='authorized')return null;
+      const inventory=getClassicalNahuatlVncDerivationOptionInventoryInternal(sourceMachineryFrame,{derivationType:'applicative',applicativeObjectKind:options.applicativeObjectKind},0,context);
+      const id=options.optionId||options.derivationOptionId||inventory.automaticOptionId;
+      const selectedOption=inventory.options.find(option=>option.optionId===id||option.optionAliases?.includes(id));
+      return buildClassicalNahuatlApplicativeParticipantChoiceDecision(source,{...options,selectedOption});
+    }
     function deriveClassicalNahuatlVncParticipantTransform(sourceDescriptor = {}, derivationType = "", options = {}) {
       const sourceObjectRequests = Object.freeze((
         Array.isArray(sourceDescriptor.sourceObjectRequests)
@@ -7519,26 +7545,11 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
           }
         }
       } else if (!blockReason && derivationType === "applicative") {
-        if (targetSubject && targetSubject !== sourceDescriptor.sourceSubject) {
-          blockReason = "classical-vnc-applicative-target-subject-must-preserve-source-subject";
-        }
-        targetSubject = sourceDescriptor.sourceSubject;
-        const objectKind = normalizeClassicalNahuatlVncDerivationObjectKind(options?.applicativeObjectKind || "specific-projective");
-        const objectPerson = normalizeClassicalNahuatlVncDerivationToken(options?.applicativeObjectPerson);
-        // §33.3 restricts this lexical reflexive applicative to honorific
-        // use. Its ordinary nonreflexive beneficiaries are not prohibited.
-        if (!blockReason && objectKind === "reflexive"
-          && hasClassicalNahuatlVncDerivationLexicalKey(sourceDescriptor.sourceStem, "miqui")
-          && hasClassicalNahuatlVncDerivationLexicalKey(selectedOption?.targetStem, "miqui-liā")) {
-          blockReason = "classical-vnc-miqui-reflexive-applicative-requires-honorific";
-        }
-        if (!blockReason && !CLASSICAL_NAHUATL_VNC_DERIVATION_OBJECT_KINDS.includes(objectKind)) {
-          blockReason = "classical-vnc-applicative-object-kind-not-authorized";
-        } else if (!blockReason && objectKind === "specific-projective" && !CLASSICAL_NAHUATL_VNC_DERIVATION_PERSONS.includes(objectPerson)) {
-          blockReason = "classical-vnc-applicative-specific-object-person-required";
-        } else if (!blockReason && objectKind === "specific-projective" && ["1sg", "2sg", "1pl", "2pl"].includes(targetSubject) && objectPerson === targetSubject) {
-          blockReason = "classical-vnc-applicative-coreferential-specific-object-must-be-reflexive";
-        } else if (!blockReason) {
+        const decision=buildClassicalNahuatlApplicativeParticipantChoiceDecision(sourceDescriptor,options);
+        blockReason=decision.blockReason;
+        targetSubject=decision.targetSubject;
+        const {objectKind,objectPerson}=decision;
+        if (!blockReason) {
           const objectId = getClassicalNahuatlVncDerivationAvailableObjectId(sourceObjectRequests, "applicative-object", newestLevel);
           addedObjectRequest = normalizeClassicalNahuatlVncDerivationObjectRequest({
             objectId,
@@ -7553,9 +7564,6 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
             // Source subject's reference through its objective role contact.
             const reflexive = objectKind === "reflexive";
             const sourceParticipant = sourceDescriptor.sourceSubjectParticipantFrame;
-            if (reflexive && objectPerson && objectPerson !== targetSubject) {
-              blockReason = "classical-vnc-class-independent-reflexive-subject-reference-required";
-            }
             const participantFrame = buildClassicalNahuatlParticipantFrame({
               role:"object",agreement:reflexive?sourceParticipant.category:objectPerson,
               ...(reflexive ? {
@@ -7709,6 +7717,7 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
         referentiallyEmptySourceSubjectDiscarded: false,
         passivePromotedSubjectRetainedAsObject: derivationType === "causative" && sourceVoice === "passive",
         sourceSubjectPreservedByApplicative: derivationType === "applicative",
+        ...(derivationType==='applicative'?{applicativeChoiceDecision:buildClassicalNahuatlApplicativeParticipantChoiceDecision(sourceDescriptor,options)}:{}),
         sourceObjectRequests,
         retainedTargetObjectRequests,
         retainedSourceReflexiveShuntlineRuleFrame,
@@ -8645,6 +8654,7 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
       buildClassicalNahuatlVncDerivationSourceAnalysisFrame,
       isClassicalNahuatlVncDerivationSourceAnalysisFrame,
       getClassicalNahuatlVncDerivationOptionInventory,
+      getClassicalNahuatlApplicativeParticipantChoiceDecision,
       isClassicalNahuatlVncDerivationOptionInventory,
       deriveClassicalNahuatlVncDerivationOperationBatchFrame,
       isClassicalNahuatlVncDerivationOperationBatchFrame,

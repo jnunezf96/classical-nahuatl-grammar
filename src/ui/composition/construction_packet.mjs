@@ -1,8 +1,8 @@
-import {previewConstructionPacket} from './construction_preview.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1&interfaceRelease=1.2.36&choiceGuidance=20261027-2&supplementationSession=20261028-1&utteranceProjection=20261028-1';
-import {getConstructionLayerReadiness as getLayerReadiness,getConstructionParticleHostInput} from './construction_layers.mjs?v=20261023-conjunct-edit-1&interfaceRelease=1.2.36';
-export {getConstructionParticleHostInput} from './construction_layers.mjs?v=20261023-conjunct-edit-1&interfaceRelease=1.2.36';
+import {previewConstructionPacket} from './construction_preview.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1&interfaceRelease=1.2.36&choiceGuidance=20261027-2&supplementationSession=20261028-1&utteranceProjection=20261028-1&ownerDecision=20261031-1';
+import {getConstructionLayerReadiness as getLayerReadiness,getConstructionParticleHostInput,arePreparedConstructionLayersCurrent,arePreparedConstructionEnvelopesCurrent} from './construction_layers.mjs?v=20261023-conjunct-edit-1&interfaceRelease=1.2.36&ownerDecision=20261031-1';
+export {getConstructionParticleHostInput} from './construction_layers.mjs?v=20261023-conjunct-edit-1&interfaceRelease=1.2.36&ownerDecision=20261031-1';
 import {resolveResultEditTarget,projectResultForEditing} from './result_editing.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&v=20261023-conjunction-1&interfaceRelease=1.2.36&choiceGuidance=20261027-2&supplementationSession=20261028-1&utteranceProjection=20261028-1';
-import {rebuildResultEdit,requiresResultEditPreview,canRebuildResultEdit} from './result_edit_rebuild.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1&interfaceRelease=1.2.36';
+import {rebuildResultEdit,requiresResultEditPreview,canRebuildResultEdit} from './result_edit_rebuild.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1&interfaceRelease=1.2.36&ownerDecision=20261031-1';
 
 // Freeze request containers while retaining the exact opaque owner frames.
 export function freezeConstructionData(value) {
@@ -72,6 +72,7 @@ export function executeConstructionPacket(runtime,packet) {
     if(result?.authorizationStatus!=='authorized')return result;
     return runtime.captureClassicalGrammarApplicationResult?.(result.canonicalResult,'construction-position-make')?.applicationResult || null;
   }
+  if((packet.preparedSentence||packet.preparedLayers)&&!arePreparedConstructionEnvelopesCurrent(runtime,packet))return null;
   if(packet.kind==='typed') {
     if(runtime.isClassicalGrammarTypedSourceOperationBindingFrame?.(packet.binding)!==true
       || packet.binding.exactSource!==packet.source)return null;
@@ -79,6 +80,11 @@ export function executeConstructionPacket(runtime,packet) {
   } else application=runtime.executeClassicalGrammarApplicationRequest(packet.request,packet.prepared || null);
   if(application?.authorizationStatus!=='authorized')return application;
   origins.set(packet,application);
+  if(packet.preparedSentence){
+    if(packet.preparedSentence.host!==application.canonicalResult)return null;
+    application=runtime.executeClassicalGrammarApplicationRequest(packet.preparedSentence.prepared.request,packet.preparedSentence.prepared);
+    if(application?.authorizationStatus!=='authorized')return application;
+  }
   if(packet.sentenceOptions) {
     if(packet.operation==='nnc:ordinary')application=runtime.executeClassicalGrammarApplicationRequest({
       operationId:'nnc:sentence-surface',args:[application.canonicalResult.typedSlotFrame,packet.sentenceOptions]});
@@ -97,6 +103,10 @@ export function executeConstructionPacket(runtime,packet) {
       if(binding?.bindingStatus!=='ready')return null;
       application=runtime.executeClassicalGrammarApplicationRequest({operationId:'vnc:sentence-result',args:binding.executionArgs});
     }
+  }
+  if(packet.preparedLayers){
+    if(!arePreparedConstructionLayersCurrent(runtime,packet.preparedLayers,application?.canonicalResult))return null;
+    for(const layer of packet.preparedLayers){application=runtime.executeClassicalGrammarApplicationRequest(layer.prepared.request,layer.prepared);if(application?.authorizationStatus!=='authorized')return application;}
   }
   for(const layer of packet.layers || []) {
     if(application?.authorizationStatus!=='authorized')return application;

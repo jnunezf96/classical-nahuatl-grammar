@@ -1,15 +1,16 @@
-import {createOwnerOperationProtocol} from './owner_operation_protocol.mjs?issuedBinding=20261028-1&ownerDecision=20261029-12';
+import {prepareConstructionLayers} from './construction_layers.mjs?v=20261023-conjunct-edit-1&interfaceRelease=1.2.36&ownerDecision=20261031-1';
+import {createOwnerOperationProtocol} from './owner_operation_protocol.mjs?issuedBinding=20261028-1&ownerDecision=20261031-1';
 const scopes=new WeakSet(),contracts=new WeakSet(),snapshots=new WeakSet(),events=new WeakMap(),cache=new WeakMap();
 export const isNuclearSentenceOperation=id=>id==='vnc:sentence-result'||id==='nnc:sentence-surface';
 const same=(a,b)=>a===b||Boolean(a&&b&&typeof a==='object'&&typeof b==='object'&&!a.kind&&!b.kind&&Object.keys(a).length===Object.keys(b).length&&Object.keys(a).every(k=>same(a[k],b[k])));
 function authored(x){if(typeof x==='function'||typeof x==='symbol')throw Error('sentence-intent-is-not-data');if(!x||typeof x!=='object')return x;const proto=Object.getPrototypeOf(x);if(x.kind||!Array.isArray(x)&&proto!==null&&Object.getPrototypeOf(proto)!==null)throw Error('sentence-intent-is-not-authority');return Object.freeze(Array.isArray(x)?x.map(authored):Object.fromEntries(Object.entries(x).map(([k,v])=>[k,authored(v)])));}
-export function createNuclearSentenceScope({owner,source,operationId,session,getIngress}){if(!owner||!source||!session||!isNuclearSentenceOperation(operationId)||typeof getIngress!=='function')return null;const s=Object.freeze({owner,source,operationId,session,getIngress});scopes.add(s);return s;}
-const current=(s,c)=>scopes.has(s)&&contracts.has(c)&&c.scope===s&&s.getIngress()===c.ingress;
+export function createNuclearSentenceScope({owner,source,operationId,session,getIngress,presentation=null}){if(!owner||!source||!session||!isNuclearSentenceOperation(operationId)||typeof getIngress!=='function')return null;const s=Object.freeze({owner,source,operationId,session,getIngress,presentation:authored(presentation)});scopes.add(s);return s;}
+const current=(s,c)=>scopes.has(s)&&contracts.has(c)&&c.scope===s&&s.getIngress()===c.ingress&&(!c.prepared||s.owner.isClassicalGrammarPreparedApplicationRequest?.(c.prepared)===true)&&(!c.layerDecision||c.layerDecision.decisions.every(p=>s.owner.isClassicalGrammarPreparedApplicationRequest?.(p)===true));
 const protocol=createOwnerOperationProtocol({kind:'nuclear-sentence-operation-contract',select:s=>isNuclearSentenceOperation(s.operationId),routeId:s=>s.operationId,projectIntent:s=>Object.freeze({...s}),buildContract:()=>null,isCurrentFrame:current,projectCaptures:(_s,c)=>c.captures,isCurrentSnapshot:(s,e)=>{const p=s.controller.session.position,v=events.get(e);return p.operationContract===s&&p.construction.source===s.source&&!p.construction.sourcePending&&current(s.controller,s.contract)&&(!e||v?.snapshot===s&&v.revision===p.revision);},transition:()=>Object.freeze({handled:true,authorizationStatus:'blocked',blockReason:'sentence-owner-reissue-required'}),equivalent:(a,b)=>a===b,staleReason:'sentence-choice-stale'});
-export function issueNuclearSentenceSnapshot(scope,{ingress,binding=null,navigator=null,operation=null,context=null,options={},layers=[],controls={}}={}){
+export function issueNuclearSentenceSnapshot(scope,{ingress,binding=null,navigator=null,operation=null,context=null,options={},layers=[],layerSelections=null,controls={}}={}){
  if(!scopes.has(scope)||scope.getIngress()!==ingress)return null;
- const o=scope.owner,id=scope.operationId;let intent,layerRecipe,controlState,request,signatureArgs,captures=[{role:'source',exact:scope.source}];
- try{intent=authored(binding?(binding.effectiveSelections||binding.callerSelections||{}):options);layerRecipe=authored(layers);controlState=authored(controls);}catch{return null;}
+ const o=scope.owner,id=scope.operationId;let intent,layerRecipe,layerIntent,controlState,request,signatureArgs,captures=[{role:'source',exact:scope.source}];
+ try{intent=authored(binding?(binding.effectiveSelections||binding.callerSelections||{}):options);layerRecipe=authored(layers);layerIntent=authored(layerSelections);controlState=authored(controls);}catch{return null;}
  if(id==='vnc:sentence-result'){
   if(o.isClassicalNahuatlVncContinuationBindingFrame?.(binding)!==true||binding.operationId!==id||binding.exactInputResult!==scope.source)return null;
   captures.push({role:'sentence-binding',exact:binding});
@@ -23,15 +24,20 @@ export function issueNuclearSentenceSnapshot(scope,{ingress,binding=null,navigat
   captures.push({role:'sentence-input',exact:input});if(context)captures.push({role:'sentence-context',exact:context});
   request=Object.freeze({operationId:id,args:Object.freeze([input,intent])});signatureArgs=request.args;
  }
- const prior=cache.get(scope);if(prior&&prior.ingress===ingress&&prior.binding===binding&&prior.navigator===navigator&&prior.operation===operation&&prior.context===context&&same(prior.intent,intent)&&same(prior.layers,layerRecipe)&&same(prior.controls,controlState))return prior.snapshot;
- let preview=null,previewError='';try{preview=request?o.previewClassicalGrammarApplicationRequest?.(request):null;}catch(error){previewError=String(error?.message||'sentence-owner-inputs-required');}
- const ready=Boolean(request&&o.isClassicalGrammarApplicationPreview?.(preview)===true&&preview.authorizationStatus==='authorized');
- const c=Object.freeze({scope,ingress,binding,navigator,operation,context,intent,layers:layerRecipe,controls:controlState,request,signatureArgs,preview,ready,blockReason:preview?.blockReason||previewError||binding?.blockReason||(!ready?'sentence-owner-inputs-required':''),captures:Object.freeze(captures.map(Object.freeze))});contracts.add(c);
+ const prior=cache.get(scope);if(prior&&current(scope,prior.snapshot.contract)&&prior.ingress===ingress&&prior.binding===binding&&prior.navigator===navigator&&prior.operation===operation&&prior.context===context&&same(prior.intent,intent)&&same(prior.layers,layerRecipe)&&same(prior.layerIntent,layerIntent)&&same(prior.controls,controlState))return prior.snapshot;
+ let preview=null,prepared=null,previewError='';try{if(id==='vnc:sentence-result'){prepared=o.prepareClassicalGrammarApplicationRequest?.(binding);request=prepared?.request||request;}else if(request){prepared=o.prepareClassicalGrammarApplicationRequest?.(request);request=prepared?.request||request;}preview=request?o.previewClassicalGrammarApplicationRequest?.(request,prepared):null;}catch(error){previewError=String(error?.message||'sentence-owner-inputs-required');}
+ const primaryReady=Boolean(request&&o.isClassicalGrammarApplicationPreview?.(preview)===true&&preview.authorizationStatus==='authorized');
+ const primaryChoices=prepared?.canonicalResult?.choiceOptionProjection||null;
+ const layerDecision=layerIntent&&primaryReady?prepareConstructionLayers(o,preview.canonicalResult,layerIntent,primaryChoices):null;
+ const choices=layerIntent&&primaryChoices?Object.freeze({...primaryChoices,...(layerDecision?.choices||{})}):primaryChoices;
+ const authoredSelections=layerIntent?Object.freeze({...authored(binding?.callerSelections||intent),layers:layerIntent}):intent;
+ const ready=primaryReady&&(!layerIntent||layerDecision?.ready===true);
+ const c=Object.freeze({scope,ingress,binding,navigator,operation,context,intent,authoredSelections,layerIntent,layerDecision,layers:layerRecipe,controls:controlState,request,signatureArgs,prepared,choices,presentation:scope.presentation,preview,ready,blockReason:layerDecision?.blockReason||prepared?.blockReason||preview?.blockReason||previewError||binding?.blockReason||(!ready?'sentence-owner-inputs-required':''),captures:Object.freeze(captures.map(Object.freeze))});contracts.add(c);
  const s=protocol.issue(scope,{operationId:id},scope.source,c,null,ingress);if(s){snapshots.add(s);cache.set(scope,{...c,snapshot:s});}return s;
 }
 export const isCurrentNuclearSentenceSnapshot=protocol.isCurrent;
 export function captureNuclearSentenceChoiceFrame(s){if(!protocol.isCurrent(s))return null;const e=Object.freeze({});events.set(e,{snapshot:s,revision:s.controller.session.position.revision});return e;}
-export function projectNuclearSentenceExecution(s){if(!snapshots.has(s)||!current(s.controller,s.contract)||!s.contract.ready)return null;return Object.freeze({operation:s.controller.operationId,source:s.source,choices:s.contract.intent,kind:'request',request:s.contract.request,layers:s.contract.layers});}
+export function projectNuclearSentenceExecution(s){if(!snapshots.has(s)||!current(s.controller,s.contract)||!s.contract.ready)return null;return Object.freeze({operation:s.controller.operationId,source:s.source,choices:s.contract.intent,kind:'request',request:s.contract.request,prepared:s.contract.prepared,...(s.contract.layerDecision?{preparedLayers:s.contract.layerDecision.preparedLayers,layers:Object.freeze([])}:{layers:s.contract.layers})});}
 export function retainNuclearSentenceBinding(snapshot,candidate,event){
  if(!protocol.isCurrent(snapshot,event)||snapshot.controller.operationId!=='vnc:sentence-result')return null;
  const o=snapshot.controller.owner,prior=snapshot.contract.binding;

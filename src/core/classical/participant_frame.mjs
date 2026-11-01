@@ -240,6 +240,61 @@ export function isClassicalNahuatlParticipantFrame(frame = null) {
   return true;
 }
 
+// Declaration validation keeps authored reference facts distinct from the
+// normalized participant. A third-common referent may use third-singular
+// morphology; an explicit contradiction is not repaired by normalization.
+export function isClassicalNahuatlParticipantReferenceSelectionCompatible(options = {}, {exactAgreement=false} = {}) {
+  const frame = buildClassicalNahuatlParticipantFrame(options);
+  if (!isClassicalNahuatlParticipantFrame(frame)) return false;
+  const agreement = token(options.agreement || options.category);
+  if (agreement && agreement !== frame.category && (exactAgreement || agreement !== frame.morphologicalAgreement)) return false;
+  return ["person", "number", "animacy", "humanness"].every(key => {
+    const value = token(options[key]);
+    return !value || value === "unspecified" || value === frame[key];
+  });
+}
+export function getClassicalNahuatlParticipantAgreementValues() {
+  return Object.freeze([...new Set([...PERSON_VALUES].filter(person=>person!=='unspecified').flatMap(person=>[...NUMBER_VALUES].filter(number=>number!=='unspecified').filter(number=>isClassicalNahuatlParticipantReferenceSelectionCompatible({person,number})).map(number=>buildClassicalNahuatlParticipantFrame({person,number}).category)))]);
+}
+export function getClassicalNahuatlParticipantReferenceOptions(options = {}) {
+  return Object.freeze(Object.fromEntries(Object.entries({person:PERSON_VALUES,number:NUMBER_VALUES,
+    animacy:ANIMACY_VALUES,humanness:HUMANNESS_VALUES}).map(([key,values]) => [key,
+    Object.freeze([...values].filter(value => isClassicalNahuatlParticipantReferenceSelectionCompatible({...options,[key]:value})))])));
+}
+
+// An explicit edit may correct dependent reference axes. Direct declarations
+// still use the compatibility predicate above and retain any contradiction.
+export function getClassicalNahuatlParticipantReferenceChoiceOptions(options = {}, domains = {}, {exactAgreement=false} = {}) {
+  const canonical={agreement:getClassicalNahuatlParticipantAgreementValues(),animacy:[...ANIMACY_VALUES],humanness:[...HUMANNESS_VALUES]};
+  const values=Object.fromEntries(Object.entries(canonical).map(([key,all])=>[key,domains[key]?all.filter(value=>domains[key].includes(value)):all]));
+  const compatible=selection=>isClassicalNahuatlParticipantReferenceSelectionCompatible({...options,...selection},{exactAgreement});
+  const result={};
+  for(const key of Object.keys(values)) {
+    result[key]=Object.freeze(values[key].flatMap(value=>{
+      const agreement=key==='agreement'?value:options.agreement;
+      const candidates=[];
+      for(const animacy of key==='animacy'?[value]:values.animacy)for(const humanness of key==='humanness'?[value]:values.humanness) {
+        const requested={agreement,animacy,humanness};if(!compatible(requested))continue;
+        const frame=buildClassicalNahuatlParticipantFrame({...options,...requested});
+        if(key!=='agreement'&&frame[key]!==value)continue;
+        const selection={agreement,animacy:frame.animacy,humanness:frame.humanness};
+        const score=Object.entries(selection).reduce((n,[axis,selected])=>n+(axis!==key&&selected===options[axis]?1:0),0);
+        candidates.push({selection,score});
+      }
+      candidates.sort((a,b)=>b.score-a.score);
+      // If no agreement has been declared yet, reference fields wait for it.
+      if(!agreement||!candidates.length)return [];
+      const best=candidates.filter(candidate=>candidate.score===candidates[0].score),selection={agreement};
+      for(const axis of ['animacy','humanness']) {
+        const alternatives=new Set(best.map(candidate=>candidate.selection[axis]));
+        selection[axis]=axis===key?value:alternatives.size===1?[...alternatives][0]:options[axis]||'';
+      }
+      return [Object.freeze({value,selections:Object.freeze(selection)})];
+    }));
+  }
+  return Object.freeze(result);
+}
+
 export function areClassicalNahuatlParticipantFramesReferentiallyCompatible(left = null, right = null) {
   if (!isClassicalNahuatlParticipantFrame(left) || !isClassicalNahuatlParticipantFrame(right)) return false;
   if (!left.hasReferent || !right.hasReferent) return false;

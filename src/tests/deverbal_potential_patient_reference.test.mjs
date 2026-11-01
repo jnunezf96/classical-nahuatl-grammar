@@ -1,7 +1,5 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import vm from 'node:vm';
-import {readFileSync} from 'node:fs';
 import {createPossessiveFixture} from './helpers/deverbal_possessive_fixture.mjs';
 
 test('potential-patient restores owned nominal reference choices after fixed active action',async()=>{
@@ -12,20 +10,14 @@ test('potential-patient restores owned nominal reference choices after fixed act
  const frame=r.evaluateClassicalNahuatlDeverbalNnc(request);
  assert.equal(frame.authorizationStatus,'authorized',frame.blockReason);
  assert.equal(frame.operationFrame.fixedTargetSubject,'');
- const code=readFileSync(new URL('../ui/rendering/rendering.mjs',import.meta.url),'utf8');
- const start=code.indexOf('    function syncClassicalDeverbalNncStateOptions('),end=code.indexOf('\n    function ',start+1);
- const writes=[];
- const ctx=vm.createContext({targetObject:r,getActiveClassicalGrammarResultBinding:()=>({exactResult:parent}),getClassicalNominalConstructionControlValue:(_id,fallback)=>fallback,buildClassicalNominalConstructionUiRequest:()=>request,getClassicalDeverbalEditablePossessorValues:()=>[],applyClassicalRuleLogicSelectOptionAvailability:(...args)=>writes.push(args)});
- vm.runInContext(code.slice(start,end),ctx);
- ctx.syncClassicalDeverbalNncStateOptions(frame);
- assert.ok(writes.find(([id,values])=>id==='classical-rule-logic-nnc-subject-animacy'&&values.includes('animate')));
+ const humanChoice=frame.choiceOptionProjection.subject.options.find(option=>option.optionId==='2sg');
+ assert(humanChoice);assert(humanChoice.writeRequestValues.some(write=>write.path[0]==='animacy'&&write.value==='animate'));
  const human={...request,subject:'2sg',animacy:'animate',humanness:'human'};
  const result=r.evaluateClassicalNahuatlDeverbalNnc(human);
  assert.equal(result.authorizationStatus,'authorized',result.blockReason);
  assert.equal(result.wordSurface,'timahuiztli');
  assert.equal(result.sourceFrame.canonicalVncResult,parent);
- writes.length=0;ctx.syncClassicalDeverbalNncStateOptions({...frame});assert.equal(writes.length,0);
  const fixed=r.evaluateClassicalNahuatlDeverbalNnc({...request,actionKind:'active-action'});
- ctx.syncClassicalDeverbalNncStateOptions(fixed);
- assert.ok(writes.find(([id,values])=>id==='classical-rule-logic-nnc-subject-animacy'&&values.length===1&&values[0]==='nonanimate'));
+ assert.deepEqual(fixed.choiceOptionProjection.animacy.options.map(option=>option.optionId),['nonanimate']);
+ assert.equal(fixed.choiceOptionProjection.animacy.editable,false);
 });

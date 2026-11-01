@@ -1,5 +1,5 @@
-import {previewRebuiltResultEdit} from './result_edit_rebuild.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1&interfaceRelease=1.2.36';
-import {getConstructionParticleHostInput,getConstructionLayerReadiness} from './construction_layers.mjs?v=20261023-conjunct-edit-1&interfaceRelease=1.2.36';
+import {previewRebuiltResultEdit} from './result_edit_rebuild.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1&interfaceRelease=1.2.36&ownerDecision=20261031-1';
+import {getConstructionParticleHostInput,getConstructionLayerReadiness,arePreparedConstructionLayersCurrent,arePreparedConstructionEnvelopesCurrent} from './construction_layers.mjs?v=20261023-conjunct-edit-1&interfaceRelease=1.2.36&ownerDecision=20261031-1';
 import {resolveResultEditTarget,projectResultForEditing} from './result_editing.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&v=20261023-conjunction-1&interfaceRelease=1.2.36&choiceGuidance=20261027-2&supplementationSession=20261028-1&utteranceProjection=20261028-1';
 
 // Owner evaluation only. No application receipt, History write or acceptance.
@@ -28,12 +28,18 @@ export function previewConstructionPacket(runtime,packet) {
     if(packet.captures.some(slot=>packet.controller.getCapturedCanonicalResult(slot.role)!==slot.exact))return null;
     return packet.controller.preview?.(packet.choices) || null;
   }
+  if((packet.preparedSentence||packet.preparedLayers)&&!arePreparedConstructionEnvelopesCurrent(runtime,packet))return null;
   if(packet.kind==='typed') {
     if(runtime.isClassicalGrammarTypedSourceOperationBindingFrame?.(packet.binding)!==true
       || packet.binding.exactSource!==packet.source)return null;
     preview=observe(runtime.previewClassicalGrammarTypedSourceOperationBindingFrame?.(packet.binding));
   } else preview=observe(runtime.previewClassicalGrammarApplicationRequest?.(packet.request,packet.prepared||null));
   if(!preview)return null;
+  if(packet.preparedSentence){
+    if(packet.preparedSentence.host!==preview.canonicalResult)return null;
+    preview=observe(runtime.previewClassicalGrammarApplicationRequest(packet.preparedSentence.prepared.request,packet.preparedSentence.prepared));
+    if(!preview)return null;
+  }
   if(packet.sentenceOptions) {
     if(packet.operation==='nnc:ordinary')preview=request('nnc:sentence-surface',[preview.canonicalResult.typedSlotFrame,packet.sentenceOptions]);
     else if(packet.operation==='grammar:nominal-construction') {
@@ -45,6 +51,10 @@ export function previewConstructionPacket(runtime,packet) {
       if(binding?.bindingStatus!=='ready')return null;
       preview=request('vnc:sentence-result',binding.executionArgs);
     }
+  }
+  if(packet.preparedLayers){
+    if(!arePreparedConstructionLayersCurrent(runtime,packet.preparedLayers,preview?.canonicalResult))return null;
+    for(const layer of packet.preparedLayers){preview=observe(runtime.previewClassicalGrammarApplicationRequest?.(layer.prepared.request,layer.prepared));if(!preview)return null;}
   }
   for(const layer of packet.layers||[]) {
     if(!preview)return null;

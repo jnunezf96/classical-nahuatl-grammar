@@ -5,20 +5,26 @@ import {
   CLASSICAL_NAHUATL_VNC_DERIVATION_TYPES,
   normalizeClassicalNahuatlVncDerivationType,
   validateClassicalNahuatlVncDerivationTypeSelection,
-} from "../../core/classical/vnc_derivation_evaluator.mjs?v=20261008-reader-40-9-190&andrewsRelease=20261024-1";
+} from "../../core/classical/vnc_derivation_evaluator.mjs?v=20261008-reader-40-9-190&andrewsRelease=20261024-1&ownerDecision=20261031-1";
 import {
   CLASSICAL_NAHUATL_VNC_CAUSATIVE_SOURCE_VOICES,
   CLASSICAL_NAHUATL_VNC_TARGET_VOICES,
   validateClassicalNahuatlVncVoiceSelection,
-} from "../../core/classical/vnc_layer_evaluator.mjs?v=20261001-reader-26-4-optional-weather-2&andrewsRelease=20261024-1";
+  getClassicalNahuatlVncSemanticInputVocabulary,
+  getClassicalNahuatlVncParadigmTensesForMood,
+} from "../../core/classical/vnc_layer_evaluator.mjs?v=20261001-reader-26-4-optional-weather-2&andrewsRelease=20261024-1&ownerDecision=20261031-1";
 import {
   buildClassicalResultOutputScopeSelectionFrame,
 } from "../../core/output/scope.mjs?v=20260726-lessons2-58-one-system-094";
 import {
   buildClassicalNahuatlParticipantFrame,
   isClassicalNahuatlParticipantFrame,
+  getClassicalNahuatlParticipantAgreementValues,
+  getClassicalNahuatlParticipantReferenceOptions,
+  getClassicalNahuatlParticipantReferenceChoiceOptions,
+  isClassicalNahuatlParticipantReferenceSelectionCompatible,
   doesClassicalNahuatlParticipantTransitionRetireSourceRole,
-} from "../../core/classical/participant_frame.mjs?v=20260823-passive-formation-continuity-238";
+} from "../../core/classical/participant_frame.mjs?v=20260823-passive-formation-continuity-238&ownerDecision=20261031-1";
 import {resolveReflexiveInterpretationChoice} from "./reflexive_choice_coordination.mjs";
 
 export function createClassicalNahuatlVncApplicationModule(targetObject = globalThis) {
@@ -43,6 +49,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
     const classicalNahuatlVncApplicationBuiltParadigmPlans = new WeakSet();
     const classicalNahuatlVncApplicationBuiltParadigmCoordinates = new WeakSet();
     const classicalNahuatlVncApplicationIssuedSentenceResultFrames = new WeakSet();
+    const classicalNahuatlVncIssuedSentenceDecisions = new WeakSet();
     const classicalNahuatlVncSentenceEnvelopeReceipts = new WeakMap();
     const classicalNahuatlVncSentenceValidationReceipts = new WeakMap();
     const classicalNahuatlVncSentenceImmutableDataGraphs = new WeakSet();
@@ -105,6 +112,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       new WeakMap();
     const classicalNahuatlVncTypedSourceApplicationExecutedBindings =
       new WeakSet();
+    const classicalNahuatlVncTypedSourceApplicationPreparedResults = new WeakMap();
     const classicalNahuatlVncTypedSourceApplicationProvenanceBySource =
       new WeakMap();
     const classicalNahuatlVncParticipantProvenanceByMachinery = new WeakMap();
@@ -6024,6 +6032,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
           ? canonicalSource.lateOperationClosureFrame
           : null,
         sentenceSurfaceFrame: authorizationStatus === "authorized" ? sentenceSurfaceFrame : null,
+        choiceOptionProjection: canonicalSource && sentenceSurfaceFrame?.choiceOptionProjection || Object.freeze({}),
         consumedNuclearFormula: authorizationStatus === "authorized" ? nuclearFormula : "",
         consumedNuclearSurface: authorizationStatus === "authorized" ? nuclearSurface : "",
         sentenceFormulaDisplay: authorizationStatus === "authorized" ? sentenceFormulaDisplay : "",
@@ -6049,6 +6058,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         surfaceStringAuthority: false,
         displayStringsAreAuthority: false
       });
+      classicalNahuatlVncIssuedSentenceDecisions.add(frame);
       if (authorizationStatus === "authorized") {
         classicalNahuatlVncApplicationIssuedSentenceResultFrames.add(frame);
         if (selectedEnvelope !== null) classicalNahuatlVncSentenceEnvelopeReceipts.set(frame,
@@ -6056,6 +6066,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       }
       return frame;
     }
+    function isClassicalNahuatlVncSentenceDecisionFrame(frame) { return Boolean(frame && classicalNahuatlVncIssuedSentenceDecisions.has(frame)); }
     function getClassicalNahuatlVncSentenceValidationCapabilities(runtime) {
       if (!runtime || typeof runtime !== "object") return null;
       const capabilities = [], names = new Set(), owners = new Set();
@@ -7371,10 +7382,10 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         ) || null;
       const derivationExplanationProjection = projectCanonicalClassicalNahuatlVncDerivationExplanation(applicationFrame, runtimeTarget || getClassicalNahuatlVncApplicationRuntimeTarget());
       const projectedApplicationFrame =
-        finalizeBuiltClassicalNahuatlVncApplicationFrame({
+        finalizeBuiltClassicalNahuatlVncApplicationFrame(Object.defineProperty({
         ...applicationFrame,
         derivationExplanationProjection
-      });
+      },'choiceOptionProjection',{value:applicationFrame.choiceOptionProjection}));
       const inherentRoleContext =
         classicalNahuatlVncInherentSubjectRoleContextByApplicationFrame.get(applicationFrame);
       if (inherentRoleContext) {
@@ -7550,6 +7561,73 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         targetObjects: Object.freeze(targetObjectRequests.map(projectObject)),
       });
     }
+    function projectClassicalNahuatlFiniteTargetDecision({request,control,participant,selected,formation,source,operation,continuation,runtime}) {
+      const field=(key,values,value=request[key],extra={})=>Object.freeze({choiceId:key,inputKind:'enum',valueKind:typeof value==='boolean'?'boolean':'string',
+        requestPath:Object.freeze([key]),applicable:true,editable:true,selectedValue:value,authoredValue:request[key],
+        options:Object.freeze(values.map(item=>typeof item==='object'?item:Object.freeze({optionId:item,label:String(item),availabilityStatus:'available'}))),...extra});
+      const transform=operation?.participantTransformFrame,voice=selected?.voiceTransformationFrame;
+      const attestation=operation?.selectedOption?.sourceAttestationFrame||continuation?.sourceMachineryFrame?.derivationOperationFrame?.selectedOption?.sourceAttestationFrame;
+      const retainedPlan=selected?.lesson11ParadigmPlan||selected?.proofFrame?.conclusion?.lesson11ParadigmPlan||formation?.lesson11ParadigmPlan;
+      const plan=retainedPlan?.requestedMood===request.mood&&retainedPlan?.requestedParadigmTense===request.tense?retainedPlan:runtime.buildClassicalNahuatlIrregularVncParadigmPlan?.(request.targetStem||request.sourceStem,{subject:request.subject,mood:request.mood,tense:request.tense});
+      const fixed=formation?.sourceSelectionFrame?.typedSourceSelectsWholeStem===true?plan?.fixedSourceCell:null;
+      const fixedSubject=attestation?.targetScope.subject||fixed?.subject
+        ||(participant.targetSubject?.hasReferent===false?participant.targetSubject.morphologicalAgreement:'')
+        ||(participant.passivePatientPromotion?participant.targetSubject.category:'')
+        ||(transform?.sourceSubjectPreservedByApplicative?transform.sourceSubject:'');
+      const retired=doesClassicalNahuatlParticipantTransitionRetireSourceRole(voice?.participantRoleTransitionFrame,'subject');
+      const objects=transform?.targetObjectRequests||request.sourceObjectRequests||[];
+      const subjects=fixedSubject?[fixedSubject]:getClassicalNahuatlParticipantAgreementValues().filter(subject=>retired||!getClassicalNahuatlVncApplicationSpecificCoreferenceBlockReason({subject,derivationType:request.derivationType,objectRequests:objects}));
+      const fixedMood=attestation?.targetScope.mood||fixed?.mood;
+      const fixedTense=attestation?.targetScope.tense||fixed?.tense;
+      const moodTenses=getClassicalNahuatlVncParadigmTensesForMood(request.mood);
+      const tenseDomain=fixedTense?[fixedTense]:plan?.allowedParadigmTenses?.length?plan.allowedParadigmTenses.filter(value=>moodTenses.includes(value)):moodTenses;
+      const inventories=Object.fromEntries(CLASSICAL_NAHUATL_VNC_APPLICATION_DERIVATIONS.filter(type=>type!=='direct').map(type=>[type,runtime.getClassicalNahuatlVncDerivationOptionInventory?.(source,{derivationType:type,applicativeObjectKind:request.applicativeObjectKind})]));
+      const applicative=request.derivationType==='applicative'?(transform?.applicativeChoiceDecision||runtime.getClassicalNahuatlApplicativeParticipantChoiceDecision?.(source,{...request,targetSubject:request.subject})):null;
+      const fields={requestedDerivation:field('requestedDerivation',CLASSICAL_NAHUATL_VNC_APPLICATION_DERIVATIONS.map(type=>Object.freeze({optionId:type,label:type,withdrawRequestPaths:Object.freeze((type===request.requestedDerivation?[]:['derivationOptionId','nonactiveOptionId',...(type!=='applicative'?['applicativeObjectKind','applicativeObjectPerson']:[]),...(type!=='causative'?['causativeObjectKind','causativeSpecificShuntlineRealization']:[])]).map(key=>Object.freeze([key]))),availabilityStatus:type==='direct'||inventories[type]?.authorizationStatus==='authorized'&&inventories[type]?.options.length?'available':'incompatible'})),request.requestedDerivation),
+        subject:field('subject',subjects,fixedSubject||request.subject,{editable:!fixedSubject||request.subject!==fixedSubject}),
+        mood:field('mood',fixedMood?[fixedMood]:getClassicalNahuatlVncSemanticInputVocabulary().moods,fixedMood||request.mood,{editable:!fixedMood||request.mood!==fixedMood}),
+        tense:field('tense',tenseDomain,fixedTense||request.tense,{editable:!fixedTense||request.tense!==fixedTense}),
+        requestedVoice:field('requestedVoice',attestation?[attestation.targetScope.voice]:control?.allowedVoices||[],request.requestedVoice,{editable:!attestation||request.requestedVoice!==attestation.targetScope.voice}),
+        nonactiveOptionId:field('nonactiveOptionId',(control?.nonactiveOptionInventory?.options||[]).map(item=>Object.freeze({...item,availabilityStatus:'available'})),control?.selectedNonactiveOptionId||'',{applicable:request.requestedVoice!=='active'}),
+        derivationOptionId:field('derivationOptionId',(control?.derivationOptionInventory?.options||[]).map(item=>Object.freeze({...item,availabilityStatus:'available'})),control?.selectedDerivationOptionId||'',{applicable:request.derivationType!=='direct'}),
+        causativeObjectKind:field('causativeObjectKind',transform?.allowedCausativeObjectKinds||[],transform?.causativeObjectKind||request.causativeObjectKind,{applicable:request.derivationType==='causative'}),
+        causativeSpecificShuntlineRealization:field('causativeSpecificShuntlineRealization',control?.allowedCausativeSpecificShuntlineRealizations||[],request.causativeSpecificShuntlineRealization,{applicable:control?.causativeSpecificShuntlineChoiceEligible===true})};
+      fields.applicativeObjectKind=field('applicativeObjectKind',applicative?.objectKinds||[],request.applicativeObjectKind,{applicable:request.derivationType==='applicative'});
+      fields.applicativeObjectPerson=field('applicativeObjectPerson',applicative?.objectPersons||[],request.applicativeObjectPerson,{applicable:request.derivationType==='applicative'&&applicative?.objectKind==='specific-projective'});
+      fields.applicativeObject=field('applicativeObject',(applicative?.objectKinds||[]).flatMap(kind=>(kind==='specific-projective'?applicative.objectPersons:['']).map(person=>Object.freeze({optionId:kind==='specific-projective'?`${kind}:${person}`:kind,label:kind==='specific-projective'?`${kind} · ${person}`:kind,availabilityStatus:'available',writeRequestValues:Object.freeze([{path:Object.freeze(['applicativeObjectKind']),value:kind},{path:Object.freeze(['applicativeObjectPerson']),value:person}])}))),request.applicativeObjectKind==='specific-projective'?`${request.applicativeObjectKind}:${request.applicativeObjectPerson}`:request.applicativeObjectKind,{requestPath:Object.freeze(['applicativeObjectKind']),applicable:request.derivationType==='applicative'});
+
+      const applicativeInventories=new Map();
+      fields.applicativeObject=Object.freeze({...fields.applicativeObject,options:Object.freeze(fields.applicativeObject.options.map(option=>{
+        const kind=option.writeRequestValues[0].value;
+        if(!applicativeInventories.has(kind))applicativeInventories.set(kind,runtime.getClassicalNahuatlVncDerivationOptionInventory?.(source,{derivationType:'applicative',applicativeObjectKind:kind}));
+        const inventory=applicativeInventories.get(kind);
+        return Object.freeze({...option,...(request.derivationOptionId&&!inventory?.options.some(item=>item.optionId===request.derivationOptionId)?{withdrawRequestPaths:Object.freeze([Object.freeze(['derivationOptionId'])])}:{})});
+      }))});
+      for(const key of ['animacy','humanness'])fields[`subject${key[0].toUpperCase()}${key.slice(1)}`]=field(`subject${key[0].toUpperCase()}${key.slice(1)}`,[],participant.targetSubject?.[key]||'',{editable:false,applicable:Boolean(participant.targetSubject)});
+      const sentence=selected?.sentenceSurfaceFrame?.choiceOptionProjection?selected.sentenceSurfaceFrame:runtime.buildClassicalNahuatlVncSentenceSurfaceFrame?.({
+        selectedFormula:selected?.formulaRealization||selected?.proofFrame?.conclusion?.selectedFormula||'',mood:request.mood,
+        expandedVncBoundaryFrame:selected?.expandedVncBoundaryFrame,priorVncFrame:selected?.priorVncFrame,
+        predicateFormationRuleFrame:selected?.predicateFormationRuleFrame,lesson11ParadigmPlan:plan,
+        options:{...request.sentenceOptions,subject:request.subject,tense:request.tense}});
+      for(const [key,value] of Object.entries(sentence?.choiceOptionProjection||{}))fields[key]=Object.freeze({...value,requestPath:Object.freeze(['sentenceOptions',key]),
+        options:Object.freeze(value.options.map(option=>Object.freeze({...option,withdrawRequestPaths:Object.freeze([Object.freeze([key]),...(option.writeRequestValues||[]).map(write=>Object.freeze([...write.path])),...(option.withdrawRequestPaths||[]).map(path=>Object.freeze(['sentenceOptions',...path]))]),...(option.writeRequestValues?{writeRequestValues:Object.freeze(option.writeRequestValues.map(write=>Object.freeze({...write,path:Object.freeze(['sentenceOptions',...write.path])})))}:{})})))});
+      const interpretation=resolveReflexiveInterpretationChoice(runtime,{valence:request.derivationType==='direct'&&request.requestedVoice==='active'?request.sourceValence:'',subject:request.subject,stem:request.sourceStem,requestedValue:request.objectInterpretation});
+      fields.objectInterpretation=field('objectInterpretation',interpretation.values,interpretation.effectiveValue,{applicable:interpretation.state!=='inactive'});
+      const number=getClassicalNahuatlVncApplicationFinalTypedFrame(selected)?.slots.number;
+      fields.finiteSingularConnector=field('finiteSingularConnector',isClassicalNahuatlOptionalFiniteConnectorFrame(getClassicalNahuatlVncApplicationFinalTypedFrame(selected),request)?['silent','qui']:[''],request.sentenceOptions.finiteSingularConnector||(isClassicalNahuatlOptionalFiniteConnectorFrame(getClassicalNahuatlVncApplicationFinalTypedFrame(selected),request)?'silent':''),{requestPath:Object.freeze(['sentenceOptions','finiteSingularConnector']),applicable:isClassicalNahuatlOptionalFiniteConnectorFrame(getClassicalNahuatlVncApplicationFinalTypedFrame(selected),request)||Boolean(request.sentenceOptions.finiteSingularConnector)});
+      fields.admonitivePluralEnding=field('admonitivePluralEnding',number?.condition==='nonpast-admonitive'?number.num2Variants||[]:[],request.sentenceOptions.admonitivePluralEnding||number?.num2||'',{requestPath:Object.freeze(['sentenceOptions','admonitivePluralEnding']),applicable:number?.condition==='nonpast-admonitive'&&String(request.subject).endsWith('pl')});
+      const directionalSystem=runtime.buildClassicalNahuatlDirectionalPrefixSystemFrame?.();
+      const directionalValues=runtime.isClassicalNahuatlDirectionalPrefixSystemFrame?.(directionalSystem)===true?directionalSystem.prefixes:[];
+      const external=plan?.fusedDirectionalSlotOwnership?.externalDirectionalAuthorized!==false;
+      fields.directionalPrefix=field('directionalPrefix',attestation?[attestation.targetScope.directionalPrefix]:['',...(external?directionalValues:[])],request.sentenceOptions.directionalPrefix||'',{requestPath:Object.freeze(['sentenceOptions','directionalPrefix']),editable:!attestation||(request.sentenceOptions.directionalPrefix||'')!==attestation.targetScope.directionalPrefix});
+      const contraction=selected?.expandedVncBoundaryFrame?.directionalIttaContractionFrame;
+      fields.directionalIttaContraction=field('directionalIttaContraction',contraction?.contextAuthorized?['','rare-contracted']:[''],request.sentenceOptions.directionalIttaContraction||'',{requestPath:Object.freeze(['sentenceOptions','directionalIttaContraction']),applicable:contraction?.contextAuthorized===true||Boolean(request.sentenceOptions.directionalIttaContraction)});
+      const alternatives=[...new Set([plan?.defaultStemOverride,plan?.selectedAlternativeStem,...(plan?.authorizedAlternatives||[]).map(x=>x.stemOverride)].filter(Boolean))];
+      fields.irregularStemChoice=field('irregularStemChoice',alternatives,plan?.selectedAlternativeStem||plan?.defaultStemOverride||'',{requestPath:Object.freeze(['sentenceOptions','irregularStemChoice']),applicable:alternatives.length>1||Boolean(request.sentenceOptions.irregularStemChoice)});
+      const fusion=request.derivationType==='direct'&&request.requestedVoice==='active'?runtime.getClassicalNahuatlVncTlaFusionContinuationChoice?.(source):null;
+      fields.tlaFusion=field('tlaFusion',fusion?[false,true]:[false],request.tlaFusion===true,{applicable:Boolean(fusion)||request.tlaFusion===true});
+      return Object.freeze(fields);
+    }
     function buildClassicalNahuatlVncApplicationFrame({
       normalizedRequest,
       controlFrame,
@@ -7721,6 +7799,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         formulaStringAuthority: false,
         surfaceStringAuthority: false
       };
+      Object.defineProperty(applicationFrame,'choiceOptionProjection',{value:rejectedAuthorityFields.length||unsupportedIntentFields.length?Object.freeze({}):projectClassicalNahuatlFiniteTargetDecision({request:normalizedRequest,control:resultControlFrame,participant:participantProjection,selected:selectedMachineryFrame,formation:formationSourceMachineryFrame,source:sourceMachineryFrame,operation:derivationOperationFrame,continuation:continuationSource,runtime:applicationRuntimeTarget})});
       if (inherentFormationRequest) {
         classicalNahuatlVncInherentSubjectRoleContextByApplicationFrame.set(
           applicationFrame, Object.freeze({
@@ -10530,6 +10609,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       nonactiveOptionInventory = null,
       admonitiveNumberFrame = null,
       finiteConnectorOptions = null,
+      applicativeDecision = null,
     } = {}) {
       const requestedDerivation = Object.freeze([
         projectClassicalNahuatlVncTypedSourceApplicationOption(
@@ -10587,25 +10667,8 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
           )
         )),
       );
-      const applicativeObjectKind = Object.freeze([
-        "specific-projective",
-        "reflexive",
-        "nonspecific-human",
-        "nonspecific-nonhuman",
-      ].map(optionId => (
-        projectClassicalNahuatlVncTypedSourceApplicationOption(
-          "applicativeObjectKind",
-          { optionId, label: optionId },
-        )
-      )));
-      const applicativeObjectPerson = Object.freeze([
-        "1sg", "2sg", "3sg", "1pl", "2pl", "3pl",
-      ].map(optionId => (
-        projectClassicalNahuatlVncTypedSourceApplicationOption(
-          "applicativeObjectPerson",
-          { optionId, label: optionId },
-        )
-      )));
+      const applicativeObjectKind = Object.freeze((applicativeDecision?.objectKinds||[]).map(optionId=>projectClassicalNahuatlVncTypedSourceApplicationOption('applicativeObjectKind',{optionId,label:optionId})));
+      const applicativeObjectPerson = Object.freeze((applicativeDecision?.objectPersons||[]).map(optionId=>projectClassicalNahuatlVncTypedSourceApplicationOption('applicativeObjectPerson',{optionId,label:optionId})));
       const requestedVoice = Object.freeze(
         allowedVoices.map(optionId => (
           projectClassicalNahuatlVncTypedSourceApplicationOption(
@@ -10684,28 +10747,75 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         &&frame.source===c.source&&frame.vncSlotFrame===c.slot&&frame.source.stem===c.formation.targetStem
         &&frame.source.verbClass===""&&Object.isFrozen(frame)&&Object.isFrozen(c.slot));
     }
+    function finalizeSpecializedFiniteChoices(projection,caller,effective,required,fixed={}) {
+      for(const [key,value]of Object.entries(fixed))if(!Object.hasOwn(projection,key))projection[key]=Object.freeze([Object.freeze({optionId:value,label:String(value),availabilityStatus:"available"})]);
+      for(const [key,domain]of Object.entries(projection)) {
+        if(!Array.isArray(domain))continue;
+        const inputKind=domain[0]?.inputKind==='text'?'text':'enum',authored=caller[key]??effective[key]??'';
+        projection[key]=Object.freeze({choiceId:key,controlChoiceId:key,inputKind,valueKind:'string',requestPath:Object.freeze([key]),applicable:true,
+          editable:inputKind==='text'||domain.length>1||!domain.some(option=>option.optionId===authored),required:required.includes(key),
+          selectedValue:authored,authoredValue:authored,options:inputKind==='text'?Object.freeze([]):domain});
+      }
+      return Object.freeze(projection);
+    }
+    function projectSpecializedFiniteReferenceChoices(projection,selections,{hasReferent=true,exactAgreement=false}={}) {
+      const keys={agreement:"subject",animacy:"subjectAnimacy",humanness:"subjectHumanness"};
+      const domains=Object.fromEntries(Object.entries(keys).map(([axis,key])=>[axis,(projection[key]||[]).map(option=>option.optionId)]));
+      const reference={agreement:selections.subject,animacy:selections.subjectAnimacy,humanness:selections.subjectHumanness,hasReferent};
+      const decisions=getClassicalNahuatlParticipantReferenceChoiceOptions(reference,domains,{exactAgreement});
+      for(const [axis,key] of Object.entries(keys)) {
+        if(!projection[key])continue;
+        const options=decisions[axis].map(option=>Object.freeze({optionId:option.value,label:option.value,availabilityStatus:"available",
+          writeRequestValues:Object.freeze(Object.entries(option.selections).map(([name,value])=>Object.freeze({path:Object.freeze([keys[name]]),value})))}));
+        projection[key]=Object.freeze({choiceId:key,controlChoiceId:key,inputKind:"enum",valueKind:"string",requestPath:Object.freeze([key]),applicable:true,
+          editable:options.length>1||!options.some(option=>option.optionId===selections[key]),selectedValue:selections[key]||"",authoredValue:selections[key]||"",options:Object.freeze(options)});
+      }
+      return isClassicalNahuatlParticipantReferenceSelectionCompatible(reference,{exactAgreement});
+    }
+    function buildRestrictedFiniteEnvelopeDecision(envelope={}, {directionalFixed=true}={}) {
+      const input=envelope||{}, fixed={sentenceType:"affirmative-assertion",negative:false,antecessive:false,
+        introductoryParticle:"",introductoryModifier:"",prefaceParticle:"",...(directionalFixed?{directionalPrefix:""}:{})};
+      const fields={};
+      for(const [key,value] of Object.entries(fixed)) {
+        const authored=key==="antecessive"?(input.antecessive===true||input.sentenceAntecessive===true?true:input.antecessive??input.sentenceAntecessive??false):input[key]??value;
+        const compatible=typeof value==="boolean"?authored!==true:key==="sentenceType"?["","affirmative-assertion"].includes(authored):["","none"].includes(authored);
+        fields[key]=Object.freeze({choiceId:key,inputKind:"enum",valueKind:typeof value,requestPath:Object.freeze(["sentenceOptions",key]),
+          applicable:true,editable:!compatible,selectedValue:compatible?value:authored,authoredValue:authored,
+          options:Object.freeze([Object.freeze({optionId:value,label:String(value),availabilityStatus:"available",
+            ...(key==="antecessive"?{withdrawRequestPaths:Object.freeze([Object.freeze(["sentenceOptions","sentenceAntecessive"])])}:{})})])});
+      }
+      const blocked=typeof input!=="object"||Array.isArray(input)||Object.values(fields).some(field=>field.editable)
+        ||Boolean(input.outsidePrefixes?.length)
+        ||getClassicalNahuatlVncApplicationPresentFields(input,CLASSICAL_NAHUATL_VNC_APPLICATION_CALLER_AUTHORITY_FIELDS).length>0
+        ||getClassicalNahuatlVncApplicationCurriculumCarrierFields(input).length>0;
+      return Object.freeze({blocked,fields:Object.freeze(fields)});
+    }
     function issueRestrictedContainingBinding(source,selections={}) {
       const r=getClassicalNahuatlVncApplicationRuntimeTarget(),family=source.sourceAnalysis.containingFamily;
       const allowed=["subject","subjectAnimacy","subjectHumanness","mood","tense","reading","embedStem","adverbialEntryId","requestedVoice","requestedDerivation","sentenceOptions"];
       const options=values=>Object.freeze(values.map(value=>Object.freeze({optionId:value,value,label:value,availabilityStatus:"available",grammarAuthority:false})));
-      const projection={subject:options(family==="tla-impersonal"?["3sg"]:["1sg","2sg","3sg","1pl","2pl","3pl","3common"]),
+      const projection={subject:options(family==="tla-impersonal"?["3sg"]:getClassicalNahuatlParticipantAgreementValues()),
         subjectAnimacy:options(family==="tla-impersonal"?["unspecified"]:["animate","nonanimate"]),
         subjectHumanness:options(family==="tla-impersonal"?["unspecified"]:["human","nonhuman"]),mood:options(["indicative"]),
         tense:options(family==="adverbial-matrix"?["imperfect"]:["present"]),
         ...(family==="tla-impersonal"?{reading:options(r.getClassicalNahuatlTlaImpersonalSourceAnalysis?.(source.sourceStem)?.availableReadings || [])}:{}),
-        ...(family==="archaic-motion-matrix"?{embedStem:options(["hui"])}:{}),
+        ...(family==="archaic-motion-matrix"?{// This existing finite lane has no object declaration. The lower
+        // formation inventory also contains transitive carrying compounds;
+        // their morphological admission is not finite ingress here (§11.4.5).
+        embedStem:options(["hui"])}:{}),
         ...(family==="adverbial-matrix"?{adverbialEntryId:options([source.sourceAnalysis.requiredAdverbialEntryId])}:{})};
       const caller=deepFreezeClassicalNahuatlVncApplicationValue(cloneClassicalNahuatlVncApplicationCompactValue(selections || {}));
-      const effective=Object.freeze({requestedVoice:"active",requestedDerivation:"direct",...caller});
+      const targetFixed={"requestedVoice":"active","requestedDerivation":"direct"};
+      const effective=Object.freeze({...targetFixed,...caller});
       let reason=!selections||typeof selections!=="object"||Array.isArray(selections)||Object.keys(selections).some(k=>!allowed.includes(k))
-        ?"restricted-containing-selection-not-supported":effective.requestedVoice!=="active"||effective.requestedDerivation!=="direct"?"restricted-containing-active-direct-target-required":"";
+        ?"restricted-containing-selection-not-supported":Object.entries(targetFixed).some(([key,value])=>effective[key]!==value)?"restricted-containing-active-direct-target-required":"";
       if(!reason&&Object.entries(projection).some(([k,domain])=>selections[k]&&!domain.some(o=>o.optionId===selections[k])))reason="restricted-containing-selection-not-licensed";
       const envelope=selections.sentenceOptions;
-      if(!reason&&envelope&&(typeof envelope!=="object"||Array.isArray(envelope)||envelope.negative===true||envelope.antecessive===true||envelope.sentenceAntecessive===true
-        ||![undefined,"","affirmative-assertion"].includes(envelope.sentenceType)||[envelope.directionalPrefix,envelope.introductoryParticle,envelope.prefaceParticle,envelope.introductoryModifier].some(v=>v&&v!=="none")
-        ||envelope.outsidePrefixes?.length||getClassicalNahuatlVncApplicationPresentFields(envelope,CLASSICAL_NAHUATL_VNC_APPLICATION_CALLER_AUTHORITY_FIELDS).length
-        ||getClassicalNahuatlVncApplicationCurriculumCarrierFields(envelope).length))reason="restricted-containing-envelope-outside-context";
+      const envelopeDecision=buildRestrictedFiniteEnvelopeDecision(envelope);
+      if(!reason&&envelopeDecision.blocked)reason="restricted-containing-envelope-outside-context";
       const required=!reason?Object.keys(projection).filter(k=>!selections[k]):[];
+      const referenceCompatible=projectSpecializedFiniteReferenceChoices(projection,effective,{hasReferent:family!=="tla-impersonal"});
+      if(!reason&&!required.length&&!referenceCompatible)reason="finite-subject-reference-declaration-conflict";
       let participant=null,formation=null,finite=null,targetApplication=null,nominal=null,adverbial=null;
       if(!reason&&!required.length) {
         const agreement=/^(1|2|3)(sg|pl|common)$/u.exec(selections.subject);
@@ -10724,7 +10834,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
           targetApplication=evaluateClassicalNahuatlVncApplication({sourceStem:formation.targetStem,verbClass:formation.targetClass,sourceValence:"intransitive",
             subject:participant.morphologicalAgreement,sourceSubject:selections.subject,sourceSubjectAnimacy:selections.subjectAnimacy,sourceSubjectHumanness:selections.subjectHumanness,sourceSubjectNumber:participant.number,
             objectKind:"none",requestedVoice:"active",requestedDerivation:"direct",mood:selections.mood,tense:selections.tense});
-          if(!isClassicalNahuatlVncApplicationFrameInternal(targetApplication))reason=targetApplication?.blockReason||"archaic-motion-actual-target-required";
+          if(!isClassicalNahuatlVncApplicationFrameInternal(targetApplication)||targetApplication.authorizationStatus!=="authorized")reason=targetApplication?.blockReason||"archaic-motion-actual-target-required";
         } else if(!reason&&family==="adverbial-matrix") {
           const potential=r.buildClassicalNahuatlLexicalAdverbialPotentialFrame({stem:source.sourceAnalysis.requiredAdverbialStem});
           adverbial=r.evaluateClassicalNahuatlAdverbialNuclear({adverbialPotentialFrame:potential,degree:source.sourceAnalysis.requiredAdverbialDegree,scope:"external-clause"});
@@ -10745,10 +10855,11 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
           reason="containing-target-semantic-context-not-retained";
         else participant=actual;
       }
+      Object.assign(projection,envelopeDecision.fields);
       const status=reason?"rejected":required.length?"choices-required":"ready";
       const binding=Object.freeze({kind:CLASSICAL_NAHUATL_VNC_TYPED_SOURCE_APPLICATION_BINDING_FRAME_KIND,version:1,operationId:"vnc:application",bindingStatus:status,
         authorizationStatus:reason?"blocked":"authorized",blockReason:reason,exactSourceMachineryFrame:source,inputSourceMachineryFrame:source,callerSelections:caller,effectiveSelections:effective,
-        requiredChoiceIds:Object.freeze(required),choiceOptionProjection:Object.freeze(projection),executionArgs:Object.freeze(status==="ready"?[source,effective]:[]),
+        requiredChoiceIds:Object.freeze(required),choiceOptionProjection:finalizeSpecializedFiniteChoices(projection,caller,effective,required,targetFixed),executionArgs:Object.freeze(status==="ready"?[source,effective]:[]),
         ownerInputAcceptanceProven:true,exactSourceIdentityPreserved:true,ownerExecutionStillRequired:status==="ready",grammarAuthority:false,sourceFiniteEventAsserted:false});
       restrictedContainingBindings.set(binding,Object.freeze({source,effective,participant,formation,finite,targetApplication,nominal,adverbial}));return binding;
     }
@@ -10805,10 +10916,11 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       const r=getClassicalNahuatlVncApplicationRuntimeTarget();
       const allowed=["subject","subjectAnimacy","subjectHumanness","mood","tense","objectSelection","requestedVoice","requestedDerivation","sentenceOptions"];
       const caller=deepFreezeClassicalNahuatlVncApplicationValue(cloneClassicalNahuatlVncApplicationCompactValue(selections||{}));
-      const effective=Object.freeze({requestedVoice:"active",requestedDerivation:"causative",...caller});
+      const targetFixed={"requestedVoice":"active","requestedDerivation":"causative"};
+      const effective=Object.freeze({...targetFixed,...caller});
       const fullOperand=isClassicalNahuatlImperfectiveVncSourceFrame(source);
       const projection={};
-      for(const [id,values]of Object.entries({subject:["1sg","2sg","3sg","1pl","2pl","3pl","3common"],subjectAnimacy:["animate","nonanimate"],subjectHumanness:["human","nonhuman","unspecified"],mood:["indicative"],tense:["present"]}))
+      for(const [id,values]of Object.entries({subject:getClassicalNahuatlParticipantAgreementValues(),subjectAnimacy:["animate","nonanimate"],subjectHumanness:["human","nonhuman","unspecified"],mood:["indicative"],tense:["present"]}))
         projection[id]=Object.freeze(values.map(optionId=>Object.freeze({choiceId:id,optionId,label:optionId,availabilityStatus:"available",ownerOptionProjected:true,grammarAuthority:false})));
       projection.objectSelection=Object.freeze([
         ...(fullOperand?[{optionId:"reflexive:",label:"reflexive"}]:[]),
@@ -10818,12 +10930,12 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       const required=Object.keys(projection).filter(key=>typeof selections?.[key]!=="string"||!selections[key]);
       let reason=!selections||typeof selections!=="object"||Array.isArray(selections)||Object.keys(selections).some(key=>!allowed.includes(key))
         ||Object.entries(projection).some(([key,options])=>Object.hasOwn(selections,key)&&selections[key]&&!options.some(option=>option.optionId===selections[key]))
-        ?"analytical-vnc-selection-not-supported":effective.requestedVoice!=="active"||effective.requestedDerivation!=="causative"?"analytical-vnc-attested-causative-use-required":"";
+        ?"analytical-vnc-selection-not-supported":Object.entries(targetFixed).some(([key,value])=>effective[key]!==value)?"analytical-vnc-attested-causative-use-required":"";
       const envelope=selections?.sentenceOptions;
-      if(!reason&&envelope&&(typeof envelope!=="object"||Array.isArray(envelope)||!["",undefined,"affirmative-assertion"].includes(envelope.sentenceType)||envelope.negative===true||envelope.antecessive===true||envelope.sentenceAntecessive===true
-        ||[envelope.directionalPrefix,envelope.introductoryParticle,envelope.introductoryModifier,envelope.prefaceParticle].some(value=>value&&value!=="none")||envelope.outsidePrefixes?.length
-        ||getClassicalNahuatlVncApplicationPresentFields(envelope,CLASSICAL_NAHUATL_VNC_APPLICATION_CALLER_AUTHORITY_FIELDS).length
-        ||getClassicalNahuatlVncApplicationCurriculumCarrierFields(envelope).length))reason="analytical-vnc-envelope-outside-admitted-context";
+      const envelopeDecision=buildRestrictedFiniteEnvelopeDecision(envelope);
+      if(!reason&&envelopeDecision.blocked)reason="analytical-vnc-envelope-outside-admitted-context";
+      const referenceCompatible=projectSpecializedFiniteReferenceChoices(projection,effective,{});
+      if(!reason&&!required.length&&!referenceCompatible)reason="finite-subject-reference-declaration-conflict";
       let participant=null,causee=null,context=null,operation=null,machinery=null;
       if(!reason&&!required.length){
         const match=/^(1|2|3)(sg|pl|common)$/u.exec(selections.subject);
@@ -10846,10 +10958,11 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         if(!reason){machinery=r.buildClassicalNahuatlDerivedVncMachineryFrame(context,operation,{targetSubject:participant.morphologicalAgreement,mood:selections.mood,tense:selections.tense});
           if(!r.isClassicalNahuatlDerivedVncMachineryFrame(machinery))reason=machinery?.blockReason||"analytical-vnc-derived-target-required";}
       }
+      Object.assign(projection,envelopeDecision.fields);
       const status=reason?"rejected":required.length?"choices-required":"ready";
       const frame=Object.freeze({kind:CLASSICAL_NAHUATL_VNC_TYPED_SOURCE_APPLICATION_BINDING_FRAME_KIND,version:1,operationId:"vnc:application",bindingStatus:status,authorizationStatus:reason?"blocked":"authorized",
         blockReason:reason||(required.length?"analytical-vnc-explicit-target-context-required":""),exactSourceMachineryFrame:source,inputSourceMachineryFrame:source,callerSelections:caller,effectiveSelections:effective,
-        requiredChoiceIds:Object.freeze(reason?[]:required),choiceOptionProjection:Object.freeze(projection),executionArgs:Object.freeze(status==="ready"?[source,effective]:[]),
+        requiredChoiceIds:Object.freeze(reason?[]:required),choiceOptionProjection:finalizeSpecializedFiniteChoices(projection,caller,effective,required,targetFixed),executionArgs:Object.freeze(status==="ready"?[source,effective]:[]),
         ownerChoicesRequired:status==="choices-required",ownerInputAcceptanceProven:true,exactSourceIdentityPreserved:true,ownerExecutionStillRequired:status==="ready",grammarAuthority:false,
         finiteCoordinateCapabilityScope:"positive-indicative-present",sourceFiniteEventAsserted:false});
       analyticalVncBindings.set(frame,Object.freeze({source,effective,participant,causee,context,operation,machinery}));return frame;
@@ -10928,6 +11041,15 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       if(!context)return null;
       return context.analysis.attestedFiniteCells?.find(cell=>Object.entries(cell.selections).every(([key,value])=>selections[key]===value))||null;
     }
+    function isImperfectiveFiniteContextAdmitted(source,selections={},partial=false) {
+      const analysis=source.sourceAnalysis,transitive=["specific-projective","projective-nonhuman","mainline-reflexive"].includes(source.sourceValence);
+      const ordinaryTense=(analysis.classIndependentTenses||["present","future"]).includes(selections.tense);
+      const ordinaryObject=!transitive||Boolean(analysis.containedObjectKind)||String(selections.objectSelection||"").startsWith("specific-projective:")
+        ||(analysis.classIndependentObjectKinds||[]).includes(String(selections.objectSelection||"").split(":")[0]);
+      if((ordinaryTense||partial&&!selections.tense)&&(ordinaryObject||partial&&!selections.objectSelection))return true;
+      return partial?(analysis.attestedFiniteCells||[]).some(cell=>Object.entries(cell.selections).every(([key,value])=>!selections[key]||selections[key]===value))
+        :Boolean(getImperfectiveAttestedFiniteCell(source,selections));
+    }
     function isClassicalNahuatlImperfectiveVncFiniteResult(frame=null) {
       const c=frame&&imperfectiveFiniteResults.get(frame),r=getClassicalNahuatlVncApplicationRuntimeTarget();
       return Boolean(c&&isClassicalNahuatlImperfectiveVncSourceFrame(c.source)&&c.source.sourceValence==="intransitive"&&r.isClassicalNahuatlFiniteVncResult(frame)
@@ -10975,12 +11097,13 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       const allowed=["subject","subjectAnimacy","subjectHumanness","mood","tense","requestedVoice","requestedDerivation","sentenceOptions",...(transitive?["objectSelection"]:[])];
       const caller=deepFreezeClassicalNahuatlVncApplicationValue(cloneClassicalNahuatlVncApplicationCompactValue(selections||{}));
       const fixedObjectSelection=source.sourceAnalysis.containedObjectKind ? source.sourceAnalysis.containedObjectKind+":" : "";
-      const effective=Object.freeze({requestedVoice:"active",requestedDerivation:"direct",...caller,...fixedContext,...(fixedObjectSelection?{objectSelection:fixedObjectSelection}:{})});
+      const targetFixed={requestedVoice:inherent?"impersonal":"active",requestedDerivation:"direct",...fixedContext,...(fixedObjectSelection?{objectSelection:fixedObjectSelection}:{})};
+      const effective=Object.freeze({...targetFixed,...caller,...fixedContext,...(fixedObjectSelection?{objectSelection:fixedObjectSelection}:{})});
       const classIndependentTenses=source.sourceAnalysis.classIndependentTenses||["present","future"];
       const attestedFiniteCells=source.sourceAnalysis.attestedFiniteCells||[];
       const projectedTenses=[...new Set([...classIndependentTenses,...attestedFiniteCells.map(cell=>cell.selections.tense)])];
       const projection={};
-      for(const [id,values]of Object.entries({...(inherent?{}:{subject:source.sourceAnalysis.allowedSubjects || ["1sg","2sg","3sg","1pl","2pl","3pl","3common"],subjectAnimacy:["animate","nonanimate"],subjectHumanness:["human","nonhuman","unspecified"]}),mood:["indicative"],tense:projectedTenses}))
+      for(const [id,values]of Object.entries({...(inherent?{}:{subject:source.sourceAnalysis.allowedSubjects || getClassicalNahuatlParticipantAgreementValues(),subjectAnimacy:["animate","nonanimate"],subjectHumanness:["human","nonhuman","unspecified"]}),mood:["indicative"],tense:projectedTenses}))
         projection[id]=Object.freeze(values.map(optionId=>Object.freeze({choiceId:id,optionId,label:optionId,availabilityStatus:"available",ownerOptionProjected:true,grammarAuthority:false})));
       if(source.sourceAnalysis.licensedOperationRuleIds?.length)projection.requestedDerivation=Object.freeze(["direct","causative"].map(optionId=>Object.freeze({
         choiceId:"requestedDerivation",optionId,label:optionId,availabilityStatus:"available",ownerOptionProjected:true,grammarAuthority:false})));
@@ -10998,16 +11121,12 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         ||Object.entries(projection).some(([id,options])=>Object.hasOwn(selections,id)&&selections[id]&&!options.some(x=>x.optionId===selections[id]))
         ||fixedObjectSelection && Object.hasOwn(selections,"objectSelection") && selections.objectSelection!==fixedObjectSelection
         ||inherent && Object.entries(fixedContext).some(([k,v])=>Object.hasOwn(selections,k)&&selections[k]!==v)
-        ?"imperfective-vnc-selection-not-supported":effective.requestedVoice!==(inherent?"impersonal":"active")||effective.requestedDerivation!=="direct"?"imperfective-vnc-class-independent-active-direct-required":"";
-      if(!reason&&envelope&&(typeof envelope!=="object"||Array.isArray(envelope)||!["",undefined,"affirmative-assertion"].includes(envelope.sentenceType)||envelope.negative===true||envelope.antecessive===true||envelope.sentenceAntecessive===true
-        ||[envelope.introductoryParticle,envelope.introductoryModifier,envelope.prefaceParticle].some(v=>v&&v!=="none")||envelope.outsidePrefixes?.length
-        ||getClassicalNahuatlVncApplicationPresentFields(envelope,CLASSICAL_NAHUATL_VNC_APPLICATION_CALLER_AUTHORITY_FIELDS).length
-        ||getClassicalNahuatlVncApplicationCurriculumCarrierFields(envelope).length)) reason="imperfective-vnc-envelope-outside-admitted-context";
-      if(!reason&&!required.length
-        &&(!classIndependentTenses.includes(effective.tense)
-          ||transitive&&!fixedObjectSelection&&!effective.objectSelection.startsWith("specific-projective:")
-            &&!(source.sourceAnalysis.classIndependentObjectKinds||[]).includes(effective.objectSelection.split(":")[0]))
-        &&!getImperfectiveAttestedFiniteCell(source,effective))reason="imperfective-vnc-attested-finite-cell-context-required";
+        ?"imperfective-vnc-selection-not-supported":Object.entries(targetFixed).some(([key,value])=>effective[key]!==value)?"imperfective-vnc-class-independent-active-direct-required":"";
+      const envelopeDecision=buildRestrictedFiniteEnvelopeDecision(envelope,{directionalFixed:false});
+      if(!reason&&envelopeDecision.blocked)reason="imperfective-vnc-envelope-outside-admitted-context";
+      if(!reason&&!required.length&&!isImperfectiveFiniteContextAdmitted(source,effective))reason="imperfective-vnc-attested-finite-cell-context-required";
+      const referenceCompatible=projectSpecializedFiniteReferenceChoices(projection,effective,{hasReferent:!inherent});
+      if(!reason&&!required.length&&!referenceCompatible)reason="finite-subject-reference-declaration-conflict";
       let finite=null,participant=null,transitiveMachinery=null,objects=Object.freeze([]);
       if(!reason&&!required.length){
         const match=/^(1|2|3)(sg|pl|common)$/u.exec(effective.subject);
@@ -11036,10 +11155,22 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         if(!isClassicalNahuatlImperfectiveVncFiniteResult(finite))reason="imperfective-vnc-issued-finite-required";
         }
       }
+      for(const [key,field]of Object.entries(projection)) {
+        const offered=Array.isArray(field)?field:field.options||[];
+        if(!["subject","subjectAnimacy","subjectHumanness","tense","objectSelection"].includes(key))continue;
+        const filtered=offered.filter(option=>{
+          const candidate={...effective,[key]:option.optionId};
+          for(const write of option.writeRequestValues||[])candidate[write.path[0]]=write.value;
+          if(key!=="tense"&&!projectedTenses.includes(candidate.tense))return true;
+          return isImperfectiveFiniteContextAdmitted(source,candidate,true);
+        });
+        projection[key]=Array.isArray(field)?Object.freeze(filtered):Object.freeze({...field,options:Object.freeze(filtered)});
+      }
+      Object.assign(projection,envelopeDecision.fields);
       const status=reason?"rejected":required.length?"choices-required":"ready";
       const frame=Object.freeze({kind:CLASSICAL_NAHUATL_VNC_TYPED_SOURCE_APPLICATION_BINDING_FRAME_KIND,version:1,operationId:"vnc:application",bindingStatus:status,authorizationStatus:reason?"blocked":"authorized",
         blockReason:reason||(required.length?"imperfective-vnc-explicit-finite-context-required":""),exactSourceMachineryFrame:source,inputSourceMachineryFrame:source,callerSelections:caller,effectiveSelections:effective,
-        requiredChoiceIds:Object.freeze(reason?[]:required),choiceOptionProjection:Object.freeze(projection),executionArgs:Object.freeze(status==="ready"?[source,effective]:[]),
+        requiredChoiceIds:Object.freeze(reason?[]:required),choiceOptionProjection:finalizeSpecializedFiniteChoices(projection,caller,effective,required,targetFixed),executionArgs:Object.freeze(status==="ready"?[source,effective]:[]),
         ownerChoicesRequired:status==="choices-required",ownerInputAcceptanceProven:true,ownerRejectionProven:false,exactSourceIdentityPreserved:true,ownerExecutionStillRequired:status==="ready",grammarAuthority:false});
       imperfectiveBindings.set(frame,Object.freeze({source,effective,finite,participant,transitiveMachinery,objects,inherent}));return frame;
     }
@@ -11103,6 +11234,12 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         && c.record.canonicalPreformedDerivation===c.analysis && source.canonicalSourceStemRecord===c.record
         && source.formationAnalysis===c.analysis && source.sourceStem===c.record.stem);
     }
+    function getPreformedFiniteMemberPlan(source,selections) {
+      const r=getClassicalNahuatlVncApplicationRuntimeTarget(),base=source.formationAnalysis.baseStem;
+      const subject=buildClassicalNahuatlParticipantFrame({agreement:selections.subject}).morphologicalAgreement;
+      const plan=r.buildClassicalNahuatlIrregularVncParadigmPlan(base,{subject,mood:selections.mood,tense:selections.tense,requestedSemanticTense:selections.tense});
+      return plan.authorizationStatus==="authorized"&&plan.applies&&plan.selectedStemOverride===base&&plan.selectedClassOverride?plan:null;
+    }
     function buildPreformedVncClosure(source,selections) {
       if (!isClassicalNahuatlPreformedVncSourceFrame(source)) return null;
       const r=getClassicalNahuatlVncApplicationRuntimeTarget(),a=source.formationAnalysis;
@@ -11110,9 +11247,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       const subject=buildClassicalNahuatlParticipantFrame({role:"subject",agreement:selections.subject,
         animacy:selections.subjectAnimacy,humanness:selections.subjectHumanness,
         number:agreement?.[2]==="common"?"common":agreement?.[2]==="pl"?"plural":"singular",hasReferent:true});
-      const plan=r.buildClassicalNahuatlIrregularVncParadigmPlan(a.baseStem,{subject:subject.morphologicalAgreement,
-        mood:selections.mood,tense:selections.tense,requestedSemanticTense:selections.tense});
-      if (plan?.authorizationStatus!=="authorized" || !plan.applies || !plan.selectedClassOverride) return null;
+      const plan=getPreformedFiniteMemberPlan(source,selections);if(!plan)return null;
       const closure=r.evaluateClassicalNahuatlLateVncDerivation({ ...selections.sentenceOptions,
         sourceStem:a.baseStem,verbClass:plan.selectedClassOverride,sourceValence:source.sourceValence,
         subject:subject.morphologicalAgreement,sourceSubject:selections.subject,sourceSubjectNumber:subject.number,
@@ -11128,36 +11263,36 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       const allowed=["subject","subjectAnimacy","subjectHumanness","mood","tense","requestedVoice","requestedDerivation","sentenceOptions"];
       const caller=deepFreezeClassicalNahuatlVncApplicationValue(cloneClassicalNahuatlVncApplicationCompactValue(selections || {}));
       const required=["subject","subjectAnimacy","subjectHumanness","mood","tense"].filter(k=>typeof selections?.[k]!=="string" || !selections[k]);
-      const effective=Object.freeze({requestedVoice:"active",requestedDerivation:"direct",...selections,
+      const targetFixed={"requestedVoice":"active","requestedDerivation":"direct"};
+      const effective=Object.freeze({...targetFixed,...selections,
         ...(selections.sentenceOptions?{sentenceOptions:deepFreezeClassicalNahuatlVncApplicationValue(cloneClassicalNahuatlVncApplicationCompactValue(selections.sentenceOptions))}:{})});
       let reason=!selections || typeof selections!=="object" || Array.isArray(selections) || Object.keys(selections).some(k=>!allowed.includes(k))
         || (Object.hasOwn(selections,"sentenceOptions") && (!selections.sentenceOptions || typeof selections.sentenceOptions!=="object" || Array.isArray(selections.sentenceOptions)))
         || getClassicalNahuatlVncApplicationPresentFields(selections.sentenceOptions,CLASSICAL_NAHUATL_VNC_APPLICATION_CALLER_AUTHORITY_FIELDS).length
         || getClassicalNahuatlVncApplicationCurriculumCarrierFields(selections.sentenceOptions).length
         ? "preformed-vnc-selection-not-supported"
-        : effective.requestedVoice!=="active" || effective.requestedDerivation!=="direct" ? "preformed-vnc-personal-active-source-required" : "";
-      const closure=!reason && !required.length ? buildPreformedVncClosure(source,effective) : null;
-      if (!reason && !required.length && !closure) reason="preformed-vnc-exact-inherited-coordinate-required";
-      let status=reason?"rejected":required.length?"choices-required":"ready";
+        : Object.entries(targetFixed).some(([key,value])=>effective[key]!==value) ? "preformed-vnc-personal-active-source-required" : "";
       const projection={},r=getClassicalNahuatlVncApplicationRuntimeTarget();
-      const base=source.formationAnalysis.baseStem;
-      const keepsMember=(subject,mood,tense)=>{
-        const plan=r.buildClassicalNahuatlIrregularVncParadigmPlan(base,{subject,mood,tense});
-        return plan.authorizationStatus==="authorized" && plan.applies && plan.selectedStemOverride===base;
-      };
-      const subjects=["1sg","2sg","3sg","1pl","2pl","3pl","3common"].filter(subject=>keepsMember(subject==="3common"?"3sg":subject,"indicative","present"));
-      const moods=["indicative","optative","admonitive"].filter(mood=>keepsMember("3sg",mood,"present"));
-      const sourcePlan=r.buildClassicalNahuatlIrregularVncParadigmPlan(base,{subject:"3sg",mood:"indicative",tense:"present"});
-      const tenses=(sourcePlan.allowedSemanticTenses || []).filter(tense=>keepsMember("3sg","indicative",tense));
+      const keepsMember=(subject,mood,tense)=>Boolean(getPreformedFiniteMemberPlan(source,{subject,mood,tense}));
+      const hasMember=(subject,mood)=>getClassicalNahuatlVncParadigmTensesForMood(mood).some(tense=>keepsMember(subject,mood,tense));
+      const selectedSubject=selections.subject||"3sg",selectedMood=selections.mood||"indicative";
+      const subjects=getClassicalNahuatlParticipantAgreementValues().filter(subject=>hasMember(subject,selectedMood));
+      const moods=getClassicalNahuatlVncSemanticInputVocabulary().moods.filter(mood=>hasMember(selectedSubject,mood));
+      const tenses=getClassicalNahuatlVncParadigmTensesForMood(selectedMood).filter(tense=>keepsMember(selectedSubject,selectedMood,tense));
       for(const [id,values] of Object.entries({subject:subjects,subjectAnimacy:["animate","nonanimate"],subjectHumanness:["human","nonhuman","unspecified"],mood:moods,tense:tenses}))
         projection[id]=Object.freeze(values.map(optionId=>Object.freeze({choiceId:id,optionId,label:optionId,availabilityStatus:"available",ownerOptionProjected:true,grammarAuthority:false})));
       if (!reason && Object.entries(projection).some(([id,options])=>Object.hasOwn(selections,id) && !options.some(option=>option.optionId===selections[id]))) {
-        reason="preformed-vnc-selection-not-supported";status="rejected";
+        reason="preformed-vnc-selection-not-supported";
       }
+      const referenceCompatible=projectSpecializedFiniteReferenceChoices(projection,effective);
+      if(!reason&&!required.length&&!referenceCompatible)reason="finite-subject-reference-declaration-conflict";
+      const closure=!reason && !required.length ? buildPreformedVncClosure(source,effective) : null;
+      if (!reason && !required.length && !closure) reason="preformed-vnc-exact-inherited-coordinate-required";
+      const status=reason?"rejected":required.length?"choices-required":"ready";
       const frame=Object.freeze({kind:CLASSICAL_NAHUATL_VNC_TYPED_SOURCE_APPLICATION_BINDING_FRAME_KIND,version:1,operationId:"vnc:application",
         authorizationStatus:reason?"blocked":"authorized",bindingStatus:status,blockReason:reason || (required.length?"preformed-vnc-finite-context-required":""),
         exactSourceMachineryFrame:source,inputSourceMachineryFrame:source,callerSelections:caller,effectiveSelections:effective,
-        requiredChoiceIds:Object.freeze(reason?[]:required),choiceOptionProjection:Object.freeze(projection),executionArgs:Object.freeze(status==="ready"?[source,effective]:[]),
+        requiredChoiceIds:Object.freeze(reason?[]:required),choiceOptionProjection:finalizeSpecializedFiniteChoices(projection,caller,effective,required,targetFixed),executionArgs:Object.freeze(status==="ready"?[source,effective]:[]),
         ownerChoicesRequired:status==="choices-required",ownerInputAcceptanceProven:true,ownerRejectionProven:false,exactSourceIdentityPreserved:true,
         ownerExecutionStillRequired:status==="ready",grammarAuthority:false,sourceStringAuthority:false,formulaStringAuthority:false,surfaceStringAuthority:false});
       preformedVncBindings.set(frame,Object.freeze({source,effective,closure}));return frame;
@@ -11229,30 +11364,34 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       const allowed = new Set(["subject","subjectAnimacy","subjectHumanness","patientReferenceId","mood","tense","requestedVoice","requestedDerivation","sentenceOptions"]);
       const unsupported = Object.keys(selections).filter(key=>!allowed.has(key));
       const projection = {};
-      const moods = ["indicative","optative","admonitive"];
+      const moods = getClassicalNahuatlVncSemanticInputVocabulary().moods;
       const tenses = (selections.mood
         ? r.getClassicalNahuatlVncParadigmTensesForMood(selections.mood)
         : [...new Set(moods.flatMap(mood=>r.getClassicalNahuatlVncParadigmTensesForMood(mood)))])
         .filter(tense=>!["preterit-as-present","distant-past-as-past"].includes(tense));
-      for (const [id,values] of Object.entries({subject:["1sg","2sg","3sg","1pl","2pl","3pl","3common"],subjectAnimacy:["animate","nonanimate"],subjectHumanness:["human","nonhuman"],mood:moods,tense:tenses}))
+      for (const [id,values] of Object.entries({subject:getClassicalNahuatlParticipantAgreementValues(),subjectAnimacy:["animate","nonanimate"],subjectHumanness:["human","nonhuman"],mood:moods,tense:tenses}))
         projection[id]=Object.freeze(values.map(optionId=>Object.freeze({choiceId:id,optionId,label:optionId,availabilityStatus:"available",ownerOptionProjected:true,ownerOptionAuthority:false,grammarAuthority:false})));
       projection.patientReferenceId=Object.freeze([Object.freeze({choiceId:"patientReferenceId",optionId:"text",label:"Patient",inputKind:"text",availabilityStatus:"available",ownerOptionProjected:true,ownerOptionAuthority:false,grammarAuthority:false})]);
       const required = ["subject","subjectAnimacy","subjectHumanness","patientReferenceId","mood","tense"].filter(key=>typeof selections[key] !== "string" || !selections[key].trim());
-      const effective = Object.freeze({requestedDerivation:"direct",requestedVoice:"passive",...selections});
+      const caller=deepFreezeClassicalNahuatlVncApplicationValue(cloneClassicalNahuatlVncApplicationCompactValue(selections||{}));
+      const targetFixed={"requestedVoice":"passive","requestedDerivation":"direct"};
+      const effective = Object.freeze({...targetFixed,...selections});
       let reason = unsupported.length ? "nonactive-carrier-finite-selection-not-recognized"
-        : effective.requestedVoice !== "passive" || effective.requestedDerivation !== "direct" ? "nonactive-carrier-personal-passive-required" : "";
+        : Object.entries(targetFixed).some(([key,value])=>effective[key]!==value) ? "nonactive-carrier-personal-passive-required" : "";
       if (!reason && selections.mood && selections.tense
         && (r.validateClassicalNahuatlVncSemanticSelection({mood:selections.mood,tense:selections.tense}).authorizationStatus !== "authorized"
           || !tenses.includes(selections.tense)))
         reason = "nonactive-carrier-mood-tense-not-authorized";
+      const referenceCompatible=projectSpecializedFiniteReferenceChoices(projection,effective,{exactAgreement:true});
+      if(!reason&&!required.length&&!referenceCompatible)reason="finite-subject-reference-declaration-conflict";
       const finite = !reason && !required.length ? r.buildClassicalNahuatlNonactiveCarrierFiniteFrame(source,effective) : null;
       if (finite && r.isClassicalNahuatlNonactiveCarrierFiniteFrame(finite) !== true) reason=finite.blockReason;
       const status=reason?"rejected":required.length?"choices-required":"ready";
       const frame=Object.freeze({kind:CLASSICAL_NAHUATL_VNC_TYPED_SOURCE_APPLICATION_BINDING_FRAME_KIND,version:1,
         operationId:"vnc:application",authorizationStatus:status==="rejected"?"blocked":"authorized",bindingStatus:status,
         blockReason:reason || (required.length?"explicit-specific-passive-patient-and-finite-context-required":""),
-        exactSourceMachineryFrame:source,inputSourceMachineryFrame:source,callerSelections:Object.freeze({...selections}),effectiveSelections:effective,
-        requiredChoiceIds:Object.freeze(reason?[]:required),choiceOptionProjection:Object.freeze(projection),executionArgs:Object.freeze(status==="ready"?[source,effective]:[]),
+        exactSourceMachineryFrame:source,inputSourceMachineryFrame:source,callerSelections:caller,effectiveSelections:effective,
+        requiredChoiceIds:Object.freeze(reason?[]:required),choiceOptionProjection:finalizeSpecializedFiniteChoices(projection,caller,effective,required,targetFixed),executionArgs:Object.freeze(status==="ready"?[source,effective]:[]),
         ownerChoicesRequired:status==="choices-required",ownerInputAcceptanceProven:true,ownerRejectionProven:false,exactSourceIdentityPreserved:true,
         ownerExecutionStillRequired:status==="ready",sourceStringAuthority:false,formulaStringAuthority:false,surfaceStringAuthority:false,lessonMetadataAuthority:false,storedStateAuthority:false,grammarAuthority:false});
       nonactiveCarrierBindings.set(frame,Object.freeze({source,effective,finite}));return frame;
@@ -11814,6 +11953,11 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
           }
         }
       }
+      const targetPreflight = provenance && !initialBlockReason
+        ? evaluationProvenance.ownerEvaluate(buildClassicalNahuatlVncTypedSourceApplicationOwnerRequest(evaluationProvenance,effectiveSelections)) : null;
+      if(targetPreflight && bindingStatus!=='rejected' && !requiredChoiceIds.length && targetPreflight.authorizationStatus!=='authorized') {
+        bindingStatus='rejected';blockReason=targetPreflight.blockReason||'classical-vnc-target-preflight-rejected';
+      }
       let finiteConnectorOptions = null;
       if (provenance && !initialBlockReason && bindingStatus !== "rejected" && !requiredChoiceIds.length
         && (buildClassicalNahuatlVncApplicationSentenceOptions(effectiveSelections).finiteSingularConnector
@@ -11821,7 +11965,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
             && !String(effectiveSelections.subject).endsWith("pl"))) {
         // A preview calls the same finite owner as Make; it never accepts a Result.
         const request = buildClassicalNahuatlVncTypedSourceApplicationOwnerRequest(evaluationProvenance, effectiveSelections);
-        const preview = evaluateClassicalNahuatlVncApplication(request);
+        const preview = targetPreflight;
         if (preview?.authorizationStatus === "authorized") {
           finiteConnectorOptions = projectClassicalNahuatlFiniteConnectorOptions(
             isClassicalNahuatlOptionalFiniteConnectorFrame(preview.resultFrame?.finalTypedVncSlotFrame, preview.normalizedRequest));
@@ -11890,7 +12034,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         }
       }
       requiredChoiceIds = Object.freeze([...new Set(requiredChoiceIds)]);
-      const choiceOptionProjection =
+      const legacyChoices =
         buildClassicalNahuatlVncTypedSourceApplicationChoiceProjection({
           derivationInventories,
           selectedDerivation,
@@ -11899,7 +12043,15 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
           nonactiveOptionInventory,
           admonitiveNumberFrame,
           finiteConnectorOptions,
+          applicativeDecision: evaluationProvenance && getClassicalNahuatlVncApplicationRuntimeTarget().getClassicalNahuatlApplicativeParticipantChoiceDecision?.(evaluationSourceMachineryFrame,{...effectiveSelections,targetSubject:effectiveSelections.subject}),
         });
+      const choiceOptionProjection = Object.freeze({...legacyChoices,...targetPreflight?.choiceOptionProjection,
+        // Derivation availability is the authenticated typed Source inventory.
+        requestedDerivation:targetPreflight?.choiceOptionProjection?.requestedDerivation
+          ? Object.freeze({...targetPreflight.choiceOptionProjection.requestedDerivation,options:Object.freeze(targetPreflight.choiceOptionProjection.requestedDerivation.options.map(option=>Object.freeze({...option,availabilityStatus:legacyChoices.requestedDerivation.find(item=>item.optionId===option.optionId)?.availabilityStatus||'incompatible'})))})
+          : legacyChoices.requestedDerivation,
+        ...(!targetPreflight?.choiceOptionProjection?.derivationOptionId?{derivationOptionId:legacyChoices.derivationOptionId}:{}),
+      });
       const sourceAccepted = Boolean(provenance);
       const authorizationStatus = bindingStatus === "rejected"
         ? "blocked"
@@ -11958,6 +12110,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
           evaluationProvenance,
           evaluationSourceMachineryFrame,
           preparedSourceApplicationFrame,
+          targetPreflight,
           ownerRequest,
           participantOperationFrame,
           selectedInventory,
@@ -12078,7 +12231,8 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       if (frame.bindingStatus === "choices-required") {
         const projectedChoicesAreUsable = frame.requiredChoiceIds.every(
           choiceId => {
-            const options = frame.choiceOptionProjection?.[choiceId];
+            const field = frame.choiceOptionProjection?.[choiceId];
+            const options = Array.isArray(field)?field:field?.options;
             if (!Array.isArray(options) || options.length === 0) return false;
             const optionIds = options.map(option => String(
               option?.optionId || ""
@@ -12088,10 +12242,10 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
               && new Set(optionIds).size === optionIds.length
               && options.every(option => (
                 Object.isFrozen(option)
-                && option.choiceId === choiceId
-                && option.ownerOptionProjected === true
-                && option.ownerOptionAuthority === false
-                && option.grammarAuthority === false
+                && (Array.isArray(field) ? option.choiceId === choiceId
+                  && option.ownerOptionProjected === true
+                  && option.ownerOptionAuthority === false
+                  && option.grammarAuthority === false : field.choiceId===choiceId)
               ))
               && options.some(option => (
                 option.availabilityStatus === "available"
@@ -12127,52 +12281,36 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         && frame.ownerExecutionStillRequired === true
       );
     }
-    function executeClassicalNahuatlVncTypedSourceApplicationBindingFrame(
-      bindingFrame = null,
-    ) {
-      if (
-        !isClassicalNahuatlVncTypedSourceApplicationBindingFrame(bindingFrame)
-        || bindingFrame.bindingStatus !== "ready"
-        || classicalNahuatlVncTypedSourceApplicationExecutedBindings.has(
-          bindingFrame,
-        )
-      ) {
-        return null;
+    function prepareClassicalNahuatlVncTypedSourceApplicationBindingFrame(bindingFrame = null) {
+      if (!isClassicalNahuatlVncTypedSourceApplicationBindingFrame(bindingFrame)
+        || bindingFrame.bindingStatus !== "ready") return null;
+      if (classicalNahuatlVncTypedSourceApplicationPreparedResults.has(bindingFrame))
+        return classicalNahuatlVncTypedSourceApplicationPreparedResults.get(bindingFrame);
+      let result = null;
+      if (restrictedContainingBindings.has(bindingFrame)) result = buildRestrictedContainingApplication(bindingFrame);
+      else if (analyticalVncBindings.has(bindingFrame)) result = buildAnalyticalVncApplication(bindingFrame);
+      else if (imperfectiveBindings.has(bindingFrame)) result = buildImperfectiveVncApplication(bindingFrame);
+      else if (preformedVncBindings.has(bindingFrame)) result = buildPreformedVncApplication(bindingFrame);
+      else if (nonactiveCarrierBindings.has(bindingFrame)) result = buildNonactiveCarrierApplication(bindingFrame);
+      else {
+        const context = classicalNahuatlVncTypedSourceApplicationBindingContexts.get(bindingFrame);
+        result = context.targetPreflight || context.evaluationProvenance.ownerEvaluate(context.ownerRequest);
+        if (!isClassicalNahuatlVncApplicationFrame(result)
+          || result.authorizationStatus !== "authorized"
+          || result.resultFrame?.authorizationStatus !== "authorized"
+          || result.normalizedRequest?.sourceStem !== context.ownerRequest.sourceStem
+          || result.normalizedRequest?.sourceValence !== context.ownerRequest.sourceValence
+          || result.normalizedRequest?.derivationType !== context.ownerRequest.requestedDerivation) result = null;
       }
-      if (restrictedContainingBindings.has(bindingFrame)) {classicalNahuatlVncTypedSourceApplicationExecutedBindings.add(bindingFrame);return buildRestrictedContainingApplication(bindingFrame);}
-      if (analyticalVncBindings.has(bindingFrame)) {classicalNahuatlVncTypedSourceApplicationExecutedBindings.add(bindingFrame);return buildAnalyticalVncApplication(bindingFrame);}
-      if (imperfectiveBindings.has(bindingFrame)) {classicalNahuatlVncTypedSourceApplicationExecutedBindings.add(bindingFrame);return buildImperfectiveVncApplication(bindingFrame);}
-      if (preformedVncBindings.has(bindingFrame)) {
-        classicalNahuatlVncTypedSourceApplicationExecutedBindings.add(bindingFrame);return buildPreformedVncApplication(bindingFrame);
-      }
-      if (nonactiveCarrierBindings.has(bindingFrame)) {
-        classicalNahuatlVncTypedSourceApplicationExecutedBindings.add(bindingFrame);
-        return buildNonactiveCarrierApplication(bindingFrame);
-      }
-      const context =
-        classicalNahuatlVncTypedSourceApplicationBindingContexts.get(
-          bindingFrame,
-        );
-      classicalNahuatlVncTypedSourceApplicationExecutedBindings.add(
-        bindingFrame,
-      );
-      const result = context.evaluationProvenance.ownerEvaluate(
-        context.ownerRequest,
-      );
-      if (
-        !isClassicalNahuatlVncApplicationFrame(result)
-        || result.authorizationStatus !== "authorized"
-        || result.resultFrame?.authorizationStatus !== "authorized"
-        || result.normalizedRequest?.sourceStem
-          !== context.ownerRequest.sourceStem
-        || result.normalizedRequest?.sourceValence
-          !== context.ownerRequest.sourceValence
-        || result.normalizedRequest?.derivationType
-          !== context.ownerRequest.requestedDerivation
-      ) {
-        return null;
-      }
+      classicalNahuatlVncTypedSourceApplicationPreparedResults.set(bindingFrame, result);
       return result;
+    }
+    function executeClassicalNahuatlVncTypedSourceApplicationBindingFrame(bindingFrame = null) {
+      if (!isClassicalNahuatlVncTypedSourceApplicationBindingFrame(bindingFrame)
+        || bindingFrame.bindingStatus !== "ready"
+        || classicalNahuatlVncTypedSourceApplicationExecutedBindings.has(bindingFrame)) return null;
+      classicalNahuatlVncTypedSourceApplicationExecutedBindings.add(bindingFrame);
+      return prepareClassicalNahuatlVncTypedSourceApplicationBindingFrame(bindingFrame);
     }
     const CLASSICAL_NAHUATL_VNC_CONTINUATION_SOURCE_FIELDS = Object.freeze([
       "sourceStem",
@@ -12594,6 +12732,34 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
             || "ordered-voice-layer-route-not-attested",
           )
           : "",
+      });
+    }
+    function projectClassicalNahuatlOrderedVoiceChoices(inventory, selections = {}, outerApplication = null) {
+      const base = inventory?.baseOperations || [];
+      const authored = Array.isArray(selections?.operations) ? selections.operations : [];
+      const second = authored[base.length] || "";
+      const third = authored[base.length + 1] || "";
+      const firstDomain = inventory?.ownerInventory;
+      const secondAvailable = firstDomain?.options?.some(option => option.operationId === second);
+      const nextDomain = secondAvailable
+        ? getClassicalNahuatlVncApplicationRuntimeTarget().getClassicalNahuatlOrderedVoiceLayerCascadeOptions(
+            inventory.sourceStem, [...base, second],
+            inventory.baseOperation === "passive" ? outerApplication || inventory.outerVncApplicationFrame : undefined)
+        : null;
+      const field = (choiceId, selected, domain, prefix, required) => Object.freeze({
+        choiceId, inputKind: "enum", applicable: Boolean(domain), editable: Boolean(domain),
+        authoredValue: selected, selectedValue: selected, required,
+        options: Object.freeze([
+          ...(!required && domain?.mayStopAtCurrentLayer ? [{operationId:"",label:"Keep the current ordered voice"}] : []),
+          ...(domain?.options || []),
+        ].map(option => Object.freeze({optionId:option.operationId,label:option.label || option.operationId,
+          availabilityStatus:"available",nextSelections:deepFreezeClassicalNahuatlVncApplicationValue({
+            ...selections,operations:[...prefix,...(option.operationId?[option.operationId]:[])],
+          })}))),
+      });
+      return Object.freeze({
+        voiceLayer2: field("voiceLayer2", second, firstDomain, base, true),
+        voiceLayer3: field("voiceLayer3", third, nextDomain, [...base, second], false),
       });
     }
     function getClassicalNahuatlVncContinuationAdditionalResults(
@@ -13339,7 +13505,10 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       const bindingIds = Object.freeze(sourceAccepted
         ? [`${normalizedOperationId}:source-result`]
         : []);
-      const ownerChoiceOptionProjection = normalizedOperationId === 'vnc:derivational-operation'
+      const ownerChoiceOptionProjection = normalizedOperationId === 'vnc:application' && ownerPreflightValidated ? ownerPreflightResult.choiceOptionProjection
+        : normalizedOperationId === 'vnc:ordered-voice-application'
+        ? projectClassicalNahuatlOrderedVoiceChoices(orderedVoiceChoiceInventory,selections,outerVncApplicationFrame)
+        : normalizedOperationId === 'vnc:sentence-result' && isClassicalNahuatlVncSentenceDecisionFrame(ownerPreflightResult) ? ownerPreflightResult.choiceOptionProjection : normalizedOperationId === 'vnc:derivational-operation'
         && ownerPreflightValidated && ownerPreflightResult?.choiceOptionProjection
         ? ownerPreflightResult.choiceOptionProjection : deepFreezeClassicalNahuatlVncApplicationValue({
         ...(finiteConnectorOptions ? {finiteSingularConnector: finiteConnectorOptions} : {}),
@@ -13610,6 +13779,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         resolveClassicalNahuatlNonactiveCarrierSourceFrame,
         isClassicalNahuatlVncTypedSourceApplicationBindingFrame,
         executeClassicalNahuatlVncTypedSourceApplicationBindingFrame,
+        prepareClassicalNahuatlVncTypedSourceApplicationBindingFrame,
         issueClassicalNahuatlVncContinuationBindingFrame,
         isClassicalNahuatlVncContinuationBindingFrame,
         prepareClassicalNahuatlVncParadigmPlan,
@@ -13642,6 +13812,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         buildClassicalNahuatlVncSentenceSurfaceRealization,
         getClassicalNahuatlVncSentenceFormulaAttachment,
         buildClassicalNahuatlVncSentenceResultFrame,
+        isClassicalNahuatlVncSentenceDecisionFrame,
         isClassicalNahuatlVncSentenceResultFrame,
         isClassicalNahuatlVncParadigmPlan,
         isClassicalNahuatlVncParadigmCoordinateFrame,
@@ -13692,6 +13863,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         resolveClassicalNahuatlNonactiveCarrierSourceFrame,
         isClassicalNahuatlVncTypedSourceApplicationBindingFrame,
         executeClassicalNahuatlVncTypedSourceApplicationBindingFrame,
+        prepareClassicalNahuatlVncTypedSourceApplicationBindingFrame,
         issueClassicalNahuatlVncContinuationBindingFrame,
         isClassicalNahuatlVncContinuationBindingFrame,
         prepareClassicalNahuatlVncParadigmPlan,
@@ -13722,6 +13894,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         isClassicalNahuatlOrderedVoiceVncApplicationFrame,
         isClassicalNahuatlOrderedVoiceVncMachineryFrame,
         buildClassicalNahuatlVncSentenceResultFrame,
+        isClassicalNahuatlVncSentenceDecisionFrame,
         isClassicalNahuatlVncSentenceResultFrame,
         buildClassicalNahuatlVncDerivationExplanationProjection,
         buildClassicalNahuatlVncSourceConstitutionProjection,
@@ -13887,6 +14060,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
     api.buildClassicalNahuatlVncSentenceSurfaceRealization = buildClassicalNahuatlVncSentenceSurfaceRealization;
     api.getClassicalNahuatlVncSentenceFormulaAttachment = getClassicalNahuatlVncSentenceFormulaAttachment;
     api.buildClassicalNahuatlVncSentenceResultFrame = buildClassicalNahuatlVncSentenceResultFrame;
+    api.isClassicalNahuatlVncSentenceDecisionFrame = isClassicalNahuatlVncSentenceDecisionFrame;
     api.isClassicalNahuatlVncSentenceResultFrame = isClassicalNahuatlVncSentenceResultFrame;
     api.buildClassicalNahuatlWidowhoodCompoundInterpretationSource = buildClassicalNahuatlWidowhoodCompoundInterpretationSource;
     api.isClassicalNahuatlWidowhoodCompoundInterpretationSource = isClassicalNahuatlWidowhoodCompoundInterpretationSource;
@@ -13935,6 +14109,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       issueClassicalNahuatlVncTypedSourceApplicationBindingFrame;
     api.isClassicalNahuatlVncTypedSourceApplicationBindingFrame =
       isClassicalNahuatlVncTypedSourceApplicationBindingFrame;
+    api.prepareClassicalNahuatlVncTypedSourceApplicationBindingFrame = prepareClassicalNahuatlVncTypedSourceApplicationBindingFrame;
     api.executeClassicalNahuatlVncTypedSourceApplicationBindingFrame =
       executeClassicalNahuatlVncTypedSourceApplicationBindingFrame;
     api.issueClassicalNahuatlVncContinuationBindingFrame =

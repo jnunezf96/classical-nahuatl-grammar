@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createRuntimeInstance} from '../runtime/create_runtime.mjs';
-import {getOwnerOperationDecisionControls,findOwnerOperationControlChoice,isOwnerOperationChoiceAllowed,readOwnerOperationControlValue} from '../ui/composition/owner_operation_protocol.mjs?issuedBinding=20261028-1&ownerDecision=20261029-12';
+import {getOwnerOperationDecisionControls,findOwnerOperationControlChoice,isOwnerOperationChoiceAllowed,readOwnerOperationControlValue} from '../ui/composition/owner_operation_protocol.mjs?issuedBinding=20261028-1&ownerDecision=20261031-1';
 import {createConstructionSession} from '../ui/composition/construction_session.mjs';
 import {createVerbalDerivationScope,issueVerbalDerivationSnapshot,projectVerbalDerivationExecution} from '../ui/composition/verbal_derivation_transaction.mjs';
 const owner=(await createRuntimeInstance({documentObject:{getElementById:()=>null,addEventListener(){}}})).runtimeObject;

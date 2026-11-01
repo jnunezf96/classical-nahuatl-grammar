@@ -1,5 +1,7 @@
+import {CLASSICAL_NAHUATL_NNC_NOUNSTEM_REQUEST_KIND,CLASSICAL_NAHUATL_RELATIONAL_SOURCE_COMPOSITION_REQUEST_KIND,CLASSICAL_NAHUATL_RELATIONAL_SOURCE_COMPOSITION_STEM_NODE_KIND,CLASSICAL_NAHUATL_RELATIONAL_SOURCE_COMPOSITION_COMPOUND_NODE_KIND} from "../../core/classical/nnc_lessons45_47_closure.mjs?v=20261009-reader-42-8-234&interfaceRelease=1.2.36&huicContinuation=20261025-1&ownerDecision=20261031-1";
 import { getClassicalNahuatlNncPredicateBoundaryCarrier } from "../../core/classical/nnc_predicate_boundary.mjs";
-import { capitalizeClassicalNahuatlNncSentenceInitial } from "../../core/classical/nnc_layer_evaluator.mjs?andrewsRelease=20261024-1&ownerDecision=20261029-12";
+import {resolveOrdinaryNncActiveSelections,stageOrdinaryNncDependencies} from './participant_choice_coordination.mjs?ownerDecision=20261031-1';
+import { capitalizeClassicalNahuatlNncSentenceInitial } from "../../core/classical/nnc_layer_evaluator.mjs?andrewsRelease=20261024-1&ownerDecision=20261031-1";
 // Canonical application boundary for Classical Nahuatl grammar projections.
 //
 // The renderer supplies genuine selections and already-issued grammar frames.
@@ -1260,6 +1262,7 @@ const ROUTE_DEFINITIONS = Object.freeze({
   }),
   "vnc:sentence-result": Object.freeze({
     capabilityName: "buildClassicalNahuatlVncSentenceResultFrame",
+    decisionValidatorName: "isClassicalNahuatlVncSentenceDecisionFrame",
     axisIds: Object.freeze(["authorized-vnc-result", "sentence-composition", "sentence-realization"]),
   }),
   "nnc:attested-cell": Object.freeze({capabilityName:"evaluateClassicalNahuatlAttestedNncCell",axisIds:Object.freeze(["attested-source","explicit-context"])}),
@@ -1300,6 +1303,7 @@ const ROUTE_DEFINITIONS = Object.freeze({
   }),
   "nnc:sentence-surface": Object.freeze({
     capabilityName: "buildClassicalNahuatlNncSentenceSurfaceFrame",
+    decisionValidatorName: "isClassicalNahuatlNncSentenceDecisionFrame",
     axisIds: Object.freeze(["nnc-state", "sentence-force", "polarity", "contextual-interpretation"]),
   }),
   "nnc:diagram": Object.freeze({
@@ -1401,10 +1405,12 @@ const ROUTE_DEFINITIONS = Object.freeze({
   }),
   "grammar:nominal-construction": Object.freeze({
     capabilityName: "evaluateClassicalNahuatlNominalConstruction",
+    decisionValidatorName: "isClassicalNahuatlNominalConstructionResult",
     axisIds: Object.freeze(["nominal-embed", "compound-nnc", "affective-nnc", "cardinal-number", "measure-modification", "vacant-state"]),
   }),
   "nnc:deverbal-construction": Object.freeze({
     capabilityName: "evaluateClassicalNahuatlDeverbalNnc",
+    decisionValidatorName: "isClassicalNahuatlIssuedDeverbalNncDecision",
     axisIds: Object.freeze(["source-stage", "source-voice", "nominalization-family", "patientive-family", "external-object", "double-nucleus-ownerhood"]),
   }),
   "nnc:adjectival-modification": Object.freeze({
@@ -1419,10 +1425,12 @@ const ROUTE_DEFINITIONS = Object.freeze({
   }),
   "nnc:adverbial": Object.freeze({
     capabilityName: "evaluateClassicalNahuatlAdverbialNuclear",
+    decisionValidatorName: "isClassicalNahuatlAdverbialNuclearResult",
     axisIds: Object.freeze(["adverbial-source", "adverbial-context", "adverbialized-subject", "clause-rank"]),
   }),
   "nnc:relational": Object.freeze({
     capabilityName: "evaluateClassicalNahuatlRelationalNnc",
+    decisionValidatorName: "isClassicalNahuatlIssuedRelationalNncDecision",
     axisIds: Object.freeze(["relational-source", "relation-family", "possessor-structure", "voice-source", "relational-result"]),
   }),
   "nnc:place-gentilic": Object.freeze({
@@ -2984,6 +2992,7 @@ function getApplicationOutputContract(
     if (!route || !resultContract) return null;
     return Object.freeze({
       capabilityName: route.capabilityName,
+      decisionValidatorName: route.decisionValidatorName || "",
       resultKinds: resultContract.resultKinds,
       resultCollection: false,
       validatorNames: AUTHORIZED_RESULT_VALIDATOR_NAMES?.[operationId]
@@ -3050,6 +3059,7 @@ const CANONICAL_APPLICATION_SOURCE_BUILDER_NAMES = Object.freeze([
 ]);
 
 const CANONICAL_ARGUMENT_VALIDATOR_NAMES = Object.freeze([
+  "isClassicalNahuatlIssuedDeverbalNncTargetFrame",
   "isClassicalNahuatlTranscriptionSourceFrame",
   "isClassicalNahuatlTranscriptionBindingFrame",
   "isClassicalNahuatlNonactiveStemRecord",
@@ -3108,6 +3118,7 @@ const CANONICAL_ARGUMENT_VALIDATOR_NAMES = Object.freeze([
   "isClassicalNahuatlVncFiniteSurfaceFrame",
   "isClassicalNahuatlVncSentenceResultFrame",
   "isClassicalNahuatlOrdinaryNncSourceFrame",
+  "isClassicalNahuatlContextualFlawedSubjectSourceFrame",
   "isClassicalNahuatlPlaceNominalSourceFrame",
   "isClassicalNahuatlPatientiveCoreSourceFrame",
   "isClassicalNahuatlCharacteristicNounSourceFrame",
@@ -3457,7 +3468,7 @@ function hasCallableCapability(targetObject, capabilityName) {
 
 function canonicalCapabilityNames() {
   return [...new Set([
-    ...Object.values(ROUTE_DEFINITIONS).map((route) => route.capabilityName),
+    ...Object.values(ROUTE_DEFINITIONS).flatMap(route => [route.capabilityName,route.decisionValidatorName].filter(Boolean)),
     ...Object.values(ADDITIONAL_OUTPUT_CONTRACTS).flatMap(
       (contracts) => Object.values(contracts).flatMap((contract) => [
         contract.capabilityName,
@@ -3495,8 +3506,10 @@ function canonicalCapabilityNames() {
     "resolvePersonalNameNncExactSource",
     "isPersonalNameNncExactSourceResolution",
     "getClassicalNahuatlVncContinuationSourceConstituents",
+    "prepareClassicalNahuatlVncTypedSourceApplicationBindingFrame",
     "getClassicalNahuatlNncContinuationSourceConstituents",
     "getClassicalNahuatlParticleSourceEntries",
+    "getClassicalNahuatlParticleReloadInputs","isClassicalNahuatlNncSentenceDecisionFrame","isClassicalNahuatlVncSentenceDecisionFrame",
     "resolveClassicalNahuatlAttestedNncCellSourceFrame",
     "resolveClassicalNahuatlAttestedPlaceSourceFrame",
     "resolveClassicalNahuatlAttestedPrincipalCollocationSourceFrame",
@@ -3569,6 +3582,7 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
   ]));
   const issuedApplicationResults = new WeakSet();
   const preparedAttitudeResults = new WeakMap();
+  const preparedTypedBindings = new WeakMap();
   const applicationPreviews = new WeakMap();
   const issuedCanonicalResults = new WeakSet();
   const issuedApplicationResultByCanonicalResult = new WeakMap();
@@ -6829,6 +6843,12 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
     callerSelections = {},
   ) {
     if (!selectionFrame) return Object.freeze([]);
+    const humanContext = selectionFrame.sourceKind === "pronominal"
+      ? getCanonicalNncOperationSelectionFrame(selectionFrame.sourceFrame,
+        {specialHumanUse: true, animacy: "animate", humanness: "human"}) : null;
+    const specialHumanUseAvailable = selectionFrame.specialHumanUseAvailable
+      || isCanonicalNncOperationSelectionFrameForExactSource(humanContext, selectionFrame.sourceFrame)
+        && humanContext.specialHumanUseAvailable === true;
     const descriptor = (
       choiceId,
       values,
@@ -6841,6 +6861,8 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
       valueKind,
     });
     const shared = [
+      descriptor("sentenceType",selectionFrame.sentenceTypeValues,selectionFrame.selectedSentenceType),
+      descriptor("polarity",selectionFrame.polarityValues,selectionFrame.selectedPolarity),
       descriptor(
         "animacy",
         selectionFrame.animacyValues,
@@ -6946,7 +6968,7 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
         ),
         descriptor(
           "specialHumanUse",
-          selectionFrame.specialHumanUseAvailable
+          specialHumanUseAvailable
             ? [false, true]
             : [],
           selectionFrame.selectedSpecialHumanUse === true,
@@ -6955,6 +6977,8 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
       ];
     return Object.freeze([...shared, ...familyDescriptors].filter(
       candidate => candidate.values.length > 1
+        || candidate.values.length > 0 && Object.hasOwn(callerSelections,candidate.choiceId)
+          && !candidate.values.includes(callerSelections[candidate.choiceId])
         || candidate.choiceId === "pluralConnector" && candidate.values.length === 1
           && Boolean(callerSelections.pluralConnector)
           && !candidate.values.includes(callerSelections.pluralConnector)
@@ -6982,6 +7006,27 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
       || (previousSelections.subject ?? previousFrame.selectedSubject) !== previousFrame.selectedSubject)
       return nextSelections;
     const retained = { ...nextSelections };
+    if (["compoundMatrix", "predicatePluralization"].includes(choiceId)) {
+      const changed = choiceId === "compoundMatrix"
+        ? ["compoundMatrixValues", "selectedCompoundMatrix"]
+        : ["predicatePluralizationValues", "selectedPredicatePluralization"];
+      if (!previousFrame[changed[0]]?.includes(previousFrame[changed[1]])
+        || !nextFrame[changed[0]]?.includes(nextSelections[choiceId])
+        || nextFrame[changed[1]] !== nextSelections[choiceId]
+        || previousFrame[changed[1]] === nextFrame[changed[1]]
+        || retained.subject !== previousFrame.selectedSubject) return nextSelections;
+      for (const [id, values, selected] of choiceId === "compoundMatrix" ? [
+        ["subject", "subjectValues", "selectedSubject"],
+        ["numberForm", "numberFormValues", "selectedNumberForm"],
+        ["predicatePluralization", "predicatePluralizationValues", "selectedPredicatePluralization"],
+      ] : [["numberForm", "numberFormValues", "selectedNumberForm"]]) {
+        const value = previousSelections[id];
+        if (Object.hasOwn(previousSelections, id) && retained[id] === value
+          && value === previousFrame[selected] && previousFrame[values]?.includes(value)
+          && !nextFrame[values]?.includes(value)) delete retained[id];
+      }
+      return Object.freeze(retained);
+    }
     if (choiceId === "animacy") {
       if (!previousFrame.animacyValues?.includes(previousFrame.selectedAnimacy)
         || !nextFrame.animacyValues?.includes(nextSelections.animacy)
@@ -7024,13 +7069,50 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
     optionId = "",
     operationValidator = null,
   } = {}) {
-    const candidateCallerSelections = Object.freeze({
+    let candidateCallerSelections = Object.freeze({
       ...callerSelections,
       [descriptor.choiceId]: getCanonicalNncChoiceValue(
         descriptor,
         optionId,
       ),
     });
+    if (selectionFrame?.sourceKind === "ordinary") {
+      const owner = {getCanonicalNncOperationSelectionFrame,
+        isClassicalNahuatlOrdinaryNncSourceFrame:source=>{const validate=getCanonicalNncCapability('isClassicalNahuatlOrdinaryNncSourceFrame');return Boolean(validate&&Reflect.apply(validate,targetObject,[source])===true);}};
+      const staged = stageOrdinaryNncDependencies(owner,exactSource,candidateCallerSelections,
+        {choiceId:descriptor.choiceId,previousSelections:callerSelections,explicitValidated:true});
+      if (!staged.invalid) candidateCallerSelections=resolveOrdinaryNncActiveSelections(
+        owner,exactSource,staged.active,{preserveDependent:true,
+          resolveReference:descriptor.choiceId==='subject'
+            && callerSelections.subject===selectionFrame.selectedSubject
+            && (!Object.hasOwn(callerSelections,'humanness')
+              || callerSelections.humanness===selectionFrame.selectedHumanness)});
+    }
+    if (selectionFrame?.sourceKind === "pronominal" && descriptor.choiceId === "specialHumanUse"
+      && candidateCallerSelections.specialHumanUse !== selectionFrame.selectedSpecialHumanUse
+      && ["subject", "animacy", "humanness"].every(id => !Object.hasOwn(callerSelections, id)
+        || callerSelections[id] === selectionFrame[({subject:"selectedSubject",animacy:"selectedAnimacy",humanness:"selectedHumanness"})[id]])) {
+      const human = getCanonicalNncOperationSelectionFrame(exactSource,
+        {specialHumanUse:true,animacy:"animate",humanness:"human"});
+      if (isCanonicalNncOperationSelectionFrameForExactSource(human, exactSource)
+        && human.specialHumanUseAvailable === true) {
+        const value = candidateCallerSelections.specialHumanUse;
+        const candidate = {...candidateCallerSelections,animacy:value?"animate":"nonanimate",humanness:value?"human":"nonhuman"};
+        delete candidate.subject;
+        const next = getCanonicalNncOperationSelectionFrame(exactSource,candidate);
+        if (isCanonicalNncOperationSelectionFrameForExactSource(next,exactSource)
+          && next.selectedSpecialHumanUse === value) {
+          candidate.subject=next.selectedSubject;
+          for (const [id,values,selected] of [["numberForm","numberFormValues","selectedNumberForm"],
+            ["predicatePluralization","predicatePluralizationValues","selectedPredicatePluralization"]]) {
+            if (Object.hasOwn(callerSelections,id) && candidate[id]===callerSelections[id]
+              && callerSelections[id]===selectionFrame[selected] && selectionFrame[values]?.includes(callerSelections[id])
+              && !next[values]?.includes(callerSelections[id])) delete candidate[id];
+          }
+          candidateCallerSelections=Object.freeze(candidate);
+        }
+      }
+    }
     let candidateSelectionFrame = null;
     try {
       candidateSelectionFrame = getCanonicalNncOperationSelectionFrame(
@@ -7056,16 +7138,13 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
       buildCanonicalNncEffectiveOperationSelections(
         candidateSelectionFrame,
       );
-    const operationSelections =
-      overlayCanonicalNncCallerOperationSelections(
-        effectiveSelections,
-        ["subject", "animacy"].includes(descriptor.choiceId)
-          ? withdrawCanonicalPronominalSubjectDependencies(exactSource, callerSelections,
-            candidateCallerSelections, selectionFrame, candidateSelectionFrame, descriptor.choiceId)
-          : candidateCallerSelections,
-        candidateSelectionFrame,
-        exactSource,
-      );
+    const nextSelections = ["subject", "animacy", "compoundMatrix", "predicatePluralization"].includes(descriptor.choiceId)
+      ? withdrawCanonicalPronominalSubjectDependencies(exactSource, callerSelections,
+        candidateCallerSelections, selectionFrame, candidateSelectionFrame, descriptor.choiceId)
+      : candidateCallerSelections;
+    const operationSelections = overlayCanonicalNncCallerOperationSelections(
+      effectiveSelections,nextSelections,candidateSelectionFrame,exactSource,
+    );
     let operationFrame = null;
     try {
       operationFrame = issueCanonicalNncOperationFrame(
@@ -7089,9 +7168,30 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
     } catch {
       available = false;
     }
+    let requiresDependentChoice = '';
+    if (!available && candidateSelectionFrame.sourceKind === 'ordinary') {
+      const missing = getCanonicalNncRequiredChoiceId(operationFrame);
+      const dependent = getCanonicalNncBindingChoiceDescriptors(candidateSelectionFrame,nextSelections)
+        .find(item=>item.choiceId===missing);
+      if (missing && missing !== descriptor.choiceId && dependent?.values.length) {
+        requiresDependentChoice=missing;
+      }
+      if (!requiresDependentChoice && descriptor.choiceId==='metaphoricalUse'
+        && nextSelections.metaphoricalUse===true && candidateSelectionFrame.selectedMetaphoricalUse===true
+        && candidateSelectionFrame.stateValues?.includes('possessive')) {
+        const possessive=issueCanonicalNncOperationFrame(exactSource,{...operationSelections,state:'possessive'});
+        if (Reflect.apply(operationValidator,targetObject,[possessive])===true
+          || getCanonicalNncRequiredChoiceId(possessive)==='possessor') requiresDependentChoice='state';
+      }
+    }
     return Object.freeze({
-      available,
-      blockReason: available
+      available: available || Boolean(requiresDependentChoice),
+      // The same decision that admits this option retains its validated input.
+      // Consumers must not reconstruct participant dependencies independently.
+      nextSelections: available || requiresDependentChoice ? nextSelections : null,
+      requiresDependentChoice,
+      ownerNextBindingStatus: available ? 'ready' : requiresDependentChoice ? 'choices-required' : 'rejected',
+      blockReason: available || requiresDependentChoice
         ? ""
         : String(
           operationFrame?.blockReason
@@ -7122,6 +7222,7 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
         });
         return Object.freeze({
           choiceId: choiceDescriptor.choiceId,
+          valueKind: choiceDescriptor.valueKind,
           ...(choiceDescriptor.choiceId === "singularConnector"
             ? {inventoryFieldRef: "id:classical-rule-logic-nnc-singular-connector"} : {}),
           optionId,
@@ -7130,6 +7231,9 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
             ? "available"
             : "incompatible",
           blockReason: probe.blockReason,
+          nextSelections: probe.nextSelections || null,
+          ...(probe.requiresDependentChoice ? {requiresDependentChoice:probe.requiresDependentChoice} : {}),
+          ownerNextBindingStatus:probe.ownerNextBindingStatus,
           ownerOptionProjected: true,
           ownerOptionAuthority: false,
           grammarAuthority: false,
@@ -7337,6 +7441,7 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
         sourceValidator: resolvedSourceValidator.capability,
         operationValidator: resolvedOperationValidator.capability,
         selectionFrame,
+        choiceOptionProjection,
         exactOperationFrame: operationAccepted ? operationFrame : null,
       }),
     );
@@ -7411,7 +7516,8 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
     } catch {
       return false;
     }
-    if (frame.ownerSelectionFrame !== context.selectionFrame) return false;
+    if (frame.ownerSelectionFrame !== context.selectionFrame
+      || frame.choiceOptionProjection !== context.choiceOptionProjection) return false;
     if (frame.bindingStatus !== "rejected") {
       if (!isCanonicalNncOperationSelectionFrameForExactSource(
         frame.ownerSelectionFrame,
@@ -7423,13 +7529,7 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
     ).filter(([, options]) => Array.isArray(options));
     if (!projectedChoiceEntries.every(([choiceId, options]) => (
       Object.isFrozen(options)
-      && (options.length > 1 || choiceId === "singularConnector" && options.length === 1
-        && frame.exactSourceFrame?.generalUseOnly === true
-        || choiceId === "pluralConnector" && options.length === 1
-          && frame.bindingStatus === "choices-required"
-          && frame.requiredChoiceIds.includes("pluralConnector")
-          && frame.exactSourceFrame?.pluralConnectorOptions?.includes(frame.callerSelections.pluralConnector)
-          && !frame.ownerSelectionFrame?.pluralConnectorValues?.includes(frame.callerSelections.pluralConnector))
+      && options.length > 0
       && new Set(options.map(option => option.optionId)).size
         === options.length
       && options.every(option => (
@@ -7563,6 +7663,13 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
     const exactNavigatorInput =
       getClassicalGrammarCapabilityNavigatorExactInput(navigator);
     if (!callerSelections || !exactNavigatorInput || !contract) return null;
+    const contextUse=callerSelections.contextUse || "independent";
+    if(!["independent","retained"].includes(contextUse))return null;
+    const contextCapability=contextUse==="retained"
+      ? resolveCanonicalCallableCapability(targetObject,"getClassicalNahuatlParticleReloadInputs",api)?.capability : null;
+    const retainedContext=contextCapability ? Reflect.apply(contextCapability,targetObject,[exactNavigatorInput]) : null;
+    if(contextUse==="retained" && !retainedContext)return null;
+    const contextOptions=retainedContext?.options || null;
     const capabilityNames = [
       contract.inventoryCapabilityName,
       contract.sourceBuilderCapabilityName,
@@ -7626,7 +7733,7 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
           exactParticleResultFrame = Reflect.apply(
             resultBuilder,
             targetObject,
-            [exactParticleSourceFrame],
+            contextOptions?[exactParticleSourceFrame,contextOptions]:[exactParticleSourceFrame],
           );
           resultAccepted = Boolean(
             Reflect.apply(
@@ -7685,7 +7792,7 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
       grammarAuthority: false,
     });
     const unexpectedSelectionKey = Object.keys(callerSelections).find(
-      key => key !== "particleId",
+      key => !["particleId","contextUse"].includes(key),
     ) || "";
     const selectedParticleId = String(
       callerSelections.particleId || "",
@@ -7721,7 +7828,7 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
       bindingStatus === "choices-required" ? ["particleId"] : [],
     );
     const effectiveSelections = Object.freeze(
-      selectedParticleId ? { particleId: selectedParticleId } : {},
+      {...(selectedParticleId ? {particleId:selectedParticleId} : {}),...(contextUse==="retained"?{contextUse}: {})},
     );
     const frame = Object.freeze({
       kind: APPLICATION_CANONICAL_PARTICLE_ROOT_OWNER_BINDING_KIND,
@@ -7734,6 +7841,8 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
       operationId: contract.executionOperationId,
       navigatorExactInputFrame: exactNavigatorInput,
       navigatorInputConsumed: false,
+      contextUse,
+      retainedContextSource:contextUse==="retained"?exactNavigatorInput:null,
       exactParticleSourceFrame: bindingStatus === "ready"
         ? selectedProbe.exactParticleSourceFrame
         : null,
@@ -7764,6 +7873,9 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
         contract,
         navigator,
         exactNavigatorInput,
+        contextUse,contextOptions,contextCapability,
+        executionRequest:bindingStatus==="ready"?Object.freeze({operationId:contract.executionOperationId,
+          args:Object.freeze(contextOptions?[selectedProbe.exactParticleSourceFrame,contextOptions]:[selectedProbe.exactParticleSourceFrame])}):null,
         inventoryCapability,
         sourceBuilder,
         sourceValidator,
@@ -7800,6 +7912,9 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
       || frame.operationId !== context.contract.executionOperationId
       || frame.navigatorExactInputFrame !== context.exactNavigatorInput
       || frame.navigatorInputConsumed !== false
+      || frame.contextUse!==context.contextUse
+      || frame.retainedContextSource!==(context.contextUse==="retained"?context.exactNavigatorInput:null)
+      || context.contextCapability && resolveCanonicalCallableCapability(targetObject,"getClassicalNahuatlParticleReloadInputs",api)?.capability!==context.contextCapability
       || frame.ownerRootConstructionPreflightValidated !== true
       || frame.ownerInputAcceptanceProven !== false
       || frame.ownerRejectionProven !== false
@@ -8213,8 +8328,8 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
     const argumentFamilies = ["attested-nnc-cell", "attested-place", "attested-principal-collocation",
       "quantitative-predicate", "relational-nnc-source", "bound-nominal-denominal",
       "place-nominal-source", "lexicalized-nnc-source", "transcription-source"];
-    return {operationId: frame.executionOperationId, args: mode === "canonical-particle-root"
-      ? [particle?.exactParticleSourceFrame] : mode === "canonical-nnc-operation"
+    if(mode==="canonical-particle-root")return particle?.executionRequest || null;
+    return {operationId: frame.executionOperationId, args: mode === "canonical-nnc-operation"
         ? [frame.exactSource, nnc?.exactOperationFrame] : argumentFamilies.includes(context.contract.family)
           ? [...frame.ownerBindingFrame.executionArgs] : [frame.ownerBindingFrame]};
   }
@@ -8224,14 +8339,18 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
     // A few canonical owners consume their binding on evaluation. Reissue an
     // isolated owner binding for inspection; the live Make binding stays unused.
     const bindingContext = typedSourceOperationBindingContextByFrame.get(frame);
-    const inspection = bindingContext.contract.bindingMode === "canonical-owner-binding"
+    const retainedMode=["canonical-particle-root","canonical-nnc-operation"].includes(bindingContext.contract.bindingMode)
+      || bindingContext.contract.family === "vnc-application" || bindingContext.contract.family === "relational-nnc-source";
+    const inspection = !retainedMode && bindingContext.contract.bindingMode === "canonical-owner-binding"
       ? issueClassicalGrammarTypedSourceOperationBindingFrame(frame.navigator, frame.operationId, frame.callerSelections)
       : frame;
     if (!isClassicalGrammarTypedSourceOperationBindingFrame(inspection) || inspection.bindingStatus !== "ready"
       || inspection.exactSource !== frame.exactSource
-      || (bindingContext.contract.bindingMode === "canonical-owner-binding"
+      || (!retainedMode && bindingContext.contract.bindingMode === "canonical-owner-binding"
         && (inspection === frame || inspection.ownerBindingFrame === frame.ownerBindingFrame))) return null;
-    const preview = previewClassicalGrammarApplicationRequest(getTypedSourceExecutionRequest(inspection));
+    const prepared=retainedMode ? prepareClassicalGrammarApplicationRequest(inspection) : null;
+    if(retainedMode && !prepared)return null;
+    const preview = previewClassicalGrammarApplicationRequest(prepared?.request || getTypedSourceExecutionRequest(inspection),prepared);
     const context = applicationPreviews.get(preview);
     if (context) context.binding = frame;
     return preview;
@@ -8275,11 +8394,13 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
       : null;
     let applicationResult = null;
     try {
-      applicationResult = executeClassicalGrammarApplicationRequest({
+      const retainedMode=canonicalParticleRootBinding||canonicalNncBinding||bindingContext?.contract.family === "vnc-application"||relationalBinding;
+      const prepared=retainedMode?prepareClassicalGrammarApplicationRequest(frame):null;
+      applicationResult = retainedMode
+        ? prepared?executeClassicalGrammarApplicationRequest(prepared.request,prepared):null
+        : executeClassicalGrammarApplicationRequest({
         operationId: frame.executionOperationId,
-        args: canonicalParticleRootBinding
-          ? [canonicalParticleContext?.exactParticleSourceFrame]
-          : canonicalNncBinding
+        args: canonicalNncBinding
             ? [frame.exactSource, canonicalNncContext?.exactOperationFrame]
             : attestedBinding || quantitativeBinding || relationalBinding || boundNominalBinding || placeNominalBinding || lexicalizedNncBinding || transcriptionBinding
               ? [...frame.ownerBindingFrame.executionArgs]
@@ -9398,12 +9519,32 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
       : `${APPLICATION_REQUEST_DIAGNOSTIC}:issued-authorized-prepared-plan-required`;
   }
 
-  // Capture data, never caller getters or opaque owner frames. The raw attitude
-  // lane is deliberately narrow; continuation/compound requests keep their
-  // existing owner-specific execution contracts.
-  function capturePreparedAttitudeData(value, depth = 0, active = new WeakSet()) {
+  // Capture primitive wrappers without invoking caller getters. Particle
+  // inputs retain frozen opaque references; only their actual owner validators
+  // can recognize them. The existing raw-attitude lane stays data-only.
+  function isPreparedOwnDataGraph(value,seen=new WeakSet()) {
+    if(value===null || typeof value!=="object")return typeof value!=="function";
+    if(seen.has(value))return true;
+    if(![Object.prototype,null,Array.prototype].includes(Object.getPrototypeOf(value)))return false;
+    seen.add(value);
+    return Reflect.ownKeys(value).every(key=>{
+      const descriptor=Object.getOwnPropertyDescriptor(value,key);
+      return descriptor && Object.hasOwn(descriptor,"value") && isPreparedOwnDataGraph(descriptor.value,seen);
+    });
+  }
+  function capturePreparedAttitudeData(value, depth = 0, active = new WeakSet(), retainOpaque = false) {
     if (value === null || value === undefined || typeof value === "string"
       || typeof value === "boolean" || typeof value === "number" && Number.isFinite(value)) return value;
+    if (retainOpaque && value && typeof value==="object"
+      && typeof Object.getOwnPropertyDescriptor(value,"kind")?.value==="string") {
+      if(Object.isFrozen(value) && isPreparedOwnDataGraph(value) && isRecognizedCanonicalArgumentCarrier(value))return value;
+      // Plain constituent descriptors (for example {kind:'ordinary-nnc',
+      // resultFrame:exact}) are authored wrappers, not issued authority.
+      // A canonical frame claim still requires exact private issuance.
+      if(Object.getOwnPropertyDescriptor(value,"kind").value.startsWith("classical-")
+        && ![CLASSICAL_NAHUATL_NNC_NOUNSTEM_REQUEST_KIND,CLASSICAL_NAHUATL_RELATIONAL_SOURCE_COMPOSITION_REQUEST_KIND,CLASSICAL_NAHUATL_RELATIONAL_SOURCE_COMPOSITION_STEM_NODE_KIND,CLASSICAL_NAHUATL_RELATIONAL_SOURCE_COMPOSITION_COMPOUND_NODE_KIND].includes(Object.getOwnPropertyDescriptor(value,"kind").value))
+        throw new TypeError("prepared-owner-issued-argument-required");
+    }
     if (typeof value !== "object" || depth > 5 || active.has(value)
       || ![Object.prototype, null, Array.prototype].includes(Object.getPrototypeOf(value))) throw new TypeError("prepared-attitude-own-data-required");
     active.add(value);
@@ -9418,32 +9559,133 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
         if (Array.isArray(value) && key === "length") continue;
         const descriptor = Object.getOwnPropertyDescriptor(value, key);
         if (typeof key !== "string" || !descriptor || !Object.hasOwn(descriptor, "value")
-          || !descriptor.enumerable || key.endsWith("Frame")) throw new TypeError("prepared-attitude-own-data-required");
-        Object.defineProperty(result, key, {value: capturePreparedAttitudeData(descriptor.value, depth + 1, active), enumerable: true});
+          || !descriptor.enumerable || !retainOpaque && key.endsWith("Frame")) throw new TypeError("prepared-attitude-own-data-required");
+        Object.defineProperty(result, key, {value: capturePreparedAttitudeData(descriptor.value, depth + 1, active, retainOpaque), enumerable: true});
       }
       return Object.freeze(result);
     } finally { active.delete(value); }
   }
 
+  function isRecognizedPreparedOwnerResult(validated,result) {
+    if(isRecognizedCanonicalResult(validated.operationId,validated.outputKind,validated.outputContract,result))return true;
+    const name=validated.outputContract.decisionValidatorName;
+    const validator=name&&resolveCanonicalCallableCapability(targetObject,name,api);
+    return Boolean(validator && validated.outputContract.resultKinds.includes(result?.kind)
+      && Reflect.apply(validator.capability,targetObject,[result])===true);
+  }
+
   function prepareClassicalGrammarApplicationRequest(request = {}) {
+    const bindingValidator=resolveCanonicalCallableCapability(targetObject,"isClassicalNahuatlVncContinuationBindingFrame",api);
+    if(Object.getOwnPropertyDescriptor(request || {},"kind")?.value==="classical-nahuatl-vnc-continuation-binding-frame"
+      && bindingValidator && Reflect.apply(bindingValidator.capability,targetObject,[request])===true
+      && ["vnc:sentence-result","vnc:application","vnc:ordered-voice-application"].includes(request.operationId)) {
+      const retained=preparedTypedBindings.get(request);if(retained)return isClassicalGrammarPreparedApplicationRequest(retained)?retained:null;
+      const result=request.ownerPreflightResult;
+      if(request.operationId === "vnc:sentence-result") {
+        const decisionValidator=resolveCanonicalCallableCapability(targetObject,"isClassicalNahuatlVncSentenceDecisionFrame",api);
+        if(!decisionValidator||Reflect.apply(decisionValidator.capability,targetObject,[result])!==true)return null;
+      } else if(request.bindingStatus !== "ready") return null;
+      const captured=Object.freeze({operationId:request.operationId,args:request.bindingStatus==="ready"?request.executionArgs:Object.freeze([request.continuationInputResult,request.ownerRequest])});
+      const validated=validateClassicalGrammarApplicationRequest(captured),capability=resolveCanonicalCallableCapability(targetObject,validated.outputContract.capabilityName,api);
+      if(!capability||!validated.authorityCarrierClear||!isRecognizedPreparedOwnerResult(validated,result))return null;
+      const prepared=retainPreparedApplicationResult(captured,validated,result,capability.capability,request,true,bindingValidator.capability);
+      preparedTypedBindings.set(request,prepared);return prepared;
+    }
+    const sentenceValidator=resolveCanonicalCallableCapability(targetObject,"isClassicalNahuatlIssuedNncSentenceSurfaceFrame",api);
+    if(Object.getOwnPropertyDescriptor(request || {},"kind")?.value==="classical-nahuatl-nnc-sentence-surface-frame"
+      && sentenceValidator && Reflect.apply(sentenceValidator.capability,targetObject,[request])===true) {
+      const retained=preparedTypedBindings.get(request);if(retained)return isClassicalGrammarPreparedApplicationRequest(retained)?retained:null;
+      const reload=targetObject.getClassicalNahuatlNncSentenceReloadContext?.(request);if(!reload)return null;
+      const captured=Object.freeze({operationId:"nnc:sentence-surface",args:Object.freeze([reload.sourceNncSlotFrame,reload.sentenceOptions])});
+      const validated=validateClassicalGrammarApplicationRequest(captured),capability=resolveCanonicalCallableCapability(targetObject,validated.outputContract.capabilityName,api);
+      if(!capability||!validated.authorityCarrierClear||!isRecognizedPreparedOwnerResult(validated,request))return null;
+      const prepared=retainPreparedApplicationResult(captured,validated,request,capability.capability);
+      preparedTypedBindings.set(request,prepared);return prepared;
+    }
+    const typedContext=typedSourceOperationBindingContextByFrame.get(request);
+    if(typedContext?.contract.family === "vnc-application") {
+      if(!isClassicalGrammarTypedSourceOperationBindingFrame(request)||request.bindingStatus!=="ready")return null;
+      const retained=preparedTypedBindings.get(request);if(retained)return isClassicalGrammarPreparedApplicationRequest(retained)?retained:null;
+      const ownerPrepare=resolveCanonicalCallableCapability(targetObject,"prepareClassicalNahuatlVncTypedSourceApplicationBindingFrame",api);
+      if(!ownerPrepare)return null;
+      const execution=getTypedSourceExecutionRequest(request),captured=Object.freeze({...execution,args:Object.freeze([...execution.args])});
+      const validated=validateClassicalGrammarApplicationRequest(captured),capability=resolveCanonicalCallableCapability(targetObject,validated.outputContract.capabilityName,api);
+      if(!capability||!validated.authorityCarrierClear)return null;
+      const result=Reflect.apply(ownerPrepare.capability,targetObject,[request.ownerBindingFrame]);
+      if(!result||getClassicalVisibleSurfaceViolation(result)||!isRecognizedPreparedOwnerResult(validated,result))return null;
+      const prepared=retainPreparedApplicationResult(captured,validated,result,capability.capability,request);
+      preparedTypedBindings.set(request,prepared);return prepared;
+    }
+    if(typedContext?.contract.bindingMode==="canonical-nnc-operation" || typedContext?.contract.family === "relational-nnc-source") {
+      if(!isClassicalGrammarTypedSourceOperationBindingFrame(request)||request.bindingStatus!=="ready")return null;
+      const retained=preparedTypedBindings.get(request);if(retained)return isClassicalGrammarPreparedApplicationRequest(retained)?retained:null;
+      const execution=getTypedSourceExecutionRequest(request);
+      const captured=Object.freeze({...execution,args:Object.freeze([...execution.args])});
+      const validated=validateClassicalGrammarApplicationRequest(captured),capability=resolveCanonicalCallableCapability(targetObject,validated.outputContract.capabilityName,api);
+      if(!capability||!validated.authorityCarrierClear)return null;
+      const result=Reflect.apply(capability.capability,targetObject,validated.args);
+      if(getClassicalVisibleSurfaceViolation(result)||!isRecognizedPreparedOwnerResult(validated,result))return null;
+      const prepared=retainPreparedApplicationResult(captured,validated,result,capability.capability,request);
+      preparedTypedBindings.set(request,prepared);return prepared;
+    }
+    const rootBinding=typedSourceOperationBindingContextByFrame.has(request)
+      && canonicalParticleRootOwnerBindingContextByFrame.get(request.ownerBindingFrame);
+    if(rootBinding){
+      if(!isClassicalGrammarTypedSourceOperationBindingFrame(request) || request.bindingStatus!=="ready")return null;
+      const retained=preparedTypedBindings.get(request);
+      if(retained)return isClassicalGrammarPreparedApplicationRequest(retained)?retained:null;
+      const captured=rootBinding.executionRequest,validated=validateClassicalGrammarApplicationRequest(captured);
+      const capability=resolveCanonicalCallableCapability(targetObject,validated.outputContract.capabilityName,api);
+      const canonicalResult=rootBinding.exactParticleResultFrame;
+      if(capability?.capability!==rootBinding.resultBuilder || !isRecognizedCanonicalResult(validated.operationId,validated.outputKind,validated.outputContract,canonicalResult))return null;
+      const prepared=retainPreparedApplicationResult(captured,validated,canonicalResult,capability.capability,request);
+      preparedTypedBindings.set(request,prepared);return prepared;
+    }
+    const requestedOperation=Object.getOwnPropertyDescriptor(request || {},"operationId")?.value;
+    const decisionLane=Boolean(ROUTE_DEFINITIONS[requestedOperation]?.decisionValidatorName);
+    const nncLane=["nnc:ordinary","nnc:pronominal"].includes(requestedOperation);
+    const particleLane=requestedOperation==="particle:result"
+      || CLASSICAL_GRAMMAR_APPLICATION_RESULT_BINDING_CONTRACTS[requestedOperation]?.family==="particle-sentence";
     let captured;
-    try { captured = capturePreparedAttitudeData(request); } catch { return null; }
-    const validated = validateClassicalGrammarApplicationRequest(captured);
-    if (validated.operationId !== "vnc:derivational-operation"
-      || validated.outputKind !== DEFAULT_APPLICATION_OUTPUT_KIND || validated.args.length !== 1
-      || !["honorific", "reverential"].includes(validated.args[0]?.lateOperation)) return null;
+    try { captured = capturePreparedAttitudeData(request,0,new WeakSet(),particleLane||decisionLane||nncLane); } catch { return null; }
+    let validated;
+    try { validated=validateClassicalGrammarApplicationRequest(captured); } catch { return null; }
+    if (validated.outputKind !== DEFAULT_APPLICATION_OUTPUT_KIND || !validated.authorityCarrierClear
+      || !validated.typedApplicationRequest || !validated.semanticOperationIdentity
+      || !particleLane && !decisionLane && !nncLane && (validated.operationId !== "vnc:derivational-operation" || validated.args.length !== 1
+        || !["honorific", "reverential"].includes(validated.args[0]?.lateOperation))) return null;
     const capability = resolveCanonicalCallableCapability(targetObject, validated.outputContract.capabilityName, api);
     if (!getCanonicalApplicationState(targetObject, api) || !capability) return null;
     const canonicalResult = Reflect.apply(capability.capability, targetObject, validated.args);
     if (getClassicalVisibleSurfaceViolation(canonicalResult)
-      || !isRecognizedCanonicalResult(validated.operationId, validated.outputKind, validated.outputContract, canonicalResult)) return null;
-    const frame = Object.freeze({kind: "classical-grammar-prepared-attitude-result", version: 1,
+      || !isRecognizedPreparedOwnerResult(validated,canonicalResult)) return null;
+    return retainPreparedApplicationResult(captured,validated,canonicalResult,capability.capability,null,particleLane||decisionLane||nncLane);
+  }
+
+  function retainPreparedApplicationResult(captured,validated,canonicalResult,capability,binding=null,particleLane=true,bindingValidator=null) {
+    const frame = Object.freeze({kind: particleLane?"classical-grammar-prepared-owner-result":"classical-grammar-prepared-attitude-result", version: 1,
       request: captured, get canonicalResult() { return preparedAttitudeResults.get(this)?.canonicalResult || null; },
       authorizationStatus: getCanonicalResultAuthorizationStatus(canonicalResult),
       blockReason: canonicalResult.blockReason || ""});
     // No application receipt or continuation provenance is issued until Make.
-    preparedAttitudeResults.set(frame, {request: captured, canonicalResult, capability: capability.capability});
+    preparedAttitudeResults.set(frame, {request: captured, canonicalResult,binding,bindingValidator,
+      operationId:validated.operationId,outputKind:validated.outputKind,capability});
     return frame;
+  }
+
+  function isClassicalGrammarPreparedApplicationRequest(prepared = null) {
+    const context=preparedAttitudeResults.get(prepared);
+    if(!context || prepared.request!==context.request || prepared.canonicalResult!==context.canonicalResult
+      || context.binding && (context.bindingValidator
+        ? resolveCanonicalCallableCapability(targetObject,"isClassicalNahuatlVncContinuationBindingFrame",api)?.capability!==context.bindingValidator
+          || Reflect.apply(context.bindingValidator,targetObject,[context.binding])!==true
+        : !isClassicalGrammarTypedSourceOperationBindingFrame(context.binding)))return false;
+    try {
+      const validated=validateClassicalGrammarApplicationRequest(context.request);
+      const capability=resolveCanonicalCallableCapability(targetObject,validated.outputContract.capabilityName,api);
+      return Boolean(capability?.capability===context.capability && validated.operationId===context.operationId
+        && validated.outputKind===context.outputKind && isRecognizedPreparedOwnerResult(validated,context.canonicalResult));
+    }catch{return false;}
   }
 
   function discardClassicalGrammarPreparedApplicationRequest(prepared = null) {
@@ -9462,7 +9704,8 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
         || !validated.authorityCarrierClear
         || getApplicationOutputPrerequisiteBlockReason(operationId, outputKind, args)) return null;
       const preparation = preparedAttitudeResults.get(prepared);
-      if (prepared && (!preparation || preparation.request !== request || preparation.capability !== capability.capability)) return null;
+      if (prepared && (!isClassicalGrammarPreparedApplicationRequest(prepared) || preparation.request !== request || preparation.operationId!==operationId
+        || preparation.outputKind!==outputKind || preparation.capability !== capability.capability)) return null;
       const exact = preparation?.canonicalResult || Reflect.apply(capability.capability, targetObject, args);
       if (getClassicalVisibleSurfaceViolation(exact)
         || !isRecognizedCanonicalResult(operationId, outputKind, outputContract, exact)
@@ -9547,8 +9790,8 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
       && resolvedCapability.dataProperty === true
     );
     const preparation = preparedAttitudeResults.get(prepared);
-    const preparedRequestMatches = prepared === null || Boolean(preparation
-      && preparation.request === request && operationId === "vnc:derivational-operation"
+    const preparedRequestMatches = prepared === null || Boolean(preparation && isClassicalGrammarPreparedApplicationRequest(prepared)
+      && preparation.request === request && operationId === preparation.operationId && outputKind===preparation.outputKind
       && preparation.capability === resolvedCapability?.capability);
     const outputPrerequisiteBlockReason = !preparedRequestMatches
       ? "classical-grammar-prepared-attitude-current-request-required"
@@ -10921,6 +11164,7 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
     previewClassicalGrammarTypedSourceOperationBindingFrame,
     isClassicalGrammarApplicationPreview,
     prepareClassicalGrammarApplicationRequest,
+    isClassicalGrammarPreparedApplicationRequest,
     discardClassicalGrammarPreparedApplicationRequest,
     isClassicalGrammarApplicationResult,
     captureClassicalGrammarApplicationResult,

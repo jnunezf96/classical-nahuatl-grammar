@@ -1,4 +1,4 @@
-import { capitalizeClassicalNahuatlNncSentenceInitial } from "./nnc_layer_evaluator.mjs?v=20260928-reader-evidence-cache-790&andrewsRelease=20261024-1&ownerDecision=20261029-12";
+import { capitalizeClassicalNahuatlNncSentenceInitial } from "./nnc_layer_evaluator.mjs?v=20260928-reader-evidence-cache-790&andrewsRelease=20261024-1&ownerDecision=20261031-1";
 
 // Canonical Lesson 44 adverbial-nuclear grammar contribution.
 // Grammar and lexical records in this module come only from
@@ -2062,6 +2062,50 @@ function evaluateIncorporatedRecord(record, request, target, exactMatrix = null)
   };
 }
 
+// These fields describe the decision made by this evaluator. They are retained
+// even when a later authored choice is rejected, so recovery has the same owner.
+function buildAdverbialChoiceProjection(potential, record, request, exactMatrix) {
+  const fields = {};
+  const degree = normalizeKey(request.degree) || (record.allowedDegrees.length === 1 ? record.allowedDegrees[0] : "");
+  const scope = normalizeKey(request.scope || (record.externalAllowed ? "external-clause" : "incorporated-predicate"));
+  const context = {...potential.inheritedContext, ...Object.fromEntries(Object.entries(request.context || {})
+    .filter(([, value]) => value !== "" && value != null))};
+  const choose = (choiceId, values, selectedValue, authoredValue, requestPath, {required=false, applicable=true}={}) => {
+    const incompatible = authoredValue !== undefined && authoredValue !== "" && !values.includes(authoredValue);
+    fields[choiceId] = {choiceId, inputKind:"enum", requestPath,
+      options:values.map(optionId => ({optionId, availabilityStatus:"available", ...(optionId === ""
+        ? (requestPath[0] === "context" && potential.inheritedContext[requestPath[1]]
+          ? {label:`inherited ${potential.inheritedContext[requestPath[1]]}`, inheritedValue:potential.inheritedContext[requestPath[1]]}
+          : {label:"none"}) : {})})),
+      selectedValue, authoredValue, required:required && !values.includes(selectedValue),
+      applicable:applicable && (values.length > 1 || incompatible || required && !values.includes(selectedValue)),
+      editable:values.length > 1 || incompatible || required && !values.includes(selectedValue)};
+  };
+  choose("degree", record.allowedDegrees, degree, request.degree, ["degree"], {required:true});
+  choose("scope", potential.allowedScopes,
+    scope, request.scope, ["scope"], {required:true});
+  if (exactMatrix) fields.scope.options = fields.scope.options.map(option =>
+    option.optionId === "external-clause"
+      ? {...option, withdrawRequestPaths:[["canonicalMatrixResult"]]} : option);
+  const choices = potential.contextChoices;
+  const external = scope === "external-clause";
+  for (const [key, domain, optional, fallback] of [
+    ["precedingParticle", choices.precedingParticles, false, ""],
+    ["negativeParticle", choices.negativeParticles, true, ""],
+    ["stressPartner", choices.stressPartners, true, ""],
+    ["variant", choices.variants, true, ""],
+    ["sentencePosition", choices.sentencePositions, false, "initial"],
+    ["clauseType", choices.clauseTypes, false, "assertion"],
+    ["negationScope", choices.negationScopes, true, ""],
+  ]) choose(key, optional ? ["", ...domain] : domain, context[key] || fallback,
+    request.context?.[key], ["context", key], {required:key === "precedingParticle" && domain.length > 0,
+      applicable:external && (key !== "negationScope" || Boolean(context.negativeParticle) || Boolean(request.context?.negationScope))});
+  // This owner accepts contextual negative particles. A second shared
+  // sentence-polarity selector must not synthesize another target request.
+  fields.polarity={choiceId:"polarity",inputKind:"fixed",applicable:false,editable:false};
+  return deepFreeze(fields);
+}
+
 function evaluateClassicalNahuatlAdverbialNuclear(request = {}, target = globalThis) {
   const exactSourceRequested = hasAdverbialExactSourceResultField(request);
   const exactMatrixRequested = request.canonicalMatrixResult != null;
@@ -2110,35 +2154,40 @@ function evaluateClassicalNahuatlAdverbialNuclear(request = {}, target = globalT
   }
   const record = ADVERBIAL_POTENTIAL_RECORDS.get(adverbialPotentialFrame);
   if (!record) return buildBlockedFrame("adverbial-potential-lexical-receipt-missing", request);
+  const choiceOptionProjection = buildAdverbialChoiceProjection(adverbialPotentialFrame, record, request, exactMatrix);
+  const blocked = (reason, _request, extra={}) => buildBlockedFrame(reason, request, {
+    adverbialPotentialFrame, canonicalSourceResult:adverbialPotentialFrame.canonicalSourceResult || null,
+    canonicalMatrixResult:exactMatrix?.exactResult || null, choiceOptionProjection, ...extra,
+  });
   const requestedDegree = normalizeKey(request.degree);
   const degree = requestedDegree || (record.allowedDegrees.length === 1 ? record.allowedDegrees[0] : "");
-  if (!degree) return buildBlockedFrame("adverbial-degree-choice-required", request, { lexicalEntryId: record.id });
+  if (!degree) return blocked("adverbial-degree-choice-required", request, { lexicalEntryId: record.id });
   if (!record.allowedDegrees.includes(degree)) {
-    return buildBlockedFrame("adverbial-source-does-not-license-requested-degree", request, {
+    return blocked("adverbial-source-does-not-license-requested-degree", request, {
       lexicalEntryId: record.id,
       allowedDegrees: record.allowedDegrees,
     });
   }
   if (record.clauseKind === "vnc" && degree !== "first-degree") {
-    return buildBlockedFrame("adverbial-vnc-allows-first-degree-only", request, { lexicalEntryId: record.id });
+    return blocked("adverbial-vnc-allows-first-degree-only", request, { lexicalEntryId: record.id });
   }
   if (record.clauseKind === "nnc-possessive" && degree !== "first-degree") {
-    return buildBlockedFrame("adverbial-possessive-nnc-allows-first-degree-only", request, { lexicalEntryId: record.id });
+    return blocked("adverbial-possessive-nnc-allows-first-degree-only", request, { lexicalEntryId: record.id });
   }
   const scope = normalizeKey(request.scope || (record.externalAllowed ? "external-clause" : "incorporated-predicate"));
-  if (exactMatrix && scope !== "incorporated-predicate") return buildBlockedFrame(
+  if (exactMatrix && scope !== "incorporated-predicate") return blocked(
     "lesson44-exact-matrix-requires-incorporated-scope", request);
   if (!LCM_AXES.scopes.includes(scope)) {
-    return buildBlockedFrame("adverbial-scope-required", request, { lexicalEntryId: record.id });
+    return blocked("adverbial-scope-required", request, { lexicalEntryId: record.id });
   }
   if (scope === "external-clause" && !record.externalAllowed) {
-    return buildBlockedFrame("adverbial-source-is-compound-only", request, { lexicalEntryId: record.id });
+    return blocked("adverbial-source-is-compound-only", request, { lexicalEntryId: record.id });
   }
   const sourceSlots = adverbialPotentialFrame.canonicalTypedSlotFrame?.slots;
-  if (!sourceSlots) return buildBlockedFrame("derived-nuclear-slot-frame-required", request);
+  if (!sourceSlots) return blocked("derived-nuclear-slot-frame-required", request);
   if ([sourceSlots.subject?.pers1, sourceSlots.subject?.pers2, sourceSlots.number?.num2]
     .some(carrier => realizeTypedCarrier(carrier))) {
-    return buildBlockedFrame("adverbialization-requires-third-person-nonplural-source", request);
+    return blocked("adverbialization-requires-third-person-nonplural-source", request);
   }
   const subjectOperationFrame = buildSubjectOperationFrame(record, degree, scope, sourceSlots);
   const typedProjection = scope === "external-clause"
@@ -2157,7 +2206,7 @@ function evaluateClassicalNahuatlAdverbialNuclear(request = {}, target = globalT
     typedProjection
     && typedProjection.authorizationStatus !== "authorized"
   ) {
-    return buildBlockedFrame(typedProjection.blockReason, request, {
+    return blocked(typedProjection.blockReason, request, {
       lexicalEntryId: record.id,
       sourceFrame: deepClone(adverbialPotentialFrame.sourceConstituents),
       subjectOperationFrame,
@@ -2175,7 +2224,7 @@ function evaluateClassicalNahuatlAdverbialNuclear(request = {}, target = globalT
     }, typedProjection.wordSurface)
     : null;
   if (externalContext && externalContext.authorizationStatus !== "authorized") {
-    return buildBlockedFrame(externalContext.blockReason, request, {
+    return blocked(externalContext.blockReason, request, {
       lexicalEntryId: record.id,
       sourceFrame: deepClone(adverbialPotentialFrame.sourceConstituents),
       subjectOperationFrame,
@@ -2186,7 +2235,7 @@ function evaluateClassicalNahuatlAdverbialNuclear(request = {}, target = globalT
     ? evaluateIncorporatedRecord(record, request, target, exactMatrix)
     : null;
   if (incorporation && incorporation.authorizationStatus !== "authorized") {
-    return buildBlockedFrame(incorporation.blockReason, request, {
+    return blocked(incorporation.blockReason, request, {
       lexicalEntryId: record.id,
       sourceFrame: deepClone(adverbialPotentialFrame.sourceConstituents),
       subjectOperationFrame,
@@ -2222,6 +2271,7 @@ function evaluateClassicalNahuatlAdverbialNuclear(request = {}, target = globalT
     version: VERSION,
     authorizationStatus: "authorized",
     blockReason: "",
+    choiceOptionProjection,
     lexicalEntryId: record.id,
     sourceFrame: deepClone(adverbialPotentialFrame.sourceConstituents),
     sourceInputMode: adverbialPotentialFrame.sourceInputMode,

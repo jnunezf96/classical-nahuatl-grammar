@@ -3,44 +3,34 @@ import assert from 'node:assert/strict';
 import vm from 'node:vm';
 import {readFileSync} from 'node:fs';
 import {createPossessiveFixture} from './helpers/deverbal_possessive_fixture.mjs';
+import {createConstructionSession} from '../ui/composition/construction_session.mjs';
+import * as adapter from '../ui/composition/nominal_operation_transaction.mjs';
+import * as decision from '../ui/composition/owner_operation_protocol.mjs?issuedBinding=20261028-1&ownerDecision=20261031-1';
 const code=readFileSync(new URL('../ui/rendering/rendering.mjs',import.meta.url),'utf8');
-const start=code.indexOf('      if (rawAffective) {');
-const end=code.indexOf('\n      if (getClassicalNominalConstructionControlValue(',start);
-const syncStart=code.indexOf('    function syncClassicalAffectiveParticipantChoices(');
-const syncEnd=code.indexOf('\n    function ',syncStart+1);
 test('raw pil choices replace obsolete mass reference domains without accepting a preview',async()=>{
- const {r,set,controls}=await createPossessiveFixture('pil');
+ const {r,set,controls,documentObject}=await createPossessiveFixture('pil');
+ for(const control of controls.values())control.appendChild=option=>control.options.push(option);
+ documentObject.createElement=()=>({});
  for(const [id,value] of Object.entries({'classical-construction-operation':'affective-nnc','classical-rule-logic-nnc-class':'tli-1','classical-rule-logic-nnc-state':'absolutive','classical-affective-semantic-reading':'pil-child','classical-affective-pil-child-route':'affective','classical-affective-pil-gender':'unspecified'}))set(id,value);
- const number=controls.get('classical-rule-logic-nnc-subject-number');
- number.options.forEach(o=>{o.disabled=o.value!=='common';});
- const accepted={unchanged:true};
- const context=vm.createContext({targetObject:r,rawAffective:true,event:null,selectedConstruction:'affective-nnc',accepted,
- syncClassicalNominalConstructionControlVisibility(){},syncClassicalCardinalParticipantChoices(){},
- buildClassicalNominalConstructionUiRequest:()=>r.buildClassicalNominalConstructionUiRequest(),
- getClassicalNominalConstructionControlValue:(id,fallback)=>controls.get(id)?.value||fallback,
- getClassicalNncAuthorityOptionContract:(...args)=>r.getClassicalNncAuthorityOptionContract(...args),
- applyClassicalRuleLogicSelectOptionAvailability(id,values,selected){const c=controls.get(id);c.options.forEach(o=>o.disabled=!values.includes(o.value));if(selected)c.value=selected;},
- syncClassicalCapabilityApplyOperationState:()=>({ready:true})});
- vm.runInContext(code.slice(syncStart,syncEnd),context);
- vm.runInContext('function stage(){'+code.slice(start,end)+'}',context);
- context.stage();
- assert.equal(number.options.find(o=>o.value==='plural').disabled,false);
- set(number.id,'plural');set('classical-affective-pil-child-route','simple');context.stage();
- assert.equal(context.PendingClassicalRawAffectiveRequest.subject,'3pl');
- assert.equal(context.accepted,accepted);
- const made=r.requestClassicalNominalConstructionResult({...context.PendingClassicalRawAffectiveRequest,reduplication:'affinity'});
- assert.equal(made.authorizationStatus,'authorized',made.blockReason);
- assert.equal(made.wordSurface,'pīpiltin');
- const before=number.options.map(o=>o.disabled);
- context.syncClassicalAffectiveParticipantChoices({...made});
- assert.deepEqual(number.options.map(o=>o.disabled),before);
- const blocked=r.requestClassicalNominalConstructionResult({...context.PendingClassicalRawAffectiveRequest,semanticReading:'not-a-reading'});
- assert.equal(blocked.authorizationStatus,'blocked');
- context.syncClassicalAffectiveParticipantChoices(blocked);
- assert.deepEqual(number.options.map(o=>o.disabled),before);
- set('classical-affective-semantic-reading','pil-noble');
- set('classical-rule-logic-nnc-state','possessive');
- context.stage();
- assert.equal(context.PendingClassicalRawAffectiveRequest.state,'possessive');
- assert.equal(context.accepted,accepted);
+ const number=controls.get('classical-rule-logic-nnc-subject-number');number.options.forEach(option=>option.disabled=option.value!=='common');
+ const source=r.buildClassicalNahuatlOrdinaryNncSourceFrame({stem:'pil',sourceClass:'tli-1'}),ingress={},sourceContext=Object.freeze({source,ingress,committed:true});
+ const session=createConstructionSession({isSource:x=>x===source});
+ const presentationStart=code.indexOf('    function getClassicalNominalChoicePresentation('),presentationEnd=code.indexOf('    function readClassicalNominalOperationSnapshot(',presentationStart);
+ const presentation=vm.runInNewContext(code.slice(presentationStart,presentationEnd)+'getClassicalNominalChoicePresentation("affective-nnc")');
+ const scope=adapter.createNominalOperationScope({owner:r,source,session,getIngress:()=>ingress,sourceContext,getSourceContext:()=>sourceContext,presentation});
+ const syncStart=code.indexOf('    function syncClassicalAffectiveParticipantChoices('),syncEnd=code.indexOf('    function syncClassicalCardinalParticipantChoices(',syncStart);
+ const sync=vm.runInNewContext(code.slice(syncStart,syncEnd)+'syncClassicalAffectiveParticipantChoices',{ClassicalConstructionSession:session,targetObject:r,syncOwnerOperationDecisionControls:decision.syncOwnerOperationDecisionControls});
+ const stage=request=>{const snapshot=adapter.issueNominalOperationSnapshot(scope,{ingress,sourceContext,request});assert.ok(snapshot);session.stage({source,route:{operation:'grammar:nominal-construction'},operationContract:snapshot,slots:snapshot.captures,ready:snapshot.contract.ready,execution:adapter.projectNominalOperationExecution(snapshot)});sync();return snapshot;};
+ const accepted=session.position.accepted,initial=stage(r.buildClassicalNominalConstructionUiRequest());
+ assert.equal(number.options.find(option=>option.value==='plural').disabled,false);
+ const plural=decision.readOwnerOperationControlIntent(initial,documentObject,initial.contract.request,number,'plural');
+ assert.equal(plural.subject,'3pl');
+ const selected=stage({...plural,pilChildRoute:'simple'});assert.equal(selected.contract.ready,true,selected.contract.blockReason);
+ assert.equal(selected.contract.preview.wordSurface,'pīpiltin');assert.equal(session.position.accepted,accepted);
+ const blocked=stage({...selected.contract.request,semanticReading:'not-a-reading'});
+ assert.equal(blocked.contract.ready,false);assert.equal(blocked.contract.choices.semanticReading.authoredValue,'not-a-reading');
+ assert.equal(controls.get('classical-affective-semantic-reading').value,'not-a-reading');
+ assert.equal(decision.projectOwnerOperationChoice({...blocked},'semanticReading'),null);
+ const recovered=stage({...selected.contract.request,semanticReading:'pil-noble',state:'possessive'});
+ assert.equal(recovered.contract.ready,true,recovered.contract.blockReason);assert.equal(session.position.accepted,accepted);
 });

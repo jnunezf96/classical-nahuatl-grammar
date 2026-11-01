@@ -1,5 +1,5 @@
-import {isClassicalNahuatlParticipantFrame} from '../../core/classical/participant_frame.mjs';
-import {createOwnerOperationProtocol,projectOwnerOperationDecision} from './owner_operation_protocol.mjs?issuedBinding=20261028-1&ownerDecision=20261029-12';
+import {isClassicalNahuatlParticipantFrame} from '../../core/classical/participant_frame.mjs?ownerDecision=20261031-1';
+import {createOwnerOperationProtocol,projectOwnerOperationDecision} from './owner_operation_protocol.mjs?issuedBinding=20261028-1&ownerDecision=20261031-1';
 const operation='vnc:derivational-operation';
 const routes=new Set(['frequentative','compound','purposive','honorific','reverential','pejorative']);
 const scopes=new WeakSet(),contracts=new WeakSet(),snapshots=new WeakSet(),cache=new WeakMap(),events=new WeakMap();

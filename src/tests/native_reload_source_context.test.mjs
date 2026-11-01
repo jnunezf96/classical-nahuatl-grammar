@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createRuntimeInstance} from '../runtime/create_runtime.mjs';
-import {inactiveAffectiveReloadControl,prepareNativeReloadSourceContext,reconcileAcceptedQuotedSourceBaseline} from '../ui/composition/native_reload_source.mjs';
+import {inactiveAffectiveReloadControl,prepareNativeReloadSourceContext,reconcileAcceptedQuotedSourceBaseline,reconcileAcceptedAffectiveSourceBaseline} from '../ui/composition/native_reload_source.mjs';
 test('only authentic owner-inapplicable lexical reading can be ignored for unchanged Source',async()=>{
  const r=(await createRuntimeInstance({documentObject:{getElementById:()=>null,addEventListener(){}}})).runtimeObject;
  const make=source=>r.executeClassicalGrammarApplicationRequest({operationId:'grammar:nominal-construction',args:[{constructionKind:'affective-nnc',source,affectRoute:'compound',affectiveMatrix:'tzin',semanticReading:'special-regard',subject:'3sg',state:'absolutive',animacy:'animate'}]}).canonicalResult;
@@ -52,4 +52,24 @@ test('inactive coordinate skip stays inside native restoration, not deverbal res
  const begin=code.indexOf('    function restoreClassicalDeverbalBuildChoices('),end=code.indexOf('    function restoreClassicalNativeBuildChoices(');
  assert(begin>=0&&end>begin);assert.doesNotMatch(code.slice(begin,end),/inactiveSourceControl/);
  const native=code.slice(end,code.indexOf('    function restoreClassicalAcceptedBuildChoices(',end));assert.match(native,/if \(choice.id === inactiveSourceControl\?\.id\) continue/);
+});
+
+test('accepted Source reconciles only an owner-inferred class and owner-inactive reading',async()=>{
+ const r=(await createRuntimeInstance({documentObject:{getElementById:()=>null,addEventListener(){}}})).runtimeObject;
+ const make=(stem,sourceClass,nounClass)=>r.executeClassicalGrammarApplicationRequest({operationId:'grammar:nominal-construction',args:[{constructionKind:'affective-nnc',source:{embedStem:stem,embedClass:nounClass,embedSourceClass:sourceClass},affectRoute:'compound',affectiveMatrix:'tzin',semanticReading:'special-regard',subject:'1sg',state:'absolutive',animacy:'animate'}]}).canonicalResult;
+ const result=make('pil','tli-1','tli');assert.equal(result.authorizationStatus,'authorized');
+ const fields={mode:'whole-stem',sourceWholeStem:'pil',sourceNncClass:'',affectiveFlawedLexicalReading:'chicken',sourceInitialI:'real'};
+ const draft={...fields,sourceNncClass:'tli-1',affectiveFlawedLexicalReading:''};
+ const saved={committedSignature:JSON.stringify(fields),draftSignature:JSON.stringify(draft)};
+ const restored=reconcileAcceptedAffectiveSourceBaseline(r,result,saved);
+ assert.equal(JSON.parse(restored.committedSignature).sourceNncClass,'tli-1');
+ assert.equal(inactiveAffectiveReloadControl(r,result,restored)?.field,'affectiveFlawedLexicalReading');
+ assert.equal(reconcileAcceptedAffectiveSourceBaseline(r,{...result},saved),saved);
+ for(const changes of [{sourceWholeStem:'other'},{sourceNncClass:'tl-1-a'},{sourceInitialI:'supportive'}]){
+  const altered={...saved,draftSignature:JSON.stringify({...draft,...changes})};
+  assert.equal(reconcileAcceptedAffectiveSourceBaseline(r,result,altered),altered);
+ }
+ const explicit={...saved,committedSignature:JSON.stringify({...fields,sourceNncClass:'tl-1-a'})};assert.equal(reconcileAcceptedAffectiveSourceBaseline(r,result,explicit),explicit);
+ const open=make('zōm','tli-1','tli'),openSaved={...saved,committedSignature:saved.committedSignature.replace('pil','zōm'),draftSignature:saved.draftSignature.replace('pil','zōm')};
+ assert.equal(open.authorizationStatus,'authorized');assert.equal(reconcileAcceptedAffectiveSourceBaseline(r,open,openSaved),openSaved);
 });

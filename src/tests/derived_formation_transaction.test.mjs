@@ -62,6 +62,8 @@ test('both patientive continuation roles project their exact owner parent and re
   else for(const [id,value]of Object.entries({'embed-stem':'cuētēxōzīpōhua','embed-class':'tl-1-a','relation':'purpose'}))h.set(`classical-deverbal-nnc-patientive-matrix-${id}`,value);
   const request=o.buildClassicalNominalConstructionUiRequest({operationId:'nnc:deverbal-construction',exactResult:source,ownerBindingFrame:binding,selectedBindingId:'continuation:patientive-nnc'}),input={ingress,binding,request,selectedBindingId:'continuation:patientive-nnc'};
   const s=issueDerivedFormationSnapshot(scope,input);assert.ok(s?.contract.ready,`${route}: ${s?.contract.blockReason}`);assert.equal(projectDerivedFormationExecution(s).request.args[0].canonicalPatientiveNncGrammarFrame,source);
+  assert.deepEqual(s.contract.choices.state.options.map(x=>x.optionId),s.contract.preview.canonicalResult.choiceOptionProjection.state.options.map(x=>x.optionId));assert.equal(s.contract.choices.subject.authoredValue,request.subject);assert.equal(s.contract.choices.reduplication,undefined);
+  const invalid=issueDerivedFormationSnapshot(scope,{...input,request:{...request,state:'invented'}});assert.equal(invalid.contract.ready,false);assert.equal(invalid.contract.choices.state.authoredValue,'invented');assert(invalid.contract.choices.state.options.some(x=>x.optionId==='absolutive'));assert.equal(projectDerivedFormationExecution(invalid),null);
   assert.equal(issueDerivedFormationSnapshot(scope,{...input,request:{...request,canonicalPatientiveNncGrammarFrame:{...source}}}),null);
  }
 });
@@ -70,6 +72,7 @@ test('action continuations keep the accepted action parent through both executio
  const binding=owner.issueClassicalNahuatlFormationResultBindingFrame('nnc:deverbal-construction',source),ingress={},session=createConstructionSession({isSource:x=>x===source}),scope=createDerivedFormationScope({owner,source,operation:'nnc:deverbal-construction',session,getIngress:()=>ingress});
  for(const request of [{constructionKind:'nominal-continuation',source:{matrixStem:'cal',matrixClass:'tl',matrixSourceClass:'tl-1-a'},subject:'3sg',state:'absolutive'},{constructionKind:'verbal-continuation',source:{matrixStem:'tzahtzi',matrixVerbClass:'A',matrixValence:'intransitive',embedClass:'tli',sourceState:'absolutive'},relation:'adverb',adverbRole:'manner',subject:'3sg',mood:'indicative',tense:'present'}]){
   request.canonicalNncResult=source;const input={ingress,binding,request,selectedBindingId:'continuation:action-nnc'},s=issueDerivedFormationSnapshot(scope,input);assert.ok(s?.contract.ready,`${request.constructionKind}: ${s?.contract.blockReason}`);assert.equal(s.contract.preview.operationFrame.actionNncContinuationFrame.canonicalActionNncResult,source);assert.equal(projectDerivedFormationExecution(s).request.args[0].canonicalNncResult,source);
+  assert(s.contract.choices.subject.options.length);if(request.constructionKind==='verbal-continuation'){assert(s.contract.choices.tense.options.some(x=>x.optionId==='present'));assert.equal(s.contract.choices.nonactiveOptionId.applicable,false);assert.equal(s.contract.choices.route,undefined);}
   assert.equal(issueDerivedFormationSnapshot(scope,{...input,request:{...request,canonicalNncResult:{...source}}}),null);
  }
 });
@@ -81,6 +84,7 @@ test('raw ownerhood vocative and double nucleus snapshots retain owner dependenc
  for(const request of rows){
   const source=principal,ingress={},session=createConstructionSession({isSource:()=>true}),context={source,ingress,committed:true},scope=createDerivedFormationScope({owner,source,operation:'nnc:deverbal-construction',session,getIngress:()=>ingress,getSourceContext:()=>context});
   const evaluated=owner.evaluateClassicalNahuatlDeverbalNnc(request);assert.equal(evaluated.authorizationStatus,'authorized',evaluated.blockReason);const s=issueDerivedFormationSnapshot(scope,{ingress,request,sourceContext:context});assert.ok(s?.contract.ready,`${request.constructionKind}: ${s?.contract.blockReason}`);assert.equal(projectDerivedFormationExecution(s).request.args[0],s.contract.request);
+  if(request.constructionKind==='vocative')assert.equal(issueDerivedFormationSnapshot(scope,{ingress,sourceContext:context,request:{...request,canonicalNncResult:{...request.canonicalNncResult}}}),null);
   if(request.constructionKind==='double-nucleus-ownerhood'){assert.ok(s.captures.some(c=>c.exact===supplement));const bad=issueDerivedFormationSnapshot(scope,{ingress,sourceContext:context,request:{...request,source:{...request.source,supplementNncResult:{...supplement}}}});assert.ok(!bad?.contract.ready);}
  }
 });

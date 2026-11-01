@@ -1528,8 +1528,14 @@ function buildFormulaAndSurface(targetObject, sourceFrame, predicateRecord, norm
   };
 }
 
-function makeBlocked(request, diagnostics, partial = {}) {
-  return freeze({
+const ISSUED_RELATIONAL_DECISIONS = new WeakSet();
+function isClassicalNahuatlIssuedRelationalNncDecision(frame = null) {
+  return ISSUED_RELATIONAL_DECISIONS.has(frame) && Object.isFrozen(frame)
+    && frame.kind === "classical-nahuatl-relational-nnc-relational-result"
+    && ["authorized", "blocked"].includes(frame.authorizationStatus);
+}
+function makeBlocked(request, diagnostics, partial = {}, choices = freeze({})) {
+  const result = withRelationalDecision({
     kind: "classical-nahuatl-relational-nnc-relational-result",
     contractKind: "classical-nahuatl-relational-nnc-relational-result",
     version: 1,
@@ -1552,7 +1558,9 @@ function makeBlocked(request, diagnostics, partial = {}) {
       operation: normalizeToken(request?.nounstem?.operation || "relational-nnc"),
     }),
     ...partial,
-  });
+  }, choices);
+  ISSUED_RELATIONAL_DECISIONS.add(result);
+  return result;
 }
 
 function resolveOwnerIssuedDerivedSourceCarrier(
@@ -2038,7 +2046,8 @@ function resolveOwnerIssuedDerivedSourceCarrier(
       sourceSubjectFrame = participant;
       sourcePossessor = participant.category;
       if (normalized.possessorId && normalized.possessorId !== sourcePossessor) {
-        return {diagnostics: ["relational-source-subject-possessor-mismatch"], carrier: null, normalized};
+        return {diagnostics: ["relational-source-subject-possessor-mismatch"], carrier: null, normalized,
+          upstreamRecovery:freeze({sourceState:STATE.POSSESSIVE,sourcePossessor,sourceSubjectFrame})};
       }
     }
     ownerOperationId = `vnc:application:${selectedVoiceOperation}:${selectedTense}`;
@@ -2151,6 +2160,48 @@ function normalizeRequest(request = {}) {
   };
 }
 
+const RELATIONAL_SUBJECT_MODES = freeze(["normal", "adverbialized"]);
+const RELATIONAL_AFFECTIVE_VALUES = freeze(["none", "honorific", "pejorative"]);
+function relationalTargetDomains(normalized, stem, sourceFrame = null, upstreamRecovery = null) {
+  if (!stem) return null;
+  const lexicalized = isHuanYolquiLexicalizationShape(normalized);
+  const carrier = sourceFrame?.upstreamSourceCarrier || upstreamRecovery;
+  const stateFromSource = carrier?.sourceState || deriveStateForSource(stem.stemId,normalized.formationId,normalized.sourceVoice,normalized.sourceKind,"");
+  const stateValues = lexicalized ? [STATE.ABSOLUTIVE] : stateFromSource ? [stateFromSource]
+    : normalized.constructionKind === "relational-nnc" ? getAllowedStates(normalized.option) : Object.values(STATE);
+  const state = sourceFrame?.state || stateFromSource || normalized.state || (normalized.option === OPTION.ONE ? STATE.POSSESSIVE : STATE.ABSOLUTIVE);
+  const fixedPossessor = carrier?.sourcePossessor || stem.fixedPossessorId || "";
+  const adverbial = normalized.constructionKind === "relational-nnc" && normalized.subjectMode === "adverbialized";
+  return {stateValues,state,fixedPossessor,possessorValues:fixedPossessor?[fixedPossessor]:Object.keys(POSSESSOR_PREFIXES),
+    subjectModes:lexicalized?["normal"]:RELATIONAL_SUBJECT_MODES,
+    subjectValues:adverbial?[ADVERBIAL_SUBJECT.formalSubjectId,"3common"]:Object.keys(SUBJECT_PREFIXES).filter(id=>!lexicalized||id!=="3common"),
+    adverbial,lexicalized,affectiveValues:!lexicalized&&normalized.constructionKind==="relational-nnc"&&stem.affective?RELATIONAL_AFFECTIVE_VALUES:["none"]};
+}
+function projectRelationalTargetChoices(request, source, constituted = false) {
+  const normalized = source.normalized, facts = source.sourceFrame, domains = normalized && relationalTargetDomains(normalized,source.stem,facts,source.upstreamRecovery);
+  if (!domains) return freeze({});
+  const fields = {}, field = (id,values,effective,{path=[id],applicable=true,fixed=false}={}) => {
+    const authored = path.reduce((value,key)=>value?.[key],request);
+    const selected = authored === undefined || authored === "" ? effective : authored;
+    fields[id] = {choiceId:id,inputKind:typeof effective === "boolean"?"boolean":"enum",requestPath:path,
+      applicable,editable:!constituted&&applicable&&(!fixed||!values.includes(selected)),required:false,
+      authoredValue:authored,selectedValue:fixed&&values.includes(selected)?effective:selected,effectiveValue:effective,
+      options:applicable?values.map(optionId=>({optionId,value:optionId,availabilityStatus:"available"})):[]};
+  };
+  field("state",domains.stateValues,domains.state,{fixed:domains.stateValues.length===1});
+  field("possessorId",domains.possessorValues,facts?.possessorId||normalized.possessorId||domains.fixedPossessor||"3sg",{applicable:domains.state===STATE.POSSESSIVE||domains.lexicalized,fixed:Boolean(domains.fixedPossessor)});
+  field("subjectMode",domains.subjectModes,normalized.subjectMode,{fixed:domains.subjectModes.length===1});
+  field("subjectId",domains.subjectValues,domains.adverbial?ADVERBIAL_SUBJECT.formalSubjectId:normalized.subjectId,{fixed:domains.adverbial});
+  field("affective",domains.affectiveValues,normalized.affective,{path:["nounstem","affective"],fixed:domains.affectiveValues.length===1});
+  field("sentencePosition",["initial","noninitial"],normalized.sentencePosition);
+  field("negative",[false,true],normalized.negative);
+  return freeze(fields);
+}
+function withRelationalDecision(record,choices) {
+  Object.defineProperty(record,"choiceOptionProjection",{value:choices,enumerable:false});
+  return freeze(record);
+}
+
 function buildSourceFrame(
   targetObject,
   issuedUpstreamSourceCarriers,
@@ -2169,7 +2220,8 @@ function buildSourceFrame(
     selectedImperfectPredicateSources,
   );
   if (upstreamSource.diagnostics.length) {
-    return { diagnostics: upstreamSource.diagnostics, normalized };
+    return { diagnostics: upstreamSource.diagnostics, normalized,
+      ...(upstreamSource.upstreamRecovery?{stem:findStem(normalized.stemId),upstreamRecovery:upstreamSource.upstreamRecovery}:{}) };
   }
   normalized = upstreamSource.normalized;
   const upstreamSourceCarrier = upstreamSource.carrier;
@@ -2179,13 +2231,18 @@ function buildSourceFrame(
   }
   const constructionKind = normalized.constructionKind;
   const option = normalized.option;
-  if (!["none", "honorific", "pejorative"].includes(normalized.affective)) {
+  if (!RELATIONAL_AFFECTIVE_VALUES.includes(normalized.affective)) {
     return { diagnostics: ["relational-affective-selection-invalid"], normalized, stem };
   }
   const allowedConstructionKinds = CLASSICAL_NAHUATL_LESSONS45_47_LCM.nounstemOperations;
   if (!allowedConstructionKinds.includes(constructionKind)) {
     return { diagnostics: ["relational-construction-kind-invalid"], normalized, stem };
   }
+  const targetDomains = relationalTargetDomains(normalized,stem);
+  if (!targetDomains.subjectModes.includes(normalized.subjectMode))
+    return {diagnostics:["relational-subject-mode-invalid"],normalized,stem};
+  if (!targetDomains.subjectValues.includes(normalized.subjectId))
+    return {diagnostics:["relational-subject-coordinate-incompatible"],normalized,stem};
   if (constructionKind === "relational-nnc" && normalized.subjectMode === "adverbialized") {
     if (!["3sg", "3common"].includes(normalized.subjectId)) {
       return { diagnostics: ["adverbial-subject-person-coordinate-incompatible"], normalized, stem };
@@ -3247,12 +3304,13 @@ export function createClassicalNahuatlNncClosureApi(targetObject = globalThis) {
       request,
       selectedImperfectPredicateSources,
     );
+    const choices=projectRelationalTargetChoices(navigatorSourceFrame?{}:request,source,Boolean(navigatorSourceFrame));
     if (source.diagnostics.length) {
-      return makeBlocked(request, source.diagnostics);
+      return makeBlocked(request, source.diagnostics,{},choices);
     }
     const operation = buildOperationFrame(targetObject, source.sourceFrame);
     if (operation.diagnostics.length) {
-      return makeBlocked(request, operation.diagnostics, { sourceFrame: source.sourceFrame });
+      return makeBlocked(request, operation.diagnostics, { sourceFrame: source.sourceFrame },choices);
     }
     const { sourceFrame } = source;
     const { operationFrame } = operation;
@@ -3263,7 +3321,7 @@ export function createClassicalNahuatlNncClosureApi(targetObject = globalThis) {
       sourceFrame,
       operationFrame,
     );
-    const result = freeze({
+    const result = withRelationalDecision({
       kind: "classical-nahuatl-relational-nnc-relational-result",
       contractKind: "classical-nahuatl-relational-nnc-relational-result",
       version: 1,
@@ -3337,8 +3395,9 @@ export function createClassicalNahuatlNncClosureApi(targetObject = globalThis) {
       surfaceStringAuthority: false,
       lessonMetadataAuthority: false,
       diagnostics: ["lessons45-47-relational-source-authorized", "lessons45-47-relational-operation-applied"],
-    });
+    }, choices);
     issuedRelationalResults.add(result);
+    ISSUED_RELATIONAL_DECISIONS.add(result);
     return result;
   }
 
@@ -3541,6 +3600,7 @@ export function createClassicalNahuatlNncClosureApi(targetObject = globalThis) {
     evaluateClassicalNahuatlRelationalNnc,
     isClassicalNahuatlRelationalNncGrammarFrame,
     isClassicalNahuatlRelationalResult,
+    isClassicalNahuatlIssuedRelationalNncDecision,
     isClassicalNahuatlRelationalSourceCompositionFrame,
     buildClassicalNahuatlPreparedPlan,
     isClassicalNahuatlPreparedPlan,

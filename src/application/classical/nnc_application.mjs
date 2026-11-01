@@ -1,9 +1,10 @@
-import {createAttestedNncCellApi, createAttestedPlaceApi, createAttestedPrincipalCollocationApi} from './attested_source_cells.mjs';
+import {CLASSICAL_NNC_EDITABLE_SENTENCE_TYPES,CLASSICAL_NNC_SENTENCE_POLARITIES,normalizeClassicalNahuatlNncSentenceType} from '../../core/classical/nnc_layer_evaluator.mjs?ownerDecision=20261031-1';
+import {createAttestedNncCellApi, createAttestedPlaceApi, createAttestedPrincipalCollocationApi} from './attested_source_cells.mjs?ownerDecision=20261031-1';
 import { analyzeQuantitiveInternalReduplication, deriveQuantitiveInternalReduplication } from '../../core/classical/quantitive_internal_reduplication.mjs';
 import {createClassicalQuantitativePredicateApi} from './quantitative_predicate.mjs?v=20261009-reader-42-6-224';
 import {
   buildClassicalNahuatlParticipantFrame,
-} from "../../core/classical/participant_frame.mjs?v=20260823-passive-formation-continuity-238";
+} from "../../core/classical/participant_frame.mjs?v=20260823-passive-formation-continuity-238&ownerDecision=20261031-1";
 
 // Canonical ordinary-NNC application service.
 //
@@ -85,15 +86,12 @@ const ORDINARY_NNC_POSSESSORS = Object.freeze([
   "nonspecific-human",
   "nonspecific-nonhuman",
 ]);
-const ORDINARY_NNC_SENTENCE_TYPES = Object.freeze([
-  "statement",
-  "exclamation",
-  "yes-no-intonation",
-  "yes-no-cuix",
-  "emphatic",
-  "wish",
-]);
-const ORDINARY_NNC_POLARITIES = Object.freeze(["positive", "negative"]);
+// Preserve the application record's historical statement spelling while the
+// actual sentence owner alone recognizes the force vocabulary and aliases.
+const normalizeNncApplicationSentenceType=value=>{
+ const normalized=normalizeClassicalNahuatlNncSentenceType(value);
+ return normalized==='assertion'?'statement':normalized||String(value||'');
+};
 const ORDINARY_NNC_STEM_FORMATIONS = Object.freeze([
   "plain",
   "affinity",
@@ -2098,6 +2096,10 @@ export function createClassicalNahuatlNncApplicationModule(
           : "";
       return deepFreeze({
         kind: NNC_OPERATION_SELECTION_FRAME_KIND,
+        sentenceTypeValues: CLASSICAL_NNC_EDITABLE_SENTENCE_TYPES,
+        selectedSentenceType: normalizeClassicalNahuatlNncSentenceType(selections.sentenceType || "assertion") || selections.sentenceType,
+        polarityValues: CLASSICAL_NNC_SENTENCE_POLARITIES,
+        selectedPolarity: selections.polarity || "positive",
         version: 1,
         authorizationStatus: "authorized",
         blockReason: "",
@@ -2274,6 +2276,10 @@ export function createClassicalNahuatlNncApplicationModule(
       : preferredNumberForm;
     return deepFreeze({
       kind: NNC_OPERATION_SELECTION_FRAME_KIND,
+        sentenceTypeValues: CLASSICAL_NNC_EDITABLE_SENTENCE_TYPES,
+        selectedSentenceType: normalizeClassicalNahuatlNncSentenceType(selections.sentenceType || "assertion") || selections.sentenceType,
+        polarityValues: CLASSICAL_NNC_SENTENCE_POLARITIES,
+        selectedPolarity: selections.polarity || "positive",
       version: 1,
       authorizationStatus: "authorized",
       blockReason: "",
@@ -2451,7 +2457,7 @@ export function createClassicalNahuatlNncApplicationModule(
     const subclass = sourceFrame.subclass;
     const possessorReduplication =
       ownDataValue(selections, "possessorReduplication", false) === true;
-    const sentenceType = normalizeChoice(
+    const sentenceType = normalizeNncApplicationSentenceType(
       ownDataValue(selections, "sentenceType", "statement"),
     );
     const polarity = normalizeChoice(
@@ -2586,9 +2592,9 @@ export function createClassicalNahuatlNncApplicationModule(
     ) {
       blockReason =
         "ordinary-nnc-possessor-reduplication-context-not-authorized";
-    } else if (!ORDINARY_NNC_SENTENCE_TYPES.includes(sentenceType)) {
+    } else if (!CLASSICAL_NNC_EDITABLE_SENTENCE_TYPES.includes(normalizeClassicalNahuatlNncSentenceType(sentenceType))) {
       blockReason = "ordinary-nnc-sentence-type-not-recognized";
-    } else if (!ORDINARY_NNC_POLARITIES.includes(polarity)) {
+    } else if (!CLASSICAL_NNC_SENTENCE_POLARITIES.includes(polarity)) {
       blockReason = "ordinary-nnc-polarity-not-recognized";
     }
     const sourceSignature = getSourceSignature(sourceFrame);
@@ -4086,7 +4092,7 @@ export function createClassicalNahuatlNncApplicationModule(
       "specialHumanUse",
       undefined,
     );
-    const sentenceType = normalizeChoice(
+    const sentenceType = normalizeNncApplicationSentenceType(
       ownDataValue(selections, "sentenceType", "statement"),
     );
     const polarity = normalizeChoice(
@@ -4158,9 +4164,9 @@ export function createClassicalNahuatlNncApplicationModule(
         "issued-pronominal-nnc-derived-coordinate-required";
     } else if (!subject || !effectiveSourceFrame.allowedSubjects.includes(subject)) {
       blockReason = "pronominal-nnc-subject-not-licensed-for-source";
-    } else if (!ORDINARY_NNC_SENTENCE_TYPES.includes(sentenceType)) {
+    } else if (!CLASSICAL_NNC_EDITABLE_SENTENCE_TYPES.includes(normalizeClassicalNahuatlNncSentenceType(sentenceType))) {
       blockReason = "pronominal-nnc-sentence-type-not-recognized";
-    } else if (!ORDINARY_NNC_POLARITIES.includes(polarity)) {
+    } else if (!CLASSICAL_NNC_SENTENCE_POLARITIES.includes(polarity)) {
       blockReason = "pronominal-nnc-polarity-not-recognized";
     } else if (
       doubledFirstPlural
@@ -4225,6 +4231,7 @@ export function createClassicalNahuatlNncApplicationModule(
       referentialHumanness: pronominalSubjectParticipantFrame.humanness,
       subjectParticipantFrame: pronominalSubjectParticipantFrame,
       numberForm: selectedCoordinate?.numberForm || "",
+      availableNumberForms:Object.freeze(availableNumberForms),
       matrixForm: selectedCoordinate?.matrixForm || "",
       predicatePluralization:
         selectedCoordinate?.predicatePluralization
@@ -5142,7 +5149,7 @@ export function createClassicalNahuatlNncApplicationModule(
       sourceFrame.allowedSubjects,
     );
     const rawSubjects = ownDataValue(request, "subjects", null);
-    const sentenceType = normalizeChoice(
+    const sentenceType = normalizeNncApplicationSentenceType(
       ownDataValue(request, "sentenceType", "statement"),
     );
     const polarity = normalizeChoice(
@@ -5157,9 +5164,9 @@ export function createClassicalNahuatlNncApplicationModule(
         && rawSubjects.length !== requestedSubjects.length
     ) {
       blockReason = "pronominal-nnc-paradigm-subject-inventory-invalid";
-    } else if (!ORDINARY_NNC_SENTENCE_TYPES.includes(sentenceType)) {
+    } else if (!CLASSICAL_NNC_EDITABLE_SENTENCE_TYPES.includes(normalizeClassicalNahuatlNncSentenceType(sentenceType))) {
       blockReason = "pronominal-nnc-sentence-type-not-recognized";
-    } else if (!ORDINARY_NNC_POLARITIES.includes(polarity)) {
+    } else if (!CLASSICAL_NNC_SENTENCE_POLARITIES.includes(polarity)) {
       blockReason = "pronominal-nnc-polarity-not-recognized";
     }
     const sourceReceipt = issuedPronominalSourceReceipts.get(sourceFrame);

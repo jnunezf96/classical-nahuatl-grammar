@@ -2,11 +2,12 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
+import {resolveOrdinaryNncActiveSelections} from '../application/classical/participant_choice_coordination.mjs';
 import {createRuntimeInstance} from '../runtime/create_runtime.mjs';
 import {createConstructionSession} from '../ui/composition/construction_session.mjs';
 const r=(await createRuntimeInstance({documentObject:{getElementById:()=>null,addEventListener(){}}})).runtimeObject;
 const code=readFileSync(new URL('../ui/rendering/rendering.mjs',import.meta.url),'utf8');
-const ctx=vm.createContext({targetObject:r});
+const ctx=vm.createContext({targetObject:r,resolveOrdinaryNncActiveSelections});
 for(const name of ['getClassicalOrdinaryNncActiveCallerSelections','getClassicalOrdinaryNncNextChoiceProjection']){
  const a=code.indexOf(`    function ${name}(`);assert.ok(a>=0,name);
  vm.runInContext(code.slice(a,code.indexOf('\n    function ',a+20)),ctx);

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import * as decision from '../ui/composition/owner_operation_protocol.mjs?issuedBinding=20261028-1&ownerDecision=20261029-12';
+import * as decision from '../ui/composition/owner_operation_protocol.mjs?issuedBinding=20261028-1&ownerDecision=20261031-1';
 import {createRuntimeInstance} from '../runtime/create_runtime.mjs';
 import {syncStemLayerChoices} from '../ui/composition/stem_layer_choices.mjs';
 import {createConstructionSession} from '../ui/composition/construction_session.mjs';
@@ -62,7 +62,7 @@ test('incomplete reverential keeps required exact-result role and cannot acquire
 test('production generic controls project blocked boolean recovery and reject invented select options',()=>{
  const {snapshot}=setup({lateOperation:'compound',lateVariant:'connective-t',compoundMatrixStem:'ya-uh',compoundMatrixClass:'B',compoundYaSyncopation:true});
  const controls=new Map();
- function control(id,type,value){const host={hidden:false,setAttribute(){}},c={id,tagName:type==='checkbox'?'INPUT':'SELECT',type,value,checked:value===true,dataset:{},options:[],setAttribute(){},closest:()=>host,appendChild(o){this.options.push(o);},querySelectorAll:()=>[]};controls.set(id,c);return c;}
+ function control(id,type,value){const host={hidden:false,attributes:{'aria-disabled':'true'},setAttribute(k,v){this.attributes[k]=v;},getAttribute(k){return this.attributes[k]??null;},removeAttribute(k){delete this.attributes[k];}},c={id,tagName:type==='checkbox'?'INPUT':'SELECT',type,value,checked:value===true,dataset:{},options:[],setAttribute(){},closest:()=>host,appendChild(o){this.options.push(o);},querySelectorAll:()=>[]};controls.set(id,c);return c;}
  const sync=control('classical-rule-logic-compound-ya-syncopation','checkbox',true);
  const order=control('classical-rule-logic-compound-event-order','select','iconic');order.options.push({value:'DOM-forged',disabled:false,hidden:false});
  const doc={getElementById:id=>controls.get(id),createElement:()=>({})};
@@ -70,13 +70,13 @@ test('production generic controls project blocked boolean recovery and reject in
  assert.deepEqual(decision.getOwnerOperationDecisionControls(snapshot,doc),[sync,order]);
  assert.equal(decision.syncOwnerOperationDecisionControls(snapshot,doc),true);
  assert.equal(sync.checked,true);assert.equal(sync.disabled,false);assert.equal(sync.closest().hidden,false);
- assert.equal(sync['aria-disabled'],'false');
+ assert.equal(sync['aria-disabled'],'false');assert.equal(sync.closest().getAttribute('aria-disabled'),'false','mirrors cannot remain disabled by their common owner field');
  assert.equal(order.options.find(x=>x.value==='DOM-forged').disabled,true);
  assert.equal(decision.isOwnerOperationChoiceAllowed(snapshot,'compoundEventOrder','DOM-forged'),false);
  assert.equal(decision.isOwnerOperationChoiceAllowed(snapshot,'compoundYaSyncopation',false),true);
  sync.checked=false;const intent=decision.readOwnerOperationControlIntent(snapshot,doc,{lateOperation:'compound'},sync);
  assert.equal(intent.compoundYaSyncopation,false);assert.equal(snapshot.contract.request.compoundYaSyncopation,true);
- assert.equal(decision.projectOwnerOperationChoiceMove({...snapshot},'compoundYaSyncopation',sync.id),null);
+ assert.equal(decision.projectOwnerOperationChoiceMove({...snapshot},'compoundYaSyncopation',sync.id),null);decision.restoreOwnerOperationDecisionControls(doc);assert.equal(sync.closest().getAttribute('aria-disabled'),'true');
 });
 
 test('receiving owner regains common controls after a fixed purposive decision',()=>{

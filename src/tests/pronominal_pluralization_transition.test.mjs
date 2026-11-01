@@ -7,7 +7,7 @@ const r=(await createRuntimeInstance({documentObject:{getElementById:()=>null,ad
 const source=r.buildClassicalNahuatlPronominalNncSourceFrame({stem:'izqui',embedStem:'iz',matrixStem:'qui'}),nav=r.getClassicalGrammarApplicationCapabilityNavigator(source);
 const bind=s=>r.issueClassicalGrammarTypedSourceOperationBindingFrame(nav,'nnc:pronominal',s);
 const code=readFileSync(new URL('../ui/rendering/rendering.mjs',import.meta.url),'utf8'),ctx=vm.createContext({targetObject:r});
-for(const name of ['getClassicalPronominalSpecialHumanTransitionSelections','getClassicalPronominalSubjectTransitionSelections','getClassicalOrdinaryNncNextChoiceProjection','getClassicalPronominalNextChoiceProjection']){const a=code.indexOf(`    function ${name}(`);if(a>=0)vm.runInContext(code.slice(a,code.indexOf('\n    function ',a+1)),ctx);}
+for(const name of ['getClassicalPronominalSpecialHumanTransitionSelections','getClassicalPronominalSubjectTransitionSelections','getClassicalOrdinaryNncNextChoiceProjection','getClassicalPronominalNextChoiceProjection']){const a=code.indexOf(`    function ${name}(`);if(a>=0)vm.runInContext(code.slice(a,code.indexOf('\n    }',a+1)+6),ctx);}
 test('izqui deliberate stem pluralization withdraws recognized obsolete ending, preserving strict requests',()=>{
  const old=bind({subject:'1pl',numberForm:'silent-silent'});assert.equal(old.bindingStatus,'ready');
  const candidate={...old.callerSelections,predicatePluralization:'plain-variant'};

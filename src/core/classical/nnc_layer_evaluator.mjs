@@ -1,3 +1,22 @@
+export const CLASSICAL_NNC_SENTENCE_POLARITIES=Object.freeze(["positive","negative"]);
+export const CLASSICAL_NNC_SENTENCE_TYPE_ALIASES = Object.freeze({
+        assertion: "assertion",
+        exclamation: "exclamation",
+        statement: "assertion",
+        question: "yes-no-intonation",
+        "question-intonation": "yes-no-intonation",
+        "yes-no-intonation": "yes-no-intonation",
+        cuix: "yes-no-cuix",
+        "question-cuix": "yes-no-cuix",
+        "yes-no-cuix": "yes-no-cuix",
+        "information-question": "information-question",
+        emphatic: "emphatic",
+        wish: "wish"
+      });
+export const CLASSICAL_NNC_EDITABLE_SENTENCE_TYPES=Object.freeze(Array.from(new Set(Object.values(CLASSICAL_NNC_SENTENCE_TYPE_ALIASES))).filter(value=>value!=="information-question"));
+export const normalizeClassicalNahuatlNncSentenceType=value=>CLASSICAL_NNC_SENTENCE_TYPE_ALIASES[
+ String(value||"assertion").trim().toLowerCase().replace(/[\s_]/gu,"-")
+]||"";
 export function capitalizeClassicalNahuatlNncSentenceInitial(value = "") {
   const text = String(value || "");
   return text ? text.charAt(0).toUpperCase() + text.slice(1) : "";
@@ -13,10 +32,11 @@ import {
 } from "../grammar/operation_owner.mjs?v=20260728-runtime-reachability-111";
 import {
   buildClassicalNahuatlParticipantFrame,
-} from "./participant_frame.mjs?v=20260823-passive-formation-continuity-238";
+} from "./participant_frame.mjs?v=20260823-passive-formation-continuity-238&ownerDecision=20261031-1";
 export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = globalThis) {
     const CLASSICAL_NAHUATL_NNC_LAYER_VERSION = 1;
     const issuedNncSentenceSurfaceFrames = new WeakMap();
+    const issuedNncSentenceDecisions = new WeakSet();
     const issuedNncPredicateSupportiveI = new WeakMap();
     const issuedNncPredicateReducedLongVowel = new WeakMap();
     // This is a lexical exception, not a productive final-i formation rule.
@@ -1652,6 +1672,9 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
       const common = normalizedSubject === "3common";
       const normalizedAnimacy = normalizeClassicalNahuatlNncToken(animacy).toLowerCase();
       const pluralAnimacyAllowed = !plural || normalizedAnimacy === "animate" || metaphoricalOverride === true;
+      const pluralDyads = Object.freeze({"t-in":["t","in"],"m-eh":["m","eh"],"0-h":["0","h"],
+        ...(getIssuedBorrowedNncSource(borrowedNncSourceFrame,normalizedStem,true) ? {silent:["⎕","0"]} : {})});
+      const pluralConnectorOptions = Object.freeze(plural && pluralAnimacyAllowed ? Object.keys(pluralDyads) : []);
       let num1 = "";
       let num2 = "";
       let connectorRule = "";
@@ -1676,14 +1699,7 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
         connectorRule = "lesson-12.3.2a-zero-class-suppletive-connector";
       } else if (plural) {
         const connector = normalizeClassicalNahuatlNncToken(pluralConnector).toLowerCase().replace(/ø/gu, "0");
-        const dyads = {
-          "t-in": ["t", "in"],
-          "m-eh": ["m", "eh"],
-          "0-h": ["0", "h"]
-        };
-        const borrowedSource = getIssuedBorrowedNncSource(borrowedNncSourceFrame, normalizedStem, true);
-        [num1, num2] = connector === "silent" && borrowedSource
-          ? ["⎕", "0"] : dyads[connector] || ["", ""];
+        [num1, num2] = pluralDyads[connector] || ["", ""];
         connectorRule = num1 ? "lesson-12.3.2b-lexically-selected-plural-number-dyad" : "";
       }
       const classKnown = Boolean(normalizedClass);
@@ -1703,6 +1719,7 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
         num2: authorized ? num2 : "",
         connectorRule,
         alternatives,
+        pluralConnectorOptions,
         animacy: normalizedAnimacy || "not-specified",
         metaphoricalOverride: metaphoricalOverride === true,
         numberBelongsTo: "subject-personal-pronoun",
@@ -2992,24 +3009,29 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
           );
       return Object.freeze(/^[aāeēiīoō]/iu.test(surface) ? ["ah", "ay"] : ["ah"]);
     }
+    const normalizeSentenceType=normalizeClassicalNahuatlNncSentenceType;
+    function issueNncSentenceDecision(data, source, options, contextualRequirement = null, forceFixedBySource = false) {
+      const valid=isClassicalNahuatlNncSlotFrame(source)
+        && contextualRequirement?.authorizationStatus!=="blocked";
+      const requested=normalizeSentenceType(options.sentenceType);
+      const polarity=normalizeClassicalNahuatlNncToken(options.polarity || "positive").toLowerCase();
+      const field=(key,values,selected,authoredValue,applicable=true)=>Object.freeze({choiceId:key,inputKind:"enum",
+        applicable:valid&&applicable,editable:valid&&applicable&&(values.length>1||values.length===1&&(!values.includes(selected)||authoredValue!==undefined&&!values.includes(authoredValue))),selectedValue:selected,authoredValue,
+        requestPath:Object.freeze([key]),options:Object.freeze((valid?values:[]).map(optionId=>Object.freeze({optionId,label:optionId||"default",availabilityStatus:"available"})))});
+      const forceValues=contextualRequirement?[contextualRequirement.requiredSentenceType]:forceFixedBySource?[data.sentenceType]:CLASSICAL_NNC_EDITABLE_SENTENCE_TYPES;
+      const polarities=contextualRequirement?[contextualRequirement.requiredPolarity]:CLASSICAL_NNC_SENTENCE_POLARITIES;
+      const prefixes=contextualRequirement?[contextualRequirement.negativePrefix]:getClassicalNahuatlNncSentenceNegativePrefixOptions(source,options);
+      const choiceOptionProjection=Object.freeze({
+        sentenceType:field("sentenceType",forceValues,forceFixedBySource?data.sentenceType:requested,forceFixedBySource||options.sentenceType===undefined?undefined:requested||options.sentenceType),
+        polarity:field("polarity",polarities,polarity,options.polarity===undefined?undefined:polarity),
+        negativePrefix:field("negativePrefix",contextualRequirement?prefixes:["",...prefixes],contextualRequirement?(data.negativePrefix||contextualRequirement.negativePrefix):(options.negativePrefix||""),options.negativePrefix,polarity==="negative"),
+      });
+      const frame=Object.freeze({...data,choiceOptionProjection});issuedNncSentenceDecisions.add(frame);return frame;
+    }
+    function isClassicalNahuatlNncSentenceDecisionFrame(frame=null) {
+      return Boolean(frame&&issuedNncSentenceDecisions.has(frame));
+    }
     function buildClassicalNahuatlNncSentenceSurfaceFrame(nncSlotFrame = null, options = {}) {
-      const sentenceTypeAliases = {
-        assertion: "assertion",
-        exclamation: "exclamation",
-        statement: "assertion",
-        question: "yes-no-intonation",
-        "question-intonation": "yes-no-intonation",
-        "yes-no-intonation": "yes-no-intonation",
-        cuix: "yes-no-cuix",
-        "question-cuix": "yes-no-cuix",
-        "yes-no-cuix": "yes-no-cuix",
-        "information-question": "information-question",
-        emphatic: "emphatic",
-        wish: "wish"
-      };
-      const normalizeSentenceType = value => sentenceTypeAliases[
-        normalizeClassicalNahuatlNncToken(value || "assertion").toLowerCase().replace(/[\s_]/gu, "-")
-      ] || "";
       // Recompose an exact issued sentence from its retained nucleus. The
       // sentence surface is never fed back as a new nounstem or negative layer.
       if (isClassicalNahuatlIssuedNncSentenceSurfaceFrame(nncSlotFrame)) {
@@ -3027,16 +3049,16 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
       }
       const contextualRequirement = targetObject.getClassicalNahuatlNominalNncSentenceContext?.(nncSlotFrame) || null;
       if (contextualRequirement?.authorizationStatus === "blocked") {
-        return Object.freeze({kind: "classical-nahuatl-nnc-sentence-surface-frame",
+        return issueNncSentenceDecision({kind: "classical-nahuatl-nnc-sentence-surface-frame",
           authorizationStatus: "blocked", blockReason: contextualRequirement.blockReason,
           sourceNncSlotFrame: nncSlotFrame, sentenceSurface: "", sentenceSurfaceApplies: false,
-          formulaStringAuthority: false, surfaceStringAuthority: false});
+          formulaStringAuthority: false, surfaceStringAuthority: false},nncSlotFrame,options,contextualRequirement);
       }
       if (targetObject.isClassicalNahuatlBoundCustomaryAgentiveNncMaterial?.(nncSlotFrame) === true) {
-        return Object.freeze({kind: "classical-nahuatl-nnc-sentence-surface-frame",
+        return issueNncSentenceDecision({kind: "classical-nahuatl-nnc-sentence-surface-frame",
           authorizationStatus: "blocked", blockReason: "bound-customary-agentive-requires-consuming-boundary",
           sourceNncSlotFrame: nncSlotFrame, sentenceSurface: "", sentenceSurfaceApplies: false,
-          formulaStringAuthority: false, surfaceStringAuthority: false});
+          formulaStringAuthority: false, surfaceStringAuthority: false},nncSlotFrame,options,contextualRequirement);
       }
       const requestedSentenceType = normalizeSentenceType(options.sentenceType);
       const polarity = normalizeClassicalNahuatlNncToken(options.polarity || "positive").toLowerCase();
@@ -3044,10 +3066,10 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
         || polarity !== contextualRequirement.requiredPolarity
         || options.negativePrefix && options.negativePrefix !== contextualRequirement.negativePrefix
         || options.predicateKind && options.predicateKind !== "equative")) {
-        return Object.freeze({kind: "classical-nahuatl-nnc-sentence-surface-frame",
+        return issueNncSentenceDecision({kind: "classical-nahuatl-nnc-sentence-surface-frame",
           authorizationStatus: "blocked", blockReason: "contextual-flawed-subject-negative-assertion-required",
           sourceNncSlotFrame: nncSlotFrame, sentenceSurface: "", sentenceSurfaceApplies: false,
-          formulaStringAuthority: false, surfaceStringAuthority: false});
+          formulaStringAuthority: false, surfaceStringAuthority: false},nncSlotFrame,options,contextualRequirement);
       }
       const canonicalNuclearWrittenResultSupplied =
         Object.prototype.hasOwnProperty.call(
@@ -3072,7 +3094,7 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
       const sentenceType = lesson16InformationQuestion ? "information-question" : requestedSentenceType === "information-question" ? "assertion" : requestedSentenceType;
       const typedNnc = isClassicalNahuatlNncSlotFrame(nncSlotFrame);
       const sentenceTypeKnown = Boolean(sentenceType);
-      const polarityKnown = ["positive", "negative"].includes(polarity);
+      const polarityKnown = CLASSICAL_NNC_SENTENCE_POLARITIES.includes(polarity);
       // An exact delegated nominal Result already implements the complete NNC
       // shell. Its derivational operation IDs belong to its own jurisdiction;
       // the sentence owner consumes that issued shell without reinterpreting it.
@@ -3175,7 +3197,7 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
       const prefixalFormula = negativePrefix && adjunctorFormula.startsWith("#") ? `${negativePrefix}#${adjunctorFormula.slice(1)}` : adjunctorFormula;
       const sentenceFormulaWords = [...sentenceParticles.map(capitalizeClassicalNahuatlNncSentenceInitial), prefixalFormula, ...(dependentClauseIntroducedByIn ? ["in", "…"] : [])].filter(Boolean);
       const sentenceFormulaDisplay = authorized ? `${sentenceFormulaWords.join(" ")}${finalPunctuation}` : "";
-      const frame = Object.freeze({
+      const frame = issueNncSentenceDecision({
         kind: "classical-nahuatl-nnc-sentence-surface-frame",
         lesson: lesson16InformationQuestion ? "Andrews Lesson 16.4" : "Andrews Lesson 15.3",
         sourceAuthority: "Andrews transcription",
@@ -3227,7 +3249,7 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
         formulaStringAuthority: false,
         formulaArtifactAuthority: "display-only-not-authority",
         legalWitnessTagIds: lesson16InformationQuestion ? ["cn-l15-153-sentence-structure", "cn-l16-164-identificational-interrogative"] : ["cn-l15-153-sentence-structure"]
-      });
+      },nncSlotFrame,options,contextualRequirement,lesson16InformationQuestion);
       if (authorized) {
         issuedNncSentenceSurfaceFrames.set(frame, Object.freeze({
           sentenceOptions: Object.freeze({...options}),
@@ -4986,6 +5008,7 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
       const pluralSelectionAuthority = normalizeClassicalNahuatlNncToken(options.pluralSelectionAuthority || (selectedPluralConnector ? "user-selection" : "")).toLowerCase();
       const pluralAuthorityAllowed = ["user-selection", "external-lexical-record"].includes(pluralSelectionAuthority);
       let singularConnector = "";
+      let singularConnectorOptions = [];
       let pluralConnector = "";
       let silentConnectorAuthorized = false;
       let selectionRule = "";
@@ -5042,10 +5065,11 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
             singularConnector = "0";
             selectionRule = "tli-subclass1-zero-num1";
           } else if (tliSubclass === "2") {
+            singularConnectorOptions = lexicalSelectionRecord?.tliSubclass2SilentNum1Authorized === true ? ["hui","⎕"] : ["hui"];
             const selected = normalizeClassicalNahuatlNncToken(options.singularConnector || "hui").toLowerCase();
             if (
               (selected === "⎕" || selected === "silent")
-              && lexicalSelectionRecord?.tliSubclass2SilentNum1Authorized === true
+              && singularConnectorOptions.includes("⎕")
             ) {
               singularConnector = "⎕";
               silentConnectorAuthorized = true;
@@ -5068,6 +5092,7 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
           }
         }
       }
+      if(singularConnector && !singularConnectorOptions.length)singularConnectorOptions=[singularConnector];
       const authorized = Boolean(!blockReason && selectionRule);
       return {
         kind: "classical-nahuatl-nounstem-connector-selection-frame",
@@ -5083,6 +5108,7 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
         tlSubclass,
         tliSubclass,
         singularConnector,
+        singularConnectorOptions:Object.freeze(singularConnectorOptions),
         pluralConnector,
         silentConnectorAuthorized,
         pluralSelectionAuthority,
@@ -8752,6 +8778,7 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
     api.realizeClassicalNahuatlNncSurfaceCarriers = realizeClassicalNahuatlNncSurfaceCarriers;
     api.capitalizeClassicalNahuatlNncSentenceInitial = capitalizeClassicalNahuatlNncSentenceInitial;
     api.buildClassicalNahuatlNncSentenceSurfaceFrame = buildClassicalNahuatlNncSentenceSurfaceFrame;
+    api.isClassicalNahuatlNncSentenceDecisionFrame = isClassicalNahuatlNncSentenceDecisionFrame;
     api.getClassicalNahuatlNncSentenceNegativePrefixOptions = getClassicalNahuatlNncSentenceNegativePrefixOptions;
     api.isClassicalNahuatlIssuedNncSentenceSurfaceFrame = isClassicalNahuatlIssuedNncSentenceSurfaceFrame;
     api.getClassicalNahuatlNncSentenceReloadContext = getClassicalNahuatlNncSentenceReloadContext;

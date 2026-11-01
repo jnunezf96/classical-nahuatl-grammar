@@ -1,0 +1,128 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {createRuntimeInstance} from '../runtime/create_runtime.mjs';
+import {createConstructionSession} from '../ui/composition/construction_session.mjs';
+import * as adapter from '../ui/composition/issued_binding_operation_transaction.mjs';
+import * as decision from '../ui/composition/owner_operation_protocol.mjs?issuedBinding=20261028-1&ownerDecision=20261031-1';
+const owner=(await createRuntimeInstance({documentObject:{getElementById:()=>null,addEventListener(){}}})).runtimeObject;
+const source=owner.buildClassicalNahuatlOrdinaryNncSourceFrame({stem:'pil',sourceClass:'tli-1'});
+function fixture(intent={subject:'3sg',state:'absolutive',humanness:'human'},presentation={choices:{state:{controlId:'state'},subject:{controlId:'subject'}}}) {
+ const navigator=owner.getClassicalGrammarApplicationCapabilityNavigator(source),session=createConstructionSession({isSource:x=>x===source});let ingress=navigator;
+ const reissue=x=>owner.issueClassicalGrammarTypedSourceOperationBindingFrame(navigator,'nnc:ordinary',x);
+ const scope=adapter.createIssuedBindingOperationScope({owner,source,operationId:'nnc:ordinary',ingressKind:'typed',navigator,session,getIngress:()=>ingress,reissue,presentation});
+ const binding=reissue(intent),snapshot=adapter.issueIssuedBindingOperationSnapshot(scope,binding,ingress);
+ return {binding,snapshot,session,replaceIngress:()=>ingress={}};
+}
+test('existing owner array domains retain exact options, authored intent and presentation-only addresses',()=>{
+ const {binding,snapshot,replaceIngress}=fixture({subject:'3sg',state:'forged',humanness:'human'});
+ const field=decision.projectOwnerOperationChoice(snapshot,'state');
+ assert.equal(field.options,binding.choiceOptionProjection.state);
+ assert.equal(field.choiceId,'state');assert.equal(field.controlId,'state');assert.equal(field.authoredValue,'forged');
+ assert.equal(decision.findOwnerOperationControlChoice(snapshot,'state').choiceId,'state');
+ const control={id:'state',tagName:'SELECT',value:'forged',options:[{value:'forged',disabled:false}]};
+ assert.deepEqual(decision.projectOwnerOperationControlMove(snapshot,control).values,['absolutive','possessive']);
+ assert.equal(decision.isOwnerOperationChoiceAllowed(snapshot,'state','forged'),false);
+ assert.equal(decision.isOwnerOperationChoiceAllowed(snapshot,'state','possessive'),true);
+ assert.equal(decision.projectOwnerOperationDecision({...snapshot}),null);
+ replaceIngress();assert.equal(decision.projectOwnerOperationChoice(snapshot,'state'),null);
+});
+test('presentation cannot extend an owner array domain or change its selected decision',()=>{
+ const {snapshot,binding}=fixture(undefined,{choices:{state:{controlId:'state',options:[{optionId:'forged',availabilityStatus:'available'}],optionIds:['possessive','forged'],authoredValue:'forged',editable:true}}});
+ const field=decision.projectOwnerOperationChoice(snapshot,'state');
+ assert.deepEqual(field.options.map(x=>x.optionId),['possessive']);
+ assert.equal(field.options[0],binding.choiceOptionProjection.state[1]);
+ assert.equal(field.authoredValue,'absolutive');
+ assert.equal(decision.isOwnerOperationChoiceAllowed(snapshot,'state','forged'),false);
+});
+test('an offered pronominal participant move retains the exact owner-validated next intent',()=>{
+ const source=owner.buildClassicalNahuatlPronominalNncSourceFrame({stem:'īn'}),navigator=owner.getClassicalGrammarApplicationCapabilityNavigator(source);
+ const initial={subject:'3common',animacy:'nonanimate',humanness:'nonhuman'};
+ const binding=owner.issueClassicalGrammarTypedSourceOperationBindingFrame(navigator,'nnc:pronominal',initial);
+ const offered=binding.choiceOptionProjection.animacy.find(x=>x.optionId==='animate');
+ assert.equal(offered.availabilityStatus,'available');assert.ok(offered.nextSelections);
+ assert.equal(offered.nextSelections.animacy,'animate');
+ assert.notEqual(offered.nextSelections.subject,'3common');
+ const next=owner.issueClassicalGrammarTypedSourceOperationBindingFrame(navigator,'nnc:pronominal',offered.nextSelections);
+ assert.equal(next.bindingStatus,'ready',next.blockReason);assert.equal(next.exactSource,source);
+ assert.equal(binding.callerSelections.subject,'3common');
+});
+test('pronominal contextual human-use choices and their recovery come from the same owner decision',()=>{
+ const source=owner.buildClassicalNahuatlPronominalNncSourceFrame({stem:'itl-ah',embedStem:'itl',matrixStem:'ah'}),navigator=owner.getClassicalGrammarApplicationCapabilityNavigator(source);
+ const issue=q=>owner.issueClassicalGrammarTypedSourceOperationBindingFrame(navigator,'nnc:pronominal',q);
+ const initial=issue({subject:'3common',animacy:'nonanimate',humanness:'nonhuman',specialHumanUse:false});
+ const special=initial.choiceOptionProjection.specialHumanUse?.find(x=>x.optionId==='true');
+ assert.equal(special?.availabilityStatus,'available');
+ const human=issue(special.nextSelections);assert.equal(human.bindingStatus,'ready',human.blockReason);
+ assert.equal(human.effectiveSelections.specialHumanUse,true);assert.equal(human.effectiveSelections.humanness,'human');
+ const ordinary=human.choiceOptionProjection.specialHumanUse.find(x=>x.optionId==='false');assert.equal(ordinary.availabilityStatus,'available');
+ assert.equal(issue(ordinary.nextSelections).bindingStatus,'ready');
+ const forged=issue({...initial.callerSelections,subject:'forged'});
+ assert.notEqual(forged.bindingStatus,'ready');assert.equal(forged.callerSelections.subject,'forged');
+ assert.ok(!(forged.choiceOptionProjection.specialHumanUse||[]).some(x=>x.availabilityStatus==='available'));
+});
+test('ordinary owner choices retain incomplete recovery and normalize only a recognized participant edit',()=>{
+ const source=owner.buildClassicalNahuatlOrdinaryNncSourceFrame({stem:'oquich',sourceClass:'tli-1'}),navigator=owner.getClassicalGrammarApplicationCapabilityNavigator(source);
+ const issue=q=>owner.issueClassicalGrammarTypedSourceOperationBindingFrame(navigator,'nnc:ordinary',q);
+ const singular=issue({subject:'3sg',animacy:'animate',humanness:'human',state:'absolutive',stemFormation:'plain',predicateFormation:'source-stem'});
+ const plural=singular.choiceOptionProjection.subject.find(x=>x.optionId==='3pl');
+ assert.equal(plural.availabilityStatus,'available');assert.equal(plural.requiresDependentChoice,'pluralConnector');
+ const pending=issue(plural.nextSelections);assert.equal(pending.bindingStatus,'choices-required');assert.ok(pending.requiredChoiceIds.includes('pluralConnector'));
+ const original=issue({subject:'3pl',humanness:'nonhuman',pluralConnector:'t-in',state:'absolutive'});
+ const personal=original.choiceOptionProjection.subject.find(x=>x.optionId==='1sg');assert.equal(personal.availabilityStatus,'available');assert.equal(personal.nextSelections.humanness,'human');
+ assert.equal(issue(personal.nextSelections).bindingStatus,'ready');
+ assert.equal(issue({...personal.nextSelections,humanness:'nonhuman'}).bindingStatus,'rejected');
+});
+test('an explicit incompatible ordinary reference survives unrelated moves and retains its one-value correction',()=>{
+ const source=owner.buildClassicalNahuatlOrdinaryNncSourceFrame({stem:'pil',sourceClass:'tli-1'}),navigator=owner.getClassicalGrammarApplicationCapabilityNavigator(source);
+ const issue=q=>owner.issueClassicalGrammarTypedSourceOperationBindingFrame(navigator,'nnc:ordinary',q);
+ const rejected=issue({subject:'1sg',humanness:'nonhuman',state:'absolutive'});assert.equal(rejected.bindingStatus,'rejected');
+ assert.ok(!rejected.choiceOptionProjection.predicateFormation.some(x=>x.availabilityStatus==='available'));
+ const correction=rejected.choiceOptionProjection.humanness?.find(x=>x.optionId==='human');assert.equal(correction?.availabilityStatus,'available');
+ assert.equal(issue(correction.nextSelections).bindingStatus,'ready');assert.equal(rejected.callerSelections.humanness,'nonhuman');
+});
+test('generated owner controls use their issued array domain without a DOM offered-value fallback',()=>{
+ const {snapshot,binding}=fixture(undefined,null);
+ const control={dataset:{classicalCapabilityChoiceId:'state'},id:'',tagName:'SELECT',value:'forged',options:[{value:'forged',disabled:false}],classicalTypedSourceChoiceBinding:binding};
+ const doc={getElementById:()=>null,querySelectorAll:()=>[control]};
+ const controls=decision.getOwnerOperationDecisionControls(snapshot,doc);assert.equal(controls.length,1);assert.equal(controls[0]===control,true);
+ assert.equal(decision.findOwnerOperationControlChoice(snapshot,control).choiceId,'state');
+ assert.deepEqual(decision.projectOwnerOperationControlMove(snapshot,control).values,['absolutive','possessive']);
+});
+import vm from 'node:vm';
+import {readFileSync} from 'node:fs';
+const rendering=readFileSync(new URL('../ui/rendering/rendering.mjs',import.meta.url),'utf8');
+const production=name=>{const start=rendering.indexOf(`    function ${name}(`);assert.ok(start>=0,name);return rendering.slice(start,rendering.indexOf('\n    }',start+20)+6);};
+test('production reconciliation and dispatch reject forged generated options before staging',()=>{
+ const {snapshot,session}=fixture(undefined,null);
+ session.stage({source,route:{operation:'nnc:ordinary'},operationContract:snapshot,slots:snapshot.captures,choices:{},legalMoves:[],ready:false});
+ const revision=session.position.revision;
+ const control={id:'',dataset:{classicalCapabilityChoiceId:'state'},tagName:'SELECT',value:'forged',options:[{value:'forged',disabled:false,hidden:false}],closest:()=>null,isConnected:true};
+ const document={getElementById:()=>null,querySelectorAll:()=>[control]};let refreshes=0;
+ const context=vm.createContext({...decision,ClassicalConstructionSession:session,targetObject:{document},getNativeGrammarControls:()=>[control],getClassicalPositionChoiceId:x=>x.dataset.classicalCapabilityChoiceId,syncClassicalCapabilityApplyOperationState:()=>{refreshes++;}});
+ vm.runInContext(production('reconcileClassicalNewNativeChoiceOffer')+production('dispatchClassicalConstructionChoice'),context);
+ assert.equal(context.reconcileClassicalNewNativeChoiceOffer(control,'forged'),false);
+ assert.equal(context.dispatchClassicalConstructionChoice(control,'forged'),false);
+ assert.equal(session.position.revision,revision);assert.equal(refreshes,0);assert.equal(session.position.accepted.result,null);
+ control.dataset.classicalCapabilityChoiceId='invented';
+ assert.equal(context.reconcileClassicalNewNativeChoiceOffer(control,'forged'),false);assert.equal(context.dispatchClassicalConstructionChoice(control,'forged'),false);
+ assert.equal(session.position.revision,revision);
+});
+test('production native NNC capture retains one owner intent before repaint and preserves accepted state',()=>{
+ const source=owner.buildClassicalNahuatlPronominalNncSourceFrame({stem:'itl-ah',embedStem:'itl',matrixStem:'ah'}),navigator=owner.getClassicalGrammarApplicationCapabilityNavigator(source);
+ const issue=q=>owner.issueClassicalGrammarTypedSourceOperationBindingFrame(navigator,'nnc:pronominal',q),binding=issue({subject:'3common',animacy:'nonanimate',humanness:'nonhuman',specialHumanUse:false});
+ const session=createConstructionSession({isSource:x=>x===source}),document={getElementById:()=>null};
+ const ctx=vm.createContext({...decision,...adapter,targetObject:{document},ClassicalConstructionSession:session,ClassicalChoicePreflightTransaction:{}});
+ vm.runInContext(production('getClassicalIssuedBindingChoicePresentation')+production('captureClassicalIssuedOwnerChoiceIntent'),ctx);
+ const scope=adapter.createIssuedBindingOperationScope({owner,source,operationId:'nnc:pronominal',ingressKind:'typed',navigator,session,getIngress:()=>navigator,reissue:issue,presentation:JSON.parse(JSON.stringify(ctx.getClassicalIssuedBindingChoicePresentation(binding)))});
+ const snapshot=adapter.issueIssuedBindingOperationSnapshot(scope,binding,navigator);
+ session.stage({source,route:{operation:'nnc:pronominal'},operationContract:snapshot,slots:snapshot.captures,choices:{},ready:false});
+ const revision=session.position.revision,control={id:'classical-rule-logic-nnc-special-human-use',type:'checkbox',checked:true};
+ const move=decision.projectOwnerOperationControlMove(snapshot,control);assert.deepEqual(move.values,[false,true]);
+ const captured=ctx.captureClassicalIssuedOwnerChoiceIntent(control,true);assert.ok(captured);
+ const option=binding.choiceOptionProjection.specialHumanUse.find(x=>x.optionId==='true');assert.equal(captured.selections===option.nextSelections,true);
+ control.checked=false;
+ assert.equal(captured.selections.specialHumanUse,true);assert.equal(binding.callerSelections.specialHumanUse,false);assert.equal(session.position.revision,revision);assert.equal(session.position.accepted.result,null);
+ assert.equal(issue(captured.selections).bindingStatus,'ready');
+ session.stage({source,sourcePending:true,route:{operation:'nnc:pronominal'},operationContract:snapshot,ready:false});
+ assert.equal(ctx.captureClassicalIssuedOwnerChoiceIntent(control,true),null);
+});

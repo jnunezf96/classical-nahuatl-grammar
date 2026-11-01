@@ -1127,6 +1127,15 @@ l50-ma-tel-za-yeh|although it may be only; at least|restrictive concession; form
         && frame.userSelectableRestriction === false
         && Object.isFrozen(frame));
     }
+    const negativeSentenceKinds=Object.freeze(["statement", "question", "exclamation", "wish", "command", "admonition"]);
+    function particleChoiceField(choiceId,values,authoredValue,selectedValue,options={}) {
+      return freezeClassicalNahuatlLesson3ParticleResult({choiceId,inputKind:"enum",requestPath:[choiceId],authoredValue,selectedValue,
+        applicable:true,editable:true,options:values.map(value=>typeof value==="object"?value:{optionId:value,availabilityStatus:"available"}),...options});
+    }
+    function particleChoiceProjection(fields) {
+      return Object.freeze(Object.fromEntries([...new Set(["sentenceKind","adverbialId","honorificized","speakerGender",...Object.keys(fields)])].map(key=>
+        [key,fields[key] || particleChoiceField(key,[],undefined,undefined,{applicable:false,editable:false})])));
+    }
     function selectClassicalNahuatlNegativeParticleFrame(request = {}) {
       const allowedKeys = new Set([
         "polarity",
@@ -1160,6 +1169,7 @@ l50-ma-tel-za-yeh|although it may be only; at least|restrictive concession; form
         ? precedingParticleResultFrame.particleId
         : requestedPrecedingParticleId;
       const sentenceKind = String(request?.sentenceKind || "statement").trim();
+      const sentenceKindAllowed=negativeSentenceKinds.includes(sentenceKind);
       const caAfterMah = precedingParticleId === "l3-mah";
       const caAfterWishOrCommandParticle = ["l3-ma", "l3-tla"]
         .includes(precedingParticleId)
@@ -1178,6 +1188,7 @@ l50-ma-tel-za-yeh|although it may be only; at least|restrictive concession; form
         selectedParticleId
       );
       const particleResultFrame = unexpectedKey
+        || !sentenceKindAllowed
         || precedingParticleInputsConflict
         || !precedingParticleResultAuthorized
         || polarity !== "negative"
@@ -1186,6 +1197,7 @@ l50-ma-tel-za-yeh|although it may be only; at least|restrictive concession; form
           ? { precedingParticleSourceFrame: precedingSourceFrame }
           : {}, negativeParticleSelectionCapability);
       const authorized = !unexpectedKey
+        && sentenceKindAllowed
         && !precedingParticleInputsConflict
         && precedingParticleResultAuthorized
         && polarity === "negative"
@@ -1198,6 +1210,8 @@ l50-ma-tel-za-yeh|although it may be only; at least|restrictive concession; form
           ? ""
           : unexpectedKey
             ? `classical-negative-particle-option-forbidden:${unexpectedKey}`
+            : !sentenceKindAllowed
+              ? "classical-negative-particle-sentence-kind-not-offered"
             : precedingParticleInputsConflict
               ? "classical-negative-particle-preceding-result-and-id-are-mutually-exclusive"
               : !precedingParticleResultAuthorized
@@ -1209,6 +1223,8 @@ l50-ma-tel-za-yeh|although it may be only; at least|restrictive concession; form
         polarity,
         precedingParticleId,
         sentenceKind,
+        choiceOptionProjection:particleChoiceProjection({sentenceKind:particleChoiceField("sentenceKind",
+          !unexpectedKey && !precedingParticleInputsConflict && precedingParticleResultAuthorized ? negativeSentenceKinds : [],request.sentenceKind,sentenceKind)}),
         selectedParticleId: authorized ? selectedParticleId : "",
         selectionRule: caAfterMah
           ? "ca-after-mah"
@@ -3012,7 +3028,7 @@ l50-ma-tel-za-yeh|although it may be only; at least|restrictive concession; form
         // retains ah#. These are context choices, not punctuation variants.
         sentenceKindOptions: Object.freeze(accepted
           && normalizedOperationId === "particle:negative-selection"
-          ? ["statement", "question", "exclamation", "wish", "command", "admonition"]
+          ? negativeSentenceKinds
           : []),
         requiredResultRoles: Object.freeze(requiredResultRoles),
         ownerChoicesRequired: Boolean(
@@ -3272,6 +3288,14 @@ l50-ma-tel-za-yeh|although it may be only; at least|restrictive concession; form
         kind: "classical-nahuatl-sentence-adverbial-layer-frame",
         version: CLASSICAL_NAHUATL_LESSON3_PARTICLES_VERSION,
         requestedAdverbialId,
+        choiceOptionProjection:particleChoiceProjection({adverbialId:particleChoiceField("adverbialId",
+          clauseKindAllowed && !particleInputsConflict && inputParticleResultAuthorized && !unexpectedOptionKey
+            ? inputParticleResultSupplied ? selectedEntry ? [requestedAdverbialId] : []
+              : [{optionId:"",label:"none",availabilityStatus:"available"},...getClassicalNahuatlSentenceAdverbialEntries().map(entry=>{
+                  const availability=getClassicalNahuatlSentenceAdverbialAvailability(entry.id,tense);
+                  return {optionId:entry.id,label:entry.displayForm || entry.sourceForm || entry.id,
+                    availabilityStatus:availability.ready?"available":"incompatible",blockReason:availability.blockReason};
+                })] : [],particleSourceFrame?.particleId,requestedAdverbialId,{editable:!inputParticleResultSupplied,required:false})}),
         adverbialOmitted,
         active: !adverbialOmitted,
         authorizationStatus: authorized ? "authorized" : blocked ? "blocked" : "inactive",
@@ -3388,6 +3412,21 @@ l50-ma-tel-za-yeh|although it may be only; at least|restrictive concession; form
       }
       return null;
     }
+    function getSentenceParticleEntryGuard(entry,canonicalInput,honorificized=false) {
+      const specializedSentenceControlOwnsEntry=CLASSICAL_NAHUATL_SPECIALIZED_SENTENCE_PARTICLE_IDS.includes(entry?.id);
+      const placementAuthorized=["clause-initial","independent-utterance","collocation-sequence","floating"].includes(entry?.placement?.scope);
+      const baseEntry=!specializedSentenceControlOwnsEntry&&placementAuthorized?findClassicalNahuatlSentenceParticleEntry(entry?.id):null;
+      const conjunctionRouteRequired=entry?.functionScope==="conjunctor";
+      const wishCarrierProfile=getClassicalNahuatlParticleWishCarrierProfile(entry);
+      const sentenceFrame=canonicalInput.canonicalInputKind==="classical-nahuatl-vnc-sentence-result-frame"?canonicalInput.canonicalInputFrame.sentenceSurfaceFrame:null;
+      const particles=sentenceFrame?.sentenceParticles||[];
+      const wishCarrierLicensed=!wishCarrierProfile||Boolean(canonicalInput.authorizationStatus==="authorized"
+        && sentenceFrame?.mood==="optative" && sentenceFrame.lesson9SentenceType==="wish-sentence"
+        && sentenceFrame.introductoryParticle==="mā" && particles.filter(x=>x==="mā").length===1
+        && particles.every(x=>["mā","ō#"].includes(x)) && sentenceFrame.lesson9NegativeRequested===false
+        && sentenceFrame.negativePrefixOutsideVnc===false && !honorificized);
+      return {baseEntry,specializedSentenceControlOwnsEntry,placementAuthorized,conjunctionRouteRequired,wishCarrierProfile,wishCarrierLicensed};
+    }
     function buildClassicalNahuatlSentenceParticleLayerFrame(options = {}) {
       if (!options || typeof options !== "object") {
         options = {};
@@ -3468,23 +3507,18 @@ l50-ma-tel-za-yeh|although it may be only; at least|restrictive concession; form
         ? null
         : getClassicalNahuatlParticleSourceEntries()
           .find(entry => entry.id === requestedParticleId) || null;
-      const specializedSentenceControlOwnsEntry = CLASSICAL_NAHUATL_SPECIALIZED_SENTENCE_PARTICLE_IDS.includes(inventoryEntry?.id);
-      const placementAuthorized = [
-        "clause-initial",
-        "independent-utterance",
-        "collocation-sequence",
-        "floating"
-      ].includes(inventoryEntry?.placement?.scope);
-      const baseSelectedEntry = !specializedSentenceControlOwnsEntry && placementAuthorized
-        ? findClassicalNahuatlSentenceParticleEntry(requestedParticleId)
-        : null;
+      const lexicalGuard=getSentenceParticleEntryGuard(inventoryEntry,canonicalInput,honorificizedRequested);
+      const {specializedSentenceControlOwnsEntry,placementAuthorized}=lexicalGuard;
+      const baseSelectedEntry=lexicalGuard.baseEntry;
       const honorificizedEntryId = honorificizedRequested ? CLASSICAL_NAHUATL_SENTENCE_PARTICLE_HONORIFIC_IDS[baseSelectedEntry?.id] || "" : "";
-      const honorificSourceFrame = honorificizedRequested && baseSelectedEntry
+      const honorificCandidateId=CLASSICAL_NAHUATL_SENTENCE_PARTICLE_HONORIFIC_IDS[baseSelectedEntry?.id] || "";
+      const honorificCandidateSourceFrame = baseSelectedEntry
         ? buildClassicalNahuatlParticleHonorificSourceFrame({
-            ...(honorificizedEntryId ? { targetId: honorificizedEntryId }
+            ...(honorificCandidateId ? { targetId: honorificCandidateId }
               : { particleSourceFrame })
           })
         : null;
+      const honorificSourceFrame=honorificizedRequested?honorificCandidateSourceFrame:null;
       const particleResultFrame = honorificSourceFrame
         ? evaluateClassicalNahuatlParticleHonorificFormation(
             honorificSourceFrame
@@ -3524,24 +3558,12 @@ l50-ma-tel-za-yeh|although it may be only; at least|restrictive concession; form
         === "independent-utterance";
       // A conjunctor needs the clause owner's signed relation and conjuncts.
       // Its lexical particle Result alone cannot authorize a prefix layer.
-      const conjunctionRouteRequired = syntacticEntry?.functionScope === "conjunctor";
+      const {conjunctionRouteRequired,wishCarrierProfile,wishCarrierLicensed}=getSentenceParticleEntryGuard(syntacticEntry,canonicalInput,honorificizedRequested);
       const independentUtterance = false;
       const sentenceFrame = canonicalInput.canonicalInputKind
           === "classical-nahuatl-vnc-sentence-result-frame"
         ? canonicalInput.canonicalInputFrame.sentenceSurfaceFrame : null;
-      const wishCarrierProfile = getClassicalNahuatlParticleWishCarrierProfile(syntacticEntry);
       const wishParticles = sentenceFrame?.sentenceParticles || [];
-      const wishCarrierLicensed = !wishCarrierProfile || Boolean(
-        canonicalInput.authorizationStatus === "authorized"
-        && sentenceFrame?.mood === "optative"
-        && sentenceFrame.lesson9SentenceType === "wish-sentence"
-        && sentenceFrame.introductoryParticle === "mā"
-        && wishParticles.filter(particle => particle === "mā").length === 1
-        && wishParticles.every(particle => ["mā", "ō#"].includes(particle))
-        && sentenceFrame.lesson9NegativeRequested === false
-        && sentenceFrame.negativePrefixOutsideVnc === false
-        && !honorificizedRequested
-      );
       const authorized = !particleOmitted
         && !unexpectedOptionKey
         && !authorityPath
@@ -3678,6 +3700,17 @@ l50-ma-tel-za-yeh|although it may be only; at least|restrictive concession; form
         kind: "classical-nahuatl-sentence-particle-layer-frame",
         version: CLASSICAL_NAHUATL_LESSON3_PARTICLES_VERSION,
         requestedParticleId,
+        choiceOptionProjection:particleChoiceProjection({
+          particleId:particleChoiceField("particleId",clauseKindAllowed&&!unexpectedOptionKey
+            ? inputParticleResultSupplied ? inputParticleResultAuthorized?[requestedParticleId]:[]
+              : ["",...getClassicalNahuatlSentenceParticleEntries().filter(entry=>{const guard=getSentenceParticleEntryGuard(entry,canonicalInput,honorificizedRequested);return guard.baseEntry&&!guard.conjunctionRouteRequired&&guard.wishCarrierLicensed;}).map(entry=>({optionId:entry.id,label:entry.sourceForm,availabilityStatus:"available"}))]
+            : [],requestedParticleId,requestedParticleId,{editable:!inputParticleResultSupplied}),
+          honorificized:particleChoiceField("honorificized",
+            particleSourceAuthorized && inputParticleResultAuthorized && !particleInputsConflict && !unexpectedOptionKey
+              ? honorificCandidateSourceFrame?.authorizationStatus==="authorized" ? [false,true] : [false] : [],
+            options.honorificized,honorificizedRequested,{applicable:honorificCandidateSourceFrame?.authorizationStatus==="authorized" || honorificizedRequested}),
+          speakerGender:particleChoiceField("speakerGender",requiredSpeakerGender?[requiredSpeakerGender]:[],
+            options.speakerGender,speakerGender,{applicable:Boolean(requiredSpeakerGender),editable:Boolean(requiredSpeakerGender)})}),
         contextualNncSentenceFrame,
         wishCarrierCompositionFrame,
         particleOmitted,

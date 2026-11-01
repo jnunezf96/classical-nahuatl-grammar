@@ -1,13 +1,13 @@
-# Grammar OS v1.2.126 release
+# Grammar OS v1.2.127 release
 
-Release name: **Unified Late Verbal Decisions**
+Release name: **Shared Owner Decisions**
 
-Browser build: **20261029-owner-decisions-145**
+Browser build: **20261031-owner-decisions-146**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
-- Frequentative, compound, purposive, honorific, reverential and pejorative choices use one canonical decision for their offered values, admission, preview and execution.
-- Exact continuation, typed compound-predicate input and existing raw attitude routes retain their owner-issued requests and Source identities.
-- Native and compact controls stage primitive choices without rebuilding executable grammar or changing accepted Results. Make remains explicit.
-- Incomplete and incompatible choices retain owner-backed recovery; copied or stale decisions cannot authorize execution.
-- Other grammatical families and raw Source declaration rules remain outside this consolidation.
+- Existing noun, particle, sentence, finite-verb, relational and deverbal paths reuse their canonical decisions for choices, recovery, preview and explicit Make.
+- Nominal receiving paths preserve the owner-approved finite coordinate and exact prepared Result. Possessor transfer retains a required reference choice and rejects contradictions with retained participant facts.
+- Staging retains the accepted Result and History. Copied, stale or incompatible authority cannot authorize execution.
+- The existing Source restoration correction preserves accepted lexical analysis. No panels were added.
+- This is an incremental consolidation release. Remaining family projections and full Source authoring consolidation remain unfinished; the operation count is unchanged.

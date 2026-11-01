@@ -8,7 +8,7 @@ import {
   CLASSICAL_NAHUATL_VNC_DERIVATION_TYPES,
   normalizeClassicalNahuatlVncDerivationType,
   validateClassicalNahuatlVncDerivationTypeSelection,
-} from "../../core/classical/vnc_derivation_evaluator.mjs?v=20260823-rhyme-coordinate-preservation-240&andrewsRelease=20261024-1";
+} from "../../core/classical/vnc_derivation_evaluator.mjs?v=20260823-rhyme-coordinate-preservation-240&andrewsRelease=20261024-1&ownerDecision=20261031-1";
 import {
   GENERATION_SOURCE_TRANSITIVITY,
   GENERATION_SOURCE_TRANSITIVITY_ORDER,
@@ -11505,6 +11505,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       return targetObject.isClassicalNahuatlSelectedImperfectPredicateSourceFrame(source) ? source : null;
     }
     function getClassicalRelationalNncUiRequest() {
+      const retained=targetObject.getClassicalRetainedRelationalRequest?.();if(retained)return retained;
       const elements = getClassicalRelationalNncUiElements();
       const selectedStem = elements.stem?.selectedOptions?.[0] || null;
       const stemId = String(selectedStem?.dataset?.classicalRelationalStemId || "");
@@ -11738,6 +11739,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       return true;
     }
     function syncClassicalRelationalNncUiControls({ render = false } = {}) {
+      if(targetObject.syncClassicalRelationalOwnerDecision?.())return true;
       const elements = getClassicalRelationalNncUiElements();
       const stemControl = populateClassicalRelationalNncStemOptions();
       if (!stemControl) {
