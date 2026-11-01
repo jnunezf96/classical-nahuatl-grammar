@@ -9,7 +9,7 @@ const noun=r.executeClassicalGrammarApplicationRequest({operationId:'nnc:ordinar
 const choices={relation:'object-complement',semanticCategory:'designation',linkKind:'object-subject',designationStructure:'ordinary-object-complement',complementOrder:'complement-principal'};
 test('complement choices use current canonical predicate eligibility before Make and recover after recapture',()=>{
  const target=Object.create(r);let probes=0,executions=0;
- Object.defineProperties(target,{evaluateClassicalNahuatlClauseComplementation:{value:(...a)=>{probes++;return r.evaluateClassicalNahuatlClauseComplementation(...a);}},requestClassicalClauseCompositionResult:{value:(...a)=>{executions++;return r.requestClassicalClauseCompositionResult(...a);}}});
+ Object.defineProperties(target,{evaluateClassicalNahuatlClauseComplementation:{value:(...a)=>{probes++;return r.evaluateClassicalNahuatlClauseComplementation(...a);}},executeClassicalGrammarApplicationRequest:{value:(...a)=>{executions++;return r.executeClassicalGrammarApplicationRequest(...a);}}});
  const c=createClassicalClauseRelationControllerGlobals(target).createClassicalClauseRelationController();
  const wrong=verb('tēm-o-ā'),right=verb('iht-o-ā');
  assert.equal(c.captureCurrentResult('principal',wrong).authorizationStatus,'authorized');assert.equal(c.captureCurrentResult('adjoined',noun).authorizationStatus,'authorized');

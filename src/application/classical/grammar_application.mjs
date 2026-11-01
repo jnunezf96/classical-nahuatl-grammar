@@ -9651,22 +9651,25 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
     const requestedOperation=Object.getOwnPropertyDescriptor(request || {},"operationId")?.value;
     const decisionLane=Boolean(ROUTE_DEFINITIONS[requestedOperation]?.decisionValidatorName);
     const nncLane=["nnc:ordinary","nnc:pronominal"].includes(requestedOperation);
+    const relationCandidate = ["nnc:adjectival-modification", "sentence:supplementation", "clause:adverbial-adjunction", "clause:composition"].includes(requestedOperation);
     const particleLane=requestedOperation==="particle:result"
       || CLASSICAL_GRAMMAR_APPLICATION_RESULT_BINDING_CONTRACTS[requestedOperation]?.family==="particle-sentence";
     let captured;
-    try { captured = capturePreparedAttitudeData(request,0,new WeakSet(),particleLane||decisionLane||nncLane); } catch { return null; }
+    try { captured = capturePreparedAttitudeData(request,0,new WeakSet(),particleLane||decisionLane||nncLane||relationCandidate); } catch { return null; }
     let validated;
     try { validated=validateClassicalGrammarApplicationRequest(captured); } catch { return null; }
+    const relationLane = relationCandidate && (requestedOperation !== "clause:composition"
+      || ["object-complement", "subject-complement", "adverbial-complement"].includes(captured.args?.[0]?.operationKind));
     if ((validated.outputKind !== DEFAULT_APPLICATION_OUTPUT_KIND && !(validated.operationId === "nnc:personal-name" && validated.outputKind === "sentence-operation")) || !validated.authorityCarrierClear
       || !validated.typedApplicationRequest || !validated.semanticOperationIdentity
-      || !particleLane && !decisionLane && !nncLane && (validated.operationId !== "vnc:derivational-operation" || validated.args.length !== 1
+      || !particleLane && !decisionLane && !nncLane && !relationLane && (validated.operationId !== "vnc:derivational-operation" || validated.args.length !== 1
         || !["honorific", "reverential"].includes(validated.args[0]?.lateOperation))) return null;
     const capability = resolveCanonicalCallableCapability(targetObject, validated.outputContract.capabilityName, api);
     if (!getCanonicalApplicationState(targetObject, api) || !capability) return null;
     const canonicalResult = Reflect.apply(capability.capability, targetObject, validated.args);
     if (getClassicalVisibleSurfaceViolation(canonicalResult)
       || !isRecognizedPreparedOwnerResult(validated,canonicalResult)) return null;
-    return retainPreparedApplicationResult(captured,validated,canonicalResult,capability.capability,null,particleLane||decisionLane||nncLane);
+    return retainPreparedApplicationResult(captured,validated,canonicalResult,capability.capability,null,particleLane||decisionLane||nncLane||relationLane);
   }
 
   function retainPreparedApplicationResult(captured,validated,canonicalResult,capability,binding=null,particleLane=true,bindingValidator=null) {

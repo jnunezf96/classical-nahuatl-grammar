@@ -1031,20 +1031,43 @@ function expectedAdjunctorValues(topology) {
     : ["none", "in"];
 }
 
+function adjectivalReferenceContacts(clause, context = {}) {
+  if (!clause) return [];
+  if (clause.clauseClass === "supplementation-structure") {
+    return isPreposedModifierContext(context)
+      ? clause.supplementationPossessorContactFrame ? ["supplement-possessor"] : []
+      : clause.supplementationPossessorContactFrame ? ["shared-subject", "supplement-possessor"] : ["shared-subject"];
+  }
+  return clause.clauseClass === "transitive-vnc"
+    ? hasIndependentObjectContact(clause) ? ["vnc-subject", "vnc-object"] : ["vnc-subject"]
+    : ["shared-subject"];
+}
+function adjectivalChoiceDomains(head, modifier, dependent, {topology = "", order = "", adjunctor = ""} = {}) {
+  const {scope, retainedHeadIn} = adjectivalCompositionScope({topology, order, adjunctor}, head || {});
+  return deepFreeze({scope, retainedHeadIn, topologies: MODIFICATION_TOPOLOGIES,
+    orders: expectedOrderValues(topology), adjunctors: expectedAdjunctorValues(topology),
+    dependentRequired: ["cooperating-preposed-nonpreposed", "discontinuous"].includes(topology),
+    linkRoles: adjectivalReferenceContacts(modifier, {topology, order}),
+    dependentLinkRoles: adjectivalReferenceContacts(dependent, {order: "head-modifier"}),
+    compoundHeadTargets: head?.compoundHead ? ["compound-matrix", "compound-whole"] : ["simple-head"],
+  });
+}
+
 function buildSelection(request, head, modifiers) {
   const topology = choose(
     request.topology || "ordinary",
     MODIFICATION_TOPOLOGIES,
     "",
   );
-  const allowedOrders = expectedOrderValues(topology);
+  const domains = adjectivalChoiceDomains(head, modifiers[0], modifiers[1], {topology, order: request.order});
+  const allowedOrders = domains.orders;
   const defaultOrder = topology === "ordinary"
     ? "head-modifier"
     : topology === "cooperating-preposed-nonpreposed"
       ? "cooperating-preposed-nonpreposed"
       : "discontinuous-head-first";
   const order = choose(request.order || defaultOrder, allowedOrders, "");
-  const allowedAdjunctors = expectedAdjunctorValues(topology);
+  const allowedAdjunctors = domains.adjunctors;
   const adjunctor = choose(
     request.adjunctor || "none",
     allowedAdjunctors,
@@ -1072,7 +1095,7 @@ function buildSelection(request, head, modifiers) {
       ? Object.hasOwn(request, "linkRole")
       : index - 1 < additionalLinkRoleInputs.length;
     return modifier.clauseClass === "transitive-vnc"
-      ? choose(supplied, ["vnc-subject", "vnc-object"], "")
+      ? choose(supplied, adjectivalReferenceContacts(modifier, {topology, order}), "")
       : modifier.supplementationPossessorContactFrame
         && index === 0 && (isPreposedModifierContext({order, topology}) || supplied === "supplement-possessor")
         ? suppliedPresent ? choose(supplied, ["supplement-possessor"], "") : "supplement-possessor"
@@ -1084,7 +1107,7 @@ function buildSelection(request, head, modifiers) {
   const compoundHeadTarget = head.compoundHead
     ? choose(
         request.compoundHeadTarget || "compound-matrix",
-        ["compound-matrix", "compound-whole"],
+        domains.compoundHeadTargets,
         "",
       )
     : Object.hasOwn(request, "compoundHeadTarget")
@@ -1230,6 +1253,19 @@ function validateSelection(
   return "";
 }
 
+function adjectivalCompositionScope(selection, head) {
+  const retainedHeadIn = selection.topology === 'ordinary'
+    && selection.order === 'modifier-head-preposed' && head.leadingClauseMarker === 'in';
+  const markedPreposed = retainedHeadIn || (
+    selection.order === "modifier-head-preposed"
+      && selection.adjunctor === "in"
+  ) || (
+    selection.topology === "cooperating-preposed-nonpreposed"
+      && ["preposed-in", "both-in"].includes(selection.adjunctor)
+  );
+  return {scope: markedPreposed ? "adjoined-unit" : "complete-sentence", retainedHeadIn};
+}
+
 function deriveReadOnlyFacts(
   selection,
   head,
@@ -1242,23 +1278,13 @@ function deriveReadOnlyFacts(
     discourseSourceContextFrame,
   );
   const exceptionProfile = getPrimaryExceptionProfile(exceptionProfiles);
-  const retainedHeadIn = selection.topology === 'ordinary'
-    && selection.order === 'modifier-head-preposed' && head.leadingClauseMarker === 'in';
-  const markedPreposed = retainedHeadIn || (
-    selection.order === "modifier-head-preposed"
-      && selection.adjunctor === "in"
-  ) || (
-    selection.topology === "cooperating-preposed-nonpreposed"
-      && ["preposed-in", "both-in"].includes(selection.adjunctor)
-  );
+  const {scope, retainedHeadIn} = adjectivalCompositionScope(selection, head);
   return deepFreeze({
     operationKind: OPERATION_KIND,
     modifierClauseType: modifiers.length > 1
       ? "cooperating-clausal-modifiers"
       : deriveModifierClauseType(modifiers[0]),
-    compositionScope: markedPreposed
-      ? "adjoined-unit"
-      : "complete-sentence",
+    compositionScope: scope,
     sentencePunctuation: head.sentencePunctuation || ".",
     retainedHeadMarker: retainedHeadIn ? 'in' : '',
     retainedHeadMarkerOrigin: retainedHeadIn ? 'owner-issued-head-layer' : '',
@@ -2091,17 +2117,15 @@ export function createClassicalNahuatlClosureModule(
     getClassicalNahuatlAdjectivalModifierClauseType:
       source => getSelectedCanonicalClause(targetObject, source, "modifier")
         ?.clauseClass || "",
-    getClassicalNahuatlAdjectivalModifierReferenceContacts: (source, context = {}) => {
-      const clause = getSelectedCanonicalClause(targetObject, source, "modifier");
-      if (!clause) return Object.freeze([]);
-      if (clause.clauseClass === "supplementation-structure") {
-        return Object.freeze(isPreposedModifierContext(context)
-          ? clause.supplementationPossessorContactFrame ? ["supplement-possessor"] : []
-          : clause.supplementationPossessorContactFrame ? ["shared-subject", "supplement-possessor"] : ["shared-subject"]);
-      }
-      return Object.freeze(clause.clauseClass === "transitive-vnc"
-        ? hasIndependentObjectContact(clause) ? ["vnc-subject", "vnc-object"] : ["vnc-subject"]
-        : ["shared-subject"]);
+    getClassicalNahuatlAdjectivalModifierReferenceContacts: (source, context = {}) =>
+      Object.freeze(adjectivalReferenceContacts(getSelectedCanonicalClause(targetObject, source, "modifier"), context)),
+    getClassicalNahuatlAdjectivalModificationChoiceDomains: (request = {}) => {
+      const head = request.head ? getSelectedCanonicalClause(targetObject, request.head, "head") : null;
+      const modifier = request.modifier ? getSelectedCanonicalClause(targetObject, request.modifier, "modifier") : null;
+      const dependentRequired = ["cooperating-preposed-nonpreposed", "discontinuous"].includes(request.topology);
+      const dependent = dependentRequired && request.dependent ? getSelectedCanonicalClause(targetObject, request.dependent, "modifier-2") : null;
+      if (request.head && !head || request.modifier && !modifier || dependentRequired && request.dependent && !dependent) return null;
+      return adjectivalChoiceDomains(head, modifier, dependent, request);
     },
     getClassicalNahuatlAdjectivalSupplementationPossessorContactFrame: (head, modifier) => {
       const headClause = getSelectedCanonicalClause(targetObject, head, "head");

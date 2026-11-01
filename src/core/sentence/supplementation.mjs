@@ -79,6 +79,15 @@ const OPERATION_OPTION_FIELDS = Object.freeze({
   ]),
   "such-that-adjunction": Object.freeze([]),
 });
+const SUPPLEMENTATION_SCALAR_DOMAINS = Object.freeze({
+  referenceMode: Object.freeze(["shared", "included", "absolute-topic", "reduced-copula"]),
+  contactRole: Object.freeze(["subject", "object", "possessor"]),
+  order: Object.freeze(["principal-first", "supplement-first", "discontinuous"]),
+  speechDirectness: Object.freeze(["direct", "indirect"]),
+  companionOrder: Object.freeze(["clause-first", "vocative-first"]),
+  reportAdjunctor: Object.freeze(["in", "none"]),
+  boolean: Object.freeze([false, true]), personalPronounVariant: Object.freeze(["default", "y-initial"]),
+});
 const FORBIDDEN_REQUEST_AUTHORITY_FIELDS = Object.freeze([
   "formula",
   "formulaRealization",
@@ -3775,6 +3784,13 @@ export function createClassicalNahuatlSupplementationApi(
     );
   }
 
+  function getIncludedContentHeadRoles(principalClause) {
+    const group = normalizeToken(principalClause?.semanticGroup);
+    if (["speech", "saying", "wish", "perception", "cognition", "causing", "requesting"].includes(group))
+      return [...(principalClause?.objects?.length ? ["object"] : []), ...(group === "wish" && isTypedReflexiveNequiPrincipal(principalClause) ? ["subject"] : [])];
+    if (group === "affect") return ["subject"];
+    return null;
+  }
   function validateComplementPolicy(principalClause, supplementClause, options) {
     const group = normalizeToken(principalClause.semanticGroup);
     if (!group) {
@@ -3800,54 +3816,18 @@ export function createClassicalNahuatlSupplementationApi(
     const reflexiveNequiSubject = group === "wish"
       && headRole === "subject"
       && isTypedReflexiveNequiPrincipal(principalClause);
-    const objectContentGroups = [
-      "speech",
-      "saying",
-      "wish",
-      "perception",
-      "cognition",
-      "causing",
-      "requesting",
-    ];
-    let authorized = true;
-    let blockReason = "";
-    if (
-      objectContentGroups.includes(group)
-      && headRole !== "object"
-      && !reflexiveNequiSubject
-    ) {
-      authorized = false;
-      blockReason = "included-content-complement-requires-object-head";
-    } else if (group === "affect" && headRole !== "subject") {
-      authorized = false;
-      blockReason = "affect-complement-requires-supplementary-subject";
-    }
+    const contentHeadRoles = getIncludedContentHeadRoles(principalClause);
+    let authorized = !contentHeadRoles || contentHeadRoles.includes(headRole);
+    let blockReason = authorized ? "" : group === "affect" ? "affect-complement-requires-supplementary-subject" : "included-content-complement-requires-object-head";
     if (authorized && (group === "speech" || group === "saying")) {
-      authorized = ["direct", "indirect"].includes(speechDirectness)
+      authorized = SUPPLEMENTATION_SCALAR_DOMAINS.speechDirectness.includes(speechDirectness)
         && ["statement", "question", "command", "wish", "exclamation"].includes(speechAct);
       // 19.3 contrasts future-indicative reported instructions with
       // Xiquilhui mā oc huālmocuepa, retaining the nonpast optative.
       // The clause owner calls optative clauses wishes; reporting them
       // does not require replacing their issued mood or tense.
     } else if (authorized && group === "wish") {
-      if (realizability === "realizable") {
-        authorized = (
-          (mood === "indicative" && tense === "future")
-          || (mood === "optative" && ["nonpast", "future"].includes(tense))
-        );
-      } else if (realizability === "present-or-future-impossible") {
-        // 9.5: an expressed ō# restricts the past optative to a past
-        // event; it contradicts an explicitly present/future-only context.
-        authorized = mood === "optative"
-          && tense === "past"
-          && !supplementClause.antecessiveOrder;
-      } else if (realizability === "past-counterfactual") {
-        // 19.3.3.c says ō# usually precedes this past optative, not that
-        // it must. 9.5 explicitly gives the same past regret without ō#.
-        authorized = mood === "optative" && tense === "past";
-      } else {
-        authorized = false;
-      }
+      authorized = getWishRealizabilityValues(supplementClause).includes(realizability);
       blockReason = authorized ? "" : "wish-complement-mood-tense-condition-failed";
     } else if (authorized && group === "perception") {
       // 19.3.3.d describes the ordinary VNC tense, not an exclusive
@@ -4238,13 +4218,13 @@ export function createClassicalNahuatlSupplementationApi(
       contactRole,
       options.supplementObjectId
     );
-    if (!["shared", "included", "absolute-topic", "reduced-copula"].includes(referenceMode)) {
+    if (!SUPPLEMENTATION_SCALAR_DOMAINS.referenceMode.includes(referenceMode)) {
       return blockedSupplementationFrame("unknown-supplementation-reference-mode", {
         principalClause,
         supplementClause,
       });
     }
-    if (!["subject", "object", "possessor"].includes(headRole) || !principalHead) {
+    if (!SUPPLEMENTATION_SCALAR_DOMAINS.contactRole.includes(headRole) || !principalHead) {
       return blockedSupplementationFrame("typed-principal-personal-head-required", {
         principalClause,
         supplementClause,
@@ -4298,7 +4278,7 @@ export function createClassicalNahuatlSupplementationApi(
       );
     }
     if (
-      !["subject", "object", "possessor"].includes(contactRole)
+      !SUPPLEMENTATION_SCALAR_DOMAINS.contactRole.includes(contactRole)
       || (
         ["shared", "absolute-topic"].includes(referenceMode)
         && !supplementContact
@@ -4545,13 +4525,13 @@ export function createClassicalNahuatlSupplementationApi(
         { principalClause, supplementClause }
       );
     }
-    if (!["principal-first", "supplement-first", "discontinuous"].includes(order)) {
+    if (!SUPPLEMENTATION_SCALAR_DOMAINS.order.includes(order)) {
       return blockedSupplementationFrame("unknown-supplementation-linear-order", {
         principalClause,
         supplementClause,
       });
     }
-    if (options.commentEmphaticCa === true && order !== "supplement-first") {
+    if (options.commentEmphaticCa === true && !getSupplementationOrderValues(principalClause, supplementClause, {referenceMode, markerSemantic:"ca"}).includes(order)) {
       return blockedSupplementationFrame(
         "comment-emphatic-ca-requires-topic-before-comment-order",
         { principalClause, supplementClause }
@@ -4564,55 +4544,14 @@ export function createClassicalNahuatlSupplementationApi(
       });
     }
     const informationQuestion = options.informationQuestion === true;
-    if (
-      informationQuestion
-      && (
-        referenceMode !== "shared"
-        || !(order === "supplement-first"
-          || (order === "discontinuous"
-            && (options.discontinuousHeadPosition || "last") === "last"))
-        || supplementClause.unitKind !== "nnc"
-        || !supplementClause.interrogativeKind
-      )
-    ) {
-      return blockedSupplementationFrame(
-        "information-question-requires-initial-interrogative-nnc-supplement",
-        { principalClause, supplementClause }
-      );
-    }
+    const questionFailure = informationQuestion ? getInformationQuestionBlockReason(supplementClause,
+      {referenceMode, order, discontinuousHeadPosition: options.discontinuousHeadPosition || "last"}) : "";
+    if (questionFailure) return blockedSupplementationFrame(questionFailure, {principalClause, supplementClause});
+    const antecessivePlacements = getSupplementationAntecessivePlacements(principalClause, supplementClause, {referenceMode, headRole, order});
     const integratedAntecessive = options.integratedAntecessive === true;
-    if (
-      integratedAntecessive
-      && (
-        order !== "supplement-first"
-        || principalClause.unitKind !== "vnc"
-        || !principalClause.antecessiveOrder
-        || !["subject", "object"].includes(headRole)
-        || referenceMode !== "shared"
-      )
-    ) {
-      return blockedSupplementationFrame(
-        "integrated-antecessive-conditions-not-met",
-        { principalClause, supplementClause }
-      );
-    }
-    const includedAntecessiveJump =
-      options.includedAntecessiveJump === true;
-    if (
-      includedAntecessiveJump
-      && (
-        referenceMode !== "included"
-        || principalClause.unitKind !== "nnc"
-        || supplementClause.unitKind !== "vnc"
-        || !supplementClause.antecessiveOrder
-        || !["subject", "possessor"].includes(headRole)
-      )
-    ) {
-      return blockedSupplementationFrame(
-        "included-antecessive-jump-conditions-not-met",
-        { principalClause, supplementClause }
-      );
-    }
+    if (integratedAntecessive && !antecessivePlacements.includes("integrate-with-supplement")) return blockedSupplementationFrame("integrated-antecessive-conditions-not-met", {principalClause, supplementClause});
+    const includedAntecessiveJump = options.includedAntecessiveJump === true;
+    if (includedAntecessiveJump && !antecessivePlacements.includes("move-to-principal")) return blockedSupplementationFrame("included-antecessive-jump-conditions-not-met", {principalClause, supplementClause});
     const complementPolicy = referenceMode === "included"
       ? validateComplementPolicy(principalClause, supplementClause, {
           ...options,
@@ -5220,20 +5159,9 @@ export function createClassicalNahuatlSupplementationApi(
             userSelectableGrammar: false,
           })
         : null;
-    const normalizedPrincipalStem = normalizeLexicalStem(
-      principalClause.sourceStem
-    );
-    const coreferentialFutureEligible = [
-      "mati",
-      "il-namiqui",
-      "il-cahua",
-      "ilcahua",
-      "nequi",
-      "qui",
-    ].some(stem => (
-      normalizedPrincipalStem === stem
-      || normalizedPrincipalStem.endsWith(`-${stem}`)
-    ));
+    const futureFacts = getCoreferentialFutureFacts(principalClause, supplementClause);
+    const normalizedPrincipalStem = futureFacts.stem;
+    const coreferentialFutureEligible = futureFacts.eligible;
     const coreferentialFutureFrame = coreferentialFutureEligible
       ? freezeDeep({
           kind:
@@ -5887,9 +5815,7 @@ export function createClassicalNahuatlSupplementationApi(
       )
     );
     if (
-      !["default", "y-initial"].includes(
-        normalizedPersonalPronounVariant
-      )
+      !SUPPLEMENTATION_SCALAR_DOMAINS.personalPronounVariant.includes(normalizedPersonalPronounVariant)
       || yInitialVariantRequested
         && !eligibleVariantConstituents.length
     ) {
@@ -6356,6 +6282,100 @@ export function createClassicalNahuatlSupplementationApi(
       : null;
   }
 
+  function getSupplementationAntecessivePlacements(principal, supplement, {referenceMode, headRole, order}) {
+    return referenceMode === "shared" && order === "supplement-first" && principal?.unitKind === "vnc"
+      && principal.antecessiveOrder && ["subject", "object"].includes(headRole)
+      ? ["retain-with-vnc", "integrate-with-supplement"]
+      : referenceMode === "included" && principal?.unitKind === "nnc" && supplement?.unitKind === "vnc"
+        && supplement.antecessiveOrder && ["subject", "possessor"].includes(headRole)
+        ? ["retain-with-vnc", "move-to-principal"] : ["retain-with-vnc"];
+  }
+  function getInformationQuestionBlockReason(supplement, {referenceMode, order, discontinuousHeadPosition = "last"}) {
+    return referenceMode === "shared" && (order === "supplement-first" || order === "discontinuous" && discontinuousHeadPosition === "last")
+      && supplement?.unitKind === "nnc" && supplement.interrogativeKind ? "" : "information-question-requires-initial-interrogative-nnc-supplement";
+  }
+  function getSupplementationOrderValues(principal, supplement, {referenceMode, markerSemantic, informationQuestion}) {
+    const orders = referenceMode === "reduced-copula" ? ["principal-first"] : markerSemantic === "ca" ? ["supplement-first"]
+      : SUPPLEMENTATION_SCALAR_DOMAINS.order;
+    return orders.filter(order => !informationQuestion || !getInformationQuestionBlockReason(supplement, {referenceMode, order}));
+  }
+  function getCoreferentialFutureFacts(principal, supplement) {
+    const stem = normalizeLexicalStem(principal?.sourceStem);
+    const eligible = ["mati", "il-namiqui", "il-cahua", "ilcahua", "nequi", "qui"].some(value => stem === value || stem.endsWith(`-${value}`));
+    return {eligible, stem, futureVnc: supplement?.unitKind === "vnc" && supplement.tense === "future",
+      sameSubjectCategory: principal?.subject?.category === supplement?.subject?.category};
+  }
+  function getClassicalNahuatlSupplementationFutureReferenceDecision(principal, supplement, {referenceMode, headRole} = {}) {
+    if (!isClassicalNahuatlSupplementationClauseEnvelope(principal) || !isClassicalNahuatlSupplementationClauseEnvelope(supplement)) return null;
+    const facts = getCoreferentialFutureFacts(principal, supplement);
+    return freezeDeep({sameSubjectFuture: referenceMode === "included" && headRole === "object" && facts.eligible && facts.futureVnc && facts.sameSubjectCategory});
+  }
+  function getClassicalNahuatlSupplementationChoiceDomains({principalClause: principal = null, supplementClause: supplement = null,
+    referenceMode = "shared", headRole = "subject", contactRole = "subject", order = "principal-first", markerSemantic = "",
+    principalContinuation = null, supplementContinuation = null, principalObjectId = ""} = {}) {
+    if (principal && !isClassicalNahuatlSupplementationClauseEnvelope(principal)
+      || supplement && !isClassicalNahuatlSupplementationClauseEnvelope(supplement)) return null;
+    const interrogative = Boolean(supplement?.interrogativeKind && !supplementContinuation);
+    const reducedCopula = targetObject.getClassicalReducedCopulaPredicateSource?.(clauseEnvelopeSources.get(principal));
+    const referenceModes = reducedCopula ? ["reduced-copula", "shared", "included", "absolute-topic"] : interrogative ? ["shared"] : ["shared", "included", "absolute-topic"];
+    const contentHeadRoles = getIncludedContentHeadRoles(principal);
+    const headRoles = (referenceMode === "absolute-topic" ? ["subject"]
+      : referenceMode === "included" && contentHeadRoles ? contentHeadRoles
+      : ["nnc", "vnc"].includes(principal?.unitKind) ? ["subject", ...(principal.objects?.length ? ["object"] : []), ...(principal.possessor ? ["possessor"] : [])] : [])
+      .filter(role => role !== "subject" || principal?.subject?.participantFrame?.hasReferent !== false
+        || referenceMode === "absolute-topic" || referenceMode === "reduced-copula" && reducedCopula
+        || referenceMode === "shared" && hasTransformedImpersonalSubjectDomain(principal));
+    const object = principal?.objects?.find(item => item.id === principalObjectId) || (principal?.objects?.length === 1 ? principal.objects[0] : null);
+    const locativeEnvelope = object?.referenceId && supplement ? buildClassicalNahuatlSupplementationClauseEnvelope(clauseEnvelopeSources.get(supplement),
+      {referenceId: supplement.referenceId, subjectReferenceId: object.referenceId}) : null;
+    const designatingLocativeContact = referenceMode === "shared" && headRole === "object" && object && locativeEnvelope
+      ? buildDesignatingLocativeSupplementFrame(principal, locativeEnvelope, object, locativeEnvelope.subject,
+        {referenceMode, headRole, contactRole: "subject", principalContinuationFrames: principalContinuation ? [principalContinuation] : []}) : null;
+    const contactRoles = referenceMode === "included" ? ["subject"]
+      : referenceMode === "absolute-topic" ? supplement?.subject?.participantFrame?.hasReferent === false ? [] : ["subject"]
+      : [...(supplement?.subject && (supplement.subject.participantFrame?.hasReferent !== false || designatingLocativeContact) ? ["subject"] : []),
+        ...(supplement?.objects?.length ? ["object"] : []), ...(supplement?.possessor ? ["possessor"] : [])];
+    const antecessivePlacements = getSupplementationAntecessivePlacements(principal, supplement, {referenceMode, headRole, order});
+    const contextualPair = [principal, supplement].map(clause => clause ? buildClassicalNahuatlSupplementationClauseEnvelope(clauseEnvelopeSources.get(clause),
+      {referenceId: "first-person-context", subjectReferenceId: "first-person-context"}) : null);
+    if (order === "supplement-first") contextualPair.reverse();
+    const contextualSilentEligible = referenceMode === "shared" && Boolean(buildClassicalNahuatlConcatenatedFirstPersonProjection(...contextualPair));
+    const nestedPossessorContacts = []; const seen = new Set();
+    const visit = frame => {if (!isClassicalNahuatlSupplementationFrame(frame) || seen.has(frame)) return; seen.add(frame);
+      for (const clause of [frame.principalClause, frame.supplementClause]) if (clause?.possessor && !nestedPossessorContacts.includes(clause)) nestedPossessorContacts.push(clause);
+      for (const child of [...(frame.principalContinuationFrames || []), ...(frame.supplementContinuationFrames || [])]) visit(child);
+    }; if (referenceMode === "shared") visit(principalContinuation);
+    const canReuseIntervener = referenceMode === "shared" && headRole === "subject" && contactRole === "subject"
+      && order === (supplementContinuation?.linearizationFrame?.discontinuousHeadPosition === "first" || supplementContinuation?.order === "discontinuous-head-first" ? "supplement-first" : "principal-first")
+      && !principalContinuation && canReuseClassicalSupplementationIntervener(principal, supplementContinuation || clauseEnvelopeSources.get(supplement));
+    return freezeDeep({referenceModes, headRoles, contactRoles, interrogative,
+      designatingLocativeContact, nestedPossessorContacts,
+      orders: getSupplementationOrderValues(principal, supplement, {referenceMode, markerSemantic, informationQuestion: referenceMode === "shared" && interrogative}),
+      discontinuousHeadPositions: referenceMode === "shared" && interrogative
+        ? ["first", "last"].filter(discontinuousHeadPosition => !getInformationQuestionBlockReason(supplement, {referenceMode, order:"discontinuous", discontinuousHeadPosition})) : ["first", "last"],
+      antecessivePlacements,
+      contextualSilentValues: contextualSilentEligible ? ["absent", "present"] : ["absent"],
+      specificityDomains: referenceMode === "shared" && headRole === "subject" && contactRole === "subject" && hasTransformedImpersonalSubjectDomain(principal)
+        && supplement?.subject?.participantFrame?.hasReferent === true ? ["same-entire-group"] : [],
+      principalIntervenerUses: canReuseIntervener ? ["separate", "reuse"] : ["separate"],
+      principalObjectIds: (principal?.objects || []).map(object => object.id), supplementObjectIds: (supplement?.objects || []).map(object => object.id),
+      wishRealizabilities: getWishRealizabilityValues(supplement), speechDirectness: SUPPLEMENTATION_SCALAR_DOMAINS.speechDirectness});
+  }
+  function getWishRealizabilityValues(supplement) {
+    return [((supplement?.mood === "indicative" && supplement?.tense === "future") || (supplement?.mood === "optative" && ["nonpast", "future"].includes(supplement?.tense))) ? "realizable" : "",
+      supplement?.mood === "optative" && supplement?.tense === "past" && !supplement?.antecessiveOrder ? "present-or-future-impossible" : "",
+      supplement?.mood === "optative" && supplement?.tense === "past" ? "past-counterfactual" : ""].filter(Boolean);
+  }
+  function getClassicalNahuatlVocativeChoiceDomains(nncClause, discourseSourceContextFrame) {
+    if (!isClassicalNahuatlSupplementationClauseEnvelope(nncClause) || !isClassicalNahuatlDiscourseSourceContextFrame(discourseSourceContextFrame)) return null;
+    const male = discourseSourceContextFrame.speakerGender === "male";
+    const parent = clauseEnvelopeSources.get(nncClause);
+    const finalIFacts = male ? targetObject.getClassicalNahuatlCustomaryAgentiveFinalIBoundaryFacts?.(parent, {useKind: "vocative"}) : null;
+    return freezeDeep({glottalVariants: male && hasTypedVocativeFinalGlottal(nncClause) ? ["plain-e", "glottal-e"] : ["plain-e"],
+      silentPluralValues: male && hasTypedVocativeSilentPluralIn(nncClause) ? ["absent", "present"] : ["absent"],
+      finalIRealizations: finalIFacts?.authorizationStatus === "authorized" && finalIFacts.canonicalParentResult === parent ? finalIFacts.availableRealizations : ["preserve"],
+      companionModes: ["standalone", "with-clause"], companionOrders: SUPPLEMENTATION_SCALAR_DOMAINS.companionOrder});
+  }
   function buildClassicalNahuatlVocativeFrame(
     nncClause = null,
     {
@@ -6408,7 +6428,7 @@ export function createClassicalNahuatlSupplementationApi(
     }
     if ((companionClause !== null
       && !isClassicalNahuatlSupplementationClauseEnvelope(companionClause))
-      || !["clause-first", "vocative-first"].includes(companionOrder)) {
+      || !SUPPLEMENTATION_SCALAR_DOMAINS.companionOrder.includes(companionOrder)) {
       return freezeDeep({
         kind: "classical-nahuatl-vocative-frame",
         authorizationStatus: "blocked",
@@ -6649,7 +6669,7 @@ export function createClassicalNahuatlSupplementationApi(
     supplementClause = null,
     { mach = false, fuseQuilMach = false, adjunctor = "in" } = {}
   ) {
-    if (!["in", "none"].includes(adjunctor) || !isClassicalNahuatlSupplementationClauseEnvelope(supplementClause)) {
+    if (!SUPPLEMENTATION_SCALAR_DOMAINS.reportAdjunctor.includes(adjunctor) || !isClassicalNahuatlSupplementationClauseEnvelope(supplementClause)) {
       return freezeDeep({
         kind: "classical-nahuatl-rumored-report-frame",
         authorizationStatus: "blocked",
@@ -7306,6 +7326,10 @@ export function createClassicalNahuatlSupplementationApi(
     isClassicalNahuatlSupplementationOperationRequest,
     evaluateClassicalNahuatlSupplementationOperation,
     evaluateClassicalNahuatlSupplementationOperationParadigm,
+    getClassicalNahuatlSupplementationFutureReferenceDecision,
+    getClassicalNahuatlSupplementationScalarDomains: () => SUPPLEMENTATION_SCALAR_DOMAINS,
+    getClassicalNahuatlSupplementationChoiceDomains,
+    getClassicalNahuatlVocativeChoiceDomains,
     buildClassicalNahuatlVocativeFrame,
     isClassicalNahuatlVocativeFrame,
     buildClassicalNahuatlRumoredReportFrame,

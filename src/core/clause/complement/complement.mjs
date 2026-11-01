@@ -1717,6 +1717,99 @@ export function createComplementClauseGlobals(targetObject = globalThis, install
       delete projection.canonicalSignature;
       return frame.canonicalSignature === signClassicalNahuatlClauseComposition(projection, "clause-complementation-result");
     }
+    function relationalComplementPairBlockReason(principal, complement, relationalPairId) {
+      const pair = CLASSICAL_NAHUATL_CLAUSE_COMPLEMENTATION_RELATIONAL_PAIRS[relationalPairId];
+      const relationalIdentity = complement?.relationalIdentity;
+      return !pair || complement?.envelope?.sourceFrameKind !== "classical-nahuatl-relational-nnc-relational-result"
+        || !classicalNahuatlClauseComplementationStemLicensed(principal, [pair.principalStem])
+        || relationalIdentity?.stemId !== pair.relationalStemId || relationalIdentity.sourceMatrixStem !== pair.relationalMatrix
+        || (pair.relationalEmbeds ? relationalIdentity.sourceKind !== "relational-compound" || relationalIdentity.sourceMode !== "embed-matrix"
+          || !(relationalIdentity.compositionLicenseId === "tech-embed-pa-copa-matrices" && relationalIdentity.compositionBranchId === "tech-plus-pa")
+            && !pair.relationalEmbeds.includes(relationalIdentity.sourceEmbedStem.normalize("NFC"))
+          : relationalIdentity.sourceKind !== "possessor" || relationalIdentity.sourceMode !== "whole-stem" || relationalIdentity.sourceEmbedStem !== "")
+        ? "typed-relational-nnc-and-verbstem-pair-not-licensed" : "";
+    }
+    function complementCategoryBlockReason(operationKind, principal, complement, category, options = {}) {
+      if (!isClassicalNahuatlClauseCompositionSourceFrame(principal) || !isClassicalNahuatlClauseCompositionSourceFrame(complement)) return "typed-principal-and-complement-clause-frames-required";
+      if (operationKind === "object-complement") {
+        if (complement.unitKind !== "nnc" || !Object.hasOwn(CLASSICAL_NAHUATL_CLAUSE_COMPLEMENTATION_OBJECT_STEM_LICENSES, category)) return "licensed-object-complement-category-and-nnc-required";
+        const possessiveName = category === "designation" && options.designationStructure === "possessive-name-possessor-complement" && options.linkKind === "possessor-subject";
+        if (possessiveName) return principal.unitKind === "nnc" && principal.state === "possessive" && principal.possessor ? "" : "possessive-name-designation-requires-typed-possessive-nnc-principal";
+        if (principal.unitKind !== "vnc") return "object-complement-principal-must-be-typed-vnc";
+        return classicalNahuatlClauseComplementationStemLicensed(principal, CLASSICAL_NAHUATL_CLAUSE_COMPLEMENTATION_OBJECT_STEM_LICENSES[category]) ? "" : "principal-verbstem-not-licensed-for-object-complement-category";
+      }
+      if (operationKind === "subject-complement") {
+        if (principal.unitKind !== "vnc") return "subject-complement-principal-must-be-typed-vnc";
+        if (complement.unitKind !== "nnc" || !["identity", "composition", "state", "passive-object-complement-transform"].includes(category)) return "licensed-subject-complement-category-and-nnc-required";
+        return category === "passive-object-complement-transform" && !["passive", "nonactive-passive"].includes(principal.voice) ? "passive-object-complement-transform-requires-typed-passive-principal" : "";
+      }
+      if (principal.unitKind !== "vnc") return "adverbial-complement-principal-must-be-typed-vnc";
+      if (!Object.hasOwn(CLASSICAL_NAHUATL_CLAUSE_COMPLEMENTATION_ADVERBIAL_STEM_LICENSES, category)) return "licensed-adverbial-complement-family-required";
+      if (!classicalNahuatlClauseComplementationStemLicensed(principal, CLASSICAL_NAHUATL_CLAUSE_COMPLEMENTATION_ADVERBIAL_STEM_LICENSES[category])) return "principal-verbstem-not-licensed-for-adverbial-complement-family";
+      if (category === "coverage") return complement.unitKind !== "nnc" ? "coverage-complement-requires-typed-nnc" : "";
+      if (category === "relational-lexicalized") return ""; // Its exact pair is a separate contextual coordinate.
+      if (complement.unitKind !== "vnc" || principal.subject.referenceId !== complement.subject.referenceId) return "adjoined-vnc-subject-must-share-principal-subject-reference";
+      return ["beginning", "satisfaction"].includes(category) && !["present", "future"].includes(complement.tense)
+        ? "beginning-or-satisfaction-complement-requires-present-or-licensed-future" : "";
+    }
+    function complementOrderBlockReason(principal, complement, auxiliary, order) {
+      return order === "discontinuous" && (!getClassicalNahuatlDiscontinuousComplementProjection(principal, complement) || auxiliary)
+        ? "discontinuous-complement-topology-not-supported" : "";
+    }
+    function subjectComplementContactBlockReason(principal, complement, contactKind) {
+      const special = ["embedded-possessor-cel", "embedded-possessor-el"].includes(contactKind);
+      const possessor = complement?.embeddedPossessor || complement?.possessor;
+      if (special && !possessor) return "typed-embedded-possessor-contact-required";
+      if (special && complement.embeddedPossessor && areClassicalNahuatlPersonNumberFeaturesCompatible(principal?.subject?.features, possessor.features) !== true)
+        return "principal-subject-category-must-match-embedded-possessor-contact";
+      if (contactKind === "embedded-possessor-cel" && !classicalNahuatlClauseComplementationStemLicensed(complement, ["cel"])) return "cel-contact-requires-typed-cel-nnc";
+      if (contactKind === "embedded-possessor-el" && !classicalNahuatlClauseComplementationStemLicensed(complement, ["el"])) return "el-contact-requires-typed-el-nnc";
+      return contactKind === "preterit-agentive-subject-iyoh" ? getIyohComplementContactBlockReason(complement) : "";
+    }
+    function designationStructureAvailability(principal, complement, auxiliary, options, structure) {
+      const blocked = reasonCode => ({status:"incompatible", reasonCode});
+      if (structure === "ordinary-object-complement") return {status:"available", reasonCode:""};
+      if (options.semanticCategory && options.semanticCategory !== "designation") return blocked("special-designation-structure-requires-designation-semantics");
+      if (structure === "possessive-name-possessor-complement") return principal?.unitKind === "nnc" && principal.state === "possessive" && principal.possessor
+        ? {status:"available", reasonCode:""} : blocked("possessive-name-designation-requires-typed-possessive-nnc-principal");
+      const reasonCode = "tla-designation-requires-nonspecific-object-plus-typed-locative-and-place-name-nncs";
+      const object = principal?.objects?.length === 1 ? principal.objects[0]
+        : principal?.objects?.find(object => object.id === options.principalObjectId);
+      if (principal?.unitKind !== "vnc" || object?.objectKind !== "nonspecific-nonhuman" || !object.referenceId
+        || complement?.unitKind !== "nnc" || complement.subject.referenceId !== object.referenceId) return blocked(reasonCode);
+      if (!auxiliary) return {status:"missing-prerequisite", reasonCode, requiredCaptureRoles:["dependent"], missingCaptureRoles:["dependent"], recovery:"Add the required exact auxiliary Result."};
+      return isClassicalNahuatlClauseCompositionSourceFrame(auxiliary) && auxiliary.unitKind === "nnc" && auxiliary.subject.referenceId === object.referenceId
+        ? {status:"available", reasonCode:""} : blocked(reasonCode);
+    }
+    function getClassicalNahuatlClauseComplementationChoiceDomains({operationKind, principalClause, complementClause, auxiliaryClause = null, options = {}} = {}) {
+      const categories = operationKind === "object-complement" ? Object.keys(CLASSICAL_NAHUATL_CLAUSE_COMPLEMENTATION_OBJECT_STEM_LICENSES)
+        : operationKind === "subject-complement" ? ["identity", "composition", "state", "passive-object-complement-transform"]
+        : Object.keys(CLASSICAL_NAHUATL_CLAUSE_COMPLEMENTATION_ADVERBIAL_STEM_LICENSES);
+      const rows = (values, guard = () => "") => Object.freeze(values.map(value => {
+        const verdict = guard(value);
+        const reasonCode = typeof verdict === "string" ? verdict : verdict.reasonCode || "";
+        return Object.freeze({value, status: typeof verdict === "object" ? verdict.status : reasonCode ? "incompatible" : "available", reasonCode,
+          recovery: reasonCode ? "Choose a licensed contact or compatible canonical Source." : "", ...(typeof verdict === "object" ? verdict : {})});
+      }));
+      return Object.freeze({semanticCategory: rows(categories, category => complementCategoryBlockReason(operationKind, principalClause, complementClause, category, options)),
+        order: rows(CLASSICAL_NAHUATL_CLAUSE_COMPLEMENTATION_OPTION_VALUE_DOMAINS.order, order => complementOrderBlockReason(principalClause, complementClause, options.designationStructure === "tla-locative-supplement-plus-place-name" ? auxiliaryClause : null, order)),
+        linkKind: rows(CLASSICAL_NAHUATL_CLAUSE_COMPLEMENTATION_OPTION_VALUE_DOMAINS.linkKind, value => value === "object-subject"
+          ? principalClause?.objects?.length ? "" : "object-complement-principal-object-required"
+          : principalClause?.possessor ? "" : "object-complement-principal-possessor-required"),
+        designationStructure: rows(CLASSICAL_NAHUATL_CLAUSE_COMPLEMENTATION_OPTION_VALUE_DOMAINS.designationStructure,
+          value => designationStructureAvailability(principalClause, complementClause, auxiliaryClause, options, value)),
+        contactKind: rows(CLASSICAL_NAHUATL_CLAUSE_COMPLEMENTATION_OPTION_VALUE_DOMAINS.contactKind,
+          value => subjectComplementContactBlockReason(principalClause, complementClause, value)),
+        relationalPairId: rows(Object.keys(CLASSICAL_NAHUATL_CLAUSE_COMPLEMENTATION_RELATIONAL_PAIRS), value => relationalComplementPairBlockReason(principalClause, complementClause, value)),
+        principalObjectIds: Object.freeze((principalClause?.objects || []).map(object => object.id))});
+    }
+    function getIyohComplementContactBlockReason(complement) {
+      const exact = targetObject.getClassicalNahuatlSupplementationClauseSourceFrame?.(complement?.envelope);
+      return targetObject.isClassicalNahuatlDeverbalNncGrammarFrame?.(exact) === true
+        && exact.operationFrame?.constructionKind === "predicate-nominalization" && exact.operationFrame?.nominalizationKind === "preterit-agentive"
+        && exact.sourceFrame?.sourceStage === "preterit-predicate" && exact.sourceFrame?.sourceVoice === "active"
+        && ["iyo-h", "iyoh"].includes(exact.sourceFrame?.sourceStem) ? "" : "iyoh-contact-requires-typed-iyoh-nnc";
+    }
     function evaluateClassicalNahuatlClauseComplementation(request = {}) {
       const operationRequest = isClassicalNahuatlClauseComplementationOperationRequest(request)
         ? request
@@ -1757,14 +1850,15 @@ export function createComplementClauseGlobals(targetObject = globalThis, install
         );
       }
       if (normalizeClassicalNahuatlClauseCompositionToken(options.order) === "discontinuous"
-        && (!getClassicalNahuatlDiscontinuousComplementProjection(principal, complement)
-          || operationRequest.auxiliaryClause)) {
+        && complementOrderBlockReason(principal, complement, operationRequest.auxiliaryClause, options.order)) {
         return buildClassicalNahuatlClauseComplementationBlockedResultFrame(
           operationKind,
           "discontinuous-complement-topology-not-supported"
         );
       }
       const semanticCategory = normalizeClassicalNahuatlClauseCompositionToken(options.semanticCategory);
+      const categoryFailure = complementCategoryBlockReason(operationKind, principal, complement, semanticCategory, options);
+      if (categoryFailure) return buildClassicalNahuatlClauseComplementationBlockedResultFrame(operationKind, categoryFailure);
       if (operationKind === "object-complement") {
         if (complement.unitKind !== "nnc" || !Object.hasOwn(CLASSICAL_NAHUATL_CLAUSE_COMPLEMENTATION_OBJECT_STEM_LICENSES, semanticCategory)) {
           return buildClassicalNahuatlClauseComplementationBlockedResultFrame(operationKind, "licensed-object-complement-category-and-nnc-required");
@@ -1836,27 +1930,13 @@ export function createComplementClauseGlobals(targetObject = globalThis, install
           }
         }
         const auxiliary = operationRequest.auxiliaryClause;
-        if (tlaLocativeStructure && (
-          !isClassicalNahuatlClauseCompositionSourceFrame(auxiliary)
-          || auxiliary.unitKind !== "nnc"
-          || object?.objectKind !== "nonspecific-nonhuman"
-          || !object.referenceId
-          || auxiliary.subject.referenceId !== object.referenceId
-          || complement.subject.referenceId !== object.referenceId
-        )) {
-          return buildClassicalNahuatlClauseComplementationBlockedResultFrame(
-            operationKind,
-            "tla-designation-requires-nonspecific-object-plus-typed-locative-and-place-name-nncs"
-          );
-        }
+        const designationAvailability = designationStructureAvailability(principal, complement, auxiliary, options, designationStructure);
+        if (designationAvailability.status !== "available") return buildClassicalNahuatlClauseComplementationBlockedResultFrame(operationKind, designationAvailability.reasonCode);
         const principalReference = linkKind === "possessor-subject"
           ? principal.possessor?.referenceId || ""
           : object?.referenceId || "";
         if (!principalReference || principalReference !== complement.subject.referenceId) {
           return buildClassicalNahuatlClauseComplementationBlockedResultFrame(operationKind, "object-or-possessor-reference-must-match-complement-subject");
-        }
-        if (designationStructure !== "ordinary-object-complement" && semanticCategory !== "designation") {
-          return buildClassicalNahuatlClauseComplementationBlockedResultFrame(operationKind, "special-designation-structure-requires-designation-semantics");
         }
         return finalizeClassicalNahuatlClauseComplementationResultFrame(operationKind, principal, complement, options, {
           role: linkKind === "possessor-subject" ? "possessor-complement" : "object-complement",
@@ -1890,32 +1970,8 @@ export function createComplementClauseGlobals(targetObject = globalThis, install
         if (!complementReference || complementReference !== principal.subject.referenceId) {
           return buildClassicalNahuatlClauseComplementationBlockedResultFrame(operationKind, "principal-subject-reference-must-match-complement-contact");
         }
-        if(specialPossessorContact && complement.embeddedPossessor
-          && areClassicalNahuatlPersonNumberFeaturesCompatible(
-            principal.subject.features,possessorContact.features)!==true){
-          return buildClassicalNahuatlClauseComplementationBlockedResultFrame(operationKind,
-            "principal-subject-category-must-match-embedded-possessor-contact");
-        }
-        if (contactKind === "embedded-possessor-cel" && !classicalNahuatlClauseComplementationStemLicensed(complement, ["cel"])) {
-          return buildClassicalNahuatlClauseComplementationBlockedResultFrame(operationKind, "cel-contact-requires-typed-cel-nnc");
-        }
-        if (contactKind === "embedded-possessor-el" && !classicalNahuatlClauseComplementationStemLicensed(complement, ["el"])) {
-          return buildClassicalNahuatlClauseComplementationBlockedResultFrame(operationKind, "el-contact-requires-typed-el-nnc");
-        }
-        if (contactKind === "preterit-agentive-subject-iyoh") {
-          // Andrews 51.3.3c contacts the subject of the preterit-agentive NNC.
-          // Its derived predicate includes nominalization zero (iyo-h-0); the exact owner's
-          // source analysis, not removal of spelling material, licenses iyoh.
-          const exact = targetObject.getClassicalNahuatlSupplementationClauseSourceFrame?.(complement.envelope);
-          if (targetObject.isClassicalNahuatlDeverbalNncGrammarFrame?.(exact) !== true
-            || exact.operationFrame?.constructionKind !== "predicate-nominalization"
-            || exact.operationFrame?.nominalizationKind !== "preterit-agentive"
-            || exact.sourceFrame?.sourceStage !== "preterit-predicate"
-            || exact.sourceFrame?.sourceVoice !== "active"
-            || !["iyo-h", "iyoh"].includes(exact.sourceFrame?.sourceStem)) {
-            return buildClassicalNahuatlClauseComplementationBlockedResultFrame(operationKind, "iyoh-contact-requires-typed-iyoh-nnc");
-          }
-        }
+        const contactFailure = subjectComplementContactBlockReason(principal, complement, contactKind);
+        if (contactFailure) return buildClassicalNahuatlClauseComplementationBlockedResultFrame(operationKind, contactFailure);
         const passiveTransform = options.passiveTransform === true || semanticCategory === "passive-object-complement-transform";
         if (passiveTransform && !["passive", "nonactive-passive"].includes(principal.voice)) {
           return buildClassicalNahuatlClauseComplementationBlockedResultFrame(operationKind, "passive-object-complement-transform-requires-typed-passive-principal");
@@ -1953,26 +2009,8 @@ export function createComplementClauseGlobals(targetObject = globalThis, install
             return buildClassicalNahuatlClauseComplementationBlockedResultFrame(operationKind, "relational-complement-requires-typed-relational-nnc");
           }
           const relationalPairId = normalizeClassicalNahuatlClauseCompositionToken(options.relationalPairId);
-          const pair = CLASSICAL_NAHUATL_CLAUSE_COMPLEMENTATION_RELATIONAL_PAIRS[relationalPairId];
-          const relationalSource = complement.envelope?.sourceFrameKind
-            === "classical-nahuatl-relational-nnc-relational-result";
-          const relationalIdentity = complement.relationalIdentity;
-          if (!pair
-            || !relationalSource
-            || !classicalNahuatlClauseComplementationStemLicensed(principal, [pair.principalStem])
-            || relationalIdentity?.stemId !== pair.relationalStemId
-            || relationalIdentity.sourceMatrixStem !== pair.relationalMatrix
-            || (pair.relationalEmbeds
-              ? relationalIdentity.sourceKind !== "relational-compound"
-                || relationalIdentity.sourceMode !== "embed-matrix"
-                || !(relationalIdentity.compositionLicenseId === "tech-embed-pa-copa-matrices"
-                  && relationalIdentity.compositionBranchId === "tech-plus-pa")
-                  && !pair.relationalEmbeds.includes(relationalIdentity.sourceEmbedStem.normalize("NFC"))
-              : relationalIdentity.sourceKind !== "possessor"
-                || relationalIdentity.sourceMode !== "whole-stem"
-                || relationalIdentity.sourceEmbedStem !== "")) {
-            return buildClassicalNahuatlClauseComplementationBlockedResultFrame(operationKind, "typed-relational-nnc-and-verbstem-pair-not-licensed");
-          }
+          const pairFailure = relationalComplementPairBlockReason(principal, complement, relationalPairId);
+          if (pairFailure) return buildClassicalNahuatlClauseComplementationBlockedResultFrame(operationKind, pairFailure);
         } else {
           if (complement.unitKind !== "vnc" || principal.subject.referenceId !== complement.subject.referenceId) {
             return buildClassicalNahuatlClauseComplementationBlockedResultFrame(operationKind, "adjoined-vnc-subject-must-share-principal-subject-reference");
@@ -2151,6 +2189,7 @@ export function createComplementClauseGlobals(targetObject = globalThis, install
     api.isClassicalNahuatlClauseCompositionSourceFrame = isClassicalNahuatlClauseCompositionSourceFrame;
     api.buildClassicalNahuatlClauseComplementationOperationRequest = buildClassicalNahuatlClauseComplementationOperationRequest;
     api.isClassicalNahuatlClauseComplementationOperationRequest = isClassicalNahuatlClauseComplementationOperationRequest;
+    api.getClassicalNahuatlClauseComplementationChoiceDomains = getClassicalNahuatlClauseComplementationChoiceDomains;
     api.evaluateClassicalNahuatlClauseComplementation = evaluateClassicalNahuatlClauseComplementation;
     api.isClassicalNahuatlClauseComplementationResultFrame = isClassicalNahuatlClauseComplementationResultFrame;
     api.evaluateClassicalNahuatlClauseComplementationParadigm = evaluateClassicalNahuatlClauseComplementationParadigm;

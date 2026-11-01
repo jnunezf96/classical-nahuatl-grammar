@@ -35761,14 +35761,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
           ? frame.relationIds : [];
         optionRecords = optionRecords.filter(option => relations.includes(option.value));
       }
-      const renderedSelectedValue = Array.isArray(decision.optionAvailability)
-        ? optionRecords.some(option => (
-          option?.value === decision.selectedValue
-          && option?.status === "available"
-        ))
-          ? decision.selectedValue
-          : ""
-        : decision.selectedValue || "";
+      const renderedSelectedValue = String(decision.authoredValue ?? decision.selectedValue ?? "");
+      if (renderedSelectedValue && !optionRecords.some(option => option.value === renderedSelectedValue)) {
+        optionRecords = [...optionRecords, {value: renderedSelectedValue, status: "incompatible", recovery: "Choose a supported value."}];
+      }
       const placeholder = targetObject.document.createElement("option");
       placeholder.value = "";
       placeholder.textContent = `Choose ${String(label.textContent || "value").toLowerCase()}`;
@@ -35793,7 +35789,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           String(optionRecord?.reasonCode || "").trim();
         option.dataset.classicalAvailabilityAuthority = "controller-issued";
         option.disabled = status !== "available" && !(
-          decision.id === "relation"
+          (decision.id === "relation" || decision.determinesCaptureRoles === true)
           && status === "missing-prerequisite"
           && Array.from(optionRecord?.missingCaptureRoles || []).length > 0
         );

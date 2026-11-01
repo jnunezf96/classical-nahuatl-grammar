@@ -1,10 +1,23 @@
 // Canonical modern ESM module.
 
+const CONCESSION_MARKERS = Object.freeze({
+  "in-tla-nel": Object.freeze(["in-tla-nel"]), "in-ma-nel": Object.freeze(["in-ma-nel", "ma-nel"]),
+  "ma-zo": Object.freeze(["ma-zo"]), "ma-zo-tel": Object.freeze(["ma-zo-tel"]),
+  "at-least": Object.freeze(["ma-nel-zan", "ma-zan-nel", "ma-nel-za", "ma-za-nel", "ma-tel-za", "ma-tel-za-yeh"]),
+});
+export function getAdverbialAdjunctionMarkerProfiles(relation, profile = "") {
+  if (relation === "concession") return Object.freeze(profile ? [...(CONCESSION_MARKERS[profile] || [])] : [...new Set(Object.values(CONCESSION_MARKERS).flat())]);
+  if (relation === "purpose" && ["ma-optative", "ma-admonitive-lest"].includes(profile)) return Object.freeze(["ma", "in-ma"]);
+  return Object.freeze(({place: ["in"], time: ["in"], manner: ["in"], condition: ["tla", "in-tla"],
+    purpose: ["unmarked", "in", "ma", "in-ma"], reason: ["ca"], consequence: ["in"], proviso: ["ahzo"]})[relation] || []);
+}
+
 export function createAdverbialAdjunctionGlobals(targetObject = globalThis, installationContext = null) {
     const grammarFrameOwnerCapability = installationContext?.grammarFrameOwnerCapability || null;
     const ADVERBIAL_ADJUNCTION_BOUNDARY_VERSION = 2;
     const issuedAdverbialAdjunctionResults = new WeakSet();
     const issuedAdverbialAdjunctionSelectionContracts = new WeakSet();
+    const adjunctionAvailabilityInputs = new WeakMap();
     const issuedRelationalNumeralCoCContracts = new WeakSet();
     const ADVERBIAL_ADJUNCTION_APPLICATION_SOURCE_UNIT_BY_OPERATION =
       Object.freeze({
@@ -1764,6 +1777,7 @@ export function createAdverbialAdjunctionGlobals(targetObject = globalThis, inst
         storedStateAuthority: false
       });
       issuedAdverbialAdjunctionSelectionContracts.add(contract);
+      adjunctionAvailabilityInputs.set(contract, {principalClause, adjoinedUnit, markerUnit, principalSource, adjoinedSource});
       return contract;
     }
     function isAdverbialAdjunctionAvailabilityContract(contract = null) {
@@ -1839,7 +1853,7 @@ export function createAdverbialAdjunctionGlobals(targetObject = globalThis, inst
         intensifier: Boolean(intensityUse) || request.intensifier === true,
         intensityUse,
         selectedUse: intensityUse ? "intensifier" : "ordinary-adverb",
-        inherentlyInterrogative: request.inherentlyInterrogative === true,
+        inherentlyInterrogative: request.inherentlyInterrogative === true || hasInterrogativeAdverbialForce(request.adjoinedUnit),
         interrogativeForceRetained: request.interrogativeForceRetained === true,
         includedInLargerSentence: request.includedInLargerSentence === true,
         conditionalCuePresent: request.conditionalCuePresent === true,
@@ -1920,6 +1934,149 @@ export function createAdverbialAdjunctionGlobals(targetObject = globalThis, inst
           || result?.lexicalAuthorizationFrame?.lexicalEntryId === "44.3-iuh"
           || grammarFrame?.nuclearClauseFrame?.adverbialCenter === "iuh"
           || grammarFrame?.morphBoundaryFrame?.adverbialCenter === "iuh");
+    }
+    function validateAdverbialAdjunctionRelationProfile({principalSource, adjoinedSource, markerSource, profile}) {
+      const diagnostics = [];
+        if (profile.relation === ADVERBIAL_ADJUNCTION_RELATION.purpose) {
+          if (profile.purposeType === ADVERBIAL_ADJUNCTION_PURPOSE.unknown) {
+            diagnostics.push("adverbial-adjunction-purpose-profile-required");
+          }
+          if (profile.purposeType === ADVERBIAL_ADJUNCTION_PURPOSE.purposiveVnc
+            && adjoinedSource?.features?.purposiveVnc !== true) {
+            diagnostics.push("adverbial-adjunction-purpose-purposive-vnc-source-required");
+          }
+          if (profile.purposeType === ADVERBIAL_ADJUNCTION_PURPOSE.maOptative
+            && adjoinedSource?.features?.mood !== "optative") {
+            diagnostics.push("adverbial-adjunction-purpose-ma-requires-optative");
+          }
+          if (profile.purposeType === ADVERBIAL_ADJUNCTION_PURPOSE.maOptative
+            && !getAdverbialAdjunctionMarkerProfiles("purpose", profile.purposeType).includes(profile.marking)) {
+            diagnostics.push("adverbial-adjunction-purpose-optative-requires-ma-marker");
+          }
+          if (profile.purposeType === ADVERBIAL_ADJUNCTION_PURPOSE.maAdmonitiveLest
+            && adjoinedSource?.features?.mood !== "admonitive") {
+            diagnostics.push("adverbial-adjunction-purpose-lest-requires-admonitive");
+          }
+          if (profile.purposeType === ADVERBIAL_ADJUNCTION_PURPOSE.maAdmonitiveLest
+            && !getAdverbialAdjunctionMarkerProfiles("purpose", profile.purposeType).includes(profile.marking)) {
+            diagnostics.push("adverbial-adjunction-purpose-lest-requires-ma-marker");
+          }
+        }
+        if (profile.relation === ADVERBIAL_ADJUNCTION_RELATION.condition) {
+          if (profile.conditionType === ADVERBIAL_ADJUNCTION_CONDITION.unknown) {
+            diagnostics.push("adverbial-adjunction-condition-profile-required");
+          }
+          const hasConditionMarker = getAdverbialAdjunctionMarkerProfiles("condition").includes(profile.marking);
+          if (!hasConditionMarker && !profile.conditionalCuePresent) {
+            diagnostics.push("adverbial-adjunction-condition-marker-or-cue-required");
+          }
+          if (profile.conditionType === ADVERBIAL_ADJUNCTION_CONDITION.open
+            && ![ADVERBIAL_ADJUNCTION_UNIT.nnc, ADVERBIAL_ADJUNCTION_UNIT.vnc, ADVERBIAL_ADJUNCTION_UNIT.clause].includes(profile.unitType)
+            && !((adjoinedSource?.features?.sentenceType === "supplementation"
+                && adjoinedSource.features.nuclearCenter === "nnc")
+              || adjoinedSource?.features?.nuclearCenter === "vnc")) {
+            diagnostics.push("adverbial-adjunction-open-condition-center-required");
+          }
+          if (profile.conditionType === ADVERBIAL_ADJUNCTION_CONDITION.open
+            && (profile.unitType === ADVERBIAL_ADJUNCTION_UNIT.vnc
+              || adjoinedSource?.features?.nuclearCenter === "vnc")) {
+            const mood = adjoinedSource?.features?.mood;
+            const tense = adjoinedSource?.features?.tense;
+            const licensedOpenVnc = (mood === "optative" && ["nonpast", "future", "preterit", "past"].includes(tense))
+              || (mood === "indicative" && tense === "present");
+            if (!licensedOpenVnc) {
+              diagnostics.push("adverbial-adjunction-open-vnc-mood-tense-not-licensed");
+            }
+          }
+          if (profile.conditionType === ADVERBIAL_ADJUNCTION_CONDITION.hypotheticalPresentFuture
+            || profile.conditionType === ADVERBIAL_ADJUNCTION_CONDITION.hypotheticalPast) {
+            if (adjoinedSource?.features?.mood !== "optative" || adjoinedSource?.features?.tense !== "past") {
+              diagnostics.push("adverbial-adjunction-hypothetical-requires-past-optative-adjunct");
+            }
+            if (!principalSource?.features?.futureEmbed) {
+              diagnostics.push("adverbial-adjunction-hypothetical-requires-future-embed-principal");
+            }
+          }
+          if (profile.conditionType === ADVERBIAL_ADJUNCTION_CONDITION.hypotheticalPresentFuture
+            && adjoinedSource?.features?.antecessive) {
+            diagnostics.push("adverbial-adjunction-present-future-hypothetical-forbids-antecessive");
+          }
+          if (profile.conditionType === ADVERBIAL_ADJUNCTION_CONDITION.hypotheticalPast
+            && principalSource?.features?.antecessive !== adjoinedSource?.features?.antecessive) {
+            diagnostics.push("adverbial-adjunction-past-hypothetical-antecessive-must-match");
+          }
+        }
+        if (profile.relation === ADVERBIAL_ADJUNCTION_RELATION.concession) {
+          if (profile.concessionType === ADVERBIAL_ADJUNCTION_CONCESSION.unknown) {
+            diagnostics.push("adverbial-adjunction-concession-profile-required");
+          }
+          const concessionMarkers = CONCESSION_MARKERS;
+          if (concessionMarkers[profile.concessionType]
+            && !concessionMarkers[profile.concessionType].includes(profile.marking)) {
+            diagnostics.push("adverbial-adjunction-concession-marker-profile-mismatch");
+          }
+        }
+      return Object.freeze(diagnostics);
+    }
+    function adverbialAdjunctionAppositionRelationLicensed(relation) {
+      return [ADVERBIAL_ADJUNCTION_RELATION.place, ADVERBIAL_ADJUNCTION_RELATION.time].includes(relation);
+    }
+    function adverbialAdjunctionOrderBlockReason(profile) {
+      if (profile.intensifier && profile.order !== ADVERBIAL_ADJUNCTION_ORDER.modifierHead) return "adverbial-adjunction-intensifier-must-precede-head";
+      if (profile.inherentlyInterrogative && ![ADVERBIAL_ADJUNCTION_ORDER.modifierHead, ADVERBIAL_ADJUNCTION_ORDER.principalAdverbialHead].includes(profile.order)) return "adverbial-adjunction-interrogative-modifier-must-be-initial";
+      if (profile.structure === ADVERBIAL_ADJUNCTION_STRUCTURE.apposition && profile.order !== ADVERBIAL_ADJUNCTION_ORDER.appositiveHeadModifier) return "adverbial-adjunction-appositive-modifier-must-follow-head";
+      if (profile.structure === ADVERBIAL_ADJUNCTION_STRUCTURE.adverbialPrincipal && profile.order !== ADVERBIAL_ADJUNCTION_ORDER.principalAdverbialHead) return "adverbial-adjunction-adverbial-principal-rank-order-required";
+      return "";
+    }
+    function hasInterrogativeAdverbialForce(result) {
+      const context = getIssuedAdverbialNucleus(result)?.operationFrame?.contextFrame;
+      return targetObject.isClassicalNahuatlAdverbialContextFrame?.(context) === true && context.interrogativeForce === true
+        || targetObject.isClassicalNahuatlRelationalResult?.(result) === true && result.sentenceFrame?.discourseFrame?.interrogativeReadingActive === true;
+    }
+    function getAdverbialAdjunctionChoiceDomains({availability, relation = "", degree = "", structureProfile = "modification"} = {}) {
+      const context = adjunctionAvailabilityInputs.get(availability);
+      if (!context || !isAdverbialAdjunctionAvailabilityContract(availability)) return null;
+      const {principalClause, adjoinedUnit, markerUnit, principalSource, adjoinedSource} = context;
+      const unitType = adjoinedSource?.features?.unitKind || "";
+      const fixed = availability.relationalNumeralCoCContract?.authorizationStatus === "authorized";
+      const intensity = relation === "intensification" ? availability.intensityUse : null;
+      const apposition = !fixed && ["first", "second"].includes(degree) && adverbialAdjunctionAppositionRelationLicensed(relation) && unitType === "nnc";
+      const adverbialPrincipal = !fixed && degree === "second" && unitType === "nnc" && ["place", "time", "manner"].includes(relation);
+      const structures = ["modification", ...(apposition ? ["apposition"] : []), ...(adverbialPrincipal ? ["adverbial-principal"] : [])];
+      const orders = !relation ? [] : fixed || intensity ? ["modifier-head"]
+        : structureProfile === "adverbial-principal" ? ["principal-adverbial-head"]
+        : structureProfile === "apposition" ? ["appositive-head-modifier"]
+        : relation === "reason" ? ["head-modifier"] : ["modifier-head", "head-modifier"];
+      orders.splice(0, orders.length, ...orders.filter(order => !adverbialAdjunctionOrderBlockReason({order,
+        intensifier: Boolean(intensity), inherentlyInterrogative: hasInterrogativeAdverbialForce(adjoinedUnit),
+        structure: structureProfile === "apposition" ? "apposition" : structureProfile === "adverbial-principal" ? "adverbial-principal" : "simple"})));
+      if (relation === "place" && degree === "first" && adjoinedUnit?.operationKind === "adjectival-modification"
+        && targetObject.getClassicalSupplementationIntervenerSource?.(adjoinedUnit) === principalClause) orders.push("discontinuous");
+      const markerUse = targetObject.getClassicalNahuatlParticleRelationalUse?.(markerUnit);
+      const sourceRelationProfile = markerUse?.relation === relation && (!degree || markerUse.degree === degree) ? markerUse.relationProfile : "";
+      const profiles = {time: ADVERBIAL_ADJUNCTION_TIME_PROFILE, condition: ADVERBIAL_ADJUNCTION_CONDITION,
+        purpose: ADVERBIAL_ADJUNCTION_PURPOSE, concession: ADVERBIAL_ADJUNCTION_CONCESSION}[relation];
+      const relationProfiles = sourceRelationProfile ? [sourceRelationProfile]
+        : degree === "nonadverbialized" ? Object.values(profiles || {}).filter(value => value !== "unknown") : [];
+      const temporal = relation === "time" && degree === "nonadverbialized" ? availability.temporalProfileEligibility : null;
+      const profileAvailability = relationProfiles.map(value => {
+        const temporalEntry = temporal?.profiles.find(entry => entry.profile === value);
+        if (temporalEntry) return Object.freeze({value, status: temporalEntry.status === "needs-capture" ? "missing-prerequisite" : temporalEntry.status,
+          reasonCode: temporalEntry.blockReason, requiredCaptureRoles: temporalEntry.requiredCaptureRoles, missingCaptureRoles: temporalEntry.missingCaptureRoles});
+        // This is the evaluator's pure rule-profile guard, never an evaluator
+        // probe. Only diagnostics of this candidate coordinate restrict it.
+        const request = {semanticRelation: relation, adverbializationDegree: degree, adjoinedUnitType: unitType,
+          structureKind: "complex", order: orders[0], recursion: "none", marking: markerUnit?.semanticMarker || "unmarked",
+          timeProfile: value, conditionType: value, purposeType: value, concessionType: value};
+        const profileDiagnostics = validateAdverbialAdjunctionRelationProfile({principalSource, adjoinedSource,
+          markerSource: markerUnit ? getCanonicalAdverbialAdjunctionSourceUnit(markerUnit, "marker") : null,
+          profile: buildAdverbialAdjunctionRuleProfile({...request, conditionalCuePresent: adjoinedSource?.features?.conditionalCue === true})});
+        const relevant = profileDiagnostics[0] || "";
+        return Object.freeze({value, status: relevant ? "incompatible" : "available", reasonCode: relevant || ""});
+      });
+      return Object.freeze({degrees: getAdverbialAdjunctionRanksFromAvailability(availability, relation), structures: Object.freeze(structures),
+        orders: Object.freeze(orders), relationProfiles: Object.freeze(relationProfiles), profileAvailability: Object.freeze(profileAvailability),
+        sourceRelationProfile, temporalEligibility: temporal, unitType});
     }
     function validateAdverbialAdjunctionRuleProfile({
       principalSource = null,
@@ -2015,30 +2172,18 @@ export function createAdverbialAdjunctionGlobals(targetObject = globalThis, inst
           && profile.contrast !== ADVERBIAL_ADJUNCTION_CONTRAST.adverbialModification) {
           diagnostics.push("adverbial-adjunction-compared-manner-contrast-required");
         }
-        if (profile.intensifier && profile.order !== ADVERBIAL_ADJUNCTION_ORDER.modifierHead) {
-          diagnostics.push("adverbial-adjunction-intensifier-must-precede-head");
-        }
-        if (profile.inherentlyInterrogative
-          && ![ADVERBIAL_ADJUNCTION_ORDER.modifierHead, ADVERBIAL_ADJUNCTION_ORDER.principalAdverbialHead].includes(profile.order)) {
-          diagnostics.push("adverbial-adjunction-interrogative-modifier-must-be-initial");
-        }
+        const orderFailure = adverbialAdjunctionOrderBlockReason(profile);
+        if (orderFailure) diagnostics.push(orderFailure);
         if (profile.includedInLargerSentence && profile.interrogativeForceRetained) {
           diagnostics.push("adverbial-adjunction-included-interrogative-loses-force");
         }
         if (profile.structure === ADVERBIAL_ADJUNCTION_STRUCTURE.apposition) {
-          if (![ADVERBIAL_ADJUNCTION_RELATION.place, ADVERBIAL_ADJUNCTION_RELATION.time].includes(profile.relation)) {
+          if (!adverbialAdjunctionAppositionRelationLicensed(profile.relation)) {
             diagnostics.push("adverbial-adjunction-apposition-requires-place-or-time");
-          }
-          if (profile.order !== ADVERBIAL_ADJUNCTION_ORDER.appositiveHeadModifier) {
-            diagnostics.push("adverbial-adjunction-appositive-modifier-must-follow-head");
           }
           if (profile.recursion !== ADVERBIAL_ADJUNCTION_RECURSION.appositive) {
             diagnostics.push("adverbial-adjunction-appositive-recursion-profile-required");
           }
-        }
-        if (profile.structure === ADVERBIAL_ADJUNCTION_STRUCTURE.adverbialPrincipal
-          && profile.order !== ADVERBIAL_ADJUNCTION_ORDER.principalAdverbialHead) {
-          diagnostics.push("adverbial-adjunction-adverbial-principal-rank-order-required");
         }
         const principalIsAst = principalSource?.sourceKind === "composition-ast";
         const adjoinedIsAst = adjoinedSource?.sourceKind === "composition-ast";
@@ -2083,91 +2228,7 @@ export function createAdverbialAdjunctionGlobals(targetObject = globalThis, inst
           && profile.contrast !== ADVERBIAL_ADJUNCTION_CONTRAST.adverbialModification) {
           diagnostics.push("adverbial-adjunction-consideration-supplementation-contrast-required");
         }
-        if (profile.relation === ADVERBIAL_ADJUNCTION_RELATION.purpose) {
-          if (profile.purposeType === ADVERBIAL_ADJUNCTION_PURPOSE.unknown) {
-            diagnostics.push("adverbial-adjunction-purpose-profile-required");
-          }
-          if (profile.purposeType === ADVERBIAL_ADJUNCTION_PURPOSE.purposiveVnc
-            && adjoinedSource?.features?.purposiveVnc !== true) {
-            diagnostics.push("adverbial-adjunction-purpose-purposive-vnc-source-required");
-          }
-          if (profile.purposeType === ADVERBIAL_ADJUNCTION_PURPOSE.maOptative
-            && adjoinedSource?.features?.mood !== "optative") {
-            diagnostics.push("adverbial-adjunction-purpose-ma-requires-optative");
-          }
-          if (profile.purposeType === ADVERBIAL_ADJUNCTION_PURPOSE.maOptative
-            && ![ADVERBIAL_ADJUNCTION_MARKING.ma, ADVERBIAL_ADJUNCTION_MARKING.inMa].includes(profile.marking)) {
-            diagnostics.push("adverbial-adjunction-purpose-optative-requires-ma-marker");
-          }
-          if (profile.purposeType === ADVERBIAL_ADJUNCTION_PURPOSE.maAdmonitiveLest
-            && adjoinedSource?.features?.mood !== "admonitive") {
-            diagnostics.push("adverbial-adjunction-purpose-lest-requires-admonitive");
-          }
-          if (profile.purposeType === ADVERBIAL_ADJUNCTION_PURPOSE.maAdmonitiveLest
-            && ![ADVERBIAL_ADJUNCTION_MARKING.ma, ADVERBIAL_ADJUNCTION_MARKING.inMa].includes(profile.marking)) {
-            diagnostics.push("adverbial-adjunction-purpose-lest-requires-ma-marker");
-          }
-        }
-        if (profile.relation === ADVERBIAL_ADJUNCTION_RELATION.condition) {
-          if (profile.conditionType === ADVERBIAL_ADJUNCTION_CONDITION.unknown) {
-            diagnostics.push("adverbial-adjunction-condition-profile-required");
-          }
-          const hasConditionMarker = [ADVERBIAL_ADJUNCTION_MARKING.tla, ADVERBIAL_ADJUNCTION_MARKING.inTla].includes(profile.marking);
-          if (!hasConditionMarker && !profile.conditionalCuePresent) {
-            diagnostics.push("adverbial-adjunction-condition-marker-or-cue-required");
-          }
-          if (profile.conditionType === ADVERBIAL_ADJUNCTION_CONDITION.open
-            && ![ADVERBIAL_ADJUNCTION_UNIT.nnc, ADVERBIAL_ADJUNCTION_UNIT.vnc, ADVERBIAL_ADJUNCTION_UNIT.clause].includes(profile.unitType)
-            && !((adjoinedSource?.features?.sentenceType === "supplementation"
-                && adjoinedSource.features.nuclearCenter === "nnc")
-              || adjoinedSource?.features?.nuclearCenter === "vnc")) {
-            diagnostics.push("adverbial-adjunction-open-condition-center-required");
-          }
-          if (profile.conditionType === ADVERBIAL_ADJUNCTION_CONDITION.open
-            && (profile.unitType === ADVERBIAL_ADJUNCTION_UNIT.vnc
-              || adjoinedSource?.features?.nuclearCenter === "vnc")) {
-            const mood = adjoinedSource?.features?.mood;
-            const tense = adjoinedSource?.features?.tense;
-            const licensedOpenVnc = (mood === "optative" && ["nonpast", "future", "preterit", "past"].includes(tense))
-              || (mood === "indicative" && tense === "present");
-            if (!licensedOpenVnc) {
-              diagnostics.push("adverbial-adjunction-open-vnc-mood-tense-not-licensed");
-            }
-          }
-          if (profile.conditionType === ADVERBIAL_ADJUNCTION_CONDITION.hypotheticalPresentFuture
-            || profile.conditionType === ADVERBIAL_ADJUNCTION_CONDITION.hypotheticalPast) {
-            if (adjoinedSource?.features?.mood !== "optative" || adjoinedSource?.features?.tense !== "past") {
-              diagnostics.push("adverbial-adjunction-hypothetical-requires-past-optative-adjunct");
-            }
-            if (!principalSource?.features?.futureEmbed) {
-              diagnostics.push("adverbial-adjunction-hypothetical-requires-future-embed-principal");
-            }
-          }
-          if (profile.conditionType === ADVERBIAL_ADJUNCTION_CONDITION.hypotheticalPresentFuture
-            && adjoinedSource?.features?.antecessive) {
-            diagnostics.push("adverbial-adjunction-present-future-hypothetical-forbids-antecessive");
-          }
-          if (profile.conditionType === ADVERBIAL_ADJUNCTION_CONDITION.hypotheticalPast
-            && principalSource?.features?.antecessive !== adjoinedSource?.features?.antecessive) {
-            diagnostics.push("adverbial-adjunction-past-hypothetical-antecessive-must-match");
-          }
-        }
-        if (profile.relation === ADVERBIAL_ADJUNCTION_RELATION.concession) {
-          if (profile.concessionType === ADVERBIAL_ADJUNCTION_CONCESSION.unknown) {
-            diagnostics.push("adverbial-adjunction-concession-profile-required");
-          }
-          const concessionMarkers = {
-            [ADVERBIAL_ADJUNCTION_CONCESSION.inTlaNel]: [ADVERBIAL_ADJUNCTION_MARKING.inTlaNel],
-            [ADVERBIAL_ADJUNCTION_CONCESSION.inMaNel]: [ADVERBIAL_ADJUNCTION_MARKING.inMaNel, ADVERBIAL_ADJUNCTION_MARKING.maNel],
-            [ADVERBIAL_ADJUNCTION_CONCESSION.maZo]: [ADVERBIAL_ADJUNCTION_MARKING.maZo],
-            [ADVERBIAL_ADJUNCTION_CONCESSION.maZoTel]: [ADVERBIAL_ADJUNCTION_MARKING.maZoTel],
-            [ADVERBIAL_ADJUNCTION_CONCESSION.atLeast]: [ADVERBIAL_ADJUNCTION_MARKING.maNelZan, ADVERBIAL_ADJUNCTION_MARKING.maZanNel, ADVERBIAL_ADJUNCTION_MARKING.maNelZa, ADVERBIAL_ADJUNCTION_MARKING.maZaNel, ADVERBIAL_ADJUNCTION_MARKING.maTelZa, ADVERBIAL_ADJUNCTION_MARKING.maTelZaYeh]
-          };
-          if (concessionMarkers[profile.concessionType]
-            && !concessionMarkers[profile.concessionType].includes(profile.marking)) {
-            diagnostics.push("adverbial-adjunction-concession-marker-profile-mismatch");
-          }
-        }
+        diagnostics.push(...validateAdverbialAdjunctionRelationProfile({principalSource, adjoinedSource, markerSource, profile}));
         if (profile.relation === ADVERBIAL_ADJUNCTION_RELATION.consequence
           && adjoinedSource?.features?.adverbialCenter !== "iuh") {
           diagnostics.push("adverbial-adjunction-consequence-requires-adverbialized-iuh");
@@ -2178,7 +2239,7 @@ export function createAdverbialAdjunctionGlobals(targetObject = globalThis, inst
           diagnostics.push("adverbial-adjunction-proviso-requires-negativized-ahzo");
         }
         if (profile.relation === ADVERBIAL_ADJUNCTION_RELATION.reason) {
-          if (profile.marking !== ADVERBIAL_ADJUNCTION_MARKING.ca) {
+          if (!getAdverbialAdjunctionMarkerProfiles("reason").includes(profile.marking)) {
             diagnostics.push("adverbial-adjunction-reason-requires-ca-principal-introducer");
           }
           if (profile.unitType !== ADVERBIAL_ADJUNCTION_UNIT.sentence) {
@@ -2284,7 +2345,7 @@ export function createAdverbialAdjunctionGlobals(targetObject = globalThis, inst
       const sentence = adjoinedSource?.issuedResult;
       if (profile.relation !== ADVERBIAL_ADJUNCTION_RELATION.purpose
         || ![ADVERBIAL_ADJUNCTION_PURPOSE.maOptative, ADVERBIAL_ADJUNCTION_PURPOSE.maAdmonitiveLest].includes(profile.purposeType)
-        || ![ADVERBIAL_ADJUNCTION_MARKING.ma, ADVERBIAL_ADJUNCTION_MARKING.inMa].includes(profile.marking)
+        || !getAdverbialAdjunctionMarkerProfiles("purpose", profile.purposeType).includes(profile.marking)
         || targetObject.isClassicalNahuatlVncSentenceResultFrame?.(sentence) !== true
         || markerSource?.ok !== true) return null;
       const sentenceFrame = sentence.sentenceSurfaceFrame;
@@ -2526,6 +2587,10 @@ export function createAdverbialAdjunctionGlobals(targetObject = globalThis, inst
         ].filter(Boolean).join("+")
       }, grammarFrameOwnerCapability);
       if (result?.supported === true && result.ok === true) {
+        const seen = new WeakSet();
+        const freeze = value => {if (!value || typeof value !== "object" || seen.has(value)) return value;
+          seen.add(value); Object.values(value).forEach(freeze); return Object.freeze(value);};
+        freeze(result);
         issuedAdverbialAdjunctionResults.add(result);
       }
       return result;
@@ -3086,6 +3151,7 @@ export function createAdverbialAdjunctionGlobals(targetObject = globalThis, inst
       isAdverbialAdjunctionAvailabilityContract;
     api.getAdverbialAdjunctionRanksFromAvailability =
       getAdverbialAdjunctionRanksFromAvailability;
+    api.getAdverbialAdjunctionChoiceDomains = getAdverbialAdjunctionChoiceDomains;
     api.buildAdverbialAdjunctionRuleProfile = buildAdverbialAdjunctionRuleProfile;
     api.validateAdverbialAdjunctionRuleProfile = validateAdverbialAdjunctionRuleProfile;
     api.buildAdverbialAdjunctionFormulaArtifacts = buildAdverbialAdjunctionFormulaArtifacts;
