@@ -7,11 +7,11 @@ test('name-use descriptor keeps realized vocative continuation distinct',()=>{
  const code=readFileSync(new URL('../ui/rendering/rendering.mjs',import.meta.url),'utf8');
  const start=code.indexOf('    function syncClassicalPersonalNameSentenceControls(');
  const end=code.indexOf('    function getClassicalPersonalNameSentenceSelection(',start);
- const element=()=>({value:'',children:[],dataset:{},setAttribute(){},appendChild(n){this.children.push(n)},replaceChildren(){this.children=[]},get options(){return this.children},closest(){return this.wrapper}});
+ const element=()=>({value:'',children:[],disabled:false,dataset:{},setAttribute(){},appendChild(n){this.children.push(n)},replaceChildren(){this.children=[]},get options(){return this.children},closest(){return this.wrapper}});
  const reranking=element(),sentence=element(),status=element();sentence.wrapper={setAttribute(){}};
  reranking.value='personal-name';sentence.value='vocative-collocation';
  const nodes={'classical-personal-name-reranking':reranking,'classical-personal-name-sentence-operation':sentence,'classical-personal-name-sentence-operation-status':status};
- const ctx=vm.createContext({targetObject:{document:{getElementById:id=>nodes[id],createElement:element}},getClassicalPersonalNameOwnerInventory:()=>({inventory:{id:'names'},rerankingValues:['personal-name'],sentenceOperations:[{id:'vocative-collocation',outputKind:'vocative-name-node'},{id:'sentence-name-use',outputKind:'name-clause'}]}),getClassicalPersonalNameChoiceLabel:v=>v.replaceAll('-',' ')});
+ const ctx=vm.createContext({ClassicalConstructionSession:{position:{operationContract:null}},getClassicalNominalConstructionControlValue:id=>nodes[id]?.value||'',targetObject:{document:{getElementById:id=>nodes[id],createElement:element}},getClassicalPersonalNameOwnerInventory:()=>({inventory:{id:'names'},rerankingValues:['personal-name'],sentenceOperations:[{id:'vocative-collocation',outputKind:'vocative-name-node'},{id:'sentence-name-use',outputKind:'name-clause'}]}),getClassicalPersonalNameChoiceLabel:v=>v.replaceAll('-',' ')});
  vm.runInContext(code.slice(start,end),ctx);
  const selected=ctx.syncClassicalPersonalNameSentenceControls(true);
  assert.equal(selected.operation,'vocative-collocation');assert.equal(sentence.disabled,false);

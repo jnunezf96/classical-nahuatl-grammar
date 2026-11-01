@@ -4,7 +4,7 @@ test('licensed verbal stem shape survives inactive path but a new genuine Source
  const {r}=await createPossessiveFixture('');const source=r.buildClassicalNahuatlOrdinaryNncSourceFrame({stem:'xō',sourceClass:'tl'});
  const control={value:'',dataset:{},options:[],closest:()=>({setAttribute(){}}),replaceChildren(){this.options=[]},appendChild(o){this.options.push(o)}};
  const target=Object.create(r);Object.defineProperty(target,'document',{value:{getElementById:()=>control,createElement:()=>({})}});
- const ctx=vm.createContext({targetObject:target,ActiveClassicalGrammarResultSourceCapture:null,ActiveClassicalGrammarCapabilityNavigator:{exactSource:source,inputRole:'exact-owner-issued-source'}});
+ const ctx=vm.createContext({ClassicalConstructionSession:{position:{operationContract:null}},targetObject:target,ActiveClassicalGrammarResultSourceCapture:null,ActiveClassicalGrammarCapabilityNavigator:{exactSource:source,inputRole:'exact-owner-issued-source'}});
  const a=code.indexOf('    function syncClassicalDenominalVerbalStemShape('),b=code.indexOf('    function syncClassicalDenominalVncControls()',a);vm.runInContext(code.slice(a,b),ctx);
  const hui={operationPath:['inceptive-hui']};ctx.syncClassicalDenominalVerbalStemShape(hui);control.value='short';let ready=ctx.syncClassicalDenominalVerbalStemShape(hui);assert.equal(r.isClassicalNahuatlDenominalVerbalStemPreparation(ready.verbalStemPreparationFrame),true);
  assert.equal(ctx.syncClassicalDenominalVerbalStemShape({operationPath:['inceptive-ti']}),null);assert.equal(control.disabled,true);assert.equal(control.value,'short');

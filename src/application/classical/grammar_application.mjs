@@ -1435,6 +1435,7 @@ const ROUTE_DEFINITIONS = Object.freeze({
   }),
   "nnc:place-gentilic": Object.freeze({
     capabilityName: "evaluatePlaceGentilicNnc",
+    decisionValidatorName: "isPlaceGentilicNncFrame",
     axisIds: Object.freeze(["place-source", "place-formation", "gentilic-formation", "collectivity", "profession", "closed-title"]),
   }),
   "clause:adverbial-adjunction": Object.freeze({
@@ -1451,10 +1452,12 @@ const ROUTE_DEFINITIONS = Object.freeze({
   }),
   "vnc:denominal": Object.freeze({
     capabilityName: "evaluateClassicalNahuatlDenominalVnc",
+    decisionValidatorName: "isClassicalNahuatlDenominalVncDecision",
     axisIds: Object.freeze(["denominal-source-family", "denominal-operation", "source-rank", "target-verbstem-class", "target-valence", "finite-participants"]),
   }),
   "nnc:personal-name": Object.freeze({
     capabilityName: "evaluatePersonalNameNnc",
+    decisionValidatorName: "isPersonalNameOwnerDecision",
     axisIds: Object.freeze(["name-source-family", "inner-clause", "outer-subject", "outer-number", "sentence-operation", "reranking"]),
   }),
 });
@@ -2706,6 +2709,7 @@ function defineAdditionalOutputContract(
   resultKinds,
   {
     resultCollection = false,
+    decisionValidatorName = "",
     validatorNames = [],
   } = {},
 ) {
@@ -2713,6 +2717,7 @@ function defineAdditionalOutputContract(
     capabilityName,
     resultKinds: Object.freeze(resultKinds),
     resultCollection: resultCollection === true,
+    decisionValidatorName,
     validatorNames: Object.freeze(validatorNames),
   });
 }
@@ -2964,6 +2969,7 @@ const ADDITIONAL_OUTPUT_CONTRACTS = Object.freeze({
         "evaluatePersonalNameSentenceOperation",
         ["classical-nahuatl-personal-name-sentence-operation"],
         {
+          decisionValidatorName: "isPersonalNameOwnerDecision",
           validatorNames: [
             "isPersonalNameSentenceOperation",
           ],
@@ -3194,6 +3200,7 @@ const CANONICAL_ARGUMENT_VALIDATOR_NAMES = Object.freeze([
   "isClassicalNahuatlDenominalVncResultFrame",
   "isClassicalNahuatlDenominalVerbalStemPreparation",
   "isClassicalNahuatlNominalRankCorrectedSourceFrame",
+  "isClassicalNahuatlBoundNominalSourceFrame",
   "isClassicalNahuatlRestrictedContainingVncSourceFrame",
   "isPersonalNameInnerClauseFrame",
   "isPersonalNameNncSourceFrame",
@@ -9650,7 +9657,7 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
     try { captured = capturePreparedAttitudeData(request,0,new WeakSet(),particleLane||decisionLane||nncLane); } catch { return null; }
     let validated;
     try { validated=validateClassicalGrammarApplicationRequest(captured); } catch { return null; }
-    if (validated.outputKind !== DEFAULT_APPLICATION_OUTPUT_KIND || !validated.authorityCarrierClear
+    if ((validated.outputKind !== DEFAULT_APPLICATION_OUTPUT_KIND && !(validated.operationId === "nnc:personal-name" && validated.outputKind === "sentence-operation")) || !validated.authorityCarrierClear
       || !validated.typedApplicationRequest || !validated.semanticOperationIdentity
       || !particleLane && !decisionLane && !nncLane && (validated.operationId !== "vnc:derivational-operation" || validated.args.length !== 1
         || !["honorific", "reverential"].includes(validated.args[0]?.lateOperation))) return null;

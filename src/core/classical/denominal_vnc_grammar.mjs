@@ -779,6 +779,13 @@ function operationInapplicabilityReason(spec, sourceFrame) {
     ? "included-possessor-single-object-causative-not-licensed" : "";
 }
 
+function getIncludedPossessorFiniteBlockReason(sourceFrame) {
+  const facts=sourceFrame.includedPossessorSourceFacts;
+  if(facts?.requiredTense&&sourceFrame.tense!==facts.requiredTense)return "included-possessor-required-tense";
+  if(facts?.expectedTenses?.length&&!facts.expectedTenses.includes(sourceFrame.tense))return "included-possessor-expected-tense-domain";
+  if(facts?.requiredExclamatory&&(!sourceFrame.exclamatory||sourceFrame.sentenceType&&!["exclamation","affirmative","affirmative-assertion"].includes(sourceFrame.sentenceType)))return "included-possessor-exclamatory-context-required";
+  return "";
+}
 function isOperationApplicable(spec, sourceFrame) {
   if (operationInapplicabilityReason(spec, sourceFrame)) return false;
   const bound = sourceFrame.canonicalBoundNominalSourceFrame;
@@ -847,15 +854,7 @@ function isOperationApplicable(spec, sourceFrame) {
         && sourceFrame.sourceState === "possessive"
         && Boolean(sourceFrame.possessor)
         && INCLUDED_POSSESSOR_FAMILIES.includes(sourceFrame.includedPossessorFamily)
-        && (
-          sourceFrame.includedPossessorFamily !== "recompense"
-          || ["present", "preterit", "future"].includes(sourceFrame.tense)
-        )
-        && (
-          sourceFrame.includedPossessorFamily !== "misfortune"
-          || (sourceFrame.tense === "preterit" && sourceFrame.exclamatory
-            && (!sourceFrame.sentenceType || ["exclamation", "affirmative", "affirmative-assertion"].includes(sourceFrame.sentenceType)))
-        );
+        && !getIncludedPossessorFiniteBlockReason(sourceFrame);
     case "ti-a-causative-double-inceptive":
     case "ti-a-causative-double-possession":
       return sourceFrame.sourceKind === "possessive-nnc-predicate"
@@ -1002,19 +1001,20 @@ function buildTargetStem(spec, sourceFrame, huiBoundaryFrame = null) {
   }
 }
 
+function getDenominalSingleObjectValues(spec,sourceFrame) {
+  const nonspecific=spec.id === "applicative-huia-use" || spec.id === "ti-a-causative-single"
+    && (sourceFrame?.priorOperationId === "inceptive-hui" && sourceFrame.priorTargetClass === "B"
+      || sourceFrame?.priorOperationId === "possession-ti" || isPanTargetPossessor(sourceFrame?.priorOperationFrame?.sourceFrame));
+  return ["1sg","2sg","3sg","1pl","2pl","3pl","3common","reflexive",
+    ...(nonspecific?["non-specific-human","non-specific-nonhuman"]:sourceFrame?.affectiveMatrixSourceFrame?.causativeObjectKinds||[])];
+}
 function buildObjectRequests(spec, source, sourceFrame = null) {
   const people = source.objectPeople;
   if (!spec.objectCount) return [];
   if (spec.objectCount === 1) {
     const reflexive = people[0] === "reflexive";
     const nonspecific = ["non-specific-human", "non-specific-nonhuman"].includes(people[0])
-      && (spec.id === "applicative-huia-use"
-        || spec.id === "ti-a-causative-single"
-          && (sourceFrame?.priorOperationId === "inceptive-hui"
-            && sourceFrame.priorTargetClass === "B"
-            || sourceFrame?.priorOperationId === "possession-ti"
-            || isPanTargetPossessor(sourceFrame?.priorOperationFrame?.sourceFrame))
-        || sourceFrame?.affectiveMatrixSourceFrame?.causativeObjectKinds?.includes(people[0]));
+      && getDenominalSingleObjectValues(spec,sourceFrame).includes(people[0]);
     return [{
       objectId: "denominal-object-1",
       objectKind: nonspecific ? people[0]
@@ -1181,6 +1181,7 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
   const classNeutralPossessionSources = new WeakMap();
   const issuedGrammarFrames = new WeakSet();
   const issuedResultFrames = new WeakSet();
+  const issuedDenominalDecisions = new WeakSet();
   const issuedPlans = new WeakSet();
   const issuedCoordinateFrames = new WeakSet();
   const issuedUiFrames = new WeakSet();
@@ -2196,6 +2197,7 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
             ? ["non-specific-human", "non-specific-nonhuman"]
             : operationFrame.sourceFrame.affectiveMatrixSourceFrame?.causativeObjectKinds || []
           : [],
+        resultObjectValues: operationFrame.objectCount === 1 ? getDenominalSingleObjectValues(operationSpecRecord,operationFrame.sourceFrame) : ["1sg","2sg","3sg","1pl","2pl","3pl"],
         resultObjectPeople: sourceProjectedDoubleObject
           ? 0
           : operationSpecRecord.objectCount,
@@ -2805,7 +2807,7 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
       && operationFrame.targetStem === join(source.priorOperationFrame.targetStem, "ā");
   }
 
-  function evaluateClassicalNahuatlDenominalVnc(request = {}) {
+  function evaluateClassicalNahuatlDenominalVncInternal(request = {}) {
     const operationFrame = deriveClassicalNahuatlDenominalVncOperationPath(request);
     if (!isClassicalNahuatlDenominalVncOperationFrame(operationFrame)) {
       return blocked(
@@ -2849,6 +2851,7 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
         operationFrame.sourceFrame.exactResultIdentityPreserved === true,
       operationFrame,
       grammarFrame,
+      receivingDecision: {request:finiteRequest,result:canonicalVncFrame},
       canonicalVncFrame: authorized ? canonicalVncFrame : null,
       finalTypedVncSlotFrame: authorized
         ? canonicalVncFrame.resultFrame.finalTypedVncSlotFrame
@@ -2872,6 +2875,59 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
     return frame;
   }
 
+  function denominalChoice(request,choiceId,values,effectiveValue,extra={}) {
+    const path=extra.requestPath||[choiceId],authoredValue=path.reduce((x,key)=>x?.[key],request),selectedValue=authoredValue===undefined||authoredValue===""?effectiveValue:authoredValue;
+    return {choiceId,inputKind:"enum",requestPath:path,authoredValue,selectedValue,effectiveValue,applicable:true,editable:values.length>1||!values.includes(selectedValue),options:values.map(optionId=>({optionId,availabilityStatus:"available"})),...extra};
+  }
+  function evaluateClassicalNahuatlDenominalVnc(request={}) {
+    const result=evaluateClassicalNahuatlDenominalVncInternal(request);
+    if(request.canonicalNncSourceFrame&&!request.verbalStemPreparationFrame&&request.operationPath?.[0]==="inceptive-hui"){
+      const shapeInventory=getClassicalNahuatlDenominalVerbalStemShapeInventory(request.canonicalNncSourceFrame,"inceptive-hui");
+      if(shapeInventory.authorizationStatus==="authorized"){
+        const stemShape=denominalChoice({},"stemShape",shapeInventory.options.map(x=>x.value),undefined,{requestPath:["verbalStemPreparationFrame"]});
+        stemShape.options=shapeInventory.options.map(option=>({optionId:option.value,label:option.label,availabilityStatus:"available",writeRequestValues:[{path:["verbalStemPreparationFrame"],value:issueClassicalNahuatlDenominalVerbalStemPreparation(request.canonicalNncSourceFrame,{operationId:"inceptive-hui",stemShape:option.value})}]}));
+        const frame=deepFreeze({...result,blockReason:"denominal-verbal-stem-shape-required",choiceOptionProjection:{stemShape},shapeInventory});issuedDenominalDecisions.add(frame);return frame;
+      }
+    }
+    const sourceKeys=["canonicalNncResult","canonicalNncSourceFrame","verbalStemPreparationFrame","canonicalBoundNominalSourceFrame","canonicalNominalRankCorrectionFrame","nounStem","sourceNounClass","sourceInitialISelection"];
+    const inventoryRequest=Object.fromEntries(sourceKeys.filter(k=>request[k]!==undefined).map(k=>[k,request[k]]));
+    if(!sourceKeys.slice(0,5).some(k=>request[k]))inventoryRequest.nounStem=request.nounStem||request.nounRoot||request.sourceVerbStem;
+    const inventory=getClassicalNahuatlDenominalVncOperationPathInventory(inventoryRequest);
+    if(!isClassicalNahuatlDenominalVncOperationPathInventory(inventory))return result;
+    const path=inventory.pathChoices.find(p=>JSON.stringify(p.operationPath)===JSON.stringify(request.operationPath==null||Array.isArray(request.operationPath)&&request.operationPath.length===0?[request.operationId||request.selectedOperationId]:request.operationPath)&&(!request.operationId||p.operationId===request.operationId)&&(!request.classChoice||p.finalClassChoice===request.classChoice)&&Object.entries(request.classChoices||{}).every(([k,v])=>p.classChoices[k]===v)&&["nounStem","nounRoot","sourceVerbStem","sourceKind","sourceState","sourceNounClass"].every(key=>!request[key]||p.sourceRequest[key]===request[key]));
+    const fields={operationId:denominalChoice(request,"operationId",inventory.operationOptions.map(x=>x.operationId),path?.operationId),
+      pathChoiceId:denominalChoice({},"pathChoiceId",inventory.pathChoices.filter(p=>!request.operationId||p.operationId===request.operationId).map(x=>x.pathChoiceId),path?.pathChoiceId,{requestPath:["operationPath"]})};
+    const writes=p=>[...Object.entries(p.sourceRequest),["operationPath",p.operationPath],["classChoices",p.classChoices],["classChoice",p.finalClassChoice],["operationId",p.operationId]].map(([key,value])=>({path:[key],value}));
+    fields.pathChoiceId.options=fields.pathChoiceId.options.map(option=>({...option,writeRequestValues:writes(inventory.pathChoices.find(p=>p.pathChoiceId===option.optionId))}));
+    fields.operationId.options=fields.operationId.options.map(option=>{const paths=inventory.pathChoices.filter(p=>p.operationId===option.optionId);return {...option,...(paths.length===1?{writeRequestValues:writes(paths[0])}:{withdrawRequestPaths:[["operationPath"],["classChoices"],["classChoice"]]})};});
+    const finite=result.receivingDecision?.result?.choiceOptionProjection;
+    for(const key of ["subject","mood","tense"])if(finite?.[key])fields[key]={...finite[key],requestPath:[key],authoredValue:request[key],selectedValue:request[key]||finite[key].selectedValue};
+    const requirements=path?.controlRequirements;
+    if(requirements){
+      if(requirements.includedPossessorFiniteContext){
+        const facts=includedPossessorFactsForSource(normalizeSourceRequest(request,resolveClassicalNahuatlDenominalExactNncBinding(request)));
+        if(facts.authorizationStatus==="authorized"){
+          const mood=request.mood||"indicative",base=CLASSICAL_NAHUATL_VNC_SEMANTIC_TENSES_BY_MOOD[mood]||[];
+          const tenses=base.filter(value=>(!facts.requiredTense||value===facts.requiredTense)&&(!facts.expectedTenses.length||facts.expectedTenses.includes(value)));
+          fields.tense=denominalChoice(request,"tense",tenses,request.tense||"present");
+          fields.exclamatory=denominalChoice(request,"exclamatory",facts.requiredExclamatory?[true]:[false,true],request.exclamatory===true);
+          fields.exclamatory.valueKind="boolean";
+          fields.exclamatory.options=fields.exclamatory.options.map(option=>({...option,writeRequestValues:[{path:["sentenceOptions","punctuationMode"],value:option.optionId?"exclamation":"statement"},{path:["sentenceOptions","sentenceType"],value:"affirmative-assertion"}]}));
+        }
+      }
+      if(requirements.sourcePossessor)fields.possessor=denominalChoice(request,"possessor",requirements.sourcePossessorValues,result.sourceFrame?.possessor);
+      if(requirements.sourceSubject)fields.sourceSubject=denominalChoice(request,"sourceSubject",["1sg","2sg","3sg","1pl","2pl","3pl","3common"],result.sourceFrame?.sourceSubject);
+      for(let i=0;i<requirements.resultObjectPeople;i++)fields[`object${i+1}`]=denominalChoice(request,`object${i+1}`,requirements.resultObjectValues,request.objectPeople?.[i]||"3sg",{requestPath:["objectPeople",i]});
+      if(requirements.resultPossessorRelation)fields.object2=denominalChoice(request,"object2",requirements.resultPossessorRelationOptions,request.objectPeople?.[1]||"source-possessor",{requestPath:["objectPeople",1]});
+    }
+    for(const key of ["object1","object2"])if(fields[key])fields[key].options=fields[key].options.map(option=>{
+      const people=[...(request.objectPeople||[])];people[key==="object1"?0:1]=option.optionId;
+      return {...option,writeRequestValues:[{path:["objectPeople"],value:people}]};
+    });
+    const frame=deepFreeze({...result,...(!path?{authorizationStatus:"blocked",blockReason:"denominal-owner-offered-path-required",formulaRealization:"",surfaceRealization:""}:{}),inventory,selectedPathChoice:path||null,choiceOptionProjection:fields});issuedDenominalDecisions.add(frame);
+    if(frame.authorizationStatus==="authorized"){issuedResultFrames.add(frame);reloadInputs.set(frame,Object.isFrozen(request)?request:reloadInputs.get(result));}return frame;
+  }
+  function isClassicalNahuatlDenominalVncDecision(frame){return issuedDenominalDecisions.has(frame);}
   function isClassicalNahuatlDenominalVncResultFrame(frame = null) {
     const exactProjection = frame?.canonicalNncResult
       && typeof targetObject.getClassicalNahuatlNncContinuationSourceConstituents
@@ -3118,6 +3174,7 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
     isClassicalNahuatlDenominalVncGrammarFrame,
     getClassicalNahuatlDenominalReloadInputs: frame => reloadInputs.get(frame) || null,
     evaluateClassicalNahuatlDenominalVnc,
+    isClassicalNahuatlDenominalVncDecision,
     isClassicalNahuatlDenominalVncResultFrame,
     prepareClassicalNahuatlDenominalVncParadigmPlan,
     isClassicalNahuatlDenominalVncParadigmPlan,

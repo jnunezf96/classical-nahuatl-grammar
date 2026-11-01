@@ -3,7 +3,7 @@ const operation='vnc:denominal';
 const scopes=new WeakSet(),contracts=new WeakSet(),snapshots=new WeakSet(),events=new WeakMap(),cache=new WeakMap(),intents=new WeakSet();
 const same=(a,b)=>a===b||Boolean(a&&b&&typeof a==='object'&&typeof b==='object'&&!a.kind&&!b.kind&&Object.keys(a).length===Object.keys(b).length&&Object.keys(a).every(k=>same(a[k],b[k])));
 function immutable(value,refs){if(!value||typeof value!=='object'||refs.has(value))return value;if(value.kind?.startsWith('classical-'))throw Error('unrecognized-canonical-parent');return Object.freeze(Array.isArray(value)?value.map(v=>immutable(v,refs)):Object.fromEntries(Object.entries(value).map(([k,v])=>[k,immutable(v,refs)])));}
-export function createDenominalScope({owner,source,session,getIngress,getSourceContext=null}){if(!owner||!source||!session||typeof getIngress!=='function')return null;const scope=Object.freeze({owner,source,session,getIngress,getSourceContext,operationId:operation});scopes.add(scope);return scope;}
+export function createDenominalScope({owner,source,session,getIngress,getSourceContext=null,presentation=null}){if(!owner||!source||!session||typeof getIngress!=='function')return null;const scope=Object.freeze({owner,source,session,getIngress,getSourceContext,presentation,operationId:operation});scopes.add(scope);return scope;}
 function current(scope,c){return scopes.has(scope)&&contracts.has(c)&&c.scope===scope&&(!c.sourceContext||scope.getSourceContext?.()===c.sourceContext);}
 const protocol=createOwnerOperationProtocol({kind:'denominal-contract',select:s=>s.operationId===operation,routeId:s=>s.routeId,projectIntent:s=>Object.freeze({...s}),buildContract:()=>null,isCurrentFrame:current,projectCaptures:(_s,c)=>c.captures,
  isCurrentSnapshot:(s,event)=>{const p=s.controller.session.position,e=events.get(event);return p.operationContract===s&&!p.construction.sourcePending&&p.construction.source===s.source&&s.controller.getIngress()===s.ingress&&(!event||Boolean(e&&e.snapshot===s&&e.revision===p.revision));},transition:()=>Object.freeze({handled:true,authorizationStatus:'blocked',blockReason:'denominal-owner-reissue-required'}),equivalent:(a,b)=>a===b,staleReason:'denominal-choice-stale-frame'});
@@ -16,7 +16,8 @@ export function issueDenominalSnapshot(scope,{ingress,binding=null,request,sourc
  if(typed){
   if(binding.operationId!==operation||binding.exactSource!==scope.source||binding.navigator!==ingress||owner.isClassicalNahuatlNominalSourceDenominalBindingFrame?.(binding.ownerBindingFrame)!==true||binding.ownerBindingFrame.exactSourceFrame!==scope.source)return null;
   const old=cache.get(scope);if(old?.binding===binding&&old.ingress===ingress)return old.snapshot;
-  const c=Object.freeze({scope,memory,binding,ingressKind:'typed',request:binding.ownerBindingFrame.ownerRequest,ready:binding.bindingStatus==='ready',blockReason:binding.blockReason,captures:Object.freeze([Object.freeze({role:'source',exact:scope.source})])});
+  const prepared=binding.bindingStatus==='ready'?owner.prepareClassicalGrammarApplicationRequest?.({operationId:operation,args:[binding.ownerBindingFrame.ownerRequest]}):null;
+  const c=Object.freeze({scope,memory,binding,prepared,preview:prepared?.canonicalResult,choices:binding.choiceOptionProjection,authoredSelections:binding.callerSelections,effectiveSelections:binding.effectiveSelections,requiredChoiceIds:binding.requiredChoiceIds,presentation:scope.presentation,ingressKind:'typed',request:prepared?.request.args[0]||binding.ownerBindingFrame.ownerRequest,ready:binding.bindingStatus==='ready'&&Boolean(prepared),blockReason:binding.blockReason,captures:Object.freeze([Object.freeze({role:'source',exact:scope.source})])});
   contracts.add(c);const snapshot=protocol.issue(scope,{operationId:operation,routeId:c.request?.operationPath?.at(-1)||''},scope.source,c,null,ingress);if(snapshot){snapshots.add(snapshot);cache.set(scope,{binding,ingress,snapshot});}return snapshot;
  }
  if(!request)return null;
@@ -32,7 +33,8 @@ export function issueDenominalSnapshot(scope,{ingress,binding=null,request,sourc
    if(shapeInventory?.authorizationStatus!=='authorized'||shapeInventory.canonicalNncSourceFrame!==scope.source)return null;
    const old=cache.get(scope);if(old?.ingress===ingress&&same(old.request,request)&&(prior?.controller!==scope&&!intent||same(old.snapshot.contract.memory,memory)))return old.snapshot;
    let declared;try{declared=immutable(request,new Set([scope.source]));}catch{return null;}
-   const c=Object.freeze({scope,memory,ingressKind:'prepared',shapeInventory,request:declared,ready:false,blockReason:'denominal-verbal-stem-shape-required',captures:Object.freeze([Object.freeze({role:'canonicalNncSourceFrame',exact:scope.source})])});
+   const prepared=owner.prepareClassicalGrammarApplicationRequest?.({operationId:operation,args:[declared]});if(!prepared)return null;
+   const c=Object.freeze({scope,memory,prepared,preview:prepared.canonicalResult,choices:prepared.canonicalResult.choiceOptionProjection,presentation:scope.presentation,ingressKind:'prepared',shapeInventory,request:prepared.request.args[0],ready:false,blockReason:prepared.canonicalResult.blockReason,captures:Object.freeze([Object.freeze({role:'canonicalNncSourceFrame',exact:scope.source})])});
    contracts.add(c);const snapshot=protocol.issue(scope,{operationId:operation,routeId:request.operationId||'inceptive-hui'},scope.source,c,null,ingress);if(snapshot){snapshots.add(snapshot);cache.set(scope,{ingress,request:declared,snapshot});}return snapshot;
   }
 
@@ -45,7 +47,7 @@ export function issueDenominalSnapshot(scope,{ingress,binding=null,request,sourc
   inventoryRequest={nounStem:d.sourceWholeStem,sourceNounClass:request.sourceNounClass,...(request.sourceInitialISelection?{sourceInitialISelection:request.sourceInitialISelection}:{})};ingressKind='raw';
  }
  const old=cache.get(scope);if(old&&old.binding===binding&&old.ingress===ingress&&old.sourceContext===sourceContext&&same(old.request,request)&&(prior?.controller!==scope&&!intent||same(old.snapshot.contract.memory,memory)))return old.snapshot;
- let declared,inventory,preview;try{
+ let declared,inventory,preview,prepared;try{
   declared=immutable(request,refs);
   inventory=owner.getClassicalNahuatlDenominalVncOperationPathInventory(inventoryRequest);
   if(owner.isClassicalNahuatlDenominalVncOperationPathInventory?.(inventory)!==true)return null;
@@ -55,7 +57,7 @@ export function issueDenominalSnapshot(scope,{ingress,binding=null,request,sourc
    &&(!declared.classChoice||path.finalClassChoice===declared.classChoice)
    &&Object.entries(declared.classChoices||{}).every(([key,value])=>path.classChoices?.[key]===value)
    &&['nounStem','nounRoot','sourceVerbStem','sourceKind','sourceState','sourceNounClass'].every(key=>!declared[key]||path.sourceRequest?.[key]===declared[key]));
-  preview=selectedPath?owner.evaluateClassicalNahuatlDenominalVnc(declared):Object.freeze({authorizationStatus:'blocked',blockReason:'denominal-owner-offered-path-required'});
+  prepared=owner.prepareClassicalGrammarApplicationRequest?.({operationId:operation,args:[declared]});if(!prepared)return null;preview=prepared.canonicalResult;
  }catch{return null;}
  if(binding&&preview.authorizationStatus==='authorized'&&preview.sourceFrame?.canonicalNncResult!==scope.source)return null;
  const retained=owner.isClassicalNahuatlDenominalVncResultFrame?.(preview)===true?owner.getClassicalNahuatlDenominalReloadInputs?.(preview):null;
@@ -66,12 +68,12 @@ export function issueDenominalSnapshot(scope,{ingress,binding=null,request,sourc
   memory=Object.freeze({...seed,...memory});
  }
 
- const c=Object.freeze({scope,memory,sourceContext,binding,ingressKind,inventory,request:retained||declared,preview,ready,blockReason:preview?.blockReason||(!retained?'owner-retained-request-required':''),captures:Object.freeze(captures)});
+ const c=Object.freeze({scope,memory,sourceContext,binding,ingressKind,inventory,request:prepared.request.args[0],prepared,choices:preview.choiceOptionProjection,presentation:scope.presentation,preview,ready,blockReason:preview?.blockReason||(!retained?'owner-retained-request-required':''),captures:Object.freeze(captures)});
  contracts.add(c);const snapshot=protocol.issue(scope,{operationId:operation,routeId:declared.operationId||declared.operationPath?.at(-1)||''},scope.source,c,null,ingress);if(snapshot){snapshots.add(snapshot);cache.set(scope,{binding,ingress,sourceContext,request:declared,snapshot});}return snapshot;
 }
 export const isCurrentDenominalSnapshot=protocol.isCurrent;
 export function captureDenominalChoiceFrame(snapshot){if(!protocol.isCurrent(snapshot))return null;const event=Object.freeze({});events.set(event,{snapshot,revision:snapshot.controller.session.position.revision});return event;}
-export function projectDenominalExecution(snapshot){if(!snapshots.has(snapshot)||!current(snapshot.controller,snapshot.contract)||snapshot.controller.getIngress()!==snapshot.ingress||!snapshot.contract.ready)return null;if(snapshot.contract.ingressKind==='typed')return Object.freeze({kind:'typed',operation,source:snapshot.source,binding:snapshot.contract.binding,choices:snapshot.contract.binding.effectiveSelections});return Object.freeze({kind:'request',operation,source:snapshot.source,choices:snapshot.contract.request,request:Object.freeze({operationId:operation,args:Object.freeze([snapshot.contract.request])})});}
+export function projectDenominalExecution(snapshot){if(!snapshots.has(snapshot)||!current(snapshot.controller,snapshot.contract)||snapshot.controller.getIngress()!==snapshot.ingress||!snapshot.contract.ready||snapshot.controller.owner.isClassicalGrammarPreparedApplicationRequest?.(snapshot.contract.prepared)!==true)return null;const c=snapshot.contract;return Object.freeze({kind:'request',operation,source:snapshot.source,binding:c.binding,choices:c.request,prepared:c.prepared,request:c.prepared.request});}
 
 export function adoptDenominalCandidate(snapshot,binding,event){if(!protocol.isCurrent(snapshot,event))return null;return issueDenominalSnapshot(snapshot.controller,{ingress:snapshot.ingress,binding});}
 

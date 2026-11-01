@@ -1,3 +1,4 @@
+import {getClassicalNahuatlParticipantReferenceChoiceOptions,getClassicalNahuatlParticipantAgreementValues} from "../../classical/participant_frame.mjs?v=20260823-passive-formation-continuity-238&ownerDecision=20261031-1";
 import {snapshotGrammarInputs} from "../../input_snapshot.mjs";
 // Canonical modern ESM module.
 
@@ -1743,33 +1744,55 @@ export function createPlaceGentilicNncApi(targetObject = globalThis, installatio
       }
       return frame;
     }
+    function getPlaceGentilicFormationBlockReason(sourceFrame,formation=sourceFrame?.formation||"",{imperfectSourceValid=issuedPlaceGentilicImperfectSourceAnalyses.has(sourceFrame)}={}) {
+      const embed=sourceFrame?.embedStem||"",source=sourceFrame?.placeStem||embed;
+      if(PLACE_GENTILIC_NNC_PLACE_FORMATIONS.includes(formation)){
+        if(!embed&&!["gentilic-incorporated-place","gentilic-affective-co"].includes(formation))return "place-name-embed-stem-required";
+        const contact=getPlaceGentilicNncCoCBlockReason(formation,embed);if(contact)return contact;
+        if(["n-imperfect-active","n-imperfect-nonactive"].includes(formation)){
+          if(!imperfectSourceValid||sourceFrame.exactVncResultIdentityPreserved!==true||!sourceFrame.nominalizedImperfectPredicateStem)return "exact-owner-issued-imperfect-vnc-result-required";
+          if(formation==="n-imperfect-active"&&sourceFrame.sourceVoice&&sourceFrame.sourceVoice!=="active")return "n-imperfect-active-requires-typed-active-source";
+          if(formation==="n-imperfect-nonactive"&&!["nonactive","passive","impersonal"].includes(sourceFrame.sourceVoice))return "n-imperfect-nonactive-requires-typed-nonactive-source";
+        }
+        if(formation==="co-place-affective"){
+          if(!["tzin","tōn","ton"].includes(sourceFrame.affectiveMatrix))return "place-affective-requires-tzin-or-ton";
+          if(!["place-name-affective","lexical-affective"].includes(sourceFrame.analysisKind))return "place-affective-structural-analysis-required";
+          if(!(stripPlaceGentilicNncEnding(embed,"-co")||stripPlaceGentilicNncEnding(embed,"co")))return "place-affective-requires-co-place-source";
+        }
+        if(formation==="gentilic-incorporated-place"&&!sourceFrame.gentilicStem)return "gentilic-stem-required";
+        if(formation==="gentilic-affective-co"&&(!sourceFrame.gentilicStem||!["tzin","tōn","ton"].includes(sourceFrame.affectiveMatrix)))return "gentilic-affective-place-requires-gentilic-and-affective-matrix";
+      }else{
+        if(formation==="ca-full-place"){
+          if(!source)return "place-stem-required-for-gentilic";
+          if(!/(?:tlah|tzālan|tzalan)$/u.test(realizePlaceGentilicNncCarrier(source)))return "full-place-gentilic-requires-tlah-or-tzalan-source";
+        }
+        if(formation==="ca-pan-eca"&&!(stripPlaceGentilicNncEnding(source,"-pan")||stripPlaceGentilicNncEnding(source,"pan")))return "pan-place-stem-required-for-eca-gentilic";
+        if(formation==="ca-can-meca"&&!(stripPlaceGentilicNncEnding(source,"-cā-n")||stripPlaceGentilicNncEnding(source,"cān")))return "can-place-stem-required-for-meca-gentilic";
+        if(formation==="ca-co-c-silent"){
+          const co=stripPlaceGentilicNncEnding(source,"-co")||stripPlaceGentilicNncEnding(source,"co"),c=stripPlaceGentilicNncEnding(source,"-c")||stripPlaceGentilicNncEnding(source,"c");
+          if(!(sourceFrame.placeMatrix==="co"?co:sourceFrame.placeMatrix==="c"?c:""))return "typed-co-or-c-place-matrix-required";
+        }
+        if(formation==="ca-ownerhood-n-silent"&&!(stripPlaceGentilicNncEnding(source,"-cā-n")||stripPlaceGentilicNncEnding(source,"cān")||stripPlaceGentilicNncEnding(source,"-ca-n")))return "ownerhood-can-place-stem-required";
+        if(formation==="ca-man-tlan-teca"&&!["-mā-n","mān","-tlā-n","tlān","-lā-n","lān"].some(ending=>stripPlaceGentilicNncEnding(source,ending)))return "man-or-tlan-place-stem-required-for-teca-gentilic";
+        if(formation==="two-clause-concatenate"){
+          if(!sourceFrame.placeStem||!sourceFrame.headStem)return "two-clause-gentilic-requires-place-and-head-stems";
+          if(!["tlāca","cal-ca","cal","chān-eh"].includes(sourceFrame.headStem))return "two-clause-gentilic-head-not-licensed";
+        }
+      }
+      return "";
+    }
     function realizePlaceGentilicNncPlaceStem(sourceFrame = null) {
       const formation = sourceFrame?.formation || "";
       const embed = sourceFrame?.embedStem || "";
       if (!sourceFrame || sourceFrame.authorizationStatus !== "authorized") {
         return { authorizationStatus: "blocked", blockReason: sourceFrame?.blockReason || "typed-place-source-required" };
       }
-      if (!embed && !["gentilic-incorporated-place", "gentilic-affective-co"].includes(formation)) {
-        return { authorizationStatus: "blocked", blockReason: "place-name-embed-stem-required" };
-      }
-      const coCBlockReason = getPlaceGentilicNncCoCBlockReason(formation, embed);
-      if (coCBlockReason) return {authorizationStatus: "blocked", blockReason: coCBlockReason};
+      const sourceBlock=getPlaceGentilicFormationBlockReason(sourceFrame);
+      if(sourceBlock)return {authorizationStatus:"blocked",blockReason:sourceBlock};
       let stem = "";
       let axisId = "";
       let boundaryRule = "";
       if (formation === "n-imperfect-active" || formation === "n-imperfect-nonactive") {
-        if (!issuedPlaceGentilicImperfectSourceAnalyses.has(sourceFrame)
-          || sourceFrame.exactVncResultIdentityPreserved !== true
-          || !sourceFrame.nominalizedImperfectPredicateStem) {
-          return { authorizationStatus: "blocked", blockReason: "exact-owner-issued-imperfect-vnc-result-required" };
-        }
-        if (formation === "n-imperfect-active" && sourceFrame.sourceVoice
-          && sourceFrame.sourceVoice !== "active") {
-          return { authorizationStatus: "blocked", blockReason: "n-imperfect-active-requires-typed-active-source" };
-        }
-        if (formation === "n-imperfect-nonactive" && !["nonactive", "passive", "impersonal"].includes(sourceFrame.sourceVoice)) {
-          return { authorizationStatus: "blocked", blockReason: "n-imperfect-nonactive-requires-typed-nonactive-source" };
-        }
         stem = sourceFrame.nominalizedImperfectPredicateStem;
         axisId = formation === "n-imperfect-active" ? "place/n-imperfect-active" : "place/n-imperfect-nonactive";
         boundaryRule = "append-imperfect-nominalizer-yā-n";
@@ -1815,17 +1838,8 @@ export function createPlaceGentilicNncApi(targetObject = globalThis, installatio
         axisId = "place/c";
         boundaryRule = "append-c";
       } else if (formation === "co-place-affective") {
-        if (!["tzin", "tōn", "ton"].includes(sourceFrame.affectiveMatrix)) {
-          return { authorizationStatus: "blocked", blockReason: "place-affective-requires-tzin-or-ton" };
-        }
-        if (!["place-name-affective", "lexical-affective"].includes(sourceFrame.analysisKind)) {
-          return { authorizationStatus: "blocked", blockReason: "place-affective-structural-analysis-required" };
-        }
         const placeBase = stripPlaceGentilicNncEnding(embed, "-co")
           || stripPlaceGentilicNncEnding(embed, "co");
-        if (!placeBase) {
-          return { authorizationStatus: "blocked", blockReason: "place-affective-requires-co-place-source" };
-        }
         const matrix = sourceFrame.affectiveMatrix === "ton" ? "tōn" : sourceFrame.affectiveMatrix;
         stem = `${placeBase}-${matrix}-co`;
         axisId = sourceFrame.analysisKind === "place-name-affective"
@@ -1863,15 +1877,11 @@ export function createPlaceGentilicNncApi(targetObject = globalThis, installatio
         axisId = "place/chan-supplementation";
         boundaryRule = "compose-possessor-supplement-with-chān";
       } else if (formation === "gentilic-incorporated-place") {
-        if (!sourceFrame.gentilicStem) return { authorizationStatus: "blocked", blockReason: "gentilic-stem-required" };
         const matrix = sourceFrame.matrixStem || "pan";
         stem = `${sourceFrame.gentilicStem}-${matrix}`;
         axisId = "extension/incorporation";
         boundaryRule = "embed-gentilic-nounstem-in-place-matrix";
       } else if (formation === "gentilic-affective-co") {
-        if (!sourceFrame.gentilicStem || !["tzin", "tōn", "ton"].includes(sourceFrame.affectiveMatrix)) {
-          return { authorizationStatus: "blocked", blockReason: "gentilic-affective-place-requires-gentilic-and-affective-matrix" };
-        }
         const matrix = sourceFrame.affectiveMatrix === "ton" ? "tōn" : sourceFrame.affectiveMatrix;
         stem = `${sourceFrame.gentilicStem}-${matrix}-co`;
         axisId = "extension/incorporation";
@@ -1900,6 +1910,8 @@ export function createPlaceGentilicNncApi(targetObject = globalThis, installatio
       if (!sourceFrame || sourceFrame.authorizationStatus !== "authorized") {
         return { authorizationStatus: "blocked", blockReason: sourceFrame?.blockReason || "typed-gentilic-source-required" };
       }
+      const sourceBlock=getPlaceGentilicFormationBlockReason(sourceFrame);
+      if(sourceBlock)return {authorizationStatus:"blocked",blockReason:sourceBlock};
       const formation = sourceFrame.formation;
       const source = sourceFrame.placeStem || sourceFrame.embedStem;
       let stem = "";
@@ -1916,22 +1928,16 @@ export function createPlaceGentilicNncApi(targetObject = globalThis, installatio
           : "gentilic/preterit-agentive-other";
         boundaryRule = "reuse-preterit-agentive-embed-as-gentilic";
       } else if (formation === "ca-full-place") {
-        if (!source) return { authorizationStatus: "blocked", blockReason: "place-stem-required-for-gentilic" };
-        if (!/(?:tlah|tzālan|tzalan)$/u.test(realizePlaceGentilicNncCarrier(source))) {
-          return { authorizationStatus: "blocked", blockReason: "full-place-gentilic-requires-tlah-or-tzalan-source" };
-        }
         stem = `${source}-ca`;
         axisId = "gentilic/ca-full-place";
         boundaryRule = "embed-full-place-stem-in-ca";
       } else if (formation === "ca-pan-eca") {
         const base = stripPlaceGentilicNncEnding(source, "-pan") || stripPlaceGentilicNncEnding(source, "pan");
-        if (!base) return { authorizationStatus: "blocked", blockReason: "pan-place-stem-required-for-eca-gentilic" };
         stem = `${base}-pan-ē-ca`;
         axisId = "gentilic/ca-pan-eca";
         boundaryRule = "retain-pan-add-ē-before-ca";
       } else if (formation === "ca-can-meca") {
         const base = stripPlaceGentilicNncEnding(source, "-cā-n") || stripPlaceGentilicNncEnding(source, "cān");
-        if (!base) return { authorizationStatus: "blocked", blockReason: "can-place-stem-required-for-meca-gentilic" };
         stem = `${base}-cā-m-ē-ca`;
         axisId = "gentilic/ca-can-meca";
         boundaryRule = "replace-final-n-with-m-add-ē-ca";
@@ -1939,7 +1945,6 @@ export function createPlaceGentilicNncApi(targetObject = globalThis, installatio
         const coBase = stripPlaceGentilicNncEnding(source, "-co") || stripPlaceGentilicNncEnding(source, "co");
         const cBase = stripPlaceGentilicNncEnding(source, "-c") || stripPlaceGentilicNncEnding(source, "c");
         const base = sourceFrame.placeMatrix === "co" ? coBase : sourceFrame.placeMatrix === "c" ? cBase : "";
-        if (!base) return { authorizationStatus: "blocked", blockReason: "typed-co-or-c-place-matrix-required" };
         stem = `${base}-ca`;
         axisId = "gentilic/ca-co-c-silent";
         boundaryRule = "replace-place-co-or-c-with-silence-before-ca";
@@ -1947,7 +1952,6 @@ export function createPlaceGentilicNncApi(targetObject = globalThis, installatio
         const base = stripPlaceGentilicNncEnding(source, "-cā-n")
           || stripPlaceGentilicNncEnding(source, "cān")
           || stripPlaceGentilicNncEnding(source, "-ca-n");
-        if (!base) return { authorizationStatus: "blocked", blockReason: "ownerhood-can-place-stem-required" };
         stem = `${base}-ca`;
         axisId = "gentilic/ca-ownerhood-n-silent";
         boundaryRule = "silence-final-n-and-drop-distant-past-ca-before-gentilic-ca";
@@ -1966,12 +1970,6 @@ export function createPlaceGentilicNncApi(targetObject = globalThis, installatio
         }
         axisId = "gentilic/ca-man-tlan-teca";
       } else if (formation === "two-clause-concatenate") {
-        if (!sourceFrame.placeStem || !sourceFrame.headStem) {
-          return { authorizationStatus: "blocked", blockReason: "two-clause-gentilic-requires-place-and-head-stems" };
-        }
-        if (!["tlāca", "cal-ca", "cal", "chān-eh"].includes(sourceFrame.headStem)) {
-          return { authorizationStatus: "blocked", blockReason: "two-clause-gentilic-head-not-licensed" };
-        }
         stem = sourceFrame.headStem;
         axisId = "gentilic/two-clause-concatenate";
         boundaryRule = "retain-place-clause-as-adjectival-modifier-of-head-nnc";
@@ -2024,7 +2022,8 @@ export function createPlaceGentilicNncApi(targetObject = globalThis, installatio
         });
       }
       const slotFrame = lowerFrame?.nncSlotFrame || null;
-      const authorized = lowerFrame?.authorizationStatus === "authorized"
+      const fixedStateMismatch=forceAbsolutive&&request.state&&normalizePlaceGentilicNncState(request.state)!=="absolutive";
+      const authorized = !fixedStateMismatch && lowerFrame?.authorizationStatus === "authorized"
         && slotFrame?.authorizationStatus === "authorized";
       const slots = slotFrame?.slots || {};
       const surface = authorized ? [
@@ -2039,7 +2038,8 @@ export function createPlaceGentilicNncApi(targetObject = globalThis, installatio
         kind: "classical-nahuatl-place-gentilic-nnc-agreement-frame",
         version: 1,
         authorizationStatus: authorized ? "authorized" : "blocked",
-        blockReason: authorized ? "" : lowerFrame?.blockReason || "canonical-nnc-agreement-unavailable",
+        blockReason: authorized ? "" : fixedStateMismatch ? "gentilic-requires-absolutive-state" : lowerFrame?.blockReason || "canonical-nnc-agreement-unavailable",
+        receivingDecision:Object.freeze({request,result:lowerFrame,forceAbsolutive}),
         state,
         subject,
         lowerFrameKind: lowerFrame?.kind || "",
@@ -2160,6 +2160,11 @@ export function createPlaceGentilicNncApi(targetObject = globalThis, installatio
         surfaceStringAuthority: false
       });
     }
+    const collectivityPossessiveVariants=Object.freeze(["0","uh"]);
+    function getPlaceGentilicLexicalChoiceRecords(kind="profession-place-association") {
+      return Object.entries(PLACE_GENTILIC_NNC_PROFESSION_LEXICON).map(([optionId,record])=>({optionId,label:record.reading,extensionKind:"profession",availabilityStatus:"available"}))
+        .concat(kind==="profession-place-association"?Object.entries(PLACE_GENTILIC_NNC_TITLE_LEXICON).filter(([,record])=>record.generationStatus!=="read-only-canvas-evidence").map(([optionId,record])=>({optionId,label:record.reading,extensionKind:"title",availabilityStatus:"available"})):[]);
+    }
     function resolvePlaceGentilicNncLexicalExtension(sourceFrame = null, request = {}) {
       const lexicon = request.extensionKind === "title"
         ? PLACE_GENTILIC_NNC_TITLE_LEXICON
@@ -2212,7 +2217,7 @@ export function createPlaceGentilicNncApi(targetObject = globalThis, installatio
       });
     }
     const placeReloadInputs=new WeakMap();
-    function evaluatePlaceGentilicNnc(request = {}) {
+    function evaluatePlaceGentilicNncInternal(request = {}) {
       const hostileAuthorityRequest = hasPlaceGentilicNncExactResultField(request) || Object.hasOwn(request, "canonicalNominalSourceFrame")
         ? Object.fromEntries(Object.entries(request).filter(
           ([key]) => !["canonicalNncResult", "canonicalVncResult", "canonicalNominalSourceFrame"].includes(key)
@@ -2262,6 +2267,7 @@ export function createPlaceGentilicNncApi(targetObject = globalThis, installatio
         }
         finiteFrame = agreementFrame;
       } else if (sourceAnalysis.constructionKind === "gentilic-collective") {
+        if(request.state==="possessive"&&!String(request.subject||"3sg").endsWith("pl")&&request.collectivityPossessiveVariant&&!collectivityPossessiveVariants.includes(request.collectivityPossessiveVariant))return buildPlaceGentilicNncBlockedFrame("collectivity-possessive-variant-required",request,{sourceAnalysis});
         const collectivityNumber = request.singularConnector
           || (request.collectivityPossessiveVariant === "uh" ? "uh" : "0");
         // Andrews 2.2 and 48.12: this typed yō matrix has reduced-long
@@ -2411,6 +2417,58 @@ export function createPlaceGentilicNncApi(targetObject = globalThis, installatio
       issuedPlaceGentilicNncFrames.add(frozenFrame);
       if(frozenFrame.authorizationStatus === "authorized")placeReloadInputs.set(frozenFrame,snapshotGrammarInputs(request,new Set([request.canonicalNncResult,request.canonicalVncResult,request.canonicalNominalSourceFrame].filter(Boolean))));
       return frozenFrame;
+    }
+    function placeChoice(request,choiceId,values,effectiveValue,extra={}) {
+      const authoredValue=request[choiceId],selectedValue=authoredValue===undefined||authoredValue===""?effectiveValue:authoredValue;
+      return {choiceId,inputKind:"enum",requestPath:[choiceId],authoredValue,selectedValue,effectiveValue,applicable:true,
+        editable:values.length>1||!values.includes(selectedValue),options:values.map(optionId=>({optionId,availabilityStatus:"available"})),...extra};
+    }
+    function getPlaceGentilicNncFormationDecision(request={}) {
+      // Resolve the actual Source without allowing the authored target to hide
+      // the correction domain. This does not evaluate candidate constructions.
+      const sourceRequest=Object.fromEntries(Object.entries(request).filter(([key])=>!["formation","placeFormation","gentilicFormation","constructionKind","placeGentilicKind"].includes(key)));
+      const resolution=resolvePlaceGentilicNncExactSource(Object.hasOwn(request,"canonicalNominalSourceFrame")?{...sourceRequest,constructionKind:"place-name",formation:"n-can"}:sourceRequest);
+      if(resolution.authorizationStatus==="blocked")return null;
+      const source=resolution.authorizationStatus==="authorized"?resolution.source:request.source||{};
+      const typed=Object.hasOwn(request,"canonicalNominalSourceFrame");
+      const exactVnc=Object.hasOwn(request,"canonicalVncResult");
+      const kinds=typed||exactVnc?["place-name"]:["place-name","gentilic","gentilic-collective","gentilic-adjectival-use","profession-place-association","profession-pertinency"];
+      const kind=normalizePlaceGentilicNncConstructionKind(request.constructionKind||request.placeGentilicKind);
+      const embed=source.embedStem||source.sourceStem||request.embedStem||request.sourceStem||"";
+      let formations=typed?["n-can"]:exactVnc?resolution.availableFormations:kind==="place-name"?PLACE_GENTILIC_NNC_PLACE_FORMATIONS.filter(value=>!["n-imperfect-active","n-imperfect-nonactive"].includes(value)):kind==="gentilic"?PLACE_GENTILIC_NNC_GENTILIC_FORMATIONS:[];
+      const facts={embedStem:normalizePlaceGentilicNncStem(embed),placeStem:normalizePlaceGentilicNncStem(source.placeStem||request.placeStem||""),gentilicStem:normalizePlaceGentilicNncStem(source.gentilicStem||request.gentilicStem||""),headStem:normalizePlaceGentilicNncStem(source.headStem||request.headStem||""),placeMatrix:normalizePlaceGentilicNncKey(source.placeMatrix||request.placeMatrix),affectiveMatrix:normalizePlaceGentilicNncKey(request.affectiveMatrix||source.affectiveMatrix),analysisKind:normalizePlaceGentilicNncKey(request.analysisKind||source.analysisKind),sourceVoice:source.sourceVoice||"",exactVncResultIdentityPreserved:resolution.exactVncResultIdentityPreserved===true,nominalizedImperfectPredicateStem:source.nominalizedImperfectPredicateStem||""};
+      formations=formations.filter(value=>!getPlaceGentilicFormationBlockReason(facts,value,{imperfectSourceValid:resolution.exactVncResultIdentityPreserved===true}));
+      return {constructionKind:placeChoice(request,"constructionKind",kinds,kind),formation:placeChoice(request,"formation",formations,request.formation,{applicable:["place-name","gentilic"].includes(kind)})};
+    }
+    function evaluatePlaceGentilicNnc(request={}) {
+      const result=evaluatePlaceGentilicNncInternal(request);
+      if(result.blockReason==="caller-supplied-formula-surface-result-or-lesson-authority-blocked")return result;
+      const fields=getPlaceGentilicNncFormationDecision(request);if(!fields)return result;
+      const kind=normalizePlaceGentilicNncConstructionKind(request.constructionKind||request.placeGentilicKind);
+      if(kind==="place-name")fields.usage=placeChoice(request,"usage",["ordinary","adverbial"],request.usage||"ordinary");
+      if(["profession-place-association","profession-pertinency"].includes(kind)){
+        const records=getPlaceGentilicLexicalChoiceRecords(kind);
+        fields.lexicalId=placeChoice(request,"lexicalId",records.map(x=>x.optionId),request.lexicalId);
+        fields.lexicalId.options=records.map(record=>({...record,writeRequestValues:[{path:["extensionKind"],value:record.extensionKind}]}));
+      }
+      if(kind==="gentilic-collective")fields.collectivityPossessiveVariant=placeChoice(request,"collectivityPossessiveVariant",collectivityPossessiveVariants,request.collectivityPossessiveVariant||"0",{applicable:request.state==="possessive"&&!String(request.subject||"3sg").endsWith("pl")});
+      if(kind==="place-name"&&["co-place-affective","gentilic-affective-co"].includes(request.formation))fields.affectiveMatrix=placeChoice(request,"affectiveMatrix",["tzin","tōn","ton"],request.affectiveMatrix||request.source?.affectiveMatrix,{requestPath:["source","affectiveMatrix"],authoredValue:request.source?.affectiveMatrix,selectedValue:request.source?.affectiveMatrix});
+      const receiving=result.agreementFrame?.receivingDecision;
+      if(receiving){
+        const lower=receiving.result,subject=request.subject||"3sg",animacy=request.animacy||"animate";
+        const reference=getClassicalNahuatlParticipantReferenceChoiceOptions({agreement:subject,animacy},{agreement:getClassicalNahuatlParticipantAgreementValues(),animacy:["animate","nonanimate"]});
+        fields.state=placeChoice(request,"state",receiving.forceAbsolutive?["absolutive"]:["absolutive","possessive"],lower?.state||"absolutive");
+        fields.subject=placeChoice(request,"subject",reference.agreement.map(x=>x.value),subject);
+        fields.subject.options=fields.subject.options.map(option=>({...option,writeRequestValues:[{path:["animacy"],value:reference.agreement.find(x=>x.value===option.optionId).selections.animacy}]}));
+        fields.animacy=placeChoice(request,"animacy",reference.animacy.map(x=>x.value),animacy);
+        fields.possessor=placeChoice(request,"possessor",lower?.stateFrame?.possessorChoices||[],lower?.possessor,{applicable:lower?.state==="possessive"});
+        fields.pluralConnector=placeChoice(request,"pluralConnector",lower?.numberFrame?.pluralConnectorOptions||[],request.pluralConnector||lower?.numberFrame?.pluralConnector,{applicable:lower?.state==="absolutive"&&subject.endsWith("pl")});
+        fields.singularConnector=placeChoice(request,"singularConnector",lower?.numberFrame?.singularConnectorOptions||[],request.singularConnector||lower?.numberFrame?.singularConnector,{applicable:lower?.state==="possessive"&&!subject.endsWith("pl")});
+      }
+      const frame=Object.freeze({...result,choiceOptionProjection:snapshotGrammarInputs(fields)});
+      issuedPlaceGentilicNncFrames.add(frame);
+      if(result.authorizationStatus==="authorized")placeReloadInputs.set(frame,Object.isFrozen(request)?request:placeReloadInputs.get(result));
+      return frame;
     }
     function isPlaceGentilicNncFrame(frame = null) {
       if (!frame
@@ -2740,6 +2798,8 @@ export function createPlaceGentilicNncApi(targetObject = globalThis, installatio
     api.buildPlaceGentilicNncAgreementFrame = buildPlaceGentilicNncAgreementFrame;
     api.getClassicalNahuatlPlaceReloadInputs = frame => placeReloadInputs.get(frame) || null;
     api.evaluatePlaceGentilicNnc = evaluatePlaceGentilicNnc;
+    api.getPlaceGentilicNncFormationDecision = getPlaceGentilicNncFormationDecision;
+    api.getPlaceGentilicLexicalChoiceRecords = getPlaceGentilicLexicalChoiceRecords;
     api.isPlaceGentilicNncFrame = isPlaceGentilicNncFrame;
     api.buildPlaceGentilicNncParadigmPlan = buildPlaceGentilicNncParadigmPlan;
     api.isPlaceGentilicNncParadigmPlan = isPlaceGentilicNncParadigmPlan;

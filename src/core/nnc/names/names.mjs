@@ -18,6 +18,7 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
   const issuedDiagrammaticProjections = new WeakSet();
   const issuedSentenceResults = new WeakSet();
   const issuedPlans = new WeakSet();
+  const issuedNameDecisions = new WeakSet();
   const issuedExactSourceResolutions = new WeakSet();
   const exactSourceResolutionBySource = new WeakMap();
   const issuedOpaqueQuotedSources = new WeakMap();
@@ -107,8 +108,8 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
     { id: "adjunctor-before-each-conjunct", section: "56.5", outputKind: "adjunctor-scope-node" },
     { id: "adjunctor-before-whole-unit", section: "56.5", outputKind: "adjunctor-scope-node" },
     { id: "adjunctor-absent", section: "56.5", outputKind: "adjunctor-scope-node" },
-    { id: "god-name-to-normal-nnc", section: "56.5-note-1", outputKind: "ordinary-nnc-source" },
-    { id: "god-name-to-place-name-embed", section: "56.5-note-2", outputKind: "place-name-embed-source" },
+    { id: "god-name-to-normal-nnc", section: "56.5-note-1", reranking: "normal-nnc-with-plural-rights", outputKind: "ordinary-nnc-source" },
+    { id: "god-name-to-place-name-embed", section: "56.5-note-2", reranking: "place-name-embed", outputKind: "place-name-embed-source" },
   ]);
   const SENTENCE_OPERATION_BY_ID = new Map(SENTENCE_OPERATION_SPECS.map(spec => [spec.id, spec]));
 
@@ -1291,6 +1292,16 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
       : { blockReason: "personal-name-inner-affective-canonical-slots-required" };
   }
 
+  function getPersonalNameAffectiveScopes(source) {
+    if (isPersonalNameOpaqueQuotedInnerSourceFrame(source)) return ["none"];
+    return ["none", ...(["absolutive-state-nnc", "absolutive-state-truncated-inner-number", "possessive-state-nnc"].includes(source.sourceFamily) ? ["inner-source"] : []), "outer-name",
+      ...(["preterit-agentive", "preterit-as-present-agentive"].includes(source.sourceFamily) ? ["general-use-agentive"] : [])];
+  }
+  function nameChoice(request, choiceId, values, effectiveValue, extra={}) {
+    const authoredValue=request[choiceId], selectedValue=authoredValue===undefined||authoredValue===""?effectiveValue:authoredValue;
+    return {choiceId,inputKind:"enum",requestPath:[choiceId],authoredValue,selectedValue,effectiveValue,applicable:true,
+      editable:values.length>1||!values.includes(selectedValue),options:values.map(optionId=>({optionId,availabilityStatus:"available"})),...extra};
+  }
   function buildPersonalNameNncOperationFrame(
     sourceFrame = null,
     selections = {},
@@ -1319,21 +1330,7 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
       || (isPersonalNameOpaqueQuotedInnerSourceFrame(sourceFrame)
         && (affectiveScope !== "none" || affectiveMatrix !== "none"))
       || ((affectiveScope === "none") !== (affectiveMatrix === "none"))
-      || (
-        affectiveScope === "general-use-agentive"
-        && ![
-          "preterit-agentive",
-          "preterit-as-present-agentive",
-        ].includes(sourceFrame.sourceFamily)
-      )
-      || (
-        affectiveScope === "inner-source"
-        && ![
-          "absolutive-state-nnc",
-          "absolutive-state-truncated-inner-number",
-          "possessive-state-nnc",
-        ].includes(sourceFrame.sourceFamily)
-      )
+      || !getPersonalNameAffectiveScopes(sourceFrame).includes(affectiveScope)
     ) return null;
     const innerAffective = affectiveScope === "inner-source"
       ? buildExactPersonalNameInnerAffective(sourceFrame, affectiveMatrix) : null;
@@ -1794,7 +1791,7 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
     );
   }
 
-  function evaluatePersonalNameNnc(request = {}) {
+  function evaluatePersonalNameNncInternal(request = {}) {
     const exactSourceRequested = hasPersonalNameExactSourceResultField(
       request,
     );
@@ -1856,6 +1853,21 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
     );
   }
 
+  function evaluatePersonalNameNnc(request = {}) {
+    const result=evaluatePersonalNameNncInternal(request);
+    const resolution=hasPersonalNameExactSourceResultField(request)?resolvePersonalNameNncExactSource(request):null;
+    const source=resolution?.sourceFrame||request.sourceFrame;
+    if(!issuedSources.has(source)||resolution?.authorizationStatus === "blocked"||result.blockReason?.startsWith("unsupported-request-field:")||result.blockReason?.startsWith("caller-authority-rejected:"))return result;
+    const scope=request.affectiveScope||"none", matrix=request.affectiveMatrix||"none";
+    const fields={outerSubject:nameChoice(request,"outerSubject",isPersonalNameOpaqueQuotedInnerSourceFrame(source)?[source.citationOuterSubject]:["1sg","2sg","3sg"],result.outerSubject),
+      affectiveScope:nameChoice(request,"affectiveScope",getPersonalNameAffectiveScopes(source),scope),
+      affectiveMatrix:nameChoice(request,"affectiveMatrix",isPersonalNameOpaqueQuotedInnerSourceFrame(source)?["none"]:scope==="none"?["none"]:["tzin","tz","ton"],matrix)};
+    // A scope correction carries its required paired matrix explicitly.
+    fields.affectiveScope.options=fields.affectiveScope.options.map(option=>({...option,writeRequestValues:[{path:["affectiveMatrix"],value:option.optionId==="none"?"none":matrix==="none"?"tzin":matrix}]}));
+    const frame=freeze({...result,choiceOptionProjection:fields});
+    issuedNameDecisions.add(frame);if(result.authorizationStatus==="authorized")issuedResults.add(frame);return frame;
+  }
+  function isPersonalNameOwnerDecision(frame) { return issuedNameDecisions.has(frame); }
   function preparePersonalNameNncParadigmPlan(request = {}) {
     const sourceFrame = request?.sourceFrame || null;
     const affectiveScope = request?.affectiveScope;
@@ -1945,26 +1957,11 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
     }));
   }
 
-  function evaluatePersonalNameSentenceOperation({ personalNameResult = null, operation = "", contextUnits = [], locativeMatrix = "", ordinaryNncSubject = "" } = {}) {
+  function evaluatePersonalNameSentenceOperationInternal({ personalNameResult = null, operation = "", contextUnits = [], locativeMatrix = "", ordinaryNncSubject = "" } = {}) {
     const spec = SENTENCE_OPERATION_BY_ID.get(key(operation));
-    if (!issuedResults.has(personalNameResult) || personalNameResult.authorizationStatus !== "authorized" || !spec) {
-      return freeze({ kind: "classical-nahuatl-personal-name-sentence-operation", version: VERSION, authorizationStatus: "blocked", blockReason: !spec ? "sentence-operation-unrecognized" : "issued-personal-name-result-required", typedFrameAuthority: true, callerSuppliedFormulaAuthority: false, callerSuppliedSurfaceAuthority: false });
-    }
-    const sourceFrame = personalNameResult.typedSlotFrame.downgradedSource;
-    if (isPersonalNameOpaqueQuotedInnerSourceFrame(sourceFrame)
-      && spec.id !== "sentence-name-use") {
-      return freeze({kind: "classical-nahuatl-personal-name-sentence-operation",
-        version: VERSION, authorizationStatus: "blocked",
-        blockReason: "opaque-quoted-inner-sentence-operation-unclaimed",
-        typedFrameAuthority: true, callerSuppliedFormulaAuthority: false,
-        callerSuppliedSurfaceAuthority: false});
-    }
-    if (spec.id.startsWith("god-name-") && sourceFrame.referentKind !== "god") {
-      return freeze({ kind: "classical-nahuatl-personal-name-sentence-operation", version: VERSION, authorizationStatus: "blocked", blockReason: "god-name-source-required", typedFrameAuthority: true, callerSuppliedFormulaAuthority: false, callerSuppliedSurfaceAuthority: false });
-    }
-    if (spec.id === "god-name-to-place-name-embed" && (!String(locativeMatrix || "").trim() || !normalizeMorph(locativeMatrix) || normalizeMorph(locativeMatrix) === "Ø")) {
-      return freeze({ kind: "classical-nahuatl-personal-name-sentence-operation", version: VERSION, authorizationStatus: "blocked", blockReason: "locative-matrix-required", typedFrameAuthority: true, callerSuppliedFormulaAuthority: false, callerSuppliedSurfaceAuthority: false });
-    }
+    const blockReason=getPersonalNameSentenceOperationBlockReason(personalNameResult,spec,locativeMatrix);
+    if(blockReason)return freeze({kind:"classical-nahuatl-personal-name-sentence-operation",version:VERSION,authorizationStatus:"blocked",blockReason,typedFrameAuthority:true,callerSuppliedFormulaAuthority:false,callerSuppliedSurfaceAuthority:false});
+    const sourceFrame=personalNameResult.typedSlotFrame.downgradedSource;
     const sentenceResult = freeze({
       kind: "classical-nahuatl-personal-name-sentence-operation",
       version: VERSION,
@@ -2007,6 +2004,33 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
     return sentenceResult;
   }
 
+  function getPersonalNameSentenceOperationBlockReason(parent,spec,locativeMatrix="", requireMatrix=true) {
+    if(!issuedResults.has(parent)||parent.authorizationStatus!=="authorized")return "issued-personal-name-result-required";
+    if(!spec)return "sentence-operation-unrecognized";
+    const source=parent.typedSlotFrame.downgradedSource;
+    if(isPersonalNameOpaqueQuotedInnerSourceFrame(source)&&spec.id!=="sentence-name-use")return "opaque-quoted-inner-sentence-operation-unclaimed";
+    if(spec.id.startsWith("god-name-")&&source.referentKind!=="god")return "god-name-source-required";
+    if(requireMatrix&&spec.id==="god-name-to-place-name-embed"&&(!text(locativeMatrix)||!normalizeMorph(locativeMatrix)||normalizeMorph(locativeMatrix)==="Ø"))return "locative-matrix-required";
+    return "";
+  }
+  function getPersonalNameSentenceDecision(parent,request={}) {
+    if(!issuedResults.has(parent))return null;
+    const options=SENTENCE_OPERATION_SPECS.filter(spec=>!getPersonalNameSentenceOperationBlockReason(parent,spec,"",false));
+    const fields={operation:nameChoice(request,"operation",options.map(x=>x.id),request.operation),
+      locativeMatrix:{choiceId:"locativeMatrix",inputKind:"text",requestPath:["locativeMatrix"],authoredValue:request.locativeMatrix,selectedValue:request.locativeMatrix||"",effectiveValue:request.locativeMatrix||"",applicable:request.operation==="god-name-to-place-name-embed",editable:true,required:true,options:[]}};
+    fields.operation.options=options.map(spec=>({optionId:spec.id,availabilityStatus:"available",reranking:spec.reranking||"personal-name",outputKind:spec.outputKind,section:spec.section}));
+    fields.operation.options.unshift({optionId:"",availabilityStatus:"available",reranking:"personal-name"});
+    const reranking=options.find(x=>x.id===request.operation)?.reranking||"personal-name";
+    fields.reranking=nameChoice({},"reranking",["personal-name",...options.filter(x=>x.reranking).map(x=>x.reranking)],reranking,{requestPath:["operation"]});
+    fields.reranking.options=fields.reranking.options.map(option=>({...option,writeRequestValues:[{path:["operation"],value:options.find(spec=>spec.reranking===option.optionId)?.id||""}]}));
+    return freeze(fields);
+  }
+  function evaluatePersonalNameSentenceOperation(request={}) {
+    const result=evaluatePersonalNameSentenceOperationInternal(request),parent=request.personalNameResult;
+    if(!issuedResults.has(parent))return result;
+    const fields=getPersonalNameSentenceDecision(parent,request);
+    const frame=freeze({...result,choiceOptionProjection:fields});issuedNameDecisions.add(frame);if(result.authorizationStatus==="authorized")issuedSentenceResults.add(frame);return frame;
+  }
   function isPersonalNameSentenceOperation(frame = null) {
     return Boolean(
       issuedSentenceResults.has(frame)
@@ -2128,6 +2152,8 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
     getPersonalNameNncOperationFrameMismatch,
     getPersonalNameNncBlockedDiagnostic,
     evaluatePersonalNameNnc,
+    isPersonalNameOwnerDecision,
+    getPersonalNameSentenceDecision,
     isPersonalNameNncResult,
     preparePersonalNameNncParadigmPlan,
     isPersonalNameNncParadigmPlan,
