@@ -13615,6 +13615,7 @@ function buildOwnerhoodNounGeneralUse(source = {}, target = globalThis, prepared
   return { sourceStem, generalUseSourceStem, nounGeneralUseFrame };
 }
 
+const ISSUED_OWNERHOOD_SOURCE_ANALYSES = new WeakSet();
 function buildOwnerhoodSourceAnalysisFrame(source = {}, sourceShape = null, characteristicSource = null) {
   characteristicSource ||= deriveOwnerhoodCharacteristicSource(source);
   if (characteristicSource && !ISSUED_OWNERHOOD_CHARACTERISTIC_SOURCE_FRAMES.has(characteristicSource)) {
@@ -13655,7 +13656,7 @@ function buildOwnerhoodSourceAnalysisFrame(source = {}, sourceShape = null, char
   const matrixOptions = lexicalFacts?.matrixOptions
     ? [...lexicalFacts.matrixOptions]
     : structuralMatrices;
-  return deepFreeze({
+  const frame=deepFreeze({
     kind: "classical-nahuatl-lesson35-ownerhood-source-analysis-frame",
     version: VERSION,
     authorizationStatus: sourceStem && nounClass && characteristicSource?.authorizationStatus !== "blocked"
@@ -13699,6 +13700,7 @@ function buildOwnerhoodSourceAnalysisFrame(source = {}, sourceShape = null, char
     formulaStringAuthority: false,
     surfaceStringAuthority: false,
   });
+  ISSUED_OWNERHOOD_SOURCE_ANALYSES.add(frame);return frame;
 }
 
 function getOwnerhoodSourceAnalysis(source = {}, target = globalThis) {
@@ -13708,6 +13710,23 @@ function getOwnerhoodSourceAnalysis(source = {}, target = globalThis) {
     nounClass: capture.nounClass, nounSubclass: capture.nounSubclass};
   const characteristic = deriveOwnerhoodCharacteristicSource(source, capture);
   return buildOwnerhoodSourceAnalysisFrame(source, buildOwnerhoodNounGeneralUse(source, target), characteristic);
+}
+
+function getOwnerhoodSourceClassDecision({sourceStem="",sourceClass=""} = {},target = globalThis) {
+  // These are Source declarations consumed by the existing ownerhood grammar,
+  // not permission from the inventory. Every offered record retains the same
+  // actual general-use/characteristic Source analysis used by realization.
+  const records=(target.getClassicalNahuatlOpenNncSourceClassInventory?.() || []).map(record=>({
+    sourceClass:record.sourceClass,nounClass:record.nounClass,nounSubclass:normalizeOwnerhoodSubclass(record.subclass)}));
+  const broadOne=normalizeOwnerhoodSubclass("1");
+  records.push({sourceClass:`tl-${broadOne}`,nounClass:normalizeNounClass("tl"),nounSubclass:broadOne});
+  const options=records.map(record=>({...record,sourceAnalysis:getOwnerhoodSourceAnalysis({sourceStem,
+    nounClass:record.nounClass,nounSubclass:record.nounSubclass},target)}))
+    .filter(record=>record.sourceAnalysis.authorizationStatus === "authorized");
+  const selected=options.find(record=>record.sourceClass===sourceClass);
+  return deepFreeze({kind:"classical-nahuatl-ownerhood-source-class-decision",sourceStem,requestedSourceClass:sourceClass,
+    authorizationStatus:selected?"authorized":"blocked",blockReason:selected?"":"typed-ownerhood-source-class-required",
+    options,sourceAnalysis:selected?.sourceAnalysis || null});
 }
 
 function getOwnerhoodMatrixValues(analysis) {
@@ -13747,7 +13766,7 @@ function buildAbundantOwnerhoodBoundary(sourceStem, boundaryVariant, target) {
     restrictedUse: joinMorphs([incorporated, "h", "0"]), boundaryPhoneFrames};
 }
 
-function buildOwnerhoodOperation(request = {}, preparedSourceFrame = null, target = globalThis, decision = null) {
+function buildOwnerhoodOperation(request = {}, preparedSourceFrame = null, target = globalThis, decision = null, acceptedSourceAnalysis = null) {
   const declaredSource = request.source && typeof request.source === "object" ? request.source : request;
   const hasExactParent = Object.prototype.hasOwnProperty.call(request, "canonicalNncResult");
   const ownerhoodSourceCaptureFrame = hasExactParent
@@ -13809,8 +13828,11 @@ function buildOwnerhoodOperation(request = {}, preparedSourceFrame = null, targe
     ISSUED_SOURCE_FRAMES.add(sourceFrame);
   }
   const nounClass = normalizeNounClass(source.nounClass);
-  const ownerhoodSourceAnalysisFrame =
-    buildOwnerhoodSourceAnalysisFrame(source, { generalUseSourceStem }, ownerhoodCharacteristicSourceFrame);
+  if(acceptedSourceAnalysis && (!ISSUED_OWNERHOOD_SOURCE_ANALYSES.has(acceptedSourceAnalysis)
+    || acceptedSourceAnalysis.sourceStem !== generalUseSourceStem || acceptedSourceAnalysis.nounClass !== nounClass
+    || acceptedSourceAnalysis.nounSubclass !== normalizeOwnerhoodSubclass(source.nounSubclass))) return {sourceFrame,operationFrame:null,blockReason:"current-issued-ownerhood-source-analysis-required"};
+  const ownerhoodSourceAnalysisFrame = acceptedSourceAnalysis
+    || buildOwnerhoodSourceAnalysisFrame(source, { generalUseSourceStem }, ownerhoodCharacteristicSourceFrame);
   const matrix = ownerhoodMatrixForSource(
     source,
     ownerhoodSourceAnalysisFrame
@@ -16460,7 +16482,33 @@ function buildDoubleNucleusOwnerhoodOperation(request = {}, target = globalThis)
   return {sourceFrame, operationFrame, normalizedRequest, blockReason: ""};
 }
 
+function captureOwnerhoodReceiptRequest(request) {
+  const seen=new WeakSet();
+  const validate=value=>{
+    if(value===null || ["undefined","string","number","boolean"].includes(typeof value))return;
+    if(typeof value!=="object" || ![Object.prototype,null,Array.prototype].includes(Object.getPrototypeOf(value)))throw new TypeError("receiving-source-own-data-required");
+    if(seen.has(value))return;seen.add(value);
+    for(const key of Reflect.ownKeys(value)) {
+      const descriptor=Object.getOwnPropertyDescriptor(value,key);
+      if(typeof key!=="string" || !descriptor || !Object.hasOwn(descriptor,"value"))throw new TypeError("receiving-source-own-data-required");
+      validate(descriptor.value);
+    }
+  };
+  validate(request);const authored={};
+  for(const key of Reflect.ownKeys(request))if(key!=="ownerhoodSourceAnalysisFrame")
+    Object.defineProperty(authored,key,{value:Object.getOwnPropertyDescriptor(request,key).value,enumerable:true});
+  return authored;
+}
 function evaluateGrammar(request = {}, target = globalThis, internalContext = null) {
+  const analysisDescriptor=Object.getOwnPropertyDescriptor(request,"ownerhoodSourceAnalysisFrame");
+  if(analysisDescriptor&&!Object.hasOwn(analysisDescriptor,"value"))return buildBlockedFrame("current-issued-ownerhood-source-analysis-required",{});
+  const acceptedSourceAnalysis=analysisDescriptor?.value;
+  if(acceptedSourceAnalysis !== undefined) {
+    if(!ISSUED_OWNERHOOD_SOURCE_ANALYSES.has(acceptedSourceAnalysis)
+      || Object.getOwnPropertyDescriptor(request,"constructionKind")?.value !== "ownerhood")
+      return buildBlockedFrame("current-issued-ownerhood-source-analysis-required",request);
+    try {request=captureOwnerhoodReceiptRequest(request);}catch{return buildBlockedFrame("receiving-source-own-data-required",{});}
+  }
   const hostilePath = findHostileAuthorityPath(request, "request", target);
   if (hostilePath) {
     return buildBlockedFrame(
@@ -16508,7 +16556,7 @@ function evaluateGrammar(request = {}, target = globalThis, internalContext = nu
       decision
     );
   } else if (constructionKind === "ownerhood") {
-    built = buildOwnerhoodOperation(request, preparedSourceFrame, target, decision);
+    built = buildOwnerhoodOperation(request, preparedSourceFrame, target, decision, acceptedSourceAnalysis);
   } else if (["nominal-continuation", "verbal-continuation"].includes(constructionKind)) {
     built = buildContinuationOperation(request, target, preparedSourceFrame, decision);
   } else if (constructionKind === "vocative") {
@@ -17045,8 +17093,11 @@ export function installClassicalNahuatlDeverbalNncGlobals(
       sentence => getPreteritNncNegativeEmbedProjection(sentence, semanticTarget),
     getClassicalNahuatlPreteritNncVocativeProjection:
       (source, options = {}) => getPreteritNncVocativeProjection(source, options, semanticTarget),
+    isClassicalNahuatlOwnerhoodSourceAnalysisFrame: frame => ISSUED_OWNERHOOD_SOURCE_ANALYSES.has(frame),
     getClassicalNahuatlOwnerhoodSourceAnalysis:
       source => getOwnerhoodSourceAnalysis(source, semanticTarget),
+    getClassicalNahuatlOwnerhoodSourceClassDecision:
+      source => getOwnerhoodSourceClassDecision(source,semanticTarget),
     captureClassicalNahuatlNncSourceForOwnerhood:
       (result, analysis = null) => captureOwnerhoodNncSource(result, semanticTarget, analysis),
     isClassicalNahuatlOwnerhoodNncSourceCaptureFrame: isOwnerhoodNncSourceCapture,

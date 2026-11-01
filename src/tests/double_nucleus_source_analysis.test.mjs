@@ -137,13 +137,17 @@ test('native Source sync keeps conditional inner choices tied to their own nucle
   const text = readFileSync(new URL('../ui/rendering/rendering.mjs', import.meta.url), 'utf8');
   const start = text.indexOf('    function syncClassicalDoubleNucleusSourceControls(');
   const end = text.indexOf('\n    function ', start + 1);
-  const ctx = vm.createContext({targetObject: {...h.r, document: h.documentObject}});
+  h.set('classical-deverbal-nnc-family','double-nucleus-ownerhood');
+  const ctx = vm.createContext({targetObject: {...h.r, document: h.documentObject},getClassicalDoubleNucleusSourceDraft:h.r.getClassicalDoubleNucleusSourceDraft});
   vm.runInContext(text.slice(start, end), ctx);
   ctx.syncClassicalDoubleNucleusSourceControls(true);
   assert.equal(h.controls.get('classical-double-nucleus-principal-possessor').disabled, false);
   assert.equal(h.controls.get('classical-double-nucleus-principal-plural').disabled, true);
+  assert.equal(h.controls.get('classical-double-nucleus-principal-humanness').value, 'human', 'inspection retains authored incompatible reference');
+  assert.equal(h.r.getClassicalDoubleNucleusSourceDraft().ready, false);
+  h.set('classical-double-nucleus-principal-humanness','nonhuman');
+  ctx.syncClassicalDoubleNucleusSourceControls(true);
   assert.equal(h.controls.get('classical-double-nucleus-principal-humanness').value, 'nonhuman');
-  assert.equal(h.controls.get('classical-double-nucleus-principal-humanness').disabled, true);
   assert.equal(h.controls.get('classical-double-nucleus-supplement-possessor').disabled, true);
   assert.equal(h.controls.get('classical-double-nucleus-supplement-plural').disabled, false);
 });
@@ -216,12 +220,14 @@ test('two-nucleus Source admits without an unrelated main stem/class and remains
     }
     h.controls.set(id, node);
   }
+  const nameMatrixLabel=element('label');nameMatrixLabel.append(h.controls.get('classical-personal-name-locative-matrix'));
   const root = element('div'); root.id = 'classical-source-parts';
   root.dataset = {classicalSourcePartsMode: 'whole-stem', classicalSourceCommitState: 'pending'};
   root.dispatchEvent = () => {};
   h.controls.set(root.id, root);
   h.documentObject.createElement = element;
   h.documentObject.body = element('body');
+  for(const id of ['classical-personal-name-sentence-context']){const node=element('div');node.id=id;h.controls.set(id,node);}
   const group = element('section'); group.id = 'classical-double-nucleus-source';
   h.controls.set(group.id, group);
   const row = element('div'); row.className = 'classical-source-parts__commit-row';

@@ -43,6 +43,44 @@ const CONTEXTUAL_FLAWED_SUBJECT_OPERATION = "contextual-flawed-subject-negative-
 const ISSUED_ADJECTIVAL_SOURCE_CONSTITUENTS = new WeakSet();
 const ISSUED_NOMINAL_EXTERNAL_OBJECTS = new WeakMap();
 const ISSUED_SOURCE_AUTHORIZATION_FRAMES = new WeakSet();
+const SOURCE_AUTHORIZATION_DECLARATIONS = new WeakMap();
+const SOURCE_AUTHORIZATION_EXACT_PARENTS = new WeakSet();
+function captureNominalSourceAuthorizationCoordinates(request, retainAuthorizedParents = false) {
+  const capture=(value,seen=new WeakSet())=>{
+    if(value===null || ["string","number","boolean","undefined"].includes(typeof value))return value;
+    if(typeof value === "object" && SOURCE_AUTHORIZATION_EXACT_PARENTS.has(value))return value;
+    if(retainAuthorizedParents && typeof value === "object" && Object.isFrozen(value)
+      && typeof Object.getOwnPropertyDescriptor(value,"kind")?.value === "string"
+      && Object.getOwnPropertyDescriptor(value,"kind").value.startsWith("classical-")) {
+      SOURCE_AUTHORIZATION_EXACT_PARENTS.add(value);return value;
+    }
+    if(typeof value!=="object" || seen.has(value) || ![Object.prototype,null,Array.prototype].includes(Object.getPrototypeOf(value)))throw new TypeError("nominal-source-own-data-required");
+    seen.add(value);const copy=Array.isArray(value)?[]:{};
+    for(const key of Reflect.ownKeys(value)) {
+      if(Array.isArray(value)&&key === "length")continue;
+      const descriptor=Object.getOwnPropertyDescriptor(value,key);
+      if(typeof key!=="string" || !descriptor || !Object.hasOwn(descriptor,"value"))throw new TypeError("nominal-source-own-data-required");
+      Object.defineProperty(copy,key,{value:capture(descriptor.value,seen),enumerable:true});
+    }
+    seen.delete(value);return Object.freeze(copy);
+  };
+  const coordinates={};
+  // These are exactly the outer coordinates read by the actual Source issuer.
+  for(const key of ["adverbRole","affectiveMatrix","characteristicMatrixRealization","constructionKind","embedBoundarySpelling","embedLexicalRule","embedRole","embedShapeVariant","matrixFormation","possessorOrientation","relation","route","source","state","structure","subject"]) {
+    const descriptor=Object.getOwnPropertyDescriptor(request,key);
+    if(descriptor&&!Object.hasOwn(descriptor,"value"))throw new TypeError("nominal-source-own-data-required");
+    coordinates[key]=capture(descriptor?.value);
+  }
+  return Object.freeze(coordinates);
+}
+function sameNominalSourceAuthorizationCoordinates(left,right) {
+  if(left===right)return true;
+  if(typeof left === "object" && left && SOURCE_AUTHORIZATION_EXACT_PARENTS.has(left)
+    || typeof right === "object" && right && SOURCE_AUTHORIZATION_EXACT_PARENTS.has(right))return false;
+  if(!left||!right||typeof left!=="object"||typeof right!=="object")return false;
+  const keys=Object.keys(left);return keys.length===Object.keys(right).length&&keys.every(key=>Object.hasOwn(right,key)&&sameNominalSourceAuthorizationCoordinates(left[key],right[key]));
+}
+
 const ISSUED_COMPOUND_USE_SOURCE_FRAMES = new WeakSet();
 const ISSUED_RAW_COMPOUND_SOURCE_FRAMES = new WeakSet();
 const ISSUED_AFFECTIVE_DENOMINAL_SOURCE_FRAMES = new WeakSet();
@@ -4002,11 +4040,18 @@ function issueClassicalNahuatlNominalConstructionSourceAuthorization(
     surfaceStringAuthority: false,
     callerSuppliedAuthorityAccepted: false,
   });
-  if (!blockReason) ISSUED_SOURCE_AUTHORIZATION_FRAMES.add(frame);
+  if (!blockReason) {
+    ISSUED_SOURCE_AUTHORIZATION_FRAMES.add(frame);
+    SOURCE_AUTHORIZATION_DECLARATIONS.set(frame,captureNominalSourceAuthorizationCoordinates(request,true));
+  }
   return frame;
 }
 
-function isClassicalNahuatlNominalConstructionSourceAuthorization(frame = null) {
+function isClassicalNahuatlNominalConstructionSourceAuthorization(frame = null, request = null) {
+  if(request !== null) {
+    let coordinates;try {coordinates=captureNominalSourceAuthorizationCoordinates(request);}catch{return false;}
+    if(!sameNominalSourceAuthorizationCoordinates(SOURCE_AUTHORIZATION_DECLARATIONS.get(frame),coordinates))return false;
+  }
   return Boolean(
     ISSUED_SOURCE_AUTHORIZATION_FRAMES.has(frame)
     && frame?.kind
@@ -13092,7 +13137,34 @@ function buildNominalChoiceProjection(request, sourceAuthorizationFrame, target,
   return null;
 }
 
+function captureNominalReceiptRequest(request) {
+  const seen=new WeakSet();
+  const validate=value=>{
+    if(value===null || ["undefined","string","number","boolean"].includes(typeof value))return;
+    if(typeof value!=="object" || ![Object.prototype,null,Array.prototype].includes(Object.getPrototypeOf(value)))throw new TypeError("receiving-source-own-data-required");
+    if(seen.has(value))return;seen.add(value);
+    for(const key of Reflect.ownKeys(value)) {
+      const descriptor=Object.getOwnPropertyDescriptor(value,key);
+      if(typeof key!=="string" || !descriptor || !Object.hasOwn(descriptor,"value"))throw new TypeError("receiving-source-own-data-required");
+      validate(descriptor.value);
+    }
+  };
+  validate(request);const authored={};
+  for(const key of Reflect.ownKeys(request))if(key!=="sourceAuthorizationFrame")
+    Object.defineProperty(authored,key,{value:Object.getOwnPropertyDescriptor(request,key).value,enumerable:true});
+  return authored;
+}
 function evaluateNominalConstruction(request = {}, target = globalThis) {
+  const authorizationDescriptor=Object.getOwnPropertyDescriptor(request,"sourceAuthorizationFrame");
+  if(authorizationDescriptor&&!Object.hasOwn(authorizationDescriptor,"value"))return buildBlockedFrame("","current-issued-nominal-source-authorization-required",{});
+  const suppliedSourceAuthorization=authorizationDescriptor?.value;
+  if(suppliedSourceAuthorization !== undefined) {
+    let coordinates;try {coordinates=captureNominalSourceAuthorizationCoordinates(request);}catch{return buildBlockedFrame("","current-issued-nominal-source-authorization-required",{});}
+    if(!isClassicalNahuatlNominalConstructionSourceAuthorization(suppliedSourceAuthorization)
+      || !sameNominalSourceAuthorizationCoordinates(SOURCE_AUTHORIZATION_DECLARATIONS.get(suppliedSourceAuthorization),coordinates))
+      return buildBlockedFrame("","current-issued-nominal-source-authorization-required",{});
+    try {request=captureNominalReceiptRequest(request);}catch{return buildBlockedFrame("","receiving-source-own-data-required",{});}
+  }
   const trustedResultFrames =
     getNominalConstructionTrustedResultFrames(request);
   const trustedTypedSourceAnalyses =
@@ -13129,8 +13201,8 @@ function evaluateNominalConstruction(request = {}, target = globalThis) {
     );
   }
   if (!constructionKind) return buildBlockedFrame("", "recognized-typed-construction-kind-required", request);
-  const sourceAuthorizationFrame =
-    issueClassicalNahuatlNominalConstructionSourceAuthorization(request, target);
+  const sourceAuthorizationFrame = suppliedSourceAuthorization
+    || issueClassicalNahuatlNominalConstructionSourceAuthorization(request, target);
   if (
     !isClassicalNahuatlNominalConstructionSourceAuthorization(
       sourceAuthorizationFrame
@@ -15030,6 +15102,8 @@ export function installClassicalNahuatlNominalConstructionGlobals(targetObject =
     CLASSICAL_NAHUATL_CARDINAL_NOMINAL_CLASSIFIERS: CARDINAL_NOMINAL_CLASSIFIERS,
     validateClassicalNahuatlClosedConstructionException,
     isClassicalNahuatlClosedConstructionExceptionValidation,
+    issueClassicalNahuatlNominalConstructionSourceAuthorization:
+      request => issueClassicalNahuatlNominalConstructionSourceAuthorization(request,target),
     isClassicalNahuatlNominalConstructionSourceAuthorization,
     buildClassicalNahuatlAffectiveDenominalSourceFrame: request =>
       buildAffectiveDenominalSourceFrame(

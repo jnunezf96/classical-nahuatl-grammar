@@ -1,6 +1,6 @@
 import {normalizeSourceEditorSignature} from '../composition/source_editor_signature.mjs';
 import {runCompositionAction} from '../composition/action_feedback.mjs?v=20261023-1';
-import { installClassicalSourceObjectRows, syncClassicalSourceObjectRows } from "./source_objects.mjs?v=20261007-panel-source-objects-1&interfaceRelease=1.2.36";
+import { installClassicalSourceObjectRows, syncClassicalSourceObjectRows,readClassicalSourceObjectSelections } from "./source_objects.mjs?v=20261007-panel-source-objects-1&interfaceRelease=1.2.36";
 import { getSourceClassRequirement } from "./source_admission.mjs?deverbalReload=20261024-8&v=20261014-source-admission-3";
 // Canonical modern ESM module.
 
@@ -9296,15 +9296,6 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         choice.disabled = !choiceApplies;
         choice.required = choiceApplies;
         choice.setAttribute?.("aria-required", String(choiceApplies));
-        if (
-          !choiceApplies
-          || previousStem !== sourceStem
-          || !selectionFrame.availableSourceLexemeIds.includes(
-            String(choice.value || "")
-          )
-        ) {
-          choice.value = "";
-        }
         if (choice.dataset) {
           choice.dataset.classicalSourceLexemeStem = choiceApplies
             ? sourceStem
@@ -9337,86 +9328,28 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       });
     }
     function syncClassicalVncSourceInitialIFact(root = null, select = null) {
-      const {
-        initialIFact: fact,
-        initialIChoiceField: choiceField,
-        initialIChoice: choice
-      } = getClassicalVncSourceGuideElements();
-      const sourceParts = getClassicalSourcePartControlState();
-      const sourceStem = sourceParts.mode === CLASSICAL_SOURCE_PARTS_MODE.embedMatrix
-        ? joinClassicalSourceEmbedMatrix(
-            sourceParts.sourceEmbedStem,
-            sourceParts.sourceMatrixStem
-          )
-        : sourceParts.sourceWholeStem;
-      const sourceValence = targetObject.document?.getElementById?.("classical-rule-logic-valence")?.value || "intransitive";
-      // The selected example may belong to another valence. Its read-only
-      // fact cannot suppress the actual Source's unresolved analysis.
-      const canonicalRecord = getClassicalVncCanonicalInitialIRecord(sourceStem, sourceValence);
-      const canonicalKind = String(canonicalRecord?.initialIAnalysis?.kind || "").trim();
-      const initialI = /^[iī]/iu.test(sourceStem);
-      const initialIAnalysis = targetObject.getClassicalNahuatlVncApplicationSourceInitialIAnalysis?.(
-        sourceStem, sourceValence, {sourceInitialISelection: choice?.value},
-      );
-      const allowedResolvedKinds = initialIAnalysis?.allowedResolvedKinds || canonicalRecord?.initialIAnalysis
-        ?.allowedResolvedKindsByValence?.[sourceValence] || [];
-      const canonicalRealizationChoice = allowedResolvedKinds.length > 1;
-      const userChoiceApplies = initialI
-        && (!canonicalKind || canonicalRealizationChoice);
-      if (choiceField) {
-        choiceField.hidden = !userChoiceApplies;
+      const {initialIFact:fact,initialIChoiceField:field,initialIChoice:choice}=getClassicalVncSourceGuideElements();
+      const parts=getClassicalSourcePartControlState();
+      const stem=parts.mode === CLASSICAL_SOURCE_PARTS_MODE.embedMatrix
+        ? joinClassicalSourceEmbedMatrix(parts.sourceEmbedStem,parts.sourceMatrixStem):parts.sourceWholeStem;
+      const analysis=targetObject.getClassicalNahuatlVncApplicationSourceInitialIAnalysis?.(stem,
+        targetObject.document?.getElementById?.("classical-rule-logic-valence")?.value || "intransitive",
+        {sourceInitialISelection:choice?.value || ""});
+      const visible=analysis?.kind !== "not-applicable";
+      const values=analysis?.allowedResolvedKinds || [];
+      const editable=visible&&values.length>1;
+      if(field)field.hidden=!visible||!editable&&!analysis?.requestedKind;
+      if(choice) {
+        choice.disabled=!editable;choice.required=analysis?.selectionRequired === true;
+        for(const option of Array.from(choice.options || []))option.disabled=Boolean(option.value)&&!values.includes(option.value);
       }
-      if (choice) {
-        choice.disabled = !userChoiceApplies;
-        choice.required = userChoiceApplies && !canonicalRealizationChoice;
-        Array.from(choice.options || []).forEach(option => {
-          option.disabled = canonicalRealizationChoice
-            && !allowedResolvedKinds.includes(option.value);
-        });
-        if (userChoiceApplies) {
-          if (root?.dataset?.classicalVncSourceInitialIChoiceStem !== sourceStem) {
-            choice.value = canonicalRealizationChoice
-              ? canonicalRecord?.initialIAnalysis?.defaultResolvedKind || initialIAnalysis?.resolvedKind || "real" : "";
-          }
-          if (root?.dataset) {
-            root.dataset.classicalVncSourceInitialIChoiceStem = sourceStem;
-          }
-        } else {
-          choice.value = "";
-          if (root?.dataset) {
-            delete root.dataset.classicalVncSourceInitialIChoiceStem;
-          }
-        }
+      if(root?.dataset) {
+        root.dataset.classicalVncSourceInitialI=analysis?.kind || "unresolved";
+        root.dataset.classicalVncSourceInitialISelection=analysis?.requestedKind || "";
       }
-      const selectedKind = userChoiceApplies
-        ? ["real", "supportive", "contextual"].includes(
-            String(choice?.value || ""),
-          )
-          ? String(choice.value)
-          : ""
-        : "";
-      const kind = (canonicalRealizationChoice && selectedKind) || canonicalKind
-        || (userChoiceApplies ? selectedKind || "unresolved" : "not-applicable");
-      const visible = initialI;
-      if (root?.dataset) {
-        root.dataset.classicalVncSourceInitialI = visible ? kind || "unresolved" : "not-applicable";
-        root.dataset.classicalVncSourceInitialISelection = userChoiceApplies ? selectedKind : "";
-      }
-      if (!fact) {
-        return visible;
-      }
-      fact.hidden = !visible;
-      fact.textContent = !visible
-        ? ""
-        : canonicalRealizationChoice
-          ? canonicalKind === "contextual"
-            ? "Initial i: Andrews permits retaining i or treating it as supportive after tla. Choose its realization, then use this Source."
-            : "Initial i: choose the analysis shown in Andrews."
-        : canonicalKind
-          ? `Initial i: ${canonicalKind === "contextual" ? "context-sensitive" : canonicalKind} (canonical source fact)`
-          : selectedKind
-            ? `Initial i: ${selectedKind === "contextual" ? "context-sensitive" : selectedKind} (Source choice)`
-            : "Initial i: choose its Source analysis before generating. Real i belongs to the stem; supportive i supplies a vowel that can disappear when its sound environment changes. Context-sensitive i behaves as supportive in some constructions and real in others. Use the stem’s analysis in Andrews §7.8, Note 1; spelling alone does not decide. Then use this Source.";
+      if(fact){fact.hidden=!visible;fact.textContent=!visible?"":analysis?.selectionRequired
+        ? "Initial i: choose its Source analysis, then Apply."
+        : `Initial i: ${analysis?.kind === "contextual"?"context-sensitive":analysis?.resolvedKind || analysis?.kind || "unresolved"}`;}
       return visible;
     }
     function syncClassicalVncSourceValenceAvailability(options = {}) {
@@ -9511,15 +9444,6 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         select.value = "";
       }
       root.dataset.classicalVncSourceSelection = select.value ? "canonical-stem" : "user-verbstem";
-      if (select.value) {
-        applyClassicalVncBuiltInSourceValenceDefault(
-          root,
-          select.selectedOptions?.[0] || null,
-          { refresh: true }
-        );
-      } else if (root.dataset) {
-        delete root.dataset.classicalVncBuiltInDefaultSignature;
-      }
       syncClassicalVncSourceValenceAvailability();
       syncClassicalVncSourceInitialIFact(root, select);
       syncClassicalVncSourceLexemeFact(root, select);
@@ -9805,20 +9729,6 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       if (!root?.dataset || root.dataset.classicalVncClassSourceIdentity === identity) return;
       root.dataset.classicalVncClassSourceIdentity = identity;
       if (initialize) return;
-      const control = targetObject.document?.getElementById?.("classical-rule-logic-class");
-      const retainedClass = targetObject.getClassicalRuleLogicCanvasClassSelection?.(
-        source.sourceWholeStem,
-        {
-          requestedClassId: control?.value || "",
-          valence: targetObject.document?.getElementById?.("classical-rule-logic-valence")?.value || "",
-        },
-      );
-      const exactReturnedClass = source.mode === "whole-stem"
-        && retainedClass?.canvasRuleId === "owner-issued-retained-vnc-coordinate";
-      if (control && !exactReturnedClass) {
-        control.value = "";
-        delete control.dataset.classicalBuiltInSourceDefault;
-      }
       // A lexical alternative belongs to the previous Source.
       const alternative = targetObject.document?.getElementById?.("classical-rule-logic-irregular-alternative");
       if (alternative) {
@@ -10034,12 +9944,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         sourceEmbedStem: state.sourceEmbedStem,
         sourceMatrixStem: state.sourceMatrixStem,
         sourcePartsSource: state.sourcePartsSource,
-        sourceInitialISelection: (() => {
-          const choice = getClassicalVncSourceGuideElements().initialIChoice;
-          return choice && choice.disabled !== true
-            ? String(choice.value || "")
-            : "";
-        })(),
+        sourceInitialISelection:getClassicalVncSourceGuideElements().initialIChoice?.value || "",
         sourceVerbClass:
           targetObject.document?.getElementById?.(
             "classical-rule-logic-class"
@@ -10057,7 +9962,10 @@ export function createUiComposerRuntime(targetObject = globalThis) {
               .sort(([leftId], [rightId]) => leftId.localeCompare(rightId))
           : [],
         sourceNncClass: targetObject.document?.getElementById?.("classical-rule-logic-nnc-class")?.value || "",
+        sourceNncReclassification:targetObject.document?.getElementById?.("classical-rule-logic-nnc-tl2a-realization")?.value || "retain-2a",
         sourceNncUse: targetObject.document?.getElementById?.("classical-rule-logic-nnc-source-use")?.value || "nounstem",
+        ...(["attested-cell","attested-place","attested-collocation","lexicalized-nnc"].includes(targetObject.document?.getElementById?.("classical-rule-logic-nnc-source-use")?.value)
+          ? {sourceAttestedEnteredStem:targetObject.document?.getElementById?.("classical-source-whole")?.value || ""}:{}),
         sourceNncInitialI: targetObject.document?.getElementById?.("classical-rule-logic-nnc-initial-i")?.value || "real",
         ...(targetObject.document?.getElementById?.("classical-construction-operation")?.value === "personal-name-nnc"
           ? {sourcePersonalNameFamily: targetObject.document?.getElementById?.("classical-personal-name-source-family")?.value || ""} : {}),
@@ -10068,11 +9976,89 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         affectiveFlawedLexicalReading: targetObject.document?.getElementById?.("classical-affective-flawed-lexical-reading")?.value || "",
         attitudeSourceAnalysis: targetObject.document?.getElementById?.("classical-attitude-source-analysis")?.value || "",
         sourceLexemeId: getClassicalVncSourceGuideElements().sourceLexemeChoice?.value || "",
+        ...(( ["mainline-reflexive","human-reciprocal","shuntline-reflexive"].includes(targetObject.document?.getElementById?.("classical-rule-logic-valence")?.value)
+          || [2,3].some(index=>Number(targetObject.document?.getElementById?.("classical-source-object-count")?.value || 1)>=index
+            && targetObject.document?.getElementById?.(`classical-source-object-${index}-kind`)?.value === "reflexive"))
+          ? {sourceObjectSubject:targetObject.document?.getElementById?.("classical-rule-logic-subject")?.value || ""}:{}),
         sourceObjectSelections: ["classical-source-object-count", "classical-source-object-2-kind", "classical-source-object-2-person", "classical-source-object-3-kind", "classical-source-object-3-person", ...(getClassicalBasalUnitFromRuntime() === "vnc" && targetObject.document?.getElementById?.("classical-rule-logic-valence")?.value === "specific-projective" ? ["classical-rule-logic-object"] : [])].map(id => targetObject.document?.getElementById?.(id)?.value || "")
       });
       return normalizeSourceEditorSignature(targetObject, signature,
         targetObject.getActiveClassicalGrammarResultSourceCapture?.(),
         targetObject.document?.getElementById?.("classical-capability-navigator-operation")?.value || "");
+    }
+    let ClassicalSourceAuthoringDraft = null;
+    let ClassicalSourceAuthoringRevision = 0;
+    let ClassicalCommittedSourceAuthoringDecision = null;
+    function getClassicalSourceAuthoringDecision() {
+      const double=targetObject.getClassicalDoubleNucleusSourceDraft?.();
+      if(double?.decision) {
+        targetObject.discardClassicalSourceAuthoringDecision?.(ClassicalSourceAuthoringDraft);
+        ClassicalSourceAuthoringDraft=null;return double.decision;
+      }
+      if(double)return null;
+      const parts=getClassicalSourcePartControlState();
+      const signature=getClassicalSourcePartsEvaluationSignature();
+      const operation=targetObject.document?.getElementById?.("classical-construction-operation")?.value;
+      const sourceContext=isClassicalRelationalNncUiModeEnabled() ? {construction:"relational-nnc"}
+        : operation === "personal-name-nnc" ? {construction:operation,
+          sourceFamily:targetObject.document?.getElementById?.("classical-personal-name-source-family")?.value || ""}
+        : ["affective-nnc","compound-nnc"].includes(operation)
+          && targetObject.document?.getElementById?.("classical-rule-logic-nnc-source-use")?.value === "general-use"
+            ? {construction:operation,sourceUse:"general-use"}
+        : operation === "deverbal-nnc" && targetObject.document?.getElementById?.("classical-deverbal-nnc-family")?.value === "ownerhood"
+          ? {construction:operation,deverbalFamily:"ownerhood"}:{};
+      if(ClassicalSourceAuthoringDraft?.signature===signature
+        && JSON.stringify(ClassicalSourceAuthoringDraft.declaration.sourceContext || {}) === JSON.stringify(sourceContext)
+        && targetObject.isClassicalSourceAuthoringDecision?.(ClassicalSourceAuthoringDraft))return ClassicalSourceAuthoringDraft;
+      targetObject.discardClassicalSourceAuthoringDecision?.(ClassicalSourceAuthoringDraft);
+      const value=id=>targetObject.document?.getElementById?.(id)?.value || "";
+      const unit=getClassicalBasalUnitFromRuntime();
+      const source=unit === "vnc" ? {verbClass:value("classical-rule-logic-class"),
+        valence:value("classical-rule-logic-valence") || "intransitive",
+        sourceInitialISelection:value("classical-vnc-source-initial-i-choice"),
+        sourceLexemeId:value("classical-vnc-source-lexeme-choice")}
+        : {sourceClass:value("classical-rule-logic-nnc-class") === "tl-2-a"
+            && value("classical-rule-logic-nnc-tl2a-realization") === "reclassify-1a"
+              ? "tl-2-a-to-1-a":value("classical-rule-logic-nnc-class"),
+          sourceUse:value("classical-rule-logic-nnc-source-use") || "nounstem",
+          supportiveInitialI:value("classical-rule-logic-nnc-initial-i") === "supportive"};
+      if(unit === "nnc" && source.sourceUse === "quantitative-predicate") {
+        delete source.sourceClass;delete source.supportiveInitialI;
+        source.citation=parts.sourceWholeStem;source.reference="nonanimate-common";
+      }
+      if(unit === "nnc" && source.sourceUse === "nounstem")delete source.sourceUse;
+      if(unit === "nnc" && ["attested-cell","attested-place","attested-collocation"].includes(source.sourceUse)) {
+        delete source.sourceClass;delete source.supportiveInitialI;
+      }
+      let selectedSourceFrame=null;
+      if(unit === "nnc" && ["attested-cell","attested-place","attested-collocation","lexicalized-nnc"].includes(source.sourceUse))
+        parts.sourceWholeStem=value("classical-source-whole").normalize("NFC").trim();
+      if(unit === "nnc" && source.sourceUse && !["attested-cell","attested-place","attested-collocation","quantitative-predicate"].includes(source.sourceUse)) {
+        const stem=parts.mode === "embed-matrix" ? joinClassicalSourceEmbedMatrix(parts.sourceEmbedStem,parts.sourceMatrixStem):parts.sourceWholeStem;
+        const identity=targetObject.deriveClassicalNncSourceIdentity?.(stem,parts,source);
+        selectedSourceFrame=identity?.typedSourceFrame || null;
+      }
+      const sourceRequest=sourceContext.construction === "relational-nnc" ? getClassicalRelationalNncUiRequest({sourceAuthoring:true})
+        : ["personal-name-nnc","affective-nnc","compound-nnc"].includes(sourceContext.construction)
+          ? targetObject.buildClassicalNominalConstructionUiRequest?.():null;
+      ClassicalSourceAuthoringDraft=targetObject.issueClassicalSourceAuthoringDecision?.({unit,parts,source,sourceContext,
+        ...(sourceRequest?{sourceRequest}:{}),
+        ...(selectedSourceFrame?{selectedSourceFrame}:{}),
+        ...(unit === "vnc"?{objectDeclaration:{...readClassicalSourceObjectSelections(targetObject.document),
+          subject:value("classical-rule-logic-subject") || "3sg"}}:{}),
+        revision:++ClassicalSourceAuthoringRevision,signature}) || null;
+      return ClassicalSourceAuthoringDraft;
+    }
+    function getClassicalCommittedSourceAuthoringDecision() {
+      const decision=ClassicalCommittedSourceAuthoringDecision;
+      if(!decision)return null;
+      const exact=targetObject.getActiveClassicalGrammarResultSourceCapture?.();
+      if(targetObject.isClassicalGrammarApplicationResultCapture?.(exact) === true)return null;
+      if(decision.declaration.parts?.mode === "two-nucleus-nnc") {
+        let committed;try{committed=JSON.parse(ClassicalSourcePartsCommittedSignature);}catch{return null;}
+        if(committed.mode !== "two-nucleus-nnc" || JSON.stringify(committed.sourceAnalysisChoices)!==decision.signature)return null;
+      } else if(ClassicalSourcePartsCommittedSignature !== decision.signature)return null;
+      return decision;
     }
     function hasCommittableClassicalSourceParts(state = null) {
       const double = targetObject.getClassicalDoubleNucleusSourceDraft?.();
@@ -10146,6 +10132,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
           targetObject.syncClassicalSourceCommitPresentation?.();
           return false;
         }
+        ClassicalCommittedSourceAuthoringDecision=double.decision;
         targetObject.clearClassicalUnsupportedResultReload?.();
         ClassicalSourcePartsCommittedSignature = getClassicalSourcePartsEvaluationSignature();
         setClassicalSourcePartsPendingState(false);
@@ -10203,6 +10190,12 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         input.value = transcriptionFrame.surface;
       }
       sourceState = getClassicalSourcePartControlState();
+      const sourceDecision = getClassicalSourceAuthoringDecision();
+      if(!sourceDecision || sourceDecision.authorizationStatus === "blocked") {
+        setClassicalSourcePartsPendingState(true);
+        targetObject.syncClassicalSourceCommitPresentation?.();
+        return false;
+      }
       const classRequirement = getSourceClassRequirement(targetObject, sourceState);
       if (classRequirement) {
         setClassicalSourcePartsPendingState(true);
@@ -10260,6 +10253,9 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         syncClassicalSourceReadout();
         return false;
       }
+      const sourceAuthoringPayload=sourceDecision ? targetObject.acceptClassicalSourceAuthoringDecision?.(sourceDecision,
+        {revision:sourceDecision.revision,signature}) : null;
+      if(sourceDecision && !sourceAuthoringPayload)return false;
       const semanticAnalysisOnly = previousSignature && (() => {
         const prior = JSON.parse(previousSignature);
         const next = JSON.parse(signature);
@@ -10296,24 +10292,15 @@ export function createUiComposerRuntime(targetObject = globalThis) {
             .map(id => targetObject.document?.getElementById?.(id)).filter(Boolean)
             .map(control => [control.id, control.value])
           : [];
-        if (nextSource.unit === CLASSICAL_BASAL_UNIT.nnc && ["two-nucleus-nnc", "general-use", "lexicalized-nnc", "attested-cell", "attested-place", "attested-collocation"].includes(nextSource.sourceNncUse)) {
+        if (nextSource.unit === CLASSICAL_BASAL_UNIT.nnc && ["two-nucleus-nnc", "general-use", "quantitative-predicate", "lexicalized-nnc", "attested-cell", "attested-place", "attested-collocation"].includes(nextSource.sourceNncUse)) {
           sourceDeclarations.push(["classical-rule-logic-nnc-source-use", nextSource.sourceNncUse]);
         }
-        const coarseNncClass = nextSource.unit === CLASSICAL_BASAL_UNIT.nnc
-          ? {tl: {nounClass: "tl", nounSubclass: ""},
-              tli: {nounClass: "tli", nounSubclass: ""},
-              "tl-1": {nounClass: "tl", nounSubclass: "1"}}[nextSource.sourceNncClass]
-          : null;
-        const coarseSourceStem = nextSource.mode === CLASSICAL_SOURCE_PARTS_MODE.embedMatrix
-          ? [nextSource.sourceEmbedStem, nextSource.sourceMatrixStem].filter(Boolean).join("-")
-          : nextSource.sourceWholeStem;
-        if (coarseNncClass && (targetObject.isClassicalCoarseNominalSourceAvailable?.(
-          coarseSourceStem, nextSource.sourceNncClass) === true
-          || sameSourceMaterial && targetObject.getClassicalNahuatlOwnerhoodSourceAnalysis?.({
-          sourceStem: coarseSourceStem, ...coarseNncClass,
-        })?.authorizationStatus === "authorized")) {
-          sourceDeclarations.push(["classical-rule-logic-nnc-class", nextSource.sourceNncClass]);
-        }
+        // The accepted application payload already owns this declaration.
+        // Restoring its captured native spelling is presentation, never a new
+        // coarse-class/ownerhood admission probe during Apply.
+        if(sourceAuthoringPayload && nextSource.unit === CLASSICAL_BASAL_UNIT.nnc)
+          sourceDeclarations.push(["classical-rule-logic-nnc-class",nextSource.sourceNncClass || ""],
+            ["classical-rule-logic-nnc-tl2a-realization",nextSource.sourceNncReclassification || "retain-2a"]);
         // Withdraw the previous preview before clearing its binding: navigator
         // synchronization must not recapture the Result that Source replaces.
         targetObject.clearClassicalRuleLogicSurfaceBlock?.();
@@ -10339,22 +10326,13 @@ export function createUiComposerRuntime(targetObject = globalThis) {
           if (control) control.value = value;
         }
       }
+      if(sourceAuthoringPayload)ClassicalCommittedSourceAuthoringDecision=sourceDecision;
       ClassicalSourcePartsCommittedSignature = getClassicalSourcePartsEvaluationSignature();
       setClassicalSourcePartsPendingState(false);
       syncClassicalSourcePartsToEntradaUrl();
       syncClassicalSourceReadout();
       syncClassicalVncSourceGuide();
       syncClassicalNncSourceGuide();
-      const canonicalVncSourceGuide = getClassicalVncSourceGuideElements();
-      if (
-        getClassicalBasalUnitFromRuntime() === CLASSICAL_BASAL_UNIT.vnc
-        && canonicalVncSourceGuide.select?.value
-      ) {
-        applyClassicalVncBuiltInSourceClassDefault(
-          canonicalVncSourceGuide.root,
-          canonicalVncSourceGuide.select.selectedOptions?.[0] || null,
-        );
-      }
       ClassicalSourcePartsCommittedSignature = getClassicalSourcePartsEvaluationSignature();
       const finiteSelection = () => ["classical-rule-logic-mood", "classical-rule-logic-tense"]
         .map(id => targetObject.document.getElementById(id)?.value || "").join("|");
@@ -10380,6 +10358,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         const control = targetObject.document?.getElementById?.(id);
         if (control) control.value = value;
       });
+      if(sourceAuthoringPayload)ClassicalCommittedSourceAuthoringDecision=sourceDecision;
       // The committed facts include any Source normalization performed by
       // the refresh and the declarations restored above.
       ClassicalSourcePartsCommittedSignature = getClassicalSourcePartsEvaluationSignature();
@@ -10392,6 +10371,8 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       return true;
     }
     function clearClassicalSourcePartsEvaluation(options = {}) {
+      targetObject.discardClassicalSourceAuthoringDecision?.(ClassicalSourceAuthoringDraft);
+      ClassicalSourceAuthoringDraft=null;ClassicalCommittedSourceAuthoringDecision=null;
       const {
         root,
         wholeInput,
@@ -11504,8 +11485,8 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       });
       return targetObject.isClassicalNahuatlSelectedImperfectPredicateSourceFrame(source) ? source : null;
     }
-    function getClassicalRelationalNncUiRequest() {
-      const retained=targetObject.getClassicalRetainedRelationalRequest?.();if(retained)return retained;
+    function getClassicalRelationalNncUiRequest(options = {}) {
+      const retained=!options.sourceAuthoring && targetObject.getClassicalRetainedRelationalRequest?.();if(retained)return retained;
       const elements = getClassicalRelationalNncUiElements();
       const selectedStem = elements.stem?.selectedOptions?.[0] || null;
       const stemId = String(selectedStem?.dataset?.classicalRelationalStemId || "");
@@ -12528,7 +12509,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
           || getClassicalBasalUnitFromRuntime() === "vnc"
             && targetObject.document?.getElementById?.("classical-rule-logic-valence")?.value === "specific-projective"
             && control.disabled !== true && !isClassicalTypedImperfectiveObjectChoice(control));
-      installClassicalSourceObjectRows(targetObject.document, () => { setClassicalSourcePartsPendingState(true); });
+      installClassicalSourceObjectRows(targetObject.document, () => { setClassicalSourcePartsPendingState(true); },targetObject);
       initClassicalCausativeParticipantControlEvents();
       initClassicalNonactiveFormationControlEvents();
       if (!ansButton && !modeButton && !transitivityButton && !supportiveIButton && !acButton && !ceButton && !delButton && !equalsButton && !classicalBasalButtons.length && !classicalRuleLogicControls.length) {
@@ -12557,6 +12538,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
           return;
         }
         control.addEventListener("change", event => {
+          targetObject.applyClassicalVncSubjectReferenceEdit?.(control);
           if (control.id === "classical-rule-logic-nnc-source-use"
             && (control.value === "two-nucleus-nnc"
               || targetObject.document?.getElementById?.("classical-deverbal-nnc-family")?.value === "double-nucleus-ownerhood")
@@ -14706,6 +14688,8 @@ export function createUiComposerRuntime(targetObject = globalThis) {
     api.setClassicalSourcePartsMode = setClassicalSourcePartsMode;
     api.getClassicalEntradaUrlSourcePartsFromLocation = getClassicalEntradaUrlSourcePartsFromLocation;
     api.syncClassicalSourcePartsToEntradaUrl = syncClassicalSourcePartsToEntradaUrl;
+    api.getClassicalSourceAuthoringDecision = getClassicalSourceAuthoringDecision;
+    api.getClassicalCommittedSourceAuthoringDecision = getClassicalCommittedSourceAuthoringDecision;
     api.getClassicalSourcePartsEvaluationSignature = getClassicalSourcePartsEvaluationSignature;
     api.commitClassicalSourcePartsEvaluation = commitClassicalSourcePartsEvaluation;
     api.setClassicalSourcePartsPendingState = setClassicalSourcePartsPendingState;

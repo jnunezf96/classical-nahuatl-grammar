@@ -35,6 +35,25 @@ export function getVncSourceClassRequirement(runtime, state = null) {
 }
 
 export function getSourceClassRequirement(runtime, state = null) {
+  const current=runtime.getClassicalSourceAuthoringDecision?.();
+  if(runtime.isClassicalSourceAuthoringDecision?.(current) === true) {
+    if(current.authorizationStatus === "authorized")return null;
+    const parts=current.declaration.parts || {};
+    const base={stemKind:current.unit === "vnc"?"verbstem":"nounstem",blockReason:current.blockReason,sourceDecision:current};
+    if(parts.mode === "two-nucleus-nnc")return {...base,fieldId:"classical-double-nucleus-analysis",sourceAnalysis:true,
+      message:"Complete both nuclei and choose their Source analysis."};
+    if(current.structureDecision?.authorizationStatus === "blocked" || current.blockReason.includes("embed-matrix-pair")) {
+      const compound=parts.mode === "embed-matrix";
+      return {...base,fieldId:compound ? !parts.sourceEmbedStem?"classical-source-embed":"classical-source-matrix":"classical-source-whole",
+        message:compound?"Complete both Source parts.":"Enter a Source."};
+    }
+    if(current.objectDecision?.authorizationStatus === "blocked")return {...base,fieldId:"classical-source-object-count",message:"Check the Source objects."};
+    if(current.initialIDecision?.selectionRequired)return {...base,fieldId:"classical-vnc-source-initial-i-choice",message:"Choose the initial-i analysis, then Apply."};
+    if(current.nncDecision?.blockReason === "ordinary-nnc-supportive-initial-i-requires-initial-i")
+      return {...base,fieldId:"classical-rule-logic-nnc-initial-i",message:"Check the initial-i analysis."};
+    return {...base,fieldId:current.unit === "vnc"?"classical-rule-logic-class":"classical-rule-logic-nnc-class"};
+  }
+
   const double = runtime.getClassicalDoubleNucleusSourceDraft?.();
   if (double) return double.ready ? null : {
     fieldId: "classical-double-nucleus-analysis", stemKind: "two-nucleus Source", sourceAnalysis: true,

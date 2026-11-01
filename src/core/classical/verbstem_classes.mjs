@@ -7918,7 +7918,10 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
         initialVowelKind: source.citationRuleFrame?.initialVowelKind || "",
       }, false, source);
     }
-    function buildClassicalNahuatlVerbstemClassFrameInternal(stem = "", options = {}, lowerInputOnly = false, obsoleteRootSource = null) {
+    const issuedVerbstemSourceClassContexts = new WeakSet();
+    // This is the same pre-finite context used below by actual Source assembly.
+    // It stops before predicate/finite generation and never probes alternatives.
+    function buildClassicalNahuatlVerbstemSourceClassContext(stem = "", options = {}, obsoleteRootSource = null) {
       const normalizedStem = normalizeClassicalNahuatlVerbstem(stem);
       const canonicalSourceSelectionCandidate =
         options.canonicalSourceSelectionFrame || null;
@@ -8011,6 +8014,18 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
       classRuleFrame.progressiveAssimilationRuleIds = progressiveAssimilationFrame?.appliedRuleIds || [];
       classRuleFrame.sourceVerbstem = tlaFusionRuleFrame.sourceStemVariant || normalizedStem;
       classRuleFrame.derivedFusedVerbstem = tlaFusionRuleFrame.fused ? tlaFusionRuleFrame.derivedStem || tlaFusionRuleFrame.derivedStemVariant || "" : "";
+      const frame = Object.freeze({kind:"classical-nahuatl-verbstem-source-class-context",
+        normalizedStem,canonicalSourceSelectionFrame,requestedOptions,lesson11ParadigmPlan,explicitTlaFusionRequested,requestedSourceValence,effectiveSourceValence,sourceOptions,structureRuleFrame,sourceSelectionFrame,citationRuleFrame,tlaFusionRuleFrame,preAssimilationClassTargetStem,progressiveAssimilationFrame,activeProgressiveAssimilationFrame,classTargetStem,classTargetRole,classTargetValence,classRuleFrame,options});
+      issuedVerbstemSourceClassContexts.add(frame);
+      return frame;
+    }
+    function isClassicalNahuatlVerbstemSourceClassContext(frame = null) {
+      return Boolean(frame && issuedVerbstemSourceClassContexts.has(frame));
+    }
+    function buildClassicalNahuatlVerbstemClassFrameInternal(stem = "", options = {}, lowerInputOnly = false, obsoleteRootSource = null) {
+      const {options: effectiveOptions,normalizedStem,canonicalSourceSelectionFrame,requestedOptions,lesson11ParadigmPlan,explicitTlaFusionRequested,requestedSourceValence,effectiveSourceValence,sourceOptions,structureRuleFrame,sourceSelectionFrame,citationRuleFrame,tlaFusionRuleFrame,preAssimilationClassTargetStem,progressiveAssimilationFrame,activeProgressiveAssimilationFrame,classTargetStem,classTargetRole,classTargetValence,classRuleFrame}=buildClassicalNahuatlVerbstemSourceClassContext(stem, options, obsoleteRootSource);
+      options = effectiveOptions;
+      const lesson11RuntimeTarget=getClassicalNahuatlVerbstemRuntimeTarget();
       const predicateFormationRuleFrame = buildClassicalNahuatlPredicateFormationRuleFrame(classTargetStem, {
         ...options,
         classProfile: classRuleFrame.classProfile
@@ -8349,6 +8364,8 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
         buildClassicalNahuatlVerbstemDisplayReceiptFrame,
         buildClassicalNahuatlVerbstemReceiptAuthorityFrame,
         buildClassicalNahuatlVerbstemClassFrame,
+        buildClassicalNahuatlVerbstemSourceClassContext,
+        isClassicalNahuatlVerbstemSourceClassContext,
         buildClassicalNahuatlLesson11LowerInput,
         isClassicalNahuatlFuenteSourceSelectionFrame,
         isClassicalNahuatlVerbstemClassFrame
@@ -8746,6 +8763,8 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
     api.buildClassicalNahuatlVerbstemReceiptInventory = buildClassicalNahuatlVerbstemReceiptInventory;
     api.buildClassicalNahuatlVerbstemDisplayReceiptFrame = buildClassicalNahuatlVerbstemDisplayReceiptFrame;
     api.buildClassicalNahuatlVerbstemReceiptAuthorityFrame = buildClassicalNahuatlVerbstemReceiptAuthorityFrame;
+    api.buildClassicalNahuatlVerbstemSourceClassContext = buildClassicalNahuatlVerbstemSourceClassContext;
+    api.isClassicalNahuatlVerbstemSourceClassContext = isClassicalNahuatlVerbstemSourceClassContext;
     api.buildClassicalNahuatlVerbstemClassFrame = buildClassicalNahuatlVerbstemClassFrame;
     api.buildClassicalNahuatlObsoleteRootVerbstemFrame = buildClassicalNahuatlObsoleteRootVerbstemFrame;
     api.buildClassicalNahuatlLesson11LowerInput = buildClassicalNahuatlLesson11LowerInput;

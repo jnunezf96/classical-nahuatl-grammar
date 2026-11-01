@@ -295,6 +295,31 @@ export function getClassicalNahuatlParticipantReferenceChoiceOptions(options = {
   return Object.freeze(result);
 }
 
+// Axis controls consume the same complete-reference guard as direct Source
+// admission. An explicit edit selects a compatible correlated declaration;
+// merely inspecting a contradictory declaration never repairs it.
+export function getClassicalNahuatlParticipantAxisChoiceOptions(options = {}) {
+  const domains={person:PERSON_VALUES,number:NUMBER_VALUES,animacy:ANIMACY_VALUES,humanness:HUMANNESS_VALUES};
+  const candidates=[];
+  for(const agreement of getClassicalNahuatlParticipantAgreementValues())for(const animacy of ANIMACY_VALUES)for(const humanness of HUMANNESS_VALUES) {
+    const declaration={role:options.role || "subject",agreement,animacy,humanness};
+    if(!isClassicalNahuatlParticipantReferenceSelectionCompatible(declaration,{exactAgreement:true}))continue;
+    const frame=buildClassicalNahuatlParticipantFrame(declaration);
+    candidates.push({agreement,...Object.fromEntries(Object.keys(domains).map(key=>[key,frame[key]]))});
+  }
+  return Object.freeze(Object.fromEntries(Object.entries(domains).map(([axis,domain])=>[axis,
+    Object.freeze([...domain].filter(value=>value!=="unspecified").flatMap(value=>{
+      const matches=candidates.filter(candidate=>candidate[axis]===value).map(selections=>({selections,
+        score:Object.keys(domains).reduce((sum,key)=>sum+(key!==axis&&selections[key]===options[key]?1:0),0)})).sort((a,b)=>b.score-a.score);
+      if(!matches.length)return [];
+      const best=matches.filter(match=>match.score===matches[0].score);
+      const selections={...best[0].selections};
+      for(const key of ["animacy","humanness"])if(key!==axis && new Set(best.map(match=>match.selections[key])).size>1)
+        selections[key]=options[key] || "unspecified";
+      return [Object.freeze({value,selections:Object.freeze(selections)})];
+    }))])));
+}
+
 export function areClassicalNahuatlParticipantFramesReferentiallyCompatible(left = null, right = null) {
   if (!isClassicalNahuatlParticipantFrame(left) || !isClassicalNahuatlParticipantFrame(right)) return false;
   if (!left.hasReferent || !right.hasReferent) return false;

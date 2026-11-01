@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import vm from 'node:vm';
+import {normalizeSourceEditorSignature} from '../ui/composition/source_editor_signature.mjs';
 import {readFileSync} from 'node:fs';
 
 const composer = readFileSync(new URL('../ui/composer/composer.mjs', import.meta.url), 'utf8');
@@ -26,7 +27,7 @@ test('relational Source signature ignores field placement but retains changed ch
   ].map(([id, value]) => [id, {id, value}]));
   let relational = Array.from(controls.values()).filter(control => control.id.startsWith('classical-relational-'));
   let unit = 'nnc';
-  const context = vm.createContext({
+  const context = vm.createContext({normalizeSourceEditorSignature,
     targetObject: {document: {
       getElementById: id => controls.get(id) || null,
       querySelectorAll: selector => {

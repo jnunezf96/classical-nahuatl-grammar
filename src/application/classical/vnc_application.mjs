@@ -649,6 +649,38 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         "human-reciprocal": "mainline-reflexive"
       }[normalizedValence] || normalizeClassicalNahuatlVncApplicationToken(requestedObjectKind) || "specific-projective";
     }
+    const sourceObjectDecisions = new WeakSet();
+    function getClassicalNahuatlVncSourceObjectDecision(declaration = {}) {
+      const {stem="",valence="intransitive",subject="3sg",count=1,firstObjectPerson="",rows=[]}=declaration;
+      const applicable=valence !== "intransitive";
+      const firstKind=getClassicalNahuatlVncApplicationObjectKind(valence);
+      const lexicalKind=firstKind === "mainline-reflexive" || firstKind === "shuntline-reflexive" ? "reflexive":firstKind;
+      const objectRequests=applicable ? Array.from({length:Number.isInteger(count)&&count>=1&&count<=3?count:0},(_,index)=>{
+        const row=index===0?{objectKind:lexicalKind,objectPerson:firstObjectPerson}:rows[index-1] || {};
+        const objectKind=row.objectKind;
+        const objectPerson=objectKind === "reflexive" ? row.objectPerson || subject:objectKind === "specific-projective" ? row.objectPerson || "":"";
+        const participantFrame=objectKind === "specific-projective" ? buildClassicalNahuatlParticipantFrame({role:"object",agreement:objectPerson,
+          ...(objectPerson === "3common"?{animacy:"nonanimate",humanness:"nonhuman",number:"common"}:{}),
+          ...Object.fromEntries(["person","animacy","humanness","number","referenceId"].filter(key=>Object.hasOwn(row,key)).map(key=>[key,row[key]]))}):null;
+        return Object.freeze({objectId:row.objectId || `source-object-${index+1}`,objectKind,objectPerson,
+          governor:count===1&&objectKind === "specific-projective"&&objectPerson === "3common"?"directive":"lexical",derivationalLevel:index+1,
+          ...(participantFrame?{participantFrame,person:row.person || participantFrame.person,animacy:row.animacy || participantFrame.animacy,
+            humanness:row.humanness || participantFrame.humanness,number:row.number || participantFrame.number}:{}),
+          ...Object.fromEntries(["governor","derivationalLevel"].filter(key=>Object.hasOwn(row,key)).map(key=>[key,row[key]]))});
+      }):[];
+      const clusterDecision=applicable ? targetObject.buildClassicalNahuatlObjectClusterFrame?.(stem,{subject,objectRequests,minimumPositionCount:1}):null;
+      const blockReason=!Number.isInteger(count)||count<1||count>3?"source-object-count-not-supported"
+        : !applicable&&count>1?"intransitive-source-cannot-declare-object-rows"
+        : applicable&&clusterDecision?.authorizationStatus !== "authorized"?clusterDecision?.blockReason || "source-object-owner-required":"";
+      const frame=deepFreezeClassicalNahuatlVncApplicationValue({kind:"classical-nahuatl-vnc-source-object-decision",declaration,
+        authorizationStatus:blockReason?"blocked":"authorized",blockReason,applicable,minimumPositionCount:1,
+        objectRequests:Object.freeze(objectRequests),clusterDecision,
+        // Ordinary singleton reference is supplied by the existing finite owner;
+        // retain explicit common-reference and multiple-object declarations only.
+        sourceObjectRequests:Object.freeze(count>1||objectRequests[0]?.objectPerson === "3common"?objectRequests:[])});
+      sourceObjectDecisions.add(frame);return frame;
+    }
+    function isClassicalNahuatlVncSourceObjectDecision(frame=null) {return Boolean(frame&&sourceObjectDecisions.has(frame));}
     function normalizeClassicalNahuatlVncApplicationDerivation(value = "direct") {
       return normalizeClassicalNahuatlVncDerivationType(value || "direct") || "direct";
     }
@@ -1326,6 +1358,10 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         sourceSubjectHumanness,
         sourceSubjectNumber,
         sourceSubjectFrame,
+        sourceSubjectDeclarationCompatible:request.sourceSubjectDeclarationCompatible !== false
+          && isClassicalNahuatlParticipantReferenceSelectionCompatible({role:"subject",agreement:requestedSourceSubjectCategory,
+            ...Object.fromEntries(["Person","Animacy","Humanness","Number"].filter(axis=>Object.hasOwn(request,`sourceSubject${axis}`))
+              .map(axis=>[axis.toLowerCase(),request[`sourceSubject${axis}`]]))}),
         sourceSubjectExplicit,
         mood: normalizeClassicalNahuatlVncApplicationToken(request.mood || "indicative"),
         tense: normalizeClassicalNahuatlVncApplicationToken(request.tense || "present"),
@@ -7648,6 +7684,8 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       directActiveRecoordinate = null,
       runtimeTarget = null
     } = {}) {
+      if(normalizedRequest?.sourceSubjectDeclarationCompatible === false)
+        forcedBlockReason = "classical-vnc-source-participant-reference-contradiction";
       const connector = normalizedRequest?.sentenceOptions?.finiteSingularConnector || "";
       const finalTyped = getClassicalNahuatlVncApplicationFinalTypedFrame(selectedMachineryFrame);
       const finalNumber = finalTyped?.slots?.number;
@@ -14000,6 +14038,8 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
     api.getClassicalNahuatlVncApplicationRequestValue = getClassicalNahuatlVncApplicationRequestValue;
     api.buildClassicalNahuatlVncApplicationSentenceOptions = buildClassicalNahuatlVncApplicationSentenceOptions;
     api.normalizeClassicalNahuatlVncApplicationRequest = normalizeClassicalNahuatlVncApplicationRequest;
+    api.getClassicalNahuatlVncSourceObjectDecision = getClassicalNahuatlVncSourceObjectDecision;
+    api.isClassicalNahuatlVncSourceObjectDecision = isClassicalNahuatlVncSourceObjectDecision;
     api.getClassicalNahuatlVncApplicationSourceInitialIAnalysis = getClassicalNahuatlVncApplicationSourceInitialIAnalysis;
     api.getClassicalNahuatlVncApplicationAllowedVoices = getClassicalNahuatlVncApplicationAllowedVoices;
     api.getClassicalNahuatlVncApplicationPublicAllowedVoices = getClassicalNahuatlVncApplicationPublicAllowedVoices;

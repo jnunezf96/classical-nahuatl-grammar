@@ -92,6 +92,8 @@ import {
 } from "../../core/output/scope.mjs?v=20260726-lessons2-58-one-system-094";
 import {
   buildClassicalNahuatlParticipantFrame,
+  getClassicalNahuatlParticipantAxisChoiceOptions,
+  isClassicalNahuatlParticipantReferenceSelectionCompatible,
 } from "../../core/classical/participant_frame.mjs?v=20260823-passive-formation-continuity-238&ownerDecision=20261031-1";
 import {
   LESSON35_PENDING_FORMULA_HOVER_AUTHORITIES,
@@ -1741,9 +1743,23 @@ export function createUiRenderingApi(targetObject = globalThis) {
       lexicalAnalysis = {}
     ) {
       const normalizedStem = String(stem || "").trim().replace(/^\((.*)\)$/u, "$1");
+      const committedDecision=targetObject.getClassicalCommittedSourceAuthoringDecision?.();
+      const committedPayload=targetObject.getClassicalAcceptedSourceAuthoringPayload?.(committedDecision);
+      const sameSourceText=value=>String(value || "").normalize("NFC").trim().replace(/^\((.*)\)$/u,"$1").replace(/\s+/gu,"").toLowerCase();
+      const declaration=committedDecision?.declaration;
+      const committedSource=targetObject.document?.getElementById?.("classical-source-parts")?.dataset?.classicalSourceCommitState === "committed"
+        && committedPayload?.unit === "nnc"
+        && sameSourceText(committedPayload.sourceInput.stem || committedPayload.sourceInput.citation) === sameSourceText(normalizedStem)
+        && (sourceParts.sourceEmbedStem || "") === (declaration.parts?.sourceEmbedStem || "")
+        && (sourceParts.sourceMatrixStem || "") === (declaration.parts?.sourceMatrixStem || "")
+        && (!lexicalAnalysis.sourceClass || lexicalAnalysis.sourceClass === committedPayload.sourceInput.sourceClass
+          || lexicalAnalysis.sourceClass === committedPayload.sourceFrame?.sourceClass)
+        && (lexicalAnalysis.sourceUse || "nounstem") === (committedPayload.sourceInput.sourceUse || "nounstem")
+        ? committedPayload.sourceFrame:null;
+
       if (getClassicalNominalConstructionControlValue("classical-construction-operation", "none") === "personal-name-nnc") {
         const request = buildClassicalNominalConstructionUiRequest();
-        const nameSource = request?.sourceFrame;
+        const nameSource = committedSource || request?.sourceFrame;
         if (targetObject.isPersonalNameNncSourceFrame?.(nameSource) === true) return {
           kind: "classical-nahuatl-nnc-source-identity-contract", recognized: true,
           nncType: "personal-name", sourceStem: normalizedStem,
@@ -1758,7 +1774,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         const sameMaterial=value=>String(value).normalize("NFC").trim().replace(/^\((.*)\)$/u,"$1").replace(/\s+/gu,"").toLowerCase();
         const enteredStem=rawWhole && sameMaterial(rawWhole)===sameMaterial(normalizedStem) ? rawWhole : normalizedStem;
         const frame=!sourceParts.sourceEmbedStem && !sourceParts.sourceMatrixStem
-          ? targetObject.issueCanonicalNncSourceFrame?.({stem:enteredStem,sourceUse:lexicalAnalysis.sourceUse}) : null;
+          ? committedSource || targetObject.issueCanonicalNncSourceFrame?.({stem:enteredStem,sourceUse:lexicalAnalysis.sourceUse}) : null;
         const valid=targetObject.isIssuedCanonicalNncSourceFrame?.(frame) === true;
         return {kind:"classical-nahuatl-nnc-source-identity-contract",recognized:valid,nncType:lexicalAnalysis.sourceUse,
           sourceStem:normalizedStem,sourceEmbedStem:"",sourceMatrixStem:"",typedSourceFrame:valid?frame:null,
@@ -1772,7 +1788,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           && normalizeClassicalNahuatlMachinerySourceValue(rawWhole).replace(/\s+/gu, "") === normalizedStem.replace(/\s+/gu, "")
           ? rawWhole : normalizedStem;
         const source = !sourceParts.sourceEmbedStem && !sourceParts.sourceMatrixStem
-          ? targetObject.resolveClassicalNahuatlLexicalizedNncSourceFrame?.({enteredStem, sourceUse: "lexicalized-nnc"}) : null;
+          ? committedSource || targetObject.resolveClassicalNahuatlLexicalizedNncSourceFrame?.({enteredStem, sourceUse: "lexicalized-nnc"}) : null;
         const recognized = targetObject.isClassicalNahuatlLexicalizedNncSourceFrame?.(source) === true;
         return {kind: "classical-nahuatl-nnc-source-identity-contract", recognized,
           nncType: "lexicalized-double-nucleus", sourceStem: normalizedStem,
@@ -1783,14 +1799,14 @@ export function createUiRenderingApi(targetObject = globalThis) {
       }
       if ((!lexicalAnalysis.sourceUse || lexicalAnalysis.sourceUse === "nounstem")
         && !sourceParts.sourceEmbedStem && !sourceParts.sourceMatrixStem && /^[1-9][0-9]*$/u.test(normalizedStem)) {
-        const frame = targetObject.buildClassicalNahuatlNominalConstructionTypedSourceFrame?.({value:Number(normalizedStem)});
+        const frame = committedSource || targetObject.buildClassicalNahuatlNominalConstructionTypedSourceFrame?.({value:Number(normalizedStem)});
         const valid = targetObject.isClassicalNahuatlNominalConstructionTypedSourceFrame?.(frame) === true;
         return {kind:"classical-nahuatl-nnc-source-identity-contract",recognized:valid,nncType:"cardinal-number",
           sourceStem:normalizedStem,sourceEmbedStem:"",sourceMatrixStem:"",typedSourceFrame:valid?frame:null,
           blockedSourceFrame:null,requestedSourceClass:"",openStemSourceCandidate:false};
       }
       if (lexicalAnalysis.sourceUse === "quantitative-predicate") {
-        const frame = targetObject.issueCanonicalNncSourceFrame?.({citation:normalizedStem,sourceUse:"quantitative-predicate",reference:"nonanimate-common"});
+        const frame = committedSource || targetObject.issueCanonicalNncSourceFrame?.({citation:normalizedStem,sourceUse:"quantitative-predicate",reference:"nonanimate-common"});
         const valid = targetObject.isClassicalNahuatlQuantitativePredicateSourceFrame?.(frame) === true;
         return {kind:"classical-nahuatl-nnc-source-identity-contract",recognized:valid,nncType:"quantitative-predicate",
           sourceStem:normalizedStem,sourceEmbedStem:"",sourceMatrixStem:"",typedSourceFrame:valid?frame:null,
@@ -1806,7 +1822,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       };
       const initialSourceFrame =
         typeof targetObject.issueCanonicalNncSourceFrame === "function"
-          ? targetObject.issueCanonicalNncSourceFrame(sourceConstituents)
+          ? committedSource || targetObject.issueCanonicalNncSourceFrame({...sourceConstituents,...(lexicalAnalysis.sourceClass ? {sourceClass:lexicalAnalysis.sourceClass}:{})})
           : null;
       // A bare general-use declaration is an operand for a later consuming
       // owner. It never inherits a fixed lexical subtype or issues a noun.
@@ -1831,7 +1847,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
           openStemSourceCandidate: false, authority: "canonical-bound-nominal-source",
           grammarAuthority: false, sourceDocument: "ANDREWS_TRANSCRIPTION_CANVAS.md",
         };
-        const selectedGeneralUse = ["", "tl"].includes(requestedSourceClass) && !sourceEmbedStem && !sourceMatrixStem
+        const selectedGeneralUse = committedSource?.generalUseOnly === true ? committedSource
+          : ["", "tl"].includes(requestedSourceClass) && !sourceEmbedStem && !sourceMatrixStem
           ? targetObject.buildClassicalNahuatlOrdinaryNncSourceFrame?.({stem: normalizedStem,
               sourceClass: requestedSourceClass, sourceUse: "general-use"}) : null;
         if (targetObject.isClassicalNahuatlOrdinaryNncSourceFrame?.(selectedGeneralUse) === true
@@ -1874,7 +1891,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         && initialSourceFrame?.blockReason
           === "lexical-noun-class-selection-required";
       if (
-        requestedSourceClass
+        requestedSourceClass && !committedSource
         && (
           !typedSourceFrame
           || requestedSourceClass === "tl-2-a-to-1-a"
@@ -2221,6 +2238,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
       return state?.basalUnit === "vnc" && isClassicalRuleLogicTlaFusionSourceValence(state?.valence);
     }
     function getClassicalRuleLogicCanvasClassSelection(stem = "", options = {}) {
+      const current=targetObject.getClassicalSourceAuthoringDecision?.();
+      if(targetObject.isClassicalSourceAuthoringDecision?.(current) === true && current.unit === "vnc"
+        && (current.applyPayload?.sourceInput.stem || current.classContext?.normalizedStem) === normalizeClassicalNahuatlMachinerySourceValue(stem))
+        return current.classDecision;
       return resolveVncSourceClassChoice(targetObject, stem, options, {
         retainedSource: ActiveClassicalVncResultSourceContinuation,
         sourceLexemeId: !options.sourceEmbedStem && !options.sourceMatrixStem ? targetObject.getClassicalVncSourceLexemeId?.() || "" : "",
@@ -2374,20 +2395,29 @@ export function createUiRenderingApi(targetObject = globalThis) {
       });
     }
     function syncClassicalVncSubjectFeatureControls(subjectFrame = null, compoundPredicate = false) {
-      if (!subjectFrame) return;
-      const values = {
-        person: subjectFrame.animacy === "nonanimate" || subjectFrame.humanness === "nonhuman"
-          ? ["3"] : ["1", "2", "3"],
-        animacy: compoundPredicate ? ["nonanimate"] : ["animate", "nonanimate"],
-        humanness: subjectFrame.animacy === "nonanimate" ? ["nonhuman"] : ["human", "nonhuman"],
-        number: subjectFrame.animacy === "nonanimate" ? ["common"] : ["singular", "plural"],
-      };
-      for (const [axis, options] of Object.entries(values)) {
-        const id = `classical-rule-logic-vnc-subject-${axis}`;
-        applyClassicalRuleLogicSelectOptionAvailability(id, options, subjectFrame[axis]);
-        const control = targetObject.document?.getElementById?.(id);
-        if (control) control.value = subjectFrame[axis];
+      if(!subjectFrame)return;
+      const value=axis=>targetObject.document?.getElementById?.(`classical-rule-logic-vnc-subject-${axis}`)?.value || subjectFrame[axis];
+      const authored=Object.fromEntries(["person","number","animacy","humanness"].map(axis=>[axis,value(axis)]));
+      const choices=getClassicalNahuatlParticipantAxisChoiceOptions(authored);
+      for(const [axis,options] of Object.entries(choices)) {
+        const control=targetObject.document?.getElementById?.(`classical-rule-logic-vnc-subject-${axis}`);
+        if(!control||isClassicalRuleLogicControlOwnerProjected(control))continue;
+        for(const option of Array.from(control.options || []))option.disabled=!options.some(choice=>choice.value===option.value);
+        control.setAttribute?.("aria-invalid",String(!isClassicalNahuatlParticipantReferenceSelectionCompatible(authored)));
       }
+    }
+    function applyClassicalVncSubjectReferenceEdit(control) {
+      const axis=String(control?.id || "").replace("classical-rule-logic-vnc-subject-","");
+      if(!["person","number","animacy","humanness"].includes(axis)||isClassicalRuleLogicControlOwnerProjected(control))return false;
+      const declaration=Object.fromEntries(["person","number","animacy","humanness"].map(key=>[key,
+        targetObject.document?.getElementById?.(`classical-rule-logic-vnc-subject-${key}`)?.value || ""]));
+      const move=getClassicalNahuatlParticipantAxisChoiceOptions(declaration)[axis]?.find(choice=>choice.value===control.value);
+      if(!move)return false;
+      for(const key of ["person","number","animacy","humanness"]) {
+        const node=targetObject.document.getElementById(`classical-rule-logic-vnc-subject-${key}`);if(node)node.value=move.selections[key];
+      }
+      const agreement=targetObject.document.getElementById("classical-rule-logic-subject");if(agreement)agreement.value=move.selections.agreement;
+      return true;
     }
     function getClassicalStandardNncSurfaceResultFamily(frame = null) {
       if (!frame || frame.authorizationStatus !== "authorized") return "";
@@ -3430,10 +3460,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
         selectedSourceNonactiveOptionId,
         sourceSubject,
         vncSubjectFrame,
-        subjectPerson: vncSubjectFrame.person,
-        subjectAnimacy: vncSubjectFrame.animacy,
-        subjectHumanness: vncSubjectFrame.humanness,
-        subjectNumber: vncSubjectFrame.number,
+        subjectPerson:overrides.subjectPerson || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-vnc-subject-person",vncSubjectFrame.person),
+        subjectAnimacy:overrides.subjectAnimacy || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-vnc-subject-animacy",vncSubjectFrame.animacy),
+        subjectHumanness:overrides.subjectHumanness || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-vnc-subject-humanness",vncSubjectFrame.humanness),
+        subjectNumber:overrides.subjectNumber || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-vnc-subject-number",vncSubjectFrame.number),
         causativeResultSubject,
         requestedCausativeObjectKind,
         causativeObjectKind: previousCausativeObjectKindEligible ? requestedCausativeObjectKind : "",
@@ -3931,10 +3961,15 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const derivationTypeSelectionBlocked = state.derivationTypeSelectionFrame?.authorizationStatus === "blocked";
       const sourceVoiceSelectionBlocked = state.sourceVoiceSelectionFrame?.authorizationStatus === "blocked";
       const targetVoiceSelectionBlocked = state.targetVoiceSelectionFrame?.authorizationStatus === "blocked";
+      const committedSourceDecision=targetObject.getClassicalCommittedSourceAuthoringDecision?.();
+      const payload=!continuation&&!sourceProjection?targetObject.getClassicalAcceptedSourceAuthoringPayload?.(committedSourceDecision):null;
+      const sourceInput=payload?.unit === "vnc"?payload.sourceInput:null;
+      const sourceObjects=sourceInput?payload.objectDecision?.sourceObjectRequests || []
+        : readClassicalSourceObjectRows(targetObject.document,state.valence,state.subject,targetObject);
       return {
-        sourceStem: state.stem,
-        sourceLexemeId: state.sourceLexemeId,
-        sourceInitialISelection: state.sourceInitialISelection,
+        sourceStem: sourceInput?.stem || state.stem,
+        sourceLexemeId: sourceInput?.sourceLexemeId ?? state.sourceLexemeId,
+        sourceInitialISelection: sourceInput?.sourceInitialISelection ?? state.sourceInitialISelection,
         subject: state.subject,
         sourceSubjectPerson: state.subjectPerson,
         sourceSubjectAnimacy: state.subjectAnimacy,
@@ -3943,10 +3978,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
         sourceSubjectFrame: state.vncSubjectFrame,
         mood: semanticSelectionBlocked ? state.requestedSemanticMood : state.mood,
         tense: semanticSelectionBlocked ? state.requestedSemanticTense : state.tense,
-        verbClass: state.verbClass,
-        sourceValence: state.valence,
-        ...(readClassicalSourceObjectRows(targetObject.document, state.valence, state.subject).length
-          ? {sourceObjectRequests: readClassicalSourceObjectRows(targetObject.document, state.valence, state.subject)} : {}),
+        verbClass: sourceInput ? sourceInput.verbClass || payload.classContext?.classRuleFrame.classId || "":state.verbClass,
+        sourceValence: sourceInput?.valence || state.valence,
+        ...(sourceObjects.length?{sourceObjectRequests:sourceObjects}:{}),
         objectKind: getClassicalRuleLogicSurfaceObjectKind(state),
         objectPerson:
           getClassicalRuleLogicSurfaceObjectKind(state) === "none"
@@ -3990,8 +4024,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
         tlaFusion: state.tlaFusion === true,
         incorporatedAdverb: state.incorporatedAdverb,
         adverbPosition: state.adverbPosition,
-        sourceEmbedStem: state.sourceEmbedStem,
-        sourceMatrixStem: state.sourceMatrixStem,
+        sourceEmbedStem: sourceInput?.embedStem ?? state.sourceEmbedStem,
+        sourceMatrixStem: sourceInput?.matrixStem ?? state.sourceMatrixStem,
         directionalPrefix: state.directionalPrefix,
         directionalIttaContraction: state.directionalIttaContraction === "rare-contracted" ? "rare-contracted" : "",
         sentenceType: state.sentenceType,
@@ -4463,7 +4497,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
       );
       if (!control) return Object.freeze([]);
       const generalUse = targetObject.document.getElementById("classical-rule-logic-nnc-source-use")?.value === "general-use";
-      const domain = resolveNncSourceChoiceDomain(targetObject, stem, options, {
+      const domain = resolveNncSourceChoiceDomain(targetObject, stem, {...options,
+        sourceDecision:targetObject.getClassicalSourceAuthoringDecision?.()}, {
         generalUse,
         construction:getClassicalNominalConstructionControlValue("classical-construction-operation", ""),
         deverbalFamily:getClassicalNominalConstructionControlValue("classical-deverbal-nnc-family", ""),
@@ -4513,9 +4548,6 @@ export function createUiRenderingApi(targetObject = globalThis) {
             ? "available-by-lesson14-final-shape"
             : retainedFact ? "committed-source-fact" : "disabled-by-lesson14-final-shape";
       });
-      if (control.value && !allowedSet.has(control.value) && control.value !== committedCoarseClass) {
-        control.value = "";
-      }
       const tl2ARealizationField = targetObject.document.getElementById(
         "classical-nnc-tl2a-realization-field"
       );
@@ -4539,9 +4571,6 @@ export function createUiRenderingApi(targetObject = globalThis) {
         && options.sourceFrame?.openStemSource !== true
         && allowedValues.length === 1
       );
-      if (canonicalClassFixed && !control.value) {
-        control.value = allowedValues[0];
-      }
       control.dataset.classicalCanvasAllowedValues = allowedValues.join("|");
       control.dataset.classicalCanvasFallbackValue = "";
       control.dataset.classicalCanvasSelectAvailability = canonicalClassFixed
@@ -18412,6 +18441,19 @@ export function createUiRenderingApi(targetObject = globalThis) {
       }
       if (isClassicalRuleLogicControlOwnerProjected(control)) return control.value || "";
       const allowedSet = new Set(allowedValues.map(value => String(value || "")));
+      if(id === "classical-rule-logic-class" && targetObject.document?.getElementById?.("classical-source-parts")) {
+        const decision=targetObject.getClassicalSourceAuthoringDecision?.();
+        if(targetObject.isClassicalSourceAuthoringDecision?.(decision) === true && decision.unit === "vnc") {
+          const values=decision.classDecision?.allowedClassIds || [];
+          for(const option of Array.from(control.options || []))option.disabled=Boolean(option.value)&&!values.includes(option.value);
+          control.disabled=decision.classDecision?.dropdownLocked === true && decision.authorizationStatus === "authorized";
+          control.dataset.classicalCanvasAllowedValues=values.join("|");
+          control.dataset.classicalSourceDecisionOwner="application-source-decision";
+          control.setAttribute?.("aria-invalid",String(decision.classDecision?.authorizationStatus === "blocked"));
+          return control.value || "";
+        }
+      }
+
       if (String(control.type || "").toLowerCase() === "checkbox") {
         const checkedValue = String(control.dataset?.classicalCheckedValue || "true");
         const uncheckedValue = String(control.dataset?.classicalUncheckedValue || "false");
@@ -25919,41 +25961,44 @@ export function createUiRenderingApi(targetObject = globalThis) {
 
     let ClassicalDoubleNucleusSourceDraftCache = null;
     const ClassicalDoubleNucleusSourceHiddenNodes = new WeakMap();
+    let ClassicalDoubleNucleusSourceRevision=0;
     function getClassicalDoubleNucleusSourceDraft() {
-      const value = id => targetObject.document?.getElementById?.(id)?.value || "";
-      if (value("classical-construction-operation") !== "deverbal-nnc"
-        || value("classical-deverbal-nnc-family") !== "double-nucleus-ownerhood") return null;
-      const selections = {analysis: value("classical-double-nucleus-analysis")};
-      for (const role of ["principal", "supplement"]) {
-        const field = key => value(`classical-double-nucleus-${role}-${key}`);
-        const subject = field("subject"), state = field("state");
-        selections[role] = {stem: field("stem"), sourceClass: field("class"), subject, state,
-          humanness: subject === "3common" ? "nonhuman" : field("humanness"),
-          possessor: state === "possessive" ? field("possessor") : "",
-          pluralConnector: state === "absolutive" && subject.endsWith("pl") ? field("plural") : ""};
+      const value=id=>targetObject.document?.getElementById?.(id)?.value || "";
+      if(value("classical-construction-operation") !== "deverbal-nnc"
+        || value("classical-deverbal-nnc-family") !== "double-nucleus-ownerhood") {
+        targetObject.discardClassicalSourceAuthoringDecision?.(ClassicalDoubleNucleusSourceDraftCache?.decision);
+        ClassicalDoubleNucleusSourceDraftCache=null;return null;
       }
-      const key = JSON.stringify(selections);
-      if (ClassicalDoubleNucleusSourceDraftCache?.key === key) return ClassicalDoubleNucleusSourceDraftCache;
-      const request = buildClassicalNominalConstructionUiRequest();
-      const source = request?.source;
-      const ready = targetObject.isClassicalNahuatlOrdinaryNncResult?.(source?.principalNncResult) === true
-        && targetObject.isClassicalNahuatlOrdinaryNncResult?.(source?.supplementNncResult) === true
-        && targetObject.isClassicalNahuatlSupplementationFrame?.(source?.canonicalSupplementationResult) === true;
-      return ClassicalDoubleNucleusSourceDraftCache = {key, selections, source, ready,
-        hasMaterial: Boolean(selections.principal.stem || selections.supplement.stem),
-        caption: ready ? source.canonicalSupplementationResult.embeddedSurface : ""};
+      const selections={analysis:value("classical-double-nucleus-analysis")};
+      for(const role of ["principal","supplement"]) {
+        const field=key=>value(`classical-double-nucleus-${role}-${key}`);
+        selections[role]={stem:field("stem"),sourceClass:field("class"),subject:field("subject"),state:field("state"),
+          humanness:field("humanness"),possessor:field("possessor"),pluralConnector:field("plural")};
+      }
+      const key=JSON.stringify(selections);
+      if(ClassicalDoubleNucleusSourceDraftCache?.key === key && targetObject.isClassicalSourceAuthoringDecision?.(ClassicalDoubleNucleusSourceDraftCache.decision))return ClassicalDoubleNucleusSourceDraftCache;
+      targetObject.discardClassicalSourceAuthoringDecision?.(ClassicalDoubleNucleusSourceDraftCache?.decision);
+      const decision=targetObject.issueClassicalSourceAuthoringDecision?.({unit:"nnc",revision:++ClassicalDoubleNucleusSourceRevision,
+        signature:key,parts:{mode:"two-nucleus-nnc"},nuclei:{principal:selections.principal,supplement:selections.supplement},analysis:selections.analysis});
+      const ready=targetObject.isClassicalSourceAuthoringDecision?.(decision) === true && decision.authorizationStatus === "authorized";
+      const source=ready?decision.applyPayload.sourceFrame:null;
+      return ClassicalDoubleNucleusSourceDraftCache=Object.freeze({key,selections:decision?.declaration?Object.freeze({analysis:decision.declaration.analysis,
+        principal:decision.declaration.nuclei.principal,supplement:decision.declaration.nuclei.supplement}):selections,
+        source,decision,ready,hasMaterial:Boolean(selections.principal.stem||selections.supplement.stem),
+        caption:source?.canonicalSupplementationResult?.embeddedSurface || ""});
     }
     let ClassicalCommittedDoubleNucleusIngress = null;
     function applyClassicalDoubleNucleusSourceDraft() {
-      const draft = getClassicalDoubleNucleusSourceDraft();
-      if (!draft?.ready || targetObject.isClassicalNahuatlSupplementationFrame?.(draft.source.canonicalSupplementationResult) !== true) return false;
-      const accepted = ActiveClassicalCapabilityApplicationResult;
+      const draft=getClassicalDoubleNucleusSourceDraft();
+      if(!draft?.ready)return false;
+      const payload=targetObject.acceptClassicalSourceAuthoringDecision?.(draft.decision,{revision:draft.decision.revision,signature:draft.key});
+      if(!payload||payload.sourceFrame!==draft.source)return false;
+      const accepted=ActiveClassicalCapabilityApplicationResult;
       clearClassicalGrammarResultSourceContinuation("two-nucleus-source-committed");
-      ActiveClassicalCapabilityApplicationResult = accepted;
-      ClassicalCommittedDoubleNucleusIngress = Object.freeze({key:draft.key,source:draft.source.canonicalSupplementationResult});
-      syncClassicalNominalConstructionControlVisibility("deverbal-nnc");
-      PendingClassicalRawConstructionRequest = {construction:"deverbal-nnc",operationId:"nnc:deverbal-construction",
-        request:{...buildClassicalNominalConstructionUiRequest(),source:draft.source}};
+      ActiveClassicalCapabilityApplicationResult=accepted;
+      ClassicalCommittedDoubleNucleusIngress=Object.freeze({key:draft.key,source:draft.source.canonicalSupplementationResult,payload,decision:draft.decision});
+      PendingClassicalRawConstructionRequest={construction:"deverbal-nnc",operationId:"nnc:deverbal-construction",
+        request:{...buildClassicalNominalConstructionUiRequest(),source:payload.sourceFrame}};
       return true;
     }
     function getClassicalCommittedDoubleNucleusIngress() {
@@ -25967,12 +26012,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       return ingress;
     }
     function getClassicalCommittedDoubleNucleusSource() {
-      const relation = getClassicalCommittedDoubleNucleusIngress()?.source;
-      if (!relation) return null;
-      return {principalNncResult:targetObject.getClassicalNahuatlSupplementationClauseSourceFrame(relation.principalClause),
-        supplementNncResult:targetObject.getClassicalNahuatlSupplementationClauseSourceFrame(relation.supplementClause),
-        canonicalSupplementationResult:relation,
-        supplementationAnalysis:`fixed-order-${relation.referenceFrame.headRole}-supplementation`};
+      return getClassicalCommittedDoubleNucleusIngress()?.payload.sourceFrame || null;
     }
     function syncClassicalDoubleNucleusSourcePresentation(active = false) {
       const doc = targetObject.document;
@@ -26018,43 +26058,34 @@ export function createUiRenderingApi(targetObject = globalThis) {
     }
 
     function syncClassicalDoubleNucleusSourceControls(active = false) {
-      if (!active) return;
-      for (const role of ["principal", "supplement"]) {
-        const control = field => targetObject.document?.getElementById(`classical-double-nucleus-${role}-${field}`);
-        const subject = control("subject")?.value || "3sg";
-        const state = control("state")?.value || "absolutive";
-        const possessor = control("possessor");
-        const reference = control("humanness");
-        const plural = control("plural");
-        if (possessor) possessor.disabled = state !== "possessive";
-        if (reference) {
-          reference.disabled = subject === "3common";
-          if (subject === "3common") reference.value = "nonhuman";
+      if(!active)return;
+      const draft=getClassicalDoubleNucleusSourceDraft();
+      for(const role of ["principal","supplement"]) {
+        const child=draft?.decision?.nuclei?.[role];
+        const controls={subject:"subject",state:"state",humanness:"humanness",possessor:"possessor",plural:"pluralConnector"};
+        for(const [field,choiceId] of Object.entries(controls)) {
+          const control=targetObject.document?.getElementById?.(`classical-double-nucleus-${role}-${field}`);
+          if(!control)continue;
+          const options=child?.operationDecision?.choiceOptionProjection?.[choiceId] || [];
+          control.disabled=!options.length;
+          for(const option of Array.from(control.options || []))option.disabled=!options.some(owned=>owned.optionId === option.value&&owned.availabilityStatus === "available");
         }
-        const source = targetObject.buildClassicalNahuatlOrdinaryNncSourceFrame?.({
-          stem: control("stem")?.value || "", sourceClass: control("class")?.value || "",
-        });
-        const choices = source?.authorizationStatus === "authorized"
-          ? targetObject.getCanonicalNncOperationSelectionFrame?.(source, {
-            subject, state, possessor: possessor?.value || "3sg",
-            humanness: reference?.value || "human",
-            animacy: subject === "3common" ? "nonanimate" : "animate",
-            pluralConnector: plural?.value || "",
-          }) : null;
-        for (const [node, values] of [[reference, choices?.humannessValues], [possessor, choices?.possessorValues]]) {
-          if (!node || !values?.length) continue;
-          for (const option of Array.from(node.options || [])) option.disabled = !values.includes(option.value);
-          if (!values.includes(node.value)) node.value = values[0];
-        }
-        if (plural) {
-          const values = choices?.pluralConnectorValues || [];
-          for (const option of Array.from(plural.options || [])) {
-            option.disabled = Boolean(option.value && !values.includes(option.value));
-          }
-          plural.disabled = state !== "absolutive" || !subject.endsWith("pl");
-          if (!plural.disabled && values.length === 1) plural.value = values[0];
-        }
+        const classControl=targetObject.document?.getElementById?.(`classical-double-nucleus-${role}-class`);
+        if(classControl)for(const option of Array.from(classControl.options || []))option.disabled=Boolean(option.value)&&!child?.sourceDecision?.allowedClassIds?.includes(option.value);
       }
+    }
+    function applyClassicalDoubleNucleusSourceChoice(control) {
+      const match=/^classical-double-nucleus-(principal|supplement)-(subject|state|humanness|possessor|plural)$/u.exec(control?.id || "");
+      if(!match)return false;
+      const [,role,field]=match,choiceId=field === "plural"?"pluralConnector":field;
+      const child=ClassicalDoubleNucleusSourceDraftCache?.decision?.nuclei?.[role];
+      const option=child?.operationDecision?.choiceOptionProjection?.[choiceId]?.find(candidate=>candidate.optionId === control.value&&candidate.availabilityStatus === "available");
+      if(!option?.nextSelections)return false;
+      for(const [key,value] of Object.entries(option.nextSelections)) {
+        const node=targetObject.document?.getElementById?.(`classical-double-nucleus-${role}-${key === "pluralConnector"?"plural":key}`);
+        if(node&&typeof value === "string")node.value=value;
+      }
+      return true;
     }
 
     function syncClassicalFutureAgentiveSubjectControls(frame) {
@@ -29123,6 +29154,17 @@ export function createUiRenderingApi(targetObject = globalThis) {
           ? action : null;
     }
     function buildClassicalNominalConstructionUiRequest(binding=null) {
+      const request=collectClassicalNominalConstructionUiRequest(binding);
+      const accepted=targetObject.getClassicalAcceptedSourceAuthoringPayload?.(targetObject.getClassicalCommittedSourceAuthoringDecision?.());
+      if(!request || binding || !accepted)return request;
+      if(accepted.sourceAuthorization
+        && targetObject.isClassicalNahuatlNominalConstructionSourceAuthorization?.(accepted.sourceAuthorization,request) === true)
+        return {...request,sourceAuthorizationFrame:accepted.sourceAuthorization};
+      if(accepted.ownerhoodDecision?.sourceAnalysis && request.constructionKind === "ownerhood")
+        return {...request,ownerhoodSourceAnalysisFrame:accepted.ownerhoodDecision.sourceAnalysis};
+      return request;
+    }
+    function collectClassicalNominalConstructionUiRequest(binding=null) {
       const selected=getClassicalNominalConstructionControlValue("classical-construction-operation","none");
       const operation=({"denominal-vnc":"vnc:denominal","place-gentilic-nnc":"nnc:place-gentilic","personal-name-nnc":"nnc:personal-name"})[selected];
       const owned=operation&&getClassicalRetainedOwnerRequest(operation,binding);
@@ -29400,7 +29442,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
                 : {}),
             })
           : null;
-        const committedNameSource = ActiveClassicalCapabilityCommittedTypedSource;
+        const acceptedSource=targetObject.document?.getElementById?.("classical-source-parts")?.dataset?.classicalSourceCommitState === "committed"
+          ? targetObject.getClassicalAcceptedSourceAuthoringPayload?.(targetObject.getClassicalCommittedSourceAuthoringDecision?.())?.sourceFrame:null;
+        const committedNameSource = targetObject.isPersonalNameNncSourceFrame?.(acceptedSource) === true ? acceptedSource:ActiveClassicalCapabilityCommittedTypedSource;
         const sourceFrame = targetObject.isPersonalNameNncSourceFrame?.(constructedNameSource) === true
           && targetObject.isPersonalNameNncSourceFrame?.(committedNameSource) === true
           && (JSON.stringify(constructedNameSource) === JSON.stringify(committedNameSource)
@@ -29731,7 +29775,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
                 ? "shuntline-reflexive" : canonicalVncSourceValence,
               sourceInitialISelection: baseSource.sourceInitialISelection,
               sourceObjectRequests: readClassicalSourceObjectRows(targetObject.document, valence,
-                sourceSubject === "3common" ? "3sg" : sourceSubject),
+                sourceSubject === "3common" ? "3sg" : sourceSubject,targetObject),
               ...(sourceSubjectBecomesPossessor && !exactBinding?.exactResult && voice === "passive"
                 ? {sourceSubject: "3sg"} : {}),
               // NNC common number has no separate VNC subject coordinate.
@@ -30866,60 +30910,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         const committedDoubleSource = getClassicalCommittedDoubleNucleusSource();
         if (committedDoubleSource) return {constructionKind:"double-nucleus-ownerhood",
           source:committedDoubleSource,subject,state,possessor,animacy};
-        const buildNucleus = role => {
-          const value = (field, fallback = "") => getClassicalNominalConstructionControlValue(
-            `classical-double-nucleus-${role}-${field}`, fallback);
-          const nounSource = targetObject.buildClassicalNahuatlOrdinaryNncSourceFrame?.({
-            stem: value("stem"), sourceClass: value("class"),
-          });
-          if (nounSource?.authorizationStatus !== "authorized") return null;
-          const innerSubject = value("subject", "3sg");
-          const innerState = value("state", "absolutive");
-          const innerOperation = targetObject.buildClassicalNahuatlOrdinaryNncOperationFrame?.(nounSource, {
-            subject: innerSubject, state: innerState,
-            possessor: innerState === "possessive" ? value("possessor", "3sg") : "",
-            pluralConnector: innerState === "absolutive" && innerSubject.endsWith("pl") ? value("plural") : "",
-            humanness: innerSubject === "3common" ? "nonhuman" : value("humanness", "human"),
-            predicateFormation: "source-stem", stemFormation: "plain",
-            sentenceType: "statement", polarity: "positive",
-          });
-          return innerOperation?.authorizationStatus === "authorized"
-            ? targetObject.evaluateClassicalNahuatlOrdinaryNnc?.(nounSource, innerOperation) : null;
-        };
-        const principal = buildNucleus("principal");
-        const supplement = buildNucleus("supplement");
-        const supplementationAnalysis = getClassicalNominalConstructionControlValue(
-          "classical-double-nucleus-analysis", "");
-        const headRole = ({"fixed-order-possessor-supplementation": "possessor",
-          "fixed-order-subject-supplementation": "subject"})[supplementationAnalysis];
-        const principalClause = headRole && principal?.authorizationStatus === "authorized"
-          ? targetObject.buildClassicalNahuatlSupplementationClauseEnvelope?.(principal, {
-            referenceId: "double-nucleus-principal",
-            subjectReferenceId: headRole === "subject" ? "double-nucleus-contact" : "double-nucleus-principal-subject",
-            ...(headRole === "possessor" ? {possessorReferenceId: "double-nucleus-contact"} : {}),
-          }) : null;
-        const supplementClause = headRole && supplement?.authorizationStatus === "authorized"
-          ? targetObject.buildClassicalNahuatlSupplementationClauseEnvelope?.(supplement, {
-            referenceId: "double-nucleus-supplement", subjectReferenceId: "double-nucleus-contact",
-          }) : null;
-        const relation = principalClause && supplementClause
-          ? targetObject.evaluateClassicalNahuatlSupplementationOperation?.({
-            operationKind: "relation", principalClause, supplementClause,
-            options: {referenceMode: "shared", headRole, supplementContactRole: "subject",
-              order: "supplement-first", adjunctor: "none"},
-          }) : null;
-        return {
-          constructionKind: "double-nucleus-ownerhood",
-          source: {
-            principalNncResult: principal, supplementNncResult: supplement, supplementationAnalysis,
-            ...(targetObject.isClassicalNahuatlSupplementationFrame?.(relation) === true
-              ? {canonicalSupplementationResult: relation} : {}),
-          },
-          subject,
-          state,
-          possessor,
-          animacy,
-        };
+        return {constructionKind:"double-nucleus-ownerhood",source:getClassicalDoubleNucleusSourceDraft()?.source || {},subject,state,possessor,animacy};
       }
       if (constructionKind === "adverbial-nuclear") {
         const binding=getActiveClassicalGrammarResultBinding('nnc:adverbial');
@@ -31713,8 +31704,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
             objectKind,
             objectPerson,
             ...(!compoundSourceSelected
-              && readClassicalSourceObjectRows(targetObject.document, valence, subject).length
-              ? {sourceObjectRequests: readClassicalSourceObjectRows(targetObject.document, valence, subject)}
+              && readClassicalSourceObjectRows(targetObject.document, valence, subject,targetObject).length
+              ? {sourceObjectRequests: readClassicalSourceObjectRows(targetObject.document, valence, subject,targetObject)}
               : {}),
           },
         };
@@ -31779,7 +31770,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           matrixVerbClass: getClassicalNominalConstructionControlValue("classical-rule-logic-class", "A"),
           matrixValence: valence,
           ...(numeralOutputKind === "vnc-embed"
-            ? { sourceObjectRequests: readClassicalSourceObjectRows(targetObject.document, valence, subject) }
+            ? { sourceObjectRequests: readClassicalSourceObjectRows(targetObject.document, valence, subject,targetObject) }
             : {}),
           measureStem: classifier === "measure" ? matrixStem : "",
           measureClass: getClassicalNominalConstructionControlValue(
@@ -33834,27 +33825,25 @@ export function createUiRenderingApi(targetObject = globalThis) {
     const nonactiveCarrierControlPresentation = new Map();
     function renderClassicalPendingNonactiveCarrierSource(block, overrides = {}) {
       const parts=targetObject.getClassicalSourcePartControlState?.();
-      const source=targetObject.getClassicalBasalUnitFromRuntime?.()==="vnc" && parts?.mode==="whole-stem"
+      const committed=targetObject.getClassicalAcceptedSourceAuthoringPayload?.(targetObject.getClassicalCommittedSourceAuthoringDecision?.());
+      const draft=targetObject.getClassicalSourceAuthoringDecision?.();
+      const source=targetObject.getClassicalBasalUnitFromRuntime?.() === "vnc" && parts?.mode === "whole-stem"
         && !ActiveClassicalGrammarResultSourceCapture && !ActiveClassicalGrammarResultBinding
-        ? targetObject.resolveClassicalNahuatlRestrictedContainingVncSourceFrame?.({enteredStem:parts.sourceWholeStem,valence:targetObject.document.getElementById("classical-rule-logic-valence")?.value || "intransitive",sourceLexemeId:targetObject.getClassicalVncSourceLexemeId?.() || ""})
-          || targetObject.resolveClassicalNahuatlNominalRankCorrectedSourceFrame?.({enteredStem:parts.sourceWholeStem,valence:targetObject.document.getElementById("classical-rule-logic-valence")?.value || "intransitive"})
-          || targetObject.resolveClassicalNahuatlAnalyticalVncSourceFrame?.({enteredStem:parts.sourceWholeStem,valence:targetObject.document.getElementById("classical-rule-logic-valence")?.value || "intransitive"})
-          || targetObject.resolveClassicalNahuatlImperfectiveVncSourceFrame?.({enteredStem:parts.sourceWholeStem,valence:targetObject.document.getElementById("classical-rule-logic-valence")?.value || "intransitive"})
-          || targetObject.resolveClassicalNahuatlPreformedVncSourceFrame?.({enteredStem:parts.sourceWholeStem,valence:"intransitive"})
-          || targetObject.resolveClassicalNahuatlNonactiveCarrierSourceFrame?.({enteredStem:parts.sourceWholeStem,valence:"intransitive"}) : null;
+        ? committed?.sourceFrame || draft?.classDecision?.specializedSource || null:null;
       const analytical=targetObject.isClassicalNahuatlAnalyticalVncSourceFrame?.(source)===true;
       const imperfective=targetObject.isClassicalNahuatlImperfectiveVncSourceFrame?.(source)===true;
       const preformed=targetObject.isClassicalNahuatlPreformedVncSourceFrame?.(source)===true;
       const containing=targetObject.isClassicalNahuatlRestrictedContainingVncSourceFrame?.(source)===true;
       const corrected=targetObject.isClassicalNahuatlNominalRankCorrectedSourceFrame?.(source)===true;
       const active=containing || corrected || analytical || imperfective || preformed || targetObject.isClassicalNahuatlNonactiveCarrierSourceFrame?.(source)===true;
-      if(containing || corrected || imperfective || analytical){const control=targetObject.document.getElementById("classical-rule-logic-class");if(control)control.value=analytical || containing?source.sourceClass:"";}
+
       for (const id of ["classical-rule-logic-class","classical-rule-logic-valence","classical-rule-logic-subject",
         "classical-rule-logic-vnc-subject-person","classical-rule-logic-vnc-subject-animacy","classical-rule-logic-vnc-subject-humanness","classical-rule-logic-vnc-subject-number",
         "classical-rule-logic-mood","classical-rule-logic-tense","classical-rule-logic-vnc-voice","classical-rule-logic-derivation-option","classical-rule-logic-object"]){
         const control=targetObject.document.getElementById(id);if(!control)continue;
         const wrapper=control.closest?.("label");
-        const sourceOwnsControl=active && (id!=="classical-rule-logic-object" || Boolean(source.sourceAnalysis?.containedObjectKind));
+        const sourceOwnsControl=active && !(id === "classical-rule-logic-class" && draft?.authorizationStatus === "blocked")
+          && (id!=="classical-rule-logic-object" || Boolean(source.sourceAnalysis?.containedObjectKind));
         if(sourceOwnsControl){if(!nonactiveCarrierControlPresentation.has(control))nonactiveCarrierControlPresentation.set(control,{disabled:control.disabled,wrapper,hidden:wrapper?.hidden});
           control.disabled=true;if(wrapper)wrapper.hidden=true;
         }else if(nonactiveCarrierControlPresentation.has(control)){
@@ -34026,7 +34015,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
       if (!request) return false;
       if (targetObject.document.getElementById("classical-source-parts")?.dataset?.classicalSourceCommitState !== "committed") return true;
       const signature = JSON.stringify(request);
-      const source = ClassicalRelationalTypedSourceCache?.signature === signature
+      const acceptedSource=targetObject.getClassicalAcceptedSourceAuthoringPayload?.(targetObject.getClassicalCommittedSourceAuthoringDecision?.())?.sourceFrame;
+      const source = targetObject.isClassicalNahuatlRelationalNncTypedSourceFrame?.(acceptedSource) === true ? acceptedSource
+        : ClassicalRelationalTypedSourceCache?.signature === signature
         ? ClassicalRelationalTypedSourceCache.source
         : targetObject.buildClassicalNahuatlRelationalNncTypedSourceFrame?.(request);
       if (!targetObject.isClassicalNahuatlRelationalNncTypedSourceFrame?.(source)) {
@@ -44256,6 +44247,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       );
       const doubleSourceChoice = String(control?.id || "").startsWith("classical-double-nucleus-");
       if (doubleSourceChoice || control?.id === "classical-deverbal-nnc-family") {
+        if(doubleSourceChoice)applyClassicalDoubleNucleusSourceChoice(control);
         const draft = getClassicalDoubleNucleusSourceDraft();
         let priorDouble = false;
         try { priorDouble = JSON.parse(targetObject.ClassicalSourcePartsCommittedSignature || "null")?.mode === "two-nucleus-nnc"; } catch {}
@@ -49003,7 +48995,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       });
       targetObject.setClassicalSourcePartsMode(saved.mode, { clearValues: false });
       apply(saved.controls);
-      syncClassicalSourceObjectRows(targetObject.document);
+      syncClassicalSourceObjectRows(targetObject.document,targetObject);
       const normalize = signature => {
         if (inactiveControl) {
           try { const fields=JSON.parse(signature);
@@ -49027,7 +49019,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         } catch { note("invalid-signature"); }
         targetObject.setClassicalSourcePartsMode(beforeMode, { clearValues: false });
         apply(before);
-        syncClassicalSourceObjectRows(targetObject.document);
+        syncClassicalSourceObjectRows(targetObject.document,targetObject);
         return false;
       }
       targetObject.ClassicalSourcePartsCommittedSignature = committedSignature;
@@ -49194,7 +49186,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const controls=getClassicalSourceObjectControls(targetObject.document);
       const rowSignature=()=>JSON.stringify(readClassicalSourceObjectRows(
         targetObject.document,application.normalizedRequest.sourceValence,
-        application.normalizedRequest.subject));
+        application.normalizedRequest.subject,targetObject));
       const accepted=rowSignature();
       if (targetObject.getClassicalSourcePartsEvaluationSignature) {
         targetObject.ClassicalSourcePartsCommittedSignature=targetObject.getClassicalSourcePartsEvaluationSignature();
@@ -49207,7 +49199,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           : Array.from(control.options||[]).some(option=>option.value===choice.value);
         if (allowed) control.value=choice.value;
       }
-      syncClassicalSourceObjectRows(targetObject.document);
+      syncClassicalSourceObjectRows(targetObject.document,targetObject);
       const pending=accepted!==rowSignature();
       targetObject.setClassicalSourcePartsPendingState?.(pending);
       targetObject.syncClassicalSourceCommitPresentation?.();
@@ -58445,6 +58437,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       syncClassicalGrammarResultBindingChoices;
     api.enterClassicalGrammarResultBindingChoice =
       enterClassicalGrammarResultBindingChoice;
+    api.applyClassicalVncSubjectReferenceEdit = applyClassicalVncSubjectReferenceEdit;
     api.getClassicalDoubleNucleusSourceDraft = getClassicalDoubleNucleusSourceDraft;
     api.applyClassicalDoubleNucleusSourceDraft = applyClassicalDoubleNucleusSourceDraft;
     api.buildClassicalNominalConstructionUiRequest = buildClassicalNominalConstructionUiRequest;

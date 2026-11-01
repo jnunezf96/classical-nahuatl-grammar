@@ -1,5 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import {createRuntimeInstance} from '../runtime/create_runtime.mjs';
+const runtime=(await createRuntimeInstance({documentObject:{getElementById:()=>null,addEventListener(){}}})).runtimeObject;
+const owner={getClassicalNahuatlVncSourceObjectDecision:runtime.getClassicalNahuatlVncSourceObjectDecision};
 import * as rows from '../ui/composer/source_objects.mjs';
 
 function documentFixture(){
@@ -24,7 +27,7 @@ test('restore two-object Source inputs and visibility without executing or bindi
   assert.equal(d.getElementById('classical-source-object-2').hidden,false);
   assert.equal(d.getElementById('classical-source-object-3').hidden,true);
   assert.equal(d.getElementById('classical-source-object-2-person').closest('label').hidden,true);
-  assert.deepEqual(rows.readClassicalSourceObjectRows(d,'mainline-reflexive','2sg'),requests);
+  assert.deepEqual(rows.readClassicalSourceObjectRows(d,'mainline-reflexive','2sg',owner),requests);
   assert.equal(rows.getClassicalSourceObjectControls(d).length,5);
 });
 
@@ -40,6 +43,6 @@ test('specific third-object selection remains visible; a one-object Source clear
   assert.equal(d.getElementById('classical-source-object-count').value,'1');
   assert.equal(d.getElementById('classical-source-object-2').hidden,true);
   assert.equal(d.getElementById('classical-source-object-3').hidden,true);
-  assert.deepEqual(rows.readClassicalSourceObjectRows(d,'mainline-reflexive','2sg'),[]);
+  assert.deepEqual(rows.readClassicalSourceObjectRows(d,'mainline-reflexive','2sg',owner),[]);
   assert.equal(d.getElementById('classical-source-object-remove').disabled,true);
 });

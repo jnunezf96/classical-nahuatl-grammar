@@ -11,7 +11,7 @@ test('Andrews mo-ca coverage source admits its present without an invented perfe
  const choices={subject:'1sg',subjectAnimacy:'animate',subjectHumanness:'human',mood:'indicative',tense:'present',requestedVoice:'active',requestedDerivation:'direct'};
  const binding=r.issueClassicalNahuatlVncTypedSourceApplicationBindingFrame(source,choices);
  assert.equal(binding.bindingStatus,'ready',binding.blockReason);
- assert.deepEqual(Array.from(binding.choiceOptionProjection.tense,x=>x.optionId),['present']);
+ assert.deepEqual(Array.from(binding.choiceOptionProjection.tense.options,x=>x.optionId),['present']);
  const navigator=r.getClassicalGrammarApplicationCapabilityNavigator(source);
  const aggregate=r.issueClassicalGrammarTypedSourceOperationBindingFrame(navigator,'vnc:application',choices);
  assert.equal(aggregate.bindingStatus,'ready',aggregate.blockReason);

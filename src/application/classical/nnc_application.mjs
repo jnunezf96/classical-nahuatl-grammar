@@ -1292,29 +1292,12 @@ export function createClassicalNahuatlNncApplicationModule(
     return frame;
   }
 
-  function buildClassicalNahuatlOrdinaryNncSourceFrame(source = {}) {
-    const forbiddenCarrier = findForbiddenAuthorityCarrier(source);
-    if (forbiddenCarrier) {
-      return buildBlockedFrame(
-        ORDINARY_NNC_SOURCE_KIND,
-        `ordinary-nnc-source-forbidden-authority:${forbiddenCarrier}`,
-      );
-    }
-    const stem = normalizeStem(ownDataValue(source, "stem", ""));
-    const embedStem = normalizeStem(ownDataValue(source, "embedStem", ""));
-    const matrixStem = normalizeStem(ownDataValue(source, "matrixStem", ""));
-    const sourceKeys = Reflect.ownKeys(source)
-      .filter((key) => typeof key === "string");
-    const forbiddenSourceKey = sourceKeys.find(
-      (key) => !ORDINARY_NNC_SOURCE_INPUT_KEYS.has(key),
-    ) || "";
-    const sourceUse = normalizeChoice(ownDataValue(source, "sourceUse", "nounstem"));
-    if (sourceUse === "general-use" && !normalizeText(ownDataValue(source, "sourceClass", ""))) {
-      return buildClassFreeSelectedUseSource(source);
-    }
+  function getOrdinaryNncSourceClassContext(source = {}) {
+    const stem = normalizeStem(ownDataValue(source,"stem",""));
+    const embedStem = normalizeStem(ownDataValue(source,"embedStem",""));
+    const matrixStem = normalizeStem(ownDataValue(source,"matrixStem",""));
+    const sourceUse = normalizeChoice(ownDataValue(source,"sourceUse","nounstem"));
     const generalUseOnly = sourceUse === "general-use";
-    // An entered general-use operand supplies no restricted citation or fine
-    // possessive subclass. Its selected cell remains owned by this service.
     let lexicalEntry = generalUseOnly ? null : ORDINARY_NNC_LEXICON[stem] || null;
     const requestedSupportiveInitialI = ownDataValue(source, "supportiveInitialI", false);
     const supportiveInitialI = requestedSupportiveInitialI === true;
@@ -1424,6 +1407,73 @@ export function createClassicalNahuatlNncApplicationModule(
         compoundStem: compoundSource,
       })
       : null;
+    const classFormGuidance=typeof targetObject.getClassicalNahuatlClassFormGuidance === "function"
+      ? targetObject.getClassicalNahuatlClassFormGuidance(stem):null;
+    const classFormCompatible=Boolean(nounClass&&classFormGuidance?.candidateClasses?.includes(nounClass));
+    return {classFormCompatible,classFormGuidance,lexicalEntry,requestedSupportiveInitialI,supportiveInitialI,requestedSourceClass,adjectivalProfile,openSourceClassAnalysis,canonicalSourceClass,requestedCanonicalReclassification,requestedOpenNounClass,openStemSource,sourceClass,sourceClassAnalysis,restrictedUseOnly,lexicalEntryId,nounClass,referentialAnimacy,naturalPossessionPolicy,naturalPossessionSemantics,stateAvailability,possessorCompatibility,classMembershipOptions,stemFormationOptions,lexicalPluralConnectorOptions,pluralConnectorOptions,useShape,subclass,ephemeralFinalVowel,truncationRepair,compoundSource,openSourceShapeCapabilityMissing,openSourceShapeFrame};
+  }
+  function getOrdinaryNncClassBlockReason(context) {
+    const {requestedSourceClass,openSourceClassAnalysis,lexicalEntry,canonicalSourceClass,
+      requestedCanonicalReclassification,openSourceShapeCapabilityMissing,openSourceShapeFrame,classFormCompatible}=context;
+    return requestedSourceClass && !openSourceClassAnalysis ? "open-nounstem-source-class-analysis-not-recognized"
+      : lexicalEntry && requestedSourceClass && requestedSourceClass !== canonicalSourceClass && !requestedCanonicalReclassification
+        ? "ordinary-nnc-source-class-contradicts-canonical-source"
+      : openSourceShapeCapabilityMissing ? "ordinary-nnc-source-shape-validator-required"
+      : openSourceShapeFrame?.authorizationStatus === "blocked" ? openSourceShapeFrame.blockReason
+      : !classFormCompatible ? "typed-class-alternative-contradicts-canvas-form-constraint":"";
+  }
+  function getClassicalNahuatlOrdinaryNncSourceClassChoices(source = {}) {
+    const generalUse=source.sourceUse === "general-use";
+    return Object.freeze(getClassicalNahuatlOpenNncSourceClassInventory().map(entry=>entry.sourceClass)
+      .filter(sourceClass=>(!generalUse || sourceClass === "tl")
+        && !getOrdinaryNncClassBlockReason(getOrdinaryNncSourceClassContext({...source,sourceClass}))));
+  }
+  function getClassicalNahuatlOrdinaryNncSourceClassFacts(source = {}) {
+    const context=getOrdinaryNncSourceClassContext(source);
+    return !getOrdinaryNncClassBlockReason(context) && context.sourceClassAnalysis ? context.sourceClassAnalysis:null;
+  }
+  const ordinarySourceDecisions = new WeakSet();
+  function getClassicalNahuatlOrdinaryNncSourceDecision(source = {}) {
+    const sourceFrame=buildClassicalNahuatlOrdinaryNncSourceFrame(source);
+    const context=getOrdinaryNncSourceClassContext(source);
+    const stem=normalizeStem(ownDataValue(source,"stem",""));
+    const classFree=sourceFrame.generalUseOnly === true && sourceFrame.classClaimed === false;
+    const allowedClassIds=classFree ? [] : getClassicalNahuatlOrdinaryNncSourceClassChoices(source);
+    const decision=deepFreeze({kind:"classical-nahuatl-ordinary-nnc-source-decision",
+      authorizationStatus:sourceFrame.authorizationStatus,blockReason:sourceFrame.blockReason,
+      requestedSourceClass:context.requestedSourceClass,sourceClass:sourceFrame.sourceClass,
+      requestedSupportiveInitialI:ownDataValue(source,"supportiveInitialI",false),
+      supportiveInitialIValues:/^[iī]/u.test(stem)&&stem.length>1?[false,true]:[false],
+      allowedClassIds,sourceFrame});
+    ordinarySourceDecisions.add(decision);return decision;
+  }
+  function isClassicalNahuatlOrdinaryNncSourceDecision(frame = null) {
+    return Boolean(frame && ordinarySourceDecisions.has(frame));
+  }
+  function buildClassicalNahuatlOrdinaryNncSourceFrame(source = {}) {
+    const forbiddenCarrier = findForbiddenAuthorityCarrier(source);
+    if (forbiddenCarrier) {
+      return buildBlockedFrame(
+        ORDINARY_NNC_SOURCE_KIND,
+        `ordinary-nnc-source-forbidden-authority:${forbiddenCarrier}`,
+      );
+    }
+    const stem = normalizeStem(ownDataValue(source, "stem", ""));
+    const embedStem = normalizeStem(ownDataValue(source, "embedStem", ""));
+    const matrixStem = normalizeStem(ownDataValue(source, "matrixStem", ""));
+    const sourceKeys = Reflect.ownKeys(source)
+      .filter((key) => typeof key === "string");
+    const forbiddenSourceKey = sourceKeys.find(
+      (key) => !ORDINARY_NNC_SOURCE_INPUT_KEYS.has(key),
+    ) || "";
+    const sourceUse = normalizeChoice(ownDataValue(source, "sourceUse", "nounstem"));
+    if (sourceUse === "general-use" && !normalizeText(ownDataValue(source, "sourceClass", ""))) {
+      return buildClassFreeSelectedUseSource(source);
+    }
+    const generalUseOnly = sourceUse === "general-use";
+    // An entered general-use operand supplies no restricted citation or fine
+    // possessive subclass. Its selected cell remains owned by this service.
+    const {lexicalEntry,requestedSupportiveInitialI,supportiveInitialI,requestedSourceClass,adjectivalProfile,openSourceClassAnalysis,canonicalSourceClass,requestedCanonicalReclassification,requestedOpenNounClass,openStemSource,sourceClass,sourceClassAnalysis,restrictedUseOnly,lexicalEntryId,nounClass,referentialAnimacy,naturalPossessionPolicy,naturalPossessionSemantics,stateAvailability,possessorCompatibility,classMembershipOptions,stemFormationOptions,lexicalPluralConnectorOptions,pluralConnectorOptions,useShape,subclass,ephemeralFinalVowel,truncationRepair,compoundSource,openSourceShapeCapabilityMissing,openSourceShapeFrame}=getOrdinaryNncSourceClassContext(source);
     const lexicalFormation =
       lexicalEntry?.lexicalFormation || (openStemSource
         ? compoundSource
@@ -1475,6 +1525,11 @@ export function createClassicalNahuatlNncApplicationModule(
       blockReason = "ordinary-nnc-source-stem-required";
     } else if (!["nounstem", "general-use"].includes(sourceUse)) {
       blockReason = "ordinary-nnc-source-use-not-recognized";
+    } else if (typeof requestedSupportiveInitialI !== "boolean"
+      || (supportiveInitialI && (!/^[iī]/u.test(stem) || stem.length < 2))) {
+      blockReason = "ordinary-nnc-supportive-initial-i-requires-initial-i";
+    } else if ((embedStem && !matrixStem) || (!embedStem && matrixStem)) {
+      blockReason = "ordinary-nnc-source-embed-matrix-pair-required";
     } else if (generalUseOnly && (requestedSourceClass !== "tl"
       || embedStem || matrixStem || supportiveInitialI)) {
       blockReason = "ordinary-nnc-selected-general-use-coarse-tl-operand-required";
@@ -1483,20 +1538,9 @@ export function createClassicalNahuatlNncApplicationModule(
     } else if (forbiddenSourceKey) {
       blockReason =
         `ordinary-nnc-source-lexical-facts-are-engine-owned:${forbiddenSourceKey}`;
-    } else if (typeof requestedSupportiveInitialI !== "boolean"
-      || (supportiveInitialI && (!/^[iī]/u.test(stem) || stem.length < 2))) {
-      blockReason = "ordinary-nnc-supportive-initial-i-requires-initial-i";
-    } else if (requestedSourceClass && !openSourceClassAnalysis) {
-      blockReason = "open-nounstem-source-class-analysis-not-recognized";
-    } else if (
-      lexicalEntry
-      && requestedSourceClass
-      && requestedSourceClass !== canonicalSourceClass
-      && !requestedCanonicalReclassification
-    ) {
-      blockReason = "ordinary-nnc-source-class-contradicts-canonical-source";
-    } else if ((embedStem && !matrixStem) || (!embedStem && matrixStem)) {
-      blockReason = "ordinary-nnc-source-embed-matrix-pair-required";
+    } else if (getOrdinaryNncClassBlockReason(getOrdinaryNncSourceClassContext(source))
+      && (!openSourceClassAnalysis || lexicalEntry && requestedSourceClass !== canonicalSourceClass && !requestedCanonicalReclassification)) {
+      blockReason = getOrdinaryNncClassBlockReason(getOrdinaryNncSourceClassContext(source));
     } else if (!lexicalEntry && !requestedOpenNounClass) {
       blockReason = "lexical-noun-class-selection-required";
     } else if (
@@ -5408,6 +5452,10 @@ export function createClassicalNahuatlNncApplicationModule(
     ...createAttestedPlaceApi(),
     ...createAttestedPrincipalCollocationApi(),
     buildClassicalNahuatlOrdinaryNncSourceFrame,
+    getClassicalNahuatlOrdinaryNncSourceDecision,
+    getClassicalNahuatlOrdinaryNncSourceClassChoices,
+    getClassicalNahuatlOrdinaryNncSourceClassFacts,
+    isClassicalNahuatlOrdinaryNncSourceDecision,
     isClassicalNahuatlOrdinaryNncSourceFrame,
     buildClassicalNahuatlNncOperationSelectionFrame,
     buildClassicalNahuatlOrdinaryNncOperationFrame,

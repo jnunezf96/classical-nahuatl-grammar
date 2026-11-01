@@ -5468,7 +5468,7 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
         message.textContent = "Enter a Source.";
       }
       if (classRequirement) {
-        message.textContent = `${sourceInUse ? "Edits not applied. " : ""}Choose a ${classRequirement.stemKind} class, then use this Source.${sourceInUse ? ` Using ${sourceInUse}` : ""}`;
+        message.textContent = `${sourceInUse ? "Edits not applied. " : ""}${classRequirement.message || `Choose a ${classRequirement.stemKind} class, then use this Source.`}${sourceInUse ? ` Using ${sourceInUse}` : ""}`;
       }
       if (soundError) {
         const fieldName = invalidField.id === "classical-source-embed" ? "Embed"
@@ -5489,7 +5489,7 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
           !draftHasSource
             ? "Enter a Source before applying it"
             : classRequirement
-            ? `Choose a ${classRequirement.stemKind} class before applying this Source`
+            ? classRequirement.message || `Choose a ${classRequirement.stemKind} class before applying this Source`
             : state === "pending"
             ? "Use pending Source"
             : "Use this Source"
