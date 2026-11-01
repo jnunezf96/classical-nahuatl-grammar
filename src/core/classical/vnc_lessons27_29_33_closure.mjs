@@ -11,7 +11,7 @@ import {
 } from "./root_stock_vowel_coalescence.mjs";
 import { getFrequentativeDestockalConstitution } from "./frequentative_destockal_structure.mjs";
 import { getReduplicationParts, reduplicate } from "./reduplicative_realization.mjs";
-import { isClassicalNahuatlParticipantFrame } from "./participant_frame.mjs?v=20260823-passive-formation-continuity-238&ownerDecision=20261031-1";
+import { isClassicalNahuatlParticipantFrame } from "./participant_frame.mjs?v=20260823-passive-formation-continuity-238&ownerDecision=20261031-2";
 
 const ATTITUDE_OPERATIONS = Object.freeze(['honorific','reverential','pejorative']);
 export const getClassicalNahuatlAttitudeOperations = () => ATTITUDE_OPERATIONS;

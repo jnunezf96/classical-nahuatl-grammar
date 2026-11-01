@@ -1,4 +1,4 @@
-import {buildClassicalNahuatlParticipantFrame} from '../../core/classical/participant_frame.mjs?ownerDecision=20261031-1';
+import {buildClassicalNahuatlParticipantFrame} from '../../core/classical/participant_frame.mjs?ownerDecision=20261031-2';
 
 // Selected attested nominal cells carry only the lexical analysis actually supplied.
 // Their external contextual Participants are authored by Build, never lexical actors.

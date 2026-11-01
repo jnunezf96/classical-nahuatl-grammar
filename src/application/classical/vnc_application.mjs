@@ -5,14 +5,14 @@ import {
   CLASSICAL_NAHUATL_VNC_DERIVATION_TYPES,
   normalizeClassicalNahuatlVncDerivationType,
   validateClassicalNahuatlVncDerivationTypeSelection,
-} from "../../core/classical/vnc_derivation_evaluator.mjs?v=20261008-reader-40-9-190&andrewsRelease=20261024-1&ownerDecision=20261031-1";
+} from "../../core/classical/vnc_derivation_evaluator.mjs?v=20261008-reader-40-9-190&andrewsRelease=20261024-1&ownerDecision=20261031-2";
 import {
   CLASSICAL_NAHUATL_VNC_CAUSATIVE_SOURCE_VOICES,
   CLASSICAL_NAHUATL_VNC_TARGET_VOICES,
   validateClassicalNahuatlVncVoiceSelection,
   getClassicalNahuatlVncSemanticInputVocabulary,
   getClassicalNahuatlVncParadigmTensesForMood,
-} from "../../core/classical/vnc_layer_evaluator.mjs?v=20261001-reader-26-4-optional-weather-2&andrewsRelease=20261024-1&ownerDecision=20261031-1";
+} from "../../core/classical/vnc_layer_evaluator.mjs?v=20261001-reader-26-4-optional-weather-2&andrewsRelease=20261024-1&ownerDecision=20261031-2";
 import {
   buildClassicalResultOutputScopeSelectionFrame,
 } from "../../core/output/scope.mjs?v=20260726-lessons2-58-one-system-094";
@@ -24,7 +24,7 @@ import {
   getClassicalNahuatlParticipantReferenceChoiceOptions,
   isClassicalNahuatlParticipantReferenceSelectionCompatible,
   doesClassicalNahuatlParticipantTransitionRetireSourceRole,
-} from "../../core/classical/participant_frame.mjs?v=20260823-passive-formation-continuity-238&ownerDecision=20261031-1";
+} from "../../core/classical/participant_frame.mjs?v=20260823-passive-formation-continuity-238&ownerDecision=20261031-2";
 import {resolveReflexiveInterpretationChoice} from "./reflexive_choice_coordination.mjs";
 
 export function createClassicalNahuatlVncApplicationModule(targetObject = globalThis) {

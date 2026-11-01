@@ -1,14 +1,14 @@
 import {normalizeSourceEditorSignature} from '../composition/source_editor_signature.mjs';
 import {runCompositionAction} from '../composition/action_feedback.mjs?v=20261023-1';
-import { installClassicalSourceObjectRows, syncClassicalSourceObjectRows,readClassicalSourceObjectSelections } from "./source_objects.mjs?v=20261007-panel-source-objects-1&interfaceRelease=1.2.36";
-import { getSourceClassRequirement } from "./source_admission.mjs?deverbalReload=20261024-8&v=20261014-source-admission-3";
+import { installClassicalSourceObjectRows, syncClassicalSourceObjectRows,readClassicalSourceObjectSelections } from "./source_objects.mjs?v=20261007-panel-source-objects-1&interfaceRelease=1.2.36&ownerDecision=20261031-2";
+import { getSourceClassRequirement } from "./source_admission.mjs?deverbalReload=20261024-8&v=20261014-source-admission-3&ownerDecision=20261031-2";
 // Canonical modern ESM module.
 
 import {
   CLASSICAL_NAHUATL_VNC_DERIVATION_TYPES,
   normalizeClassicalNahuatlVncDerivationType,
   validateClassicalNahuatlVncDerivationTypeSelection,
-} from "../../core/classical/vnc_derivation_evaluator.mjs?v=20260823-rhyme-coordinate-preservation-240&andrewsRelease=20261024-1&ownerDecision=20261031-1";
+} from "../../core/classical/vnc_derivation_evaluator.mjs?v=20260823-rhyme-coordinate-preservation-240&andrewsRelease=20261024-1&ownerDecision=20261031-2";
 import {
   GENERATION_SOURCE_TRANSITIVITY,
   GENERATION_SOURCE_TRANSITIVITY_ORDER,

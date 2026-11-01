@@ -1,5 +1,5 @@
 // Canonical modern ESM module.
-import { getSourceClassRequirement } from "../composer/source_admission.mjs?deverbalReload=20261024-8&v=20261014-source-admission-3";
+import { getSourceClassRequirement } from "../composer/source_admission.mjs?deverbalReload=20261024-8&v=20261014-source-admission-3&ownerDecision=20261031-2";
 
 import { CLASSICAL_RESULT_OUTPUT_SCOPE_CONTROL_CONTRACTS } from "../../core/output/scope.mjs?v=20260726-lessons2-58-one-system-094";
 import { PLACE_GENTILIC_NNC_UI_CONTROL_CONTRACTS } from "../../core/nnc/place_gentilic/ui_contract.mjs?v=20260726-lessons2-58-one-system-094&interfaceRelease=1.2.36";

@@ -7,7 +7,7 @@ import {
 import {
   normalizeClassicalNahuatlVncParadigmTense,
   normalizeClassicalNahuatlVncSemanticTense,
-} from "./vnc_layer_evaluator.mjs?v=20261001-reader-26-4-optional-weather-2&andrewsRelease=20261024-1&ownerDecision=20261031-1";
+} from "./vnc_layer_evaluator.mjs?v=20261001-reader-26-4-optional-weather-2&andrewsRelease=20261024-1&ownerDecision=20261031-2";
 import {
   getClassicalNahuatlPhoneRepertoryRelation,
 } from "../concepts/phone_repertory_facts.mjs?v=20260810-atom099-001";
@@ -15,7 +15,7 @@ import {
   buildClassicalNahuatlParticipantFrame,
   buildClassicalNahuatlParticipantRoleTransitionFrame,
   isClassicalNahuatlParticipantFrame,
-} from "./participant_frame.mjs?v=20260823-passive-formation-continuity-238&ownerDecision=20261031-1";
+} from "./participant_frame.mjs?v=20260823-passive-formation-continuity-238&ownerDecision=20261031-2";
 
 // This participant transition is shared by suffixal and nominal causatives.
 // Callers retain the original owned Source; these are its transformed objects.

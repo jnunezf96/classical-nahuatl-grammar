@@ -1,11 +1,11 @@
-import {getAdverbialAdjunctionMarkerProfiles} from "../../core/clause/adjunction/adjunction.mjs";
+import {getAdverbialAdjunctionMarkerProfiles} from "../../core/clause/adjunction/adjunction.mjs?ownerDecision=20261031-2";
 import {buildCurrentChoiceFrame} from './current_choice_frame.mjs';
 import {resolveComparisonChoices, projectComparisonChoiceFrame} from './comparison_choices.mjs?v=20261026-all-comparison-1';
 // Typed application controller for composing already-issued canonical clause
 // results. It owns presentation decisions only; the clause engine remains the
 // sole owner of relation validation, formulas, realization, and surfaces.
 
-import { installClassicalLateValidationOwnersGlobals } from "../../core/classical/late_validation_owner_catalog.mjs?v=20260826-relational-role-340&andrewsRelease=20261024-1&interfaceRelease=1.2.37&supplementationSession=20261028-1&utteranceProjection=20261028-1&ownerDecision=20261031-1";
+import { installClassicalLateValidationOwnersGlobals } from "../../core/classical/late_validation_owner_catalog.mjs?v=20260826-relational-role-340&andrewsRelease=20261024-1&interfaceRelease=1.2.37&supplementationSession=20261028-1&utteranceProjection=20261028-1&ownerDecision=20261031-2";
 
 const CONTROLLER_KIND = "classical-clause-relation-controller";
 const CONTROLLER_RESULT_KIND = "classical-clause-relation-controller-result";

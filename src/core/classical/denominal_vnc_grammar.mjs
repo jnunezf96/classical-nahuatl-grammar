@@ -1,6 +1,6 @@
 import {snapshotGrammarInputs} from "../input_snapshot.mjs";
 import {reduplicate} from "./reduplicative_realization.mjs";
-import {CLASSICAL_NAHUATL_VNC_SEMANTIC_MOODS, CLASSICAL_NAHUATL_VNC_SEMANTIC_TENSES_BY_MOOD} from "./vnc_layer_evaluator.mjs?andrewsRelease=20261024-1&ownerDecision=20261031-1";
+import {CLASSICAL_NAHUATL_VNC_SEMANTIC_MOODS, CLASSICAL_NAHUATL_VNC_SEMANTIC_TENSES_BY_MOOD} from "./vnc_layer_evaluator.mjs?andrewsRelease=20261024-1&ownerDecision=20261031-2";
 
 // Canonical Andrews-only denominal VNC grammar.
 //

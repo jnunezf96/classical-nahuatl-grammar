@@ -1,10 +1,10 @@
-import {CLASSICAL_NNC_EDITABLE_SENTENCE_TYPES,CLASSICAL_NNC_SENTENCE_POLARITIES,normalizeClassicalNahuatlNncSentenceType} from '../../core/classical/nnc_layer_evaluator.mjs?ownerDecision=20261031-1';
-import {createAttestedNncCellApi, createAttestedPlaceApi, createAttestedPrincipalCollocationApi} from './attested_source_cells.mjs?ownerDecision=20261031-1';
+import {CLASSICAL_NNC_EDITABLE_SENTENCE_TYPES,CLASSICAL_NNC_SENTENCE_POLARITIES,normalizeClassicalNahuatlNncSentenceType} from '../../core/classical/nnc_layer_evaluator.mjs?ownerDecision=20261031-2';
+import {createAttestedNncCellApi, createAttestedPlaceApi, createAttestedPrincipalCollocationApi} from './attested_source_cells.mjs?ownerDecision=20261031-2';
 import { analyzeQuantitiveInternalReduplication, deriveQuantitiveInternalReduplication } from '../../core/classical/quantitive_internal_reduplication.mjs';
 import {createClassicalQuantitativePredicateApi} from './quantitative_predicate.mjs?v=20261009-reader-42-6-224';
 import {
   buildClassicalNahuatlParticipantFrame,
-} from "../../core/classical/participant_frame.mjs?v=20260823-passive-formation-continuity-238&ownerDecision=20261031-1";
+} from "../../core/classical/participant_frame.mjs?v=20260823-passive-formation-continuity-238&ownerDecision=20261031-2";
 
 // Canonical ordinary-NNC application service.
 //

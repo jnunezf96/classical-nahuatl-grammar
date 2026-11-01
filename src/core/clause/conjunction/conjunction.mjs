@@ -1,5 +1,5 @@
 // Canonical modern ESM module.
-import {isClassicalNahuatlParticipantFrame} from "../../classical/participant_frame.mjs?ownerDecision=20261031-1";
+import {isClassicalNahuatlParticipantFrame} from "../../classical/participant_frame.mjs?ownerDecision=20261031-2";
 
 export function createConjunctionClauseGlobals(targetObject = globalThis, installationContext = null) {
     const grammarFrameOwnerCapability = installationContext?.grammarFrameOwnerCapability || null;

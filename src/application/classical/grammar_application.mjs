@@ -1,7 +1,7 @@
 import {CLASSICAL_NAHUATL_NNC_NOUNSTEM_REQUEST_KIND,CLASSICAL_NAHUATL_RELATIONAL_SOURCE_COMPOSITION_REQUEST_KIND,CLASSICAL_NAHUATL_RELATIONAL_SOURCE_COMPOSITION_STEM_NODE_KIND,CLASSICAL_NAHUATL_RELATIONAL_SOURCE_COMPOSITION_COMPOUND_NODE_KIND} from "../../core/classical/nnc_lessons45_47_closure.mjs?v=20261009-reader-42-8-234&interfaceRelease=1.2.36&huicContinuation=20261025-1&ownerDecision=20261031-1";
 import { getClassicalNahuatlNncPredicateBoundaryCarrier } from "../../core/classical/nnc_predicate_boundary.mjs";
 import {resolveOrdinaryNncActiveSelections,stageOrdinaryNncDependencies} from './participant_choice_coordination.mjs?ownerDecision=20261031-1';
-import { capitalizeClassicalNahuatlNncSentenceInitial } from "../../core/classical/nnc_layer_evaluator.mjs?andrewsRelease=20261024-1&ownerDecision=20261031-1";
+import { capitalizeClassicalNahuatlNncSentenceInitial } from "../../core/classical/nnc_layer_evaluator.mjs?andrewsRelease=20261024-1&ownerDecision=20261031-2";
 // Canonical application boundary for Classical Nahuatl grammar projections.
 //
 // The renderer supplies genuine selections and already-issued grammar frames.
@@ -11135,7 +11135,7 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
       } else sourceFrame=issueCanonicalNncSourceFrame(sourceInput,sourceDraftCaptureToken);
       nncDecision=ordinarySourceDecisionBySource.get(sourceFrame) || null;
       blockReason ||= isIssuedCanonicalNncSourceFrame(sourceFrame)||getIssuedTypedSourceProvenance(sourceFrame)?"":sourceFrame?.blockReason || "issued-authorized-nnc-source-required";
-      if(blockReason && !compound && !source.sourceClass && (!source.sourceUse || source.sourceUse === "nounstem") && !source.supportiveInitialI) {
+      if(blockReason && !declaration.selectedSourceFrame && !compound && !source.sourceClass && (!source.sourceUse || source.sourceUse === "nounstem") && !source.supportiveInitialI) {
         const lexical=call("buildClassicalNahuatlLexicalAdverbialPotentialFrame",{stem});
         const validate=getCanonicalNncCapability("isClassicalNahuatlAdverbialPotentialFrame");
         if(validate&&Reflect.apply(validate,targetObject,[lexical])===true && lexical.authorizationStatus === "authorized"

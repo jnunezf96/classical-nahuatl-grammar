@@ -1,7 +1,7 @@
 import {
   buildClassicalNahuatlParticipantFrame,
   isClassicalNahuatlParticipantFrame,
-} from "../../classical/participant_frame.mjs?v=20260823-passive-formation-continuity-238&ownerDecision=20261031-1";
+} from "../../classical/participant_frame.mjs?v=20260823-passive-formation-continuity-238&ownerDecision=20261031-2";
 
 // Canonical Andrews Lesson 56 personal-name NNC grammar.
 //

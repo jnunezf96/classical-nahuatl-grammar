@@ -350,6 +350,21 @@ test('ownerhood class recovery never overrides unrelated Source intent and quant
  assert.equal(r.issueClassicalSourceAuthoringDecision({...quantitative,parts:{mode:'embed-matrix',sourceEmbedStem:'mi',sourceMatrixStem:'ac'},source:{...quantitative.source,citation:'mi-ac'}}).authorizationStatus,'blocked');
 });
 
+test('explicit incompatible Source parent cannot be replaced by classless lexical fallback',()=>{
+ const selected=r.buildClassicalNahuatlBoundNominalSourceFrame({nounStem:'ix'});
+ assert.equal(r.isClassicalNahuatlBoundNominalSourceFrame(selected),true);
+ const input={unit:'nnc',revision:1,signature:'explicit-lexical-parent',parts:{mode:'whole-stem',sourceWholeStem:'tlapīc'},source:{},selectedSourceFrame:selected};
+ const rejected=r.issueClassicalSourceAuthoringDecision(input);
+ assert.equal(rejected.authorizationStatus,'blocked');
+ assert.equal(rejected.declaration.selectedSourceFrame,selected);
+ assert.equal(rejected.applyPayload,null);
+ assert.equal(r.acceptClassicalSourceAuthoringDecision(rejected,{revision:1,signature:input.signature}),null);
+ const {selectedSourceFrame,...withoutSelected}=input;
+ const ordinaryLexical=r.issueClassicalSourceAuthoringDecision(withoutSelected);
+ assert.equal(ordinaryLexical.authorizationStatus,'authorized',ordinaryLexical.blockReason);
+ assert.equal(ordinaryLexical.applyPayload.sourceFrame.lexicalNncSourceFrame.ordinaryNounParadigmAuthorized,false);
+});
+
 test('classless lexical adverbial Source retains its existing dedicated ingress',()=>{
  const draft=r.issueClassicalSourceAuthoringDecision({unit:'nnc',revision:1,signature:'classless',parts:{mode:'whole-stem',sourceWholeStem:'tlapīc'},source:{}});
  assert.equal(draft.authorizationStatus,'authorized',draft.blockReason);

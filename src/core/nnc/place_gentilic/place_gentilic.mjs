@@ -1,4 +1,4 @@
-import {getClassicalNahuatlParticipantReferenceChoiceOptions,getClassicalNahuatlParticipantAgreementValues} from "../../classical/participant_frame.mjs?v=20260823-passive-formation-continuity-238&ownerDecision=20261031-1";
+import {getClassicalNahuatlParticipantReferenceChoiceOptions,getClassicalNahuatlParticipantAgreementValues} from "../../classical/participant_frame.mjs?v=20260823-passive-formation-continuity-238&ownerDecision=20261031-2";
 import {snapshotGrammarInputs} from "../../input_snapshot.mjs";
 // Canonical modern ESM module.
 

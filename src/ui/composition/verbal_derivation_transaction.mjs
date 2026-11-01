@@ -1,4 +1,4 @@
-import {isClassicalNahuatlParticipantFrame} from '../../core/classical/participant_frame.mjs?ownerDecision=20261031-1';
+import {isClassicalNahuatlParticipantFrame} from '../../core/classical/participant_frame.mjs?ownerDecision=20261031-2';
 import {createOwnerOperationProtocol,projectOwnerOperationDecision} from './owner_operation_protocol.mjs?issuedBinding=20261028-1&ownerDecision=20261031-1';
 const operation='vnc:derivational-operation';
 const routes=new Set(['frequentative','compound','purposive','honorific','reverential','pejorative']);

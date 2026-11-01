@@ -10,7 +10,7 @@ import {
   buildClassicalNahuatlParticipantFrame,
   isClassicalNahuatlParticipantReferenceSelectionCompatible,
   getClassicalNahuatlParticipantReferenceOptions,
-} from "./participant_frame.mjs?v=20260823-passive-formation-continuity-238&ownerDecision=20261031-1";
+} from "./participant_frame.mjs?v=20260823-passive-formation-continuity-238&ownerDecision=20261031-2";
 
 const VERSION = 1;
 // Exact lexical meanings, not a whitelist for productive compound Sources.

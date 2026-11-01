@@ -1,13 +1,13 @@
-# Grammar OS v1.2.127 release
+# Grammar OS v1.2.128 release
 
-Release name: **Shared Owner Decisions**
+Release name: **Source and Build Owner Decisions**
 
-Browser build: **20261031-owner-decisions-146**
+Browser build: **20261031-owner-decisions-147**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
-- Existing noun, particle, sentence, finite-verb, relational and deverbal paths reuse their canonical decisions for choices, recovery, preview and explicit Make.
-- Nominal receiving paths preserve the owner-approved finite coordinate and exact prepared Result. Possessor transfer retains a required reference choice and rejects contradictions with retained participant facts.
-- Staging retains the accepted Result and History. Copied, stale or incompatible authority cannot authorize execution.
-- The existing Source restoration correction preserves accepted lexical analysis. No panels were added.
-- This is an incremental consolidation release. Remaining family projections and full Source authoring consolidation remain unfinished; the operation count is unchanged.
+- Existing nominal, minor deverbal, adverbial, denominal, place/gentilic, personal-name and clause targets use actual contextual owner decisions and retained preparations.
+- Source drafting now aggregates actual Source, class, structure, participant and object owners at the existing application boundary; explicit Apply retains the exact accepted payload.
+- Incompatible authored choices stay blocked with owner-issued correction. An explicitly incompatible Source parent cannot be substituted by lexical fallback.
+- Preview and explicit Make retain their exact prepared Results; staged Build or Source edits preserve accepted Results and History.
+- The 27-owner/188-branch operation census is unchanged. Existing persistence limits and focused/public proof scopes remain explicit; no new panel or grammatical capability is added.

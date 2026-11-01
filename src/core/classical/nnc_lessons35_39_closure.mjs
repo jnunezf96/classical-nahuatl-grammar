@@ -13,10 +13,10 @@ import {
   buildClassicalNahuatlParticipantFrame,
   isClassicalNahuatlParticipantReferenceSelectionCompatible,
   getClassicalNahuatlParticipantReferenceChoiceOptions,
-} from "./participant_frame.mjs?v=20260823-passive-formation-continuity-238&ownerDecision=20261031-1";
+} from "./participant_frame.mjs?v=20260823-passive-formation-continuity-238&ownerDecision=20261031-2";
 
 import { projectClassicalNahuatlRetainedReflexiveShuntline }
-  from "./vnc_derivation_evaluator.mjs?v=20261008-reader-40-9-190&andrewsRelease=20261024-1&ownerDecision=20261031-1";
+  from "./vnc_derivation_evaluator.mjs?v=20261008-reader-40-9-190&andrewsRelease=20261024-1&ownerDecision=20261031-2";
 
 const VERSION = 1;
 const ISSUED_SOURCE_FRAMES = new WeakSet();

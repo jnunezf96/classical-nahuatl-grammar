@@ -1,3 +1,10 @@
+## v1.2.128 — Source and Build Owner Decisions
+
+- Consolidate the remaining scoped Build choices with their actual grammatical owners and exact prepared execution.
+- Retain owner-backed Source drafts through explicit Apply, preserving class, structure, participant and object analysis.
+- Preserve incompatible authored intent, exact parents and accepted Results while staging; keep Apply and Make explicit.
+- Keep the operation census and established persistence limits unchanged.
+
 ## v1.2.127 — Shared Owner Decisions
 
 - Reuse canonical choices, recovery and prepared execution across the verified noun, particle, sentence, finite, relational and deverbal paths.
