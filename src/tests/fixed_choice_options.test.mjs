@@ -25,23 +25,29 @@ function fixture({id='classical-rule-logic-vnc-subject-humanness',options=[['hum
  return {root,select,refresh,buttons:()=>host.querySelectorAll('button'),mirror:()=>host.children.find(n=>n.dataset.compositionChoiceFor===id),changes:()=>changes,source,accepted};
 }
 
-test('fixed selected value keeps large button presentation and unavailable siblings, without accepting clicks',()=>{
- const f=fixture();f.refresh();const buttons=f.buttons();
- assert.equal(f.mirror().className,'composition-choice-buttons');assert.deepEqual(buttons.map(b=>b.textContent),['human','nonhuman']);
- assert.deepEqual(buttons.map(b=>b.getAttribute('aria-pressed')),['false','true']);assert(buttons.every(b=>b.disabled));
- for(const button of buttons)button.dispatchEvent({type:'click'});
+test('fixed selected value is a readout and live alternatives can become editable again',()=>{
+ const f=fixture();f.refresh();
+ assert.equal(f.mirror().className,'composition-fixed-value');
+ assert.equal(f.mirror().getAttribute('role'),'note');
+ assert.equal(f.mirror().textContent,'nonhuman · unavailable here: human');
+ assert.equal(f.buttons().length,0);
  assert.equal(f.select.value,'nonhuman');assert.equal(f.changes(),0);
  f.select.disabled=false;f.select.options[0].disabled=false;f.refresh();
- let human=f.buttons().find(b=>b.textContent==='human');assert.equal(human.disabled,false);human.dispatchEvent({type:'click'});assert.equal(f.select.value,'human');assert.equal(f.changes(),1);
- f.select.disabled=true;f.select.options[1].disabled=true;f.refresh();assert.equal(f.buttons().length,2);assert(f.buttons().every(b=>b.disabled));
+ const human=f.buttons().find(b=>b.textContent==='human');assert.equal(human.disabled,false);
+ human.dispatchEvent({type:'click'});assert.equal(f.select.value,'human');assert.equal(f.changes(),1);
+ f.select.disabled=true;f.select.options[1].disabled=true;f.refresh();
+ assert.equal(f.buttons().length,0);
+ assert.equal(f.mirror().textContent,'human · unavailable here: nonhuman');
 });
 
-test('fixed NNC Number shows its owner-disabled hidden siblings, while unrelated hidden options remain private',()=>{
+test('fixed NNC Number names owner-disabled siblings and keeps unrelated hidden options private',()=>{
  const f=fixture({id:'classical-rule-logic-nnc-subject-number',value:'common',options:[['singular',true,true,true],['common',false],['plural',true,true,true],['internal',true,true],['future',false,true]]});
- f.refresh();assert.deepEqual(f.buttons().map(b=>b.textContent),['singular','common','plural']);assert(f.buttons().every(b=>b.disabled));
+ f.refresh();assert.equal(f.mirror().textContent,'common · unavailable here: singular, plural');
+ assert.equal(f.buttons().length,0);
  assert.deepEqual(f.select.options.map(o=>o.hidden),[true,false,true,true,true],'native visibility is untouched');
- for(const b of f.buttons())b.dispatchEvent({type:'click'});assert.equal(f.select.value,'common');assert.equal(f.changes(),0);
- const other=fixture({options:[['secret',true,true,true],['nonhuman',false]]});other.refresh();assert.deepEqual(other.buttons().map(b=>b.textContent),['nonhuman']);
+ assert.equal(f.select.value,'common');assert.equal(f.changes(),0);
+ const other=fixture({options:[['secret',true,true,true],['nonhuman',false]]});other.refresh();
+ assert.equal(other.mirror().textContent,'nonhuman');
 });
 
 test('option-group restrictions disable alternatives and stale buttons cannot bypass a newly disabled group',()=>{

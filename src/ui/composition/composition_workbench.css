@@ -1182,11 +1182,6 @@ body.is-language-classical #classical-workbench .composition-make-preview [hidde
   body.is-language-classical #classical-workbench .composition-make-preview {grid-column:1;grid-row:2;justify-content:flex-start;max-width:none}
 }
 
-/* A fixed choice keeps the same shape as its editable alternatives. */
-body.is-language-classical #classical-workbench[data-composition-design="path"] .composition-choice-buttons[data-composition-choice-fixed="true"] button[aria-pressed="true"] {
-  opacity:1;cursor:default;
-}
-
 /* Build category cues: decorative shapes only. Labels, values, disclosure
    chevrons and native controls remain the public interaction contract. */
 body.is-language-classical #classical-workbench #classical-authority-panel {

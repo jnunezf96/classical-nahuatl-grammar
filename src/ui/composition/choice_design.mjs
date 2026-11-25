@@ -192,13 +192,13 @@ export function createChoiceDesign(doc) {
     if(!mirror || mirror.dataset.signature!==signature || mirror.nativeControl!==control) {
       mirror?.remove();mirror=doc.createElement('div');mirror.dataset.compositionChoiceFor=controlKey(control);
       mirror.dataset.signature=signature;mirror.nativeControl=control;
-      mirror.className='composition-choice-buttons';mirror.dataset.compositionChoiceFixed=String(kind==='fixed');
-      mirror.setAttribute('role','group');mirror.setAttribute('aria-label',controlLabel(control));
+      mirror.className=kind==='fixed' ? 'composition-fixed-value' : 'composition-choice-buttons';
+      mirror.setAttribute('role',kind==='fixed' ? 'note' : 'group');mirror.setAttribute('aria-label',controlLabel(control));
       control.after(mirror);mirrors.set(controlKey(control),mirror);
-      for(const option of options.filter(option=>option.value && (!option.hidden || kind==='fixed' && option.showWhenFixed))) {
+      if(kind==='buttons')for(const option of options.filter(option=>option.value && !option.hidden)) {
         const button=doc.createElement('button');button.type='button';button.textContent=option.label;
         button.dataset.compositionChoiceValue=option.value;button.disabled=option.disabled;
-        if(kind==='buttons')button.addEventListener('click',()=>{
+        button.addEventListener('click',()=>{
           const before=doc.defaultView.getClassicalConstructionPosition?.();
           runCompositionAction(doc,button,()=>{
           const native=findControl(doc,controlKey(control));
@@ -218,12 +218,18 @@ export function createChoiceDesign(doc) {
         });mirror.append(button);
       }
     }
-    for(const button of mirror.children) {
-      button.disabled=kind==='fixed' || control.disabled || Boolean(options.find(option=>option.value===button.dataset.compositionChoiceValue)?.disabled);
-      const selected=button.dataset.compositionChoiceValue===control.value;
-      button.setAttribute('aria-pressed',String(selected));
-      button.title=kind==='fixed' && selected ? 'Selected by the current construction'
-        : button.disabled ? 'Unavailable for the current construction' : '';
+    if(kind==='fixed') {
+      const current=options.find(option=>option.value===control.value);
+      const unavailable=options.filter(option=>option.value && option.value!==control.value
+        && (!option.hidden || option.showWhenFixed)).map(option=>option.label);
+      const readout=unavailable.length
+        ? `${current?.label || ''} · unavailable here: ${unavailable.join(', ')}`
+        : current?.label || '';
+      if(mirror.textContent!==readout)mirror.textContent=readout;
+    } else for(const button of mirror.children) {
+      button.disabled=control.disabled || Boolean(options.find(option=>option.value===button.dataset.compositionChoiceValue)?.disabled);
+      button.setAttribute('aria-pressed',String(button.dataset.compositionChoiceValue===control.value));
+      button.title=button.disabled ? 'Unavailable for the current construction' : '';
     }
     control.dataset.compositionChoiceMirror=kind;
     if(control.dataset.compositionOriginalTabIndex===undefined)control.dataset.compositionOriginalTabIndex=control.getAttribute('tabindex') || '';
