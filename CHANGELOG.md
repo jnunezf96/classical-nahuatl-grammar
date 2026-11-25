@@ -1,3 +1,9 @@
+## v1.2.129 — Writer Controls
+
+- Shows both discontinuous description orders before Make and names the intervening clause in the saved-Result picker.
+- Shows a fixed Grammar value as a readout and restores interactive choices when the owner offers alternatives.
+- Adds the UI control inventory and Andrews topology map to the source repository.
+
 ## v1.2.128 — Source and Build Owner Decisions
 
 - Consolidate the remaining scoped Build choices with their actual grammatical owners and exact prepared execution.

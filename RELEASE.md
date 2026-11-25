@@ -1,13 +1,12 @@
-# Grammar OS v1.2.128 release
+# Grammar OS v1.2.129 release
 
-Release name: **Source and Build Owner Decisions**
+Release name: **Writer Controls**
 
-Browser build: **20261031-owner-decisions-147**
+Browser build: **20261124-writer-controls-129-1**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
-- Existing nominal, minor deverbal, adverbial, denominal, place/gentilic, personal-name and clause targets use actual contextual owner decisions and retained preparations.
-- Source drafting now aggregates actual Source, class, structure, participant and object owners at the existing application boundary; explicit Apply retains the exact accepted payload.
-- Incompatible authored choices stay blocked with owner-issued correction. An explicitly incompatible Source parent cannot be substituted by lexical fallback.
-- Preview and explicit Make retain their exact prepared Results; staged Build or Source edits preserve accepted Results and History.
-- The 27-owner/188-branch operation census is unchanged. Existing persistence limits and focused/public proof scopes remain explicit; no new panel or grammatical capability is added.
+- Show where the intervening clause goes in either written order for a discontinuous description. The shared saved-Result picker names that role.
+- Show a fixed Grammar value as a readout. Owner-offered alternatives remain editable.
+- Record the writer's tasks, controls, and representative verification in the [UI control inventory](docs/reports/ui-control-intent-inventory.md).
+- Keep explicit Make Result for acceptance and retain the existing scope of grammar and persistence support.
