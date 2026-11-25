@@ -91,3 +91,37 @@ test('discontinuous staged order puts the exact intervening clause between the h
  }
  assert.deepEqual(r.getClassicalGrammarWorkspaceHistorySnapshot(),before);
 });
+
+test('equal Peter sentences retain distinct owner contacts in draft and Result structure',()=>{
+ const finite=r.executeClassicalGrammarApplicationRequest({operationId:'vnc:application',args:[{
+  sourceStem:'itt-a',verbClass:'A',sourceValence:'specific-projective',objectKind:'specific-projective',
+  objectPerson:'3sg',subject:'3sg',mood:'indicative',tense:'preterit',
+ }]}).canonicalResult;
+ const principal=r.executeClassicalGrammarApplicationRequest({operationId:'vnc:sentence-result',args:[
+  finite,{antecessive:true,punctuationMode:'statement'},
+ ]}).canonicalResult;
+ const source=r.issueCanonicalNncSourceFrame({stem:'Petoloh',sourceClass:'zero'});
+ const adjunct=r.executeClassicalGrammarApplicationRequest({operationId:'nnc:ordinary',args:[
+  source,r.issueCanonicalNncOperationFrame(source,{subject:'3sg',state:'absolutive'}),
+ ]}).canonicalResult;
+ const c=controller([principal,adjunct]);
+ for(const [headRole,headId,contact] of [
+  ['subject','subject','Subject ↔ Subject'],
+  ['object','source-object-1','Object ↔ Subject'],
+ ]){
+  const selections={relation:'supplementation',supplementationReferenceMode:'shared',
+   supplementationOrder:'principal-first',supplementationHeadRole:headRole,supplementationContactRole:'subject'};
+  const before=r.getClassicalGrammarWorkspaceHistorySnapshot();
+  const draft=projectClauseStructure(r,c,selections,project);
+  assert.equal(draft.link?.left.id,headId);
+  assert.equal(draft.link?.right.id,'subject');
+  assert.deepEqual(r.getClassicalGrammarWorkspaceHistorySnapshot(),before);
+  const exact=compose(c,selections);
+  assert.equal(exact.surfaceRealization,'Ōquittac Petoloh.');
+  const view=projectCanonicalStructure(r,exact,project);
+  assert.equal(Object.fromEntries(view.facts).Contact,contact);
+  assert.equal(Object.fromEntries(view.facts)['Principal contact'],headId);
+  assert.equal(c.getCapturedCanonicalResult('principal')===principal,true);
+  assert.equal(c.getCapturedCanonicalResult('adjoined')===adjunct,true);
+ }
+});
