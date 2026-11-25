@@ -272,6 +272,9 @@ export function createStructureDesign(doc) {
       if(piece.kind==='marker'){const marker=element('span','composition-spatial-marker',piece.text);marker.setAttribute('aria-label',`${title(piece.role)}: ${piece.text}`);strip.append(marker);continue;}
       const source=sources.find(tree=>tree.exact===piece.source);if(!source)continue;
       const tile=element('span','composition-spatial-unit',title(piece.role));tile.dataset.compositionSpatialRole=piece.role;
+      if (spatial.pending && source.surface) {
+        tile.append(element('span', 'composition-source-card__form', source.surface));
+      }
       if(source.spatial && !seen.has(source.exact)){const nested=renderSpatial(source.spatial,source.children,new Set([...seen,source.exact]));if(nested)tile.append(nested);}
       strip.append(tile);
     }
