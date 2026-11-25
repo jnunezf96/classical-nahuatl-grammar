@@ -1,6 +1,10 @@
 // Read-only presentation of the current owner contract. Never authorizes a choice.
 const words=value=>String(value||'').replace(/([a-z])([A-Z])/gu,'$1 $2').replace(/[-_]/gu,' ').trim();
 export function inputLabel(contract,role) {
+  if (contract?.relation === 'adjectival-modification'
+    && contract.derived?.topology === 'discontinuous' && role === 'dependent') {
+    return 'intervening clause';
+  }
   const slot=contract?.currentChoiceFrame?.inputs?.find(input=>input.role===role)?.slot
     || contract?.derived?.captureSlotLayout?.[role] || role;
   return slot==='standard'?'comparison standard':words(slot);

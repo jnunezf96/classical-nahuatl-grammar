@@ -124,7 +124,12 @@ function draftSpatial(contract,sources) {
     if(['topology','order','modifier-adjunctor'].some(id=>unresolved.has(id)))return null;
     const head=unit('principal','Head'),mod=unit('adjoined','Modifier'),dependent=unit('dependent','Modifier 2');
     if(d.topology==='ordinary')pieces=d.order==='modifier-head-preposed'?[...(d.adjunctor==='in'?[marker]:[]),mod,head]:d.order==='head-modifier'?[head,...(d.adjunctor==='in'?[marker]:[]),mod]:[];
-    else if(d.topology==='cooperating-preposed-nonpreposed')pieces=[...(['preposed-in','both-in'].includes(d.adjunctor)?[marker]:[]),mod,head,...(['nonpreposed-in','both-in'].includes(d.adjunctor)?[marker]:[]),dependent];
+    else if (d.topology === 'discontinuous') {
+      const middle = unit('dependent', 'Intervening clause');
+      const markedModifier = [...(d.adjunctor === 'in' ? [marker] : []), mod];
+      if (d.order === 'discontinuous-head-first') pieces = [head, middle, ...markedModifier];
+      if (d.order === 'discontinuous-modifier-first') pieces = [...markedModifier, middle, head];
+    } else if(d.topology==='cooperating-preposed-nonpreposed')pieces=[...(['preposed-in','both-in'].includes(d.adjunctor)?[marker]:[]),mod,head,...(['nonpreposed-in','both-in'].includes(d.adjunctor)?[marker]:[]),dependent];
   } else if(contract.relation==='supplementation' && n.supplementationReferenceMode==='shared') {
     if(unresolved.has('supplementation-order') || n.markerSemantic==='ca' || n.principalIntervenerUse==='reuse' || n.supplementationOrder==='discontinuous')return null;
     const principal=unit('principal','Principal'),adjunct=unit('adjoined','Adjunct'),marked=n.markerSemantic==='in'?[marker]:[];

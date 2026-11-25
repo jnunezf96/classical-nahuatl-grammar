@@ -68,3 +68,26 @@ test('completed conjunction readiness follows the canonical owner for coupled op
  const raw=r.evaluateClassicalNahuatlClauseConjunction;let calls=0;r.evaluateClassicalNahuatlClauseConjunction=(...args)=>{calls++;return raw(...args);};
  try{const fresh=controller();fresh.buildDecisionContract(selections);const first=calls;fresh.buildDecisionContract(selections);assert.equal(calls,first,'reuse owner evaluation for unchanged exact captures and options');fresh.buildDecisionContract({...selections,boundaryPunctuation:'comma'});assert(calls>first,'changed owner option invalidates cached preflight');}finally{r.evaluateClassicalNahuatlClauseConjunction=raw;}
 });
+
+test('discontinuous staged order puts the exact intervening clause between the head and modifier',()=>{
+ const parents={principal:nncs[0],adjoined:nncs[1],dependent:vnc};
+ const c=controller([parents.principal,parents.adjoined,parents.dependent]);
+ const before=r.getClassicalGrammarWorkspaceHistorySnapshot();
+ for(const [order,expected] of [
+  ['discontinuous-head-first',['principal','dependent','in','adjoined']],
+  ['discontinuous-modifier-first',['in','adjoined','dependent','principal']],
+ ]){
+  const contract={relation:'adjectival-modification',unresolvedDecisionIds:[],derived:{
+   requiredCaptureRoles:Object.keys(parents),topology:'discontinuous',order,adjunctor:'in',
+  }};
+  const {spatial}=projectClauseStructure(r,c,{},project,contract);
+  assert.equal(spatial.pending,true);
+  assert.deepEqual(spatial.pieces.map(piece=>piece.captureRole || piece.text),expected);
+  for(const piece of spatial.pieces.filter(piece=>piece.kind==='unit')){
+   assert.equal(piece.source===parents[piece.captureRole],true);
+  }
+  assert.equal(spatial.pieces.find(piece=>piece.captureRole==='dependent').role,'Intervening clause');
+  assert.equal(projectClauseStructure(r,c,{},project,{...contract,unresolvedDecisionIds:['order']}).spatial,null);
+ }
+ assert.deepEqual(r.getClassicalGrammarWorkspaceHistorySnapshot(),before);
+});

@@ -19,6 +19,9 @@ test('unknown/unselected contracts and generic author tags cannot imply ready or
  assert.equal(guidance(null),'');assert.equal(guidance({}),'Choose a construction under Build.');assert.equal(guidance({relation:'comparison'}),'Review the required choices under Build.');assert.doesNotMatch(guidance({relation:'comparison',authorizationStatus:'authorized',currentChoiceFrame:{outcome:{readyToMake:false}}}),/Make Result/u);
  for(const x of ['Andrews','Andrews transcription owner','other-author','Andrews-internal-rule'])assert.equal(normalizeAndrewsReference(x),'');assert.equal(normalizeAndrewsReference('Andrews-53.1'),'Andrews §53.1');
  assert.equal(inputLabel({derived:{captureSlotLayout:{dependent:'dimension'}}},'dependent'),'dimension');
+ const adjective={relation:'adjectival-modification',derived:{topology:'discontinuous'}};
+ assert.equal(inputLabel(adjective,'dependent'),'intervening clause');
+ assert.equal(inputLabel({...adjective,derived:{topology:'cooperating-preposed-nonpreposed'}},'dependent'),'dependent');
 });
 test('bibliography is scoped to current route; empty and unknown routes withdraw it',()=>{
  assert.deepEqual(background({}),[]);assert.deepEqual(background({operation:'unknown'}),[]);
