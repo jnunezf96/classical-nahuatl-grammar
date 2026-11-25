@@ -4,7 +4,7 @@
 grammar and conjugation application.
 
 Current release: **Grammar OS v1.2.129 — Writer Controls**
-(browser build `20261124-writer-controls-129-1`).
+(browser build `20261124-writer-controls-129-2`).
 
 See [Version History](CHANGELOG.md) for user-facing “What’s New” notes.
 

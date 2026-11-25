@@ -68,6 +68,15 @@ function endpointsFor(r,exact,project) {
   if(envelope.possessor?.id)endpoints.push({id:envelope.possessor.id,label:'Possessor',category:envelope.possessor.category,lane:'',selected:false});
   return endpoints;
 }
+export function getClassicalSharedContactLabel(runtime, exact) {
+  if (runtime.isClassicalNahuatlSupplementationFrame?.(exact) !== true
+    || exact.authorizationStatus !== 'authorized') return '';
+  const reference = exact.referenceFrame;
+  if (reference?.referenceMode !== 'shared' || reference.referenceIdentityUnified !== true
+    || !reference.principalHead?.id || !reference.supplementContact?.id
+    || !reference.headRole || !reference.supplementContactRole) return '';
+  return `Principal ${title(reference.headRole)} ↔ Adjunct ${title(reference.supplementContactRole)}`;
+}
 function structureFacts(r,exact) {
   if(r.isClassicalNahuatlClauseConjunctionResultFrame?.(exact))return [['Relationship','Conjunction'],['Rank',title(exact.relationFrame?.level)],['Head',exact.balancedRelation?.noHead?'None':''],['Conjuncts',String(exact.conjuncts.length)]];
   if(r.isClassicalNahuatlSupplementationFrame?.(exact)) {

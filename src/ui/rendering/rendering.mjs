@@ -45,7 +45,7 @@ import { normalizeClassicalNahuatlIntroductoryModifier }
 import {createClassicalWorkspaceProvenanceProjector}
   from '../composer/result_provenance.mjs?v=20261012-position-provenance-7';
 import {resolvePathTargets, setPathHistoryPresentation} from '../composition/path_presentation.mjs?v=20261011-path-targets-7&routeShapes=20261021-1&writtenPreview=20261022-1&writingSource=20261022-1';
-import {setStructureDesignContext, setStructureComparison, projectCanonicalStructure, projectClauseStructure, comparisonCapturePresentation, projectOperationShape, projectCapturedOperationShape, compareCanonicalStructures} from '../composition/structure_design.mjs?historyCompare=20261028-1&choiceArchitecture=20261026-6&icDimension=20261026-1&reasonPresentation=20261026-1&nucleusEdit=20261024-9&clauseHarmony=20261023-5&v=20261011-structure-15&routeShapes=20261021-1&clauseCoordinate=20261021-1&resetEligibility=20261022-1&writingSource=20261022-1&makePreview=20261022-1&fixedChoices=20261022-1&interfaceRelease=1.2.36&choiceGuidance=20261027-2&operationPilot=20261027-1&supplementationSession=20261028-1&utteranceProjection=20261028-1';
+import {setStructureDesignContext, setStructureComparison, projectCanonicalStructure, projectClauseStructure, comparisonCapturePresentation, projectOperationShape, projectCapturedOperationShape, compareCanonicalStructures, getClassicalSharedContactLabel} from '../composition/structure_design.mjs?historyCompare=20261028-1&choiceArchitecture=20261026-6&icDimension=20261026-1&reasonPresentation=20261026-1&nucleusEdit=20261024-9&clauseHarmony=20261023-5&v=20261011-structure-15&routeShapes=20261021-1&clauseCoordinate=20261021-1&resetEligibility=20261022-1&writingSource=20261022-1&makePreview=20261022-1&fixedChoices=20261022-1&interfaceRelease=1.2.36&choiceGuidance=20261027-2&operationPilot=20261027-1&supplementationSession=20261028-1&utteranceProjection=20261028-1';
 import {setSourceCandidatePresentation, projectSavedSourceCandidate, setRouteChoicePresentation, projectOfferedOperationShapes} from '../composition/candidate_design.mjs?v=20261021-route-shapes-1';
 import {notifyExplicitMakeResult,focusNativeChoice} from '../composition/flow_design.mjs?v=20261022-reset-eligibility-1&writingSource=20261022-1&makePreview=20261022-1&fixedChoices=20261022-1';
 import {getBuildOperationGroup,getBuildOperationOrder,inventoryOptionReference,formatBuildOperationLabel} from '../composition/build_navigation_model.mjs?v=20261021-ending-reference-2&nominalReload=20261024-4&interfaceRelease=1.2.36';
@@ -46929,7 +46929,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
         }
       }
       return rows.length ? {authorizationStatus: "authorized", projectionAuthority: "issued-composition-order",
-        linearFormula: formula, sentenceFormula: formula, rows} : null;
+        linearFormula: formula, sentenceFormula: formula, rows,
+        contactLabel: getClassicalSharedContactLabel(targetObject, canonical)} : null;
     }
 
     function getClassicalAnalysisTypedSlots(context = null) {
@@ -47286,6 +47287,14 @@ export function createUiRenderingApi(targetObject = globalThis) {
           const node = section.querySelector(".classical-rule-surface__formula");
           if (node) renderClassicalDerivedAnnotationRanges(node, node.textContent,
             getClassicalCompositeFormulaAnnotations(node.textContent, canonical));
+        }
+      }
+      if (diagrammaticProjection?.contactLabel) {
+        for (const section of [linearSection, diagramSection].filter(Boolean)) {
+          const contact = targetObject.document.createElement("p");
+          contact.dataset.classicalReferentialContact = "shared";
+          contact.textContent = diagrammaticProjection.contactLabel;
+          section.append(contact);
         }
       }
       const generalAvailable = Boolean(diagrammaticProjection?.generalLinearFormula

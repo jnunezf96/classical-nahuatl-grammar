@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {createRuntimeInstance} from '../runtime/create_runtime.mjs';
-import {projectCanonicalStructure,projectClauseStructure,structurePresentationSignature} from '../ui/composition/structure_design.mjs';
+import {projectCanonicalStructure,projectClauseStructure,structurePresentationSignature,getClassicalSharedContactLabel} from '../ui/composition/structure_design.mjs';
 import {getResultEditTargets,createResultEditSelection} from '../ui/composition/result_editing.mjs';
 import {presentIdleClauseComposition} from '../ui/composition/clause_composition.mjs';
 import {Element} from './helpers/organization_dom.mjs';
@@ -120,6 +120,9 @@ test('equal Peter sentences retain distinct owner contacts in draft and Result s
   assert.equal(exact.surfaceRealization,'Ōquittac Petoloh.');
   const view=projectCanonicalStructure(r,exact,project);
   assert.equal(Object.fromEntries(view.facts).Contact,contact);
+  const roleName=headRole==='subject'?'Subject':'Object';
+  assert.equal(getClassicalSharedContactLabel(r,exact),`Principal ${roleName} ↔ Adjunct Subject`);
+  assert.equal(getClassicalSharedContactLabel(r,{...exact}),'');
   assert.equal(Object.fromEntries(view.facts)['Principal contact'],headId);
   assert.equal(c.getCapturedCanonicalResult('principal')===principal,true);
   assert.equal(c.getCapturedCanonicalResult('adjoined')===adjunct,true);
