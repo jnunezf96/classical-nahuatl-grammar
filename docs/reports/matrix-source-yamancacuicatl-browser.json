@@ -1,0 +1,576 @@
+{
+  "environment": "Isolated local Chrome, Analysis mode, port 8874",
+  "steps": [
+    {
+      "step": "cuica source",
+      "classOptions": [
+        [
+          "",
+          "Choose class",
+          false,
+          false
+        ],
+        [
+          "tl",
+          "tl · subtype unspecified",
+          false,
+          false
+        ],
+        [
+          "tli",
+          "tli · subtype unspecified",
+          false,
+          false
+        ],
+        [
+          "zero",
+          "0",
+          false,
+          false
+        ],
+        [
+          "borrowed-name",
+          "Borrowed name · 0",
+          false,
+          false
+        ],
+        [
+          "in",
+          "in",
+          true,
+          false
+        ],
+        [
+          "tli-1",
+          "tli 1",
+          true,
+          false
+        ],
+        [
+          "tli-2",
+          "tli 2",
+          true,
+          false
+        ],
+        [
+          "tl-1-a",
+          "tl 1-A",
+          false,
+          false
+        ],
+        [
+          "tl-1-b",
+          "tl 1-B",
+          false,
+          false
+        ],
+        [
+          "tl-2-a",
+          "tl 2-A",
+          true,
+          false
+        ],
+        [
+          "tl-2-b-a",
+          "tl 2-B (final a)",
+          false,
+          false
+        ],
+        [
+          "tl-2-b-i",
+          "tl 2-B (final i)",
+          true,
+          false
+        ],
+        [
+          "tl-2-c",
+          "tl 2-C",
+          true,
+          false
+        ]
+      ],
+      "value": "tl",
+      "result": "Result\nOutput scope\nsingle form\nfull paradigm",
+      "make": {
+        "enabled": false,
+        "label": "Use this Source first"
+      }
+    },
+    {
+      "step": "matrix noun staged",
+      "result": "Result\nOutput scope\nsingle form\nfull paradigm",
+      "make": {
+        "enabled": true,
+        "label": "Make Result"
+      }
+    },
+    {
+      "step": "matrix noun accepted",
+      "result": "Result\n\nKeep this sentence or prepare its next change.\n\nView options\nCuicatl.\nWork with Result\nPart\nWhole result — cuicatl\nChange\nAdd\nReorder\nRemove\nUnavailable actions\n\nWhole result — cuicatl\n\nWorkspace\nUndo\nClear\nContinue composing\nContinue entire Result\nNNC ordinary · cuicatl\nCopy form\nResult ready. Continue only when you want it as Source.\nAnalysis\nSpecific\nGeneral\nLinear\n#0-0(cuica)tl-0#\nDiagram\n#0-0( ... )tl-0#\nSubject\n(cuica)\nPredicate\nSentence",
+      "make": {
+        "enabled": false,
+        "label": "Applied"
+      }
+    },
+    {
+      "step": "yam-ā-ni source",
+      "classOptions": [
+        [
+          "",
+          "Choose a verbstem class",
+          true,
+          false
+        ],
+        [
+          "A",
+          "A",
+          false,
+          false
+        ],
+        [
+          "B",
+          "B",
+          false,
+          false
+        ],
+        [
+          "C",
+          "C",
+          true,
+          false
+        ],
+        [
+          "D",
+          "D",
+          true,
+          false
+        ]
+      ],
+      "value": "B",
+      "result": "Result\nView options",
+      "make": {
+        "enabled": false,
+        "label": "Use this Source first"
+      }
+    },
+    {
+      "step": "preterit staged",
+      "result": "Result\nView options",
+      "make": {
+        "enabled": true,
+        "label": "Make Result"
+      }
+    },
+    {
+      "step": "preterit accepted",
+      "result": "Result\n\nKeep this sentence or prepare its next change.\n\nView options\nYamān\nWork with Result\nPart\nWhole result\nChange\nAdd\nReorder\nRemove\nUnavailable actions\n\nWhole result\n\nWorkspace\nUndo\nClear\nContinue composing\nContinue entire Result\nVNC application · yamān\nCopy form\nResult ready. Continue only when you want it as Source.\nAnalysis\nGRAMMATICAL STRUCTURE\nVERBSTEM\nyam-ā-ni\nFORMATION\nDirect\nVOICE\nActive\nSpecific\nGeneral\nLinear\n#0-0(yam-ā-n)0+⎕-0#\n\nSubject · Third person · singular\n\nDiagram\n#0-0+ ... +⎕-0#\nSubject\n(yam-ā-n)\nCore\n)0+\nTense\nThird person · singular\nSubject features",
+      "make": {
+        "enabled": false,
+        "label": "Applied"
+      }
+    },
+    {
+      "step": "agentive setup",
+      "offered": [
+        "predicate-nominalization:preterit-source",
+        "predicate nominalization preterit source",
+        false,
+        false
+      ],
+      "fields": [
+        [
+          "classical-build-task",
+          "option:id%3Aclassical-capability-navigator-operation:nnc%3Adeverbal-construction",
+          [
+            [
+              "option:id%3Aclassical-capability-navigator-operation:vnc%3Aapplication",
+              "Make a verb clause"
+            ],
+            [
+              "option:id%3Aclassical-capability-navigator-operation:vnc%3Asentence-result",
+              "Make a sentence"
+            ],
+            [
+              "option:id%3Aclassical-capability-navigator-operation:vnc%3Aderivational-operation",
+              "Change the verb stem · current Result"
+            ],
+            [
+              "option:id%3Aclassical-construction-operation:attitude-vnc",
+              "Express honorific, reverential or pejorative attitude · Source editor: yam-ā-ni"
+            ],
+            [
+              "option:id%3Aclassical-capability-navigator-operation:grammar%3Anominal-construction",
+              "Add a noun to this verb · current Result"
+            ],
+            [
+              "option:id%3Aclassical-construction-operation:cardinal-numeral-nnc",
+              "Form a cardinal-number construction · Source editor: yam-ā-ni"
+            ],
+            [
+              "option:id%3Aclassical-capability-navigator-operation:nnc%3Adeverbal-construction",
+              "Make a noun from a verb · current Result"
+            ],
+            [
+              "option:id%3Aclassical-construction-operation:deverbal-nnc",
+              "Make a noun from a verb · Source editor: yam-ā-ni"
+            ],
+            [
+              "option:id%3Aclassical-construction-operation:adverbial-nuclear",
+              "Form an adverbial clause · Source editor: yam-ā-ni"
+            ],
+            [
+              "option:id%3Aclassical-capability-navigator-operation:nnc%3Apersonal-name",
+              "Form a personal name"
+            ],
+            [
+              "option:id%3Aclassical-construction-operation:nominal-embed-vnc",
+              "Embed a noun in a verb · Source editor: yam-ā-ni"
+            ],
+            [
+              "option:id%3Aclassical-capability-navigator-operation:sentence%3Asupplementation",
+              "Combine Results"
+            ]
+          ]
+        ],
+        [
+          "classical-capability-navigator-binding",
+          "predicate-nominalization:preterit-source",
+          [
+            [
+              "predicate-nominalization:preterit-source",
+              "predicate nominalization preterit source"
+            ],
+            [
+              "patientive:root-stock-source",
+              "patientive root stock source"
+            ]
+          ]
+        ],
+        [
+          "classical-deverbal-nnc-nominalization-kind-choices",
+          "preterit-agentive",
+          [
+            [
+              "preterit-agentive",
+              "preterit agentive"
+            ],
+            [
+              "preterit-patientive",
+              "preterit patientive"
+            ],
+            [
+              "customary-agentive-reanalysis",
+              "customary agentive reanalysis"
+            ],
+            [
+              "customary-agentive-full",
+              "customary fully nominal agentive"
+            ],
+            [
+              "customary-patientive",
+              "customary patientive"
+            ],
+            [
+              "instrumentive",
+              "instrumentive"
+            ],
+            [
+              "instrumentive-full",
+              "fully nominal instrumentive"
+            ],
+            [
+              "present-agentive",
+              "present agentive"
+            ],
+            [
+              "future-agentive",
+              "future agentive"
+            ],
+            [
+              "passive-action",
+              "passive action"
+            ],
+            [
+              "active-action",
+              "active action"
+            ]
+          ]
+        ],
+        [
+          "classical-deverbal-nnc-number-connector",
+          "qui",
+          [
+            [
+              "qui",
+              "qui"
+            ],
+            [
+              "silent",
+              "silent"
+            ]
+          ]
+        ],
+        [
+          "classical-rule-logic-directional",
+          "none",
+          [
+            [
+              "none",
+              "none"
+            ],
+            [
+              "on",
+              "on distance/thither"
+            ],
+            [
+              "huāl",
+              "huāl proximity/hither"
+            ]
+          ]
+        ],
+        [
+          "classical-sentence-particles",
+          "",
+          [
+            [
+              "classical-particle-slot-0:particle:l3-ca",
+              "ca · indeed; in fact"
+            ],
+            [
+              "classical-particle-slot-0:particle:l3-cuix",
+              "cuix? · perhaps; perchance"
+            ],
+            [
+              "classical-particle-slot-0:particle:l3-tla",
+              "tlā · if; in the event that; in case; provided that"
+            ],
+            [
+              "classical-particle-slot-0:particle:l3-ma",
+              "mā · if only; would that"
+            ],
+            [
+              "classical-particle-slot-0:particle:l3-o-behold",
+              "ō · here is; here are; here you have; behold"
+            ],
+            [
+              "classical-built-in-particle:l50-ma-za-nel",
+              "mā zā nel · at least"
+            ],
+            [
+              "classical-built-in-particle:l50-ma-nel-zan",
+              "mā nel zan · at least"
+            ],
+            [
+              "classical-particle-slot-0:particle:l3-in",
+              "in · context-selected adjunctor"
+            ],
+            [
+              "classical-particle-slot-0:particle:l3-anca",
+              "anca · therefore; consequently; hence; apparently; evidently"
+            ],
+            [
+              "classical-particle-slot-0:particle:l3-mah",
+              "mah · as though; such that"
+            ],
+            [
+              "classical-particle-slot-0:particle:l3-auh-conjunctor",
+              "auh · and; but"
+            ],
+            [
+              "classical-particle-slot-0:particle:l3-mec",
+              "mec · then"
+            ]
+          ]
+        ],
+        [
+          "classical-canvas-grammar-fact-matches",
+          "ACI-P069-L035-91475DC064-02",
+          [
+            [
+              "ACI-P069-L035-91475DC064-02",
+              "ACI-P069-L035-91475DC064-02 — §5.5.2"
+            ],
+            [
+              "ACI-P069-L035-91475DC064-03",
+              "ACI-P069-L035-91475DC064-03 — §5.5.2"
+            ],
+            [
+              "ACI-P069-L035-91475DC064-04",
+              "ACI-P069-L035-91475DC064-04 — §5.5.2"
+            ],
+            [
+              "ACI-P069-L035-91475DC064-05",
+              "ACI-P069-L035-91475DC064-05 — §5.5.2"
+            ],
+            [
+              "ACI-P069-L035-91475DC064-06",
+              "ACI-P069-L035-91475DC064-06 — §5.5.2"
+            ],
+            [
+              "ACI-P070-L017-55ACE00A59",
+              "ACI-P070-L017-55ACE00A59 — §5.5.2"
+            ],
+            [
+              "ACI-P070-L017-55ACE00A59-02",
+              "ACI-P070-L017-55ACE00A59-02 — §5.5.2"
+            ],
+            [
+              "ACI-P070-L017-55ACE00A59-03",
+              "ACI-P070-L017-55ACE00A59-03 — §5.5.2"
+            ],
+            [
+              "ACI-P070-L017-55ACE00A59-04",
+              "ACI-P070-L017-55ACE00A59-04 — §5.5.2"
+            ],
+            [
+              "ACI-P070-L017-55ACE00A59-05",
+              "ACI-P070-L017-55ACE00A59-05 — §5.5.2"
+            ],
+            [
+              "ACI-P070-L017-55ACE00A59-06",
+              "ACI-P070-L017-55ACE00A59-06 — §5.5.2"
+            ],
+            [
+              "ACI-P070-L017-55ACE00A59-07",
+              "ACI-P070-L017-55ACE00A59-07 — §5.5.2"
+            ]
+          ]
+        ],
+        [
+          "classical-result-edit-target",
+          "[]",
+          [
+            [
+              "[]",
+              "Whole result"
+            ]
+          ]
+        ]
+      ],
+      "result": "Result\n\nYour accepted sentence stays here while you prepare a change.\n\nView options\nAccepted sentence\nYamān\nWork with Result\nPart\nWhole result\nChange\nAdd\nReorder\nRemove\nUnavailable actions\n\nWhole result · Continue\n\nWorkspace\nUndo\nClear\nContinue composing\n\nChoose the next grammatical operation.\n\nContinue entire Result\nVNC application · yamān\nCopy form\nExact Result retained for its next pathways; its owner-issued typed Source is shown without rerunning it.\nAnalysis\nGRAMMATICAL STRUCTURE\nVERBSTEM\nyam-ā-ni\nFORMATION\nDirect\nVOICE\nActive\nSpecific\nGeneral\nLinear\n#0-0(yam-ā-n)0+⎕-0#\n\nSubject · Third person · singular\n\nDiagram\n#0-0+ ... +⎕-0#\nSubject\n(yam-ā-n)\nCore\n)0+\nTense\nThird person · singular\nSubject features",
+      "make": {
+        "enabled": true,
+        "label": "Make Result"
+      }
+    },
+    {
+      "step": "agentive staged",
+      "result": "Result\n\nYour accepted sentence stays here while you prepare a change.\n\nView options\nAccepted sentence\nYamān\nWork with Result\nPart\nWhole result\nChange\nAdd\nReorder\nRemove\nUnavailable actions\n\nWhole result · Continue\n\nWorkspace\nUndo\nClear\nContinue composing\n\nChoose the next grammatical operation.\n\nContinue entire Result\nVNC application · yamān\nCopy form\nExact Result retained for its next pathways; its owner-issued typed Source is shown without rerunning it.\nAnalysis\nGRAMMATICAL STRUCTURE\nVERBSTEM\nyam-ā-ni\nFORMATION\nDirect\nVOICE\nActive\nSpecific\nGeneral\nLinear\n#0-0(yam-ā-n)0+⎕-0#\n\nSubject · Third person · singular\n\nDiagram\n#0-0+ ... +⎕-0#\nSubject\n(yam-ā-n)\nCore\n)0+\nTense\nThird person · singular\nSubject features",
+      "make": {
+        "enabled": true,
+        "label": "Make Result"
+      }
+    },
+    {
+      "step": "agentive accepted",
+      "result": "Result\n\nKeep this sentence or prepare its next change.\n\nView options\nYamānqui.\nWork with Result\nPart\nWhole result — Yamānqui.\nChange\nAdd\nReorder\nRemove\nUnavailable actions\n\nWhole result — Yamānqui.\n\nWorkspace\nUndo\nClear\nContinue composing\nContinue entire Result\nVNC application · yamān\npredicate nominalization · yamānqui\nCopy form\nResult ready. Continue only when you want it as Source.\nAnalysis\nGRAMMATICAL STRUCTURE\nNOMINALIZATION\nPreterit-agentive\nSOURCE STAGE\nPreterit predicate\nSTATE\nAbsolutive\nSpecific\nGeneral\nLinear\n#0-0(yam-ā-n-0)qui-0#\n\nOrdinary preterit of yam-ā-ni\n\nDiagram\n#0-0( ... )qui-0#\nSubject\n(yam-ā-n-0)\nPredicate\n\nOrdinary preterit of yam-ā-ni",
+      "make": {
+        "enabled": false,
+        "label": "Applied"
+      }
+    },
+    {
+      "step": "matrix source opened",
+      "mode": [
+        [
+          "result",
+          "Saved Result",
+          false,
+          false
+        ],
+        [
+          "nounstem",
+          "Known nounstem",
+          false,
+          false
+        ]
+      ],
+      "visible": true,
+      "result": "Result\n\nYour accepted sentence stays here while you prepare a change.\n\nView options\nAccepted sentence\nYamānqui.\nWork with Result\nPart\nWhole result — Yamānqui.\nChange\nAdd\nReorder\nRemove\nUnavailable actions\n\nWhole result — Yamānqui. · Continue\n\nWorkspace\nUndo\nClear\nContinue composing\n\nChoose the next grammatical operation.\n\nContinue entire Result\nVNC application · yamān\npredicate nominalization · yamānqui\nCopy form\nAnalysis\nGRAMMATICAL STRUCTURE\nNOMINALIZATION\nPreterit-agentive\nSOURCE STAGE\nPreterit predicate\nSTATE\nAbsolutive\nSpecific\nGeneral\nLinear\n#0-0(yam-ā-n-0)qui-0#\n\nOrdinary preterit of yam-ā-ni\n\nDiagram\n#0-0( ... )qui-0#\nSubject\n(yam-ā-n-0)\nPredicate\n\nOrdinary preterit of yam-ā-ni",
+      "make": {
+        "enabled": false,
+        "label": "Add the required Result"
+      }
+    },
+    {
+      "step": "saved candidates",
+      "choices": [
+        [
+          "",
+          "Choose a saved Result",
+          false,
+          false
+        ],
+        [
+          "history-1",
+          "Cuicatl. — Make a noun clause",
+          false,
+          false
+        ]
+      ],
+      "result": "Result\n\nYour accepted sentence stays here while you prepare a change.\n\nView options\nAccepted sentence\nYamānqui.\nWork with Result\nPart\nWhole result — Yamānqui.\nChange\nAdd\nReorder\nRemove\nUnavailable actions\n\nWhole result — Yamānqui. · Continue\n\nWorkspace\nUndo\nClear\nContinue composing\n\nChoose the next grammatical operation.\n\nContinue entire Result\nVNC application · yamān\npredicate nominalization · yamānqui\nCopy form\nAnalysis\nGRAMMATICAL STRUCTURE\nNOMINALIZATION\nPreterit-agentive\nSOURCE STAGE\nPreterit predicate\nSTATE\nAbsolutive\nSpecific\nGeneral\nLinear\n#0-0(yam-ā-n-0)qui-0#\n\nOrdinary preterit of yam-ā-ni\n\nDiagram\n#0-0( ... )qui-0#\nSubject\n(yam-ā-n-0)\nPredicate\n\nOrdinary preterit of yam-ā-ni",
+      "make": {
+        "enabled": false,
+        "label": "Add the required Result"
+      }
+    },
+    {
+      "step": "saved staged",
+      "result": "Result\n\nYour accepted sentence stays here while you prepare a change.\n\nView options\nAccepted sentence\nYamānqui.\nWork with Result\nPart\nWhole result — Yamānqui.\nChange\nAdd\nReorder\nRemove\nUnavailable actions\n\nWhole result — Yamānqui. · Continue\n\nWorkspace\nUndo\nClear\nContinue composing\n\nChoose the next grammatical operation.\n\nContinue entire Result\nVNC application · yamān\npredicate nominalization · yamānqui\nCopy form\nAnalysis\nGRAMMATICAL STRUCTURE\nNOMINALIZATION\nPreterit-agentive\nSOURCE STAGE\nPreterit predicate\nSTATE\nAbsolutive\nSpecific\nGeneral\nLinear\n#0-0(yam-ā-n-0)qui-0#\n\nOrdinary preterit of yam-ā-ni\n\nDiagram\n#0-0( ... )qui-0#\nSubject\n(yam-ā-n-0)\nPredicate\n\nOrdinary preterit of yam-ā-ni",
+      "make": {
+        "enabled": true,
+        "label": "Make Result"
+      }
+    },
+    {
+      "step": "saved made",
+      "result": "Result\n\nKeep this sentence or prepare its next change.\n\nView options\nYamāncācuicatl.\nWork with Result\nPart\nWhole result — yamāncācuicatl\nChange\nAdd\nReorder\nRemove\nUnavailable actions\n\nWhole result — yamāncācuicatl\n\nWorkspace\nUndo\nClear\nContinue composing\nContinue entire Result\nNNC ordinary · cuicatl\npredicate nominalization · yamānqui\ngrammar nominal construction · yamāncācuicatl\nCopy form\nResult ready. Continue only when you want it as Source.\nAnalysis\nSpecific\nGeneral\nLinear\n#0-0(yam-ā-n-0-cā-cuica)tl-0#\n\nEmbed yam-ā-n-0-cā · Governing matrix cuica\n\nDiagram\n#0-0( ... )tl-0#\nSubject\n(yam-ā-n-0-cā-cuica)\nPredicate\nyam-ā-n-0-cā\nEmbed\ncuica\nGoverning matrix\nSentence",
+      "make": {
+        "enabled": false,
+        "label": "Applied"
+      }
+    },
+    {
+      "step": "matrix source opened",
+      "mode": [
+        [
+          "result",
+          "Saved Result",
+          false,
+          false
+        ],
+        [
+          "nounstem",
+          "Known nounstem",
+          false,
+          false
+        ]
+      ],
+      "visible": true,
+      "result": "Result\n\nKeep this sentence or prepare its next change.\n\nView options\nYamānqui.\nWork with Result\nPart\nWhole result — Yamānqui.\nChange\nAdd\nReorder\nRemove\nUnavailable actions\n\nWhole result — Yamānqui.\n\nWorkspace\nUndo\nClear\nContinue composing\nContinue entire Result\nVNC application · yamān\npredicate nominalization · yamānqui\nCopy form\nExact Result restored as the next Source.\nAnalysis\nGRAMMATICAL STRUCTURE\nNOMINALIZATION\nPreterit-agentive\nSOURCE STAGE\nPreterit predicate\nSTATE\nAbsolutive\nSpecific\nGeneral\nLinear\n#0-0(yam-ā-n-0)qui-0#\n\nOrdinary preterit of yam-ā-ni\n\nDiagram\n#0-0( ... )qui-0#\nSubject\n(yam-ā-n-0)\nPredicate\n\nOrdinary preterit of yam-ā-ni",
+      "make": {
+        "enabled": false,
+        "label": "Add the required Result"
+      }
+    },
+    {
+      "step": "known staged",
+      "source": "nounstem",
+      "stem": "cuica",
+      "cls": "tl",
+      "result": "Result\n\nKeep this sentence or prepare its next change.\n\nView options\nYamānqui.\nWork with Result\nPart\nWhole result — Yamānqui.\nChange\nAdd\nReorder\nRemove\nUnavailable actions\n\nWhole result — Yamānqui.\n\nWorkspace\nUndo\nClear\nContinue composing\nContinue entire Result\nVNC application · yamān\npredicate nominalization · yamānqui\nCopy form\nExact Result restored as the next Source.\nAnalysis\nGRAMMATICAL STRUCTURE\nNOMINALIZATION\nPreterit-agentive\nSOURCE STAGE\nPreterit predicate\nSTATE\nAbsolutive\nSpecific\nGeneral\nLinear\n#0-0(yam-ā-n-0)qui-0#\n\nOrdinary preterit of yam-ā-ni\n\nDiagram\n#0-0( ... )qui-0#\nSubject\n(yam-ā-n-0)\nPredicate\n\nOrdinary preterit of yam-ā-ni",
+      "make": {
+        "enabled": true,
+        "label": "Make Result"
+      }
+    },
+    {
+      "step": "known made",
+      "result": "Result\n\nKeep this sentence or prepare its next change.\n\nView options\nYamāncācuicatl.\nWork with Result\nPart\nWhole result — yamāncācuicatl\nChange\nAdd\nReorder\nRemove\nUnavailable actions\n\nWhole result — yamāncācuicatl\n\nWorkspace\nUndo\nClear\nContinue composing\nContinue entire Result\nVNC application · yamān\npredicate nominalization · yamānqui\ngrammar nominal construction · yamāncācuicatl\nCopy form\nResult ready. Continue only when you want it as Source.\nAnalysis\nSpecific\nGeneral\nLinear\n#0-0(yam-ā-n-0-cā-cuica)tl-0#\n\nEmbed yam-ā-n-0-cā · Governing matrix cuica\n\nDiagram\n#0-0( ... )tl-0#\nSubject\n(yam-ā-n-0-cā-cuica)\nPredicate\nyam-ā-n-0-cā\nEmbed\ncuica\nGoverning matrix\nSentence",
+      "make": {
+        "enabled": false,
+        "label": "Applied"
+      }
+    }
+  ]
+}

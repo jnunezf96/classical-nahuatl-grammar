@@ -1,0 +1,116 @@
+{
+  "environment": "Isolated local Chrome, Analysis mode, port 8874",
+  "steps": [
+    {
+      "step": "noun draft",
+      "classOptions": [],
+      "result": "Result\nOutput scope\nsingle form\nfull paradigm",
+      "make": {
+        "enabled": true,
+        "label": "Make Result"
+      }
+    },
+    {
+      "step": "positive noun accepted",
+      "result": "Result\n\nKeep this sentence or prepare its next change.\n\nView options\nĒhualiztli.\nWork with Result\nPart\nWhole result — ēhualiztli\nChange\nAdd\nReorder\nRemove\nUnavailable actions\n\nWhole result — ēhualiztli\n\nWorkspace\nUndo\nClear\nContinue composing\nContinue entire Result\nNNC ordinary · ēhualiztli\nCopy form\nResult ready. Continue only when you want it as Source.\nAnalysis\nSpecific\nGeneral\nLinear\n#0-0(ē-hu-a-liz)tli-0#\nDiagram\n#0-0( ... )tli-0#\nSubject\n(ē-hu-a-liz)\nPredicate\nSentence",
+      "make": {
+        "enabled": false,
+        "label": "Applied"
+      }
+    },
+    {
+      "step": "ah selector",
+      "route": [
+        "option:id%3Aclassical-capability-navigator-operation:nnc%3Asentence-surface",
+        "Change sentence type or polarity",
+        false
+      ],
+      "options": [
+        [
+          "ah",
+          "ah-",
+          false
+        ],
+        [
+          "ay",
+          "ay-",
+          false
+        ]
+      ],
+      "visible": true,
+      "polarity": "negative",
+      "result": "Result\n\nYour accepted sentence stays here while you prepare a change.\n\nView options\nAccepted sentence\nĒhualiztli.\nWork with Result\nPart\nWhole result — ēhualiztli\nChange\nAdd\nReorder\nRemove\nUnavailable actions\n\nWhole result — ēhualiztli · Continue\n\nWorkspace\nUndo\nClear\nContinue composing\n\nChoose the next grammatical operation.\n\nContinue entire Result\nNNC ordinary · ēhualiztli\nCopy form\nAnalysis\nSpecific\nGeneral\nLinear\n#0-0(ē-hu-a-liz)tli-0#\nDiagram\n#0-0( ... )tli-0#\nSubject\n(ē-hu-a-liz)\nPredicate\nSentence",
+      "make": {
+        "enabled": true,
+        "label": "Make Result"
+      }
+    },
+    {
+      "step": "ah staged",
+      "prefix": "ah",
+      "result": "Result\n\nYour accepted sentence stays here while you prepare a change.\n\nView options\nAccepted sentence\nĒhualiztli.\nWork with Result\nPart\nWhole result — ēhualiztli\nChange\nAdd\nReorder\nRemove\nUnavailable actions\n\nWhole result — ēhualiztli · Continue\n\nWorkspace\nUndo\nClear\nContinue composing\n\nChoose the next grammatical operation.\n\nContinue entire Result\nNNC ordinary · ēhualiztli\nCopy form\nAnalysis\nSpecific\nGeneral\nLinear\n#0-0(ē-hu-a-liz)tli-0#\nDiagram\n#0-0( ... )tli-0#\nSubject\n(ē-hu-a-liz)\nPredicate\nSentence",
+      "make": {
+        "enabled": true,
+        "label": "Make Result"
+      }
+    },
+    {
+      "step": "ah made",
+      "expected": "ah#0-0(ē-hu-a-liz)tli-0#.",
+      "formula": "ah#0-0(ē-hu-a-liz)tli-0#.",
+      "diagramText": "ah#\nNegative sentence prefix\n#0-0( ... )tli-0#\nSubject\n(ē-hu-a-liz)\nPredicate",
+      "result": "Result\n\nKeep this sentence or prepare its next change.\n\nView options\nAhēhualiztli.\nWork with Result\nPart\nWhole result — Ahēhualiztli.\nChange\nAdd\nReorder\nRemove\nUnavailable actions\n\nWhole result — Ahēhualiztli.\n\nWorkspace\nUndo\nClear\nContinue composing\nContinue entire Result\nNNC ordinary · ēhualiztli\nNNC sentence surface\nCopy form\nResult ready. Continue only when you want it as Source.\nAnalysis\nSpecific\nGeneral\nLinear\nah#0-0(ē-hu-a-liz)tli-0#.\nDiagram\nah#\nNegative sentence prefix\n#0-0( ... )tli-0#\nSubject\n(ē-hu-a-liz)\nPredicate\nSentence",
+      "make": {
+        "enabled": false,
+        "label": "Applied"
+      }
+    },
+    {
+      "step": "ay selector",
+      "route": [
+        "option:id%3Aclassical-capability-navigator-operation:nnc%3Asentence-surface",
+        "Change sentence type or polarity",
+        false
+      ],
+      "options": [
+        [
+          "ah",
+          "ah-",
+          false
+        ],
+        [
+          "ay",
+          "ay-",
+          false
+        ]
+      ],
+      "visible": true,
+      "polarity": "negative",
+      "result": "Result\n\nKeep this sentence or prepare its next change.\n\nView options\nĒhualiztli.\nWork with Result\nPart\nWhole result — ēhualiztli\nChange\nAdd\nReorder\nRemove\nUnavailable actions\n\nWhole result — ēhualiztli\n\nWorkspace\nUndo\nClear\nContinue composing\nContinue entire Result\nNNC ordinary · ēhualiztli\nCopy form\nExact Result restored as the next Source.\nAnalysis\nSpecific\nGeneral\nLinear\n#0-0(ē-hu-a-liz)tli-0#\nDiagram\n#0-0( ... )tli-0#\nSubject\n(ē-hu-a-liz)\nPredicate\nSentence",
+      "make": {
+        "enabled": true,
+        "label": "Make Result"
+      }
+    },
+    {
+      "step": "ay staged",
+      "prefix": "ay",
+      "result": "Result\n\nKeep this sentence or prepare its next change.\n\nView options\nĒhualiztli.\nWork with Result\nPart\nWhole result — ēhualiztli\nChange\nAdd\nReorder\nRemove\nUnavailable actions\n\nWhole result — ēhualiztli\n\nWorkspace\nUndo\nClear\nContinue composing\nContinue entire Result\nNNC ordinary · ēhualiztli\nCopy form\nExact Result restored as the next Source.\nAnalysis\nSpecific\nGeneral\nLinear\n#0-0(ē-hu-a-liz)tli-0#\nDiagram\n#0-0( ... )tli-0#\nSubject\n(ē-hu-a-liz)\nPredicate\nSentence",
+      "make": {
+        "enabled": true,
+        "label": "Make Result"
+      }
+    },
+    {
+      "step": "ay made",
+      "expected": "ay#0-0(ē-hu-a-liz)tli-0#.",
+      "formula": "ay#0-0(ē-hu-a-liz)tli-0#.",
+      "diagramText": "ay#\nNegative sentence prefix\n#0-0( ... )tli-0#\nSubject\n(ē-hu-a-liz)\nPredicate",
+      "result": "Result\n\nKeep this sentence or prepare its next change.\n\nView options\nAyēhualiztli.\nWork with Result\nPart\nWhole result — Ayēhualiztli.\nChange\nAdd\nReorder\nRemove\nUnavailable actions\n\nWhole result — Ayēhualiztli.\n\nWorkspace\nUndo\nClear\nContinue composing\nContinue entire Result\nNNC ordinary · ēhualiztli\nNNC sentence surface\nCopy form\nResult ready. Continue only when you want it as Source.\nAnalysis\nSpecific\nGeneral\nLinear\nay#0-0(ē-hu-a-liz)tli-0#.\nDiagram\nay#\nNegative sentence prefix\n#0-0( ... )tli-0#\nSubject\n(ē-hu-a-liz)\nPredicate\nSentence",
+      "make": {
+        "enabled": false,
+        "label": "Applied"
+      }
+    }
+  ]
+}

@@ -1,0 +1,197 @@
+{
+  "environment": "Isolated local Chrome, Analysis mode, port 8874",
+  "speakerSex": [
+    {
+      "step": "noun draft",
+      "classOptions": [],
+      "result": "Result\nOutput scope\nsingle form\nfull paradigm",
+      "make": {
+        "enabled": true,
+        "label": "Make Result"
+      }
+    },
+    {
+      "step": "oquichtli accepted",
+      "result": "Result\n\nKeep this sentence or prepare its next change.\n\nView options\nOquichtli.\nWork with Result\nPart\nWhole result — oquichtli\nChange\nAdd\nReorder\nRemove\nUnavailable actions\n\nWhole result — oquichtli\n\nWorkspace\nUndo\nClear\nContinue composing\nContinue entire Result\nNNC ordinary · oquichtli\nCopy form\nResult ready. Continue only when you want it as Source.\nAnalysis\nSpecific\nGeneral\nLinear\n#0-0(oquich)tli-0#\nDiagram\n#0-0( ... )tli-0#\nSubject\n(oquich)\nPredicate\nSentence",
+      "make": {
+        "enabled": false,
+        "label": "Applied"
+      }
+    },
+    {
+      "step": "male staged",
+      "speakerOptions": [
+        [
+          "unspecified",
+          "not specified",
+          false
+        ],
+        [
+          "male",
+          "man",
+          false
+        ],
+        [
+          "female",
+          "woman",
+          false
+        ]
+      ],
+      "sourceMirror": "male",
+      "result": "Result\n\nYour accepted sentence stays here while you prepare a change.\n\nView options\nAccepted sentence\nOquichtli.\nWork with Result\nPart\nWhole result — oquichtli\nChange\nAdd\nReorder\nRemove\nUnavailable actions\n\nWhole result — oquichtli · Continue\n\nWorkspace\nUndo\nClear\nContinue composing\n\nChoose the next grammatical operation.\n\nContinue entire Result\nNNC ordinary · oquichtli\nCopy form\nAnalysis\nSpecific\nGeneral\nLinear\n#0-0(oquich)tli-0#\nDiagram\n#0-0( ... )tli-0#\nSubject\n(oquich)\nPredicate\nSentence",
+      "make": {
+        "enabled": true,
+        "label": "Make Result"
+      }
+    },
+    {
+      "step": "male made",
+      "result": "Result\n\nKeep this sentence or prepare its next change.\n\nView options\nOquichtlé!\nWork with Result\nPart\nWhole result — Oquichtlé!\nChange\nAdd\nReorder\nRemove\nUnavailable actions\n\nWhole result — Oquichtlé!\n\nWorkspace\nUndo\nClear\nContinue composing\nContinue entire Result\nNNC ordinary · oquichtli\nsentence supplementation · Oquichtlé!\nCopy form\nResult ready. Continue only when you want it as Source.\nAnalysis\nSpecific\nGeneral\nLinear\n#0-0(oquich)tli-0#e\n\nThe vocative e carries exceptional stress.\n\nDiagram\n#0-0(oquich)tli-0#e\nVocative NNC\n\nThe vocative e carries exceptional stress.",
+      "make": {
+        "enabled": false,
+        "label": "Applied"
+      }
+    },
+    {
+      "step": "female staged",
+      "speakerOptions": [
+        [
+          "unspecified",
+          "not specified",
+          false
+        ],
+        [
+          "male",
+          "man",
+          false
+        ],
+        [
+          "female",
+          "woman",
+          false
+        ]
+      ],
+      "sourceMirror": "female",
+      "result": "Result\n\nKeep this sentence or prepare its next change.\n\nView options\nOquichtli.\nWork with Result\nPart\nWhole result — oquichtli\nChange\nAdd\nReorder\nRemove\nUnavailable actions\n\nWhole result — oquichtli\n\nWorkspace\nUndo\nClear\nContinue composing\nContinue entire Result\nNNC ordinary · oquichtli\nCopy form\nExact Result restored as the next Source.\nAnalysis\nSpecific\nGeneral\nLinear\n#0-0(oquich)tli-0#\nDiagram\n#0-0( ... )tli-0#\nSubject\n(oquich)\nPredicate\nSentence",
+      "make": {
+        "enabled": true,
+        "label": "Make Result"
+      }
+    },
+    {
+      "step": "female made",
+      "result": "Result\n\nKeep this sentence or prepare its next change.\n\nView options\nOquichtli!\nWork with Result\nPart\nWhole result — Oquichtli!\nChange\nAdd\nReorder\nRemove\nUnavailable actions\n\nWhole result — Oquichtli!\n\nWorkspace\nUndo\nClear\nContinue composing\nContinue entire Result\nNNC ordinary · oquichtli\nsentence supplementation · Oquichtli!\nCopy form\nResult ready. Continue only when you want it as Source.\nAnalysis\nSpecific\nGeneral\nLinear\n#0-0(oquich)tli-0#\n\nHigh tone on the final syllable with affected stress.\n\nDiagram\n#0-0(oquich)tli-0#\nVocative NNC\n\nHigh tone on the final syllable with affected stress.",
+      "make": {
+        "enabled": false,
+        "label": "Applied"
+      }
+    }
+  ],
+  "negativeForm": [
+    {
+      "step": "noun draft",
+      "classOptions": [],
+      "result": "Result\nOutput scope\nsingle form\nfull paradigm",
+      "make": {
+        "enabled": true,
+        "label": "Make Result"
+      }
+    },
+    {
+      "step": "positive noun accepted",
+      "result": "Result\n\nKeep this sentence or prepare its next change.\n\nView options\nĒhualiztli.\nWork with Result\nPart\nWhole result — ēhualiztli\nChange\nAdd\nReorder\nRemove\nUnavailable actions\n\nWhole result — ēhualiztli\n\nWorkspace\nUndo\nClear\nContinue composing\nContinue entire Result\nNNC ordinary · ēhualiztli\nCopy form\nResult ready. Continue only when you want it as Source.\nAnalysis\nSpecific\nGeneral\nLinear\n#0-0(ē-hu-a-liz)tli-0#\nDiagram\n#0-0( ... )tli-0#\nSubject\n(ē-hu-a-liz)\nPredicate\nSentence",
+      "make": {
+        "enabled": false,
+        "label": "Applied"
+      }
+    },
+    {
+      "step": "ah selector",
+      "route": [
+        "option:id%3Aclassical-capability-navigator-operation:nnc%3Asentence-surface",
+        "Change sentence type or polarity",
+        false
+      ],
+      "options": [
+        [
+          "ah",
+          "ah-",
+          false
+        ],
+        [
+          "ay",
+          "ay-",
+          false
+        ]
+      ],
+      "visible": true,
+      "polarity": "negative",
+      "result": "Result\n\nYour accepted sentence stays here while you prepare a change.\n\nView options\nAccepted sentence\nĒhualiztli.\nWork with Result\nPart\nWhole result — ēhualiztli\nChange\nAdd\nReorder\nRemove\nUnavailable actions\n\nWhole result — ēhualiztli · Continue\n\nWorkspace\nUndo\nClear\nContinue composing\n\nChoose the next grammatical operation.\n\nContinue entire Result\nNNC ordinary · ēhualiztli\nCopy form\nAnalysis\nSpecific\nGeneral\nLinear\n#0-0(ē-hu-a-liz)tli-0#\nDiagram\n#0-0( ... )tli-0#\nSubject\n(ē-hu-a-liz)\nPredicate\nSentence",
+      "make": {
+        "enabled": true,
+        "label": "Make Result"
+      }
+    },
+    {
+      "step": "ah staged",
+      "prefix": "ah",
+      "result": "Result\n\nYour accepted sentence stays here while you prepare a change.\n\nView options\nAccepted sentence\nĒhualiztli.\nWork with Result\nPart\nWhole result — ēhualiztli\nChange\nAdd\nReorder\nRemove\nUnavailable actions\n\nWhole result — ēhualiztli · Continue\n\nWorkspace\nUndo\nClear\nContinue composing\n\nChoose the next grammatical operation.\n\nContinue entire Result\nNNC ordinary · ēhualiztli\nCopy form\nAnalysis\nSpecific\nGeneral\nLinear\n#0-0(ē-hu-a-liz)tli-0#\nDiagram\n#0-0( ... )tli-0#\nSubject\n(ē-hu-a-liz)\nPredicate\nSentence",
+      "make": {
+        "enabled": true,
+        "label": "Make Result"
+      }
+    },
+    {
+      "step": "ah made",
+      "result": "Result\n\nKeep this sentence or prepare its next change.\n\nView options\nAhēhualiztli.\nWork with Result\nPart\nWhole result — Ahēhualiztli.\nChange\nAdd\nReorder\nRemove\nUnavailable actions\n\nWhole result — Ahēhualiztli.\n\nWorkspace\nUndo\nClear\nContinue composing\nContinue entire Result\nNNC ordinary · ēhualiztli\nNNC sentence surface\nCopy form\nResult ready. Continue only when you want it as Source.\nAnalysis\nSpecific\nGeneral\nLinear\n#0-0(ē-hu-a-liz)tli-0#\nDiagram\n#0-0( ... )tli-0#\nSubject\n(ē-hu-a-liz)\nPredicate\nSentence",
+      "make": {
+        "enabled": false,
+        "label": "Applied"
+      }
+    },
+    {
+      "step": "ay selector",
+      "route": [
+        "option:id%3Aclassical-capability-navigator-operation:nnc%3Asentence-surface",
+        "Change sentence type or polarity",
+        false
+      ],
+      "options": [
+        [
+          "ah",
+          "ah-",
+          false
+        ],
+        [
+          "ay",
+          "ay-",
+          false
+        ]
+      ],
+      "visible": true,
+      "polarity": "negative",
+      "result": "Result\n\nKeep this sentence or prepare its next change.\n\nView options\nĒhualiztli.\nWork with Result\nPart\nWhole result — ēhualiztli\nChange\nAdd\nReorder\nRemove\nUnavailable actions\n\nWhole result — ēhualiztli\n\nWorkspace\nUndo\nClear\nContinue composing\nContinue entire Result\nNNC ordinary · ēhualiztli\nCopy form\nExact Result restored as the next Source.\nAnalysis\nSpecific\nGeneral\nLinear\n#0-0(ē-hu-a-liz)tli-0#\nDiagram\n#0-0( ... )tli-0#\nSubject\n(ē-hu-a-liz)\nPredicate\nSentence",
+      "make": {
+        "enabled": true,
+        "label": "Make Result"
+      }
+    },
+    {
+      "step": "ay staged",
+      "prefix": "ay",
+      "result": "Result\n\nKeep this sentence or prepare its next change.\n\nView options\nĒhualiztli.\nWork with Result\nPart\nWhole result — ēhualiztli\nChange\nAdd\nReorder\nRemove\nUnavailable actions\n\nWhole result — ēhualiztli\n\nWorkspace\nUndo\nClear\nContinue composing\nContinue entire Result\nNNC ordinary · ēhualiztli\nCopy form\nExact Result restored as the next Source.\nAnalysis\nSpecific\nGeneral\nLinear\n#0-0(ē-hu-a-liz)tli-0#\nDiagram\n#0-0( ... )tli-0#\nSubject\n(ē-hu-a-liz)\nPredicate\nSentence",
+      "make": {
+        "enabled": true,
+        "label": "Make Result"
+      }
+    },
+    {
+      "step": "ay made",
+      "result": "Result\n\nKeep this sentence or prepare its next change.\n\nView options\nAyēhualiztli.\nWork with Result\nPart\nWhole result — Ayēhualiztli.\nChange\nAdd\nReorder\nRemove\nUnavailable actions\n\nWhole result — Ayēhualiztli.\n\nWorkspace\nUndo\nClear\nContinue composing\nContinue entire Result\nNNC ordinary · ēhualiztli\nNNC sentence surface\nCopy form\nResult ready. Continue only when you want it as Source.\nAnalysis\nSpecific\nGeneral\nLinear\n#0-0(ē-hu-a-liz)tli-0#\nDiagram\n#0-0( ... )tli-0#\nSubject\n(ē-hu-a-liz)\nPredicate\nSentence",
+      "make": {
+        "enabled": false,
+        "label": "Applied"
+      }
+    }
+  ]
+}
