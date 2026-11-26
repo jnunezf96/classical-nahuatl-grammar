@@ -1,4 +1,4 @@
-import {encodeCompactResultAddress as encode,decodeCompactResultAddress as decode} from "../application/classical/compact_result_link.mjs";
+import {encodeCompactResultAddress as encode,decodeCompactResultAddress as decode,writeCompactResultAddress,readCompactResultAddress} from "../application/classical/compact_result_link.mjs";
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
@@ -152,11 +152,17 @@ test("a deeply nested conjunction keeps its complete clause structure",async()=>
 });
 
 test("large conjunction links restore all clauses and both levels of structure",async()=>{
-  for(const [shape,count,nodeCount] of [["flat",44,133],["wide",176,537]]){
+  for(const [shape,count,nodeCount] of [["flat",44,133],["wide",176,537],["wide",420,1281]]){
     const result=makeLargeConjunction(r,shape,count);
     const recipe=save(r,{result});
     assert.equal(recipe?.nodes.length,nodeCount);
-    const reopened=restore(fresh,await decode(await encode(recipe)))?.result;
+    const address=await encode(recipe);
+    const url=new URL("https://example.test/classical-nahuatl-grammar/?view=result");
+    writeCompactResultAddress(url,address);
+    assert.equal(url.searchParams.get("view"),"result");
+    assert.equal(Boolean(url.hash),count===420);
+    assert.equal(readCompactResultAddress(url),address);
+    const reopened=restore(fresh,await decode(readCompactResultAddress(url)))?.result;
     assert.ok(reopened);
     assert.equal(reopened.surfaceRealization,result.surfaceRealization);
     assert.equal(reopened.formulaRealization,result.formulaRealization);

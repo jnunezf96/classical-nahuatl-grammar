@@ -1,18 +1,19 @@
 const PREFIX = "sgr2";
 export const MAX_RESULT_LINK_NODES = 36 ** 2;
 const MAX_ADDRESS = 16000;
-const MAX_JSON_BYTES = 262144;
+const MAX_GRAMMAR_JSON_BYTES = 256 * 1024;
+const MAX_SOURCE_JSON_BYTES = 512 * 1024;
 
-async function compress(value) {
+async function compress(value, maxBytes) {
   const bytes = new TextEncoder().encode(JSON.stringify(value));
-  if (bytes.length > MAX_JSON_BYTES) throw new Error("Result recipe too large");
+  if (bytes.length > maxBytes) throw new Error("Result recipe too large");
   const stream = new Blob([bytes]).stream().pipeThrough(new CompressionStream("deflate"));
   const packed = new Uint8Array(await new Response(stream).arrayBuffer());
   return btoa(Array.from(packed, byte => String.fromCharCode(byte)).join(""))
     .replaceAll("+", "-").replaceAll("/", "_").replace(/=+$/, "");
 }
 
-async function expand(segment) {
+async function expand(segment, maxBytes) {
   if (!/^[A-Za-z0-9_-]+$/.test(segment)) throw new Error("Invalid Result segment");
   const bytes = Uint8Array.from(atob(segment.replaceAll("-", "+").replaceAll("_", "/")), ch => ch.charCodeAt(0));
   const reader = new Blob([bytes]).stream().pipeThrough(new DecompressionStream("deflate")).getReader();
@@ -23,7 +24,7 @@ async function expand(segment) {
       const {done, value} = await reader.read();
       if (done) break;
       length += value.length;
-      if (length > MAX_JSON_BYTES) throw new Error("Expanded Result segment too large");
+      if (length > maxBytes) throw new Error("Expanded Result segment too large");
       text += decoder.decode(value, {stream:true});
     }
     return JSON.parse(text + decoder.decode());
@@ -34,6 +35,34 @@ async function expand(segment) {
 
 export function isCompactResultAddress(address) {
   return typeof address === "string" && /^sgr[12]\//.test(address);
+}
+
+export const COMPACT_RESULT_DATA_FRAGMENT = "#r-data=";
+const MAX_RESULT_REQUEST_TARGET = 7500;
+
+export function writeCompactResultAddress(url, address) {
+  url.hash = "";
+  url.searchParams.set("r", address);
+  const exposeSeparators = () => {
+    url.search = url.search.replace(/(^|[?&])r=[^&]+/, part => part.replaceAll("%2F", "/"));
+  };
+  exposeSeparators();
+  if (url.pathname.length + url.search.length > MAX_RESULT_REQUEST_TARGET) {
+    const [prefix, source, grammar, result] = address.split("/");
+    url.searchParams.set("r", [prefix, "", "", result].join("/"));
+    exposeSeparators();
+    url.hash = COMPACT_RESULT_DATA_FRAGMENT + source + "/" + grammar;
+  }
+}
+
+export function readCompactResultAddress(url) {
+  const address = url?.searchParams.get("r");
+  if (!isCompactResultAddress(address) || !url.hash.startsWith(COMPACT_RESULT_DATA_FRAGMENT)) return address;
+  const parts = address.split("/");
+  if (parts.length !== 4 || parts[1] !== "" || parts[2] !== "") return null;
+  const data = url.hash.slice(COMPACT_RESULT_DATA_FRAGMENT.length).split("/");
+  if (data.length !== 2) return null;
+  return [parts[0], ...data, parts[3]].join("/");
 }
 
 function requestDelta(previous, next) {
@@ -98,7 +127,7 @@ export async function encodeCompactResultAddress(recipe) {
     source.lexicalSource = lexicalSource;
     grammar = operation;
   }
-  const segments = await Promise.all([compress(source), compress(grammar)]);
+  const segments = await Promise.all([compress(source, MAX_SOURCE_JSON_BYTES), compress(grammar, MAX_GRAMMAR_JSON_BYTES)]);
   const address = [PREFIX, ...segments, recipe.roots.result.toString(36)].join("/");
   return address.length <= MAX_ADDRESS ? address : null;
 }
@@ -108,7 +137,7 @@ export async function decodeCompactResultAddress(address) {
   const parts = address.split("/");
   if (parts.length !== 4 || !/^[0-9a-z]{1,2}$/.test(parts[3])) return null;
   try {
-    const [source, grammar] = await Promise.all([expand(parts[1]), expand(parts[2])]);
+    const [source, grammar] = await Promise.all([expand(parts[1], MAX_SOURCE_JSON_BYTES), expand(parts[2], MAX_GRAMMAR_JSON_BYTES)]);
     const root = Number.parseInt(parts[3], 36);
     if (!source || !Array.isArray(source.dependencies)
       || root !== source.dependencies.length || root >= MAX_RESULT_LINK_NODES

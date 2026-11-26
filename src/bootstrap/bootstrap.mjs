@@ -355,7 +355,7 @@ export async function bootstrapBrowserApp(options = {}) {
                 await globalObject.initializeUiRuntime();
             }
             const incomingUrl = initialReloadUrl ? new URL(initialReloadUrl) : null;
-            const compactAddress = incomingUrl?.searchParams.get("r");
+            const compactAddress = readCompactResultAddress(incomingUrl);
             const compactRecipe = isCompactResultAddress(compactAddress)
                 ? await decodeCompactResultAddress(compactAddress) : null;
             const restored = globalObject.restoreClassicalVncReloadSession?.({ url: initialReloadUrl, compactRecipe });
@@ -386,4 +386,4 @@ export async function bootstrapBrowserApp(options = {}) {
     });
     return browserBootstrapPromise;
 }
-import { decodeCompactResultAddress, isCompactResultAddress } from "../application/classical/compact_result_link.mjs";
+import { decodeCompactResultAddress, isCompactResultAddress, readCompactResultAddress } from "../application/classical/compact_result_link.mjs";
