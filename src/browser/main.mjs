@@ -46,6 +46,17 @@ function publishBootstrapStatus(status, error = null) {
     }
     if (status === "ready") {
         projection.hidden = true;
+        const root = document.documentElement;
+        if (root.dataset.classicalResultLinkRestored === "true") {
+            delete root.dataset.classicalResultLinkRestored;
+            const analysisView = document.getElementById("ui-density-advanced");
+            if (analysisView?.getAttribute("aria-pressed") !== "true") analysisView?.click();
+            document.querySelector('[data-classical-panel-jump="classical-result-panel"]')?.click();
+            requestAnimationFrame(() => {
+                const analysis = document.querySelector('#classical-result-panel details[data-composition-information="analysis"]');
+                if (analysis) analysis.open = true;
+            });
+        }
         return;
     }
     projection.hidden = false;

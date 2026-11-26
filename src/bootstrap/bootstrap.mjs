@@ -354,7 +354,10 @@ export async function bootstrapBrowserApp(options = {}) {
                 documentObject.documentElement.dataset.classicalBootstrapPhase = "data-and-interface";
                 await globalObject.initializeUiRuntime();
             }
-            globalObject.restoreClassicalVncReloadSession?.({ url: initialReloadUrl });
+            const restored = globalObject.restoreClassicalVncReloadSession?.({ url: initialReloadUrl });
+            if (restored && initialReloadUrl && new URL(initialReloadUrl).hash.startsWith("#result-v1=")) {
+                documentObject.documentElement.dataset.classicalResultLinkRestored = "true";
+            }
             installClassicalNestedControlLedger({ globalObject, documentObject });
             installDeferredClassicalGrammaticalAtlas({
                 globalObject,
