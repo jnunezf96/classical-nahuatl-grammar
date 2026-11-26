@@ -60,3 +60,33 @@ test("purposive adjunct and attitude sentence links retain original choices and 
     }
   }
 });
+
+export function makePossessiveCompound(r) {
+  const args={sourceStem:"ye",sourceValence:"intransitive",verbClass:"A",subject:"3sg",mood:"indicative",
+    tense:"present",derivationType:"direct",voice:"active",lateOperation:"compound",lateVariant:"accompanying-possession",
+    compoundMatrixStem:"nemi",compoundMatrixClass:"B",compoundPossessiveStem:"chīmal",compoundPossessor:"1sg"};
+  const application=r.executeClassicalGrammarApplicationRequest({operationId:"vnc:derivational-operation",args:[args]});
+  assert.equal(application.authorizationStatus,"authorized",application.blockReason);
+  const parent=application.canonicalResult;
+  assert.equal(parent.surfaceRealization,"nochīmal yetinemi");
+  return {parent,result:r.requestClassicalVncSentenceResultFrame(parent)};
+}
+
+test("accompanying possession retains the possessive and verbal analysis",async()=>{
+  const r=await runtime(),fresh=await runtime();
+  const {parent,result}=makePossessiveCompound(r);
+  for(const frame of [parent,result]){
+    const recipe=save(r,{result:frame});
+    assert.ok(recipe,parent.surfaceRealization);
+    const restored=replay(fresh,await decode(await encode(recipe)))?.result;
+    assert.ok(restored);
+    const closure=restored.lateOperationClosureFrame ?? restored;
+    assert.equal(closure.surfaceRealization,parent.surfaceRealization);
+    assert.equal(closure.formulaRealization,parent.formulaRealization);
+    assert.equal(closure.operationFrame.variant,"accompanying-possession");
+    if(frame===result){
+      assert.equal(restored.sentenceFormulaDisplay,result.sentenceFormulaDisplay);
+      assert.equal(restored.sentenceSurfaceDisplay,result.sentenceSurfaceDisplay);
+    }
+  }
+});

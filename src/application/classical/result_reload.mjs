@@ -81,7 +81,7 @@ const COMPOUND_LEXICALIZATION_KEYS = ["lexicalStatus","sourceEmbedStem","sourceM
 function directLateInputs(input, connective) {
   if (!input || !(connective ? input.lateOperation === "compound" && input.lateVariant === "connective-t"
     : ["purposive","honorific","pejorative","reverential"].includes(input.lateOperation)
-      || input.lateOperation === "compound" && ["shared-object","reflexive-matrix","huītz-carry"].includes(input.lateVariant))
+      || input.lateOperation === "compound" && ["shared-object","reflexive-matrix","huītz-carry","accompanying-possession"].includes(input.lateVariant))
     || Array.isArray(input) || Object.keys(input).length > 128) return null;
   const scalar = value => typeof value === "string" && value.length <= 4096
     || typeof value === "boolean" || Number.isFinite(value);
