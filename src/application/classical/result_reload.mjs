@@ -173,6 +173,16 @@ export function exportClassicalResultReloadRecipe(r, roots = {}, normalizePrimit
         choices: { ...pick(value.operationFrame, NNC_KEYS),
           animacy: value.operationFrame.referentialAnimacy,
           humanness: value.operationFrame.referentialHumanness } };
+    } else if (capture.operationId === "nnc:quantitative-predicate"
+      && r.isClassicalNahuatlQuantitativePredicateResult?.(value)) {
+      node = {type:"nnc:quantitative", citation:value.sourceFrame.citation};
+    } else if (capture.operationId === "nnc:adverbial"
+      && r.isClassicalNahuatlAdverbialNuclearResult?.(value)
+      && ["owner-issued-lexical-adverbial-vnc-source", "owner-issued-lexical-adverbial-nnc-source"].includes(value.sourceInputMode)
+      && !value.canonicalSourceResult && !value.canonicalMatrixResult) {
+      node = {type:"nnc:lexical-adverb", stem:value.adverbialPotentialFrame.sourceConstituents.stem,
+        entry:value.lexicalEntryId, degree:value.operationFrame.degree, scope:value.scope,
+        context:pick(value.operationFrame.contextFrame, CONTEXT_KEYS)};
     } else if (capture.operationId === "nnc:adverbial"
       && r.isClassicalNahuatlAdverbialNuclearResult?.(value)
       && value.canonicalSourceResult) {
@@ -324,6 +334,23 @@ export function replayClassicalResultReloadRecipe(r, recipe) {
           source[`${position}Constituent`] = { kind, stem: source[`${position}Stem`], resultFrame: parent };
         }
         result = r.requestClassicalNominalConstructionResult({ constructionKind: "compound-nnc", ...node.choices, source });
+      } else if (node?.type === "nnc:quantitative" && exact(node, ["type", "citation"])
+        && typeof node.citation === "string" && node.citation.length <= 4096) {
+        const source = r.buildClassicalNahuatlQuantitativePredicateSourceFrame({
+          citation:node.citation, sourceUse:"quantitative-predicate", reference:"nonanimate-common",
+        });
+        const binding = r.issueClassicalNahuatlQuantitativePredicateBindingFrame(source);
+        if (binding?.bindingStatus !== "ready") return null;
+        result = r.executeClassicalGrammarApplicationRequest({
+          operationId:"nnc:quantitative-predicate", args:binding.executionArgs,
+        })?.canonicalResult;
+      } else if (node?.type === "nnc:lexical-adverb" && exact(node, ["type", "stem", "entry", "degree", "scope", "context"])
+        && ["stem", "entry", "degree", "scope"].every(key => typeof node[key] === "string")
+        && node.stem.length <= 4096 && plain(node.context, CONTEXT_KEYS)) {
+        const adverbialPotentialFrame = r.buildClassicalNahuatlLexicalAdverbialPotentialFrame({stem:node.stem});
+        if (adverbialPotentialFrame?.lexicalEntryId !== node.entry) return null;
+        result = r.requestClassicalAdverbialNncResult({adverbialPotentialFrame,
+          degree:node.degree, scope:node.scope, context:node.context});
       } else if (node?.type === "nnc:adverbial" && exact(node, ["type", "source", "scope", "context"])
         && typeof node.scope === "string" && plain(node.context, CONTEXT_KEYS) && prior(node.source)) {
         result = r.requestClassicalAdverbialNncResult({ canonicalSourceResult: prior(node.source),

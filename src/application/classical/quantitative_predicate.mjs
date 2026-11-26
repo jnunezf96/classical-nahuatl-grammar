@@ -68,7 +68,7 @@ export function createClassicalQuantitativePredicateApi() {
       wordSurface, surfaceRealization,sentenceSurface:surfaceRealization,embeddedSurface:wordSurface,formulaRealization,sentencePunctuation:'.',
       formulaProjection:{projectionSource:'whole-citation-with-unclaimed-decomposition',formulaRealization},
       writtenProjection:{projectionSource:'exact-whole-quantitative-citation',surfaceRealization},
-      savedStateCapability:'deliberately-unsupported',savedStateNote:'Session only',
+      savedStateCapability:'supported',
       typedFrameAuthority:true,formulaStringAuthority:false,surfaceStringAuthority:false,callerSuppliedAuthorityAccepted:false});
     results.add(frame);
     return frame;

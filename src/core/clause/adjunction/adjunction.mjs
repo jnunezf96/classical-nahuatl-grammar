@@ -2550,8 +2550,7 @@ export function createAdverbialAdjunctionGlobals(targetObject = globalThis, inst
         ...(profile.intensityUse ? {
           quantitativePredicateParent: request.principalClause,
           intensityAdverbParent: request.adjoinedUnit,
-          savedStateCapability: "deliberately-unsupported",
-          savedStateNote: "Session only",
+          savedStateCapability: "supported",
         } : {}),
         formulaRecord: artifacts.formulaRecord,
         formulaRealizationRecord: artifacts.formulaRealizationRecord,

@@ -1,4 +1,4 @@
-const PREFIX = "sgr1";
+const PREFIX = "sgr2";
 const MAX_ADDRESS = 16000;
 const MAX_JSON_BYTES = 262144;
 
@@ -32,7 +32,43 @@ async function expand(segment) {
 }
 
 export function isCompactResultAddress(address) {
-  return typeof address === "string" && address.startsWith(PREFIX + "/");
+  return typeof address === "string" && /^sgr[12]\//.test(address);
+}
+
+function requestDelta(previous, next) {
+  return {
+    set: Object.fromEntries(Object.entries(next).filter(([key, value]) =>
+      !Object.hasOwn(previous, key) || JSON.stringify(previous[key]) !== JSON.stringify(value))),
+    remove: Object.keys(previous).filter(key => !Object.hasOwn(next, key)),
+  };
+}
+
+function packSteps(steps) {
+  return steps.slice(1).map((step, index) => {
+    const previous = steps[index].request;
+    if (!previous || !step.request) return [step];
+    const {request, ...operation} = step;
+    return [operation, requestDelta(previous, request)];
+  });
+}
+
+function unpackSteps(first, packed) {
+  const steps = [first];
+  for (const entry of packed) {
+    if (!Array.isArray(entry) || !entry[0] || entry.length < 1 || entry.length > 2) throw new Error("Invalid Grammar step");
+    const [operation, delta] = entry;
+    if (entry.length === 1) {
+      steps.push(operation);
+      continue;
+    }
+    const previous = steps.at(-1)?.request;
+    if (!previous || !delta?.set || !Array.isArray(delta.remove)
+      || !delta.remove.every(key => typeof key === "string")) throw new Error("Invalid Grammar changes");
+    const removed = new Set(delta.remove);
+    const request = Object.fromEntries(Object.entries(previous).filter(([key]) => !removed.has(key)));
+    steps.push({...operation, request:{...request, ...delta.set}});
+  }
+  return steps;
 }
 
 export async function encodeCompactResultAddress(recipe) {
@@ -47,7 +83,7 @@ export async function encodeCompactResultAddress(recipe) {
   let grammar = result;
   if (chained) {
     source.priorBuild = steps[0];
-    grammar = {...result, recipe:{...result.recipe, steps:steps.slice(1)}};
+    grammar = {...result, recipe:{...result.recipe, steps:packSteps(steps)}};
   } else if (result.source && typeof result.source === "object") {
     const {source: lexicalSource, ...operation} = result;
     source.lexicalSource = lexicalSource;
@@ -70,7 +106,9 @@ export async function decodeCompactResultAddress(address) {
       || !grammar || typeof grammar !== "object" || Array.isArray(grammar)) return null;
     if (Object.hasOwn(source, "priorBuild")) {
       if (grammar.type !== "vnc" || !Array.isArray(grammar.recipe?.steps)) return null;
-      grammar.recipe.steps.unshift(source.priorBuild);
+      if (grammar.recipe.steps.length >= 512) return null;
+      if (parts[0] === "sgr2") grammar.recipe.steps = unpackSteps(source.priorBuild, grammar.recipe.steps);
+      else grammar.recipe.steps.unshift(source.priorBuild);
     }
     if (Object.hasOwn(source, "lexicalSource")) {
       if (Object.hasOwn(grammar, "source")) return null;

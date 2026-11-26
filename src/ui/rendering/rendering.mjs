@@ -47434,6 +47434,19 @@ export function createUiRenderingApi(targetObject = globalThis) {
         selectedOutput.appendChild(note);
       }
       primary.append(primaryHeading, selectedOutput);
+      if (targetObject.isClassicalNahuatlQuantitativePredicateResult?.(canonical) === true) {
+        analysisChildren.push(createGrammarInspectorLine("Whole quantitative predicate", canonical.formulaRealization));
+      }
+      if (targetObject.isAdverbialAdjunctionResult?.(canonical) === true
+        && canonical.ruleProfile?.relation === "intensification"
+        && targetObject.isClassicalNahuatlQuantitativePredicateResult?.(canonical.quantitativePredicateParent) === true
+        && targetObject.isClassicalNahuatlAdverbialNuclearResult?.(canonical.intensityAdverbParent) === true) {
+        analysisChildren.push(
+          createGrammarInspectorLine("Relation", "Intensification"),
+          createGrammarInspectorLine("Intensifier", canonical.intensityAdverbParent.formulaRealization),
+          createGrammarInspectorLine("Quantitative predicate", canonical.quantitativePredicateParent.formulaRealization),
+        );
+      }
       const honorificExistentialSpelling = canonical?.operationFrames?.find(
         frame => frame.kind === "classical-nahuatl-honorific-existential-spelling-frame"
       );

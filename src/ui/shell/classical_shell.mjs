@@ -763,7 +763,7 @@ export function createClassicalShellModule(targetObject = globalThis) {
                   <option value="attested-collocation">Attested clause collocation</option>
                         </select>
                         <small id="classical-general-use-source-note" hidden>Subtype unclaimed. Continue a saved Result.</small>
-                        <small id="classical-quantitative-source-note" hidden>Class and internal form unclaimed. Session only.</small>
+                        <small id="classical-quantitative-source-note" hidden>Class and internal form unclaimed.</small>
                       </label>
                       <label
                         class="classical-nnc-source-guide__field"
