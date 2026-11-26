@@ -283,3 +283,49 @@ test("relational selected imperfect-source analysis replays from its declared pa
   const { result } = await roundtrip(r, current);
   assert.equal(result.sentenceSurface, parent.sentenceFrame.sentenceSurface);
 });
+
+export function makeDirectNounSentences(r) {
+  const possessive=r.buildClassicalNahuatlPossessiveNncFrame("chīmal",{
+    subject:"3sg",possessor:"1sg",singularConnector:"0",nounstemRelationKind:"nonrelational",animacy:"nonanimate",
+  });
+  const absolutive=r.buildClassicalNahuatlAbsolutiveNncFrame("pil",{
+    subject:"3sg",nounClass:"tli",animacy:"animate",humanness:"human",
+  });
+  return [possessive,absolutive].map((parent,index)=>({slot:parent.nncSlotFrame,
+    result:execute(r,"nnc:sentence-surface",parent.nncSlotFrame,{
+      sentenceType:"assertion",polarity:index ? "negative" : "positive",
+    }),
+  }));
+}
+
+test("direct noun sentences restore the chosen state and exact nucleus",async()=>{
+  const r=await runtime(),fresh=await runtime();
+  for(const {slot,result} of makeDirectNounSentences(r)){
+    const recipe=exportClassicalResultReloadRecipe(r,{result,slot});
+    assert.ok(recipe,result.sentenceSurface);
+    const roots=replayClassicalResultReloadRecipe(fresh,recipe);
+    assert.ok(roots);
+    assert.ok(roots.result.sourceNncSlotFrame===roots.slot);
+    assert.equal(roots.result.sentenceSurface,result.sentenceSurface);
+    assert.equal(roots.result.sentenceFormulaDisplay,result.sentenceFormulaDisplay);
+    assert.deepEqual(roots.slot.slots,slot.slots);
+  }
+});
+
+export function makeLayeredNounSentence(r) {
+  const host=makeDirectNounSentences(r)[0].result;
+  const result=execute(r,"sentence:adverbial-adjunction",{
+    nuclearResultFrame:host,particleSourceFrame:r.buildClassicalNahuatlParticleSourceFrame("l3-no-adverbial"),
+  });
+  return {host,result};
+}
+
+test("a particle layer retains the direct noun sentence it modifies",async()=>{
+  const r=await runtime(),fresh=await runtime();
+  const {host,result}=makeLayeredNounSentence(r);
+  const roots=replayClassicalResultReloadRecipe(fresh,exportClassicalResultReloadRecipe(r,{result,host}));
+  assert.ok(roots);
+  assert.ok(roots.result.canonicalInputFrame===roots.host);
+  assert.equal(roots.result.sentenceSurfaceDisplay,result.sentenceSurfaceDisplay);
+  assert.equal(roots.result.sentenceFormulaDisplay,result.sentenceFormulaDisplay);
+});

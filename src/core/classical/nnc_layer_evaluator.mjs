@@ -36,6 +36,7 @@ import {
 export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = globalThis) {
     const CLASSICAL_NAHUATL_NNC_LAYER_VERSION = 1;
     const issuedNncSentenceSurfaceFrames = new WeakMap();
+    const directNncSlotReloadInputs = new WeakMap();
     const issuedNncSentenceDecisions = new WeakSet();
     const issuedNncPredicateSupportiveI = new WeakMap();
     const issuedNncPredicateReducedLongVowel = new WeakMap();
@@ -4810,6 +4811,9 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
       lesson12Frame.absolutiveParadigmContractFrame = buildClassicalNahuatlAbsolutiveParadigmContractFrame(lesson12Frame);
       lesson12Frame.proofFrame.conclusion.absolutiveParadigmContractFrame = lesson12Frame.absolutiveParadigmContractFrame;
       lesson12Frame.selectedOutputLogicFrame.absolutiveParadigmContractFrame = lesson12Frame.absolutiveParadigmContractFrame;
+      if (authorized) directNncSlotReloadInputs.set(nncSlotFrame, Object.freeze({
+        state:"absolutive", stem:normalizedStem, options:Object.freeze({...options}),
+      }));
       return lesson12Frame;
     }
     function buildClassicalNahuatlPossessiveNncFrame(stem = "", options = {}) {
@@ -4966,6 +4970,9 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
         lesson13Frame.possessiveParadigmContractFrame;
       lesson13Frame.selectedOutputLogicFrame.possessiveParadigmContractFrame =
         lesson13Frame.possessiveParadigmContractFrame;
+      if (authorized) directNncSlotReloadInputs.set(nncSlotFrame, Object.freeze({
+        state:"possessive", stem:normalizedStem, options:Object.freeze({...options}),
+      }));
       return lesson13Frame;
     }
     function normalizeClassicalNahuatlSubclass(value = "") {
@@ -8781,6 +8788,7 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
     api.isClassicalNahuatlNncSentenceDecisionFrame = isClassicalNahuatlNncSentenceDecisionFrame;
     api.getClassicalNahuatlNncSentenceNegativePrefixOptions = getClassicalNahuatlNncSentenceNegativePrefixOptions;
     api.isClassicalNahuatlIssuedNncSentenceSurfaceFrame = isClassicalNahuatlIssuedNncSentenceSurfaceFrame;
+    api.getClassicalNahuatlDirectNncSlotReloadInputs = slot => directNncSlotReloadInputs.get(slot);
     api.getClassicalNahuatlNncSentenceReloadContext = getClassicalNahuatlNncSentenceReloadContext;
     api.buildClassicalNahuatlExotlInterpretationSource = buildClassicalNahuatlExotlInterpretationSource;
     api.isClassicalNahuatlExotlInterpretationSource = isClassicalNahuatlExotlInterpretationSource;

@@ -7,6 +7,14 @@ const SOURCE_KEYS = [
   "matrixStem",
   "supportiveInitialI",
 ];
+const DIRECT_NNC_CHOICES = [
+  "subject", "animacy", "humanness", "stateAvailability", "naturalPossessionPolicy",
+  "metaphoricalOverride", "policySelectionAuthority", "numberDyad",
+  "nounClass", "class", "pluralConnector", "naturalPossessionSemantics", "possessorCompatibility",
+  "possessor", "nounstemRelationKind", "analogicalTlaDerivedStem", "thirdPluralPossessorNumberMorph",
+  "singularConnector", "silentConnectorAuthorized",
+];
+const DIRECT_NNC_NUMBER_CHOICES = "thirdPluralPossessorSt2Options";
 const PRONOMINAL_SOURCE = ["stem", "embedStem", "matrixStem"];
 const PRONOMINAL_CHOICES = [
   "stemFormation",
@@ -97,14 +105,17 @@ const capturedParent = (r, slot) => {
     slot,
     "reload-nnc-nucleus",
   );
-  return r.isClassicalGrammarApplicationResultCapture?.(
+  const parent = r.isClassicalGrammarApplicationResultCapture?.(
     capture,
     "reload-nnc-nucleus",
   ) === true
     ? capture.applicationResult.canonicalResult
     : null;
+  if (parent && slotOf(r,parent) === slot) return parent;
+  return r.getClassicalNahuatlDirectNncSlotReloadInputs?.(slot) ? slot : null;
 };
 const slotOf = (r, parent) =>
+  r.getClassicalNahuatlDirectNncSlotReloadInputs?.(parent) ? parent :
   r.isClassicalNahuatlOrdinaryNncResult?.(parent) ||
   r.isClassicalNahuatlPronominalNncResult?.(parent) ||
   r.isClassicalNahuatlRelationalResult?.(parent)
@@ -117,6 +128,7 @@ function require(condition, message) {
 }
 export function isNncReloadEvidence(r, value) {
   return (
+    Boolean(r.getClassicalNahuatlDirectNncSlotReloadInputs?.(value)) ||
     r.isClassicalNahuatlLesson2WrittenResult?.(value) === true ||
     r.isClassicalNahuatlOrdinaryNncSourceFrame?.(value) === true ||
     r.isClassicalNahuatlContextualFlawedSubjectSourceFrame?.(value) === true ||
@@ -124,6 +136,13 @@ export function isNncReloadEvidence(r, value) {
   );
 }
 export function exportNncContextReloadNode(r, value, visit) {
+  const direct = r.getClassicalNahuatlDirectNncSlotReloadInputs?.(value);
+  if (direct) {
+    const {borrowedNncSourceFrame, ...choices} = direct.options;
+    require(validDirectNncChoices(choices), "supported direct nucleus inputs required");
+    return { type:"nnc:direct-nucleus",state:direct.state,stem:direct.stem,choices,
+      ...(borrowedNncSourceFrame ? {borrowed:visit(borrowedNncSourceFrame)} : {}) };
+  }
   if (r.isClassicalNahuatlLesson2WrittenResult?.(value) === true) {
     return {
       type: "nnc:writing",
@@ -273,10 +292,31 @@ export function exportNncContextReloadNode(r, value, visit) {
   }
   return undefined;
 }
+function validDirectNncChoices(choices) {
+  if (!exact(choices,[...DIRECT_NNC_CHOICES,DIRECT_NNC_NUMBER_CHOICES])) return false;
+  return Object.entries(choices).every(([key,value])=>key===DIRECT_NNC_NUMBER_CHOICES
+    ? Array.isArray(value) && value.length<=12 && value.every(item=>typeof item==="string" && item.length<=256)
+    : typeof value==="boolean" || Number.isFinite(value) || typeof value==="string" && value.length<=4096);
+}
 export function replayNncContextReloadNode(r, node, prior) {
   if (typeof node?.type !== "string" || !node.type.startsWith("nnc:"))
     return undefined;
   try {
+    if(node?.type==="nnc:direct-nucleus") {
+      if (!exact(node,["type","state","stem","choices","borrowed"])
+        || !["absolutive","possessive"].includes(node.state) || typeof node.stem!=="string"
+        || node.stem.length>4096 || !validDirectNncChoices(node.choices)) return null;
+      const choices={...node.choices};
+      if(node.borrowed!==undefined) {
+        choices.borrowedNncSourceFrame=prior(node.borrowed);
+        if(!r.isClassicalNahuatlOrdinaryNncSourceFrame?.(choices.borrowedNncSourceFrame)) return null;
+      }
+      const frame=node.state==="absolutive"
+        ? r.buildClassicalNahuatlAbsolutiveNncFrame(node.stem,choices)
+        : r.buildClassicalNahuatlPossessiveNncFrame(node.stem,choices);
+      return r.getClassicalNahuatlDirectNncSlotReloadInputs?.(frame.nncSlotFrame) ? frame.nncSlotFrame : null;
+    }
+
     if (node.type === "nnc:writing") {
       if (
         !exact(node, ["type", "parts", "boundaryKind", "terminal"]) ||
