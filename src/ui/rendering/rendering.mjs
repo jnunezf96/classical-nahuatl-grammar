@@ -59,6 +59,7 @@ import {getNativeGrammarControls, getWritingSourcePresentation, setChoiceDesignC
 import { readClassicalSourceObjectRows, getClassicalSourceObjectControls,
   restoreClassicalSourceObjectRows, syncClassicalSourceObjectRows }
   from "../composer/source_objects.mjs?v=20261007-panel-source-objects-1&interfaceRelease=1.2.36&ownerDecision=20261031-2";
+import { translateClassicalConstructionLink } from "../../application/classical/construction_link_reload.mjs";
 import { exportClassicalResultReloadRecipe, replayClassicalResultReloadRecipe, reissueClassicalAcceptedBuildBinding, matchesAcceptedVncContinuationBuild, matchesAcceptedNominalCompoundBuild, matchesAcceptedDeverbalBuild, supportsFutureObjectResultReload, supportsNominalCompoundResultReload }
   from "../../application/classical/result_reload.mjs?deverbalReload=20261024-8&stemReload=20261024-2&innerParticle=20261024-1&remainingReload=20261024-1&conjunctReload=20261023-1&v=20261007-reader-40-2-175&acceptedBuild=20261023-1&nominalReload=20261024-4&complexReload=20261027-1&placeReload=20261027-2&ownerDecision=20261031-2";
 import { exportClassicalGrammarWorkspaceHistoryReloadState,
@@ -49878,6 +49879,15 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const address = browserWindow?.location?.href
         ? new URL(url || browserWindow.location.href, browserWindow.location.href) : null;
       const prefix = "#result-v1=";
+      if (address?.searchParams.has("r") && !address.hash.startsWith(prefix)
+        && saved?.url !== address.href) {
+        let recipe;
+        try { recipe = translateClassicalConstructionLink(targetObject, address.searchParams.get("r")); }
+        catch { /* Unsupported constructions never replace the accepted Result. */ }
+        if (recipe && restoreClassicalMixedReloadSession({ recipe })) return true;
+        setClassicalWholeCanvasActionStatus("This construction link could not be reopened.");
+        return false;
+      }
       if (address?.hash.startsWith(prefix) && saved?.url !== address.href) {
         let recipe;
         try {

@@ -355,7 +355,8 @@ export async function bootstrapBrowserApp(options = {}) {
                 await globalObject.initializeUiRuntime();
             }
             const restored = globalObject.restoreClassicalVncReloadSession?.({ url: initialReloadUrl });
-            if (restored && initialReloadUrl && new URL(initialReloadUrl).hash.startsWith("#result-v1=")) {
+            const restoredUrl = restored && initialReloadUrl ? new URL(initialReloadUrl) : null;
+            if (restoredUrl && (restoredUrl.hash.startsWith("#result-v1=") || restoredUrl.searchParams.has("r"))) {
                 documentObject.documentElement.dataset.classicalResultLinkRestored = "true";
             }
             installClassicalNestedControlLedger({ globalObject, documentObject });
