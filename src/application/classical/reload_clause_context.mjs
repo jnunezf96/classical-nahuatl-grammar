@@ -86,6 +86,8 @@ export function exportClauseContextReloadNode(r,v,visit) {
       ...(v.precedingParticleResultFrame?{preceding:visit(v.precedingParticleResultFrame)}:{precedingParticleId:v.precedingParticleId})};
   }
   if(r.isClassicalNahuatlParticleResultFrame?.(v)===true) {
+    if (v.negativeSelectionFrame) return {type:'particle:negative-attachment',
+      selection:visit(v.negativeSelectionFrame),following:visit(v.followingParticleResultFrame)};
     const inputs=r.getClassicalNahuatlParticleReloadInputs(v);need(inputs);
     return {type:'particle:result',source:visit(inputs.sourceFrame),options:pick(inputs.options,PARTICLE),
       ...(inputs.options.precedingParticleSourceFrame?{preceding:visit(inputs.options.precedingParticleSourceFrame)}:{})};
@@ -164,6 +166,12 @@ export function replayClauseContextReloadNode(r,n,prior) {
       need(exact(n,['type','source','options','preceding'])&&prior(n.source)&&plain(n.options,PARTICLE));
       const options={...n.options};if(n.preceding!==undefined){options.precedingParticleSourceFrame=prior(n.preceding);need(options.precedingParticleSourceFrame);}
       return r.executeClassicalGrammarApplicationRequest({operationId:'particle:result',args:[prior(n.source),options]})?.canonicalResult;
+    }
+    if(n?.type==='particle:negative-attachment') {
+      need(exact(n,['type','selection','following'])&&prior(n.selection)&&prior(n.following));
+      return r.executeClassicalGrammarApplicationRequest({operationId:'particle:negative-attachment',args:[{
+        negativeSelectionFrame:prior(n.selection),followingParticleResultFrame:prior(n.following),
+      }]})?.canonicalResult;
     }
     if(n?.type==='particle:negative-selection') {
       need(exact(n,['type','polarity','sentenceKind','preceding','precedingParticleId'])&&typeof n.polarity==='string'&&typeof n.sentenceKind==='string'

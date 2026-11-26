@@ -67,3 +67,35 @@ test('projected nonspecific object references survive the composition source wra
  const projected=r.buildClassicalNahuatlClauseCompositionSourceFrame(a.canonicalResult,{referenceId:'nonspecific-source',objectReferenceId:'retained-object',objectReferenceIds:{'nonspecific-object':'retained-object'}});assert.equal(projected.authorizationStatus,'authorized',projected.blockReason);
  const whole=group([projected,source(nouns[1],1)]),{roots}=roundtrip(whole);assert.deepEqual(roots.accepted.conjuncts[0].objects,whole.conjuncts[0].objects);assert.equal(roots.accepted.conjuncts[0].objects[0].referenceId,'retained-object');
 });
+
+export function makeNegativeAttachment(owner=r, followingId="l3-no-adverbial") {
+  const execute=(operationId,...args)=>owner.executeClassicalGrammarApplicationRequest({operationId,args});
+  const particle=id=>execute("particle:result",owner.buildClassicalNahuatlParticleSourceFrame(id)).canonicalResult;
+  const selection=execute("particle:negative-selection",{
+    polarity:"negative",sentenceKind:"wish",precedingParticleResultFrame:particle("l3-ma"),
+  }).canonicalResult;
+  const following=particle(followingId);
+  const application=execute("particle:negative-attachment",{
+    negativeSelectionFrame:selection,followingParticleResultFrame:following,
+  });
+  assert.equal(application.authorizationStatus,"authorized",application.blockReason);
+  return {result:application.canonicalResult,selection,following};
+}
+
+test("a negative attachment link preserves its exact selection and following particle",async()=>{
+  for(const followingId of ["l3-no-adverbial","l3-oc"]){
+    const {result,selection,following}=makeNegativeAttachment(r,followingId);
+    const recipe=save(r,{result,selection,following});
+    assert.ok(recipe,result.surface);
+    const roots=restore(fresh,recipe);
+    assert.ok(roots);
+    assert.ok(roots.result.negativeSelectionFrame===roots.selection);
+    assert.ok(roots.result.followingParticleResultFrame===roots.following);
+    assert.equal(roots.result.surface,result.surface);
+    assert.equal(roots.result.formula,result.formula);
+    const forged=structuredClone(recipe);
+    const attachment=forged.nodes.find(node=>node.type==="particle:negative-attachment");
+    attachment.following=attachment.selection;
+    assert.equal(restore(fresh,forged),null);
+  }
+});
