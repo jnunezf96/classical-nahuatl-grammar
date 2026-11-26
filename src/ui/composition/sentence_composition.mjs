@@ -12,7 +12,8 @@ async function initializeCompositionWorkbench() {
   try { await bootstrapPromise; } catch { return; }
   const doc = document;
   const win = window;
-  if (!doc.getElementById('classical-workbench')) return;
+  const workspace = doc.getElementById('classical-workbench');
+  if (!workspace) return;
   let organizationModel=DEFAULT_WORKSPACE_ORGANIZATION;
   try{organizationModel=await loadWorkspaceOrganization(doc);}catch(error){console.error('Workspace organization:',error);}
   const refreshPresentation=createCompositionPresentation(doc,organizationModel);
@@ -45,6 +46,7 @@ async function initializeCompositionWorkbench() {
       if (!button || button.dataset.classicalPanelJump === 'classical-path-panel') return;
       const panel = doc.getElementById(button.dataset.classicalPanelJump);
       if (panel) {
+        workspace.dataset.classicalSelectedStage = panel.id;
         const reduceMotion = win.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
         const navHeight = panelNavigation.getBoundingClientRect().height;
         const top = Math.max(0, panel.getBoundingClientRect().top + win.scrollY - navHeight - 12);

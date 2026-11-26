@@ -1492,3 +1492,15 @@ body.is-language-classical #classical-workbench[data-composition-operation-selec
 .classical-double-nucleus-source__nuclei legend {padding:0 6px;font-weight:600;color:#173e34}
 .classical-double-nucleus-source__nuclei .classical-rule-control {display:flex;flex-direction:column;gap:6px;margin:8px 0}
 @media(max-width:700px) {.classical-double-nucleus-source__nuclei {grid-template-columns:1fr}}
+body.is-language-classical #classical-workbench:not([data-classical-selected-stage="classical-authority-panel"]) #classical-authority-panel,
+body.is-language-classical #classical-workbench[data-classical-selected-stage="classical-authority-panel"] #classical-source-panel,
+body.is-language-classical #classical-workbench[data-classical-selected-stage="classical-result-panel"] #classical-source-panel {
+  display: none !important;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] .panel-grid {
+  grid-template-columns: minmax(0, 1fr) !important;
+}
+body.is-language-classical #classical-workbench[data-workspace-organization="canvas"] :is(#classical-source-panel,#classical-authority-panel,#classical-result-panel) {
+  grid-column: 1 !important;
+  grid-row: auto !important;
+}
