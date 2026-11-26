@@ -47447,6 +47447,19 @@ export function createUiRenderingApi(targetObject = globalThis) {
           createGrammarInspectorLine("Quantitative predicate", canonical.quantitativePredicateParent.formulaRealization),
         );
       }
+      if (targetObject.isAdverbialAdjunctionResult?.(canonical) === true
+        && canonical.ruleProfile?.relation === "place") {
+        const adjunct = canonical.sourceContract?.adjoined?.issuedResult;
+        if (targetObject.isClassicalNahuatlRelationalResult?.(adjunct) === true
+          && targetObject.isClassicalNahuatlRelationalNncTypedSourceFrame?.(adjunct.navigatorSourceFrame) === true
+          && canonical.formulaRecord?.formula && adjunct.formula) {
+          analysisChildren.push(
+            createGrammarInspectorLine("Relation", "Place"),
+            createGrammarInspectorLine("Clause structure", canonical.formulaRecord.formula),
+            createGrammarInspectorLine("Relational adjunct", adjunct.formula),
+          );
+        }
+      }
       const honorificExistentialSpelling = canonical?.operationFrames?.find(
         frame => frame.kind === "classical-nahuatl-honorific-existential-spelling-frame"
       );

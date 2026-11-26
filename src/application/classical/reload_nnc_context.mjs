@@ -204,6 +204,8 @@ export function exportNncContextReloadNode(r, value, visit) {
     return {
       type: "nnc:relational",
       nounstem,
+      ...(r.isClassicalNahuatlRelationalNncTypedSourceFrame?.(value.navigatorSourceFrame)
+        && value.navigatorSourceFrame.sourceFrame === source ? { typedSource: true } : {}),
       clause: {
         ...pick(source, RELATIONAL_CLAUSE),
         subjectId: source.requestedSubjectId,
@@ -404,9 +406,11 @@ export function replayNncContextReloadNode(r, node, prior) {
           "composition",
           "upstream",
           "selected",
+          "typedSource",
         ]) ||
         !scalar(node.nounstem, RELATIONAL_NOUN) ||
-        !scalar(node.clause, RELATIONAL_CLAUSE)
+        !scalar(node.clause, RELATIONAL_CLAUSE) ||
+        (node.typedSource !== undefined && node.typedSource !== true)
       )
         return null;
       const nounstem = {
@@ -451,9 +455,17 @@ export function replayNncContextReloadNode(r, node, prior) {
           matrix: root.matrix,
         };
       }
+      const request = { nounstem, ...node.clause };
+      let args = [request];
+      if (node.typedSource) {
+        const source = r.buildClassicalNahuatlRelationalNncTypedSourceFrame(request);
+        const binding = r.issueClassicalNahuatlRelationalNncTypedSourceBindingFrame(source);
+        if (binding?.bindingStatus !== "ready") return null;
+        args = binding.executionArgs;
+      }
       return r.executeClassicalGrammarApplicationRequest({
         operationId: "nnc:relational",
-        args: [{ nounstem, ...node.clause }],
+        args,
       })?.canonicalResult;
     }
     if (node.type === "nnc:contextual-affective") {

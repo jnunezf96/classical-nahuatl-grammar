@@ -3378,7 +3378,13 @@ export function createClassicalNahuatlNncClosureApi(targetObject = globalThis) {
         : {}),
       sourceFrame,
       operationFrame,
-      ...(navigatorSourceFrame ? {navigatorSourceFrame,navigatorSourceIdentityPreserved:true,savedStateCapability:"deliberately-unsupported",savedStateNote:"Session only"} : {}),
+      ...(navigatorSourceFrame ? {
+        navigatorSourceFrame,
+        navigatorSourceIdentityPreserved:true,
+        savedStateCapability:source.predicateStemFrame?.stemId === "tloc-proximity"
+          && !source.sourceCompositionFrame && !source.upstreamSourceCarrier
+          && !source.selectedImperfectPredicateSource ? "supported" : "unclaimed",
+      } : {}),
       grammarFrame,
       greatestCommonDivisor: freeze({
         ...grammarFrame.greatestCommonDivisor,
