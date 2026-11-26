@@ -1,8 +1,8 @@
-# Grammar OS v1.2.153 release
+# Grammar OS v1.2.154 release
 
 Release name: **Writer Controls**
 
-Browser build: **20261126-negative-attachment-links-153**
+Browser build: **20261126-nested-chain-links-154**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 

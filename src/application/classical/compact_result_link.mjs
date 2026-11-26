@@ -53,6 +53,8 @@ function packSteps(steps) {
 }
 
 function unpackSteps(first, packed) {
+  if (!first || typeof first !== "object" || Array.isArray(first)
+    || !Array.isArray(packed) || packed.length >= 512) throw new Error("Invalid Grammar chain");
   const steps = [first];
   for (const entry of packed) {
     if (!Array.isArray(entry) || !entry[0] || entry.length < 1 || entry.length > 2) throw new Error("Invalid Grammar step");
@@ -79,7 +81,12 @@ export async function encodeCompactResultAddress(recipe) {
   // initial build separately from the operations that continue it.
   const steps = result.type === "vnc" ? result.recipe.steps : null;
   const chained = steps?.length > 1;
-  const source = { dependencies: recipe.nodes.slice(0,-1) };
+  const source = { dependencies: recipe.nodes.slice(0,-1).map(node => {
+    const steps = node.type === "vnc" ? node.recipe.steps : null;
+    return steps?.length > 1
+      ? {...node, firstStep:steps[0], recipe:{...node.recipe, steps:packSteps(steps)}}
+      : node;
+  }) };
   let grammar = result;
   if (chained) {
     source.priorBuild = steps[0];
@@ -114,6 +121,12 @@ export async function decodeCompactResultAddress(address) {
       if (Object.hasOwn(grammar, "source")) return null;
       grammar.source = source.lexicalSource;
     }
-    return {kind:"classical-grammar-result-reload-recipe", version:1, nodes:[...source.dependencies, grammar], roots:{result:root}};
+    const dependencies = source.dependencies.map(node => {
+      if (!node || !Object.hasOwn(node,"firstStep")) return node;
+      if (parts[0] !== "sgr2" || node.type !== "vnc") throw new Error("Invalid dependency chain");
+      const {firstStep, ...operation} = node;
+      return {...operation, recipe:{...operation.recipe, steps:unpackSteps(firstStep,operation.recipe?.steps)}};
+    });
+    return {kind:"classical-grammar-result-reload-recipe", version:1, nodes:[...dependencies, grammar], roots:{result:root}};
   } catch { return null; }
 }

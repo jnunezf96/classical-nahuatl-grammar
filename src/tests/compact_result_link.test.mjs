@@ -33,3 +33,16 @@ test("compact continuation carries 512 steps without copying repeated inputs", a
   assert.ok(address.length < 2000);
   assert.deepEqual(await decodeCompactResultAddress(address), recipe);
 });
+
+test("a long verb chain can be saved as a dependency of a larger Result", async () => {
+  const request = { sourceStem: "nemi", notes: "Repeated input ".repeat(80) };
+  const recipe = verbalRecipe(Array.from({ length: 512 }, (_, index) => ({
+    request: { ...request, subject: index % 2 ? "1pl" : "3sg" },
+  })));
+  recipe.nodes.push({ type: "particle:source", particleId: "l3-no-adverbial" });
+  recipe.nodes.push({ type: "particle:sentence-layer", operation: "sentence:adverbial-adjunction", host: 0, source: 1, options: {} });
+  recipe.roots.result = 2;
+  const address = await encodeCompactResultAddress(recipe);
+  assert.ok(address.length < 3000);
+  assert.deepEqual(await decodeCompactResultAddress(address), recipe);
+});
