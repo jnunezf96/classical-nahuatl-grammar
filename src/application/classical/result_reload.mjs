@@ -41,6 +41,22 @@ const plain = (value, keys) => value && typeof value === "object" && !Array.isAr
     && ["string", "boolean", "number"].includes(typeof value[key]));
 const exact = (value, keys) => value && typeof value === "object" && !Array.isArray(value)
   && Object.keys(value).every(key => keys.includes(key));
+function connectiveInputs(input) {
+  if (!input || input.lateOperation !== "compound" || input.lateVariant !== "connective-t"
+    || Array.isArray(input) || Object.keys(input).length > 128) return null;
+  const scalar = value => typeof value === "string" && value.length <= 4096
+    || typeof value === "boolean" || Number.isFinite(value);
+  const entries = Object.entries(input).filter(([,value]) => value !== undefined);
+  const safeKey = key => !["__proto__", "prototype", "constructor"].includes(key);
+  const plainOptions = value => value && Object.getPrototypeOf(value) === Object.prototype
+    && Object.keys(value).length <= 64 && Object.entries(value).every(([key, field]) =>
+      safeKey(key) && (scalar(field) || key === "outsidePrefixes" && Array.isArray(field) && field.length <= 12 && field.every(scalar)));
+  return entries.every(([key,value]) => safeKey(key) && (scalar(value)
+    || key === "sentenceOptions" && plainOptions(value)
+    || key === "outsidePrefixes" && Array.isArray(value) && value.length <= 12 && value.every(scalar)
+    || key === "sourceObjectRequests" && Array.isArray(value) && value.length === 0))
+    ? Object.fromEntries(entries) : null;
+}
 const ATTESTED_RELOAD = new Map([
   ["nnc:attested-cell", ["attested-cell", "NncCell", ["possessor"]]],
   ["nnc:attested-place", ["attested-place", "Place", []]],
@@ -149,7 +165,17 @@ export function exportClassicalResultReloadRecipe(r, roots = {}, normalizePrimit
       ?? exportClauseContextReloadNode(r,value,child=>visit(child,depth+1))
       ?? exportConstructedReloadNode(r,value,child=>visit(child,depth+1));
     const vnc = r.exportClassicalNahuatlVncApplicationRecipe?.(value);
+    const connective = r.getClassicalNahuatlDirectConnectiveReloadInputs?.(value);
+    const connectiveRequest = connectiveInputs(connective?.inputs);
+    const lexicalParent = capture?.operationId === "nnc:ordinary"
+      ? r.getClassicalNahuatlLexicalizedPresentNncSourceParent?.(value.sourceFrame) : null;
     if (node) {}
+    else if (connectiveRequest) node = {type:"vnc:direct-connective", request:connectiveRequest,
+      ...(connective.sourceApplicationFrame ? {source:visit(connective.sourceApplicationFrame,depth+1)} : {})};
+    else if (lexicalParent && r.isClassicalNahuatlOrdinaryNncResult?.(value))
+      node = {type:"nnc:lexicalized-present", parent:visit(lexicalParent.canonicalResult,depth+1),
+        choices:{...pick(value.operationFrame,NNC_KEYS),animacy:value.operationFrame.referentialAnimacy,
+          humanness:value.operationFrame.referentialHumanness}};
     else if (futureObjectReloadStep(r,value)) node = {type: "vnc:future-object",
       source: visit(value.baseApplicationFrame,depth+1), step: futureObjectReloadStep(r,value)};
     else if (vnc) node = { type: "vnc", recipe: vnc };
@@ -317,6 +343,25 @@ export function replayClassicalResultReloadRecipe(r, recipe) {
         const application = r.executeClassicalGrammarApplicationRequest({operationId: "nnc:sentence-surface",
           args: [prior(node.source).typedSlotFrame, node.choices]});
         result = application?.canonicalResult;
+      } else if (node?.type === "vnc:direct-connective" && exact(node, ["type", "request", "source"])) {
+        const request = connectiveInputs(node.request);
+        if (!request) return null;
+        if (node.source !== undefined) {
+          const source = prior(node.source);
+          if (r.isClassicalNahuatlVncApplicationFrame?.(source) !== true) return null;
+          request.sourceApplicationFrame = source;
+        }
+        const application = r.executeClassicalGrammarApplicationRequest({operationId:"vnc:derivational-operation",args:[request]});
+        if (application?.authorizationStatus !== "authorized"
+          || !r.getClassicalNahuatlDirectConnectiveReloadInputs?.(application.canonicalResult)) return null;
+        result = application.canonicalResult;
+      } else if (node?.type === "nnc:lexicalized-present" && exact(node, ["type", "parent", "choices"])
+        && prior(node.parent) && plain(node.choices, [...NNC_KEYS, "humanness"])) {
+        const source = r.buildClassicalNahuatlLexicalizedPresentNncSourceFrame(prior(node.parent));
+        if (r.getClassicalNahuatlLexicalizedPresentNncSourceParent?.(source)?.canonicalResult !== prior(node.parent)) return null;
+        const navigator = r.getClassicalGrammarApplicationCapabilityNavigator(source);
+        const binding = r.issueClassicalGrammarTypedSourceOperationBindingFrame(navigator,"nnc:ordinary",node.choices);
+        result = r.executeClassicalGrammarTypedSourceOperationBindingFrame(binding)?.canonicalResult;
       } else if (node?.type === "nnc:ordinary" && exact(node, ["type", "source", "choices"])
         && plain(node.source, SOURCE_KEYS) && plain(node.choices, [...NNC_KEYS, "humanness"])) {
         const source = r.issueCanonicalNncSourceFrame(node.source);
