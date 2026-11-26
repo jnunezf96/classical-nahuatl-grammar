@@ -1,3 +1,4 @@
+import {encodeCompactResultAddress as encode,decodeCompactResultAddress as decode} from "../application/classical/compact_result_link.mjs";
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
@@ -98,4 +99,54 @@ test("a negative attachment link preserves its exact selection and following par
     attachment.following=attachment.selection;
     assert.equal(restore(fresh,forged),null);
   }
+});
+
+export function makeLargeConjunction(owner=r,deep=false) {
+  const execute=(operationId,...args)=>{
+    const application=owner.executeClassicalGrammarApplicationRequest({operationId,args});
+    assert.equal(application.authorizationStatus,"authorized",application.blockReason);
+    return application.canonicalResult;
+  };
+  const clauses=Array.from({length:44},(_,index)=>{
+    const source=owner.buildClassicalNahuatlOrdinaryNncSourceFrame({stem:"cal",sourceClass:"tli-1"});
+    const operation=owner.buildClassicalNahuatlOrdinaryNncOperationFrame(source,{subject:"3common",state:"absolutive"});
+    return owner.buildClassicalNahuatlClauseCompositionSourceFrame(execute("nnc:ordinary",source,operation),{
+      referenceId:"clause-"+index,
+    });
+  });
+  const conjoin=conjuncts=>execute("clause:composition",{
+    operationKind:"conjunction",conjuncts,options:{relation:"unmarked",coordinationType:"additive"},
+  });
+  return deep
+    ? clauses.slice(2).reduce((group,clause)=>conjoin([group,clause]),conjoin(clauses.slice(0,2)))
+    : conjoin([conjoin(clauses.slice(0,22)),conjoin(clauses.slice(22))]);
+}
+
+test("a wide nested conjunction saves all 135 nodes in its Result link",async()=>{
+  const result=makeLargeConjunction();
+  const recipe=save(r,{result});
+  assert.equal(recipe?.nodes.length,135);
+  const reopened=restore(fresh,await decode(await encode(recipe)))?.result;
+  assert.ok(reopened);
+  assert.equal(reopened.surfaceRealization,result.surfaceRealization);
+  assert.equal(reopened.formulaRealization,result.formulaRealization);
+  assert.deepEqual(reopened.conjuncts.flatMap(group=>group.conjuncts.map(clause=>clause.referenceId)),
+    Array.from({length:44},(_,index)=>"clause-"+index));
+});
+
+
+test("a deeply nested conjunction keeps its complete clause structure",async()=>{
+  const result=makeLargeConjunction(r,true);
+  const recipe=save(r,{result});
+  assert.equal(recipe?.nodes.length,175);
+  const reopened=restore(fresh,await decode(await encode(recipe)))?.result;
+  assert.ok(reopened);
+  assert.equal(reopened.surfaceRealization,result.surfaceRealization);
+  assert.equal(reopened.formulaRealization,result.formulaRealization);
+  let parent=reopened;
+  for(let index=43;index>=2;index--){
+    assert.equal(parent.conjuncts[1].referenceId,"clause-"+index);
+    parent=parent.conjuncts[0];
+  }
+  assert.deepEqual(parent.conjuncts.map(clause=>clause.referenceId),["clause-0","clause-1"]);
 });

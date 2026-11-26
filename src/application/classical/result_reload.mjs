@@ -1,3 +1,4 @@
+import {MAX_RESULT_LINK_NODES} from "./compact_result_link.mjs";
 import {exportImperfectiveReloadNode,replayImperfectiveReloadNode} from "./reload_imperfective.mjs";
 import {exportFormedReloadNode,replayFormedReloadNode} from "./reload_formed.mjs?placeReload=20261027-2";
 import {exportNameReloadNode,replayNameReloadNode} from "./reload_names.mjs?ownerDecision=20261031-2";
@@ -184,7 +185,7 @@ export function exportClassicalResultReloadRecipe(r, roots = {}, normalizePrimit
   const nodes = [], indices = new Map(), visiting = new Set();
   function visit(value, depth = 0) {
     if (indices.has(value)) return indices.get(value);
-    if (!value || depth > 32 || nodes.length >= 128 || visiting.has(value)) throw new Error("unsupported reload graph");
+    if (!value || depth + nodes.length >= MAX_RESULT_LINK_NODES || visiting.has(value)) throw new Error("unsupported reload graph");
     const capture = issued(r, value);
     const allomorphBinding = r.getClassicalNahuatlCompoundAllomorphBindingForSource?.(value);
     if (!capture && !allomorphBinding && !isNncReloadEvidence(r,value) && !isClauseReloadEvidence(r,value)
@@ -360,7 +361,7 @@ export function exportClassicalResultReloadRecipe(r, roots = {}, normalizePrimit
 export function replayClassicalResultReloadRecipe(r, recipe) {
   if (!exact(recipe, ["kind", "version", "nodes", "roots"]) || recipe.kind !== KIND
     || recipe.version !== 1 || !Array.isArray(recipe.nodes) || !recipe.nodes.length
-    || recipe.nodes.length > 128 || !recipe.roots || Array.isArray(recipe.roots)
+    || recipe.nodes.length > MAX_RESULT_LINK_NODES || !recipe.roots || Array.isArray(recipe.roots)
     || typeof recipe.roots !== "object") return null;
   const results = [];
   const prior = id => Number.isInteger(id) && id >= 0 && id < results.length ? results[id] : null;

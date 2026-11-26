@@ -1,4 +1,5 @@
 const PREFIX = "sgr2";
+export const MAX_RESULT_LINK_NODES = 512;
 const MAX_ADDRESS = 16000;
 const MAX_JSON_BYTES = 262144;
 
@@ -75,7 +76,8 @@ function unpackSteps(first, packed) {
 
 export async function encodeCompactResultAddress(recipe) {
   if (!recipe || recipe.kind !== "classical-grammar-result-reload-recipe" || recipe.version !== 1
-    || recipe.roots?.result !== recipe.nodes?.length - 1) return null;
+    || !Array.isArray(recipe.nodes) || !recipe.nodes.length || recipe.nodes.length > MAX_RESULT_LINK_NODES
+    || recipe.roots?.result !== recipe.nodes.length - 1) return null;
   const result = recipe.nodes.at(-1);
   // Dependencies precede the operation. A verbal chain can also carry its
   // initial build separately from the operations that continue it.
@@ -109,7 +111,7 @@ export async function decodeCompactResultAddress(address) {
     const [source, grammar] = await Promise.all([expand(parts[1]), expand(parts[2])]);
     const root = Number.parseInt(parts[3], 36);
     if (!source || !Array.isArray(source.dependencies)
-      || root !== source.dependencies.length || root >= 128
+      || root !== source.dependencies.length || root >= MAX_RESULT_LINK_NODES
       || !grammar || typeof grammar !== "object" || Array.isArray(grammar)) return null;
     if (Object.hasOwn(source, "priorBuild")) {
       if (grammar.type !== "vnc" || !Array.isArray(grammar.recipe?.steps)) return null;
