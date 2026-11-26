@@ -219,3 +219,43 @@ test("a compound link restores its compound-only predicate Source",async()=>{
     assert.equal(replay(fresh,decoded),null);
   }
 });
+
+export function makeNominalMatrixCompound(r) {
+  const execute=(operationId,...args)=>r.executeClassicalGrammarApplicationRequest({operationId,args}).canonicalResult;
+  const nounSource=r.buildClassicalNahuatlOrdinaryNncSourceFrame({stem:"pil",sourceClass:"tli-1"});
+  const nounOperation=r.buildClassicalNahuatlOrdinaryNncOperationFrame(nounSource,{
+    state:"absolutive",subject:"3sg",predicateFormation:"source-stem",humanness:"human",
+  });
+  const embed=execute("nnc:ordinary",nounSource,nounOperation);
+  const finite={subject:"3sg",mood:"indicative",tense:"present"};
+  const matrix=execute("vnc:application",{...finite,sourceStem:"caqui",verbClass:"B",sourceValence:"specific-projective",
+    objectKind:"specific-projective",objectPerson:"3sg",requestedDerivation:"direct",requestedVoice:"active"});
+  const nominal=execute("grammar:nominal-construction",{...finite,constructionKind:"nominal-embed-vnc",relation:"object",
+    route:"object",voice:"active",embedReduplication:"none",matrixFormation:"ordinary",matrixReduplication:"none",
+    orientation:"not-applicable",source:{embedStem:"pil",embedClass:"tli",embedSourceClass:"tli-1",
+      embedConstituent:{kind:"ordinary-nnc",stem:"pil",resultFrame:embed},
+      matrixStem:"caqui",matrixValence:"specific-projective",matrixVerbClass:"B",
+      matrixConstituent:{kind:"vnc-result",stem:"caqui",resultFrame:matrix}}});
+  const parent=execute("vnc:derivational-operation",{...finite,sourceStem:"chōca",verbClass:"A",sourceValence:"intransitive",
+    objectKind:"specific-projective",objectPerson:"3sg",voice:"active",lateOperation:"compound",lateVariant:"connective-t",
+    compoundMatrixVncResultFrame:nominal});
+  assert.equal(parent?.surfaceRealization,"chōcatipilcaqui");
+  return {nominal,parent,result:r.requestClassicalVncSentenceResultFrame(parent)};
+}
+
+test("a nominally composed matrix retains its exact identity in a compound link",async()=>{
+  const r=await runtime(),fresh=await runtime();
+  const {nominal,parent,result}=makeNominalMatrixCompound(r);
+  const recipe=save(r,{result,nominal});
+  assert.ok(recipe,parent.surfaceRealization);
+  const roots=replay(fresh,recipe);
+  assert.ok(roots?.result.lateOperationClosureFrame.operationFrame.operationFacts.nominalMatrixResultFrame===roots?.nominal);
+  const decoded=await decode(await encode(save(r,{result})));
+  const reopened=replay(fresh,decoded)?.result;
+  assert.ok(reopened);
+  assert.equal(reopened.sentenceSurfaceDisplay,result.sentenceSurfaceDisplay);
+  assert.equal(reopened.sentenceFormulaDisplay,result.sentenceFormulaDisplay);
+  const outer=decoded.nodes.find(node=>node.operands?.compoundMatrixVncResultFrame!==undefined);
+  outer.operands.compoundMatrixVncResultFrame=decoded.nodes.findIndex(node=>node.type==="vnc");
+  assert.equal(replay(fresh,decoded),null);
+});

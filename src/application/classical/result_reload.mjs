@@ -52,7 +52,7 @@ const plain = (value, keys) => value && typeof value === "object" && !Array.isAr
 const exact = (value, keys) => value && typeof value === "object" && !Array.isArray(value)
   && Object.keys(value).every(key => keys.includes(key));
 const DIRECT_LATE_OPERANDS = new Map([
-  ["compound", ["recursiveEmbedClosureFrame", "compoundEmbedClosureFrame", "compoundMatrixClosureFrame"]],
+  ["compound", ["recursiveEmbedClosureFrame", "compoundEmbedClosureFrame", "compoundMatrixClosureFrame", "compoundMatrixVncResultFrame"]],
   ["reverential", ["attitudeSourceClosureFrame"]],
 ]);
 const LATE_OPERANDS = ["recursiveEmbedClosureFrame","compoundEmbedClosureFrame","compoundMatrixClosureFrame",
@@ -480,7 +480,7 @@ export function replayClassicalResultReloadRecipe(r, recipe) {
           if (!exact(node.operands,DIRECT_LATE_OPERANDS.get(request.lateOperation) ?? [])) return null;
           for (const [role,index] of Object.entries(node.operands)) {
             const operand = prior(index);
-            if (!r.isClassicalNahuatlClosureFrame?.(operand) || Object.hasOwn(request,role)) return null;
+            if (!operand || Object.hasOwn(request,role)) return null;
             operands[role] = operand;
           }
         }

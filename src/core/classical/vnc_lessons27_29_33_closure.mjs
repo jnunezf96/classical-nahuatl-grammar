@@ -7635,12 +7635,17 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
         || compoundPredicateSourceFrame !== frame.compoundPredicateSourceFrame)) return null;
       const operands = {};
       const roles = {
-        compound: ["recursiveEmbedClosureFrame", "compoundEmbedClosureFrame", "compoundMatrixClosureFrame"],
+        compound: ["recursiveEmbedClosureFrame", "compoundEmbedClosureFrame", "compoundMatrixClosureFrame", "compoundMatrixVncResultFrame"],
         reverential: ["attitudeSourceClosureFrame"],
       };
       for (const role of roles[frame.operationFrame.operation] ?? []) {
         if (inputs[role] === undefined) continue;
-        if (!issuedClosureFrames.has(inputs[role]) || inputs[role].authorizationStatus !== "authorized") return null;
+        const operand = inputs[role];
+        const valid = role === "compoundMatrixVncResultFrame"
+          ? targetObject.isClassicalNahuatlNominalConstructionResult?.(operand) === true
+            && operand === frame.operationFrame.operationFacts.nominalMatrixResultFrame
+          : issuedClosureFrames.has(operand);
+        if (!valid || operand.authorizationStatus !== "authorized") return null;
         operands[role] = inputs[role];
         delete inputs[role];
       }
