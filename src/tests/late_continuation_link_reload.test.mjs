@@ -64,3 +64,44 @@ test("attitude links reopen with the original parent, formula and chosen scope",
     assert.equal(replay(fresh,forged),null);
   }
 });
+
+export function makeDirectCompounds(r) {
+  const base={sourceStem:"cui",sourceValence:"specific-projective",objectKind:"specific-projective",
+    objectPerson:"3sg",verbClass:"A",subject:"3sg",mood:"indicative",tense:"present",
+    derivationType:"direct",voice:"active",lateOperation:"compound"};
+  const requests=[
+    {...base,lateVariant:"shared-object",compoundMatrixStem:"tlāl-i-ā"},
+    {...base,lateVariant:"shared-object",compoundMatrixStem:"quetza",objectKind:"reflexive",objectPerson:""},
+    {...base,sourceStem:"chōca",sourceValence:"intransitive",objectKind:"none",objectPerson:"",
+      lateVariant:"reflexive-matrix",compoundMatrixStem:"m-o-quetza"},
+
+  ];
+  return requests.map(request=>{
+    const made=r.executeClassicalGrammarApplicationRequest({operationId:"vnc:derivational-operation",args:[request]});
+    assert.equal(made.authorizationStatus,"authorized",made.blockReason || request.lateVariant);
+    const parent=made.canonicalResult;
+    const result=r.requestClassicalVncSentenceResultFrame(parent);
+    assert.equal(result.lateOperationClosureFrame,parent);
+    return {parent,result};
+  });
+}
+
+test("direct compounds reopen inside sentences with the exact compound analysis",async()=>{
+  const r=await runtime(),fresh=await runtime();
+  for(const {parent,result} of makeDirectCompounds(r)){
+    const recipe=save(r,{result,parent});
+    assert.ok(recipe,parent.surfaceRealization);
+    const reopened=replay(fresh,recipe);
+    assert.ok(reopened,parent.surfaceRealization);
+    assert.ok(reopened.result.lateOperationClosureFrame===reopened.parent, parent.surfaceRealization);
+    assert.equal(reopened.parent.surfaceRealization,parent.surfaceRealization);
+    assert.equal(reopened.parent.formulaRealization,parent.formulaRealization);
+    assert.equal(reopened.parent.operationFrame.variant,parent.operationFrame.variant);
+    const compact=await encode(save(r,{result}));
+    const linked=replay(fresh,await decode(compact))?.result;
+    assert.ok(linked,parent.surfaceRealization);
+    assert.equal(linked.lateOperationClosureFrame.formulaRealization,parent.formulaRealization);
+    assert.equal(linked.surfaceRealization,result.surfaceRealization);
+    assert.equal(linked.formulaRecord?.formula,result.formulaRecord?.formula);
+  }
+});

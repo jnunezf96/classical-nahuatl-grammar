@@ -69,7 +69,8 @@ const finiteSelections = (value, extras = []) => exact(value,[...CARRIER_CHOICES
     : typeof choice === "string" && choice.length <= 4096);
 function directLateInputs(input, connective) {
   if (!input || !(connective ? input.lateOperation === "compound" && input.lateVariant === "connective-t"
-    : ["purposive","honorific"].includes(input.lateOperation))
+    : ["purposive","honorific"].includes(input.lateOperation)
+      || input.lateOperation === "compound" && ["shared-object","reflexive-matrix"].includes(input.lateVariant))
     || Array.isArray(input) || Object.keys(input).length > 128) return null;
   const scalar = value => typeof value === "string" && value.length <= 4096
     || typeof value === "boolean" || Number.isFinite(value);
@@ -202,7 +203,7 @@ export function exportClassicalResultReloadRecipe(r, roots = {}, normalizePrimit
       ? value.vncApplicationFrame : null;
     const late = r.getClassicalNahuatlDirectLateReloadInputs?.(value);
     const continuedLate = r.getClassicalNahuatlLateContinuationReloadInputs?.(value);
-    const connective = late?.inputs?.lateOperation === "compound";
+    const connective = late?.inputs?.lateOperation === "compound" && late.inputs.lateVariant === "connective-t";
     const lateRequest = directLateInputs(late?.inputs,connective);
     const lateSentenceParent = r.isClassicalNahuatlVncSentenceResultFrame?.(value)
       && (r.getClassicalNahuatlDirectLateReloadInputs?.(value.lateOperationClosureFrame)
