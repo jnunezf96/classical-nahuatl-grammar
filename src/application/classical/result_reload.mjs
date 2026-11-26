@@ -52,7 +52,8 @@ const plain = (value, keys) => value && typeof value === "object" && !Array.isAr
 const exact = (value, keys) => value && typeof value === "object" && !Array.isArray(value)
   && Object.keys(value).every(key => keys.includes(key));
 const DIRECT_LATE_OPERANDS = new Map([
-  ["compound", ["recursiveEmbedClosureFrame", "compoundEmbedClosureFrame", "compoundMatrixClosureFrame", "compoundMatrixVncResultFrame"]],
+  ["compound", ["recursiveEmbedClosureFrame", "compoundEmbedClosureFrame", "compoundMatrixClosureFrame", "compoundMatrixVncResultFrame",
+    "compoundEmbedAllomorphSourceClosureFrame"]],
   ["reverential", ["attitudeSourceClosureFrame"]],
   ["honorific", ["attitudeCompoundClosureFrame", "attitudeMemberTransformationFrame"]],
   ["pejorative", ["attitudeCompoundClosureFrame", "attitudeMemberTransformationFrame"]],
@@ -73,7 +74,7 @@ function lateContinuationChoices(value) {
 const finiteSelections = (value, extras = []) => exact(value,[...CARRIER_CHOICES,...extras]) && Object.entries(value).every(([key,choice]) =>
   key === "sentenceOptions" ? plain(choice,CARRIER_SENTENCE_CHOICES)
     : typeof choice === "string" && choice.length <= 4096);
-const DIRECT_SOURCE_OBJECT_KEYS = ["objectId","objectKind","objectPerson","object","governor","derivationalLevel",
+const DIRECT_SOURCE_OBJECT_KEYS = ["objectId","objectKind","objectPerson","objectNumber","object","governor","derivationalLevel",
   "silentSpecificObject","shuntlineReflexivePosition","shuntlineReflexiveBoundaryVariant","mainlineLinearPriority",
   "person","animacy","humanness","number","referenceId"];
 const COMPOUND_LEXICALIZATION_KEYS = ["lexicalStatus","sourceEmbedStem","sourceMatrixStem",
@@ -185,7 +186,8 @@ export function exportClassicalResultReloadRecipe(r, roots = {}, normalizePrimit
     if (indices.has(value)) return indices.get(value);
     if (!value || depth > 32 || nodes.length >= 128 || visiting.has(value)) throw new Error("unsupported reload graph");
     const capture = issued(r, value);
-    if (!capture && !isNncReloadEvidence(r,value) && !isClauseReloadEvidence(r,value)
+    const allomorphBinding = r.getClassicalNahuatlCompoundAllomorphBindingForSource?.(value);
+    if (!capture && !allomorphBinding && !isNncReloadEvidence(r,value) && !isClauseReloadEvidence(r,value)
       && !isDeverbalReloadEvidence(r,value)) throw new Error("issued reload Result required");
     visiting.add(value);
     // An ordinary nucleus can be issued directly by Source analysis or have
@@ -228,6 +230,13 @@ export function exportClassicalResultReloadRecipe(r, roots = {}, normalizePrimit
     const lexicalParent = capture?.operationId === "nnc:ordinary"
       ? r.getClassicalNahuatlLexicalizedPresentNncSourceParent?.(value.sourceFrame) : null;
     if (node) {}
+    else if (allomorphBinding && lateContinuationChoices(allomorphBinding.callerSelections)
+      && exact(allomorphBinding.additionalResultFrames,LATE_OPERANDS)) {
+      node = {type:"vnc:compound-allomorph-source",source:visit(allomorphBinding.exactInputResult,depth+1),
+        selections:allomorphBinding.callerSelections,
+        operands:Object.fromEntries(Object.entries(allomorphBinding.additionalResultFrames)
+          .map(([role,operand])=>[role,visit(operand,depth+1)]))};
+    }
     else if (carrier && finiteSelections(carrier.selections)) node = {type:"vnc:nonactive-carrier",...carrier};
     else if (carrierParent) node = {type:"vnc:nonactive-carrier-sentence",source:visit(carrierParent,depth+1)};
     else if (specialized && finiteSelections(specialized.selections,["reading","embedStem","adverbialEntryId","objectSelection"]))
@@ -447,7 +456,7 @@ export function replayClassicalResultReloadRecipe(r, recipe) {
       } else if (node?.type === "vnc:specialized-finite-sentence" && exact(node, ["type","source"])
         && r.getClassicalNahuatlSpecializedFiniteReloadInputs?.(prior(node.source))?.projection === "application") {
         result = r.requestClassicalVncSentenceResultFrame(prior(node.source));
-      } else if (node?.type === "vnc:late-continuation"
+      } else if (["vnc:late-continuation","vnc:compound-allomorph-source"].includes(node?.type)
         && exact(node,["type","source","selections","operands"])
         && prior(node.source) && lateContinuationChoices(node.selections) && exact(node.operands,LATE_OPERANDS)
         && Object.values(node.operands).every(ref=>prior(ref))) {
@@ -455,10 +464,17 @@ export function replayClassicalResultReloadRecipe(r, recipe) {
         const operands = Object.fromEntries(Object.entries(node.operands).map(([role,ref])=>[role,prior(ref)]));
         const binding = r.issueClassicalNahuatlVncContinuationBindingFrame("vnc:derivational-operation",parent,node.selections,operands);
         if (binding?.bindingStatus !== "ready" || binding.exactInputResult !== parent) return null;
-        const application = r.executeClassicalGrammarApplicationRequest({operationId:binding.operationId,args:binding.executionArgs});
-        if (application?.authorizationStatus !== "authorized"
-          || r.getClassicalNahuatlLateContinuationReloadInputs?.(application.canonicalResult)?.parent !== parent) return null;
-        result = application.canonicalResult;
+        if (node.type === "vnc:compound-allomorph-source") {
+          const {compoundEmbedAllomorphSourceClosureFrame,sourceApplicationFrame} = binding.ownerRequest;
+          if (compoundEmbedAllomorphSourceClosureFrame !== parent
+            || r.getClassicalNahuatlCompoundAllomorphBindingForSource?.(sourceApplicationFrame) !== binding) return null;
+          result = sourceApplicationFrame;
+        } else {
+          const application = r.executeClassicalGrammarApplicationRequest({operationId:binding.operationId,args:binding.executionArgs});
+          if (application?.authorizationStatus !== "authorized"
+            || r.getClassicalNahuatlLateContinuationReloadInputs?.(application.canonicalResult)?.parent !== parent) return null;
+          result = application.canonicalResult;
+        }
       } else if (node?.type === "vnc:direct-late-sentence" && exact(node, ["type","source"])
         && (r.getClassicalNahuatlDirectLateReloadInputs?.(prior(node.source))
           || r.getClassicalNahuatlLateContinuationReloadInputs?.(prior(node.source)))) {
@@ -578,7 +594,7 @@ export function replayClassicalResultReloadRecipe(r, recipe) {
           principalClause: prior(node.principal), adjoinedUnit: prior(node.adjoined),
           ...(node.marker === undefined ? {} : { markerUnit: prior(node.marker) }) });
       } else return null;
-      if (!issued(r, result) && !isNncReloadEvidence(r,result) && !isClauseReloadEvidence(r,result) && !isDeverbalReloadEvidence(r,result)) return null;
+      if (!issued(r, result) && !r.getClassicalNahuatlCompoundAllomorphBindingForSource?.(result) && !isNncReloadEvidence(r,result) && !isClauseReloadEvidence(r,result) && !isDeverbalReloadEvidence(r,result)) return null;
       results.push(result);
     }
     const roots = Object.fromEntries(Object.entries(recipe.roots).map(([key, id]) => [key, prior(id)]));

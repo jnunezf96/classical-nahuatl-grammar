@@ -285,3 +285,40 @@ test("both direct compound honorific readings keep their scope and parent in a s
     assert.equal(replay(fresh,altered),null);
   }
 });
+
+export function makeAllomorph(r) {
+  const operationId="vnc:derivational-operation";
+  const execute=args=>r.executeClassicalGrammarApplicationRequest({operationId,args});
+  const honorific=execute([{sourceStem:"pil-ca",sourceValence:"intransitive",verbClass:"A",subject:"3sg",
+    sourceSubject:"3sg",sourceSubjectHumanness:"human",sourceSubjectAnimacy:"animate",mood:"indicative",
+    tense:"present",voice:"active",lateOperation:"honorific",lateVariant:"causative",honoredParticipant:"subject",
+    honorificFormationAnalysis:"causative-only"}]);
+  assert.equal(honorific.authorizationStatus,"authorized",honorific.blockReason);
+  const input=honorific.canonicalResult;
+  const binding=r.issueClassicalNahuatlVncContinuationBindingFrame(operationId,input,{
+    lateOperation:"compound",lateVariant:"connective-t",compoundMatrixStem:"yāuh",
+  });
+  assert.equal(binding.bindingStatus,"ready",binding.blockReason);
+  const application=execute([{...binding.executionArgs[0]}]);
+  assert.equal(application.authorizationStatus,"authorized",application.blockReason);
+  const parent=application.canonicalResult;
+  return {input,parent,result:r.requestClassicalVncSentenceResultFrame(parent)};
+}
+
+test("direct builds preserve the documented compound perfective and its exact input",async()=>{
+  const r=await runtime(),fresh=await runtime();
+  const {input,parent,result}=makeAllomorph(r);
+  assert.equal(parent.surfaceRealization,"mopilquitihtiyauh");
+  const recipe=save(r,{result,input});
+  assert.ok(recipe);
+  const roots=replay(fresh,recipe);
+  assert.ok(roots);
+  const restored=roots.result.lateOperationClosureFrame;
+  const allomorph=restored.operationFrame.operationFacts.compoundEmbedAllomorphFrame;
+  assert.equal(allomorph.selectedPerfectiveStem,"pil-qui-tih");
+  assert.ok(allomorph.sourceClosureFrame===roots.input);
+  assert.equal(restored.formulaRealization,parent.formulaRealization);
+  const linked=replay(fresh,await decode(await encode(save(r,{result}))))?.result;
+  assert.equal(linked?.sentenceSurfaceDisplay,result.sentenceSurfaceDisplay);
+  assert.equal(linked?.sentenceFormulaDisplay,result.sentenceFormulaDisplay);
+});

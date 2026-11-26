@@ -7635,7 +7635,8 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
         || compoundPredicateSourceFrame !== frame.compoundPredicateSourceFrame)) return null;
       const operands = {};
       const roles = {
-        compound: ["recursiveEmbedClosureFrame", "compoundEmbedClosureFrame", "compoundMatrixClosureFrame", "compoundMatrixVncResultFrame"],
+        compound: ["recursiveEmbedClosureFrame", "compoundEmbedClosureFrame", "compoundMatrixClosureFrame", "compoundMatrixVncResultFrame",
+          "compoundEmbedAllomorphSourceClosureFrame"],
         reverential: ["attitudeSourceClosureFrame"],
         honorific: ["attitudeCompoundClosureFrame", "attitudeMemberTransformationFrame"],
         pejorative: ["attitudeCompoundClosureFrame", "attitudeMemberTransformationFrame"],

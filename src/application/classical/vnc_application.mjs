@@ -137,6 +137,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       ]);
     const classicalNahuatlVncContinuationBindingFrames = new WeakSet();
     const lateContinuationBindingsByRequest = new WeakMap();
+    const compoundAllomorphBindingsBySource = new WeakMap();
     const CLASSICAL_NAHUATL_ORDERED_VOICE_VNC_APPLICATION_KIND =
       "classical-nahuatl-ordered-voice-vnc-application-frame";
     const CLASSICAL_NAHUATL_VNC_MEANING_PRESENTATION_FRAME_KIND =
@@ -13657,6 +13658,10 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       if (frame.operationId === "vnc:derivational-operation" && frame.bindingStatus === "ready"
         && frame.exactInputResult && frame.executionArgs.length === 1 && frame.executionArgs[0] === frame.ownerRequest) {
         lateContinuationBindingsByRequest.set(frame.ownerRequest,frame);
+        const {compoundEmbedAllomorphSourceClosureFrame, sourceApplicationFrame} = frame.ownerRequest;
+        if (sourceApplicationFrame && compoundEmbedAllomorphSourceClosureFrame === frame.exactInputResult) {
+          compoundAllomorphBindingsBySource.set(sourceApplicationFrame,frame);
+        }
       }
       return frame;
     }
@@ -14163,6 +14168,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
     api.prepareClassicalNahuatlVncApplicationRecipeReplay =
       prepareClassicalNahuatlVncApplicationRecipeReplay;
     api.getClassicalNahuatlVncContinuationReloadInputs = getClassicalNahuatlVncContinuationReloadInputs;
+    api.getClassicalNahuatlCompoundAllomorphBindingForSource = source => compoundAllomorphBindingsBySource.get(source);
     api.getClassicalNahuatlLateContinuationBindingForRequest = request => lateContinuationBindingsByRequest.get(request);
     api.getClassicalNahuatlVncRecipeStepExecutionRequest =
       getClassicalNahuatlVncRecipeStepExecutionRequest;
