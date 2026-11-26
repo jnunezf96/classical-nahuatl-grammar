@@ -39,7 +39,7 @@ const ADJUNCTION_KEYS = ["semanticRelation", "adverbializationDegree", "structur
   "principalCorroboratingAdverbial", "conditionalCuePresent"];
 const CONJUNCTION_FACT_KEYS = ["semanticGroup", "shortPronominal", "collectiveReference", "namedPartnerEligible",
   "maleBondingStem", "demonstrativeKind", "interrogativeKind", "antecessiveOrder", "mood", "tense", "sentenceKind"];
-const CONJUNCTION_OPTION_KEYS = ["relation", "coordinationType", "level", "polarity", "rightwardModifier",
+const CONJUNCTION_OPTION_KEYS = ["contextualSilentFirstPerson", "relation", "coordinationType", "level", "polarity", "rightwardModifier",
   "modifierAdjunctor", "sharedModifierScope", "sharedModifier", "leftContextAbsent", "markedAdjoinedException",
   "adjoinedFunction", "identicalAdjoinedClauseEllipsis", "boundaryPunctuation", "correlationType", "pattern",
   "lexicalType", "adjunctorDistribution", "stateRealization", "parallelType", "rephraseAxis", "appositiveType"];

@@ -20,7 +20,7 @@ const need = condition => { if (!condition) throw new Error('unsupported clause 
 export function isClauseReloadEvidence(r,v) {
   return ['isClassicalNahuatlDiscourseSourceContextFrame','isClassicalNahuatlSupplementationContextRecord',
     'isClassicalNahuatlSupplementationClauseEnvelope','isClassicalNahuatlClauseCompositionSourceFrame',
-    'isClassicalNahuatlParticleSourceFrame','isClassicalNahuatlParticleResultFrame',
+    'isClassicalNahuatlClauseComplementationResultFrame','isClassicalNahuatlParticleSourceFrame','isClassicalNahuatlParticleResultFrame',
     'isClassicalNahuatlNegativeParticleSelectionFrame','isClassicalNahuatlSupplementationFrame']
     .some(name=>r[name]?.(v)===true && v.authorizationStatus!=='blocked');
 }
@@ -43,6 +43,13 @@ function unpack(v,prior,depth=0) {
   return Object.fromEntries(Object.entries(v.fields).map(([k,x])=>[k,unpack(x,prior,depth+1)]));
 }
 export function exportClauseContextReloadNode(r,v,visit) {
+  const complement = r.getClassicalNahuatlClauseComplementationReloadInputs?.(v);
+  if (complement) {
+    const {operationKind, principalClause, complementClause, auxiliaryClause, options} = complement;
+    return {type:'clause:complement',operationKind,principal:visit(principalClause),complement:visit(complementClause),
+      ...(auxiliaryClause ? {auxiliary:visit(auxiliaryClause)} : {}),
+      options:pack(r,options,visit)};
+  }
   if(r.isClassicalNahuatlDiscourseSourceContextFrame?.(v)===true)
     return {type:'clause:discourse-source',inputs:pick(v,DISCOURSE)};
   if(r.isClassicalNahuatlSupplementationContextRecord?.(v)===true) {
@@ -87,6 +94,18 @@ export function exportClauseContextReloadNode(r,v,visit) {
 }
 export function replayClauseContextReloadNode(r,n,prior) {
   try {
+    if(n?.type==='clause:complement') {
+      need(exact(n,['type','operationKind','principal','complement','auxiliary','options']));
+      const principalClause = prior(n.principal), complementClause = prior(n.complement);
+      const auxiliaryClause = n.auxiliary === undefined ? null : prior(n.auxiliary);
+      need(principalClause && complementClause && (n.auxiliary === undefined || auxiliaryClause));
+      const made = r.executeClassicalGrammarApplicationRequest({operationId:'clause:composition',args:[{
+        operationKind:n.operationKind, principalClause, complementClause, auxiliaryClause,
+        options:unpack(n.options,prior),
+      }]});
+      return made?.authorizationStatus === 'authorized'
+        && r.isClassicalNahuatlClauseComplementationResultFrame?.(made.canonicalResult) ? made.canonicalResult : null;
+    }
     if(n?.type==='clause:discourse-source') {
       need(exact(n,['type','inputs'])&&plain(n.inputs,DISCOURSE));
       return r.buildClassicalNahuatlDiscourseSourceContextFrame(n.inputs);

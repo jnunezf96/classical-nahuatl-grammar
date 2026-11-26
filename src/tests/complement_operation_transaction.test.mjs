@@ -1,3 +1,5 @@
+import {exportClassicalResultReloadRecipe as save,replayClassicalResultReloadRecipe as replay} from "../application/classical/result_reload.mjs";
+import {encodeCompactResultAddress as encode,decodeCompactResultAddress as decode} from "../application/classical/compact_result_link.mjs";
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createRuntimeInstance} from '../runtime/create_runtime.mjs';
@@ -9,6 +11,17 @@ const cases=[
  {left:verb('nēci','B'),right:noun,choices:{relation:'subject-complement',semanticCategory:'identity',contactKind:'subject',complementOrder:'complement-principal'}},
  {left:verb('pēhua','A'),right:verb('cuīca','A'),choices:{relation:'adverbial-complement',semanticCategory:'beginning',complementOrder:'principal-complement'}}
 ];
+export function makeComplementLinkFixtures() {
+  return cases.map(({left,right,choices})=>{
+    const controller=r.createClassicalClauseRelationController();
+    controller.captureCurrentResult("principal",left);
+    controller.captureCurrentResult("adjoined",right);
+    const application=controller.compose(choices);
+    assert.equal(application.authorizationStatus,"authorized",application.blockReason);
+    return {result:application.canonicalResult,left,right};
+  });
+}
+
 for(const item of cases)test(`${item.choices.relation} current owner frame guards choice/capture and exact execution`,()=>{
  const c=r.createClassicalClauseRelationController();c.captureCurrentResult('principal',item.left);c.captureCurrentResult('adjoined',item.right);const contract=c.buildDecisionContract(item.choices);assert.equal(contract.authorizationStatus,'authorized',contract.blockReason);assert.ok(contract.currentChoiceFrame);assert.equal(contract.currentChoiceFrame.familyId,item.choices.relation);
  assert.equal(contract.currentChoiceFrame.decisions.find(d=>d.id==='complement-order').key,'complementOrder');
@@ -69,4 +82,46 @@ test('actual production choice handler publishes complement session without writ
  ctx.applyClassicalComparisonChoiceIntent(c,{type:'set-choice',key,value},snapshot.contract.currentChoiceFrame);assert.equal(ctx.ClassicalClauseRelationSelections,selections);assert.equal(session.position.operationContract.selections[key],value);assert.equal(ctx.readClassicalClauseContract(c),session.position.operationContract.contract);assert.equal(session.position.accepted.result,null);
  const fresh={relation:'conjunction',coordinationRelation:'marked',clauseLevel:'principal'};ctx.ClassicalClauseRelationSelections=fresh;assert.equal(ctx.readClassicalClauseSelections(),fresh,'explicit auh ingress wins');
  }
+});
+
+test("complement links retain exact clause parents and selected analysis",async()=>{
+  const {runtimeObject:fresh}=await createRuntimeInstance({documentObject:{getElementById:()=>null,addEventListener(){}}});
+  for(const {result,left,right} of makeComplementLinkFixtures()){
+    const recipe=save(r,{result,left,right});
+    assert.ok(recipe,result.surfaceRealization);
+    const roots=replay(fresh,recipe);
+    assert.ok(roots);
+    assert.ok(fresh.getClassicalNahuatlSupplementationClauseSourceFrame(roots.result.principalClause.envelope)===roots.left);
+    assert.ok(fresh.getClassicalNahuatlSupplementationClauseSourceFrame(roots.result.complementClause.envelope)===roots.right);
+    const compact=await encode(save(r,{result}));
+    const reopened=replay(fresh,await decode(compact))?.result;
+    assert.ok(reopened);
+    assert.equal(reopened.surfaceRealization,result.surfaceRealization);
+    assert.equal(reopened.formulaRealization,result.formulaRealization);
+    assert.deepEqual(reopened.formulaSequence,result.formulaSequence);
+    assert.equal(reopened.relationFrame.semanticCategory,result.relationFrame.semanticCategory);
+  }
+});
+export const complementFixtureRuntime=r;
+
+export function makeNestedComplementConjunction(fixtures=makeComplementLinkFixtures()) {
+  const [first,second]=fixtures.map(fixture=>fixture.result);
+  const application=r.executeClassicalGrammarApplicationRequest({operationId:"clause:composition",args:[{
+    operationKind:"conjunction",conjuncts:[first,second],options:{relation:"unmarked",coordinationType:"additive"},
+  }]});
+  assert.equal(application.authorizationStatus,"authorized",application.blockReason);
+  return {result:application.canonicalResult,first,second};
+}
+
+test("a conjunction link restores the two distinct complement analyses",async()=>{
+  const {runtimeObject:fresh}=await createRuntimeInstance({documentObject:{getElementById:()=>null,addEventListener(){}}});
+  const {result,first,second}=makeNestedComplementConjunction();
+  const roots=replay(fresh,save(r,{result,first,second}));
+  assert.ok(roots?.result.conjuncts[0]===roots?.first);
+  assert.ok(roots?.result.conjuncts[1]===roots?.second);
+  const reopened=replay(fresh,await decode(await encode(save(r,{result}))))?.result;
+  assert.ok(reopened);
+  assert.equal(reopened.surfaceRealization,result.surfaceRealization);
+  assert.equal(reopened.formulaRealization,result.formulaRealization);
+  assert.deepEqual(reopened.conjuncts.map(clause=>clause.operationKind),["object-complement","subject-complement"]);
 });

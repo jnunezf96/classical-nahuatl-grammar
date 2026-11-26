@@ -1,3 +1,4 @@
+import {exportClassicalResultReloadRecipe as save,replayClassicalResultReloadRecipe as replay} from "../application/classical/result_reload.mjs";
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createRuntimeInstance} from '../runtime/create_runtime.mjs';
@@ -20,6 +21,10 @@ for(const selections of cases)test(`${selections.relation} exact owner inputs an
  const session=createConstructionSession({isSource:x=>[left,right].includes(x),isResult:x=>r.isClassicalNahuatlClauseConjunctionResultFrame(x),execute:p=>c.compose(p.selections),present:()=>true});
  session.stage({source:left,route:{operation:'clause:composition'},slots:s.captures,choices:s.selections,operationContract:s,ready:true,execution:{selections:s.selections}});assert.equal(session.position.accepted.result,null);assert.equal(session.make(session.position.revision),true);const made=session.position.accepted.result;
  assert.equal(r.getClassicalNahuatlSupplementationClauseSourceFrame(made.conjuncts[0].envelope),left);assert.equal(r.getClassicalNahuatlSupplementationClauseSourceFrame(made.conjuncts[1].envelope),right);
+ const reopened=replay(r,save(r,{result:made}))?.result;
+ assert.ok(reopened,made.operationKind);
+ assert.equal(reopened.surfaceRealization,made.surfaceRealization);
+ assert.equal(reopened.formulaRealization,made.formulaRealization);
  if(selections.relation==='lexical-conjunction')assert.equal(made.relationFrame.lexicalInterpretationIndependentlyValidated,false);
 });
 

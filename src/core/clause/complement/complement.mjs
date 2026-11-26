@@ -5,6 +5,7 @@ export function createComplementClauseGlobals(targetObject = globalThis, install
     const grammarFrameOwnerCapability = installationContext?.grammarFrameOwnerCapability || null;
     const COMPLEMENT_CLAUSE_BOUNDARY_VERSION = 1;
     const issuedClassicalNahuatlClauseComplementationResults = new WeakSet();
+    const clauseComplementReloadInputs = new WeakMap();
     const issuedClassicalNahuatlClauseCompositionSourceFrames = new WeakSet();
     const COMPLEMENT_CLAUSE_ROLE = Object.freeze({
       objectComplement: "object-complement",
@@ -1682,6 +1683,9 @@ export function createComplementClauseGlobals(targetObject = globalThis, install
         canonicalSignature: signClassicalNahuatlClauseComposition(projection, "clause-complementation-result")
       });
       issuedClassicalNahuatlClauseComplementationResults.add(result);
+      clauseComplementReloadInputs.set(result, Object.freeze({
+        operationKind, principalClause, complementClause, auxiliaryClause, options,
+      }));
       return result;
     }
     function isClassicalNahuatlClauseComplementationResultFrame(frame = null) {
@@ -2190,6 +2194,7 @@ export function createComplementClauseGlobals(targetObject = globalThis, install
     api.buildClassicalNahuatlClauseComplementationOperationRequest = buildClassicalNahuatlClauseComplementationOperationRequest;
     api.isClassicalNahuatlClauseComplementationOperationRequest = isClassicalNahuatlClauseComplementationOperationRequest;
     api.getClassicalNahuatlClauseComplementationChoiceDomains = getClassicalNahuatlClauseComplementationChoiceDomains;
+    api.getClassicalNahuatlClauseComplementationReloadInputs = result => clauseComplementReloadInputs.get(result);
     api.evaluateClassicalNahuatlClauseComplementation = evaluateClassicalNahuatlClauseComplementation;
     api.isClassicalNahuatlClauseComplementationResultFrame = isClassicalNahuatlClauseComplementationResultFrame;
     api.evaluateClassicalNahuatlClauseComplementationParadigm = evaluateClassicalNahuatlClauseComplementationParadigm;
