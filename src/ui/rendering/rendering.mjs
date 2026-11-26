@@ -47437,6 +47437,22 @@ export function createUiRenderingApi(targetObject = globalThis) {
       if (targetObject.isClassicalNahuatlQuantitativePredicateResult?.(canonical) === true) {
         analysisChildren.push(createGrammarInspectorLine("Whole quantitative predicate", canonical.formulaRealization));
       }
+      if (!analysisChildren.length && (targetObject.isClassicalNahuatlAttestedPrincipalCollocationResult?.(canonical)
+        || targetObject.isClassicalNahuatlAttestedPlaceResult?.(canonical)
+        || targetObject.isClassicalNahuatlAttestedNncCellResult?.(canonical))) {
+        analysisChildren.push(createGrammarInspectorLine("Attested form", canonical.formulaRealization));
+      }
+      if (targetObject.isAdverbialAdjunctionResult?.(canonical) === true
+        && canonical.ruleProfile?.relation === "condition") {
+        const principal = canonical.sourceContract?.principal?.issuedResult;
+        if (targetObject.isClassicalNahuatlAttestedPrincipalCollocationResult?.(principal)) {
+          analysisChildren.push(
+            createGrammarInspectorLine("Relation", "Condition"),
+            createGrammarInspectorLine("Clause structure", canonical.formulaRecord.formula),
+            createGrammarInspectorLine("Attested principal", principal.formulaRealization),
+          );
+        }
+      }
       if (targetObject.isAdverbialAdjunctionResult?.(canonical) === true
         && canonical.ruleProfile?.relation === "intensification"
         && targetObject.isClassicalNahuatlQuantitativePredicateResult?.(canonical.quantitativePredicateParent) === true

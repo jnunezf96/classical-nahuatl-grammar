@@ -41,6 +41,11 @@ const plain = (value, keys) => value && typeof value === "object" && !Array.isAr
     && ["string", "boolean", "number"].includes(typeof value[key]));
 const exact = (value, keys) => value && typeof value === "object" && !Array.isArray(value)
   && Object.keys(value).every(key => keys.includes(key));
+const ATTESTED_RELOAD = new Map([
+  ["nnc:attested-cell", ["attested-cell", "NncCell", ["possessor"]]],
+  ["nnc:attested-place", ["attested-place", "Place", []]],
+  ["clause:attested-collocation", ["attested-collocation", "PrincipalCollocation", []]],
+]);
 const issued = (r, value) => {
   const capture = r.captureClassicalGrammarApplicationResult?.(value, "reload-inputs");
   return r.isClassicalGrammarApplicationResultCapture?.(capture, "reload-inputs")
@@ -173,6 +178,11 @@ export function exportClassicalResultReloadRecipe(r, roots = {}, normalizePrimit
         choices: { ...pick(value.operationFrame, NNC_KEYS),
           animacy: value.operationFrame.referentialAnimacy,
           humanness: value.operationFrame.referentialHumanness } };
+    } else if (ATTESTED_RELOAD.has(capture.operationId)) {
+      const [, family, fields] = ATTESTED_RELOAD.get(capture.operationId);
+      if (!r[`isClassicalNahuatlAttested${family}Result`]?.(value)) throw new Error("Attested Result required");
+      node = {type:"attested", operation:capture.operationId, stem:value.sourceFrame.stem,
+        choices:pick(value.operationFrame?.effectiveSelections, fields)};
     } else if (capture.operationId === "nnc:quantitative-predicate"
       && r.isClassicalNahuatlQuantitativePredicateResult?.(value)) {
       node = {type:"nnc:quantitative", citation:value.sourceFrame.citation};
@@ -334,6 +344,17 @@ export function replayClassicalResultReloadRecipe(r, recipe) {
           source[`${position}Constituent`] = { kind, stem: source[`${position}Stem`], resultFrame: parent };
         }
         result = r.requestClassicalNominalConstructionResult({ constructionKind: "compound-nnc", ...node.choices, source });
+      } else if (node?.type === "attested" && exact(node, ["type", "operation", "stem", "choices"])
+        && ATTESTED_RELOAD.has(node.operation) && typeof node.stem === "string" && node.stem.length <= 256) {
+        const [sourceUse, family, fields] = ATTESTED_RELOAD.get(node.operation);
+        if (!plain(node.choices, fields)) return null;
+        const source = r[`resolveClassicalNahuatlAttested${family}SourceFrame`]({enteredStem:node.stem, sourceUse});
+        if (!source) return null;
+        const binding = r[`issueClassicalNahuatlAttested${family}BindingFrame`](source,node.choices);
+        if (binding?.bindingStatus !== "ready") return null;
+        result = r.executeClassicalGrammarApplicationRequest({
+          operationId:node.operation, args:binding.executionArgs,
+        })?.canonicalResult;
       } else if (node?.type === "nnc:quantitative" && exact(node, ["type", "citation"])
         && typeof node.citation === "string" && node.citation.length <= 4096) {
         const source = r.buildClassicalNahuatlQuantitativePredicateSourceFrame({
