@@ -70,7 +70,7 @@ const finiteSelections = (value, extras = []) => exact(value,[...CARRIER_CHOICES
     : typeof choice === "string" && choice.length <= 4096);
 function directLateInputs(input, connective) {
   if (!input || !(connective ? input.lateOperation === "compound" && input.lateVariant === "connective-t"
-    : ["purposive","honorific"].includes(input.lateOperation)
+    : ["purposive","honorific","pejorative"].includes(input.lateOperation)
       || input.lateOperation === "compound" && ["shared-object","reflexive-matrix"].includes(input.lateVariant))
     || Array.isArray(input) || Object.keys(input).length > 128) return null;
   const scalar = value => typeof value === "string" && value.length <= 4096

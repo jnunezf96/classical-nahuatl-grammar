@@ -7624,7 +7624,7 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
     },
     getClassicalNahuatlDirectLateReloadInputs: frame => {
       if (!issuedClosureFrames.has(frame) || frame.authorizationStatus !== "authorized"
-        || !(["purposive","honorific"].includes(frame.operationFrame?.operation)
+        || !(["purposive","honorific","pejorative"].includes(frame.operationFrame?.operation)
           || frame.operationFrame?.operation === "compound" && ["connective-t","shared-object","reflexive-matrix"].includes(frame.operationFrame.variant))) return null;
       const request = issuedClosureRequests.get(frame);
       if (!request) return null;

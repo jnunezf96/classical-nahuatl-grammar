@@ -20,6 +20,8 @@ export function makeDirectLateResults(r) {
   const honorific=make({sourceStem:"chōca",sourceSubject:"3sg",sourceSubjectHumanness:"human",sourceSubjectAnimacy:"animate",
     lateOperation:"honorific",lateVariant:"causative",honoredParticipant:"subject",
     honorificFormationAnalysis:"causative-only",honorificStemAlternative:"type-two-long"});
+  const pejorative=make({sourceStem:"chōca",derivationType:"direct",lateOperation:"pejorative",
+    lateVariant:"preterit-embed",honoredParticipant:"subject"});
   const principal=r.requestClassicalVncApplicationResult({sourceStem:"cochi",verbClass:"B",sourceValence:"intransitive",
     subject:"3sg",mood:"indicative",tense:"present",requestedVoice:"active"});
   const controller=r.createClassicalClauseRelationController();
@@ -28,14 +30,15 @@ export function makeDirectLateResults(r) {
   const built=controller.compose({relation:"purpose",degree:"nonadverbialized",relationProfile:"purposive-vnc",
     order:"modifier-head",structureProfile:"modification"});
   assert.equal(built.authorizationStatus,"authorized",built.blockReason);
-  return {purpose:built.canonicalResult,purposive,honorific,sentence:r.requestClassicalVncSentenceResultFrame(honorific)};
+  return {purpose:built.canonicalResult,purposive,honorific,pejorative,pejorativeSentence:r.requestClassicalVncSentenceResultFrame(pejorative),sentence:r.requestClassicalVncSentenceResultFrame(honorific)};
 }
 
-test("purposive adjunct and honorific sentence links retain original choices and formulas",async()=>{
+test("purposive adjunct and attitude sentence links retain original choices and formulas",async()=>{
   const r=await runtime(),fresh=await runtime();
   const original=makeDirectLateResults(r);
   for(const [form,field] of [[original.purposive,"surfaceRealization"],[original.honorific,"surfaceRealization"],
-    [original.purpose,"surface"],[original.sentence,"sentenceSurfaceDisplay"]]) {
+    [original.purpose,"surface"],[original.sentence,"sentenceSurfaceDisplay"],
+    [original.pejorative,"surfaceRealization"],[original.pejorativeSentence,"sentenceSurfaceDisplay"]]) {
     const recipe=save(r,{result:form});
     assert.ok(recipe,form.kind);
     const restored=replay(fresh,await decode(await encode(recipe)))?.result;
@@ -46,10 +49,10 @@ test("purposive adjunct and honorific sentence links retain original choices and
       assert.deepEqual(restored.formulaRealizationRecord,form.formulaRealizationRecord);
       assert.equal(restored.ruleProfile.purposeType,"purposive-vnc");
       assert.equal(restored.sourceContract.adjoined.issuedResult.formulaRealization,original.purposive.formulaRealization);
-    } else if(form===original.sentence) {
+    } else if(form===original.sentence || form===original.pejorativeSentence) {
       assert.ok(form.sentenceFormulaDisplay);
       assert.equal(restored.sentenceFormulaDisplay,form.sentenceFormulaDisplay);
-      assert.equal(restored.lateOperationClosureFrame.operationFrame.operation,"honorific");
+      assert.equal(restored.lateOperationClosureFrame.operationFrame.operation,form.lateOperationClosureFrame.operationFrame.operation);
     } else {
       assert.ok(form.formulaRealization);
       assert.equal(restored.formulaRealization,form.formulaRealization);
