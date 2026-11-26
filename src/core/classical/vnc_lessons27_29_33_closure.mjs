@@ -32,6 +32,7 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
   const issuedMachineryFrames = new WeakSet();
   const issuedClosureFrames = new WeakSet();
   const issuedClosureRequests = new WeakMap();
+  const issuedClosureCallerRequests = new WeakMap();
   const issuedSourceAgreementFrames = new WeakSet();
   const issuedCompoundPredicateSources = new WeakSet();
   const compoundPredicateBindingRequests = new WeakMap();
@@ -6478,6 +6479,7 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
     return result;
   }
   function evaluateClassicalNahuatlLateVncDerivation(request = {}, internalEvaluation = {}) {
+    const callerRequest = request;
     if (targetObject.isClassicalNahuatlImperfectiveVncApplicationFrame?.(request.sourceApplicationFrame) === true)
       return blockedClosure(request,"independent-perfective-class-required-for-derived-source");
     if (isClassicalNahuatlCompoundPredicateBindingFrame(request)) {
@@ -7443,6 +7445,7 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
     });
     issuedClosureFrames.add(closureFrame);
     issuedClosureRequests.set(closureFrame, freeze({ ...request }));
+    issuedClosureCallerRequests.set(closureFrame, callerRequest);
     if (typeof targetObject.getDefaultGrammarContractRegistry === "function"
       && typeof targetObject.assertRegisteredGrammarContract === "function") {
       const registry = targetObject.getDefaultGrammarContractRegistry();
@@ -7613,6 +7616,12 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
     getClassicalNahuatlVncTlaFusionContinuationChoice,
     isClassicalNahuatlMachineryFrame: frame => withParentValidationTransaction(() => isClassicalNahuatlMachineryFrame(frame)),
     evaluateClassicalNahuatlLateVncDerivation,
+    getClassicalNahuatlLateContinuationReloadInputs: frame => {
+      if (!issuedClosureFrames.has(frame) || frame.authorizationStatus !== "authorized") return null;
+      const binding = targetObject.getClassicalNahuatlLateContinuationBindingForRequest?.(issuedClosureCallerRequests.get(frame));
+      if (!binding || binding.bindingStatus !== "ready") return null;
+      return {parent:binding.exactInputResult,selections:binding.callerSelections,operands:binding.additionalResultFrames};
+    },
     getClassicalNahuatlDirectLateReloadInputs: frame => {
       if (!issuedClosureFrames.has(frame) || frame.authorizationStatus !== "authorized"
         || !(["purposive","honorific"].includes(frame.operationFrame?.operation)

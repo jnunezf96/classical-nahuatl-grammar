@@ -51,6 +51,19 @@ const plain = (value, keys) => value && typeof value === "object" && !Array.isAr
     && ["string", "boolean", "number"].includes(typeof value[key]));
 const exact = (value, keys) => value && typeof value === "object" && !Array.isArray(value)
   && Object.keys(value).every(key => keys.includes(key));
+const LATE_OPERANDS = ["recursiveEmbedClosureFrame","compoundEmbedClosureFrame","compoundMatrixClosureFrame",
+  "compoundMatrixVncResultFrame","attitudeSourceClosureFrame","attitudeCompoundClosureFrame","attitudeMemberTransformationFrame"];
+function lateContinuationChoices(value) {
+  if (!value || typeof value !== "object" || Array.isArray(value) || Object.keys(value).length > 64) return false;
+  const scalar = field => typeof field === "string" && field.length <= 4096
+    || typeof field === "boolean" || Number.isFinite(field);
+  const safeKey = key => !["__proto__","prototype","constructor","kind","version"].includes(key);
+  return Object.entries(value).every(([key,field]) => safeKey(key) && (scalar(field)
+    || key === "sentenceOptions" && field && typeof field === "object" && !Array.isArray(field)
+      && Object.keys(field).length <= 48 && Object.entries(field).every(([option,choice]) =>
+        safeKey(option) && (scalar(choice) || option === "outsidePrefixes"
+          && Array.isArray(choice) && choice.length <= 12 && choice.every(scalar)))));
+}
 const finiteSelections = (value, extras = []) => exact(value,[...CARRIER_CHOICES,...extras]) && Object.entries(value).every(([key,choice]) =>
   key === "sentenceOptions" ? plain(choice,CARRIER_SENTENCE_CHOICES)
     : typeof choice === "string" && choice.length <= 4096);
@@ -188,10 +201,12 @@ export function exportClassicalResultReloadRecipe(r, roots = {}, normalizePrimit
       && r.getClassicalNahuatlSpecializedFiniteReloadInputs?.(value.vncApplicationFrame)
       ? value.vncApplicationFrame : null;
     const late = r.getClassicalNahuatlDirectLateReloadInputs?.(value);
+    const continuedLate = r.getClassicalNahuatlLateContinuationReloadInputs?.(value);
     const connective = late?.inputs?.lateOperation === "compound";
     const lateRequest = directLateInputs(late?.inputs,connective);
     const lateSentenceParent = r.isClassicalNahuatlVncSentenceResultFrame?.(value)
-      && r.getClassicalNahuatlDirectLateReloadInputs?.(value.lateOperationClosureFrame) ? value.lateOperationClosureFrame : null;
+      && (r.getClassicalNahuatlDirectLateReloadInputs?.(value.lateOperationClosureFrame)
+        || r.getClassicalNahuatlLateContinuationReloadInputs?.(value.lateOperationClosureFrame)) ? value.lateOperationClosureFrame : null;
     const lexicalParent = capture?.operationId === "nnc:ordinary"
       ? r.getClassicalNahuatlLexicalizedPresentNncSourceParent?.(value.sourceFrame) : null;
     if (node) {}
@@ -200,6 +215,11 @@ export function exportClassicalResultReloadRecipe(r, roots = {}, normalizePrimit
     else if (specialized && finiteSelections(specialized.selections,["reading","embedStem","adverbialEntryId","objectSelection"]))
       node = {type:"vnc:specialized-finite",...specialized};
     else if (specializedParent) node = {type:"vnc:specialized-finite-sentence",source:visit(specializedParent,depth+1)};
+    else if (continuedLate && lateContinuationChoices(continuedLate.selections) && exact(continuedLate.operands,LATE_OPERANDS)) {
+      node = {type:"vnc:late-continuation",source:visit(continuedLate.parent,depth+1),
+        selections:continuedLate.selections,
+        operands:Object.fromEntries(Object.entries(continuedLate.operands).map(([role,operand])=>[role,visit(operand,depth+1)]))};
+    }
     else if (lateRequest) node = {type:connective ? "vnc:direct-connective" : "vnc:direct-late", request:lateRequest,
       ...(late.sourceApplicationFrame ? {source:visit(late.sourceApplicationFrame,depth+1)} : {})};
     else if (lateSentenceParent) node = {type:"vnc:direct-late-sentence",source:visit(lateSentenceParent,depth+1)};
@@ -404,8 +424,21 @@ export function replayClassicalResultReloadRecipe(r, recipe) {
       } else if (node?.type === "vnc:specialized-finite-sentence" && exact(node, ["type","source"])
         && r.getClassicalNahuatlSpecializedFiniteReloadInputs?.(prior(node.source))?.projection === "application") {
         result = r.requestClassicalVncSentenceResultFrame(prior(node.source));
+      } else if (node?.type === "vnc:late-continuation"
+        && exact(node,["type","source","selections","operands"])
+        && prior(node.source) && lateContinuationChoices(node.selections) && exact(node.operands,LATE_OPERANDS)
+        && Object.values(node.operands).every(ref=>prior(ref))) {
+        const parent = prior(node.source);
+        const operands = Object.fromEntries(Object.entries(node.operands).map(([role,ref])=>[role,prior(ref)]));
+        const binding = r.issueClassicalNahuatlVncContinuationBindingFrame("vnc:derivational-operation",parent,node.selections,operands);
+        if (binding?.bindingStatus !== "ready" || binding.exactInputResult !== parent) return null;
+        const application = r.executeClassicalGrammarApplicationRequest({operationId:binding.operationId,args:binding.executionArgs});
+        if (application?.authorizationStatus !== "authorized"
+          || r.getClassicalNahuatlLateContinuationReloadInputs?.(application.canonicalResult)?.parent !== parent) return null;
+        result = application.canonicalResult;
       } else if (node?.type === "vnc:direct-late-sentence" && exact(node, ["type","source"])
-        && r.getClassicalNahuatlDirectLateReloadInputs?.(prior(node.source))) {
+        && (r.getClassicalNahuatlDirectLateReloadInputs?.(prior(node.source))
+          || r.getClassicalNahuatlLateContinuationReloadInputs?.(prior(node.source)))) {
         result = r.requestClassicalVncSentenceResultFrame(prior(node.source));
       } else if (["vnc:direct-connective","vnc:direct-late"].includes(node?.type) && exact(node, ["type", "request", "source"])) {
         const request = directLateInputs(node.request,node.type === "vnc:direct-connective");

@@ -1,8 +1,8 @@
-# Grammar OS v1.2.141 release
+# Grammar OS v1.2.142 release
 
 Release name: **Writer Controls**
 
-Browser build: **20261126-purpose-honorific-links-141**
+Browser build: **20261126-late-continuation-links-142**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
