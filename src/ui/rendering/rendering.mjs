@@ -60,6 +60,7 @@ import { readClassicalSourceObjectRows, getClassicalSourceObjectControls,
   restoreClassicalSourceObjectRows, syncClassicalSourceObjectRows }
   from "../composer/source_objects.mjs?v=20261007-panel-source-objects-1&interfaceRelease=1.2.36&ownerDecision=20261031-2";
 import { translateClassicalConstructionLink } from "../../application/classical/construction_link_reload.mjs";
+import { encodeCompactResultAddress, isCompactResultAddress } from "../../application/classical/compact_result_link.mjs";
 import { exportClassicalResultReloadRecipe, replayClassicalResultReloadRecipe, reissueClassicalAcceptedBuildBinding, matchesAcceptedVncContinuationBuild, matchesAcceptedNominalCompoundBuild, matchesAcceptedDeverbalBuild, supportsFutureObjectResultReload, supportsNominalCompoundResultReload }
   from "../../application/classical/result_reload.mjs?deverbalReload=20261024-8&stemReload=20261024-2&innerParticle=20261024-1&remainingReload=20261024-1&conjunctReload=20261023-1&v=20261007-reader-40-2-175&acceptedBuild=20261023-1&nominalReload=20261024-4&complexReload=20261027-1&placeReload=20261027-2&ownerDecision=20261031-2";
 import { exportClassicalGrammarWorkspaceHistoryReloadState,
@@ -49756,6 +49757,38 @@ export function createUiRenderingApi(targetObject = globalThis) {
       }
       return restored;
     }
+    let lastAddressedResult;
+    function updateClassicalResultLink(browserWindow, exactResult) {
+      if (!browserWindow?.location?.href || !browserWindow.history || lastAddressedResult === exactResult) return;
+      lastAddressedResult = exactResult;
+      const recipe = exactResult && exportClassicalResultReloadRecipe(targetObject, { result: exactResult });
+      const publish = compact => {
+        if (ClassicalConstructionSession.position.accepted.result !== exactResult) return;
+        const previous = browserWindow.location.href;
+        const url = new URL(previous);
+        if (url.hash.startsWith("#result-v1=")) url.hash = "";
+        url.searchParams.delete("r");
+        if (compact) {
+          url.searchParams.set("r", compact);
+          // Keep the Source / Grammar / Result separators visible.
+          url.search = url.search.replace(/(^|[?&])r=[^&]+/, part => part.replaceAll("%2F", "/"));
+          url.hash = "";
+        } else if (recipe) {
+          const fallback = "#result-v1=" + encodeURIComponent(JSON.stringify(recipe));
+          if (fallback.length <= 16000) url.hash = fallback;
+        }
+        if (url.href === previous) return;
+        browserWindow.history.replaceState(browserWindow.history.state, "", url.href);
+        try {
+          const storage = browserWindow.sessionStorage;
+          const saved = JSON.parse(storage?.getItem(CLASSICAL_VNC_RELOAD_SESSION_KEY) || "null");
+          if (saved?.url === previous) storage.setItem(CLASSICAL_VNC_RELOAD_SESSION_KEY,
+            JSON.stringify({...saved, url:url.href}));
+        } catch { /* Link replay does not depend on session storage. */ }
+      };
+      if (recipe) encodeCompactResultAddress(recipe).catch(() => null).then(publish).catch(() => {});
+      else publish(null);
+    }
     function saveClassicalVncReloadSession() {
       // Startup reconstructs controls before replaying the accepted Result.
       // Never replace the previous session with those temporary defaults.
@@ -49771,17 +49804,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         const activeCurrent=getActiveClassicalCapabilityApplicationResult()?.canonicalResult;
         const visible=getClassicalSgrOwnerIssuedProjection(ActiveClassicalRuleLogicSurfaceFrame)?.canonicalResult;
         const accepted = getClassicalVisibleAcceptedResult()?.canonicalResult;
-        if (browserWindow?.location && browserWindow.history) {
-          const address = new URL(browserWindow.location.href);
-          const exactResult = ClassicalConstructionSession.position.accepted.result;
-          const recipe = exactResult && exportClassicalResultReloadRecipe(targetObject, { result: exactResult });
-          const fragment = recipe ? "#result-v1=" + encodeURIComponent(JSON.stringify(recipe)) : "";
-          if (fragment && fragment.length <= 16000) address.hash = fragment;
-          else if (address.hash.startsWith("#result-v1=")) address.hash = "";
-          if (address.href !== browserWindow.location.href) {
-            browserWindow.history.replaceState(browserWindow.history.state, "", address.href);
-          }
-        }
+        updateClassicalResultLink(browserWindow, ClassicalConstructionSession.position.accepted.result);
         const current=accepted || (activeCurrent && targetObject.isClassicalNahuatlVncSentenceResultFrame?.(visible)
           && visible.vncApplicationFrame===activeCurrent ? visible
           : activeCurrent || ActiveClassicalGrammarResultSourceCapture?.canonicalResult
@@ -49868,7 +49891,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         return false;
       }
     }
-    function restoreClassicalVncReloadSession({ url = "" } = {}) {
+    function restoreClassicalVncReloadSession({ url = "", compactRecipe = null } = {}) {
       classicalVncReloadPersistenceReady = true;
       const browserWindow = targetObject.document?.defaultView || targetObject.window;
       let saved;
@@ -49882,7 +49905,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
       if (address?.searchParams.has("r") && !address.hash.startsWith(prefix)
         && saved?.url !== address.href) {
         let recipe;
-        try { recipe = translateClassicalConstructionLink(targetObject, address.searchParams.get("r")); }
+        try {
+          const r = address.searchParams.get("r");
+          recipe = isCompactResultAddress(r) ? compactRecipe : translateClassicalConstructionLink(targetObject, r);
+        }
         catch { /* Unsupported constructions never replace the accepted Result. */ }
         if (recipe && restoreClassicalMixedReloadSession({ recipe })) return true;
         setClassicalWholeCanvasActionStatus("This construction link could not be reopened.");

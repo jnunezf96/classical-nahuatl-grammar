@@ -5657,7 +5657,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       }
       const nextHash = buildEntradaUrlHash();
       const currentHash = String(locationObject.hash || "");
-      if (currentHash.startsWith("#result-v1=")) return currentHash;
+      if (currentHash.startsWith("#result-v1=") || /[?&]r=sgr1(?:\/|%2F)/i.test(locationObject.search || "")) return currentHash;
       if (!nextHash && !currentHash.startsWith(`#${ENTRADA_URL_SEGMENT_PREFIX}`)) {
         return "";
       }
@@ -9921,7 +9921,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       });
       const nextHash = buildEntradaUrlHash(nextSnapshot);
       const currentHash = String(locationObject.hash || "");
-      if (currentHash.startsWith("#result-v1=")) return currentHash;
+      if (currentHash.startsWith("#result-v1=") || /[?&]r=sgr1(?:\/|%2F)/i.test(locationObject.search || "")) return currentHash;
       if (currentHash === nextHash) {
         return nextHash;
       }

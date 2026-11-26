@@ -354,7 +354,11 @@ export async function bootstrapBrowserApp(options = {}) {
                 documentObject.documentElement.dataset.classicalBootstrapPhase = "data-and-interface";
                 await globalObject.initializeUiRuntime();
             }
-            const restored = globalObject.restoreClassicalVncReloadSession?.({ url: initialReloadUrl });
+            const incomingUrl = initialReloadUrl ? new URL(initialReloadUrl) : null;
+            const compactAddress = incomingUrl?.searchParams.get("r");
+            const compactRecipe = isCompactResultAddress(compactAddress)
+                ? await decodeCompactResultAddress(compactAddress) : null;
+            const restored = globalObject.restoreClassicalVncReloadSession?.({ url: initialReloadUrl, compactRecipe });
             const restoredUrl = restored && initialReloadUrl ? new URL(initialReloadUrl) : null;
             if (restoredUrl && (restoredUrl.hash.startsWith("#result-v1=") || restoredUrl.searchParams.has("r"))) {
                 documentObject.documentElement.dataset.classicalResultLinkRestored = "true";
@@ -382,3 +386,4 @@ export async function bootstrapBrowserApp(options = {}) {
     });
     return browserBootstrapPromise;
 }
+import { decodeCompactResultAddress, isCompactResultAddress } from "../application/classical/compact_result_link.mjs";
