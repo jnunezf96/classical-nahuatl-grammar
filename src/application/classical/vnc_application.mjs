@@ -11469,7 +11469,8 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         sourceSubjectPerson:patient.person,sourceSubjectAnimacy:patient.animacy,sourceSubjectHumanness:patient.humanness,sourceSubjectNumber:patient.number,
         sourceObjectRequests:Object.freeze([]),patientReferenceId:patient.referenceId,sourceSubjectDeleted:true,
         grammarAuthority:false,formulaStringAuthority:false,surfaceStringAuthority:false});
-      const context=Object.freeze({source:c.source,machinery,typed,patient,result,app,surface,projection});
+      const context=Object.freeze({source:c.source,machinery,typed,patient,result,app,surface,projection,
+        selections:binding.callerSelections});
       nonactiveCarrierApplications.set(app,context);nonactiveCarrierApplications.set(result,context);
       classicalNahuatlVncApplicationFrameByResultFrame.set(result,app);return app;
     }
@@ -11478,6 +11479,13 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       return Boolean(c && r.isClassicalNahuatlNonactiveCarrierSourceFrame(c.source) && r.isClassicalNahuatlNonactiveCarrierFiniteFrame(c.machinery)
         && c.app.resultFrame===c.result && c.result.sourceMachineryFrame===c.source && c.result.selectedMachineryFrame===c.machinery
         && c.result.finalTypedVncSlotFrame===c.typed && c.typed.slots.subject.participantFrame===c.patient && Object.isFrozen(frame));
+    }
+    function getClassicalNahuatlNonactiveCarrierReloadInputs(frame) {
+      if (!isNonactiveCarrierApplication(frame)) return null;
+      const context = nonactiveCarrierApplications.get(frame);
+      const source = {enteredStem:context.source.nonactiveStem,valence:"intransitive"};
+      if (resolveClassicalNahuatlNonactiveCarrierSourceFrame(source) !== context.source) return null;
+      return {source,selections:context.selections,projection:frame === context.app ? "application" : "nucleus"};
     }
     function issueClassicalNahuatlVncTypedSourceApplicationBindingFrame(
       exactSourceMachineryFrame = null,
@@ -13815,6 +13823,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         resolveClassicalNahuatlPreformedVncSourceFrame,
         isClassicalNahuatlPreformedVncSourceFrame,
         resolveClassicalNahuatlNonactiveCarrierSourceFrame,
+        getClassicalNahuatlNonactiveCarrierReloadInputs,
         isClassicalNahuatlVncTypedSourceApplicationBindingFrame,
         executeClassicalNahuatlVncTypedSourceApplicationBindingFrame,
         prepareClassicalNahuatlVncTypedSourceApplicationBindingFrame,
@@ -13899,6 +13908,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         resolveClassicalNahuatlPreformedVncSourceFrame,
         isClassicalNahuatlPreformedVncSourceFrame,
         resolveClassicalNahuatlNonactiveCarrierSourceFrame,
+        getClassicalNahuatlNonactiveCarrierReloadInputs,
         isClassicalNahuatlVncTypedSourceApplicationBindingFrame,
         executeClassicalNahuatlVncTypedSourceApplicationBindingFrame,
         prepareClassicalNahuatlVncTypedSourceApplicationBindingFrame,
@@ -14137,6 +14147,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
     api.isClassicalNahuatlImperfectiveVncSourceFrame = isClassicalNahuatlImperfectiveVncSourceFrame;
     api.isClassicalNahuatlRestrictedContainingVncFiniteResult = isClassicalNahuatlRestrictedContainingVncFiniteResult;
     api.getClassicalNahuatlImperfectiveVncReloadInputs = getClassicalNahuatlImperfectiveVncReloadInputs;
+    api.getClassicalNahuatlNonactiveCarrierReloadInputs = getClassicalNahuatlNonactiveCarrierReloadInputs;
     api.isClassicalNahuatlImperfectiveVncFiniteResult = isClassicalNahuatlImperfectiveVncFiniteResult;
     api.isClassicalNahuatlImperfectiveTransitiveVncMachineryFrame = isClassicalNahuatlImperfectiveTransitiveVncMachineryFrame;
     api.isClassicalNahuatlImperfectiveVncApplicationFrame = isClassicalNahuatlImperfectiveVncApplicationFrame;

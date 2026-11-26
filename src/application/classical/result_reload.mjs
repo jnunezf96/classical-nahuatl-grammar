@@ -12,6 +12,10 @@ import {exportDeverbalReloadNode, replayDeverbalReloadNode, isDeverbalReloadEvid
 // Each node is reissued by its existing owner in the new runtime.
 const KIND = "classical-grammar-result-reload-recipe";
 const SOURCE_KEYS = ["stem", "sourceClass", "embedStem", "matrixStem", "supportiveInitialI"];
+const CARRIER_CHOICES = ["subject","subjectAnimacy","subjectHumanness","patientReferenceId",
+  "mood","tense","requestedVoice","requestedDerivation","sentenceOptions"];
+const CARRIER_SENTENCE_CHOICES = ["sentenceType","negative","exclamatory","punctuation","punctuationMode",
+  "introductoryParticle","introductoryModifier","prefaceParticle","directionalPrefix","antecessive","sentenceAntecessive"];
 const NNC_KEYS = ["state", "subject", "metaphoricalUse", "possessor", "includedPossessor", "stemFormation",
   "predicateFormation", "animacy", "singularConnector", "nonspecificHumanForm", "pluralConnector",
   "possessorReduplication", "sentenceType", "polarity"];
@@ -41,6 +45,9 @@ const plain = (value, keys) => value && typeof value === "object" && !Array.isAr
     && ["string", "boolean", "number"].includes(typeof value[key]));
 const exact = (value, keys) => value && typeof value === "object" && !Array.isArray(value)
   && Object.keys(value).every(key => keys.includes(key));
+const carrierSelections = value => exact(value,CARRIER_CHOICES) && Object.entries(value).every(([key,choice]) =>
+  key === "sentenceOptions" ? plain(choice,CARRIER_SENTENCE_CHOICES)
+    : typeof choice === "string" && choice.length <= 4096);
 function connectiveInputs(input) {
   if (!input || input.lateOperation !== "compound" || input.lateVariant !== "connective-t"
     || Array.isArray(input) || Object.keys(input).length > 128) return null;
@@ -165,11 +172,17 @@ export function exportClassicalResultReloadRecipe(r, roots = {}, normalizePrimit
       ?? exportClauseContextReloadNode(r,value,child=>visit(child,depth+1))
       ?? exportConstructedReloadNode(r,value,child=>visit(child,depth+1));
     const vnc = r.exportClassicalNahuatlVncApplicationRecipe?.(value);
+    const carrier = r.getClassicalNahuatlNonactiveCarrierReloadInputs?.(value);
+    const carrierParent = r.isClassicalNahuatlVncSentenceResultFrame?.(value)
+      && r.getClassicalNahuatlNonactiveCarrierReloadInputs?.(value.vncApplicationFrame)
+      ? value.vncApplicationFrame : null;
     const connective = r.getClassicalNahuatlDirectConnectiveReloadInputs?.(value);
     const connectiveRequest = connectiveInputs(connective?.inputs);
     const lexicalParent = capture?.operationId === "nnc:ordinary"
       ? r.getClassicalNahuatlLexicalizedPresentNncSourceParent?.(value.sourceFrame) : null;
     if (node) {}
+    else if (carrier && carrierSelections(carrier.selections)) node = {type:"vnc:nonactive-carrier",...carrier};
+    else if (carrierParent) node = {type:"vnc:nonactive-carrier-sentence",source:visit(carrierParent,depth+1)};
     else if (connectiveRequest) node = {type:"vnc:direct-connective", request:connectiveRequest,
       ...(connective.sourceApplicationFrame ? {source:visit(connective.sourceApplicationFrame,depth+1)} : {})};
     else if (lexicalParent && r.isClassicalNahuatlOrdinaryNncResult?.(value))
@@ -343,6 +356,20 @@ export function replayClassicalResultReloadRecipe(r, recipe) {
         const application = r.executeClassicalGrammarApplicationRequest({operationId: "nnc:sentence-surface",
           args: [prior(node.source).typedSlotFrame, node.choices]});
         result = application?.canonicalResult;
+      } else if (node?.type === "vnc:nonactive-carrier" && exact(node, ["type","source","selections","projection"])
+        && exact(node.source,["enteredStem","valence"]) && node.source.valence === "intransitive"
+        && typeof node.source.enteredStem === "string" && node.source.enteredStem.length <= 256
+        && carrierSelections(node.selections) && ["application","nucleus"].includes(node.projection)) {
+        const source = r.resolveClassicalNahuatlNonactiveCarrierSourceFrame(node.source);
+        if (r.isClassicalNahuatlNonactiveCarrierSourceFrame?.(source) !== true) return null;
+        const navigator = r.getClassicalGrammarApplicationCapabilityNavigator(source);
+        const binding = r.issueClassicalGrammarTypedSourceOperationBindingFrame(navigator,"vnc:application",node.selections);
+        const application = r.executeClassicalGrammarTypedSourceOperationBindingFrame(binding)?.canonicalResult;
+        if (r.getClassicalNahuatlNonactiveCarrierReloadInputs?.(application)?.projection !== "application") return null;
+        result = node.projection === "nucleus" ? application.resultFrame : application;
+      } else if (node?.type === "vnc:nonactive-carrier-sentence" && exact(node, ["type","source"])
+        && r.getClassicalNahuatlNonactiveCarrierReloadInputs?.(prior(node.source))?.projection === "application") {
+        result = r.requestClassicalVncSentenceResultFrame(prior(node.source));
       } else if (node?.type === "vnc:direct-connective" && exact(node, ["type", "request", "source"])) {
         const request = connectiveInputs(node.request);
         if (!request) return null;
