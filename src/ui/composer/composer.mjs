@@ -5657,6 +5657,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       }
       const nextHash = buildEntradaUrlHash();
       const currentHash = String(locationObject.hash || "");
+      if (currentHash.startsWith("#result-v1=")) return currentHash;
       if (!nextHash && !currentHash.startsWith(`#${ENTRADA_URL_SEGMENT_PREFIX}`)) {
         return "";
       }
@@ -9920,6 +9921,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       });
       const nextHash = buildEntradaUrlHash(nextSnapshot);
       const currentHash = String(locationObject.hash || "");
+      if (currentHash.startsWith("#result-v1=")) return currentHash;
       if (currentHash === nextHash) {
         return nextHash;
       }

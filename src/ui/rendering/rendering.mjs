@@ -41552,6 +41552,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         afterPresent:application=>completeClassicalConstructionPresentation(position,edit,application,completion)
       });
       syncClassicalCapabilityApplyOperationState(null,made?ClassicalConstructionSession.position:null);
+      if (made) scheduleClassicalVncReloadSave();
       return made;
     }
 
@@ -49769,6 +49770,17 @@ export function createUiRenderingApi(targetObject = globalThis) {
         const activeCurrent=getActiveClassicalCapabilityApplicationResult()?.canonicalResult;
         const visible=getClassicalSgrOwnerIssuedProjection(ActiveClassicalRuleLogicSurfaceFrame)?.canonicalResult;
         const accepted = getClassicalVisibleAcceptedResult()?.canonicalResult;
+        if (browserWindow?.location && browserWindow.history) {
+          const address = new URL(browserWindow.location.href);
+          const exactResult = ClassicalConstructionSession.position.accepted.result;
+          const recipe = exactResult && exportClassicalResultReloadRecipe(targetObject, { result: exactResult });
+          const fragment = recipe ? "#result-v1=" + encodeURIComponent(JSON.stringify(recipe)) : "";
+          if (fragment && fragment.length <= 16000) address.hash = fragment;
+          else if (address.hash.startsWith("#result-v1=")) address.hash = "";
+          if (address.href !== browserWindow.location.href) {
+            browserWindow.history.replaceState(browserWindow.history.state, "", address.href);
+          }
+        }
         const current=accepted || (activeCurrent && targetObject.isClassicalNahuatlVncSentenceResultFrame?.(visible)
           && visible.vncApplicationFrame===activeCurrent ? visible
           : activeCurrent || ActiveClassicalGrammarResultSourceCapture?.canonicalResult
@@ -49862,7 +49874,23 @@ export function createUiRenderingApi(targetObject = globalThis) {
       try {
         saved = JSON.parse(browserWindow?.sessionStorage?.getItem(
           CLASSICAL_VNC_RELOAD_SESSION_KEY) || "null");
-      } catch { return false; }
+      } catch { saved = null; }
+      const address = browserWindow?.location?.href
+        ? new URL(url || browserWindow.location.href, browserWindow.location.href) : null;
+      const prefix = "#result-v1=";
+      if (address?.hash.startsWith(prefix) && saved?.url !== address.href) {
+        let recipe;
+        try {
+          if (address.hash.length <= 16000) {
+            recipe = JSON.parse(decodeURIComponent(address.hash.slice(prefix.length)));
+          }
+        } catch { /* A malformed address has no authority. */ }
+        if (!recipe || !restoreClassicalMixedReloadSession({ recipe })) {
+          setClassicalWholeCanvasActionStatus("This Result link could not be reopened.");
+          return false;
+        }
+        return true;
+      }
       if (restoreClassicalUnsupportedResultReload(saved, url || browserWindow.location.href)) {
         restoreClassicalHistoryReloadState(saved);
         return true;
