@@ -7613,9 +7613,10 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
     getClassicalNahuatlVncTlaFusionContinuationChoice,
     isClassicalNahuatlMachineryFrame: frame => withParentValidationTransaction(() => isClassicalNahuatlMachineryFrame(frame)),
     evaluateClassicalNahuatlLateVncDerivation,
-    getClassicalNahuatlDirectConnectiveReloadInputs: frame => {
+    getClassicalNahuatlDirectLateReloadInputs: frame => {
       if (!issuedClosureFrames.has(frame) || frame.authorizationStatus !== "authorized"
-        || frame.operationFrame?.operation !== "compound" || frame.operationFrame.variant !== "connective-t") return null;
+        || !(["purposive","honorific"].includes(frame.operationFrame?.operation)
+          || frame.operationFrame?.operation === "compound" && frame.operationFrame.variant === "connective-t")) return null;
       const request = issuedClosureRequests.get(frame);
       if (!request) return null;
       const {sourceApplicationFrame, ...inputs} = request;

@@ -47434,6 +47434,17 @@ export function createUiRenderingApi(targetObject = globalThis) {
         selectedOutput.appendChild(note);
       }
       primary.append(primaryHeading, selectedOutput);
+      if (targetObject.isAdverbialAdjunctionResult?.(canonical) === true
+        && canonical.ruleProfile?.purposeType === "purposive-vnc") {
+        const adjunct = canonical.sourceContract?.adjoined?.issuedResult;
+        if (targetObject.isClassicalNahuatlClosureFrame?.(adjunct) === true
+          && adjunct.operationFrame?.operation === "purposive" && adjunct.formulaRealization) {
+          analysisChildren.push(
+            createGrammarInspectorLine("Relation", "Purpose"),
+            createGrammarInspectorLine("Purposive verb clause", adjunct.formulaRealization),
+          );
+        }
+      }
       if (targetObject.isClassicalNahuatlQuantitativePredicateResult?.(canonical) === true) {
         analysisChildren.push(createGrammarInspectorLine("Whole quantitative predicate", canonical.formulaRealization));
       }
