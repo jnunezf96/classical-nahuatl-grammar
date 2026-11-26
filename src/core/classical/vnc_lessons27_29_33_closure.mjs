@@ -7628,9 +7628,11 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
           || frame.operationFrame?.operation === "compound" && ["connective-t","shared-object","reflexive-matrix","huītz-carry"].includes(frame.operationFrame.variant))) return null;
       const request = issuedClosureRequests.get(frame);
       if (!request) return null;
-      const {sourceApplicationFrame, ...inputs} = request;
+      const {sourceApplicationFrame, compoundPredicateSourceFrame, ...inputs} = request;
       if (sourceApplicationFrame && (targetObject.isClassicalNahuatlVncApplicationFrame?.(sourceApplicationFrame) !== true
         || sourceApplicationFrame !== frame.baseApplicationFrame)) return null;
+      if (compoundPredicateSourceFrame && (!isClassicalNahuatlCompoundPredicateSourceFrame(compoundPredicateSourceFrame)
+        || compoundPredicateSourceFrame !== frame.compoundPredicateSourceFrame)) return null;
       const operands = {};
       const roles = {
         compound: ["recursiveEmbedClosureFrame", "compoundEmbedClosureFrame", "compoundMatrixClosureFrame"],
@@ -7642,7 +7644,7 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
         operands[role] = inputs[role];
         delete inputs[role];
       }
-      return {inputs, sourceApplicationFrame, operands};
+      return {inputs, sourceApplicationFrame, compoundPredicateSourceFrame, operands};
     },
     isClassicalNahuatlClosureFrame: frame => withParentValidationTransaction(() => isClassicalNahuatlClosureFrame(frame)),
     buildClassicalNahuatlParadigm

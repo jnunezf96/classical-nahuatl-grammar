@@ -207,6 +207,7 @@ export function exportClassicalResultReloadRecipe(r, roots = {}, normalizePrimit
       ? value.vncApplicationFrame : null;
     const late = r.getClassicalNahuatlDirectLateReloadInputs?.(value);
     const continuedLate = r.getClassicalNahuatlLateContinuationReloadInputs?.(value);
+    const predicate = late?.compoundPredicateSourceFrame;
     const connective = late?.inputs?.lateOperation === "compound" && late.inputs.lateVariant === "connective-t";
     const lateRequest = directLateInputs(late?.inputs,connective);
     const lateSentenceParent = r.isClassicalNahuatlVncSentenceResultFrame?.(value)
@@ -227,6 +228,8 @@ export function exportClassicalResultReloadRecipe(r, roots = {}, normalizePrimit
     }
     else if (lateRequest) node = {type:connective ? "vnc:direct-connective" : "vnc:direct-late", request:lateRequest,
       ...(late.sourceApplicationFrame ? {source:visit(late.sourceApplicationFrame,depth+1)} : {}),
+      ...(predicate ? {predicate:{sourceStem:predicate.sourceStem,
+        ...(predicate.canonicalNncResult ? {parent:visit(predicate.canonicalNncResult,depth+1)} : {})}} : {}),
       ...(Object.keys(late.operands).length ? {
         operands:Object.fromEntries(Object.entries(late.operands).map(([role,operand])=>[role,visit(operand,depth+1)]))
       } : {})};
@@ -448,13 +451,29 @@ export function replayClassicalResultReloadRecipe(r, recipe) {
         && (r.getClassicalNahuatlDirectLateReloadInputs?.(prior(node.source))
           || r.getClassicalNahuatlLateContinuationReloadInputs?.(prior(node.source)))) {
         result = r.requestClassicalVncSentenceResultFrame(prior(node.source));
-      } else if (["vnc:direct-connective","vnc:direct-late"].includes(node?.type) && exact(node, ["type", "request", "source", "operands"])) {
+      } else if (["vnc:direct-connective","vnc:direct-late"].includes(node?.type) && exact(node, ["type", "request", "source", "operands", "predicate"])) {
         const request = directLateInputs(node.request,node.type === "vnc:direct-connective");
         if (!request) return null;
         if (node.source !== undefined) {
           const source = prior(node.source);
           if (r.isClassicalNahuatlVncApplicationFrame?.(source) !== true) return null;
           request.sourceApplicationFrame = source;
+        }
+        let predicate;
+        if (node.predicate !== undefined) {
+          if (node.type !== "vnc:direct-connective" || node.source !== undefined
+            || !exact(node.predicate,["sourceStem","parent"])
+            || typeof node.predicate.sourceStem !== "string"
+            || node.predicate.sourceStem.length > 4096
+            || Object.hasOwn(request,"compoundPredicateSourceFrame")) return null;
+          const parent = node.predicate.parent === undefined ? null : prior(node.predicate.parent);
+          if (node.predicate.parent !== undefined && !parent) return null;
+          predicate = r.buildClassicalNahuatlCompoundPredicateSourceFrame({
+            sourceStem:node.predicate.sourceStem,...(parent ? {canonicalNncResult:parent} : {})
+          });
+          if (!r.isClassicalNahuatlCompoundPredicateSourceFrame(predicate)
+            || predicate.canonicalNncResult !== parent) return null;
+          request.compoundPredicateSourceFrame = predicate;
         }
         const operands = {};
         if (node.operands !== undefined) {
@@ -470,6 +489,7 @@ export function replayClassicalResultReloadRecipe(r, recipe) {
         });
         const restored = r.getClassicalNahuatlDirectLateReloadInputs?.(application?.canonicalResult);
         if (application?.authorizationStatus !== "authorized" || !restored
+          || restored.compoundPredicateSourceFrame !== predicate
           || Object.entries(operands).some(([role,operand])=>restored.operands[role] !== operand)) return null;
         result = application.canonicalResult;
       } else if (node?.type === "nnc:lexicalized-present" && exact(node, ["type", "parent", "choices"])

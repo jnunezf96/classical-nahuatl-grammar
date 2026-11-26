@@ -173,3 +173,49 @@ test("a direct reverential sentence link preserves its honorific input",async()=
   delete outer.operands.attitudeSourceClosureFrame;
   assert.equal(replay(fresh,decoded),null);
 });
+
+export function makeCompoundPredicate(r, fromOwnerhood=false) {
+  const ownerhood=fromOwnerhood ? r.evaluateClassicalNahuatlDeverbalNnc({
+    constructionKind:"ownerhood",source:{sourceStem:"xōch",nounClass:"tli",ownerhoodMatrix:"ē"},
+    subject:"3sg",state:"absolutive",animacy:"animate",numberConnector:"silent",
+  }) : null;
+  const source=r.buildClassicalNahuatlCompoundPredicateSourceFrame(
+    ownerhood ? {canonicalNncResult:ownerhood} : {sourceStem:"cac"}
+  );
+  assert.ok(r.isClassicalNahuatlCompoundPredicateSourceFrame(source));
+  const args={sourceStem:source.sourceStem,sourceValence:"intransitive",verbClass:"A",subject:"3sg",mood:"indicative",
+    tense:"present",derivationType:"direct",voice:"active",lateOperation:"compound",lateVariant:"connective-t",
+    compoundMatrixStem:"yāuh",compoundPredicateSourceFrame:source};
+  const application=r.executeClassicalGrammarApplicationRequest({operationId:"vnc:derivational-operation",args:[args]});
+  assert.equal(application.authorizationStatus,"authorized",application.blockReason);
+  const parent=application.canonicalResult;
+  assert.equal(parent.surfaceRealization,ownerhood ? "xōchehtiyauh" : "cactiyauh");
+  return {parent,result:r.requestClassicalVncSentenceResultFrame(parent)};
+}
+
+test("a compound link restores its compound-only predicate Source",async()=>{
+  const r=await runtime(),fresh=await runtime();
+  for(const fromOwnerhood of [false,true]) {
+    const {parent,result}=makeCompoundPredicate(r,fromOwnerhood);
+    const recipe=save(r,{result});
+    assert.ok(recipe,parent.surfaceRealization);
+    const decoded=await decode(await encode(recipe));
+    const reopened=replay(fresh,decoded)?.result;
+    assert.ok(reopened);
+    assert.equal(reopened.sentenceSurfaceDisplay,result.sentenceSurfaceDisplay);
+    assert.equal(reopened.sentenceFormulaDisplay,result.sentenceFormulaDisplay);
+    const closure=reopened.lateOperationClosureFrame;
+    const source=closure.compoundPredicateSourceFrame;
+    assert.ok(fresh.isClassicalNahuatlCompoundPredicateSourceFrame(source));
+    assert.equal(source.lexicalIdentity,parent.compoundPredicateSourceFrame.lexicalIdentity);
+    assert.equal(source.independentFiniteUse,false);
+    assert.equal(closure.formulaRealization,parent.formulaRealization);
+    if(fromOwnerhood) {
+      assert.equal(source.canonicalNncResult.formulaRealization,
+        parent.compoundPredicateSourceFrame.canonicalNncResult.formulaRealization);
+    }
+    const compound=decoded.nodes.find(node=>node.predicate);
+    compound.predicate.sourceStem="chōca";
+    assert.equal(replay(fresh,decoded),null);
+  }
+});
