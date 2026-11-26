@@ -10931,7 +10931,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         formulaRealization:surface.formulaRealization,surfaceRealization:surface.wordRealization,typedFrameAuthority:true,callerSuppliedAuthorityAccepted:false,formulaStringAuthority:false,surfaceStringAuthority:false});
       const projection=Object.freeze({kind:"classical-nahuatl-vnc-continuation-source-constituents",authorizationStatus:"authorized",...custody,canonicalSourceFrame:c.source,canonicalApplicationFrame:app,canonicalResultFrame:result,
         sourceStem:targetStem,sourceIdentityStem:c.source.sourceStem,verbClass:c.source.sourceClass,sourceValence:"intransitive",sourceVoice:"active",sourceSubject:c.effective.subject,sourceSubjectFrame:participant,sourceObjectRequests:objects,grammarAuthority:false});
-      const context=Object.freeze({...c,app,result,typed,machinery,surface,projection,coordinate:Object.freeze({subject:participant.morphologicalAgreement,mood:c.effective.mood,tense:c.effective.tense})});
+      const context=Object.freeze({...c,app,result,typed,machinery,surface,projection,selections:binding.callerSelections,coordinate:Object.freeze({subject:participant.morphologicalAgreement,mood:c.effective.mood,tense:c.effective.tense})});
       restrictedContainingApplications.set(app,context);restrictedContainingApplications.set(result,context);classicalNahuatlVncApplicationFrameByResultFrame.set(result,app);return app;
     }
     function isRestrictedContainingApplication(frame=null) {
@@ -11037,7 +11037,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         canonicalApplicationFrame:app,canonicalResultFrame:result,analyticalDerivationContextFrame:c.context,derivationOperationFrame:c.operation,
         sourceStem:c.operation.targetStem,sourceIdentityStem:c.source.sourceStem,verbClass:c.operation.targetClass,sourceValence:c.operation.targetValence,sourceVoice:"active",
         sourceSubject:c.effective.subject,sourceSubjectFrame:c.participant,sourceObjectRequests:objects,grammarAuthority:false});
-      const context=Object.freeze({...c,app,result,typed,surface,projection,coordinate:Object.freeze({subject:c.participant.morphologicalAgreement,mood:c.effective.mood,tense:c.effective.tense})});
+      const context=Object.freeze({...c,app,result,typed,surface,projection,selections:binding.callerSelections,coordinate:Object.freeze({subject:c.participant.morphologicalAgreement,mood:c.effective.mood,tense:c.effective.tense})});
       analyticalVncApplications.set(app,context);analyticalVncApplications.set(result,context);classicalNahuatlVncApplicationFrameByResultFrame.set(result,app);return app;
     }
     function isAnalyticalVncApplication(frame) {
@@ -11371,7 +11371,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         sourceValence:c.source.sourceValence,sourceSubject:c.effective.subject,sourceSubjectFrame:participant,
         sourceSubjectPerson:participant.person,sourceSubjectAnimacy:participant.animacy,sourceSubjectHumanness:participant.humanness,sourceSubjectNumber:participant.number,
         sourceObjectRequests:Object.freeze([]),grammarAuthority:false,formulaStringAuthority:false,surfaceStringAuthority:false});
-      const context=Object.freeze({source:c.source,closure,machinery,typed,participant,result,app,projection});
+      const context=Object.freeze({source:c.source,closure,machinery,typed,participant,result,app,projection,selections:binding.callerSelections});
       preformedVncApplications.set(app,context);preformedVncApplications.set(result,context);
       classicalNahuatlVncApplicationFrameByResultFrame.set(result,app);return app;
     }
@@ -11486,6 +11486,26 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       const source = {enteredStem:context.source.nonactiveStem,valence:"intransitive"};
       if (resolveClassicalNahuatlNonactiveCarrierSourceFrame(source) !== context.source) return null;
       return {source,selections:context.selections,projection:frame === context.app ? "application" : "nucleus"};
+    }
+    function getClassicalNahuatlSpecializedFiniteReloadInputs(frame) {
+      const runtime = getClassicalNahuatlVncApplicationRuntimeTarget();
+      const families = [
+        ["restricted-containing", isRestrictedContainingApplication, restrictedContainingApplications, runtime.resolveClassicalNahuatlRestrictedContainingVncSourceFrame],
+        ["analytical", isAnalyticalVncApplication, analyticalVncApplications, runtime.resolveClassicalNahuatlAnalyticalVncSourceFrame],
+        ["preformed", isPreformedVncApplication, preformedVncApplications, resolveClassicalNahuatlPreformedVncSourceFrame],
+      ];
+      for (const [family, isApplication, contexts, resolve] of families) {
+        if (!contexts.has(frame) || !isApplication(frame)) continue;
+        const context = contexts.get(frame), ownerSource = context.source;
+        const imperfectiveOperand = family === "analytical" && isClassicalNahuatlImperfectiveVncSourceFrame(ownerSource);
+        const source = {enteredStem:ownerSource.sourceStem,valence:ownerSource.sourceValence};
+        if (family === "restricted-containing" && ownerSource.sourceLexemeId) source.sourceLexemeId = ownerSource.sourceLexemeId;
+        const reissued = imperfectiveOperand ? resolveClassicalNahuatlImperfectiveVncSourceFrame(source) : resolve?.(source);
+        if (reissued !== ownerSource) return null;
+        return {family:imperfectiveOperand ? "analytical-imperfective" : family,source,
+          selections:context.selections,projection:frame === context.app ? "application" : "nucleus"};
+      }
+      return null;
     }
     function issueClassicalNahuatlVncTypedSourceApplicationBindingFrame(
       exactSourceMachineryFrame = null,
@@ -14148,6 +14168,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
     api.isClassicalNahuatlRestrictedContainingVncFiniteResult = isClassicalNahuatlRestrictedContainingVncFiniteResult;
     api.getClassicalNahuatlImperfectiveVncReloadInputs = getClassicalNahuatlImperfectiveVncReloadInputs;
     api.getClassicalNahuatlNonactiveCarrierReloadInputs = getClassicalNahuatlNonactiveCarrierReloadInputs;
+    api.getClassicalNahuatlSpecializedFiniteReloadInputs = getClassicalNahuatlSpecializedFiniteReloadInputs;
     api.isClassicalNahuatlImperfectiveVncFiniteResult = isClassicalNahuatlImperfectiveVncFiniteResult;
     api.isClassicalNahuatlImperfectiveTransitiveVncMachineryFrame = isClassicalNahuatlImperfectiveTransitiveVncMachineryFrame;
     api.isClassicalNahuatlImperfectiveVncApplicationFrame = isClassicalNahuatlImperfectiveVncApplicationFrame;

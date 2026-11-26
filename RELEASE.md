@@ -1,8 +1,8 @@
-# Grammar OS v1.2.139 release
+# Grammar OS v1.2.140 release
 
 Release name: **Writer Controls**
 
-Browser build: **20261126-passive-links-139**
+Browser build: **20261126-specialized-links-140**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
