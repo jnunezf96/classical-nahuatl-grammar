@@ -101,13 +101,13 @@ test("a negative attachment link preserves its exact selection and following par
   }
 });
 
-export function makeLargeConjunction(owner=r,deep=false) {
+export function makeLargeConjunction(owner=r,shape="wide",count=44) {
   const execute=(operationId,...args)=>{
     const application=owner.executeClassicalGrammarApplicationRequest({operationId,args});
     assert.equal(application.authorizationStatus,"authorized",application.blockReason);
     return application.canonicalResult;
   };
-  const clauses=Array.from({length:44},(_,index)=>{
+  const clauses=Array.from({length:count},(_,index)=>{
     const source=owner.buildClassicalNahuatlOrdinaryNncSourceFrame({stem:"cal",sourceClass:"tli-1"});
     const operation=owner.buildClassicalNahuatlOrdinaryNncOperationFrame(source,{subject:"3common",state:"absolutive"});
     return owner.buildClassicalNahuatlClauseCompositionSourceFrame(execute("nnc:ordinary",source,operation),{
@@ -117,9 +117,9 @@ export function makeLargeConjunction(owner=r,deep=false) {
   const conjoin=conjuncts=>execute("clause:composition",{
     operationKind:"conjunction",conjuncts,options:{relation:"unmarked",coordinationType:"additive"},
   });
-  return deep
-    ? clauses.slice(2).reduce((group,clause)=>conjoin([group,clause]),conjoin(clauses.slice(0,2)))
-    : conjoin([conjoin(clauses.slice(0,22)),conjoin(clauses.slice(22))]);
+  if(shape==="flat") return conjoin(clauses);
+  if(shape==="deep") return clauses.slice(2).reduce((group,clause)=>conjoin([group,clause]),conjoin(clauses.slice(0,2)));
+  return conjoin(Array.from({length:Math.ceil(count/22)},(_,index)=>conjoin(clauses.slice(index*22,index*22+22))));
 }
 
 test("a wide nested conjunction saves all 135 nodes in its Result link",async()=>{
@@ -136,7 +136,7 @@ test("a wide nested conjunction saves all 135 nodes in its Result link",async()=
 
 
 test("a deeply nested conjunction keeps its complete clause structure",async()=>{
-  const result=makeLargeConjunction(r,true);
+  const result=makeLargeConjunction(r,"deep");
   const recipe=save(r,{result});
   assert.equal(recipe?.nodes.length,175);
   const reopened=restore(fresh,await decode(await encode(recipe)))?.result;
@@ -149,4 +149,19 @@ test("a deeply nested conjunction keeps its complete clause structure",async()=>
     parent=parent.conjuncts[0];
   }
   assert.deepEqual(parent.conjuncts.map(clause=>clause.referenceId),["clause-0","clause-1"]);
+});
+
+test("large conjunction links restore all clauses and both levels of structure",async()=>{
+  for(const [shape,count,nodeCount] of [["flat",44,133],["wide",176,537]]){
+    const result=makeLargeConjunction(r,shape,count);
+    const recipe=save(r,{result});
+    assert.equal(recipe?.nodes.length,nodeCount);
+    const reopened=restore(fresh,await decode(await encode(recipe)))?.result;
+    assert.ok(reopened);
+    assert.equal(reopened.surfaceRealization,result.surfaceRealization);
+    assert.equal(reopened.formulaRealization,result.formulaRealization);
+    const clauses=shape==="flat" ? reopened.conjuncts : reopened.conjuncts.flatMap(group=>group.conjuncts);
+    assert.deepEqual(clauses.map(clause=>clause.referenceId),
+      Array.from({length:count},(_,index)=>"clause-"+index));
+  }
 });

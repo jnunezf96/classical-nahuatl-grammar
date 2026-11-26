@@ -1,5 +1,5 @@
 const PREFIX = "sgr2";
-export const MAX_RESULT_LINK_NODES = 512;
+export const MAX_RESULT_LINK_NODES = 36 ** 2;
 const MAX_ADDRESS = 16000;
 const MAX_JSON_BYTES = 262144;
 

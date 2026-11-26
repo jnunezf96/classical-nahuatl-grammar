@@ -400,7 +400,7 @@ export function replayClassicalResultReloadRecipe(r, recipe) {
       } else if (node?.type === "clause:conjunction"
         && exact(node, ["type", "operationKind", "conjuncts", "options", "sharedSupplement", "conjunctorResult"])
         && typeof node.operationKind === "string" && plain(node.options, CONJUNCTION_OPTION_KEYS)
-        && Array.isArray(node.conjuncts) && node.conjuncts.length > 0 && node.conjuncts.length <= 32) {
+        && Array.isArray(node.conjuncts) && node.conjuncts.length > 0 && node.conjuncts.length <= MAX_RESULT_LINK_NODES) {
         if (["sharedSupplement", "conjunctorResult"].some(key => node[key] !== undefined && !prior(node[key]))) return null;
         const conjuncts = node.conjuncts.map(child => {
           if (exact(child, ["result"]) && prior(child.result)) return prior(child.result);
