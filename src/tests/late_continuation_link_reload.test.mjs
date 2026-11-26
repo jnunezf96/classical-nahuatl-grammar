@@ -8,7 +8,7 @@ const runtime=async()=>(await createRuntimeInstance({
   documentObject:{getElementById:()=>null,addEventListener(){}},
 })).runtimeObject;
 
-export function makeAttitudeContinuations(r) {
+export function makeAttitudeContinuations(r, direct=false) {
   const operationId="vnc:derivational-operation";
   const base={subject:"3sg",mood:"indicative",tense:"present",requestedDerivation:"direct",requestedVoice:"active"};
   function apply(args) {
@@ -19,7 +19,7 @@ export function makeAttitudeContinuations(r) {
   function bind(parent,choices) {
     const binding=r.issueClassicalNahuatlVncContinuationBindingFrame(operationId,parent,choices);
     assert.equal(binding.bindingStatus,"ready",binding.blockReason);
-    return apply(binding.executionArgs);
+    return apply(direct ? [{...binding.executionArgs[0]}] : binding.executionArgs);
   }
   const honorific=apply([{...base,sourceStem:"chōca",verbClass:"A",sourceValence:"intransitive",sourceSubject:"3sg",
     sourceSubjectHumanness:"human",sourceSubjectAnimacy:"animate",voice:"active",lateOperation:"honorific",lateVariant:"causative",
@@ -258,4 +258,30 @@ test("a nominally composed matrix retains its exact identity in a compound link"
   const outer=decoded.nodes.find(node=>node.operands?.compoundMatrixVncResultFrame!==undefined);
   outer.operands.compoundMatrixVncResultFrame=decoded.nodes.findIndex(node=>node.type==="vnc");
   assert.equal(replay(fresh,decoded),null);
+});
+
+test("both direct compound honorific readings keep their scope and parent in a sentence link",async()=>{
+  const r=await runtime(),fresh=await runtime();
+  for(const {parent,result} of makeAttitudeContinuations(r,true).slice(1)){
+    const sentence=r.requestClassicalVncSentenceResultFrame(result);
+    const recipe=save(r,{result:sentence});
+    assert.ok(recipe,result.surfaceRealization);
+    const decoded=await decode(await encode(recipe));
+    const reopened=replay(fresh,decoded)?.result;
+    assert.ok(reopened);
+    assert.equal(reopened.sentenceSurfaceDisplay,sentence.sentenceSurfaceDisplay);
+    assert.equal(reopened.sentenceFormulaDisplay,sentence.sentenceFormulaDisplay);
+    const closure=reopened.lateOperationClosureFrame;
+    assert.equal(closure.operationFrame.operationFacts.compoundTarget,result.operationFrame.operationFacts.compoundTarget);
+    assert.deepEqual(closure.operationFrame.operationFacts.compoundLexicalizationAnalysisFrame,
+      result.operationFrame.operationFacts.compoundLexicalizationAnalysisFrame);
+    assert.equal(fresh.getClassicalNahuatlDirectLateReloadInputs(closure).operands.attitudeCompoundClosureFrame.formulaRealization,
+      parent.formulaRealization);
+    assert.deepEqual(closure.baseApplicationFrame.normalizedRequest.sourceObjectRequests,
+      result.baseApplicationFrame.normalizedRequest.sourceObjectRequests);
+    const altered=structuredClone(decoded);
+    const node=altered.nodes.find(entry=>entry.operands?.attitudeCompoundClosureFrame!==undefined);
+    node.request.compoundLexicalizationAnalysis.sourceEmbedStem="chōca";
+    assert.equal(replay(fresh,altered),null);
+  }
 });

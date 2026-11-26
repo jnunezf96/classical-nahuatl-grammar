@@ -54,6 +54,8 @@ const exact = (value, keys) => value && typeof value === "object" && !Array.isAr
 const DIRECT_LATE_OPERANDS = new Map([
   ["compound", ["recursiveEmbedClosureFrame", "compoundEmbedClosureFrame", "compoundMatrixClosureFrame", "compoundMatrixVncResultFrame"]],
   ["reverential", ["attitudeSourceClosureFrame"]],
+  ["honorific", ["attitudeCompoundClosureFrame", "attitudeMemberTransformationFrame"]],
+  ["pejorative", ["attitudeCompoundClosureFrame", "attitudeMemberTransformationFrame"]],
 ]);
 const LATE_OPERANDS = ["recursiveEmbedClosureFrame","compoundEmbedClosureFrame","compoundMatrixClosureFrame",
   "compoundMatrixVncResultFrame","attitudeSourceClosureFrame","attitudeCompoundClosureFrame","attitudeMemberTransformationFrame"];
@@ -71,6 +73,11 @@ function lateContinuationChoices(value) {
 const finiteSelections = (value, extras = []) => exact(value,[...CARRIER_CHOICES,...extras]) && Object.entries(value).every(([key,choice]) =>
   key === "sentenceOptions" ? plain(choice,CARRIER_SENTENCE_CHOICES)
     : typeof choice === "string" && choice.length <= 4096);
+const DIRECT_SOURCE_OBJECT_KEYS = ["objectId","objectKind","objectPerson","object","governor","derivationalLevel",
+  "silentSpecificObject","shuntlineReflexivePosition","shuntlineReflexiveBoundaryVariant","mainlineLinearPriority",
+  "person","animacy","humanness","number","referenceId"];
+const COMPOUND_LEXICALIZATION_KEYS = ["lexicalStatus","sourceEmbedStem","sourceMatrixStem",
+  "selectedStructure","availableStructures","lexicalMeaningId"];
 function directLateInputs(input, connective) {
   if (!input || !(connective ? input.lateOperation === "compound" && input.lateVariant === "connective-t"
     : ["purposive","honorific","pejorative","reverential"].includes(input.lateOperation)
@@ -86,7 +93,12 @@ function directLateInputs(input, connective) {
   return entries.every(([key,value]) => safeKey(key) && (scalar(value)
     || key === "sentenceOptions" && plainOptions(value)
     || key === "outsidePrefixes" && Array.isArray(value) && value.length <= 12 && value.every(scalar)
-    || key === "sourceObjectRequests" && Array.isArray(value) && value.length === 0))
+    || key === "sourceObjectRequests" && Array.isArray(value) && value.length <= 12
+      && value.every(object => exact(object,DIRECT_SOURCE_OBJECT_KEYS) && Object.values(object).every(scalar))
+    || key === "compoundLexicalizationAnalysis" && exact(value,COMPOUND_LEXICALIZATION_KEYS)
+      && Object.entries(value).every(([field,choice]) => field === "availableStructures"
+        ? Array.isArray(choice) && choice.length <= 2 && choice.every(item => typeof item === "string" && scalar(item))
+        : typeof choice === "string" && scalar(choice))))
     ? Object.fromEntries(entries) : null;
 }
 const ATTESTED_RELOAD = new Map([

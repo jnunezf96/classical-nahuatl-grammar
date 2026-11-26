@@ -7637,6 +7637,8 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
       const roles = {
         compound: ["recursiveEmbedClosureFrame", "compoundEmbedClosureFrame", "compoundMatrixClosureFrame", "compoundMatrixVncResultFrame"],
         reverential: ["attitudeSourceClosureFrame"],
+        honorific: ["attitudeCompoundClosureFrame", "attitudeMemberTransformationFrame"],
+        pejorative: ["attitudeCompoundClosureFrame", "attitudeMemberTransformationFrame"],
       };
       for (const role of roles[frame.operationFrame.operation] ?? []) {
         if (inputs[role] === undefined) continue;
@@ -7648,6 +7650,14 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
         if (!valid || operand.authorizationStatus !== "authorized") return null;
         operands[role] = inputs[role];
         delete inputs[role];
+      }
+      if (Array.isArray(inputs.sourceObjectRequests)) {
+        inputs.sourceObjectRequests = inputs.sourceObjectRequests.map(({participantFrame, ...object}) => {
+          for (const key of ["person", "animacy", "humanness", "number", "referenceId"]) {
+            if (!object[key] && participantFrame?.[key]) object[key] = participantFrame[key];
+          }
+          return object;
+        });
       }
       return {inputs, sourceApplicationFrame, compoundPredicateSourceFrame, operands};
     },
