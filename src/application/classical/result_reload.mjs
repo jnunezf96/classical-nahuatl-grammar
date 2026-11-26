@@ -51,6 +51,7 @@ const plain = (value, keys) => value && typeof value === "object" && !Array.isAr
     && ["string", "boolean", "number"].includes(typeof value[key]));
 const exact = (value, keys) => value && typeof value === "object" && !Array.isArray(value)
   && Object.keys(value).every(key => keys.includes(key));
+const DIRECT_COMPOUND_OPERANDS = ["recursiveEmbedClosureFrame", "compoundEmbedClosureFrame", "compoundMatrixClosureFrame"];
 const LATE_OPERANDS = ["recursiveEmbedClosureFrame","compoundEmbedClosureFrame","compoundMatrixClosureFrame",
   "compoundMatrixVncResultFrame","attitudeSourceClosureFrame","attitudeCompoundClosureFrame","attitudeMemberTransformationFrame"];
 function lateContinuationChoices(value) {
@@ -222,7 +223,10 @@ export function exportClassicalResultReloadRecipe(r, roots = {}, normalizePrimit
         operands:Object.fromEntries(Object.entries(continuedLate.operands).map(([role,operand])=>[role,visit(operand,depth+1)]))};
     }
     else if (lateRequest) node = {type:connective ? "vnc:direct-connective" : "vnc:direct-late", request:lateRequest,
-      ...(late.sourceApplicationFrame ? {source:visit(late.sourceApplicationFrame,depth+1)} : {})};
+      ...(late.sourceApplicationFrame ? {source:visit(late.sourceApplicationFrame,depth+1)} : {}),
+      ...(Object.keys(late.operands).length ? {
+        operands:Object.fromEntries(Object.entries(late.operands).map(([role,operand])=>[role,visit(operand,depth+1)]))
+      } : {})};
     else if (lateSentenceParent) node = {type:"vnc:direct-late-sentence",source:visit(lateSentenceParent,depth+1)};
     else if (lexicalParent && r.isClassicalNahuatlOrdinaryNncResult?.(value))
       node = {type:"nnc:lexicalized-present", parent:visit(lexicalParent.canonicalResult,depth+1),
@@ -441,7 +445,7 @@ export function replayClassicalResultReloadRecipe(r, recipe) {
         && (r.getClassicalNahuatlDirectLateReloadInputs?.(prior(node.source))
           || r.getClassicalNahuatlLateContinuationReloadInputs?.(prior(node.source)))) {
         result = r.requestClassicalVncSentenceResultFrame(prior(node.source));
-      } else if (["vnc:direct-connective","vnc:direct-late"].includes(node?.type) && exact(node, ["type", "request", "source"])) {
+      } else if (["vnc:direct-connective","vnc:direct-late"].includes(node?.type) && exact(node, ["type", "request", "source", "operands"])) {
         const request = directLateInputs(node.request,node.type === "vnc:direct-connective");
         if (!request) return null;
         if (node.source !== undefined) {
@@ -449,9 +453,21 @@ export function replayClassicalResultReloadRecipe(r, recipe) {
           if (r.isClassicalNahuatlVncApplicationFrame?.(source) !== true) return null;
           request.sourceApplicationFrame = source;
         }
-        const application = r.executeClassicalGrammarApplicationRequest({operationId:"vnc:derivational-operation",args:[request]});
-        if (application?.authorizationStatus !== "authorized"
-          || !r.getClassicalNahuatlDirectLateReloadInputs?.(application.canonicalResult)) return null;
+        const operands = {};
+        if (node.operands !== undefined) {
+          if (request.lateOperation !== "compound" || !exact(node.operands,DIRECT_COMPOUND_OPERANDS)) return null;
+          for (const [role,index] of Object.entries(node.operands)) {
+            const operand = prior(index);
+            if (!r.isClassicalNahuatlClosureFrame?.(operand) || Object.hasOwn(request,role)) return null;
+            operands[role] = operand;
+          }
+        }
+        const application = r.executeClassicalGrammarApplicationRequest({
+          operationId:"vnc:derivational-operation",args:[{...request,...operands}]
+        });
+        const restored = r.getClassicalNahuatlDirectLateReloadInputs?.(application?.canonicalResult);
+        if (application?.authorizationStatus !== "authorized" || !restored
+          || Object.entries(operands).some(([role,operand])=>restored.operands[role] !== operand)) return null;
         result = application.canonicalResult;
       } else if (node?.type === "nnc:lexicalized-present" && exact(node, ["type", "parent", "choices"])
         && prior(node.parent) && plain(node.choices, [...NNC_KEYS, "humanness"])) {

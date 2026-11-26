@@ -105,3 +105,33 @@ test("direct compounds reopen inside sentences with the exact compound analysis"
     assert.equal(linked.formulaRecord?.formula,result.formulaRecord?.formula);
   }
 });
+
+export function makeRecursiveCompound(r) {
+  const request={sourceStem:"chōca",sourceValence:"intransitive",verbClass:"A",subject:"2sg",
+    mood:"indicative",tense:"present",derivationType:"direct",voice:"active",
+    lateOperation:"compound",lateVariant:"connective-t",compoundMatrixStem:"ahci"};
+  const make=args=>r.executeClassicalGrammarApplicationRequest({operationId:"vnc:derivational-operation",args:[args]});
+  const inner=make(request).canonicalResult;
+  const outer=make({...request,sourceStem:inner.operationFrame.targetStem,compoundMatrixStem:"ya-uh",
+    compoundEmbedClosureFrame:inner,tense:"future"}).canonicalResult;
+  assert.equal(outer.surfaceRealization,"tichōcatahcitiyāz");
+  return {inner,parent:outer,result:r.requestClassicalVncSentenceResultFrame(outer)};
+}
+
+test("a compound used as an embed survives a nested Result link",async()=>{
+  const r=await runtime(),fresh=await runtime();
+  const {inner,parent,result}=makeRecursiveCompound(r);
+  const recipe=save(r,{result});
+  assert.ok(recipe,parent.surfaceRealization);
+  const decoded=await decode(await encode(recipe));
+  const reopened=replay(fresh,decoded)?.result?.lateOperationClosureFrame;
+  assert.ok(reopened);
+  assert.equal(reopened.surfaceRealization,parent.surfaceRealization);
+  assert.equal(reopened.formulaRealization,parent.formulaRealization);
+  const restored=fresh.getClassicalNahuatlDirectLateReloadInputs(reopened).operands.compoundEmbedClosureFrame;
+  assert.equal(restored.surfaceRealization,inner.surfaceRealization);
+  assert.equal(restored.formulaRealization,inner.formulaRealization);
+  const outer=decoded.nodes.find(node=>node.operands?.compoundEmbedClosureFrame!==undefined);
+  outer.operands.compoundEmbedClosureFrame=decoded.nodes.length-1;
+  assert.equal(replay(fresh,decoded),null);
+});

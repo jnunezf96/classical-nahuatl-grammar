@@ -7631,7 +7631,16 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
       const {sourceApplicationFrame, ...inputs} = request;
       if (sourceApplicationFrame && (targetObject.isClassicalNahuatlVncApplicationFrame?.(sourceApplicationFrame) !== true
         || sourceApplicationFrame !== frame.baseApplicationFrame)) return null;
-      return {inputs, sourceApplicationFrame};
+      const operands = {};
+      if (frame.operationFrame.operation === "compound") {
+        for (const role of ["recursiveEmbedClosureFrame", "compoundEmbedClosureFrame", "compoundMatrixClosureFrame"]) {
+          if (inputs[role] === undefined) continue;
+          if (!issuedClosureFrames.has(inputs[role]) || inputs[role].authorizationStatus !== "authorized") return null;
+          operands[role] = inputs[role];
+          delete inputs[role];
+        }
+      }
+      return {inputs, sourceApplicationFrame, operands};
     },
     isClassicalNahuatlClosureFrame: frame => withParentValidationTransaction(() => isClassicalNahuatlClosureFrame(frame)),
     buildClassicalNahuatlParadigm
