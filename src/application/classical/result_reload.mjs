@@ -51,7 +51,10 @@ const plain = (value, keys) => value && typeof value === "object" && !Array.isAr
     && ["string", "boolean", "number"].includes(typeof value[key]));
 const exact = (value, keys) => value && typeof value === "object" && !Array.isArray(value)
   && Object.keys(value).every(key => keys.includes(key));
-const DIRECT_COMPOUND_OPERANDS = ["recursiveEmbedClosureFrame", "compoundEmbedClosureFrame", "compoundMatrixClosureFrame"];
+const DIRECT_LATE_OPERANDS = new Map([
+  ["compound", ["recursiveEmbedClosureFrame", "compoundEmbedClosureFrame", "compoundMatrixClosureFrame"]],
+  ["reverential", ["attitudeSourceClosureFrame"]],
+]);
 const LATE_OPERANDS = ["recursiveEmbedClosureFrame","compoundEmbedClosureFrame","compoundMatrixClosureFrame",
   "compoundMatrixVncResultFrame","attitudeSourceClosureFrame","attitudeCompoundClosureFrame","attitudeMemberTransformationFrame"];
 function lateContinuationChoices(value) {
@@ -70,8 +73,8 @@ const finiteSelections = (value, extras = []) => exact(value,[...CARRIER_CHOICES
     : typeof choice === "string" && choice.length <= 4096);
 function directLateInputs(input, connective) {
   if (!input || !(connective ? input.lateOperation === "compound" && input.lateVariant === "connective-t"
-    : ["purposive","honorific","pejorative"].includes(input.lateOperation)
-      || input.lateOperation === "compound" && ["shared-object","reflexive-matrix"].includes(input.lateVariant))
+    : ["purposive","honorific","pejorative","reverential"].includes(input.lateOperation)
+      || input.lateOperation === "compound" && ["shared-object","reflexive-matrix","huītz-carry"].includes(input.lateVariant))
     || Array.isArray(input) || Object.keys(input).length > 128) return null;
   const scalar = value => typeof value === "string" && value.length <= 4096
     || typeof value === "boolean" || Number.isFinite(value);
@@ -455,7 +458,7 @@ export function replayClassicalResultReloadRecipe(r, recipe) {
         }
         const operands = {};
         if (node.operands !== undefined) {
-          if (request.lateOperation !== "compound" || !exact(node.operands,DIRECT_COMPOUND_OPERANDS)) return null;
+          if (!exact(node.operands,DIRECT_LATE_OPERANDS.get(request.lateOperation) ?? [])) return null;
           for (const [role,index] of Object.entries(node.operands)) {
             const operand = prior(index);
             if (!r.isClassicalNahuatlClosureFrame?.(operand) || Object.hasOwn(request,role)) return null;

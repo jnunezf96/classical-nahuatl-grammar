@@ -69,7 +69,11 @@ export function makeDirectCompounds(r) {
   const base={sourceStem:"cui",sourceValence:"specific-projective",objectKind:"specific-projective",
     objectPerson:"3sg",verbClass:"A",subject:"3sg",mood:"indicative",tense:"present",
     derivationType:"direct",voice:"active",lateOperation:"compound"};
+  const carry={...base,sourceValence:"tla",objectKind:"nonspecific-nonhuman",objectPerson:"",
+    lateVariant:"huītz-carry",compoundMatrixStem:"huī-tz"};
   const requests=[
+    {...carry,sourceStem:"huīca",subject:"3pl",tense:"preterit-as-present"},
+    {...carry,sourceStem:"itqui",subject:"1sg",tense:"distant-past-as-past"},
     {...base,lateVariant:"shared-object",compoundMatrixStem:"tlāl-i-ā"},
     {...base,lateVariant:"shared-object",compoundMatrixStem:"quetza",objectKind:"reflexive",objectPerson:""},
     {...base,sourceStem:"chōca",sourceValence:"intransitive",objectKind:"none",objectPerson:"",
@@ -133,5 +137,39 @@ test("a compound used as an embed survives a nested Result link",async()=>{
   assert.equal(restored.formulaRealization,inner.formulaRealization);
   const outer=decoded.nodes.find(node=>node.operands?.compoundEmbedClosureFrame!==undefined);
   outer.operands.compoundEmbedClosureFrame=decoded.nodes.length-1;
+  assert.equal(replay(fresh,decoded),null);
+});
+
+export function makeDirectReverential(r) {
+  const [{parent:honorific}]=makeAttitudeContinuations(r);
+  const {targetStem,targetValence,targetClass}=honorific.operationFrame;
+  const application=r.executeClassicalGrammarApplicationRequest({operationId:"vnc:derivational-operation",args:[{
+    sourceStem:targetStem,sourceValence:targetValence,verbClass:targetClass,subject:"3sg",mood:"indicative",
+    tense:"present",derivationType:"direct",voice:"active",objectKind:"reflexive",lateOperation:"reverential",
+    lateVariant:"preterit-embed",honoredParticipant:"subject",attitudeSourceClosureFrame:honorific,
+  }]});
+  assert.equal(application.authorizationStatus,"authorized",application.blockReason);
+  const parent=application.canonicalResult;
+  assert.equal(parent.surfaceRealization,"mochōquitihtzinoa");
+  return {honorific,parent,result:r.requestClassicalVncSentenceResultFrame(parent)};
+}
+
+test("a direct reverential sentence link preserves its honorific input",async()=>{
+  const r=await runtime(),fresh=await runtime();
+  const {honorific,parent,result}=makeDirectReverential(r);
+  const recipe=save(r,{result});
+  assert.ok(recipe,parent.surfaceRealization);
+  const decoded=await decode(await encode(recipe));
+  const sentence=replay(fresh,decoded)?.result;
+  assert.ok(sentence);
+  assert.equal(sentence.sentenceSurfaceDisplay,result.sentenceSurfaceDisplay);
+  assert.equal(sentence.sentenceFormulaDisplay,result.sentenceFormulaDisplay);
+  const closure=sentence.lateOperationClosureFrame;
+  assert.equal(closure.formulaRealization,parent.formulaRealization);
+  const restored=fresh.getClassicalNahuatlDirectLateReloadInputs(closure).operands.attitudeSourceClosureFrame;
+  assert.equal(restored.surfaceRealization,honorific.surfaceRealization);
+  assert.equal(restored.formulaRealization,honorific.formulaRealization);
+  const outer=decoded.nodes.find(node=>node.operands?.attitudeSourceClosureFrame!==undefined);
+  delete outer.operands.attitudeSourceClosureFrame;
   assert.equal(replay(fresh,decoded),null);
 });

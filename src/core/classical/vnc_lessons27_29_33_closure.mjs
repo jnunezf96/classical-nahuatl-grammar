@@ -7624,21 +7624,23 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
     },
     getClassicalNahuatlDirectLateReloadInputs: frame => {
       if (!issuedClosureFrames.has(frame) || frame.authorizationStatus !== "authorized"
-        || !(["purposive","honorific","pejorative"].includes(frame.operationFrame?.operation)
-          || frame.operationFrame?.operation === "compound" && ["connective-t","shared-object","reflexive-matrix"].includes(frame.operationFrame.variant))) return null;
+        || !(["purposive","honorific","pejorative","reverential"].includes(frame.operationFrame?.operation)
+          || frame.operationFrame?.operation === "compound" && ["connective-t","shared-object","reflexive-matrix","huītz-carry"].includes(frame.operationFrame.variant))) return null;
       const request = issuedClosureRequests.get(frame);
       if (!request) return null;
       const {sourceApplicationFrame, ...inputs} = request;
       if (sourceApplicationFrame && (targetObject.isClassicalNahuatlVncApplicationFrame?.(sourceApplicationFrame) !== true
         || sourceApplicationFrame !== frame.baseApplicationFrame)) return null;
       const operands = {};
-      if (frame.operationFrame.operation === "compound") {
-        for (const role of ["recursiveEmbedClosureFrame", "compoundEmbedClosureFrame", "compoundMatrixClosureFrame"]) {
-          if (inputs[role] === undefined) continue;
-          if (!issuedClosureFrames.has(inputs[role]) || inputs[role].authorizationStatus !== "authorized") return null;
-          operands[role] = inputs[role];
-          delete inputs[role];
-        }
+      const roles = {
+        compound: ["recursiveEmbedClosureFrame", "compoundEmbedClosureFrame", "compoundMatrixClosureFrame"],
+        reverential: ["attitudeSourceClosureFrame"],
+      };
+      for (const role of roles[frame.operationFrame.operation] ?? []) {
+        if (inputs[role] === undefined) continue;
+        if (!issuedClosureFrames.has(inputs[role]) || inputs[role].authorizationStatus !== "authorized") return null;
+        operands[role] = inputs[role];
+        delete inputs[role];
       }
       return {inputs, sourceApplicationFrame, operands};
     },
