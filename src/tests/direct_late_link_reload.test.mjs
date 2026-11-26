@@ -90,3 +90,48 @@ test("accompanying possession retains the possessive and verbal analysis",async(
     }
   }
 });
+
+export function makeSelectedWish(r,negative) {
+  const base=r.requestClassicalVncApplicationResult({sourceStem:"nemi",sourceValence:"intransitive",verbClass:"B",
+    subject:"1sg",mood:"optative",tense:"nonpast",requestedDerivation:"direct",requestedVoice:"active"});
+  const application=r.executeClassicalGrammarApplicationRequest({operationId:"vnc:sentence-result",
+    args:[base,{sentenceType:"wish-sentence",introductoryParticle:"mā",negative}]});
+  assert.equal(application.authorizationStatus,"authorized",application.blockReason);
+  return {base,result:application.canonicalResult};
+}
+
+test("explicit positive and negative wish envelopes reopen with their original analysis",async()=>{
+  const r=await runtime(),fresh=await runtime();
+  for(const negative of [false,true]){
+    const {base,result}=makeSelectedWish(r,negative);
+    const recipe=save(r,{result,base});
+    assert.ok(recipe);
+    const roots=replay(fresh,recipe);
+    assert.ok(roots);
+    assert.ok(roots.result.canonicalSourceFrame===roots.base);
+    const linked=replay(fresh,await decode(await encode(save(r,{result}))))?.result;
+    assert.equal(linked?.sentenceSurfaceDisplay,result.sentenceSurfaceDisplay);
+    assert.equal(linked?.sentenceFormulaDisplay,result.sentenceFormulaDisplay);
+  }
+});
+
+export function makeLayeredWish(r) {
+  const host=makeSelectedWish(r,true).result;
+  const application=r.executeClassicalGrammarApplicationRequest({operationId:"sentence:adverbial-adjunction",args:[{
+    nuclearResultFrame:host,particleSourceFrame:r.buildClassicalNahuatlParticleSourceFrame("l3-no-adverbial"),
+  }]});
+  assert.equal(application.authorizationStatus,"authorized",application.blockReason);
+  return {host,result:application.canonicalResult};
+}
+
+test("adverbial adjunction keeps the explicitly selected wish as its exact host",async()=>{
+  const r=await runtime(),fresh=await runtime();
+  const {host,result}=makeLayeredWish(r);
+  const roots=replay(fresh,save(r,{result,host}));
+  assert.ok(roots);
+  assert.ok(roots.result.canonicalInputFrame===roots.host);
+  assert.equal(roots.host.sentenceFormulaDisplay,host.sentenceFormulaDisplay);
+  const linked=replay(fresh,await decode(await encode(save(r,{result}))))?.result;
+  assert.equal(linked?.sentenceSurfaceDisplay,result.sentenceSurfaceDisplay);
+  assert.equal(linked?.sentenceFormulaDisplay,result.sentenceFormulaDisplay);
+});

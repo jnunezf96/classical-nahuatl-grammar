@@ -51,6 +51,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
     const classicalNahuatlVncApplicationIssuedSentenceResultFrames = new WeakSet();
     const classicalNahuatlVncIssuedSentenceDecisions = new WeakSet();
     const classicalNahuatlVncSentenceEnvelopeReceipts = new WeakMap();
+    const explicitlySelectedVncSentenceEnvelopes = new WeakSet();
     const classicalNahuatlVncSentenceValidationReceipts = new WeakMap();
     const classicalNahuatlVncSentenceImmutableDataGraphs = new WeakSet();
     const classicalNahuatlWidowhoodInterpretationSources = new WeakSet();
@@ -6099,6 +6100,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       classicalNahuatlVncIssuedSentenceDecisions.add(frame);
       if (authorizationStatus === "authorized") {
         classicalNahuatlVncApplicationIssuedSentenceResultFrames.add(frame);
+        if (envelopeSelections !== null) explicitlySelectedVncSentenceEnvelopes.add(frame);
         if (selectedEnvelope !== null) classicalNahuatlVncSentenceEnvelopeReceipts.set(frame,
           buildClassicalNahuatlVncSentenceEnvelopeSelections(selectedEnvelope));
       }
@@ -14167,6 +14169,10 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
     };
     api.prepareClassicalNahuatlVncApplicationRecipeReplay =
       prepareClassicalNahuatlVncApplicationRecipeReplay;
+    api.getClassicalNahuatlVncSelectedSentenceReloadInputs = frame =>
+      explicitlySelectedVncSentenceEnvelopes.has(frame) && isClassicalNahuatlVncSentenceResultFrame(frame)
+        ? Object.freeze({source:frame.canonicalSourceFrame, selections:classicalNahuatlVncSentenceEnvelopeReceipts.get(frame)})
+        : null;
     api.getClassicalNahuatlVncContinuationReloadInputs = getClassicalNahuatlVncContinuationReloadInputs;
     api.getClassicalNahuatlCompoundAllomorphBindingForSource = source => compoundAllomorphBindingsBySource.get(source);
     api.getClassicalNahuatlLateContinuationBindingForRequest = request => lateContinuationBindingsByRequest.get(request);

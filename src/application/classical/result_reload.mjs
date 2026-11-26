@@ -187,8 +187,9 @@ export function exportClassicalResultReloadRecipe(r, roots = {}, normalizePrimit
     if (indices.has(value)) return indices.get(value);
     if (!value || depth + nodes.length >= MAX_RESULT_LINK_NODES || visiting.has(value)) throw new Error("unsupported reload graph");
     const capture = issued(r, value);
+    const selectedSentence = r.getClassicalNahuatlVncSelectedSentenceReloadInputs?.(value);
     const allomorphBinding = r.getClassicalNahuatlCompoundAllomorphBindingForSource?.(value);
-    if (!capture && !allomorphBinding && !isNncReloadEvidence(r,value) && !isClauseReloadEvidence(r,value)
+    if (!capture && !allomorphBinding && !selectedSentence && !isNncReloadEvidence(r,value) && !isClauseReloadEvidence(r,value)
       && !isDeverbalReloadEvidence(r,value)) throw new Error("issued reload Result required");
     visiting.add(value);
     // An ordinary nucleus can be issued directly by Source analysis or have
@@ -230,7 +231,10 @@ export function exportClassicalResultReloadRecipe(r, roots = {}, normalizePrimit
         || r.getClassicalNahuatlLateContinuationReloadInputs?.(value.lateOperationClosureFrame)) ? value.lateOperationClosureFrame : null;
     const lexicalParent = capture?.operationId === "nnc:ordinary"
       ? r.getClassicalNahuatlLexicalizedPresentNncSourceParent?.(value.sourceFrame) : null;
-    if (node) {}
+    if (selectedSentence && lateContinuationChoices({sentenceOptions:selectedSentence.selections})) {
+      node = {type:"vnc:selected-sentence",source:visit(selectedSentence.source,depth+1),
+        selections:selectedSentence.selections};
+    } else if (node) {}
     else if (allomorphBinding && lateContinuationChoices(allomorphBinding.callerSelections)
       && exact(allomorphBinding.additionalResultFrames,LATE_OPERANDS)) {
       node = {type:"vnc:compound-allomorph-source",source:visit(allomorphBinding.exactInputResult,depth+1),
@@ -476,6 +480,16 @@ export function replayClassicalResultReloadRecipe(r, recipe) {
             || r.getClassicalNahuatlLateContinuationReloadInputs?.(application.canonicalResult)?.parent !== parent) return null;
           result = application.canonicalResult;
         }
+      } else if (node?.type === "vnc:selected-sentence" && exact(node,["type","source","selections"])
+        && prior(node.source) && node.selections
+        && lateContinuationChoices({sentenceOptions:node.selections})) {
+        const source = prior(node.source);
+        const application = r.executeClassicalGrammarApplicationRequest({
+          operationId:"vnc:sentence-result",args:[source,node.selections],
+        });
+        result = application?.canonicalResult;
+        if (application?.authorizationStatus !== "authorized"
+          || r.getClassicalNahuatlVncSelectedSentenceReloadInputs?.(result)?.source !== source) return null;
       } else if (node?.type === "vnc:direct-late-sentence" && exact(node, ["type","source"])
         && (r.getClassicalNahuatlDirectLateReloadInputs?.(prior(node.source))
           || r.getClassicalNahuatlLateContinuationReloadInputs?.(prior(node.source)))) {
