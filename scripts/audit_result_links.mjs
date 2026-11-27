@@ -261,6 +261,7 @@ function availableValues(projection) {
 }
 
 let typedVncAccepted = 0;
+let typedVncSentences = 0;
 let typedVncProbes = 0;
 const typedVncErrors = new Map();
 if (includes("finite")) {
@@ -305,7 +306,13 @@ if (includes("finite")) {
       const receipt = instrumented.executeClassicalGrammarApplicationRequest({
         operationId: "vnc:application", args: [binding],
       });
-      if (receipt.authorizationStatus === "authorized") typedVncAccepted++;
+      if (receipt.authorizationStatus === "authorized") {
+        typedVncAccepted++;
+        const sentence = instrumented.executeClassicalGrammarApplicationRequest({
+          operationId: "vnc:sentence-result", args: [receipt.canonicalResult],
+        });
+        if (sentence.authorizationStatus === "authorized") typedVncSentences++;
+      }
       const derivation = binding.effectiveSelections.requestedDerivation;
       if (!varyFinite || variedDerivations.has(derivation)) continue;
       variedDerivations.add(derivation);
@@ -318,7 +325,7 @@ if (includes("finite")) {
     }
   }
 }
-if (includes("finite")) console.log(`Owners accepted ${typedVncAccepted} finite Results from ${typedVncProbes} typed choice probes; ${[...typedVncErrors.values()].reduce((a, b) => a + b, 0)} threw errors`);
+if (includes("finite")) console.log(`Owners accepted ${typedVncAccepted} finite Results from ${typedVncProbes} typed choice probes, then ${typedVncSentences} sentences; ${[...typedVncErrors.values()].reduce((a, b) => a + b, 0)} threw errors`);
 
 // Follow noun choices through the same private binding used by Make.
 let nominalAttempts = 0;
@@ -524,7 +531,7 @@ const missingCoverage = [
   includes("nested") && (!generatedEdges.size || !retainedSubstitutions),
   includes("relations") && (!adverbialAccepted || !readingCoverage.get("nnc:adjectival-modification")?.accepted
     || !readingCoverage.get("sentence:supplementation")?.accepted),
-  includes("finite") && (!typedVncAccepted || typedVncErrors.size),
+  includes("finite") && (!typedVncAccepted || !typedVncSentences || typedVncErrors.size),
   includes("nominal") && (!nominalAccepted || !nounSentences || !nounModifiers),
   includes("public") && publicSourcesAccepted !== publicSources.length + 1,
 ].some(Boolean);
