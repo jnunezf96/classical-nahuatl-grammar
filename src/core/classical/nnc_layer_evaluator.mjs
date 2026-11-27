@@ -5713,7 +5713,10 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
       if (authorized) {
         classGovernedReloadInputs.set(lesson14Frame, {
           type:"nnc:class-governed", stem:normalizedRestrictedUseStem,
-          options:Object.freeze({...options}), signature:JSON.stringify(lesson14Frame),
+          options:Object.freeze({...options,
+            ...(Array.isArray(options.compoundSourceConstituents)
+              ? {compoundSourceConstituents:Object.freeze([...options.compoundSourceConstituents])} : {}),
+          }), signature:JSON.stringify(lesson14Frame),
         });
         classGovernedReloadInputs.set(nncSlotFrame, {
           type:"nnc:class-governed-slot", parent:lesson14Frame, signature:JSON.stringify(nncSlotFrame),

@@ -464,3 +464,27 @@ test("a lexical plural link retains the selected form and its eligible alternati
   forged.nodes.find(node=>node.type==="nnc:lexical-selection-record").stem="cal";
   assert.equal(replayClassicalResultReloadRecipe(fresh,forged),null);
 });
+
+export function makeYoCompoundSentence(r) {
+  const noun=r.buildClassicalNahuatlClassGovernedNncFrame("cal-yō",{
+    state:"possessive",subject:"3sg",possessor:"1sg",nounClass:"tl",tlSubclass:"1B",
+    classSelectionAuthority:"user-selection",sourceStructure:"compound",compoundSourceConstituents:["cal","yō"],
+  });
+  const result=execute(r,"nnc:sentence-surface",noun.nncSlotFrame,{sentenceType:"assertion",polarity:"positive"});
+  assert.equal(result.sentenceSurface,"Nocalyo.");
+  return {noun,result};
+}
+
+test("a possessive yō compound link preserves both constituents and the shortened matrix",async()=>{
+  const r=await runtime(),fresh=await runtime();
+  const {noun,result}=makeYoCompoundSentence(r);
+  const recipe=exportClassicalResultReloadRecipe(r,{result,noun});
+  assert.ok(recipe,result.sentenceSurface);
+  const reopened=replayClassicalResultReloadRecipe(fresh,recipe);
+  assert.ok(reopened);
+  assert.equal(reopened.result.sentenceSurface,result.sentenceSurface);
+  assert.equal(reopened.result.sentenceFormulaDisplay,result.sentenceFormulaDisplay);
+  assert.deepEqual(reopened.noun.sourceFrame,noun.sourceFrame);
+  assert.equal(reopened.result.sourceNncSlotFrame,reopened.noun.nncSlotFrame);
+  assert.deepEqual(fresh.getClassicalNahuatlClassGovernedReloadInputs(reopened.noun).options.compoundSourceConstituents,["cal","yō"]);
+});

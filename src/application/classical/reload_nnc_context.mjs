@@ -368,7 +368,9 @@ export function exportNncContextReloadNode(r, value, visit) {
 }
 function validDirectNncChoices(choices,keys=DIRECT_NNC_CHOICES) {
   if (!exact(choices,[...keys,DIRECT_NNC_NUMBER_CHOICES])) return false;
-  return Object.entries(choices).every(([key,value])=>key===DIRECT_NNC_NUMBER_CHOICES
+  return Object.entries(choices).every(([key,value])=>key==="compoundSourceConstituents"
+    ? Array.isArray(value) && value.length<=32 && value.every(part=>typeof part==="string" && part.length<=256)
+    : key===DIRECT_NNC_NUMBER_CHOICES
     ? typeof value==="string" && value.length<=256
       || Array.isArray(value) && value.length<=12 && value.every(item=>typeof item==="string" && item.length<=256)
     : typeof value==="boolean" || Number.isFinite(value) || typeof value==="string" && value.length<=4096);
