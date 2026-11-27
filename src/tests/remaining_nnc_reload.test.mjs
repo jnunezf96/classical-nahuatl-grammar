@@ -512,3 +512,31 @@ test("explicit constituent alternatives and the chosen boundary survive the link
     assert.ok(reopened.result.sourceNncSlotFrame===reopened.noun.nncSlotFrame);
   }
 });
+
+export function makeOrdinaryCompoundSentence(r) {
+  const source=r.buildClassicalNahuatlOrdinaryNncSourceFrame({stem:"tle-māi",embedStem:"tle",matrixStem:"māi"});
+  const operation=r.buildClassicalNahuatlOrdinaryNncOperationFrame(source,{
+    state:"absolutive",subject:"3common",predicateFormation:"yo-matrix",
+  });
+  const noun=execute(r,"nnc:ordinary",source,operation);
+  const result=execute(r,"nnc:sentence-surface",noun.typedSlotFrame,{sentenceType:"assertion",polarity:"positive"});
+  assert.equal(result.sentenceSurface,"Tlemāyōtl.");
+  return {source,noun,result};
+}
+
+test("ordinary compound noun links preserve their licensed embed and matrix",async()=>{
+  const r=await runtime(),fresh=await runtime();
+  const {source,noun,result}=makeOrdinaryCompoundSentence(r);
+  const recipe=exportClassicalResultReloadRecipe(r,{result,noun,source});
+  assert.ok(recipe,result.sentenceSurface);
+  const reopened=replayClassicalResultReloadRecipe(fresh,recipe);
+  assert.ok(reopened);
+  assert.deepEqual(reopened.noun.sourceFrame.sourceConstituents,source.sourceConstituents);
+  assert.ok(reopened.noun.sourceFrame===reopened.source);
+  assert.ok(reopened.result.sourceNncSlotFrame===reopened.noun.typedSlotFrame);
+  assert.equal(reopened.result.sentenceSurface,result.sentenceSurface);
+  assert.equal(reopened.result.sentenceFormulaDisplay,result.sentenceFormulaDisplay);
+  const altered=structuredClone(recipe);
+  altered.nodes.find(node=>node.type==="nnc:source").source.matrixStem="mā";
+  assert.equal(replayClassicalResultReloadRecipe(fresh,altered),null);
+});

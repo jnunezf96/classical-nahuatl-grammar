@@ -24,8 +24,9 @@ function inputs(value,edge,key='',depth=0){
 const ownerInputs=(r,value)=>r.getClassicalNahuatlDeverbalNncReloadInputs?.(value)||null;
 export const exportDeverbalRequestInputs=(request,visit)=>inputs(request,visit);
 const nounChoices=('state subject metaphoricalUse possessor includedPossessor stemFormation predicateFormation animacy humanness singularConnector nonspecificHumanForm pluralConnector possessorReduplication sentenceType polarity').split(' ');
-const bareNoun=(r,value)=>{
+const nounNeedsSourceNode=(r,value)=>{
  if(r.isClassicalNahuatlOrdinaryNncResult?.(value)!==true)return false;
+ if(value.sourceFrame?.compoundSource && !r.getClassicalNahuatlLexicalizedPresentNncSourceParent?.(value.sourceFrame))return true;
  const capture=r.captureClassicalGrammarApplicationResult?.(value,'reload-inputs');
  return r.isClassicalGrammarApplicationResultCapture?.(capture,'reload-inputs')!==true
   ||capture.applicationResult?.operationId!=='nnc:ordinary'||capture.applicationResult?.canonicalResult!==value;
@@ -33,7 +34,7 @@ const bareNoun=(r,value)=>{
 export function isDeverbalReloadEvidence(r,value){
  return Boolean(r.getClassicalNahuatlPatientiveCoreSourceReloadInputs?.(value)||ownerInputs(r,value)||r.isClassicalNahuatlVncApplicationFrame?.(value)===true&&r.exportClassicalNahuatlVncApplicationRecipe?.(value)||r.getClassicalNahuatlDeverbalNncReloadParent?.(value)
   ||r.getClassicalNahuatlVncApplicationReloadParent?.(value)
-  ||bareNoun(r,value));
+  ||nounNeedsSourceNode(r,value));
 }
 export function exportDeverbalReloadNode(r,value,visit){
  const core=r.getClassicalNahuatlPatientiveCoreSourceReloadInputs?.(value);
@@ -47,7 +48,7 @@ export function exportDeverbalReloadNode(r,value,visit){
  }
  const application=r.getClassicalNahuatlVncApplicationReloadParent?.(value);
  if(application)return{type:'deverbal:vnc-nucleus',source:visit(application)};
- if(bareNoun(r,value)){
+ if(nounNeedsSourceNode(r,value)){
   const choices={...value.operationFrame,animacy:value.operationFrame.referentialAnimacy,humanness:value.operationFrame.referentialHumanness};
   return{type:'deverbal:ordinary-nnc',source:visit(value.sourceFrame),choices:Object.fromEntries(nounChoices.filter(key=>['string','boolean'].includes(typeof choices[key])).map(key=>[key,choices[key]]))};
  }

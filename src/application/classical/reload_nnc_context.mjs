@@ -231,8 +231,11 @@ export function exportNncContextReloadNode(r, value, visit) {
     };
   }
   if (r.isClassicalNahuatlOrdinaryNncSourceFrame?.(value) === true) {
-    require(!value.compoundSource &&
-      !value.sourceConstituents?.length &&
+    const constituents = value.sourceConstituents ?? [];
+    const exactCompound = value.compoundSource && value.embedStem && value.matrixStem
+      && constituents.length === 2
+      && constituents[0] === value.embedStem && constituents[1] === value.matrixStem;
+    require((exactCompound || !value.compoundSource && constituents.length === 0) &&
       !r.getClassicalNahuatlLexicalizedPresentNncSourceParent?.(
         value,
       ), "unsupported contextual source parent");
