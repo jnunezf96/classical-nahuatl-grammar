@@ -429,3 +429,38 @@ test("a class-governed sentence link reissues the lower class and higher stem op
   assert.deepEqual(reopened.result.sourceNncSlotFrame.slots,higher.nncSlotFrame.slots);
   assert.ok(fresh.getClassicalNahuatlClassGovernedReloadInputs(reopened.result.sourceNncSlotFrame).parent.nncSlotFrame===reopened.lowerSlot);
 });
+
+export function makeLexicalPluralSentence(r) {
+  const stem="tōch", plural={nounClass:"tli",stemFormation:"affinity",pluralConnector:"m-eh"};
+  const lexical=r.buildClassicalNahuatlLexicalSelectionRecord(stem,{
+    ...plural,selectionAuthority:"external-lexical-record",classMembershipOptions:["in","tli"],
+    pluralStemFormationOptions:["plain","affinity"],pluralStemFormationRequirement:"allowed",
+    preferredPluralStemFormation:"affinity",pluralConnectorOptions:["t-in","m-eh"],
+    preferredPluralConnector:"t-in",affinityConnectorExceptionAuthorized:true,
+  });
+  const noun=r.buildClassicalNahuatlClassGovernedNncFrame(stem,{
+    ...plural,state:"absolutive",subject:"3pl",animacy:"animate",classSelectionAuthority:"external-lexical-record",
+    pluralSelectionAuthority:"external-lexical-record",lesson14LexicalSelectionRecord:lexical,
+  });
+  const result=execute(r,"nnc:sentence-surface",noun.nncSlotFrame,{sentenceType:"assertion",polarity:"positive"});
+  assert.equal(result.sentenceSurface,"Tōtōchmeh.");
+  return {lexical,noun,result};
+}
+
+test("a lexical plural link retains the selected form and its eligible alternatives",async()=>{
+  const r=await runtime(),fresh=await runtime();
+  const {lexical,noun,result}=makeLexicalPluralSentence(r);
+  const recipe=exportClassicalResultReloadRecipe(r,{result,lexical,noun});
+  assert.ok(recipe,result.sentenceSurface);
+  const reopened=replayClassicalResultReloadRecipe(fresh,recipe);
+  assert.ok(reopened);
+  assert.equal(reopened.result.sentenceFormulaDisplay,result.sentenceFormulaDisplay);
+  assert.equal(reopened.result.sentenceSurface,result.sentenceSurface);
+  assert.deepEqual(reopened.lexical,lexical);
+  const inputs=fresh.getClassicalNahuatlClassGovernedReloadInputs(reopened.noun);
+  assert.ok(inputs.options.lesson14LexicalSelectionRecord===reopened.lexical);
+  assert.ok(reopened.result.sourceNncSlotFrame===reopened.noun.nncSlotFrame);
+  const forged=structuredClone(recipe);
+  forged.nodes.find(node=>node.type==="nnc:lexical-selection-record").stem="cal";
+  assert.equal(replayClassicalResultReloadRecipe(fresh,forged),null);
+});

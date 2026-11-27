@@ -14,6 +14,18 @@ const DIRECT_NNC_CHOICES = [
   "possessor", "nounstemRelationKind", "analogicalTlaDerivedStem", "thirdPluralPossessorNumberMorph",
   "singularConnector", "silentConnectorAuthorized",
 ];
+const LEXICAL_SELECTION_LISTS = ["classMembershipOptions","pluralStemFormationOptions","pluralConnectorOptions"];
+const LEXICAL_SELECTION_CHOICES = [
+  ...LEXICAL_SELECTION_LISTS,"selectionAuthority","classSelectionAuthority","nounClass","class","stemFormation",
+  "pluralConnector","sourcePlainPluralConnector","supportiveInitialI","selectedInitialVariant",
+  "pluralStemFormationRequirement","preferredPluralStemFormation","preferredPluralConnector",
+  "affinityConnectorExceptionAuthorized","possessivePluralDerivedSemanticNeed","tliSubclass2SilentNum1Authorized",
+  "glottalizedGeneralUseEligible",
+];
+const validLexicalSelectionChoices = choices => exact(choices,LEXICAL_SELECTION_CHOICES)
+  && Object.entries(choices).every(([key,value]) => LEXICAL_SELECTION_LISTS.includes(key)
+    ? Array.isArray(value) && value.length<=32 && value.every(item=>typeof item==="string" && item.length<=256)
+    : typeof value==="boolean" || Number.isFinite(value) || typeof value==="string" && value.length<=4096);
 const CLASS_GOVERNED_CHOICES = [...DIRECT_NNC_CHOICES,
   "state","classSelectionAuthority","compoundSourceConstituents","derivedStem","ephemeralFinalVowel",
   "generalUseShape","generalUseStem","matrixMorpheme","sourceStructure","stemFormation","tlSubclass",
@@ -183,12 +195,17 @@ export function exportNncContextReloadNode(r, value, visit) {
   const classGoverned = r.getClassicalNahuatlClassGovernedReloadInputs?.(value);
   if (classGoverned) {
     const {type,stem,parent,options} = classGoverned;
+    if (type==="nnc:lexical-selection-record") {
+      require(validLexicalSelectionChoices(options), "supported lexical selection inputs required");
+      return {type,stem,choices:options};
+    }
     if (type==="nnc:class-governed-slot") return {type,parent:visit(parent)};
-    const {borrowedNncSourceFrame,nncSourceAuthorityFrame,...choices} = options;
+    const {borrowedNncSourceFrame,nncSourceAuthorityFrame,lesson14LexicalSelectionRecord,...choices} = options;
     require(validDirectNncChoices(choices,parent ? HIGHER_NNC_CHOICES : CLASS_GOVERNED_CHOICES),
       "supported class-governed noun choices required");
     return {type,choices,
       ...(parent ? {parent:visit(parent)} : {stem}),
+      ...(lesson14LexicalSelectionRecord ? {lexical:visit(lesson14LexicalSelectionRecord)} : {}),
       ...(borrowedNncSourceFrame ? {borrowed:visit(borrowedNncSourceFrame)} : {}),
       ...(nncSourceAuthorityFrame ? {authority:visit(nncSourceAuthorityFrame)} : {})};
   }
@@ -382,6 +399,12 @@ export function replayNncContextReloadNode(r, node, prior) {
       const authority=r.buildClassicalNahuatlNncSourceAuthorityFrame(node.stem,choices);
       return r.getClassicalNahuatlNncSourceAuthorityReloadInputs?.(authority) ? authority : null;
     }
+    if (node.type==="nnc:lexical-selection-record") {
+      if(!exact(node,["type","stem","choices"]) || typeof node.stem!=="string" || node.stem.length>4096
+        || !validLexicalSelectionChoices(node.choices)) return null;
+      const record=r.buildClassicalNahuatlLexicalSelectionRecord(node.stem,node.choices);
+      return r.getClassicalNahuatlClassGovernedReloadInputs?.(record)?.type===node.type ? record : null;
+    }
     if (node.type==="nnc:class-governed-slot") {
       if(!exact(node,["type","parent"])) return null;
       const parent=prior(node.parent);
@@ -390,7 +413,7 @@ export function replayNncContextReloadNode(r, node, prior) {
     }
     if (["nnc:class-governed","nnc:higher-slot"].includes(node.type)) {
       const higher=node.type==="nnc:higher-slot";
-      if(!exact(node,["type","choices","authority",...(higher?["parent"]:["stem","borrowed"])])
+      if(!exact(node,["type","choices","authority",...(higher?["parent"]:["stem","borrowed","lexical"])])
         || !validDirectNncChoices(node.choices,higher ? HIGHER_NNC_CHOICES : CLASS_GOVERNED_CHOICES)) return null;
       const parent=higher ? prior(node.parent) : null;
       const parentInputs=r.getClassicalNahuatlClassGovernedReloadInputs?.(parent);
@@ -405,6 +428,12 @@ export function replayNncContextReloadNode(r, node, prior) {
       if(node.borrowed!==undefined) {
         choices.borrowedNncSourceFrame=prior(node.borrowed);
         if(!r.isClassicalNahuatlOrdinaryNncSourceFrame?.(choices.borrowedNncSourceFrame)) return null;
+      }
+      if(node.lexical!==undefined) {
+        const lexical=prior(node.lexical);
+        const inputs=r.getClassicalNahuatlClassGovernedReloadInputs?.(lexical);
+        if(inputs?.type!=="nnc:lexical-selection-record" || inputs.stem!==stem) return null;
+        choices.lesson14LexicalSelectionRecord=lexical;
       }
       const frame=higher ? r.buildClassicalNahuatlHigherNncFrame(parent,choices)
         : r.buildClassicalNahuatlClassGovernedNncFrame(stem,choices);

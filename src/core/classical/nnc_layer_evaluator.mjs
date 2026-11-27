@@ -1092,7 +1092,7 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
         && ["retained", "omitted"].includes(selectedInitialVariant)
         && (selectedInitialVariant !== "omitted" || supportiveInitialVariant)
       );
-      return {
+      const frame = {
         kind: "classical-nahuatl-nounstem-lexical-selection-record",
         version: 1,
         sourceAuthority: "Andrews transcription",
@@ -1151,6 +1151,16 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
           "cn-l14-147-possessive-common"
         ]
       };
+      if (authorized && Object.values(options).every(value => ["string","boolean","number"].includes(typeof value)
+        || Array.isArray(value) && value.every(item => typeof item === "string"))) {
+        const inputs = Object.fromEntries(Object.entries(options).map(([key,value]) =>
+          [key,Array.isArray(value) ? Object.freeze([...value]) : value]));
+        classGovernedReloadInputs.set(frame, {
+          type:"nnc:lexical-selection-record",stem:frame.restrictedUseStem,
+          options:Object.freeze(inputs),signature:JSON.stringify(frame),
+        });
+      }
+      return frame;
     }
     function isClassicalNahuatlLexicalSelectionRecord(record = null) {
       return Boolean(
