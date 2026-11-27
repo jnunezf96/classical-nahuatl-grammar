@@ -303,6 +303,50 @@ for (const [parent] of finiteSeeds) {
 }
 console.log(`Owners accepted ${typedVncAccepted} finite Results from ${typedVncProbes} typed choice probes; ${[...typedVncErrors.values()].reduce((a, b) => a + b, 0)} threw errors`);
 
+// Follow noun choices through the same private binding used by Make.
+let nominalAttempts = 0;
+let nominalAccepted = 0;
+const nominalSources = new Set(candidates.filter(([, operation]) => operation === "nnc:ordinary")
+  .map(([noun]) => noun.sourceFrame).filter(Boolean));
+for (const source of nominalSources) {
+  const navigator = runtime.getClassicalGrammarApplicationCapabilityNavigator(source);
+  const issue = choices => runtime.issueClassicalGrammarTypedSourceOperationBindingFrame(navigator, "nnc:ordinary", choices);
+  const baseline = issue({});
+  const queue = [{ choices: {}, vary: true }];
+  for (const state of availableValues(baseline?.choiceOptionProjection?.state)) {
+    queue.push({ choices: { state }, vary: true });
+  }
+  const seen = new Set();
+  for (let index = 0; index < queue.length; index++) {
+    const { choices, vary } = queue[index];
+    const key = JSON.stringify(choices);
+    if (seen.has(key)) continue;
+    seen.add(key);
+    nominalAttempts++;
+    const binding = issue(choices);
+    if (binding?.bindingStatus === "choices-required") {
+      const field = binding.requiredChoiceIds.find(id => !Object.hasOwn(choices, id));
+      for (const value of availableValues(binding.choiceOptionProjection[field])) queue.push({ choices: { ...choices, [field]: value }, vary });
+    } else if (binding?.bindingStatus === "ready") {
+      const receipt = runtime.executeClassicalGrammarTypedSourceOperationBindingFrame(binding);
+      if (receipt?.authorizationStatus === "authorized") {
+        nominalAccepted++;
+        instrumented.captureClassicalGrammarApplicationResult(receipt, "audit-nominal-choice");
+      }
+      if (vary) {
+        for (const field of ["subject", "possessor", "predicateFormation", "stemFormation", "pluralConnector"]) {
+          for (const value of availableValues(binding.choiceOptionProjection[field])) {
+            if (value !== binding.effectiveSelections[field]) {
+              queue.push({ choices: { ...choices, [field]: value }, vary: false });
+            }
+          }
+        }
+      }
+    }
+  }
+}
+console.log(`Owners accepted ${nominalAccepted} noun Results from ${nominalAttempts} typed choice probes`);
+
 // These public Source uses were added after the original capability fixture.
 const publicSources = [
   ["nnc:attested-cell", "NncCell", "attested-cell", "icn-īuh", { possessor: "1sg" }],
@@ -425,6 +469,6 @@ for (const [key, count] of [...counts].sort(([left], [right]) => left.localeComp
   console.log(`${count}\t${key}`);
 }
 if (!checkedOperandGraphs || changedOperandGraphs || changedRecipes.size
-  || fixtureResults.failed || !generatedEdges.size || !retainedSubstitutions || !adverbialAccepted || !typedVncAccepted || typedVncErrors.size || publicSourcesAccepted !== publicSources.length + 1
+  || fixtureResults.failed || !generatedEdges.size || !retainedSubstitutions || !adverbialAccepted || !typedVncAccepted || !nominalAccepted || typedVncErrors.size || publicSourcesAccepted !== publicSources.length + 1
   || !readingCoverage.get("nnc:adjectival-modification")?.accepted
   || !readingCoverage.get("sentence:supplementation")?.accepted || [...counts.keys()].some(key => !key.endsWith(": verified"))) process.exitCode = 1;
