@@ -14,6 +14,11 @@ const DIRECT_NNC_CHOICES = [
   "possessor", "nounstemRelationKind", "analogicalTlaDerivedStem", "thirdPluralPossessorNumberMorph",
   "singularConnector", "silentConnectorAuthorized",
 ];
+const NNC_SOURCE_AUTHORITY_CHOICES = [
+  "selectedState", "state", "stateAvailability", "naturalPossessionPolicy", "statePolicy",
+  "naturalPossessionSemantics", "metaphoricalOverride", "policySelectionAuthority",
+  "possessorCompatibility", "nonspecificHumanPossessorCarrier",
+];
 const DIRECT_NNC_NUMBER_CHOICES = "thirdPluralPossessorSt2Options";
 const PRONOMINAL_SOURCE = ["stem", "embedStem", "matrixStem"];
 const PRONOMINAL_CHOICES = [
@@ -129,6 +134,7 @@ function require(condition, message) {
 export function isNncReloadEvidence(r, value) {
   return (
     Boolean(r.getClassicalNahuatlDirectNncSlotReloadInputs?.(value)) ||
+    Boolean(r.getClassicalNahuatlNncSourceAuthorityReloadInputs?.(value)) ||
     r.isClassicalNahuatlLesson2WrittenResult?.(value) === true ||
     r.isClassicalNahuatlOrdinaryNncSourceFrame?.(value) === true ||
     r.isClassicalNahuatlContextualFlawedSubjectSourceFrame?.(value) === true ||
@@ -136,12 +142,18 @@ export function isNncReloadEvidence(r, value) {
   );
 }
 export function exportNncContextReloadNode(r, value, visit) {
+  const authority = r.getClassicalNahuatlNncSourceAuthorityReloadInputs?.(value);
+  if (authority) {
+    require(validDirectNncChoices(authority.options,NNC_SOURCE_AUTHORITY_CHOICES), "supported source authority inputs required");
+    return {type:"nnc:source-authority",stem:authority.stem,choices:authority.options};
+  }
   const direct = r.getClassicalNahuatlDirectNncSlotReloadInputs?.(value);
   if (direct) {
-    const {borrowedNncSourceFrame, ...choices} = direct.options;
+    const {borrowedNncSourceFrame,nncSourceAuthorityFrame, ...choices} = direct.options;
     require(validDirectNncChoices(choices), "supported direct nucleus inputs required");
     return { type:"nnc:direct-nucleus",state:direct.state,stem:direct.stem,choices,
-      ...(borrowedNncSourceFrame ? {borrowed:visit(borrowedNncSourceFrame)} : {}) };
+      ...(borrowedNncSourceFrame ? {borrowed:visit(borrowedNncSourceFrame)} : {}),
+      ...(nncSourceAuthorityFrame ? {authority:visit(nncSourceAuthorityFrame)} : {}) };
   }
   if (r.isClassicalNahuatlLesson2WrittenResult?.(value) === true) {
     return {
@@ -292,24 +304,37 @@ export function exportNncContextReloadNode(r, value, visit) {
   }
   return undefined;
 }
-function validDirectNncChoices(choices) {
-  if (!exact(choices,[...DIRECT_NNC_CHOICES,DIRECT_NNC_NUMBER_CHOICES])) return false;
+function validDirectNncChoices(choices,keys=DIRECT_NNC_CHOICES) {
+  if (!exact(choices,[...keys,DIRECT_NNC_NUMBER_CHOICES])) return false;
   return Object.entries(choices).every(([key,value])=>key===DIRECT_NNC_NUMBER_CHOICES
-    ? Array.isArray(value) && value.length<=12 && value.every(item=>typeof item==="string" && item.length<=256)
+    ? typeof value==="string" && value.length<=256
+      || Array.isArray(value) && value.length<=12 && value.every(item=>typeof item==="string" && item.length<=256)
     : typeof value==="boolean" || Number.isFinite(value) || typeof value==="string" && value.length<=4096);
 }
 export function replayNncContextReloadNode(r, node, prior) {
   if (typeof node?.type !== "string" || !node.type.startsWith("nnc:"))
     return undefined;
   try {
+    if(node?.type==="nnc:source-authority") {
+      if(!exact(node,["type","stem","choices"]) || typeof node.stem!=="string" || node.stem.length>4096
+        || !validDirectNncChoices(node.choices,NNC_SOURCE_AUTHORITY_CHOICES)) return null;
+      const authority=r.buildClassicalNahuatlNncSourceAuthorityFrame(node.stem,node.choices);
+      return r.getClassicalNahuatlNncSourceAuthorityReloadInputs?.(authority) ? authority : null;
+    }
     if(node?.type==="nnc:direct-nucleus") {
-      if (!exact(node,["type","state","stem","choices","borrowed"])
+      if (!exact(node,["type","state","stem","choices","borrowed","authority"])
         || !["absolutive","possessive"].includes(node.state) || typeof node.stem!=="string"
         || node.stem.length>4096 || !validDirectNncChoices(node.choices)) return null;
       const choices={...node.choices};
       if(node.borrowed!==undefined) {
         choices.borrowedNncSourceFrame=prior(node.borrowed);
         if(!r.isClassicalNahuatlOrdinaryNncSourceFrame?.(choices.borrowedNncSourceFrame)) return null;
+      }
+      if(node.authority!==undefined) {
+        const authority=prior(node.authority);
+        if(!r.getClassicalNahuatlNncSourceAuthorityReloadInputs?.(authority)
+          || authority.sourceStem!==node.stem || authority.selectedState!==node.state) return null;
+        choices.nncSourceAuthorityFrame=authority;
       }
       const frame=node.state==="absolutive"
         ? r.buildClassicalNahuatlAbsolutiveNncFrame(node.stem,choices)

@@ -329,3 +329,30 @@ test("a particle layer retains the direct noun sentence it modifies",async()=>{
   assert.equal(roots.result.sentenceSurfaceDisplay,result.sentenceSurfaceDisplay);
   assert.equal(roots.result.sentenceFormulaDisplay,result.sentenceFormulaDisplay);
 });
+
+export function makeTypedPossessiveSentence(r) {
+  const source=r.buildClassicalNahuatlNncSourceAuthorityFrame("chīmal",{
+    selectedState:"possessive",naturalPossessionPolicy:"naturally-possessed",naturalPossessionSemantics:"property",
+  });
+  const parent=r.buildClassicalNahuatlPossessiveNncFrame("chīmal",{
+    nncSourceAuthorityFrame:source,subject:"3sg",possessor:"2sg",singularConnector:"0",
+    nounstemRelationKind:"nonrelational",animacy:"nonanimate",
+  });
+  return {source,slot:parent.nncSlotFrame,result:execute(r,"nnc:sentence-surface",parent.nncSlotFrame,{
+    sentenceType:"assertion",polarity:"positive",
+  })};
+}
+
+test("a noun sentence link restores its explicitly selected possession policy",async()=>{
+  const r=await runtime(),fresh=await runtime();
+  const {source,slot,result}=makeTypedPossessiveSentence(r);
+  const recipe=exportClassicalResultReloadRecipe(r,{result,source,slot});
+  assert.ok(recipe,result.sentenceSurface);
+  const roots=replayClassicalResultReloadRecipe(fresh,recipe);
+  assert.ok(roots);
+  assert.equal(roots.result.sentenceSurface,result.sentenceSurface);
+  assert.equal(roots.result.sentenceFormulaDisplay,result.sentenceFormulaDisplay);
+  assert.equal(roots.source.naturalPossessionSemantics,"property");
+  assert.deepEqual(roots.source.allowedStateValues,["possessive"]);
+  assert.ok(fresh.getClassicalNahuatlDirectNncSlotReloadInputs(roots.slot).options.nncSourceAuthorityFrame===roots.source);
+});

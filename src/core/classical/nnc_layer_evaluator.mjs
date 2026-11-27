@@ -37,6 +37,7 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
     const CLASSICAL_NAHUATL_NNC_LAYER_VERSION = 1;
     const issuedNncSentenceSurfaceFrames = new WeakMap();
     const directNncSlotReloadInputs = new WeakMap();
+    const nncSourceAuthorityReloadInputs = new WeakMap();
     const issuedNncSentenceDecisions = new WeakSet();
     const issuedNncPredicateSupportiveI = new WeakMap();
     const issuedNncPredicateReducedLongVowel = new WeakMap();
@@ -4581,7 +4582,7 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
         blockReason = naturalPossessionPolicy === "naturally-possessed" ? "naturally-possessed-nounstem-requires-possessive-state" : "nounstem-never-possessive-without-metaphorical-override";
       }
       const authorized = !blockReason;
-      return {
+      const frame = {
         kind: "classical-nahuatl-nnc-source-authority-frame",
         sourceAuthority: "Andrews transcription plus typed lexical analysis",
         sourceDocument: CLASSICAL_NAHUATL_NNC_SOURCE_DOCUMENT,
@@ -4620,6 +4621,12 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
         surfaceStringAuthority: false,
         legalWitnessTagIds: ["cn-l12-127-state-restrictions", "cn-l15-152-natural-possession"]
       };
+      if (authorized && Object.values(options).every(value =>
+        ["string","boolean","number"].includes(typeof value)
+        || Array.isArray(value) && value.every(item => typeof item === "string"))) nncSourceAuthorityReloadInputs.set(frame,{
+        stem:normalizedStem, options:cloneClassicalNahuatlNncValue(options), signature:JSON.stringify(frame),
+      });
+      return frame;
     }
     function isClassicalNahuatlNncSourceAuthorityFrame(frame = null) {
       return Boolean(frame && frame.kind === "classical-nahuatl-nnc-source-authority-frame" && frame.authorizationStatus === "authorized" && frame.sourceStem && ["ordinary", "naturally-possessed", "never-possessive"].includes(frame.naturalPossessionPolicy) && ["ordinary", "natural-association-unspecified", "property", "kinship-or-human-relation", "body-part", "never-possessive"].includes(frame.naturalPossessionSemantics) && ["both", "absolutive-only", "possessive-only"].includes(frame.stateAvailability) && ["ordinary", "relational-tla", "analogical-tla-derived"].includes(frame.possessorCompatibility) && ["tē", "ti", "t"].includes(frame.nonspecificHumanPossessorCarrier) && Array.isArray(frame.thirdPluralPossessorSt2Options) && frame.thirdPluralPossessorSt2Options.length > 0 && frame.thirdPluralPossessorSt2Options.every(value => ["m", "n"].includes(value)) && Array.isArray(frame.allowedStateValues) && frame.allowedStateValues.includes(frame.selectedState) && isClassicalNahuatlStemOperationRecord(frame.lesson15StemOperationRecord) && frame.lesson15StemOperationRecord.sourceStem === frame.sourceStem && isClassicalNahuatlPossessorReduplicationSelection(frame.lesson15PossessorReduplicationSelection) && frame.lesson15PossessorReduplicationSelection.sourceStem === frame.sourceStem && frame.formulaStringAuthority === false && frame.surfaceStringAuthority === false);
@@ -8788,6 +8795,11 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
     api.isClassicalNahuatlNncSentenceDecisionFrame = isClassicalNahuatlNncSentenceDecisionFrame;
     api.getClassicalNahuatlNncSentenceNegativePrefixOptions = getClassicalNahuatlNncSentenceNegativePrefixOptions;
     api.isClassicalNahuatlIssuedNncSentenceSurfaceFrame = isClassicalNahuatlIssuedNncSentenceSurfaceFrame;
+    api.getClassicalNahuatlNncSourceAuthorityReloadInputs = frame => {
+      const receipt = nncSourceAuthorityReloadInputs.get(frame);
+      return receipt && JSON.stringify(frame) === receipt.signature
+        ? {stem:receipt.stem,options:cloneClassicalNahuatlNncValue(receipt.options)} : null;
+    };
     api.getClassicalNahuatlDirectNncSlotReloadInputs = slot => directNncSlotReloadInputs.get(slot);
     api.getClassicalNahuatlNncSentenceReloadContext = getClassicalNahuatlNncSentenceReloadContext;
     api.buildClassicalNahuatlExotlInterpretationSource = buildClassicalNahuatlExotlInterpretationSource;
