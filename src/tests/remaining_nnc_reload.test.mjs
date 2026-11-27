@@ -585,7 +585,11 @@ test("the shared link check verifies an adverbial with an ordinary compound noun
   });
   assert.ok(project(r, result).surface);
   assert.ok(project(r, result).analysis);
-  assert.equal(inspectClassicalResultLink(r, result, project, fresh).status, "verified");
+  const check = inspectClassicalResultLink(r, result, project, fresh);
+  assert.equal(check.status, "verified");
+  const legacy = structuredClone(check.recipe);
+  delete legacy.nodes.at(-1).degree;
+  assert.deepEqual(project(fresh, replayClassicalResultReloadRecipe(fresh, legacy).result), project(r, result));
   const changedAnalysis = (runtime, value) => ({
     ...project(runtime, value),
     analysis: runtime === fresh ? "different analysis" : value.formulaRealization,
@@ -611,4 +615,32 @@ test("primitive adverbial links preserve the exact initial and possessor choices
     assert.ok(project(r, result).analysis);
     assert.equal(inspectClassicalResultLink(r, result, project, fresh).status, "verified");
   }
+});
+
+test("incorporated adverbial links keep the selected degree and both exact parents", async () => {
+  const r = await runtime(), fresh = await runtime();
+  const typed = r.issueCanonicalNncSourceFrame({stem:"achi", sourceClass:"zero"});
+  const navigator = r.getClassicalGrammarApplicationCapabilityNavigator(typed);
+  const binding = r.issueClassicalGrammarTypedSourceOperationBindingFrame(navigator, "nnc:ordinary", {});
+  const source = r.executeClassicalGrammarTypedSourceOperationBindingFrame(binding).canonicalResult;
+  const matrix = r.requestClassicalVncApplicationResult({
+    sourceStem:"chōca", verbClass:"A", sourceValence:"intransitive",
+    subject:"3sg", mood:"indicative", tense:"present", requestedVoice:"active",
+  });
+  const result = execute(r, "nnc:adverbial", {
+    canonicalSourceResult:source, canonicalMatrixResult:matrix,
+    scope:"incorporated-predicate", degree:"second-degree",
+  });
+  const recipe = exportClassicalResultReloadRecipe(r, {result, source, matrix});
+  assert.ok(recipe);
+  const reopened = replayClassicalResultReloadRecipe(fresh, recipe);
+  assert.ok(reopened);
+  assert.equal(reopened.result.canonicalSourceResult, reopened.source);
+  assert.equal(reopened.result.canonicalMatrixResult, reopened.matrix);
+  assert.equal(reopened.result.operationFrame.degree, result.operationFrame.degree);
+  assert.equal(reopened.result.formulaRealization, result.formulaRealization);
+  assert.equal(reopened.result.wordSurface, result.wordSurface);
+  const invalid = structuredClone(recipe);
+  invalid.nodes.at(-1).matrix = invalid.roots.result;
+  assert.equal(replayClassicalResultReloadRecipe(fresh, invalid), null);
 });

@@ -313,23 +313,25 @@ export function exportClassicalResultReloadRecipe(r, roots = {}, normalizePrimit
     } else if (capture.operationId === "nnc:adverbial"
       && r.isClassicalNahuatlAdverbialNuclearResult?.(value)
       && ["owner-issued-lexical-adverbial-vnc-source", "owner-issued-lexical-adverbial-nnc-source"].includes(value.sourceInputMode)
-      && !value.canonicalSourceResult && !value.canonicalMatrixResult) {
+      && !value.canonicalSourceResult) {
       node = {type:"nnc:lexical-adverb", stem:value.adverbialPotentialFrame.sourceConstituents.stem,
         entry:value.lexicalEntryId, degree:value.operationFrame.degree, scope:value.scope,
-        context:pick(value.operationFrame.contextFrame, CONTEXT_KEYS)};
+        context:pick(value.operationFrame.contextFrame, CONTEXT_KEYS),
+        ...(value.canonicalMatrixResult ? {matrix:visit(value.canonicalMatrixResult, depth + 1)} : {}) };
     } else if (capture.operationId === "nnc:adverbial"
       && r.isClassicalNahuatlAdverbialNuclearResult?.(value)
-      && r.isClassicalNahuatlPrimitiveAdverbialPotentialFrame?.(value.adverbialPotentialFrame)
-      && !value.canonicalMatrixResult) {
+      && r.isClassicalNahuatlPrimitiveAdverbialPotentialFrame?.(value.adverbialPotentialFrame)) {
       const source = r.getClassicalNahuatlPrimitiveAdverbialReloadInputs(value.adverbialPotentialFrame);
       node = { type: "nnc:primitive-adverb", source: pick(source, PRIMITIVE_ADVERBIAL_KEYS),
         degree: value.operationFrame.degree, scope: value.scope,
-        context: pick(value.operationFrame.contextFrame, CONTEXT_KEYS) };
+        context: pick(value.operationFrame.contextFrame, CONTEXT_KEYS),
+        ...(value.canonicalMatrixResult ? {matrix:visit(value.canonicalMatrixResult, depth + 1)} : {}) };
     } else if (capture.operationId === "nnc:adverbial"
       && r.isClassicalNahuatlAdverbialNuclearResult?.(value)
       && value.canonicalSourceResult) {
       node = { type: "nnc:adverbial", source: visit(value.canonicalSourceResult, depth + 1),
-        scope: value.scope, context: pick(value.operationFrame.contextFrame, CONTEXT_KEYS) };
+        degree: value.operationFrame.degree, scope: value.scope, context: pick(value.operationFrame.contextFrame, CONTEXT_KEYS),
+        ...(value.canonicalMatrixResult ? {matrix:visit(value.canonicalMatrixResult, depth + 1)} : {}) };
     } else if (capture.operationId === "grammar:nominal-construction"
       && r.isClassicalNahuatlNominalConstructionResult?.(value)
       && value.constructionKind === "compound-nnc") {
@@ -630,26 +632,34 @@ export function replayClassicalResultReloadRecipe(r, recipe) {
         result = r.executeClassicalGrammarApplicationRequest({
           operationId:"nnc:quantitative-predicate", args:binding.executionArgs,
         })?.canonicalResult;
-      } else if (node?.type === "nnc:lexical-adverb" && exact(node, ["type", "stem", "entry", "degree", "scope", "context"])
+      } else if (node?.type === "nnc:lexical-adverb" && exact(node, ["type", "stem", "entry", "degree", "scope", "context", "matrix"])
         && ["stem", "entry", "degree", "scope"].every(key => typeof node[key] === "string")
-        && node.stem.length <= 4096 && plain(node.context, CONTEXT_KEYS)) {
+        && node.stem.length <= 4096 && plain(node.context, CONTEXT_KEYS)
+        && (node.matrix === undefined || prior(node.matrix))) {
         const adverbialPotentialFrame = r.buildClassicalNahuatlLexicalAdverbialPotentialFrame({stem:node.stem});
         if (adverbialPotentialFrame?.lexicalEntryId !== node.entry) return null;
         result = r.requestClassicalAdverbialNncResult({adverbialPotentialFrame,
-          degree:node.degree, scope:node.scope, context:node.context});
+          degree:node.degree, scope:node.scope, context:node.context,
+          ...(node.matrix === undefined ? {} : {canonicalMatrixResult:prior(node.matrix)})});
       } else if (node?.type === "nnc:primitive-adverb"
-        && exact(node, ["type", "source", "degree", "scope", "context"])
+        && exact(node, ["type", "source", "degree", "scope", "context", "matrix"])
         && plain(node.source, PRIMITIVE_ADVERBIAL_KEYS)
         && typeof node.degree === "string" && typeof node.scope === "string"
-        && plain(node.context, CONTEXT_KEYS)) {
+        && plain(node.context, CONTEXT_KEYS)
+        && (node.matrix === undefined || prior(node.matrix))) {
         const adverbialPotentialFrame = r.buildClassicalNahuatlPrimitiveAdverbialPotentialFrame(node.source);
         if (!r.isClassicalNahuatlPrimitiveAdverbialPotentialFrame(adverbialPotentialFrame)) return null;
         result = r.requestClassicalAdverbialNncResult({adverbialPotentialFrame,
-          degree: node.degree, scope: node.scope, context: node.context});
-      } else if (node?.type === "nnc:adverbial" && exact(node, ["type", "source", "scope", "context"])
-        && typeof node.scope === "string" && plain(node.context, CONTEXT_KEYS) && prior(node.source)) {
+          degree: node.degree, scope: node.scope, context: node.context,
+          ...(node.matrix === undefined ? {} : {canonicalMatrixResult:prior(node.matrix)})});
+      } else if (node?.type === "nnc:adverbial" && exact(node, ["type", "source", "scope", "context", "degree", "matrix"])
+        && (node.degree === undefined || typeof node.degree === "string")
+        && typeof node.scope === "string" && plain(node.context, CONTEXT_KEYS)
+        && (node.matrix === undefined || prior(node.matrix)) && prior(node.source)) {
         result = r.requestClassicalAdverbialNncResult({ canonicalSourceResult: prior(node.source),
-          scope: node.scope, context: node.context });
+          scope: node.scope, context: node.context,
+          ...(node.degree === undefined ? {} : {degree:node.degree}),
+          ...(node.matrix === undefined ? {} : {canonicalMatrixResult:prior(node.matrix)}) });
       } else if (node?.type === "nnc:adjectival-modification"
         && exact(node, ["type", "head", "modifier", "additional", "intervening", "choices", "additionalLinks"])
         && plain(node.choices, ADJECTIVAL_KEYS) && prior(node.head) && prior(node.modifier)

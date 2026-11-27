@@ -1,8 +1,8 @@
-# Grammar OS v1.2.169 release
+# Grammar OS v1.2.170 release
 
 Release name: **Writer Controls**
 
-Browser build: **20261126-nested-result-links-169**
+Browser build: **20261126-adverbial-matrix-links-170**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
