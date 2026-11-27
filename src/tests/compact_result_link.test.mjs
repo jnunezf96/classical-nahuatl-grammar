@@ -2,6 +2,8 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { decodeCompactResultAddress, encodeCompactResultAddress } from "../application/classical/compact_result_link.mjs";
 
+import { encodeVerifiedClassicalResultLink } from "../application/classical/result_reload.mjs";
+
 const verbalRecipe = steps => ({
   kind: "classical-grammar-result-reload-recipe",
   version: 1,
@@ -45,4 +47,16 @@ test("a long verb chain can be saved as a dependency of a larger Result", async 
   const address = await encodeCompactResultAddress(recipe);
   assert.ok(address.length < 3000);
   assert.deepEqual(await decodeCompactResultAddress(address), recipe);
+});
+
+test("a link is publishable only if its compact address decodes to the exact recipe", async () => {
+  const steps = Array.from({ length: 512 }, () => ({ request: { sourceStem: "nemi" } }));
+  const supported = verbalRecipe(steps);
+  const address = await encodeVerifiedClassicalResultLink(supported);
+  assert.ok(address);
+  assert.deepEqual(await decodeCompactResultAddress(address), supported);
+
+  const tooManySteps = verbalRecipe([...steps, steps[0]]);
+  assert.ok(await encodeCompactResultAddress(tooManySteps));
+  assert.equal(await encodeVerifiedClassicalResultLink(tooManySteps), null);
 });

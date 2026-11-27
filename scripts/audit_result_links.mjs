@@ -1,8 +1,6 @@
 import { createRuntimeInstance } from "../src/runtime/create_runtime.mjs";
-import { inspectClassicalResultLink } from "../src/application/classical/result_reload.mjs";
-import { encodeCompactResultAddress, decodeCompactResultAddress } from "../src/application/classical/compact_result_link.mjs";
+import { inspectClassicalResultLink, encodeVerifiedClassicalResultLink } from "../src/application/classical/result_reload.mjs";
 import capabilities from "../src/tests/classical_all_25_capability_play_contract.test.js";
-import { isDeepStrictEqual } from "node:util";
 import { getClassicalSharedContactLabel } from "../src/ui/composition/structure_design.mjs";
 
 const instantiate = async () => (await createRuntimeInstance({
@@ -268,10 +266,8 @@ for (const [result, operation] of witnesses) {
   let { status } = check;
   if (status === "verified") {
     try {
-      const address = await encodeCompactResultAddress(check.recipe);
-      const decoded = address && await decodeCompactResultAddress(address);
-      status = isDeepStrictEqual(decoded, JSON.parse(JSON.stringify(check.recipe)))
-        ? status : "compact-address-failed";
+      const address = await encodeVerifiedClassicalResultLink(check.recipe);
+      if (!address) status = "compact-address-failed";
     } catch {
       status = "compact-address-failed";
     }

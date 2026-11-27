@@ -60,8 +60,8 @@ import { readClassicalSourceObjectRows, getClassicalSourceObjectControls,
   restoreClassicalSourceObjectRows, syncClassicalSourceObjectRows }
   from "../composer/source_objects.mjs?v=20261007-panel-source-objects-1&interfaceRelease=1.2.36&ownerDecision=20261031-2";
 import { translateClassicalConstructionLink } from "../../application/classical/construction_link_reload.mjs";
-import { encodeCompactResultAddress, isCompactResultAddress, writeCompactResultAddress, COMPACT_RESULT_DATA_FRAGMENT } from "../../application/classical/compact_result_link.mjs";
-import { exportClassicalResultReloadRecipe, inspectClassicalResultLink, replayClassicalResultReloadRecipe, reissueClassicalAcceptedBuildBinding, matchesAcceptedVncContinuationBuild, matchesAcceptedNominalCompoundBuild, matchesAcceptedDeverbalBuild, supportsFutureObjectResultReload, supportsNominalCompoundResultReload }
+import { isCompactResultAddress, writeCompactResultAddress, COMPACT_RESULT_DATA_FRAGMENT } from "../../application/classical/compact_result_link.mjs";
+import { exportClassicalResultReloadRecipe, inspectClassicalResultLink, encodeVerifiedClassicalResultLink, replayClassicalResultReloadRecipe, reissueClassicalAcceptedBuildBinding, matchesAcceptedVncContinuationBuild, matchesAcceptedNominalCompoundBuild, matchesAcceptedDeverbalBuild, supportsFutureObjectResultReload, supportsNominalCompoundResultReload }
   from "../../application/classical/result_reload.mjs?deverbalReload=20261024-8&stemReload=20261024-2&innerParticle=20261024-1&remainingReload=20261024-1&conjunctReload=20261023-1&v=20261007-reader-40-2-175&acceptedBuild=20261023-1&nominalReload=20261024-4&complexReload=20261027-1&placeReload=20261027-2&ownerDecision=20261031-2";
 import { exportClassicalGrammarWorkspaceHistoryReloadState,
   restoreClassicalGrammarWorkspaceHistoryReloadState }
@@ -49814,9 +49814,12 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const projection = getClassicalOwnerIssuedResultProjection(result);
       if (!projection) return null;
       const { surface, linearFormula, sentenceFormula, operationId, outputKind } = projection;
-      const composite = getClassicalCompositeAnalysisProjection(projection.canonicalResult);
+      const canonical = projection.canonicalResult;
+      const composite = getClassicalCompositeAnalysisProjection(canonical);
+      const annotations = [linearFormula, sentenceFormula].map(formula =>
+        getClassicalCompositeFormulaAnnotations(formula, canonical));
       return {
-        surface, linearFormula, sentenceFormula, operationId, outputKind,
+        surface, linearFormula, sentenceFormula, operationId, outputKind, annotations,
         contactLabel: composite?.contactLabel,
         constituents: composite?.rows.map(({ expression, role, formulaStart }) => ({
           expression, role, formulaStart,
@@ -49858,7 +49861,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         if (ClassicalConstructionSession.position.accepted.result !== exactResult) return;
         const check = inspectClassicalResultLink(targetObject, exactResult, projectClassicalResultLinkAnalysis);
         const recipe = check.status === "verified" ? check.recipe : null;
-        const compact = recipe ? await encodeCompactResultAddress(recipe).catch(() => null) : null;
+        const compact = recipe ? await encodeVerifiedClassicalResultLink(recipe).catch(() => null) : null;
         if (ClassicalConstructionSession.position.accepted.result !== exactResult) return;
         const published = publish(compact, recipe);
         const status = recipe && !published ? "address-too-long" : check.status;

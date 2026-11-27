@@ -1,4 +1,4 @@
-import {MAX_RESULT_LINK_NODES} from "./compact_result_link.mjs";
+import {MAX_RESULT_LINK_NODES, encodeCompactResultAddress, decodeCompactResultAddress} from "./compact_result_link.mjs";
 import {exportImperfectiveReloadNode,replayImperfectiveReloadNode} from "./reload_imperfective.mjs";
 import {exportFormedReloadNode,replayFormedReloadNode} from "./reload_formed.mjs?placeReload=20261027-2";
 import {exportNameReloadNode,replayNameReloadNode} from "./reload_names.mjs?ownerDecision=20261031-2";
@@ -775,4 +775,12 @@ export function inspectClassicalResultLink(r, result, project, replayRuntime = r
   if (!original || !restored) return { status: "missing-analysis", recipe };
   if (!sameInputs(original, restored)) return { status: "changed-analysis", recipe };
   return { status: "verified", recipe };
+}
+
+// Check the actual address bytes before offering the link to the user.
+export async function encodeVerifiedClassicalResultLink(recipe) {
+  const payload = JSON.parse(JSON.stringify(recipe));
+  const address = await encodeCompactResultAddress(payload);
+  if (!address) return null;
+  return sameInputs(payload, await decodeCompactResultAddress(address)) ? address : null;
 }
