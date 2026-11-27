@@ -428,6 +428,25 @@ if (includes("public")) {
 }
 if (includes("public")) console.log(`Owners accepted ${publicSourcesAccepted} of ${publicSources.length + 1} attested and quantitative Source choices`);
 
+let negativeAttachmentAccepted = false;
+if (includes("public")) {
+  const particle = id => instrumented.executeClassicalGrammarApplicationRequest({
+    operationId: "particle:result", args: [runtime.buildClassicalNahuatlParticleSourceFrame(id)],
+  }).canonicalResult;
+  const precedingParticleResultFrame = particle("l3-ma");
+  const followingParticleResultFrame = particle("l3-zo");
+  const selection = instrumented.executeClassicalGrammarApplicationRequest({
+    operationId: "particle:negative-selection", args: [{ precedingParticleResultFrame, sentenceKind: "wish" }],
+  });
+  if (selection.authorizationStatus === "authorized") {
+    const attachment = instrumented.executeClassicalGrammarApplicationRequest({
+      operationId: "particle:negative-attachment",
+      args: [{ negativeSelectionFrame: selection.canonicalResult, followingParticleResultFrame }],
+    });
+    negativeAttachmentAccepted = attachment.authorizationStatus === "authorized";
+  }
+}
+
 function project(runtime, value) {
   const capture = runtime.captureClassicalGrammarApplicationResult(value, "result-link-audit");
   if (!capture || !runtime.isClassicalGrammarApplicationResultCapture(capture, "result-link-audit")) return null;
@@ -452,9 +471,23 @@ function project(runtime, value) {
   };
 }
 
+// The owner graph supplies an independent view of the applied operations.
+function projectOwnerGraph(r, result) {
+  const graph = r.getClassicalGrammarApplicationLayerGraph(result);
+  if (!r.isClassicalGrammarApplicationLayerGraph(graph)) return null;
+  return {
+    nodes: graph.nodes.map(({ operationId, outputKind, depth }) => [operationId, outputKind, depth]),
+    edges: graph.edges.map(({ fromNodeId, toNodeId, sharedUnitKinds }) =>
+      JSON.stringify([fromNodeId, toNodeId, [...sharedUnitKinds].sort()])).sort(),
+  };
+}
+
 const counts = new Map();
 const changedRecipes = new Map();
+let checkedOwnerGraphs = 0;
+const changedOwnerGraphs = new Map();
 const distinctLinks = new Set();
+const verifiedOperations = new Set();
 let checkedOperandGraphs = 0;
 let changedOperandGraphs = 0;
 const jsonPayload = value => value && JSON.parse(JSON.stringify(value));
@@ -462,6 +495,13 @@ for (const [result, operation] of witnesses) {
   const check = inspectClassicalResultLink(runtime, result, project, fresh);
   let { status } = check;
   if (status === "verified") {
+    const originalGraph = projectOwnerGraph(runtime, result);
+    if (originalGraph?.edges.length) {
+      checkedOwnerGraphs++;
+      if (!isDeepStrictEqual(originalGraph, projectOwnerGraph(fresh, check.reopened))) {
+        changedOwnerGraphs.set(operation, (changedOwnerGraphs.get(operation) || 0) + 1);
+      }
+    }
     const second = exportClassicalResultReloadRecipe(fresh, { result: check.reopened });
     if (!isDeepStrictEqual(jsonPayload(check.recipe), jsonPayload(second))) {
       changedRecipes.set(operation, (changedRecipes.get(operation) || 0) + 1);
@@ -481,7 +521,10 @@ for (const [result, operation] of witnesses) {
     try {
       const address = await encodeVerifiedClassicalResultLink(check.recipe);
       if (!address) status = "compact-address-failed";
-      else distinctLinks.add(address);
+      else {
+        distinctLinks.add(address);
+        verifiedOperations.add(operation);
+      }
     } catch {
       status = "compact-address-failed";
     }
@@ -521,19 +564,37 @@ for (const [result, operation] of witnesses) {
 }
 console.log(`Checked ${witnesses.size} accepted Result witnesses using ${distinctLinks.size} distinct short links`);
 console.log(`${checkedOperandGraphs - changedOperandGraphs} of ${checkedOperandGraphs} nested Results retained exact reopened operands`);
+const changedOwnerGraphCount = [...changedOwnerGraphs.values()].reduce((sum, count) => sum + count, 0);
+console.log(`${checkedOwnerGraphs - changedOwnerGraphCount} of ${checkedOwnerGraphs} owner-recorded continuation graphs matched`);
+for (const [operation, count] of changedOwnerGraphs) console.log(`${count}\t${operation}: owner continuation graph changed`);
 for (const [operation, count] of changedRecipes) {
   console.log(`${count}\t${operation}: recipe changed after reopen`);
 }
 for (const [key, count] of [...counts].sort(([left], [right]) => left.localeCompare(right))) {
   console.log(`${count}\t${key}`);
 }
+// The installed Writing owner has no public Source lane. Track its omission
+// explicitly so the audit still reports the complete continuation inventory.
+const internalOperations = new Set(["orthography:transcription"]);
+const continuationOperations = runtime.getClassicalGrammarApplicationInventory().operations
+  .filter(operation => operation.rhymeRoutePlaneFrame.compatibilitySignature.exactContinuationOutputUnitKinds.length)
+  .map(operation => operation.operationId);
+const uncovered = continuationOperations.filter(operation => !verifiedOperations.has(operation));
+const uncoveredBuilds = uncovered.filter(operation => !internalOperations.has(operation));
+console.log(`Verified ${continuationOperations.length - uncovered.length} of ${continuationOperations.length} indexed continuation operations`);
+if (uncoveredBuilds.length) console.log(`Uncovered build operations: ${uncoveredBuilds.join(", ")}`);
+const uncoveredInternal = uncovered.filter(operation => internalOperations.has(operation));
+if (uncoveredInternal.length) console.log(`Uncovered internal operations: ${uncoveredInternal.join(", ")}`);
+
 const missingCoverage = [
   includes("nested") && (!generatedEdges.size || !retainedSubstitutions),
   includes("relations") && (!adverbialAccepted || !readingCoverage.get("nnc:adjectival-modification")?.accepted
     || !readingCoverage.get("sentence:supplementation")?.accepted),
   includes("finite") && (!typedVncAccepted || !typedVncSentences || typedVncErrors.size),
   includes("nominal") && (!nominalAccepted || !nounSentences || !nounModifiers),
-  includes("public") && publicSourcesAccepted !== publicSources.length + 1,
+  includes("public") && (publicSourcesAccepted !== publicSources.length + 1 || !negativeAttachmentAccepted),
+  !selectedGroups.length && uncoveredBuilds.length,
 ].some(Boolean);
-if (!checkedOperandGraphs || changedOperandGraphs || changedRecipes.size || fixtureResults.failed || missingCoverage
+if (!checkedOwnerGraphs || !checkedOperandGraphs || changedOperandGraphs || changedRecipes.size || changedOwnerGraphs.size
+  || fixtureResults.failed || missingCoverage
   || [...counts.keys()].some(key => !key.endsWith(": verified"))) process.exitCode = 1;

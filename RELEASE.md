@@ -1,8 +1,8 @@
-# Grammar OS v1.2.174 release
+# Grammar OS v1.2.175 release
 
 Release name: **Writer Controls**
 
-Browser build: **20261126-verbal-sentence-parent-174**
+Browser build: **20261126-typed-verb-origin-175**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 

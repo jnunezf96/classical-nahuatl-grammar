@@ -115,6 +115,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       new WeakSet();
     const classicalNahuatlVncTypedSourceApplicationPreparedResults = new WeakMap();
     const typedSourceImpersonalReloadChoices = new WeakMap();
+    const typedSourceReloadChoices = new WeakMap();
     const classicalNahuatlVncTypedSourceApplicationProvenanceBySource =
       new WeakMap();
     const classicalNahuatlVncParticipantProvenanceByMachinery = new WeakMap();
@@ -10260,6 +10261,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
     function exportClassicalNahuatlVncApplicationRecipe(result = null) {
       const steps = [];
       const visiting = new Set();
+      let latestScalarRequest = null;
       const owner = getClassicalNahuatlVncApplicationRuntimeTarget();
       function visit(value) {
         // This family's typed stem/patient recipe is deliberately not serialized
@@ -10285,7 +10287,9 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
               && ["frequentative-prefix-shape", "frequentative-tla"].includes(operation.ruleFamily))) return false;
           visiting.add(value);
           if (!visit(value.baseApplicationFrame)) return false;
-          const baseRequest = steps.at(-1)?.request;
+          const previousStep = steps.at(-1);
+          const baseRequest = previousStep?.operationId === "vnc:typed-source"
+            ? latestScalarRequest : previousStep?.request;
           if (!baseRequest) return false;
           if (futureObject) {
             // Store inputs, not a flattened finite compound. Replay captures the
@@ -10323,8 +10327,8 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         if (classicalNahuatlDenominalCausativeOperationByMachinery.has(
           frame.resultFrame.formationSourceMachineryFrame)) return false;
         visiting.add(frame);
-        const parent = classicalNahuatlVncContinuationSourceByApplicationFrame
-          .get(frame)?.sourceResultFrame || null;
+        const ancestry = classicalNahuatlVncContinuationSourceByApplicationFrame.get(frame);
+        const parent = ancestry?.sourceResultFrame || null;
         if (parent && !visit(parent)) return false;
         const normalized = frame.normalizedRequest;
         const sentenceEntries = Object.entries(normalized.sentenceOptions || {});
@@ -10364,9 +10368,11 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
             request[key] = normalized[key];
           }
         }
-        steps.push(Object.freeze(parent && impersonalChoices
-          ? { operationId: "vnc:typed-impersonal", request: impersonalChoices }
-          : { request: Object.freeze(request) }));
+        const typedChoices = typedSourceReloadChoices.get(frame);
+        latestScalarRequest = Object.freeze(request);
+        steps.push(Object.freeze(parent && typedChoices && !ancestry.canonicalNominalSourceResultFrame
+          ? { operationId: "vnc:typed-source", request: typedChoices }
+          : { request: latestScalarRequest }));
         visiting.delete(frame);
         return true;
       }
@@ -10403,14 +10409,14 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
           || owner.isClassicalNahuatlClosureFrame?.(parent))) return null;
         return Object.freeze({ operationId, args: Object.freeze([parent]) });
       }
-      if (operationId === "vnc:typed-impersonal") {
+      if (["vnc:typed-source", "vnc:typed-impersonal"].includes(operationId)) {
         const choices = step.request;
         if (!isClassicalNahuatlVncApplicationFrame(parent)
           || !choices || typeof choices !== "object" || Array.isArray(choices)
-          || Object.keys(choices).some(key => !["requestedDerivation", "requestedVoice",
-            "nonactiveOptionId", "subject", "mood", "tense", "sentenceOptions"].includes(key))
-          || choices.requestedDerivation !== "direct" || choices.requestedVoice !== "impersonal"
-          || !["inherent-impersonal", "tla-impersonal"].includes(choices.nonactiveOptionId)) return null;
+          || Object.keys(choices).some(key => !CLASSICAL_NAHUATL_VNC_TYPED_SOURCE_APPLICATION_SELECTION_FIELDS.includes(key))
+          || operationId === "vnc:typed-impersonal" && (choices.requestedDerivation !== "direct"
+            || choices.requestedVoice !== "impersonal"
+            || !["inherent-impersonal", "tla-impersonal"].includes(choices.nonactiveOptionId))) return null;
         const binding = issueClassicalNahuatlVncTypedSourceApplicationBindingFrame(
           parent.resultFrame.sourceMachineryFrame, choices,
         );
@@ -12393,6 +12399,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
           || result.normalizedRequest?.sourceStem !== context.ownerRequest.sourceStem
           || result.normalizedRequest?.sourceValence !== context.ownerRequest.sourceValence
           || result.normalizedRequest?.derivationType !== context.ownerRequest.requestedDerivation) result = null;
+        if (result) typedSourceReloadChoices.set(result, bindingFrame.callerSelections);
       }
       const { requestedDerivation, requestedVoice, nonactiveOptionId } = bindingFrame.effectiveSelections;
       if (result && requestedDerivation === "direct" && requestedVoice === "impersonal"

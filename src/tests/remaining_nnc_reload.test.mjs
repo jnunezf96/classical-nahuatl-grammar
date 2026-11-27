@@ -666,6 +666,13 @@ test("typed impersonal links keep the chosen voice on each accepted verb", async
       assert.equal(restored.resultFrame.surfaceRealization, result.resultFrame.surfaceRealization);
       assert.equal(restored.resultFrame.formulaRealization, result.resultFrame.formulaRealization);
       assert.equal(restored.resultFrame.selectedVoice, result.resultFrame.selectedVoice);
+      const legacy = structuredClone(recipe);
+      const step = legacy.nodes.at(-1).recipe.steps.at(-1);
+      const { requestedDerivation, requestedVoice, subject, mood, tense: selectedTense } = binding.effectiveSelections;
+      step.operationId = "vnc:typed-impersonal";
+      step.request = { requestedDerivation, requestedVoice, nonactiveOptionId, subject, mood, tense:selectedTense };
+      const previous = replayClassicalResultReloadRecipe(fresh, legacy)?.result;
+      assert.equal(previous?.resultFrame.formulaRealization, result.resultFrame.formulaRealization);
     }
   }
 });
@@ -704,4 +711,26 @@ test("a verbal sentence reopens with the exact finite Result shared in its graph
   const oldResult = replayClassicalResultReloadRecipe(fresh, oldRecipe)?.result;
   assert.equal(oldResult.sentenceSurface, result.sentenceSurface);
   assert.equal(oldResult.sentenceFormulaDisplay, result.sentenceFormulaDisplay);
+});
+
+test("a typed verbal sentence reopens without an extra grammar operation", async () => {
+  const r = await runtime(), fresh = await runtime();
+  const base = execute(r, "vnc:application", {
+    sourceStem:"nemi", verbClass:"B", sourceValence:"intransitive", subject:"3sg", tense:"present", mood:"indicative",
+  });
+  const binding = r.issueClassicalNahuatlVncTypedSourceApplicationBindingFrame(
+    base.resultFrame.sourceMachineryFrame, {requestedDerivation:"direct", subject:"1pl"},
+  );
+  const finite = execute(r, "vnc:application", binding);
+  const sentence = execute(r, "vnc:sentence-result", finite);
+  const recipe = exportClassicalResultReloadRecipe(r, {result:sentence, finite});
+  const reopened = replayClassicalResultReloadRecipe(fresh, recipe);
+  assert.equal(reopened.result.vncApplicationFrame, reopened.finite);
+  assert.equal(reopened.result.sentenceFormulaDisplay, sentence.sentenceFormulaDisplay);
+  const operations = (runtime, result) => runtime.getClassicalGrammarApplicationLayerGraph(result)
+    .nodes.map(node => [node.operationId, node.depth]);
+  assert.deepEqual(operations(fresh, reopened.result), operations(r, sentence));
+  const invalid = structuredClone(recipe);
+  invalid.nodes[0].recipe.steps.at(-1).request.formulaRealization = "forged";
+  assert.equal(replayClassicalResultReloadRecipe(fresh, invalid), null);
 });
