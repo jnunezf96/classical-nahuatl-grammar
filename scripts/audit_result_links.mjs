@@ -172,6 +172,72 @@ for (const [source, operation] of candidates) {
 }
 console.log(`Owners accepted ${adverbialAccepted} of ${adverbialAttempts} adverbial choices`);
 
+function* adjectivalReadings(base, dependent) {
+  const domains = runtime.getClassicalNahuatlAdjectivalModificationChoiceDomains;
+  for (const topology of domains(base)?.topologies || []) {
+    const chosen = { ...base, topology, dependent };
+    const shape = domains(chosen);
+    if (!shape) continue;
+    for (const order of shape.orders) {
+      const ordered = domains({ ...chosen, order });
+      for (const adjunctor of ordered.adjunctors) {
+        for (const linkRole of ordered.linkRoles) {
+          for (const compoundHeadTarget of ordered.compoundHeadTargets) {
+            const request = { ...base, topology, order, adjunctor, linkRole, compoundHeadTarget };
+            if (topology === "discontinuous") request.interveningClauses = [dependent];
+            const links = topology === "cooperating-preposed-nonpreposed" ? ordered.dependentLinkRoles : [null];
+            for (const additionalLink of links) {
+              yield additionalLink ? { ...request, additionalModifiers: [dependent],
+                additionalLinkRoles: [additionalLink] } : request;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+function* supplementaryReadings(base) {
+  const domains = runtime.getClassicalNahuatlSupplementationChoiceDomains;
+  for (const referenceMode of domains(base)?.referenceModes || []) {
+    const contact = domains({ ...base, referenceMode });
+    for (const headRole of contact.headRoles) {
+      for (const supplementContactRole of contact.contactRoles) {
+        for (const order of contact.orders) {
+          yield { ...base, options: { ...base.options, referenceMode, headRole, supplementContactRole, order } };
+        }
+      }
+    }
+  }
+}
+
+const readingCoverage = new Map();
+for (const { operationId, args: [base] } of seedRequests) {
+  let readings;
+  if (operationId === "nnc:adjectival-modification") {
+    const dependent = candidates.find(([value, operation]) => operation === "nnc:sentence-surface"
+      && value !== base.head && value !== base.modifier)?.[0];
+    if (dependent) readings = adjectivalReadings(base, dependent);
+  } else if (operationId === "sentence:supplementation") {
+    readings = supplementaryReadings(base);
+  }
+  if (!readings) continue;
+  const coverage = { attempted: 0, accepted: 0 };
+  for (const reading of readings) {
+    coverage.attempted++;
+    const receipt = instrumented.executeClassicalGrammarApplicationRequest({ operationId, args: [reading] });
+    if (receipt.authorizationStatus === "authorized") coverage.accepted++;
+  }
+  const prior = readingCoverage.get(operationId) || { attempted: 0, accepted: 0 };
+  readingCoverage.set(operationId, {
+    attempted: prior.attempted + coverage.attempted,
+    accepted: prior.accepted + coverage.accepted,
+  });
+}
+for (const [operationId, coverage] of readingCoverage) {
+  console.log(`${operationId}: owners accepted ${coverage.accepted} of ${coverage.attempted} generated readings`);
+}
+
 function project(runtime, value) {
   const capture = runtime.captureClassicalGrammarApplicationResult(value, "result-link-audit");
   if (!capture || !runtime.isClassicalGrammarApplicationResultCapture(capture, "result-link-audit")) return null;
@@ -181,7 +247,14 @@ function project(runtime, value) {
     kind: capture.outputKind,
     contact: getClassicalSharedContactLabel(runtime, value),
     orderedVoice: (value.orderedVoiceApplicationFrame || value).operations,
-    modifierLinks: value.selection?.modifierLinkRoles,
+    adjectival: value.selection?.modifierLinkRoles && {
+      topology: value.selection.topology,
+      order: value.selection.order,
+      adjunctor: value.selection.adjunctor,
+      links: value.selection.modifierLinkRoles,
+      headTarget: value.selection.compoundHeadTarget,
+      roles: value.selectedClauses.map(clause => clause.role),
+    },
     surface: value.sentenceSurfaceDisplay || value.sentenceSurface || value.surface || value.surfaceRealization
       || value.wordSurface || inner?.surface || inner?.surfaceRealization,
     analysis: value.sentenceFormulaDisplay || value.sentenceFormula || value.formula
@@ -217,4 +290,6 @@ console.log(`Checked ${witnesses.size} accepted Result witnesses`);
 for (const [key, count] of [...counts].sort(([left], [right]) => left.localeCompare(right))) {
   console.log(`${count}\t${key}`);
 }
-if (fixtureResults.failed || !generatedEdges.size || !retainedSubstitutions || !adverbialAccepted || [...counts.keys()].some(key => !key.endsWith(": verified"))) process.exitCode = 1;
+if (fixtureResults.failed || !generatedEdges.size || !retainedSubstitutions || !adverbialAccepted
+  || !readingCoverage.get("nnc:adjectival-modification")?.accepted
+  || !readingCoverage.get("sentence:supplementation")?.accepted || [...counts.keys()].some(key => !key.endsWith(": verified"))) process.exitCode = 1;
