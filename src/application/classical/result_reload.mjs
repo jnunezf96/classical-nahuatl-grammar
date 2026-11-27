@@ -6,13 +6,12 @@ import {exportConstructedReloadNode,replayConstructedReloadNode} from "./reload_
 import {exportComparisonReloadNode,replayComparisonReloadNode} from "./reload_comparison.mjs";
 import {exportNominalCompoundReloadNode, replayNominalCompoundReloadNode, supportsNominalCompoundResultReload} from "./reload_nominal_compound.mjs?nominalReload=20261024-4";
 export {supportsNominalCompoundResultReload};
-import {exportNncContextReloadNode, replayNncContextReloadNode, isNncReloadEvidence} from "./reload_nnc_context.mjs";
+import {exportNncContextReloadNode, replayNncContextReloadNode, isNncReloadEvidence, NNC_RELOAD_SOURCE_KEYS, reissueNncReloadSource} from "./reload_nnc_context.mjs";
 import {exportClauseContextReloadNode, replayClauseContextReloadNode, isClauseReloadEvidence} from "./reload_clause_context.mjs?innerParticle=20261024-1";
 import {exportDeverbalReloadNode, replayDeverbalReloadNode, isDeverbalReloadEvidence, exportDeverbalRequestInputs} from "./reload_deverbal.mjs?deverbalReload=20261024-8";
 // Reload inputs are recipes, never persisted grammar frames or written answers.
 // Each node is reissued by its existing owner in the new runtime.
 const KIND = "classical-grammar-result-reload-recipe";
-const SOURCE_KEYS = ["stem", "sourceClass", "embedStem", "matrixStem", "supportiveInitialI"];
 const CARRIER_CHOICES = ["subject","subjectAnimacy","subjectHumanness","patientReferenceId",
   "mood","tense","requestedVoice","requestedDerivation","sentenceOptions"];
 const CARRIER_SENTENCE_CHOICES = ["sentenceType","negative","exclamatory","punctuation","punctuationMode",
@@ -200,7 +199,7 @@ export function exportClassicalResultReloadRecipe(r, roots = {}, normalizePrimit
       && r.isClassicalNahuatlOrdinaryNncSourceFrame?.(value.sourceFrame) === true
       && !r.getClassicalNahuatlLexicalizedPresentNncSourceParent?.(value.sourceFrame)
       && !value.sourceFrame.compoundSource && !value.sourceFrame.sourceConstituents?.length;
-    let node = primitiveNnc ? {type:"nnc:ordinary",source:pick(value.sourceFrame,SOURCE_KEYS),
+    let node = primitiveNnc ? {type:"nnc:ordinary",source:pick(value.sourceFrame,NNC_RELOAD_SOURCE_KEYS),
       choices:{...pick(value.operationFrame,NNC_KEYS),animacy:value.operationFrame.referentialAnimacy,
         humanness:value.operationFrame.referentialHumanness}}
       : exportFormedReloadNode(r,value,child=>visit(child,depth+1))
@@ -288,7 +287,7 @@ export function exportClassicalResultReloadRecipe(r, roots = {}, normalizePrimit
       && r.isClassicalNahuatlOrdinaryNncResult?.(value)
       && !r.getClassicalNahuatlLexicalizedPresentNncSourceParent?.(value.sourceFrame)
       && !value.sourceFrame.compoundSource && !value.sourceFrame.sourceConstituents?.length) {
-      node = { type: "nnc:ordinary", source: pick(value.sourceFrame, SOURCE_KEYS),
+      node = { type: "nnc:ordinary", source: pick(value.sourceFrame, NNC_RELOAD_SOURCE_KEYS),
         choices: { ...pick(value.operationFrame, NNC_KEYS),
           animacy: value.operationFrame.referentialAnimacy,
           humanness: value.operationFrame.referentialHumanness } };
@@ -543,8 +542,8 @@ export function replayClassicalResultReloadRecipe(r, recipe) {
         const binding = r.issueClassicalGrammarTypedSourceOperationBindingFrame(navigator,"nnc:ordinary",node.choices);
         result = r.executeClassicalGrammarTypedSourceOperationBindingFrame(binding)?.canonicalResult;
       } else if (node?.type === "nnc:ordinary" && exact(node, ["type", "source", "choices"])
-        && plain(node.source, SOURCE_KEYS) && plain(node.choices, [...NNC_KEYS, "humanness"])) {
-        const source = r.issueCanonicalNncSourceFrame(node.source);
+        && plain(node.source, NNC_RELOAD_SOURCE_KEYS) && plain(node.choices, [...NNC_KEYS, "humanness"])) {
+        const source = reissueNncReloadSource(r,node.source);
         if (Object.hasOwn(node.choices, "animacy")) {
           const navigator = r.getClassicalGrammarApplicationCapabilityNavigator(source);
           const binding = r.issueClassicalGrammarTypedSourceOperationBindingFrame(navigator, "nnc:ordinary", node.choices);

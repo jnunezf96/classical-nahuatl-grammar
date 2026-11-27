@@ -540,3 +540,33 @@ test("ordinary compound noun links preserve their licensed embed and matrix",asy
   altered.nodes.find(node=>node.type==="nnc:source").source.matrixStem="mā";
   assert.equal(replayClassicalResultReloadRecipe(fresh,altered),null);
 });
+
+export function makeGeneralUseNounSentence(r) {
+  const source=r.buildClassicalNahuatlOrdinaryNncSourceFrame({stem:"noh-mah",sourceUse:"general-use"});
+  const operation=r.buildClassicalNahuatlOrdinaryNncOperationFrame(source,{
+    state:"possessive",subject:"3common",possessor:"1sg",singularConnector:"silent",
+  });
+  const noun=execute(r,"nnc:ordinary",source,operation);
+  const result=execute(r,"nnc:sentence-surface",noun.typedSlotFrame,{sentenceType:"assertion",polarity:"positive"});
+  return {noun,result};
+}
+
+test("general-use noun links preserve their source scope and recover earlier links",async()=>{
+  const r=await runtime(),fresh=await runtime();
+  const {noun,result}=makeGeneralUseNounSentence(r);
+  const recipe=exportClassicalResultReloadRecipe(r,{result,noun});
+  assert.ok(recipe);
+  const node=recipe.nodes.find(node=>node.type==="nnc:ordinary");
+  assert.equal(node.source.sourceUse,"general-use");
+  const legacy=structuredClone(recipe);
+  delete legacy.nodes.find(node=>node.type==="nnc:ordinary").source.sourceUse;
+  for(const input of [recipe,legacy]){
+    const reopened=replayClassicalResultReloadRecipe(fresh,input);
+    assert.ok(reopened);
+    assert.equal(reopened.noun.sourceFrame.generalUseOnly,true);
+    assert.equal(reopened.noun.sourceFrame.selectedUseScope,noun.sourceFrame.selectedUseScope);
+    assert.equal(reopened.result.sentenceSurface,result.sentenceSurface);
+    assert.equal(reopened.result.sentenceFormulaDisplay,result.sentenceFormulaDisplay);
+    assert.ok(reopened.result.sourceNncSlotFrame===reopened.noun.typedSlotFrame);
+  }
+});

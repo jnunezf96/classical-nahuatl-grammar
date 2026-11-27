@@ -1,12 +1,20 @@
 // Reload stores owner inputs and graph references. Written answers and discourse
 // projections are re-created by their original owners, never accepted as inputs.
-const SOURCE_KEYS = [
+export const NNC_RELOAD_SOURCE_KEYS = [
+  "sourceUse",
   "stem",
   "sourceClass",
   "embedStem",
   "matrixStem",
   "supportiveInitialI",
 ];
+export function reissueNncReloadSource(r,source) {
+  // Earlier recipes omitted sourceUse. An issued class-free noun source
+  // has an explicitly empty class and belongs to the general-use route.
+  const legacyGeneralUse = source.sourceUse === undefined && source.sourceClass === ""
+    && !source.embedStem && !source.matrixStem && source.supportiveInitialI === false;
+  return r.issueCanonicalNncSourceFrame(legacyGeneralUse ? {...source,sourceUse:"general-use"} : source);
+}
 const DIRECT_NNC_CHOICES = [
   "subject", "animacy", "humanness", "stateAvailability", "naturalPossessionPolicy",
   "metaphoricalOverride", "policySelectionAuthority", "numberDyad",
@@ -239,7 +247,7 @@ export function exportNncContextReloadNode(r, value, visit) {
       !r.getClassicalNahuatlLexicalizedPresentNncSourceParent?.(
         value,
       ), "unsupported contextual source parent");
-    return { type: "nnc:source", source: pick(value, SOURCE_KEYS) };
+    return { type: "nnc:source", source: pick(value, NNC_RELOAD_SOURCE_KEYS) };
   }
   if (r.isClassicalNahuatlContextualFlawedSubjectSourceFrame?.(value) === true)
     return {
@@ -514,8 +522,8 @@ export function replayNncContextReloadNode(r, node, prior) {
       return r.isClassicalNahuatlLesson2WrittenResult?.(result) ? result : null;
     }
     if (node.type === "nnc:source")
-      return exact(node, ["type", "source"]) && scalar(node.source, SOURCE_KEYS)
-        ? r.issueCanonicalNncSourceFrame(node.source)
+      return exact(node, ["type", "source"]) && scalar(node.source, NNC_RELOAD_SOURCE_KEYS)
+        ? reissueNncReloadSource(r,node.source)
         : null;
     if (node.type === "nnc:contextual-flawed-source")
       return exact(node, ["type", "source", "negative"]) &&
