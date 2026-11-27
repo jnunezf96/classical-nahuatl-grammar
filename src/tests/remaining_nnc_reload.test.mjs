@@ -356,3 +356,44 @@ test("a noun sentence link restores its explicitly selected possession policy",a
   assert.deepEqual(roots.source.allowedStateValues,["possessive"]);
   assert.ok(fresh.getClassicalNahuatlDirectNncSlotReloadInputs(roots.slot).options.nncSourceAuthorityFrame===roots.source);
 });
+
+export function makeLesson15Sentence(r) {
+  const stem="tah";
+  const operation=r.buildClassicalNahuatlStemOperationRecord(stem,{
+    operation:"secondary-general-use",targetStem:"tē-tah",secondaryPossessorCarrier:"tē",
+    selectionAuthority:"user-supplied-lexical-analysis",
+  });
+  const reduplication=r.buildClassicalNahuatlPossessorReduplicationSelection(stem,{
+    selected:true,selectionAuthority:"user-selection",
+  });
+  const source=r.buildClassicalNahuatlNncSourceAuthorityFrame(stem,{
+    selectedState:"possessive",lesson15StemOperationRecord:operation,lesson15PossessorReduplicationSelection:reduplication,
+  });
+  const parent=r.buildClassicalNahuatlPossessiveNncFrame(stem,{
+    nncSourceAuthorityFrame:source,subject:"3sg",possessor:"2sg",singularConnector:"0",
+    nounstemRelationKind:"nonrelational",animacy:"animate",
+  });
+  return {source,operation,reduplication,result:execute(r,"nnc:sentence-surface",parent.nncSlotFrame,{
+    sentenceType:"assertion",polarity:"positive",
+  })};
+}
+
+test("Lesson 15 stem operation and reduplication both survive a noun sentence link",async()=>{
+  const r=await runtime(),fresh=await runtime();
+  const {source,operation,reduplication,result}=makeLesson15Sentence(r);
+  const recipe=exportClassicalResultReloadRecipe(r,{result,source,operation,reduplication});
+  assert.ok(recipe,result.sentenceSurface);
+  const roots=replayClassicalResultReloadRecipe(fresh,recipe);
+  assert.ok(roots);
+  assert.equal(roots.result.sentenceSurface,result.sentenceSurface);
+  assert.equal(roots.result.sentenceFormulaDisplay,result.sentenceFormulaDisplay);
+  assert.deepEqual(roots.source.lesson15StemOperationRecord,source.lesson15StemOperationRecord);
+  assert.deepEqual(roots.source.lesson15PossessorReduplicationSelection,source.lesson15PossessorReduplicationSelection);
+  const reloaded=fresh.getClassicalNahuatlNncSourceAuthorityReloadInputs(roots.source);
+  assert.ok(reloaded.stemOperation===roots.operation);
+  assert.ok(reloaded.reduplication===roots.reduplication);
+  const forged=structuredClone(recipe);
+  const node=forged.nodes.find(entry=>entry.type==="nnc:source-authority");
+  node.stemOperation=node.reduplication;
+  assert.equal(replayClassicalResultReloadRecipe(fresh,forged),null);
+});

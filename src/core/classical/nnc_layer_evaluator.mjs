@@ -38,6 +38,7 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
     const issuedNncSentenceSurfaceFrames = new WeakMap();
     const directNncSlotReloadInputs = new WeakMap();
     const nncSourceAuthorityReloadInputs = new WeakMap();
+    const lesson15ReloadInputs = new WeakMap();
     const issuedNncSentenceDecisions = new WeakSet();
     const issuedNncPredicateSupportiveI = new WeakMap();
     const issuedNncPredicateReducedLongVowel = new WeakMap();
@@ -4282,7 +4283,7 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
       } else if (!reclassificationSourceAuthorized) {
         blockReason = "tl-2a-to-1a-reclassification-requires-typed-tl-2a-source-analysis";
       }
-      return {
+      const frame = {
         kind: "classical-nahuatl-ordinary-nnc-stem-operation-record",
         version: 1,
         sourceAuthority: selectionAuthority === "canvas-predicate-option"
@@ -4334,6 +4335,13 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
         surfaceStringAuthority: false,
         legalWitnessTagIds: ["suppletive", "yo-matrix"].includes(operation) ? ["cn-l15-151b-possessive-suppletion"] : operation === "secondary-general-use" ? ["cn-l15-151e-secondary-general-use"] : operation === "analogical-restricted-use" ? ["cn-l15-151f-analogical-restricted-use"] : operation === "tl-2a-to-1a" ? ["cn-l15-151g-reclassification"] : []
       };
+      if (!blockReason && Object.values(options).every(value => ["string","boolean","number"].includes(typeof value))) {
+        lesson15ReloadInputs.set(frame, {
+          type:"nnc:stem-operation", stem:normalizedSourceStem, options:Object.freeze({...options}),
+          signature:JSON.stringify(frame),
+        });
+      }
+      return frame;
     }
     function isClassicalNahuatlStemOperationRecord(record = null) {
       if (
@@ -4446,7 +4454,7 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
       const selectionAuthority = normalizeClassicalNahuatlNncToken(options.selectionAuthority || (selected ? "" : "not-selected")).toLowerCase().replace(/[\s_]/gu, "-");
       const selectionAuthorityKnown = !selected || selectionAuthority === "user-selection";
       const blockReason = !normalizedSourceStem ? "lesson15-reduplication-source-stem-required" : !selectionAuthorityKnown ? "possessor-reduplication-requires-typed-selection-authority" : "";
-      return {
+      const frame = {
         kind: "classical-nahuatl-ordinary-nnc-possessor-reduplication-selection",
         version: 1,
         sourceAuthority: "Andrews transcription plus typed grammatical context",
@@ -4462,6 +4470,13 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
         surfaceStringAuthority: false,
         legalWitnessTagIds: ["cn-l15-151d-possessor-reduplication"]
       };
+      if (!blockReason && Object.values(options).every(value => ["string","boolean","number"].includes(typeof value))) {
+        lesson15ReloadInputs.set(frame, {
+          type:"nnc:possessor-reduplication", stem:normalizedSourceStem, options:Object.freeze({...options}),
+          signature:JSON.stringify(frame),
+        });
+      }
+      return frame;
     }
     function isClassicalNahuatlPossessorReduplicationSelection(record = null) {
       return Boolean(
@@ -4621,11 +4636,16 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
         surfaceStringAuthority: false,
         legalWitnessTagIds: ["cn-l12-127-state-restrictions", "cn-l15-152-natural-possession"]
       };
-      if (authorized && Object.values(options).every(value =>
-        ["string","boolean","number"].includes(typeof value)
-        || Array.isArray(value) && value.every(item => typeof item === "string"))) nncSourceAuthorityReloadInputs.set(frame,{
-        stem:normalizedStem, options:cloneClassicalNahuatlNncValue(options), signature:JSON.stringify(frame),
-      });
+      if (authorized) {
+        const {lesson15StemOperationRecord: stemOperation, lesson15PossessorReduplicationSelection: reduplication, ...choices} = options;
+        if (Object.values(choices).every(value => ["string","boolean","number"].includes(typeof value)
+          || Array.isArray(value) && value.every(item => typeof item === "string"))) {
+          nncSourceAuthorityReloadInputs.set(frame,{
+            stem:normalizedStem, options:cloneClassicalNahuatlNncValue(choices), stemOperation, reduplication,
+            signature:JSON.stringify(frame),
+          });
+        }
+      }
       return frame;
     }
     function isClassicalNahuatlNncSourceAuthorityFrame(frame = null) {
@@ -8795,10 +8815,18 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
     api.isClassicalNahuatlNncSentenceDecisionFrame = isClassicalNahuatlNncSentenceDecisionFrame;
     api.getClassicalNahuatlNncSentenceNegativePrefixOptions = getClassicalNahuatlNncSentenceNegativePrefixOptions;
     api.isClassicalNahuatlIssuedNncSentenceSurfaceFrame = isClassicalNahuatlIssuedNncSentenceSurfaceFrame;
+    api.getClassicalNahuatlLesson15ReloadInputs = frame => {
+      const receipt = lesson15ReloadInputs.get(frame);
+      return receipt && JSON.stringify(frame) === receipt.signature
+        ? {type:receipt.type,stem:receipt.stem,options:receipt.options} : null;
+    };
     api.getClassicalNahuatlNncSourceAuthorityReloadInputs = frame => {
       const receipt = nncSourceAuthorityReloadInputs.get(frame);
       return receipt && JSON.stringify(frame) === receipt.signature
-        ? {stem:receipt.stem,options:cloneClassicalNahuatlNncValue(receipt.options)} : null;
+        && (!receipt.stemOperation || JSON.stringify(frame.lesson15StemOperationRecord) === lesson15ReloadInputs.get(receipt.stemOperation)?.signature)
+        && (!receipt.reduplication || JSON.stringify(frame.lesson15PossessorReduplicationSelection) === lesson15ReloadInputs.get(receipt.reduplication)?.signature)
+        ? {stem:receipt.stem,options:cloneClassicalNahuatlNncValue(receipt.options),
+          stemOperation:receipt.stemOperation,reduplication:receipt.reduplication} : null;
     };
     api.getClassicalNahuatlDirectNncSlotReloadInputs = slot => directNncSlotReloadInputs.get(slot);
     api.getClassicalNahuatlNncSentenceReloadContext = getClassicalNahuatlNncSentenceReloadContext;

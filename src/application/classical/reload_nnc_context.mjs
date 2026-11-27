@@ -19,6 +19,21 @@ const NNC_SOURCE_AUTHORITY_CHOICES = [
   "naturalPossessionSemantics", "metaphoricalOverride", "policySelectionAuthority",
   "possessorCompatibility", "nonspecificHumanPossessorCarrier",
 ];
+const LESSON15 = new Map([
+  ["nnc:stem-operation", {
+    build:"buildClassicalNahuatlStemOperationRecord",
+    keys:["operation","operationId","selectionAuthority","predicateOptionId","optionId","selectedState","state",
+      "subject","possessor","nounClass","useShape","subclass","stemFormation","stemRelation","secondaryPossessorCarrier",
+      "targetStem","suppletiveConnector"],
+  }],
+  ["nnc:possessor-reduplication", {
+    build:"buildClassicalNahuatlPossessorReduplicationSelection",keys:["selected","selectionAuthority"],
+  }],
+]);
+const LESSON15_AUTHORITY_OPERANDS = [
+  ["stemOperation","lesson15StemOperationRecord","nnc:stem-operation"],
+  ["reduplication","lesson15PossessorReduplicationSelection","nnc:possessor-reduplication"],
+];
 const DIRECT_NNC_NUMBER_CHOICES = "thirdPluralPossessorSt2Options";
 const PRONOMINAL_SOURCE = ["stem", "embedStem", "matrixStem"];
 const PRONOMINAL_CHOICES = [
@@ -135,6 +150,7 @@ export function isNncReloadEvidence(r, value) {
   return (
     Boolean(r.getClassicalNahuatlDirectNncSlotReloadInputs?.(value)) ||
     Boolean(r.getClassicalNahuatlNncSourceAuthorityReloadInputs?.(value)) ||
+    Boolean(r.getClassicalNahuatlLesson15ReloadInputs?.(value)) ||
     r.isClassicalNahuatlLesson2WrittenResult?.(value) === true ||
     r.isClassicalNahuatlOrdinaryNncSourceFrame?.(value) === true ||
     r.isClassicalNahuatlContextualFlawedSubjectSourceFrame?.(value) === true ||
@@ -142,10 +158,17 @@ export function isNncReloadEvidence(r, value) {
   );
 }
 export function exportNncContextReloadNode(r, value, visit) {
+  const lesson15 = r.getClassicalNahuatlLesson15ReloadInputs?.(value);
+  if (lesson15) {
+    require(scalar(lesson15.options,LESSON15.get(lesson15.type).keys), "supported Lesson 15 inputs required");
+    return {type:lesson15.type,stem:lesson15.stem,choices:lesson15.options};
+  }
   const authority = r.getClassicalNahuatlNncSourceAuthorityReloadInputs?.(value);
   if (authority) {
     require(validDirectNncChoices(authority.options,NNC_SOURCE_AUTHORITY_CHOICES), "supported source authority inputs required");
-    return {type:"nnc:source-authority",stem:authority.stem,choices:authority.options};
+    return {type:"nnc:source-authority",stem:authority.stem,choices:authority.options,
+      ...Object.fromEntries(LESSON15_AUTHORITY_OPERANDS.filter(([role])=>authority[role])
+        .map(([role])=>[role,visit(authority[role])]))};
   }
   const direct = r.getClassicalNahuatlDirectNncSlotReloadInputs?.(value);
   if (direct) {
@@ -315,10 +338,26 @@ export function replayNncContextReloadNode(r, node, prior) {
   if (typeof node?.type !== "string" || !node.type.startsWith("nnc:"))
     return undefined;
   try {
+    const lesson15 = LESSON15.get(node.type);
+    if (lesson15) {
+      if (!exact(node,["type","stem","choices"]) || typeof node.stem!=="string" || node.stem.length>4096
+        || !scalar(node.choices,lesson15.keys)
+        || Object.values(node.choices).some(value=>typeof value==="string" && value.length>4096)) return null;
+      const frame=r[lesson15.build](node.stem,node.choices);
+      return r.getClassicalNahuatlLesson15ReloadInputs?.(frame)?.type===node.type ? frame : null;
+    }
     if(node?.type==="nnc:source-authority") {
-      if(!exact(node,["type","stem","choices"]) || typeof node.stem!=="string" || node.stem.length>4096
+      if(!exact(node,["type","stem","choices",...LESSON15_AUTHORITY_OPERANDS.map(([role])=>role)]) || typeof node.stem!=="string" || node.stem.length>4096
         || !validDirectNncChoices(node.choices,NNC_SOURCE_AUTHORITY_CHOICES)) return null;
-      const authority=r.buildClassicalNahuatlNncSourceAuthorityFrame(node.stem,node.choices);
+      const choices={...node.choices};
+      for(const [role,key,type] of LESSON15_AUTHORITY_OPERANDS) {
+        if(node[role]===undefined) continue;
+        const operand=prior(node[role]);
+        const inputs=r.getClassicalNahuatlLesson15ReloadInputs?.(operand);
+        if(inputs?.type!==type || inputs.stem!==node.stem) return null;
+        choices[key]=operand;
+      }
+      const authority=r.buildClassicalNahuatlNncSourceAuthorityFrame(node.stem,choices);
       return r.getClassicalNahuatlNncSourceAuthorityReloadInputs?.(authority) ? authority : null;
     }
     if(node?.type==="nnc:direct-nucleus") {
