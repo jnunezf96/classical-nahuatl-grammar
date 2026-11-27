@@ -39,6 +39,7 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
     const directNncSlotReloadInputs = new WeakMap();
     const nncSourceAuthorityReloadInputs = new WeakMap();
     const lesson15ReloadInputs = new WeakMap();
+    const classGovernedReloadInputs = new WeakMap();
     const issuedNncSentenceDecisions = new WeakSet();
     const issuedNncPredicateSupportiveI = new WeakMap();
     const issuedNncPredicateReducedLongVowel = new WeakMap();
@@ -5699,6 +5700,15 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
         lesson14Frame.nounstemParadigmContractFrame;
       lesson14Frame.selectedOutputLogicFrame.nounstemParadigmContractFrame =
         lesson14Frame.nounstemParadigmContractFrame;
+      if (authorized) {
+        classGovernedReloadInputs.set(lesson14Frame, {
+          type:"nnc:class-governed", stem:normalizedRestrictedUseStem,
+          options:Object.freeze({...options}), signature:JSON.stringify(lesson14Frame),
+        });
+        classGovernedReloadInputs.set(nncSlotFrame, {
+          type:"nnc:class-governed-slot", parent:lesson14Frame, signature:JSON.stringify(nncSlotFrame),
+        });
+      }
       return lesson14Frame;
     }
     function buildClassicalNahuatlSentenceHandoffFrame(nncSlotFrame = null, options = {}) {
@@ -7124,6 +7134,14 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
         lesson15Frame.ordinaryNncContractFrame;
       lesson15Frame.selectedOutputLogicFrame.lessons12To15GrammarSurfaceContractFrame =
         lesson15Frame.lessons12To15GrammarSurfaceContractFrame;
+      const parentReceipt = classGovernedReloadInputs.get(classGovernedFrame);
+      if (authorized && parentReceipt?.type === "nnc:class-governed"
+        && parentReceipt.signature === JSON.stringify(classGovernedFrame)) {
+        classGovernedReloadInputs.set(nncSlotFrame, {
+          type:"nnc:higher-slot", parent:classGovernedFrame,
+          options:Object.freeze({...options}), signature:JSON.stringify(nncSlotFrame),
+        });
+      }
       return lesson15Frame;
     }
     function normalizeClassicalNahuatlSubtype(value = "") {
@@ -8815,6 +8833,12 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
     api.isClassicalNahuatlNncSentenceDecisionFrame = isClassicalNahuatlNncSentenceDecisionFrame;
     api.getClassicalNahuatlNncSentenceNegativePrefixOptions = getClassicalNahuatlNncSentenceNegativePrefixOptions;
     api.isClassicalNahuatlIssuedNncSentenceSurfaceFrame = isClassicalNahuatlIssuedNncSentenceSurfaceFrame;
+    api.getClassicalNahuatlClassGovernedReloadInputs = frame => {
+      const receipt = classGovernedReloadInputs.get(frame);
+      if (!receipt || JSON.stringify(frame) !== receipt.signature) return null;
+      const {signature, ...inputs} = receipt;
+      return inputs;
+    };
     api.getClassicalNahuatlLesson15ReloadInputs = frame => {
       const receipt = lesson15ReloadInputs.get(frame);
       return receipt && JSON.stringify(frame) === receipt.signature

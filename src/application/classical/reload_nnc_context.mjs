@@ -14,6 +14,13 @@ const DIRECT_NNC_CHOICES = [
   "possessor", "nounstemRelationKind", "analogicalTlaDerivedStem", "thirdPluralPossessorNumberMorph",
   "singularConnector", "silentConnectorAuthorized",
 ];
+const CLASS_GOVERNED_CHOICES = [...DIRECT_NNC_CHOICES,
+  "state","classSelectionAuthority","compoundSourceConstituents","derivedStem","ephemeralFinalVowel",
+  "generalUseShape","generalUseStem","matrixMorpheme","sourceStructure","stemFormation","tlSubclass",
+  "tliSubclass","truncationRepair","useShape","pluralSelectionAuthority","constituentAmbiguityKind",
+  "constituentAlternativeStem","selectedConstituentAnalysisId","constituentAnalysisSelectionAuthority",
+];
+const HIGHER_NNC_CHOICES = ["stateAvailability","naturalPossessionPolicy","metaphoricalOverride","policySelectionAuthority"];
 const NNC_SOURCE_AUTHORITY_CHOICES = [
   "selectedState", "state", "stateAvailability", "naturalPossessionPolicy", "statePolicy",
   "naturalPossessionSemantics", "metaphoricalOverride", "policySelectionAuthority",
@@ -120,6 +127,8 @@ const pick = (value, keys) =>
       )
       .map((k) => [k, value[k]]),
   );
+const isReloadableNncSlot = (r, slot) => Boolean(r.getClassicalNahuatlDirectNncSlotReloadInputs?.(slot)
+  || ["nnc:class-governed-slot","nnc:higher-slot"].includes(r.getClassicalNahuatlClassGovernedReloadInputs?.(slot)?.type));
 const capturedParent = (r, slot) => {
   const capture = r.captureClassicalGrammarApplicationResult?.(
     slot,
@@ -132,10 +141,10 @@ const capturedParent = (r, slot) => {
     ? capture.applicationResult.canonicalResult
     : null;
   if (parent && slotOf(r,parent) === slot) return parent;
-  return r.getClassicalNahuatlDirectNncSlotReloadInputs?.(slot) ? slot : null;
+  return isReloadableNncSlot(r,slot) ? slot : null;
 };
 const slotOf = (r, parent) =>
-  r.getClassicalNahuatlDirectNncSlotReloadInputs?.(parent) ? parent :
+  isReloadableNncSlot(r,parent) ? parent :
   r.isClassicalNahuatlOrdinaryNncResult?.(parent) ||
   r.isClassicalNahuatlPronominalNncResult?.(parent) ||
   r.isClassicalNahuatlRelationalResult?.(parent)
@@ -149,6 +158,7 @@ function require(condition, message) {
 export function isNncReloadEvidence(r, value) {
   return (
     Boolean(r.getClassicalNahuatlDirectNncSlotReloadInputs?.(value)) ||
+    Boolean(r.getClassicalNahuatlClassGovernedReloadInputs?.(value)) ||
     Boolean(r.getClassicalNahuatlNncSourceAuthorityReloadInputs?.(value)) ||
     Boolean(r.getClassicalNahuatlLesson15ReloadInputs?.(value)) ||
     r.isClassicalNahuatlLesson2WrittenResult?.(value) === true ||
@@ -169,6 +179,18 @@ export function exportNncContextReloadNode(r, value, visit) {
     return {type:"nnc:source-authority",stem:authority.stem,choices:authority.options,
       ...Object.fromEntries(LESSON15_AUTHORITY_OPERANDS.filter(([role])=>authority[role])
         .map(([role])=>[role,visit(authority[role])]))};
+  }
+  const classGoverned = r.getClassicalNahuatlClassGovernedReloadInputs?.(value);
+  if (classGoverned) {
+    const {type,stem,parent,options} = classGoverned;
+    if (type==="nnc:class-governed-slot") return {type,parent:visit(parent)};
+    const {borrowedNncSourceFrame,nncSourceAuthorityFrame,...choices} = options;
+    require(validDirectNncChoices(choices,parent ? HIGHER_NNC_CHOICES : CLASS_GOVERNED_CHOICES),
+      "supported class-governed noun choices required");
+    return {type,choices,
+      ...(parent ? {parent:visit(parent)} : {stem}),
+      ...(borrowedNncSourceFrame ? {borrowed:visit(borrowedNncSourceFrame)} : {}),
+      ...(nncSourceAuthorityFrame ? {authority:visit(nncSourceAuthorityFrame)} : {})};
   }
   const direct = r.getClassicalNahuatlDirectNncSlotReloadInputs?.(value);
   if (direct) {
@@ -359,6 +381,35 @@ export function replayNncContextReloadNode(r, node, prior) {
       }
       const authority=r.buildClassicalNahuatlNncSourceAuthorityFrame(node.stem,choices);
       return r.getClassicalNahuatlNncSourceAuthorityReloadInputs?.(authority) ? authority : null;
+    }
+    if (node.type==="nnc:class-governed-slot") {
+      if(!exact(node,["type","parent"])) return null;
+      const parent=prior(node.parent);
+      return r.getClassicalNahuatlClassGovernedReloadInputs?.(parent)?.type==="nnc:class-governed"
+        ? parent.nncSlotFrame : null;
+    }
+    if (["nnc:class-governed","nnc:higher-slot"].includes(node.type)) {
+      const higher=node.type==="nnc:higher-slot";
+      if(!exact(node,["type","choices","authority",...(higher?["parent"]:["stem","borrowed"])])
+        || !validDirectNncChoices(node.choices,higher ? HIGHER_NNC_CHOICES : CLASS_GOVERNED_CHOICES)) return null;
+      const parent=higher ? prior(node.parent) : null;
+      const parentInputs=r.getClassicalNahuatlClassGovernedReloadInputs?.(parent);
+      const stem=higher ? parentInputs?.stem : node.stem;
+      if ((higher && parentInputs?.type!=="nnc:class-governed") || typeof stem!=="string" || stem.length>4096) return null;
+      const choices={...node.choices};
+      if(node.authority!==undefined) {
+        const authority=prior(node.authority);
+        if(!r.getClassicalNahuatlNncSourceAuthorityReloadInputs?.(authority) || authority.sourceStem!==stem) return null;
+        choices.nncSourceAuthorityFrame=authority;
+      }
+      if(node.borrowed!==undefined) {
+        choices.borrowedNncSourceFrame=prior(node.borrowed);
+        if(!r.isClassicalNahuatlOrdinaryNncSourceFrame?.(choices.borrowedNncSourceFrame)) return null;
+      }
+      const frame=higher ? r.buildClassicalNahuatlHigherNncFrame(parent,choices)
+        : r.buildClassicalNahuatlClassGovernedNncFrame(stem,choices);
+      const result=higher ? frame.nncSlotFrame : frame;
+      return r.getClassicalNahuatlClassGovernedReloadInputs?.(result)?.type===node.type ? result : null;
     }
     if(node?.type==="nnc:direct-nucleus") {
       if (!exact(node,["type","state","stem","choices","borrowed","authority"])

@@ -397,3 +397,35 @@ test("Lesson 15 stem operation and reduplication both survive a noun sentence li
   node.stemOperation=node.reduplication;
   assert.equal(replayClassicalResultReloadRecipe(fresh,forged),null);
 });
+
+export function makeClassGovernedSentence(r) {
+  const stem="tah";
+  const operation=r.buildClassicalNahuatlStemOperationRecord(stem,{
+    operation:"secondary-general-use",targetStem:"tē-tah",secondaryPossessorCarrier:"tē",
+    selectionAuthority:"user-supplied-lexical-analysis",
+  });
+  const source=r.buildClassicalNahuatlNncSourceAuthorityFrame(stem,{
+    selectedState:"possessive",lesson15StemOperationRecord:operation,
+  });
+  const lower=r.buildClassicalNahuatlClassGovernedNncFrame(stem,{
+    state:"possessive",subject:"3sg",possessor:"3pl",thirdPluralPossessorNumberMorph:"n",nounClass:"tli",
+    classSelectionAuthority:"user-selection",tliSubclass:"1",nncSourceAuthorityFrame:source,
+  });
+  const higher=r.buildClassicalNahuatlHigherNncFrame(lower);
+  const result=execute(r,"nnc:sentence-surface",higher.nncSlotFrame,{sentenceType:"assertion",polarity:"positive"});
+  assert.equal(result.sentenceSurface,"Īntētah.");
+  return {lower,higher,result};
+}
+
+test("a class-governed sentence link reissues the lower class and higher stem operation",async()=>{
+  const r=await runtime(),fresh=await runtime();
+  const {lower,higher,result}=makeClassGovernedSentence(r);
+  const recipe=exportClassicalResultReloadRecipe(r,{result,lowerSlot:lower.nncSlotFrame});
+  assert.ok(recipe,result.sentenceSurface);
+  const reopened=replayClassicalResultReloadRecipe(fresh,recipe);
+  assert.ok(reopened);
+  assert.equal(reopened.result.sentenceSurface,result.sentenceSurface);
+  assert.equal(reopened.result.sentenceFormulaDisplay,result.sentenceFormulaDisplay);
+  assert.deepEqual(reopened.result.sourceNncSlotFrame.slots,higher.nncSlotFrame.slots);
+  assert.ok(fresh.getClassicalNahuatlClassGovernedReloadInputs(reopened.result.sourceNncSlotFrame).parent.nncSlotFrame===reopened.lowerSlot);
+});
