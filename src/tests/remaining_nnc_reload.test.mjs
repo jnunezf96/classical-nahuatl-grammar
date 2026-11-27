@@ -644,3 +644,28 @@ test("incorporated adverbial links keep the selected degree and both exact paren
   invalid.nodes.at(-1).matrix = invalid.roots.result;
   assert.equal(replayClassicalResultReloadRecipe(fresh, invalid), null);
 });
+
+test("typed impersonal links keep the chosen voice on each accepted verb", async () => {
+  const r = await runtime(), fresh = await runtime();
+  for (const [sourceStem, verbClass, tense] of [
+    ["nemi", "B", "present"], ["temō", "A", "preterit"], ["chōca", "A", "present"],
+  ]) {
+    const source = r.requestClassicalVncApplicationResult({
+      sourceStem, verbClass, tense, sourceValence:"intransitive", subject:"3sg", mood:"indicative",
+    }).resultFrame.sourceMachineryFrame;
+    for (const nonactiveOptionId of ["inherent-impersonal", "tla-impersonal"]) {
+      const binding = r.issueClassicalNahuatlVncTypedSourceApplicationBindingFrame(source, {
+        requestedDerivation:"direct", requestedVoice:"impersonal", nonactiveOptionId, tense,
+      });
+      assert.equal(binding.bindingStatus, "ready", binding.blockReason);
+      const result = execute(r, "vnc:application", binding);
+      const recipe = exportClassicalResultReloadRecipe(r, {result});
+      assert.equal(recipe.nodes.at(-1).recipe.steps.at(-1).request.nonactiveOptionId, nonactiveOptionId);
+      const restored = replayClassicalResultReloadRecipe(fresh, recipe)?.result;
+      assert.ok(restored, sourceStem + " " + nonactiveOptionId);
+      assert.equal(restored.resultFrame.surfaceRealization, result.resultFrame.surfaceRealization);
+      assert.equal(restored.resultFrame.formulaRealization, result.resultFrame.formulaRealization);
+      assert.equal(restored.resultFrame.selectedVoice, result.resultFrame.selectedVoice);
+    }
+  }
+});

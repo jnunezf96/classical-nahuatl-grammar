@@ -236,6 +236,99 @@ for (const [operationId, coverage] of readingCoverage) {
   console.log(`${operationId}: owners accepted ${coverage.accepted} of ${coverage.attempted} generated readings`);
 }
 
+// Follow the same typed Source choice frames as Build. A new selection may
+// reveal another required choice, so ask the owner again at each step.
+function availableValues(projection) {
+  const options = Array.isArray(projection) ? projection : projection?.options || [];
+  return options.filter(option => option.availabilityStatus === "available")
+    .map(option => option.optionId);
+}
+
+let typedVncAccepted = 0;
+let typedVncProbes = 0;
+const typedVncErrors = new Map();
+const finiteSeeds = candidates.filter(([value, operation]) => operation === "vnc:application"
+  && value.resultFrame?.sourceMachineryFrame);
+const seenFiniteSources = new Set();
+for (const [parent] of finiteSeeds) {
+  const { sourceStem, verbClass, sourceValence, sourceInitialISelection } = parent.normalizedRequest;
+  const sourceKey = JSON.stringify([sourceStem, verbClass, sourceValence, sourceInitialISelection]);
+  if (seenFiniteSources.has(sourceKey)) continue;
+  seenFiniteSources.add(sourceKey);
+  const variedDerivations = new Set();
+  const source = parent.resultFrame.sourceMachineryFrame;
+  const queue = [{ choices: {}, varyFinite: true }];
+  const visited = new Set();
+  while (queue.length) {
+    const { choices, varyFinite } = queue.shift();
+    const key = JSON.stringify(choices);
+    if (visited.has(key)) continue;
+    visited.add(key);
+    typedVncProbes++;
+    let binding;
+    try {
+      binding = runtime.issueClassicalNahuatlVncTypedSourceApplicationBindingFrame(source, choices);
+    } catch (error) {
+      const message = String(error.message || error);
+      if (!typedVncErrors.has(message)) {
+        console.error(JSON.stringify({ source: parent.normalizedRequest.sourceStem, choices, error: message }));
+      }
+      typedVncErrors.set(message, (typedVncErrors.get(message) || 0) + 1);
+      continue;
+    }
+    if (!runtime.isClassicalNahuatlVncTypedSourceApplicationBindingFrame(binding)) continue;
+    if (binding.bindingStatus === "choices-required") {
+      const field = binding.requiredChoiceIds.find(id => !Object.hasOwn(choices, id));
+      for (const value of availableValues(binding.choiceOptionProjection[field])) {
+        queue.push({ choices: { ...choices, [field]: value }, varyFinite });
+      }
+      continue;
+    }
+    if (binding.bindingStatus !== "ready") continue;
+    const receipt = instrumented.executeClassicalGrammarApplicationRequest({
+      operationId: "vnc:application", args: [binding],
+    });
+    if (receipt.authorizationStatus === "authorized") typedVncAccepted++;
+    const derivation = binding.effectiveSelections.requestedDerivation;
+    if (!varyFinite || variedDerivations.has(derivation)) continue;
+    variedDerivations.add(derivation);
+    for (const field of ["subject", "tense", "requestedVoice"]) {
+      for (const value of availableValues(binding.choiceOptionProjection[field])) {
+        if (value === binding.effectiveSelections[field]) continue;
+        queue.push({ choices: { ...choices, [field]: value }, varyFinite: false });
+      }
+    }
+  }
+}
+console.log(`Owners accepted ${typedVncAccepted} finite Results from ${typedVncProbes} typed choice probes; ${[...typedVncErrors.values()].reduce((a, b) => a + b, 0)} threw errors`);
+
+// These public Source uses were added after the original capability fixture.
+const publicSources = [
+  ["nnc:attested-cell", "NncCell", "attested-cell", "icn-īuh", { possessor: "1sg" }],
+  ["nnc:attested-cell", "NncCell", "attested-cell", "icn-īuh", { possessor: "2pl" }],
+  ["nnc:attested-place", "Place", "attested-place", "Teticpac", {}],
+  ["clause:attested-collocation", "PrincipalCollocation", "attested-collocation", "achi īc", {}],
+];
+let publicSourcesAccepted = 0;
+for (const [operationId, family, sourceUse, enteredStem, choices] of publicSources) {
+  const source = runtime[`resolveClassicalNahuatlAttested${family}SourceFrame`]({ enteredStem, sourceUse });
+  const binding = runtime[`issueClassicalNahuatlAttested${family}BindingFrame`](source, choices);
+  if (binding.bindingStatus !== "ready") continue;
+  const receipt = instrumented.executeClassicalGrammarApplicationRequest({ operationId, args: binding.executionArgs });
+  if (receipt.authorizationStatus === "authorized") publicSourcesAccepted++;
+}
+const quantity = runtime.buildClassicalNahuatlQuantitativePredicateSourceFrame({
+  citation: "miyec", sourceUse: "quantitative-predicate", reference: "nonanimate-common",
+});
+const quantityBinding = runtime.issueClassicalNahuatlQuantitativePredicateBindingFrame(quantity);
+if (quantityBinding.bindingStatus === "ready") {
+  const receipt = instrumented.executeClassicalGrammarApplicationRequest({
+    operationId: "nnc:quantitative-predicate", args: quantityBinding.executionArgs,
+  });
+  if (receipt.authorizationStatus === "authorized") publicSourcesAccepted++;
+}
+console.log(`Owners accepted ${publicSourcesAccepted} of ${publicSources.length + 1} attested and quantitative Source choices`);
+
 function project(runtime, value) {
   const capture = runtime.captureClassicalGrammarApplicationResult(value, "result-link-audit");
   if (!capture || !runtime.isClassicalGrammarApplicationResultCapture(capture, "result-link-audit")) return null;
@@ -277,6 +370,10 @@ for (const [result, operation] of witnesses) {
     console.error(JSON.stringify({
       operation, status, surface, analysis,
       recipeNodes: check.recipe?.nodes.map(node => node.type),
+      ...(operation === "vnc:application" ? {
+        source: result.normalizedRequest?.sourceStem,
+        choices: requests.get(result)?.args[0]?.callerSelections,
+      } : {}),
     }));
   }
   const key = `${operation}: ${status}`;
@@ -286,6 +383,6 @@ console.log(`Checked ${witnesses.size} accepted Result witnesses`);
 for (const [key, count] of [...counts].sort(([left], [right]) => left.localeCompare(right))) {
   console.log(`${count}\t${key}`);
 }
-if (fixtureResults.failed || !generatedEdges.size || !retainedSubstitutions || !adverbialAccepted
+if (fixtureResults.failed || !generatedEdges.size || !retainedSubstitutions || !adverbialAccepted || !typedVncAccepted || typedVncErrors.size || publicSourcesAccepted !== publicSources.length + 1
   || !readingCoverage.get("nnc:adjectival-modification")?.accepted
   || !readingCoverage.get("sentence:supplementation")?.accepted || [...counts.keys()].some(key => !key.endsWith(": verified"))) process.exitCode = 1;

@@ -114,6 +114,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
     const classicalNahuatlVncTypedSourceApplicationExecutedBindings =
       new WeakSet();
     const classicalNahuatlVncTypedSourceApplicationPreparedResults = new WeakMap();
+    const typedSourceImpersonalReloadChoices = new WeakMap();
     const classicalNahuatlVncTypedSourceApplicationProvenanceBySource =
       new WeakMap();
     const classicalNahuatlVncParticipantProvenanceByMachinery = new WeakMap();
@@ -10337,12 +10338,17 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
             || (value === "none" ? "" : value) !==
               (normalized.sentenceOptions[canonicalAliasKeys[key]] === "none"
                 ? "" : normalized.sentenceOptions[canonicalAliasKeys[key]])))) return false;
+        const impersonalChoices = typedSourceImpersonalReloadChoices.get(frame);
         const request = {
           ...buildClassicalNahuatlVncApplicationScalarCoordinateRequest(
             frame, {}, Object.fromEntries(Object.entries(normalized.sentenceOptions || {})
               .filter(([key]) => !isForbiddenClassicalGrammarAuthorityKey(key))),
           ),
           impersonalDerivationPath: normalized.impersonalDerivationPath,
+          ...(impersonalChoices ? {
+            requestedVoice: impersonalChoices.requestedVoice,
+            nonactiveOptionId: impersonalChoices.nonactiveOptionId,
+          } : {}),
           // These authored participant axes belong to the accepted input.
           // A later continuation validates its source participant against them.
           ...(normalized.subjectAnimacy || normalized.subjectHumanness ? {
@@ -10358,7 +10364,9 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
             request[key] = normalized[key];
           }
         }
-        steps.push(Object.freeze({ request: Object.freeze(request) }));
+        steps.push(Object.freeze(parent && impersonalChoices
+          ? { operationId: "vnc:typed-impersonal", request: impersonalChoices }
+          : { request: Object.freeze(request) }));
         visiting.delete(frame);
         return true;
       }
@@ -10394,6 +10402,20 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         if (Object.hasOwn(step, "request") || !(isClassicalNahuatlVncApplicationFrame(parent)
           || owner.isClassicalNahuatlClosureFrame?.(parent))) return null;
         return Object.freeze({ operationId, args: Object.freeze([parent]) });
+      }
+      if (operationId === "vnc:typed-impersonal") {
+        const choices = step.request;
+        if (!isClassicalNahuatlVncApplicationFrame(parent)
+          || !choices || typeof choices !== "object" || Array.isArray(choices)
+          || Object.keys(choices).some(key => !["requestedDerivation", "requestedVoice",
+            "nonactiveOptionId", "subject", "mood", "tense", "sentenceOptions"].includes(key))
+          || choices.requestedDerivation !== "direct" || choices.requestedVoice !== "impersonal"
+          || !["inherent-impersonal", "tla-impersonal"].includes(choices.nonactiveOptionId)) return null;
+        const binding = issueClassicalNahuatlVncTypedSourceApplicationBindingFrame(
+          parent.resultFrame.sourceMachineryFrame, choices,
+        );
+        return binding?.bindingStatus === "ready"
+          ? Object.freeze({ operationId: "vnc:application", args: Object.freeze([binding]) }) : null;
       }
       if (operationId === "vnc:derivational-operation") {
         if (!isClassicalNahuatlVncApplicationFrame(parent) || !step.request
@@ -12371,6 +12393,17 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
           || result.normalizedRequest?.sourceStem !== context.ownerRequest.sourceStem
           || result.normalizedRequest?.sourceValence !== context.ownerRequest.sourceValence
           || result.normalizedRequest?.derivationType !== context.ownerRequest.requestedDerivation) result = null;
+      }
+      const { requestedDerivation, requestedVoice, nonactiveOptionId } = bindingFrame.effectiveSelections;
+      if (result && requestedDerivation === "direct" && requestedVoice === "impersonal"
+        && ["inherent-impersonal", "tla-impersonal"].includes(nonactiveOptionId)) {
+        // These preflight results retain the original active Source controls.
+        // The issued binding records which impersonal operation produced them.
+        const { subject, mood, tense, sentenceOptions } = bindingFrame.effectiveSelections;
+        typedSourceImpersonalReloadChoices.set(result, Object.freeze({
+          requestedDerivation, requestedVoice, nonactiveOptionId, subject, mood, tense,
+          ...(sentenceOptions ? { sentenceOptions } : {}),
+        }));
       }
       classicalNahuatlVncTypedSourceApplicationPreparedResults.set(bindingFrame, result);
       return result;
