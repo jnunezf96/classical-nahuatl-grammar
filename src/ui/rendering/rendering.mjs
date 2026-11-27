@@ -216,6 +216,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
     let ClassicalPositionCleared = false;
     let PendingClassicalResultEdit = null;
     let classicalRestoredEditRoot = null;
+    const ClassicalAcceptedLinkRecipes = new WeakMap();
     const ClassicalConstructionSession = createConstructionSession({
       isSource: exact => ClassicalPositionSources.has(exact),
       isResult: exact => getClassicalOwnerIssuedResultProjection(exact)?.canonicalResult === exact,
@@ -256,7 +257,12 @@ export function createUiRenderingApi(targetObject = globalThis) {
           return true;
         } finally { ClassicalPositionExecuting = false; }
       },
-      onAccepted: scheduleClassicalVncReloadSave,
+      onAccepted: application => {
+        const result = application.canonicalResult;
+        const recipe = exportClassicalResultReloadRecipe(targetObject, { result });
+        ClassicalAcceptedLinkRecipes.set(result, recipe === null ? null : JSON.stringify(recipe));
+        scheduleClassicalVncReloadSave();
+      },
       onChange: () => {
         publishClassicalConstructionPosition();
         const accepted = ClassicalConstructionSession.position.accepted.result;
@@ -49859,7 +49865,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
       }
       Promise.resolve().then(async () => {
         if (ClassicalConstructionSession.position.accepted.result !== exactResult) return;
-        const check = inspectClassicalResultLink(targetObject, exactResult, projectClassicalResultLinkAnalysis);
+        const savedRecipe = ClassicalAcceptedLinkRecipes.get(exactResult);
+        const check = inspectClassicalResultLink(
+          targetObject, exactResult, projectClassicalResultLinkAnalysis, targetObject,
+          savedRecipe === undefined ? undefined : JSON.parse(savedRecipe),
+        );
         const recipe = check.status === "verified" ? check.recipe : null;
         const compact = recipe ? await encodeVerifiedClassicalResultLink(recipe).catch(() => null) : null;
         if (ClassicalConstructionSession.position.accepted.result !== exactResult) return;

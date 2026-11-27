@@ -1,8 +1,8 @@
-# Grammar OS v1.2.177 release
+# Grammar OS v1.2.178 release
 
 Release name: **Writer Controls**
 
-Browser build: **20261126-result-acceptance-links-177**
+Browser build: **20261126-forward-result-links-178**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 

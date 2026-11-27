@@ -183,6 +183,12 @@ export function matchesAcceptedNominalCompoundBuild(r, result, position) {
   return same(original,packet.request.args[0]);
 }
 
+function isNominalVerbSentenceSource(runtime, source) {
+  return runtime.isClassicalNahuatlDenominalVncResultFrame?.(source) === true
+    || (runtime.isClassicalNahuatlNominalConstructionResult?.(source) === true
+      && source.constructionKind === "nominal-embed-vnc");
+}
+
 export function exportClassicalResultReloadRecipe(r, roots = {}, normalizePrimitiveNnc = false) {
   const nodes = [], indices = new Map(), visiting = new Set();
   function visit(value, depth = 0) {
@@ -276,6 +282,10 @@ export function exportClassicalResultReloadRecipe(r, roots = {}, normalizePrimit
           humanness:value.operationFrame.referentialHumanness}};
     else if (futureObjectReloadStep(r,value)) node = {type: "vnc:future-object",
       source: visit(value.baseApplicationFrame,depth+1), step: futureObjectReloadStep(r,value)};
+    else if (r.isClassicalNahuatlVncSentenceResultFrame?.(value)
+      && isNominalVerbSentenceSource(r, value.canonicalSourceFrame)) {
+      node = {type:"vnc:sentence", source:visit(value.canonicalSourceFrame, depth + 1)};
+    }
     else if (vnc && r.isClassicalNahuatlVncSentenceResultFrame?.(value)
       && r.isClassicalNahuatlVncApplicationFrame?.(value.vncApplicationFrame)) {
       node = {type:"vnc:sentence", source:visit(value.vncApplicationFrame, depth + 1)};
@@ -426,7 +436,8 @@ export function replayClassicalResultReloadRecipe(r, recipe) {
           || !futureObjectReloadStep(r,application.canonicalResult)) return null;
         result = application.canonicalResult;
       } else if (node?.type === "vnc:sentence" && exact(node, ["type", "source"])
-        && r.isClassicalNahuatlVncApplicationFrame?.(prior(node.source))) {
+        && (r.isClassicalNahuatlVncApplicationFrame?.(prior(node.source))
+          || isNominalVerbSentenceSource(r, prior(node.source)))) {
         result = r.executeClassicalGrammarApplicationRequest({
           operationId:"vnc:sentence-result", args:[prior(node.source)],
         })?.canonicalResult;
@@ -783,8 +794,8 @@ function projectReloadOwnerGraph(runtime, result) {
 
 // Inspect any accepted Result through the same recipe path used by sharing.
 // A caller can supply a fresh runtime to check that no session state is needed.
-export function inspectClassicalResultLink(r, result, project, replayRuntime = r) {
-  const recipe = exportClassicalResultReloadRecipe(r, { result });
+export function inspectClassicalResultLink(r, result, project, replayRuntime = r,
+  recipe = exportClassicalResultReloadRecipe(r, { result })) {
   if (!recipe) return { status: "missing-recipe" };
   const recipePayload = JSON.parse(JSON.stringify(recipe));
   const reopened = replayClassicalResultReloadRecipe(replayRuntime, recipePayload)?.result;

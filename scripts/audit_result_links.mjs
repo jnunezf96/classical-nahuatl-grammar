@@ -3,7 +3,7 @@ import { inspectClassicalResultLink, encodeVerifiedClassicalResultLink, exportCl
 import capabilities from "../src/tests/classical_all_25_capability_play_contract.test.js";
 import { getClassicalSharedContactLabel } from "../src/ui/composition/structure_design.mjs";
 
-const groups = ["nested", "relations", "finite", "nominal", "public"];
+const groups = ["nested", "relations", "finite", "nominal", "public", "cross"];
 const selectedGroups = process.argv.slice(2);
 if (selectedGroups.some(group => !groups.includes(group))) {
   console.error(`Usage: node scripts/audit_result_links.mjs [${groups.join("|")}]...`);
@@ -153,6 +153,41 @@ if (includes("nested")) {
   }
 }
 if (includes("nested")) console.log(`Owners accepted ${acceptedSubstitutions} of ${substitutions} operand substitutions; ${retainedSubstitutions} retain the exact replacement`);
+
+// Use the same continuation unit types to try parents from different
+// operations. The owner still decides whether each replacement is grammatical.
+let crossAttempts = 0;
+let crossAccepted = 0;
+const crossPaths = new Set();
+if (includes("cross")) {
+  const representatives = new Map();
+  for (const [value, operation] of candidates) {
+    if (!representatives.has(operation)) representatives.set(operation, value);
+  }
+  const units = new Map();
+  const unitKinds = value => {
+    if (!units.has(value)) {
+      units.set(value, runtime.getClassicalGrammarApplicationCapabilityNavigator(value)?.emittedUnitKinds || []);
+    }
+    return units.get(value);
+  };
+  for (const request of templates) {
+    for (const { path, parent } of operandPaths(request.args)) {
+      for (const [operation, replacement] of representatives) {
+        if (operation === witnesses.get(parent) || !unitKinds(parent).some(kind => unitKinds(replacement).includes(kind))) continue;
+        crossAttempts++;
+        const receipt = instrumented.executeClassicalGrammarApplicationRequest({
+          ...request, args: replaceOperand(request.args, path, replacement),
+        });
+        if (receipt.authorizationStatus === "authorized" && retainsOperand(receipt.canonicalResult, replacement)) {
+          crossAccepted++;
+          crossPaths.add(`${operation} → ${request.operationId}`);
+        }
+      }
+    }
+  }
+  console.log(`Owners retained exact inputs for ${crossAccepted} of ${crossAttempts} cross-operation substitutions across ${crossPaths.size} operation pairs`);
+}
 
 // The adverbial owner publishes its valid degrees and scopes. Incorporated
 // forms also need a matrix; try each issued VNC seed and let the owner decide.
@@ -574,6 +609,7 @@ if (uncoveredInternal.length) console.log(`Uncovered internal operations: ${unco
 
 const missingCoverage = [
   includes("nested") && (!generatedEdges.size || !retainedSubstitutions),
+  includes("cross") && !crossAccepted,
   includes("relations") && (!adverbialAccepted || !readingCoverage.get("nnc:adjectival-modification")?.accepted
     || !readingCoverage.get("sentence:supplementation")?.accepted),
   includes("finite") && (!typedVncAccepted || !typedVncSentences || typedVncErrors.size),
