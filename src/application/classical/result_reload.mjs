@@ -771,19 +771,37 @@ export function reissueClassicalAcceptedBuildBinding(r, result, expectedSource =
     && binding.navigator === navigator ? binding : null;
 }
 
+function projectReloadOwnerGraph(runtime, result) {
+  const graph = runtime.getClassicalGrammarApplicationLayerGraph?.(result);
+  if (!graph?.edges.length || !runtime.isClassicalGrammarApplicationLayerGraph?.(graph)) return null;
+  return {
+    nodes: graph.nodes.map(({ operationId, outputKind, depth }) => [operationId, outputKind, depth]),
+    edges: graph.edges.map(({ fromNodeId, toNodeId, sharedUnitKinds }) =>
+      JSON.stringify([fromNodeId, toNodeId, [...sharedUnitKinds].sort()])).sort(),
+  };
+}
+
 // Inspect any accepted Result through the same recipe path used by sharing.
 // A caller can supply a fresh runtime to check that no session state is needed.
 export function inspectClassicalResultLink(r, result, project, replayRuntime = r) {
   const recipe = exportClassicalResultReloadRecipe(r, { result });
   if (!recipe) return { status: "missing-recipe" };
-  const reopened = replayClassicalResultReloadRecipe(replayRuntime, JSON.parse(JSON.stringify(recipe)))?.result;
+  const recipePayload = JSON.parse(JSON.stringify(recipe));
+  const reopened = replayClassicalResultReloadRecipe(replayRuntime, recipePayload)?.result;
   if (!reopened) return { status: "replay-failed", recipe };
 
   const original = project(r, result);
   const restored = project(replayRuntime, reopened);
   if (!original || !restored) return { status: "missing-analysis", recipe };
   if (!sameInputs(original, restored)) return { status: "changed-analysis", recipe };
-  return { status: "verified", recipe, reopened };
+  const originalGraph = projectReloadOwnerGraph(r, result);
+  const reopenedGraph = projectReloadOwnerGraph(replayRuntime, reopened);
+  if (!sameInputs(originalGraph, reopenedGraph)) return { status: "changed-owner-graph", recipe };
+  const reissued = exportClassicalResultReloadRecipe(replayRuntime, { result: reopened });
+  if (!reissued || !sameInputs(recipePayload, JSON.parse(JSON.stringify(reissued)))) {
+    return { status: "changed-recipe", recipe, reissued };
+  }
+  return { status: "verified", recipe, reopened, checkedOwnerGraph: originalGraph !== null };
 }
 
 // Check the actual address bytes before offering the link to the user.

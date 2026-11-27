@@ -734,3 +734,20 @@ test("a typed verbal sentence reopens without an extra grammar operation", async
   invalid.nodes[0].recipe.steps.at(-1).request.formulaRealization = "forged";
   assert.equal(replayClassicalResultReloadRecipe(fresh, invalid), null);
 });
+
+test("link publication detects a missing grammar chain even when the form and formula match", async () => {
+  const r = await runtime(), fresh = await runtime();
+  const finite = execute(r, "vnc:application", {
+    sourceStem:"nemi", verbClass:"B", sourceValence:"intransitive", subject:"3sg", tense:"present", mood:"indicative",
+  });
+  const sentence = execute(r, "vnc:sentence-result", finite);
+  const project = (_runtime, result) => ({
+    form:result.sentenceSurface, formula:result.sentenceFormulaDisplay,
+  });
+  const ordinary = inspectClassicalResultLink(r, sentence, project, fresh);
+  assert.equal(ordinary.status, "verified");
+  assert.equal(ordinary.checkedOwnerGraph, true);
+  const missingGraph = Object.create(fresh);
+  Object.defineProperty(missingGraph, "getClassicalGrammarApplicationLayerGraph", {value:() => null});
+  assert.equal(inspectClassicalResultLink(r, sentence, project, missingGraph).status, "changed-owner-graph");
+});

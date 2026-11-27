@@ -1,4 +1,3 @@
-import { isDeepStrictEqual } from "node:util";
 import { createRuntimeInstance } from "../src/runtime/create_runtime.mjs";
 import { inspectClassicalResultLink, encodeVerifiedClassicalResultLink, exportClassicalResultReloadRecipe, replayClassicalResultReloadRecipe } from "../src/application/classical/result_reload.mjs";
 import capabilities from "../src/tests/classical_all_25_capability_play_contract.test.js";
@@ -471,17 +470,6 @@ function project(runtime, value) {
   };
 }
 
-// The owner graph supplies an independent view of the applied operations.
-function projectOwnerGraph(r, result) {
-  const graph = r.getClassicalGrammarApplicationLayerGraph(result);
-  if (!r.isClassicalGrammarApplicationLayerGraph(graph)) return null;
-  return {
-    nodes: graph.nodes.map(({ operationId, outputKind, depth }) => [operationId, outputKind, depth]),
-    edges: graph.edges.map(({ fromNodeId, toNodeId, sharedUnitKinds }) =>
-      JSON.stringify([fromNodeId, toNodeId, [...sharedUnitKinds].sort()])).sort(),
-  };
-}
-
 const counts = new Map();
 const changedRecipes = new Map();
 let checkedOwnerGraphs = 0;
@@ -494,30 +482,28 @@ const jsonPayload = value => value && JSON.parse(JSON.stringify(value));
 for (const [result, operation] of witnesses) {
   const check = inspectClassicalResultLink(runtime, result, project, fresh);
   let { status } = check;
+  if (status === "changed-owner-graph") {
+    checkedOwnerGraphs++;
+    changedOwnerGraphs.set(operation, (changedOwnerGraphs.get(operation) || 0) + 1);
+  }
+  if (status === "changed-recipe") {
+    const second = check.reissued;
+    changedRecipes.set(operation, (changedRecipes.get(operation) || 0) + 1);
+    if (changedRecipes.get(operation) === 1) {
+      const before = jsonPayload(check.recipe).nodes;
+      const after = jsonPayload(second)?.nodes;
+      const changed = before.findIndex((node, index) => JSON.stringify(node) !== JSON.stringify(after?.[index]));
+      console.error(JSON.stringify({
+        operation, status: "recipe-changed-after-reopen",
+        initial: before.map(node => node.type), reopened: after?.map(node => node.type),
+        firstChangedNode: changed,
+        changedFields: Object.keys(before[changed] || {}).filter(key =>
+          JSON.stringify(before[changed][key]) !== JSON.stringify(after?.[changed]?.[key])),
+      }));
+    }
+  }
   if (status === "verified") {
-    const originalGraph = projectOwnerGraph(runtime, result);
-    if (originalGraph?.edges.length) {
-      checkedOwnerGraphs++;
-      if (!isDeepStrictEqual(originalGraph, projectOwnerGraph(fresh, check.reopened))) {
-        changedOwnerGraphs.set(operation, (changedOwnerGraphs.get(operation) || 0) + 1);
-      }
-    }
-    const second = exportClassicalResultReloadRecipe(fresh, { result: check.reopened });
-    if (!isDeepStrictEqual(jsonPayload(check.recipe), jsonPayload(second))) {
-      changedRecipes.set(operation, (changedRecipes.get(operation) || 0) + 1);
-      if (changedRecipes.get(operation) === 1) {
-        const before = jsonPayload(check.recipe).nodes;
-        const after = jsonPayload(second)?.nodes;
-        const changed = before.findIndex((node, index) => !isDeepStrictEqual(node, after?.[index]));
-        console.error(JSON.stringify({
-          operation, status: "recipe-changed-after-reopen",
-          initial: before.map(node => node.type), reopened: after?.map(node => node.type),
-          firstChangedNode: changed,
-          changedFields: Object.keys(before[changed] || {}).filter(key =>
-            !isDeepStrictEqual(before[changed][key], after?.[changed]?.[key])),
-        }));
-      }
-    }
+    if (check.checkedOwnerGraph) checkedOwnerGraphs++;
     try {
       const address = await encodeVerifiedClassicalResultLink(check.recipe);
       if (!address) status = "compact-address-failed";

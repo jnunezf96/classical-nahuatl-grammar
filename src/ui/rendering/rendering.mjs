@@ -49880,6 +49880,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       if (!classicalVncReloadPersistenceReady || classicalUnsupportedResultReloadPending) return false;
       const browserWindow = targetObject.document?.defaultView || targetObject.window;
       try {
+        updateClassicalResultLink(browserWindow, ClassicalConstructionSession.position.accepted.result);
         const history = exportClassicalGrammarWorkspaceHistoryReloadState(targetObject);
         const historySelection = getClassicalHistoryReloadSelection();
         const historyEntries = ["supported", "partial"].includes(history?.status) ? history.nodes || [] : [];
@@ -49889,7 +49890,6 @@ export function createUiRenderingApi(targetObject = globalThis) {
         const activeCurrent=getActiveClassicalCapabilityApplicationResult()?.canonicalResult;
         const visible=getClassicalSgrOwnerIssuedProjection(ActiveClassicalRuleLogicSurfaceFrame)?.canonicalResult;
         const accepted = getClassicalVisibleAcceptedResult()?.canonicalResult;
-        updateClassicalResultLink(browserWindow, ClassicalConstructionSession.position.accepted.result);
         const current=accepted || (activeCurrent && targetObject.isClassicalNahuatlVncSentenceResultFrame?.(visible)
           && visible.vncApplicationFrame===activeCurrent ? visible
           : activeCurrent || ActiveClassicalGrammarResultSourceCapture?.canonicalResult

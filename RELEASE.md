@@ -1,8 +1,8 @@
-# Grammar OS v1.2.175 release
+# Grammar OS v1.2.176 release
 
 Release name: **Writer Controls**
 
-Browser build: **20261126-typed-verb-origin-175**
+Browser build: **20261126-link-chain-verification-176**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
