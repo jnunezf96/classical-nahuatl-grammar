@@ -488,3 +488,27 @@ test("a possessive yō compound link preserves both constituents and the shorten
   assert.equal(reopened.result.sourceNncSlotFrame,reopened.noun.nncSlotFrame);
   assert.deepEqual(fresh.getClassicalNahuatlClassGovernedReloadInputs(reopened.noun).options.compoundSourceConstituents,["cal","yō"]);
 });
+
+export function makeConstituentChoiceSentence(r, selection="alternative-typed-slots") {
+  const options={state:"possessive",subject:"3common",possessor:"1sg",nounClass:"zero",
+    classSelectionAuthority:"user-selection",constituentAmbiguityKind:"front-o",constituentAlternativeStem:"mī",
+    selectedConstituentAnalysisId:selection,constituentAnalysisSelectionAuthority:"user-selection"};
+  const original=r.buildClassicalNahuatlClassGovernedNncFrame("omi",options);
+  const noun=r.buildClassicalNahuatlClassGovernedNncFrame("omi",{...options,constituentAnalyses:original.ambiguityFrame.analyses});
+  return {noun,result:execute(r,"nnc:sentence-surface",noun.nncSlotFrame,{sentenceType:"assertion",polarity:"positive"})};
+}
+
+test("explicit constituent alternatives and the chosen boundary survive the link",async()=>{
+  const r=await runtime(),fresh=await runtime();
+  for(const selection of ["current-typed-slots","alternative-typed-slots"]){
+    const {noun,result}=makeConstituentChoiceSentence(r,selection);
+    const recipe=exportClassicalResultReloadRecipe(r,{result,noun});
+    assert.ok(recipe,result.sentenceSurface);
+    const reopened=replayClassicalResultReloadRecipe(fresh,recipe);
+    assert.ok(reopened);
+    assert.equal(reopened.result.sentenceSurface,result.sentenceSurface);
+    assert.equal(reopened.result.sentenceFormulaDisplay,result.sentenceFormulaDisplay);
+    assert.deepEqual(reopened.noun.ambiguityFrame,noun.ambiguityFrame);
+    assert.ok(reopened.result.sourceNncSlotFrame===reopened.noun.nncSlotFrame);
+  }
+});

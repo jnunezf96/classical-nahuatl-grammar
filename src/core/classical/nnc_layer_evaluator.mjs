@@ -5710,12 +5710,17 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
         lesson14Frame.nounstemParadigmContractFrame;
       lesson14Frame.selectedOutputLogicFrame.nounstemParadigmContractFrame =
         lesson14Frame.nounstemParadigmContractFrame;
-      if (authorized) {
+      if (authorized && (!Array.isArray(options.constituentAnalyses)
+        || ambiguityFrame.rejectedUntypedAnalysisCount === 0)) {
         classGovernedReloadInputs.set(lesson14Frame, {
           type:"nnc:class-governed", stem:normalizedRestrictedUseStem,
           options:Object.freeze({...options,
             ...(Array.isArray(options.compoundSourceConstituents)
               ? {compoundSourceConstituents:Object.freeze([...options.compoundSourceConstituents])} : {}),
+            ...(Array.isArray(options.constituentAnalyses) && options.constituentAnalyses.length
+              ? {constituentAnalyses:Object.freeze(ambiguityFrame.analyses.map(analysis=>Object.freeze({
+                ...analysis,slots:Object.freeze({...analysis.slots}),
+              })))} : {}),
           }), signature:JSON.stringify(lesson14Frame),
         });
         classGovernedReloadInputs.set(nncSlotFrame, {

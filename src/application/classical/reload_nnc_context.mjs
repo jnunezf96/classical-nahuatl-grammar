@@ -30,7 +30,7 @@ const CLASS_GOVERNED_CHOICES = [...DIRECT_NNC_CHOICES,
   "state","classSelectionAuthority","compoundSourceConstituents","derivedStem","ephemeralFinalVowel",
   "generalUseShape","generalUseStem","matrixMorpheme","sourceStructure","stemFormation","tlSubclass",
   "tliSubclass","truncationRepair","useShape","pluralSelectionAuthority","constituentAmbiguityKind",
-  "constituentAlternativeStem","selectedConstituentAnalysisId","constituentAnalysisSelectionAuthority",
+  "constituentAlternativeStem","selectedConstituentAnalysisId","constituentAnalysisSelectionAuthority","constituentAnalyses",
 ];
 const HIGHER_NNC_CHOICES = ["stateAvailability","naturalPossessionPolicy","metaphoricalOverride","policySelectionAuthority"];
 const NNC_SOURCE_AUTHORITY_CHOICES = [
@@ -366,9 +366,23 @@ export function exportNncContextReloadNode(r, value, visit) {
   }
   return undefined;
 }
+function validConstituentAnalyses(value) {
+  const text = field => typeof field==="string" && field.length<=4096;
+  const fields = ["kind","id","label","ambiguityKind","slots","vowelLengthAuthority","boundarySelectionAuthority",
+    "formulaStringAuthority","surfaceStringAuthority"];
+  return Array.isArray(value) && value.length<=32 && value.every(entry=>exact(entry,fields)
+    && entry.kind==="classical-nahuatl-nounstem-typed-constituent-analysis"
+    && entry.vowelLengthAuthority==="explicit-typed-source-spelling"
+    && exact(entry.slots,["stem","st","st1","st2","num1","num2"])
+    && text(entry.slots.stem) && Object.values(entry.slots).every(text)
+    && Object.entries(entry).every(([key,field])=>key==="slots"
+      || (key==="formulaStringAuthority" || key==="surfaceStringAuthority" ? field===false : text(field))));
+}
 function validDirectNncChoices(choices,keys=DIRECT_NNC_CHOICES) {
   if (!exact(choices,[...keys,DIRECT_NNC_NUMBER_CHOICES])) return false;
-  return Object.entries(choices).every(([key,value])=>key==="compoundSourceConstituents"
+  return Object.entries(choices).every(([key,value])=>key==="constituentAnalyses"
+    ? validConstituentAnalyses(value)
+    : key==="compoundSourceConstituents"
     ? Array.isArray(value) && value.length<=32 && value.every(part=>typeof part==="string" && part.length<=256)
     : key===DIRECT_NNC_NUMBER_CHOICES
     ? typeof value==="string" && value.length<=256
