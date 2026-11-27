@@ -323,10 +323,15 @@ if (includes("finite")) console.log(`Owners accepted ${typedVncAccepted} finite 
 // Follow noun choices through the same private binding used by Make.
 let nominalAttempts = 0;
 let nominalAccepted = 0;
+let nounSentences = 0;
+let nounModifiers = 0;
+const explicitOperands = new Map();
 if (includes("nominal")) {
   const nominalSources = new Set(candidates.filter(([, operation]) => operation === "nnc:ordinary")
     .map(([noun]) => noun.sourceFrame).filter(Boolean));
+  const modifier = candidates.find(([, operation]) => operation === "nnc:sentence-surface")?.[0];
   for (const source of nominalSources) {
+    const modifiedStates = new Set();
     const navigator = runtime.getClassicalGrammarApplicationCapabilityNavigator(source);
     const issue = choices => runtime.issueClassicalGrammarTypedSourceOperationBindingFrame(navigator, "nnc:ordinary", choices);
     const baseline = issue({});
@@ -350,6 +355,27 @@ if (includes("nominal")) {
         if (receipt?.authorizationStatus === "authorized") {
           nominalAccepted++;
           instrumented.captureClassicalGrammarApplicationResult(receipt, "audit-nominal-choice");
+          const noun = receipt.canonicalResult;
+          const sentence = instrumented.executeClassicalGrammarApplicationRequest({
+            operationId: "nnc:sentence-surface",
+            args: [noun.typedSlotFrame, { sentenceType: "assertion", polarity: "positive" }],
+          });
+          if (sentence.authorizationStatus === "authorized") {
+            nounSentences++;
+            const whole = sentence.canonicalResult;
+            if (retainsOperand(whole, noun.typedSlotFrame)) explicitOperands.set(whole, noun);
+            const state = binding.effectiveSelections.state;
+            if (modifier && !modifiedStates.has(state)) {
+              const combined = instrumented.executeClassicalGrammarApplicationRequest({
+                operationId: "nnc:adjectival-modification",
+                args: [{ operationKind: "adjectival-modification", topology: "ordinary", head: whole, modifier }],
+              });
+              if (combined.authorizationStatus === "authorized") {
+                modifiedStates.add(state);
+                nounModifiers++;
+              }
+            }
+          }
         }
         if (vary) {
           for (const field of ["subject", "possessor", "predicateFormation", "stemFormation", "pluralConnector"]) {
@@ -364,7 +390,7 @@ if (includes("nominal")) {
     }
   }
 }
-if (includes("nominal")) console.log(`Owners accepted ${nominalAccepted} noun Results from ${nominalAttempts} typed choice probes`);
+if (includes("nominal")) console.log(`Owners accepted ${nominalAccepted} noun Results from ${nominalAttempts} typed choice probes, then ${nounSentences} sentences and ${nounModifiers} modified sentences`);
 
 // These public Source uses were added after the original capability fixture.
 const publicSources = [
@@ -454,15 +480,18 @@ for (const [result, operation] of witnesses) {
     }
   }
   if (status === "verified" && requests.has(result)) {
+    const typedNoun = explicitOperands.get(result);
     const operands = [...new Set([...operandPaths(requests.get(result).args)].map(entry => entry.parent))]
       .filter(parent => parent !== result && retainsOperand(result, parent));
+    if (typedNoun && !operands.includes(typedNoun)) operands.push(typedNoun);
     if (operands.length) {
       checkedOperandGraphs++;
       const names = operands.map((_, index) => `operand${index}`);
       const roots = { result, ...Object.fromEntries(names.map((name, index) => [name, operands[index]])) };
       const graph = exportClassicalResultReloadRecipe(runtime, roots);
       const reopened = graph && replayClassicalResultReloadRecipe(fresh, jsonPayload(graph));
-      if (!reopened || names.some(name => !retainsOperand(reopened.result, reopened[name]))) {
+      if (!reopened || names.some((name, index) => !retainsOperand(reopened.result,
+        operands[index] === typedNoun ? reopened[name].typedSlotFrame : reopened[name]))) {
         changedOperandGraphs++;
         console.error(JSON.stringify({ operation, status: "nested-operand-identity-changed",
           operands: operands.map(operand => witnesses.get(operand)) }));
@@ -496,7 +525,7 @@ const missingCoverage = [
   includes("relations") && (!adverbialAccepted || !readingCoverage.get("nnc:adjectival-modification")?.accepted
     || !readingCoverage.get("sentence:supplementation")?.accepted),
   includes("finite") && (!typedVncAccepted || typedVncErrors.size),
-  includes("nominal") && !nominalAccepted,
+  includes("nominal") && (!nominalAccepted || !nounSentences || !nounModifiers),
   includes("public") && publicSourcesAccepted !== publicSources.length + 1,
 ].some(Boolean);
 if (!checkedOperandGraphs || changedOperandGraphs || changedRecipes.size || fixtureResults.failed || missingCoverage
