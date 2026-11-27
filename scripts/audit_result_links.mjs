@@ -4,6 +4,14 @@ import { inspectClassicalResultLink, encodeVerifiedClassicalResultLink, exportCl
 import capabilities from "../src/tests/classical_all_25_capability_play_contract.test.js";
 import { getClassicalSharedContactLabel } from "../src/ui/composition/structure_design.mjs";
 
+const groups = ["nested", "relations", "finite", "nominal", "public"];
+const selectedGroups = process.argv.slice(2);
+if (selectedGroups.some(group => !groups.includes(group))) {
+  console.error(`Usage: node scripts/audit_result_links.mjs [${groups.join("|")}]...`);
+  process.exit(2);
+}
+const includes = group => !selectedGroups.length || selectedGroups.includes(group);
+
 const instantiate = async () => (await createRuntimeInstance({
   documentObject: { getElementById: () => null, addEventListener() {} },
 })).runtimeObject;
@@ -50,34 +58,36 @@ const generatedEdges = new Set();
 const pendingEdges = new Set();
 let pendingBindings = 0;
 let blockedBindings = 0;
-let frontier = [...witnesses];
-for (let depth = 0; depth < 2; depth++) {
-  const existing = new Set(witnesses.keys());
-  for (const [parent, parentOperation] of frontier) {
-    const navigator = runtime.getClassicalGrammarApplicationCapabilityNavigator(parent);
-    for (const operation of navigator?.operations || []) {
-      const edge = `${parentOperation} → ${operation.operationId}`;
-      const binding = operation.ownerBindingFrame;
-      if (!operation.ownerBindingFrameValidated || binding?.bindingStatus !== "ready"
-        || !binding.executionArgs?.length) {
-        if (operation.ownerChoicesRequired) {
-          pendingEdges.add(edge);
-          pendingBindings++;
+if (includes("nested")) {
+  let frontier = [...witnesses];
+  for (let depth = 0; depth < 2; depth++) {
+    const existing = new Set(witnesses.keys());
+    for (const [parent, parentOperation] of frontier) {
+      const navigator = runtime.getClassicalGrammarApplicationCapabilityNavigator(parent);
+      for (const operation of navigator?.operations || []) {
+        const edge = `${parentOperation} → ${operation.operationId}`;
+        const binding = operation.ownerBindingFrame;
+        if (!operation.ownerBindingFrameValidated || binding?.bindingStatus !== "ready"
+          || !binding.executionArgs?.length) {
+          if (operation.ownerChoicesRequired) {
+            pendingEdges.add(edge);
+            pendingBindings++;
+          }
+          continue;
         }
-        continue;
+        const receipt = instrumented.executeClassicalGrammarApplicationRequest({
+          operationId: operation.operationId,
+          args: binding.executionArgs,
+        });
+        if (receipt.authorizationStatus === "authorized") generatedEdges.add(edge);
+        else blockedBindings++;
       }
-      const receipt = instrumented.executeClassicalGrammarApplicationRequest({
-        operationId: operation.operationId,
-        args: binding.executionArgs,
-      });
-      if (receipt.authorizationStatus === "authorized") generatedEdges.add(edge);
-      else blockedBindings++;
     }
+    frontier = [...witnesses].filter(([value]) => !existing.has(value));
   }
-  frontier = [...witnesses].filter(([value]) => !existing.has(value));
 }
-console.log(`Generated continuations across ${generatedEdges.size} operation pairs from ready bindings`);
-console.log(`${pendingBindings} bindings across ${pendingEdges.size} operation pairs require choices or operands; ${blockedBindings} ready executions were blocked`);
+if (includes("nested")) console.log(`Generated continuations across ${generatedEdges.size} operation pairs from ready bindings`);
+if (includes("nested")) console.log(`${pendingBindings} bindings across ${pendingEdges.size} operation pairs require choices or operands; ${blockedBindings} ready executions were blocked`);
 
 // Vary one parent at a time using successful requests as templates. An
 // owner-issued frame is opaque, even if it contains further Result objects.
@@ -124,52 +134,56 @@ const templates = seedRequests;
 let substitutions = 0;
 let acceptedSubstitutions = 0;
 let retainedSubstitutions = 0;
-for (const request of templates) {
-  const paths = [...operandPaths(request.args)];
-  for (const { path, parent } of paths) {
-    for (const [replacement, operation] of candidates) {
-      if (replacement === parent || replacement.kind !== parent.kind
-        || operation !== witnesses.get(parent)) continue;
-      substitutions++;
-      const receipt = instrumented.executeClassicalGrammarApplicationRequest({
-        ...request, args: replaceOperand(request.args, path, replacement),
-      });
-      if (receipt.authorizationStatus === "authorized") {
-        acceptedSubstitutions++;
-        if (retainsOperand(receipt.canonicalResult, replacement)) retainedSubstitutions++;
+if (includes("nested")) {
+  for (const request of templates) {
+    const paths = [...operandPaths(request.args)];
+    for (const { path, parent } of paths) {
+      for (const [replacement, operation] of candidates) {
+        if (replacement === parent || replacement.kind !== parent.kind
+          || operation !== witnesses.get(parent)) continue;
+        substitutions++;
+        const receipt = instrumented.executeClassicalGrammarApplicationRequest({
+          ...request, args: replaceOperand(request.args, path, replacement),
+        });
+        if (receipt.authorizationStatus === "authorized") {
+          acceptedSubstitutions++;
+          if (retainsOperand(receipt.canonicalResult, replacement)) retainedSubstitutions++;
+        }
       }
     }
   }
 }
-console.log(`Owners accepted ${acceptedSubstitutions} of ${substitutions} operand substitutions; ${retainedSubstitutions} retain the exact replacement`);
+if (includes("nested")) console.log(`Owners accepted ${acceptedSubstitutions} of ${substitutions} operand substitutions; ${retainedSubstitutions} retain the exact replacement`);
 
 // The adverbial owner publishes its valid degrees and scopes. Incorporated
 // forms also need a matrix; try each issued VNC seed and let the owner decide.
 let adverbialAttempts = 0;
 let adverbialAccepted = 0;
-const matrices = candidates.filter(([, operation]) => operation === "vnc:application");
-for (const [source, operation] of candidates) {
-  if (!["nnc:ordinary", "vnc:application"].includes(operation)) continue;
-  const binding = runtime.issueClassicalGrammarFormationResultBindingFrame("nnc:adverbial", source);
-  if (!runtime.isClassicalGrammarFormationResultBindingFrame(binding)
-    || binding.authorizationStatus !== "authorized") continue;
-  const choices = binding.ownerChoiceOptionProjection;
-  for (const degree of choices.degree || []) {
-    for (const scope of choices.scope || []) {
-      const matrixChoices = scope === "incorporated-predicate" ? matrices : [[null]];
-      for (const [matrix] of matrixChoices) {
-        adverbialAttempts++;
-        const receipt = instrumented.executeClassicalGrammarApplicationRequest({
-          operationId: "nnc:adverbial",
-          args: [{ canonicalSourceResult: source, degree, scope,
-            ...(matrix ? { canonicalMatrixResult: matrix } : {}) }],
-        });
-        if (receipt.authorizationStatus === "authorized") adverbialAccepted++;
+if (includes("relations")) {
+  const matrices = candidates.filter(([, operation]) => operation === "vnc:application");
+  for (const [source, operation] of candidates) {
+    if (!["nnc:ordinary", "vnc:application"].includes(operation)) continue;
+    const binding = runtime.issueClassicalGrammarFormationResultBindingFrame("nnc:adverbial", source);
+    if (!runtime.isClassicalGrammarFormationResultBindingFrame(binding)
+      || binding.authorizationStatus !== "authorized") continue;
+    const choices = binding.ownerChoiceOptionProjection;
+    for (const degree of choices.degree || []) {
+      for (const scope of choices.scope || []) {
+        const matrixChoices = scope === "incorporated-predicate" ? matrices : [[null]];
+        for (const [matrix] of matrixChoices) {
+          adverbialAttempts++;
+          const receipt = instrumented.executeClassicalGrammarApplicationRequest({
+            operationId: "nnc:adverbial",
+            args: [{ canonicalSourceResult: source, degree, scope,
+              ...(matrix ? { canonicalMatrixResult: matrix } : {}) }],
+          });
+          if (receipt.authorizationStatus === "authorized") adverbialAccepted++;
+        }
       }
     }
   }
 }
-console.log(`Owners accepted ${adverbialAccepted} of ${adverbialAttempts} adverbial choices`);
+if (includes("relations")) console.log(`Owners accepted ${adverbialAccepted} of ${adverbialAttempts} adverbial choices`);
 
 function* adjectivalReadings(base, dependent) {
   const domains = runtime.getClassicalNahuatlAdjectivalModificationChoiceDomains;
@@ -211,32 +225,33 @@ function* supplementaryReadings(base) {
 }
 
 const readingCoverage = new Map();
-for (const { operationId, args: [base] } of seedRequests) {
-  let readings;
-  if (operationId === "nnc:adjectival-modification") {
-    const dependent = candidates.find(([value, operation]) => operation === "nnc:sentence-surface"
-      && value !== base.head && value !== base.modifier)?.[0];
-    if (dependent) readings = adjectivalReadings(base, dependent);
-  } else if (operationId === "sentence:supplementation") {
-    readings = supplementaryReadings(base);
+if (includes("relations")) {
+  for (const { operationId, args: [base] } of seedRequests) {
+    let readings;
+    if (operationId === "nnc:adjectival-modification") {
+      const dependent = candidates.find(([value, operation]) => operation === "nnc:sentence-surface"
+        && value !== base.head && value !== base.modifier)?.[0];
+      if (dependent) readings = adjectivalReadings(base, dependent);
+    } else if (operationId === "sentence:supplementation") {
+      readings = supplementaryReadings(base);
+    }
+    if (!readings) continue;
+    const coverage = { attempted: 0, accepted: 0 };
+    for (const reading of readings) {
+      coverage.attempted++;
+      const receipt = instrumented.executeClassicalGrammarApplicationRequest({ operationId, args: [reading] });
+      if (receipt.authorizationStatus === "authorized") coverage.accepted++;
+    }
+    const prior = readingCoverage.get(operationId) || { attempted: 0, accepted: 0 };
+    readingCoverage.set(operationId, {
+      attempted: prior.attempted + coverage.attempted,
+      accepted: prior.accepted + coverage.accepted,
+    });
   }
-  if (!readings) continue;
-  const coverage = { attempted: 0, accepted: 0 };
-  for (const reading of readings) {
-    coverage.attempted++;
-    const receipt = instrumented.executeClassicalGrammarApplicationRequest({ operationId, args: [reading] });
-    if (receipt.authorizationStatus === "authorized") coverage.accepted++;
+  for (const [operationId, coverage] of readingCoverage) {
+    console.log(`${operationId}: owners accepted ${coverage.accepted} of ${coverage.attempted} generated readings`);
   }
-  const prior = readingCoverage.get(operationId) || { attempted: 0, accepted: 0 };
-  readingCoverage.set(operationId, {
-    attempted: prior.attempted + coverage.attempted,
-    accepted: prior.accepted + coverage.accepted,
-  });
 }
-for (const [operationId, coverage] of readingCoverage) {
-  console.log(`${operationId}: owners accepted ${coverage.accepted} of ${coverage.attempted} generated readings`);
-}
-
 // Follow the same typed Source choice frames as Build. A new selection may
 // reveal another required choice, so ask the owner again at each step.
 function availableValues(projection) {
@@ -248,96 +263,100 @@ function availableValues(projection) {
 let typedVncAccepted = 0;
 let typedVncProbes = 0;
 const typedVncErrors = new Map();
-const finiteSeeds = candidates.filter(([value, operation]) => operation === "vnc:application"
-  && value.resultFrame?.sourceMachineryFrame);
-const seenFiniteSources = new Set();
-for (const [parent] of finiteSeeds) {
-  const { sourceStem, verbClass, sourceValence, sourceInitialISelection } = parent.normalizedRequest;
-  const sourceKey = JSON.stringify([sourceStem, verbClass, sourceValence, sourceInitialISelection]);
-  if (seenFiniteSources.has(sourceKey)) continue;
-  seenFiniteSources.add(sourceKey);
-  const variedDerivations = new Set();
-  const source = parent.resultFrame.sourceMachineryFrame;
-  const queue = [{ choices: {}, varyFinite: true }];
-  const visited = new Set();
-  while (queue.length) {
-    const { choices, varyFinite } = queue.shift();
-    const key = JSON.stringify(choices);
-    if (visited.has(key)) continue;
-    visited.add(key);
-    typedVncProbes++;
-    let binding;
-    try {
-      binding = runtime.issueClassicalNahuatlVncTypedSourceApplicationBindingFrame(source, choices);
-    } catch (error) {
-      const message = String(error.message || error);
-      if (!typedVncErrors.has(message)) {
-        console.error(JSON.stringify({ source: parent.normalizedRequest.sourceStem, choices, error: message }));
+if (includes("finite")) {
+  const finiteSeeds = candidates.filter(([value, operation]) => operation === "vnc:application"
+    && value.resultFrame?.sourceMachineryFrame);
+  const seenFiniteSources = new Set();
+  for (const [parent] of finiteSeeds) {
+    const { sourceStem, verbClass, sourceValence, sourceInitialISelection } = parent.normalizedRequest;
+    const sourceKey = JSON.stringify([sourceStem, verbClass, sourceValence, sourceInitialISelection]);
+    if (seenFiniteSources.has(sourceKey)) continue;
+    seenFiniteSources.add(sourceKey);
+    const variedDerivations = new Set();
+    const source = parent.resultFrame.sourceMachineryFrame;
+    const queue = [{ choices: {}, varyFinite: true }];
+    const visited = new Set();
+    while (queue.length) {
+      const { choices, varyFinite } = queue.shift();
+      const key = JSON.stringify(choices);
+      if (visited.has(key)) continue;
+      visited.add(key);
+      typedVncProbes++;
+      let binding;
+      try {
+        binding = runtime.issueClassicalNahuatlVncTypedSourceApplicationBindingFrame(source, choices);
+      } catch (error) {
+        const message = String(error.message || error);
+        if (!typedVncErrors.has(message)) {
+          console.error(JSON.stringify({ source: parent.normalizedRequest.sourceStem, choices, error: message }));
+        }
+        typedVncErrors.set(message, (typedVncErrors.get(message) || 0) + 1);
+        continue;
       }
-      typedVncErrors.set(message, (typedVncErrors.get(message) || 0) + 1);
-      continue;
-    }
-    if (!runtime.isClassicalNahuatlVncTypedSourceApplicationBindingFrame(binding)) continue;
-    if (binding.bindingStatus === "choices-required") {
-      const field = binding.requiredChoiceIds.find(id => !Object.hasOwn(choices, id));
-      for (const value of availableValues(binding.choiceOptionProjection[field])) {
-        queue.push({ choices: { ...choices, [field]: value }, varyFinite });
+      if (!runtime.isClassicalNahuatlVncTypedSourceApplicationBindingFrame(binding)) continue;
+      if (binding.bindingStatus === "choices-required") {
+        const field = binding.requiredChoiceIds.find(id => !Object.hasOwn(choices, id));
+        for (const value of availableValues(binding.choiceOptionProjection[field])) {
+          queue.push({ choices: { ...choices, [field]: value }, varyFinite });
+        }
+        continue;
       }
-      continue;
-    }
-    if (binding.bindingStatus !== "ready") continue;
-    const receipt = instrumented.executeClassicalGrammarApplicationRequest({
-      operationId: "vnc:application", args: [binding],
-    });
-    if (receipt.authorizationStatus === "authorized") typedVncAccepted++;
-    const derivation = binding.effectiveSelections.requestedDerivation;
-    if (!varyFinite || variedDerivations.has(derivation)) continue;
-    variedDerivations.add(derivation);
-    for (const field of ["subject", "tense", "requestedVoice"]) {
-      for (const value of availableValues(binding.choiceOptionProjection[field])) {
-        if (value === binding.effectiveSelections[field]) continue;
-        queue.push({ choices: { ...choices, [field]: value }, varyFinite: false });
+      if (binding.bindingStatus !== "ready") continue;
+      const receipt = instrumented.executeClassicalGrammarApplicationRequest({
+        operationId: "vnc:application", args: [binding],
+      });
+      if (receipt.authorizationStatus === "authorized") typedVncAccepted++;
+      const derivation = binding.effectiveSelections.requestedDerivation;
+      if (!varyFinite || variedDerivations.has(derivation)) continue;
+      variedDerivations.add(derivation);
+      for (const field of ["subject", "tense", "requestedVoice"]) {
+        for (const value of availableValues(binding.choiceOptionProjection[field])) {
+          if (value === binding.effectiveSelections[field]) continue;
+          queue.push({ choices: { ...choices, [field]: value }, varyFinite: false });
+        }
       }
     }
   }
 }
-console.log(`Owners accepted ${typedVncAccepted} finite Results from ${typedVncProbes} typed choice probes; ${[...typedVncErrors.values()].reduce((a, b) => a + b, 0)} threw errors`);
+if (includes("finite")) console.log(`Owners accepted ${typedVncAccepted} finite Results from ${typedVncProbes} typed choice probes; ${[...typedVncErrors.values()].reduce((a, b) => a + b, 0)} threw errors`);
 
 // Follow noun choices through the same private binding used by Make.
 let nominalAttempts = 0;
 let nominalAccepted = 0;
-const nominalSources = new Set(candidates.filter(([, operation]) => operation === "nnc:ordinary")
-  .map(([noun]) => noun.sourceFrame).filter(Boolean));
-for (const source of nominalSources) {
-  const navigator = runtime.getClassicalGrammarApplicationCapabilityNavigator(source);
-  const issue = choices => runtime.issueClassicalGrammarTypedSourceOperationBindingFrame(navigator, "nnc:ordinary", choices);
-  const baseline = issue({});
-  const queue = [{ choices: {}, vary: true }];
-  for (const state of availableValues(baseline?.choiceOptionProjection?.state)) {
-    queue.push({ choices: { state }, vary: true });
-  }
-  const seen = new Set();
-  for (let index = 0; index < queue.length; index++) {
-    const { choices, vary } = queue[index];
-    const key = JSON.stringify(choices);
-    if (seen.has(key)) continue;
-    seen.add(key);
-    nominalAttempts++;
-    const binding = issue(choices);
-    if (binding?.bindingStatus === "choices-required") {
-      const field = binding.requiredChoiceIds.find(id => !Object.hasOwn(choices, id));
-      for (const value of availableValues(binding.choiceOptionProjection[field])) queue.push({ choices: { ...choices, [field]: value }, vary });
-    } else if (binding?.bindingStatus === "ready") {
-      const receipt = runtime.executeClassicalGrammarTypedSourceOperationBindingFrame(binding);
-      if (receipt?.authorizationStatus === "authorized") {
-        nominalAccepted++;
-        instrumented.captureClassicalGrammarApplicationResult(receipt, "audit-nominal-choice");
-      }
-      if (vary) {
-        for (const field of ["subject", "possessor", "predicateFormation", "stemFormation", "pluralConnector"]) {
-          for (const value of availableValues(binding.choiceOptionProjection[field])) {
-            if (value !== binding.effectiveSelections[field]) {
-              queue.push({ choices: { ...choices, [field]: value }, vary: false });
+if (includes("nominal")) {
+  const nominalSources = new Set(candidates.filter(([, operation]) => operation === "nnc:ordinary")
+    .map(([noun]) => noun.sourceFrame).filter(Boolean));
+  for (const source of nominalSources) {
+    const navigator = runtime.getClassicalGrammarApplicationCapabilityNavigator(source);
+    const issue = choices => runtime.issueClassicalGrammarTypedSourceOperationBindingFrame(navigator, "nnc:ordinary", choices);
+    const baseline = issue({});
+    const queue = [{ choices: {}, vary: true }];
+    for (const state of availableValues(baseline?.choiceOptionProjection?.state)) {
+      queue.push({ choices: { state }, vary: true });
+    }
+    const seen = new Set();
+    for (let index = 0; index < queue.length; index++) {
+      const { choices, vary } = queue[index];
+      const key = JSON.stringify(choices);
+      if (seen.has(key)) continue;
+      seen.add(key);
+      nominalAttempts++;
+      const binding = issue(choices);
+      if (binding?.bindingStatus === "choices-required") {
+        const field = binding.requiredChoiceIds.find(id => !Object.hasOwn(choices, id));
+        for (const value of availableValues(binding.choiceOptionProjection[field])) queue.push({ choices: { ...choices, [field]: value }, vary });
+      } else if (binding?.bindingStatus === "ready") {
+        const receipt = runtime.executeClassicalGrammarTypedSourceOperationBindingFrame(binding);
+        if (receipt?.authorizationStatus === "authorized") {
+          nominalAccepted++;
+          instrumented.captureClassicalGrammarApplicationResult(receipt, "audit-nominal-choice");
+        }
+        if (vary) {
+          for (const field of ["subject", "possessor", "predicateFormation", "stemFormation", "pluralConnector"]) {
+            for (const value of availableValues(binding.choiceOptionProjection[field])) {
+              if (value !== binding.effectiveSelections[field]) {
+                queue.push({ choices: { ...choices, [field]: value }, vary: false });
+              }
             }
           }
         }
@@ -345,7 +364,7 @@ for (const source of nominalSources) {
     }
   }
 }
-console.log(`Owners accepted ${nominalAccepted} noun Results from ${nominalAttempts} typed choice probes`);
+if (includes("nominal")) console.log(`Owners accepted ${nominalAccepted} noun Results from ${nominalAttempts} typed choice probes`);
 
 // These public Source uses were added after the original capability fixture.
 const publicSources = [
@@ -355,24 +374,26 @@ const publicSources = [
   ["clause:attested-collocation", "PrincipalCollocation", "attested-collocation", "achi īc", {}],
 ];
 let publicSourcesAccepted = 0;
-for (const [operationId, family, sourceUse, enteredStem, choices] of publicSources) {
-  const source = runtime[`resolveClassicalNahuatlAttested${family}SourceFrame`]({ enteredStem, sourceUse });
-  const binding = runtime[`issueClassicalNahuatlAttested${family}BindingFrame`](source, choices);
-  if (binding.bindingStatus !== "ready") continue;
-  const receipt = instrumented.executeClassicalGrammarApplicationRequest({ operationId, args: binding.executionArgs });
-  if (receipt.authorizationStatus === "authorized") publicSourcesAccepted++;
-}
-const quantity = runtime.buildClassicalNahuatlQuantitativePredicateSourceFrame({
-  citation: "miyec", sourceUse: "quantitative-predicate", reference: "nonanimate-common",
-});
-const quantityBinding = runtime.issueClassicalNahuatlQuantitativePredicateBindingFrame(quantity);
-if (quantityBinding.bindingStatus === "ready") {
-  const receipt = instrumented.executeClassicalGrammarApplicationRequest({
-    operationId: "nnc:quantitative-predicate", args: quantityBinding.executionArgs,
+if (includes("public")) {
+  for (const [operationId, family, sourceUse, enteredStem, choices] of publicSources) {
+    const source = runtime[`resolveClassicalNahuatlAttested${family}SourceFrame`]({ enteredStem, sourceUse });
+    const binding = runtime[`issueClassicalNahuatlAttested${family}BindingFrame`](source, choices);
+    if (binding.bindingStatus !== "ready") continue;
+    const receipt = instrumented.executeClassicalGrammarApplicationRequest({ operationId, args: binding.executionArgs });
+    if (receipt.authorizationStatus === "authorized") publicSourcesAccepted++;
+  }
+  const quantity = runtime.buildClassicalNahuatlQuantitativePredicateSourceFrame({
+    citation: "miyec", sourceUse: "quantitative-predicate", reference: "nonanimate-common",
   });
-  if (receipt.authorizationStatus === "authorized") publicSourcesAccepted++;
+  const quantityBinding = runtime.issueClassicalNahuatlQuantitativePredicateBindingFrame(quantity);
+  if (quantityBinding.bindingStatus === "ready") {
+    const receipt = instrumented.executeClassicalGrammarApplicationRequest({
+      operationId: "nnc:quantitative-predicate", args: quantityBinding.executionArgs,
+    });
+    if (receipt.authorizationStatus === "authorized") publicSourcesAccepted++;
+  }
 }
-console.log(`Owners accepted ${publicSourcesAccepted} of ${publicSources.length + 1} attested and quantitative Source choices`);
+if (includes("public")) console.log(`Owners accepted ${publicSourcesAccepted} of ${publicSources.length + 1} attested and quantitative Source choices`);
 
 function project(runtime, value) {
   const capture = runtime.captureClassicalGrammarApplicationResult(value, "result-link-audit");
@@ -400,6 +421,7 @@ function project(runtime, value) {
 
 const counts = new Map();
 const changedRecipes = new Map();
+const distinctLinks = new Set();
 let checkedOperandGraphs = 0;
 let changedOperandGraphs = 0;
 const jsonPayload = value => value && JSON.parse(JSON.stringify(value));
@@ -426,6 +448,7 @@ for (const [result, operation] of witnesses) {
     try {
       const address = await encodeVerifiedClassicalResultLink(check.recipe);
       if (!address) status = "compact-address-failed";
+      else distinctLinks.add(address);
     } catch {
       status = "compact-address-failed";
     }
@@ -460,7 +483,7 @@ for (const [result, operation] of witnesses) {
   const key = `${operation}: ${status}`;
   counts.set(key, (counts.get(key) || 0) + 1);
 }
-console.log(`Checked ${witnesses.size} accepted Result witnesses`);
+console.log(`Checked ${witnesses.size} accepted Result witnesses using ${distinctLinks.size} distinct short links`);
 console.log(`${checkedOperandGraphs - changedOperandGraphs} of ${checkedOperandGraphs} nested Results retained exact reopened operands`);
 for (const [operation, count] of changedRecipes) {
   console.log(`${count}\t${operation}: recipe changed after reopen`);
@@ -468,7 +491,13 @@ for (const [operation, count] of changedRecipes) {
 for (const [key, count] of [...counts].sort(([left], [right]) => left.localeCompare(right))) {
   console.log(`${count}\t${key}`);
 }
-if (!checkedOperandGraphs || changedOperandGraphs || changedRecipes.size
-  || fixtureResults.failed || !generatedEdges.size || !retainedSubstitutions || !adverbialAccepted || !typedVncAccepted || !nominalAccepted || typedVncErrors.size || publicSourcesAccepted !== publicSources.length + 1
-  || !readingCoverage.get("nnc:adjectival-modification")?.accepted
-  || !readingCoverage.get("sentence:supplementation")?.accepted || [...counts.keys()].some(key => !key.endsWith(": verified"))) process.exitCode = 1;
+const missingCoverage = [
+  includes("nested") && (!generatedEdges.size || !retainedSubstitutions),
+  includes("relations") && (!adverbialAccepted || !readingCoverage.get("nnc:adjectival-modification")?.accepted
+    || !readingCoverage.get("sentence:supplementation")?.accepted),
+  includes("finite") && (!typedVncAccepted || typedVncErrors.size),
+  includes("nominal") && !nominalAccepted,
+  includes("public") && publicSourcesAccepted !== publicSources.length + 1,
+].some(Boolean);
+if (!checkedOperandGraphs || changedOperandGraphs || changedRecipes.size || fixtureResults.failed || missingCoverage
+  || [...counts.keys()].some(key => !key.endsWith(": verified"))) process.exitCode = 1;
