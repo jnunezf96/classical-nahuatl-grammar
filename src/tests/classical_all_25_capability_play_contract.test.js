@@ -183,21 +183,24 @@ function run(ctx = {}) {
         "vnc:sentence-result",
         [vncSentence().canonicalResult]
     );
-    const exactDeverbal = () => {
-        const preterit = witnesses.vnc("pix-preterit", {
-            sourceStem: "pix",
-            verbClass: "A",
-            tense: "preterit",
-        });
-        return execute(ctx, "nnc:deverbal-construction", [{
-            constructionKind: "predicate-nominalization",
-            nominalizationKind: "preterit-agentive",
-            canonicalVncResult: preterit.canonicalResult.resultFrame,
-            subject: "3sg",
-            state: "absolutive",
-            animacy: "animate",
-        }]);
-    };
+    const exactDeverbal = () => execute(ctx, "nnc:deverbal-construction", [{
+        constructionKind: "deverbal-action",
+        actionKind: "active-action",
+        actionSuffix: "liz",
+        source: {
+            sourceStem: "nemi",
+            sourceStage: "future-core",
+            verbClass: "B",
+            sourceVoice: "active",
+            sourceValence: "intransitive",
+            sourceObjectPattern: "none",
+            sourceSubject: "2sg",
+        },
+        subject: "3common",
+        state: "possessive",
+        possessor: "2sg",
+        animacy: "nonanimate",
+    }]);
 
     const cases = [
         {
@@ -302,7 +305,7 @@ function run(ctx = {}) {
                 "sentence:particle-adjunction",
                 [{
                     particleResultFrame:
-                        witnesses.particle("l3-auh-conjunctor")
+                        witnesses.particle("l3-ca")
                             .canonicalResult,
                     nuclearResultFrame: exactVncSentence().canonicalResult,
                     honorificized: false,
@@ -490,20 +493,27 @@ function run(ctx = {}) {
             operationId: "nnc:relational",
             mode: "composition",
             validator: "isClassicalNahuatlRelationalResult",
-            build: () => execute(ctx, "nnc:relational", [{
-                nounstem: {
-                    kind: "classical-nahuatl-nnc-nounstem-request",
-                    stemId: "n-locative",
-                    operation: "relational-nnc",
-                    formation: "option-two",
-                    sourceFormation: "preterit-agentive",
-                    sourceMode: "embed-matrix",
-                    upstreamResult: exactDeverbal().canonicalResult,
-                },
-                state: "absolutive",
-                subjectMode: "adverbialized",
-                subjectId: "3common",
-            }]),
+            build: () => execute(ctx, "nnc:relational", [
+                ctx.buildClassicalNahuatlRelationalNncTypedSourceFrame({
+                    state: "possessive",
+                    possessorId: "1sg",
+                    subjectMode: "adverbialized",
+                    subjectId: "3common",
+                    nounstem: {
+                        kind: "classical-nahuatl-nnc-nounstem-request",
+                        stemId: "tloc-proximity",
+                        formation: "option-one",
+                        operation: "relational-nnc",
+                        sourceKind: "possessor",
+                        sourceFormation: "plain-nounstem",
+                        sourceVoice: "active",
+                        sourceMode: "whole-stem",
+                        sourceStem: "tloc",
+                        sourceMatrixStem: "tloc",
+                        affective: "none",
+                    },
+                }),
+            ]),
         },
         {
             operationId: "nnc:place-gentilic",

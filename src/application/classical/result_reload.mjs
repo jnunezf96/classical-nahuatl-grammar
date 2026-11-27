@@ -35,6 +35,7 @@ const PRIMITIVE_ADVERBIAL_KEYS = ["predicateKind", "sourceStem", "verbClass", "s
   "tense", "sourceInitialISelection", "possessor"];
 const CONTEXT_KEYS = ["precedingParticle", "negativeParticle", "stressPartner",
   "requestedVariant", "sentencePosition", "clauseType", "negationScope"];
+const ADJECTIVAL_KEYS = ["topology", "order", "adjunctor", "linkRole", "compoundHeadTarget"];
 const ADJUNCTION_KEYS = ["semanticRelation", "adverbializationDegree", "structureKind",
   "adjoinedUnitType", "order", "recursion", "marking", "contrast", "timeProfile",
   "conditionType", "purposeType", "concessionType", "explicitAdverbialIndicator",
@@ -243,6 +244,14 @@ export function exportClassicalResultReloadRecipe(r, roots = {}, normalizePrimit
         operands:Object.fromEntries(Object.entries(allomorphBinding.additionalResultFrames)
           .map(([role,operand])=>[role,visit(operand,depth+1)]))};
     }
+    else if (r.isClassicalNahuatlOrderedVoiceVncApplicationFrame?.(value)) {
+      node = {type:"vnc:ordered-voice", source:visit(value.baseApplicationFrame,depth+1),
+        operations:value.operations};
+    }
+    else if (r.isClassicalNahuatlVncSentenceResultFrame?.(value)
+      && r.isClassicalNahuatlOrderedVoiceVncApplicationFrame?.(value.orderedVoiceApplicationFrame)) {
+      node = {type:"vnc:ordered-voice-sentence",source:visit(value.orderedVoiceApplicationFrame,depth+1)};
+    }
     else if (carrier && finiteSelections(carrier.selections)) node = {type:"vnc:nonactive-carrier",...carrier};
     else if (carrierParent) node = {type:"vnc:nonactive-carrier-sentence",source:visit(carrierParent,depth+1)};
     else if (specialized && finiteSelections(specialized.selections,["reading","embedStem","adverbialEntryId","objectSelection"]))
@@ -348,6 +357,17 @@ export function exportClassicalResultReloadRecipe(r, roots = {}, normalizePrimit
           node[position] = visit(result, depth + 1);
         }
       }
+    } else if (capture.operationId === "nnc:adjectival-modification"
+      && r.isClassicalNahuatlResultFrame?.(value) && !value.discourseSourceContextFrame) {
+      const clauses = value.selectedClauses;
+      const ref = clause => visit(clause?.sourceResult, depth + 1);
+      node = { type: "nnc:adjectival-modification",
+        head: ref(clauses.find(clause => clause.role === "head")),
+        modifier: ref(clauses.find(clause => clause.role === "modifier")),
+        additional: clauses.filter(clause => clause.role.startsWith("modifier-")).map(ref),
+        intervening: clauses.filter(clause => clause.role.startsWith("intervening-")).map(ref),
+        choices: pick(value.selection, ADJECTIVAL_KEYS),
+        additionalLinks: value.selection.modifierLinkRoles.slice(1) };
     } else if (capture.operationId === "clause:adverbial-adjunction"
       && value.supported === true && value.sourceContract) {
       const p = value.ruleProfile;
@@ -451,6 +471,17 @@ export function replayClassicalResultReloadRecipe(r, recipe) {
         const application = r.executeClassicalGrammarTypedSourceOperationBindingFrame(binding)?.canonicalResult;
         if (r.getClassicalNahuatlNonactiveCarrierReloadInputs?.(application)?.projection !== "application") return null;
         result = node.projection === "nucleus" ? application.resultFrame : application;
+      } else if (node?.type === "vnc:ordered-voice" && exact(node, ["type","source","operations"])
+        && r.isClassicalNahuatlVncApplicationFrame?.(prior(node.source))
+        && Array.isArray(node.operations) && node.operations.length > 0 && node.operations.length <= 32
+        && node.operations.every(operation => typeof operation === "string" && operation.length <= 128)) {
+        result = r.executeClassicalGrammarApplicationRequest({operationId:"vnc:ordered-voice-application",
+          args:[prior(node.source), {operations:node.operations}]})?.canonicalResult;
+      } else if (node?.type === "vnc:ordered-voice-sentence" && exact(node, ["type","source"])
+        && r.isClassicalNahuatlOrderedVoiceVncApplicationFrame?.(prior(node.source))) {
+        result = r.executeClassicalGrammarApplicationRequest({
+          operationId:"vnc:sentence-result",args:[prior(node.source)],
+        })?.canonicalResult;
       } else if (node?.type === "vnc:nonactive-carrier-sentence" && exact(node, ["type","source"])
         && r.getClassicalNahuatlNonactiveCarrierReloadInputs?.(prior(node.source))?.projection === "application") {
         result = r.requestClassicalVncSentenceResultFrame(prior(node.source));
@@ -619,6 +650,20 @@ export function replayClassicalResultReloadRecipe(r, recipe) {
         && typeof node.scope === "string" && plain(node.context, CONTEXT_KEYS) && prior(node.source)) {
         result = r.requestClassicalAdverbialNncResult({ canonicalSourceResult: prior(node.source),
           scope: node.scope, context: node.context });
+      } else if (node?.type === "nnc:adjectival-modification"
+        && exact(node, ["type", "head", "modifier", "additional", "intervening", "choices", "additionalLinks"])
+        && plain(node.choices, ADJECTIVAL_KEYS) && prior(node.head) && prior(node.modifier)
+        && [node.additional, node.intervening].every(refs => Array.isArray(refs) && refs.every(prior))
+        && Array.isArray(node.additionalLinks) && node.additionalLinks.length === node.additional.length
+        && node.additionalLinks.every(role => typeof role === "string")) {
+        result = r.executeClassicalGrammarApplicationRequest({
+          operationId: node.type,
+          args: [{ operationKind: "adjectival-modification", ...node.choices,
+            head: prior(node.head), modifier: prior(node.modifier),
+            ...(node.additional.length ? { additionalModifiers: node.additional.map(prior),
+              additionalLinkRoles: node.additionalLinks } : {}),
+            ...(node.intervening.length ? { interveningClauses: node.intervening.map(prior) } : {}) }],
+        })?.canonicalResult;
       } else if (node?.type === "clause:adverbial-adjunction"
         && exact(node, ["type", "principal", "adjoined", "marker", "choices"])
         && plain(node.choices, ADJUNCTION_KEYS) && prior(node.principal) && prior(node.adjoined)
