@@ -4929,7 +4929,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         && rebuiltAllowedVoices[0] === "impersonal";
       const rebuiltSelectedVoice = rebuiltAllowedVoices.includes(normalizedRequestedVoice)
         ? normalizedRequestedVoice
-        : rebuiltAutomaticInherentImpersonalVoice ? "impersonal" : "active";
+        : rebuiltAllowedVoices.includes("active") ? "active" : rebuiltAllowedVoices[0] || "active";
       let rebuiltVoiceNormalizationReason = "";
       if (!frame.normalizedRequest.requestedVoiceRecognized) {
         rebuiltVoiceNormalizationReason = "unknown-voice-normalized-to-active";
@@ -8262,7 +8262,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         );
         let selectedVoice = allowedVoices.includes(normalizedBaseRequest.voice)
           ? normalizedBaseRequest.voice
-          : automaticInherentImpersonalVoice ? "impersonal" : "active";
+          : allowedVoices.includes("active") ? "active" : allowedVoices[0] || "active";
         let voiceNormalizationReason = "";
         if (!normalizedBaseRequest.requestedVoiceRecognized) {
           voiceNormalizationReason = "unknown-voice-normalized-to-active";

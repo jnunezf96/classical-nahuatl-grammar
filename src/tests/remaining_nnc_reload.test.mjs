@@ -669,3 +669,20 @@ test("typed impersonal links keep the chosen voice on each accepted verb", async
     }
   }
 });
+
+test("a typed causative probe with an unavailable voice returns a rejected choice", async () => {
+  const r = await runtime();
+  const root = r.requestClassicalVncApplicationResult({
+    sourceStem:"yohua", verbClass:"A", sourceValence:"intransitive",
+    subject:"1sg", mood:"indicative", tense:"present", requestedVoice:"impersonal",
+    nonactiveOptionId:"inherent-impersonal",
+  });
+  const source = root.resultFrame.sourceMachineryFrame;
+  const binding = r.issueClassicalNahuatlVncTypedSourceApplicationBindingFrame(source, {
+    requestedDerivation:"causative", derivationOptionId:"causative:type-one:final-a-replacement:yohua",
+  });
+  assert.ok(r.isClassicalNahuatlVncTypedSourceApplicationBindingFrame(binding));
+  assert.equal(binding.bindingStatus, "rejected");
+  assert.equal(binding.blockReason, "classical-vnc-typed-source-application-target-voice-not-authorized");
+  assert.deepEqual(binding.executionArgs, []);
+});
