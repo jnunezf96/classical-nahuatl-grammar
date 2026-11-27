@@ -4,9 +4,9 @@ import {createConstructionSession} from '../ui/composition/construction_session.
 import {createClassicalGrammarWorkspaceHistory} from '../application/classical/grammar_workspace_history.mjs';
 const source=Object.freeze({source:true}),old=Object.freeze({id:'old'}),next=Object.freeze({id:'next'});
 const app=Object.freeze({authorizationStatus:'authorized',operationId:'test',canonicalResult:next});
-function fixture({execute=()=>app,present=()=>true,prepareCommit,onChange=()=>{}}={}) {
+function fixture({execute=()=>app,present=()=>true,prepareCommit,onAccepted,onChange=()=>{}}={}) {
  const history=createClassicalGrammarWorkspaceHistory({captureClassicalGrammarApplicationResult:x=>x===app?Object.freeze({applicationResult:app,canonicalResult:next}):null,isClassicalGrammarApplicationResultCapture:x=>x?.applicationResult===app,isClassicalGrammarApplicationResult:x=>x===app});
- const session=createConstructionSession({isSource:x=>x===source,isResult:x=>x===old||x===next,execute,present,onChange,prepareCommit:prepareCommit||(()=>{const token=history.prepareRecord(app);return{commit:()=>history.commitRecord(token),publish(){}};})});
+ const session=createConstructionSession({isSource:x=>x===source,isResult:x=>x===old||x===next,execute,present,onAccepted,onChange,prepareCommit:prepareCommit||(()=>{const token=history.prepareRecord(app);return{commit:()=>history.commitRecord(token),publish(){}};})});
  session.restore(old);session.stage({source,choices:{x:1},route:{operation:'test'},ready:true,execution:{signature:'one'}});return{session,history};
 }
 test('history rejection and execution errors preserve accepted result and permit explicit retry',()=>{
@@ -95,4 +95,24 @@ test('successful recovery clears only its own stale message, preserving owner di
  const name='clearClassicalAcceptanceRecoveryStatus',start=code.indexOf(`    function ${name}(`);assert.ok(start>=0);
  const status={textContent:'Retry display',dataset:{classicalAcceptanceRecoveryMessage:'Retry display'}};const ctx=vm.createContext({targetObject:{document:{getElementById:()=>status}}});vm.runInContext(code.slice(start,code.indexOf('\n    function ',start+20)),ctx);ctx[name]();assert.equal(status.textContent,'Accepted Result ready.');assert.equal(status.dataset.classicalAcceptanceRecoveryMessage,undefined);
  status.textContent='Choose a licensed object';status.dataset.classicalAcceptanceRecoveryMessage='Retry display';ctx[name]();assert.equal(status.textContent,'Choose a licensed object');
+});
+
+
+test("acceptance effects receive the committed Result even when display fails",()=>{
+ const accepted=[];
+ let failCommit=true;
+ const {session}=fixture({
+  prepareCommit:()=>failCommit?null:{commit:()=>true},
+  onAccepted(application){accepted.push(application.canonicalResult);},
+  present(){throw Error("display unavailable");},
+ });
+ assert.equal(session.make(),false);
+ assert.deepEqual(accepted,[]);
+ failCommit=false;
+ assert.equal(session.make(),true);
+ assert.equal(session.position.accepted.result,next);
+ assert.deepEqual(accepted,[next]);
+ assert.ok(session.position.presentationFailure);
+ session.recoverPresentation();
+ assert.deepEqual(accepted,[next]);
 });

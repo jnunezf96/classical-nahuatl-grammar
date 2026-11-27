@@ -2,7 +2,7 @@ import {createConstructionPosition,projectConstructionPosition} from './construc
 
 // The only execution input is the current position's captured owner packet.
 export function createConstructionSession({isSource,isResult,execute,present,
-  prepareCommit=()=>({commit:()=>true,publish(){}}),recover=present,onChange=()=>{},onFailure=()=>{}}) {
+  prepareCommit=()=>({commit:()=>true,publish(){}}),recover=present,onAccepted=()=>{},onChange=()=>{},onFailure=()=>{}}) {
   const store=createConstructionPosition({isSource,isResult});
   let pendingPresentation=null, pendingAcceptance=null, presenting=false;
   const candidateMatches=position=>Boolean(pendingAcceptance
@@ -79,6 +79,8 @@ export function createConstructionSession({isSource,isResult,execute,present,
       }
       pendingPresentation={application,packet:token.position.execution,position:token.position,context,postPresented:false};
       try{transaction.publish?.();}catch(error){report(application,error);}
+      // Consumers can save accepted state even when rendering needs recovery.
+      try{onAccepted(application);}catch(error){report(application,error);}
       recoverPresentation();
       return true; // accepted and History committed, even if display needs recovery
     },

@@ -256,6 +256,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           return true;
         } finally { ClassicalPositionExecuting = false; }
       },
+      onAccepted: scheduleClassicalVncReloadSave,
       onChange: () => {
         publishClassicalConstructionPosition();
         const accepted = ClassicalConstructionSession.position.accepted.result;
@@ -41554,7 +41555,6 @@ export function createUiRenderingApi(targetObject = globalThis) {
         afterPresent:application=>completeClassicalConstructionPresentation(position,edit,application,completion)
       });
       syncClassicalCapabilityApplyOperationState(null,made?ClassicalConstructionSession.position:null);
-      if (made) scheduleClassicalVncReloadSave();
       return made;
     }
 
