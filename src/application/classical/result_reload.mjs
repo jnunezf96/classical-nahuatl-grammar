@@ -276,6 +276,10 @@ export function exportClassicalResultReloadRecipe(r, roots = {}, normalizePrimit
           humanness:value.operationFrame.referentialHumanness}};
     else if (futureObjectReloadStep(r,value)) node = {type: "vnc:future-object",
       source: visit(value.baseApplicationFrame,depth+1), step: futureObjectReloadStep(r,value)};
+    else if (vnc && r.isClassicalNahuatlVncSentenceResultFrame?.(value)
+      && r.isClassicalNahuatlVncApplicationFrame?.(value.vncApplicationFrame)) {
+      node = {type:"vnc:sentence", source:visit(value.vncApplicationFrame, depth + 1)};
+    }
     else if (vnc) node = { type: "vnc", recipe: vnc };
     else if (r.isClassicalNahuatlClauseConjunctionResultFrame?.(value) === true) {
       const first = value.conjuncts?.[0];
@@ -421,6 +425,11 @@ export function replayClassicalResultReloadRecipe(r, recipe) {
           || application.authorizationStatus !== "authorized"
           || !futureObjectReloadStep(r,application.canonicalResult)) return null;
         result = application.canonicalResult;
+      } else if (node?.type === "vnc:sentence" && exact(node, ["type", "source"])
+        && r.isClassicalNahuatlVncApplicationFrame?.(prior(node.source))) {
+        result = r.executeClassicalGrammarApplicationRequest({
+          operationId:"vnc:sentence-result", args:[prior(node.source)],
+        })?.canonicalResult;
       } else if (node?.type === "vnc" && exact(node, ["type", "recipe"])) {
         const v = node.recipe;
         if (v?.kind !== "classical-nahuatl-vnc-application-reload-recipe" || v.version !== 1
@@ -774,7 +783,7 @@ export function inspectClassicalResultLink(r, result, project, replayRuntime = r
   const restored = project(replayRuntime, reopened);
   if (!original || !restored) return { status: "missing-analysis", recipe };
   if (!sameInputs(original, restored)) return { status: "changed-analysis", recipe };
-  return { status: "verified", recipe };
+  return { status: "verified", recipe, reopened };
 }
 
 // Check the actual address bytes before offering the link to the user.

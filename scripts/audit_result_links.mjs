@@ -1,5 +1,6 @@
+import { isDeepStrictEqual } from "node:util";
 import { createRuntimeInstance } from "../src/runtime/create_runtime.mjs";
-import { inspectClassicalResultLink, encodeVerifiedClassicalResultLink } from "../src/application/classical/result_reload.mjs";
+import { inspectClassicalResultLink, encodeVerifiedClassicalResultLink, exportClassicalResultReloadRecipe, replayClassicalResultReloadRecipe } from "../src/application/classical/result_reload.mjs";
 import capabilities from "../src/tests/classical_all_25_capability_play_contract.test.js";
 import { getClassicalSharedContactLabel } from "../src/ui/composition/structure_design.mjs";
 
@@ -354,15 +355,51 @@ function project(runtime, value) {
 }
 
 const counts = new Map();
+const changedRecipes = new Map();
+let checkedOperandGraphs = 0;
+let changedOperandGraphs = 0;
+const jsonPayload = value => value && JSON.parse(JSON.stringify(value));
 for (const [result, operation] of witnesses) {
   const check = inspectClassicalResultLink(runtime, result, project, fresh);
   let { status } = check;
   if (status === "verified") {
+    const second = exportClassicalResultReloadRecipe(fresh, { result: check.reopened });
+    if (!isDeepStrictEqual(jsonPayload(check.recipe), jsonPayload(second))) {
+      changedRecipes.set(operation, (changedRecipes.get(operation) || 0) + 1);
+      if (changedRecipes.get(operation) === 1) {
+        const before = jsonPayload(check.recipe).nodes;
+        const after = jsonPayload(second)?.nodes;
+        const changed = before.findIndex((node, index) => !isDeepStrictEqual(node, after?.[index]));
+        console.error(JSON.stringify({
+          operation, status: "recipe-changed-after-reopen",
+          initial: before.map(node => node.type), reopened: after?.map(node => node.type),
+          firstChangedNode: changed,
+          changedFields: Object.keys(before[changed] || {}).filter(key =>
+            !isDeepStrictEqual(before[changed][key], after?.[changed]?.[key])),
+        }));
+      }
+    }
     try {
       const address = await encodeVerifiedClassicalResultLink(check.recipe);
       if (!address) status = "compact-address-failed";
     } catch {
       status = "compact-address-failed";
+    }
+  }
+  if (status === "verified" && requests.has(result)) {
+    const operands = [...new Set([...operandPaths(requests.get(result).args)].map(entry => entry.parent))]
+      .filter(parent => parent !== result && retainsOperand(result, parent));
+    if (operands.length) {
+      checkedOperandGraphs++;
+      const names = operands.map((_, index) => `operand${index}`);
+      const roots = { result, ...Object.fromEntries(names.map((name, index) => [name, operands[index]])) };
+      const graph = exportClassicalResultReloadRecipe(runtime, roots);
+      const reopened = graph && replayClassicalResultReloadRecipe(fresh, jsonPayload(graph));
+      if (!reopened || names.some(name => !retainsOperand(reopened.result, reopened[name]))) {
+        changedOperandGraphs++;
+        console.error(JSON.stringify({ operation, status: "nested-operand-identity-changed",
+          operands: operands.map(operand => witnesses.get(operand)) }));
+      }
     }
   }
   if (status !== "verified") {
@@ -380,9 +417,14 @@ for (const [result, operation] of witnesses) {
   counts.set(key, (counts.get(key) || 0) + 1);
 }
 console.log(`Checked ${witnesses.size} accepted Result witnesses`);
+console.log(`${checkedOperandGraphs - changedOperandGraphs} of ${checkedOperandGraphs} nested Results retained exact reopened operands`);
+for (const [operation, count] of changedRecipes) {
+  console.log(`${count}\t${operation}: recipe changed after reopen`);
+}
 for (const [key, count] of [...counts].sort(([left], [right]) => left.localeCompare(right))) {
   console.log(`${count}\t${key}`);
 }
-if (fixtureResults.failed || !generatedEdges.size || !retainedSubstitutions || !adverbialAccepted || !typedVncAccepted || typedVncErrors.size || publicSourcesAccepted !== publicSources.length + 1
+if (!checkedOperandGraphs || changedOperandGraphs || changedRecipes.size
+  || fixtureResults.failed || !generatedEdges.size || !retainedSubstitutions || !adverbialAccepted || !typedVncAccepted || typedVncErrors.size || publicSourcesAccepted !== publicSources.length + 1
   || !readingCoverage.get("nnc:adjectival-modification")?.accepted
   || !readingCoverage.get("sentence:supplementation")?.accepted || [...counts.keys()].some(key => !key.endsWith(": verified"))) process.exitCode = 1;

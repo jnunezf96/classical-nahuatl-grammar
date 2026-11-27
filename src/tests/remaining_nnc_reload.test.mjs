@@ -686,3 +686,22 @@ test("a typed causative probe with an unavailable voice returns a rejected choic
   assert.equal(binding.blockReason, "classical-vnc-typed-source-application-target-voice-not-authorized");
   assert.deepEqual(binding.executionArgs, []);
 });
+
+test("a verbal sentence reopens with the exact finite Result shared in its graph", async () => {
+  const r = await runtime(), fresh = await runtime();
+  const finite = execute(r, "vnc:application", {
+    sourceStem:"nemi", verbClass:"B", sourceValence:"intransitive", subject:"3sg", tense:"present", mood:"indicative",
+  });
+  const result = execute(r, "vnc:sentence-result", finite);
+  const recipe = exportClassicalResultReloadRecipe(r, {result, finite});
+  assert.equal(recipe.nodes.length, 2);
+  const reopened = replayClassicalResultReloadRecipe(fresh, recipe);
+  assert.equal(reopened.result.vncApplicationFrame, reopened.finite);
+  assert.equal(reopened.result.sentenceSurface, result.sentenceSurface);
+  assert.equal(reopened.result.sentenceFormulaDisplay, result.sentenceFormulaDisplay);
+  const oldRecipe = { ...recipe, roots:{result:0},
+    nodes:[{type:"vnc", recipe:r.exportClassicalNahuatlVncApplicationRecipe(result)}] };
+  const oldResult = replayClassicalResultReloadRecipe(fresh, oldRecipe)?.result;
+  assert.equal(oldResult.sentenceSurface, result.sentenceSurface);
+  assert.equal(oldResult.sentenceFormulaDisplay, result.sentenceFormulaDisplay);
+});
