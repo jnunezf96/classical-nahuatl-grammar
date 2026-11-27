@@ -61,7 +61,7 @@ import { readClassicalSourceObjectRows, getClassicalSourceObjectControls,
   from "../composer/source_objects.mjs?v=20261007-panel-source-objects-1&interfaceRelease=1.2.36&ownerDecision=20261031-2";
 import { translateClassicalConstructionLink } from "../../application/classical/construction_link_reload.mjs";
 import { encodeCompactResultAddress, isCompactResultAddress, writeCompactResultAddress, COMPACT_RESULT_DATA_FRAGMENT } from "../../application/classical/compact_result_link.mjs";
-import { exportClassicalResultReloadRecipe, replayClassicalResultReloadRecipe, reissueClassicalAcceptedBuildBinding, matchesAcceptedVncContinuationBuild, matchesAcceptedNominalCompoundBuild, matchesAcceptedDeverbalBuild, supportsFutureObjectResultReload, supportsNominalCompoundResultReload }
+import { exportClassicalResultReloadRecipe, inspectClassicalResultLink, replayClassicalResultReloadRecipe, reissueClassicalAcceptedBuildBinding, matchesAcceptedVncContinuationBuild, matchesAcceptedNominalCompoundBuild, matchesAcceptedDeverbalBuild, supportsFutureObjectResultReload, supportsNominalCompoundResultReload }
   from "../../application/classical/result_reload.mjs?deverbalReload=20261024-8&stemReload=20261024-2&innerParticle=20261024-1&remainingReload=20261024-1&conjunctReload=20261023-1&v=20261007-reader-40-2-175&acceptedBuild=20261023-1&nominalReload=20261024-4&complexReload=20261027-1&placeReload=20261027-2&ownerDecision=20261031-2";
 import { exportClassicalGrammarWorkspaceHistoryReloadState,
   restoreClassicalGrammarWorkspaceHistoryReloadState }
@@ -49810,12 +49810,25 @@ export function createUiRenderingApi(targetObject = globalThis) {
       }
       return restored;
     }
+    function projectClassicalResultLinkAnalysis(_runtime, result) {
+      const projection = getClassicalOwnerIssuedResultProjection(result);
+      if (!projection) return null;
+      const { surface, linearFormula, sentenceFormula, operationId, outputKind } = projection;
+      const composite = getClassicalCompositeAnalysisProjection(projection.canonicalResult);
+      return {
+        surface, linearFormula, sentenceFormula, operationId, outputKind,
+        contactLabel: composite?.contactLabel,
+        constituents: composite?.rows.map(({ expression, role, formulaStart }) => ({
+          expression, role, formulaStart,
+        })),
+      };
+    }
+
     let lastAddressedResult;
     function updateClassicalResultLink(browserWindow, exactResult) {
       if (!browserWindow?.location?.href || !browserWindow.history || lastAddressedResult === exactResult) return;
       lastAddressedResult = exactResult;
-      const recipe = exactResult && exportClassicalResultReloadRecipe(targetObject, { result: exactResult });
-      const publish = compact => {
+      const publish = (compact, recipe = null) => {
         if (ClassicalConstructionSession.position.accepted.result !== exactResult) return;
         const previous = browserWindow.location.href;
         const url = new URL(previous);
@@ -49827,7 +49840,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           const fallback = "#result-v1=" + encodeURIComponent(JSON.stringify(recipe));
           if (fallback.length <= 16000) url.hash = fallback;
         }
-        if (url.href === previous) return;
+        if (url.href === previous) return Boolean(compact || url.hash.startsWith("#result-v1="));
         browserWindow.history.replaceState(browserWindow.history.state, "", url.href);
         try {
           const storage = browserWindow.sessionStorage;
@@ -49835,9 +49848,28 @@ export function createUiRenderingApi(targetObject = globalThis) {
           if (saved?.url === previous) storage.setItem(CLASSICAL_VNC_RELOAD_SESSION_KEY,
             JSON.stringify({...saved, url:url.href}));
         } catch { /* Link replay does not depend on session storage. */ }
+        return Boolean(compact || url.hash.startsWith("#result-v1="));
       };
-      if (recipe) encodeCompactResultAddress(recipe).catch(() => null).then(publish).catch(() => {});
-      else publish(null);
+      if (!exactResult) {
+        publish(null);
+        return;
+      }
+      Promise.resolve().then(async () => {
+        if (ClassicalConstructionSession.position.accepted.result !== exactResult) return;
+        const check = inspectClassicalResultLink(targetObject, exactResult, projectClassicalResultLinkAnalysis);
+        const recipe = check.status === "verified" ? check.recipe : null;
+        const compact = recipe ? await encodeCompactResultAddress(recipe).catch(() => null) : null;
+        if (ClassicalConstructionSession.position.accepted.result !== exactResult) return;
+        const published = publish(compact, recipe);
+        const status = recipe && !published ? "address-too-long" : check.status;
+        const panel = targetObject.document.getElementById("classical-result-panel");
+        if (panel) panel.dataset.classicalResultLinkStatus = status;
+        if (!published) setClassicalWholeCanvasActionStatus("This Result’s link could not be saved.");
+      }).catch(() => {
+        if (ClassicalConstructionSession.position.accepted.result !== exactResult) return;
+        publish(null);
+        setClassicalWholeCanvasActionStatus("This Result’s link could not be saved.");
+      });
     }
     function saveClassicalVncReloadSession() {
       // Startup reconstructs controls before replaying the accepted Result.

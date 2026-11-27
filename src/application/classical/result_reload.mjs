@@ -31,6 +31,8 @@ const UNIQUE_KEYS = ["lexicalStatus", "position", "sourceStem", "meaningCertaint
 const uniqueAnalysis = value => exact(value, UNIQUE_KEYS)
   && UNIQUE_KEYS.filter(key => !["sourceBoundaries", "relatedFormations"].includes(key)).every(key => value[key] === undefined || typeof value[key] === "string")
   && ["sourceBoundaries", "relatedFormations"].every(key => Array.isArray(value[key]) && value[key].length <= 32 && value[key].every(item => typeof item === "string"));
+const PRIMITIVE_ADVERBIAL_KEYS = ["predicateKind", "sourceStem", "verbClass", "sourceValence",
+  "tense", "sourceInitialISelection", "possessor"];
 const CONTEXT_KEYS = ["precedingParticle", "negativeParticle", "stressPartner",
   "requestedVariant", "sentencePosition", "clauseType", "negationScope"];
 const ADJUNCTION_KEYS = ["semanticRelation", "adverbializationDegree", "structureKind",
@@ -306,6 +308,14 @@ export function exportClassicalResultReloadRecipe(r, roots = {}, normalizePrimit
       node = {type:"nnc:lexical-adverb", stem:value.adverbialPotentialFrame.sourceConstituents.stem,
         entry:value.lexicalEntryId, degree:value.operationFrame.degree, scope:value.scope,
         context:pick(value.operationFrame.contextFrame, CONTEXT_KEYS)};
+    } else if (capture.operationId === "nnc:adverbial"
+      && r.isClassicalNahuatlAdverbialNuclearResult?.(value)
+      && r.isClassicalNahuatlPrimitiveAdverbialPotentialFrame?.(value.adverbialPotentialFrame)
+      && !value.canonicalMatrixResult) {
+      const source = r.getClassicalNahuatlPrimitiveAdverbialReloadInputs(value.adverbialPotentialFrame);
+      node = { type: "nnc:primitive-adverb", source: pick(source, PRIMITIVE_ADVERBIAL_KEYS),
+        degree: value.operationFrame.degree, scope: value.scope,
+        context: pick(value.operationFrame.contextFrame, CONTEXT_KEYS) };
     } else if (capture.operationId === "nnc:adverbial"
       && r.isClassicalNahuatlAdverbialNuclearResult?.(value)
       && value.canonicalSourceResult) {
@@ -596,6 +606,15 @@ export function replayClassicalResultReloadRecipe(r, recipe) {
         if (adverbialPotentialFrame?.lexicalEntryId !== node.entry) return null;
         result = r.requestClassicalAdverbialNncResult({adverbialPotentialFrame,
           degree:node.degree, scope:node.scope, context:node.context});
+      } else if (node?.type === "nnc:primitive-adverb"
+        && exact(node, ["type", "source", "degree", "scope", "context"])
+        && plain(node.source, PRIMITIVE_ADVERBIAL_KEYS)
+        && typeof node.degree === "string" && typeof node.scope === "string"
+        && plain(node.context, CONTEXT_KEYS)) {
+        const adverbialPotentialFrame = r.buildClassicalNahuatlPrimitiveAdverbialPotentialFrame(node.source);
+        if (!r.isClassicalNahuatlPrimitiveAdverbialPotentialFrame(adverbialPotentialFrame)) return null;
+        result = r.requestClassicalAdverbialNncResult({adverbialPotentialFrame,
+          degree: node.degree, scope: node.scope, context: node.context});
       } else if (node?.type === "nnc:adverbial" && exact(node, ["type", "source", "scope", "context"])
         && typeof node.scope === "string" && plain(node.context, CONTEXT_KEYS) && prior(node.source)) {
         result = r.requestClassicalAdverbialNncResult({ canonicalSourceResult: prior(node.source),
@@ -686,4 +705,19 @@ export function reissueClassicalAcceptedBuildBinding(r, result, expectedSource =
   return r.isClassicalGrammarTypedSourceOperationBindingFrame?.(binding) === true
     && binding.bindingStatus === "ready" && binding.exactSource === source
     && binding.navigator === navigator ? binding : null;
+}
+
+// Inspect any accepted Result through the same recipe path used by sharing.
+// A caller can supply a fresh runtime to check that no session state is needed.
+export function inspectClassicalResultLink(r, result, project, replayRuntime = r) {
+  const recipe = exportClassicalResultReloadRecipe(r, { result });
+  if (!recipe) return { status: "missing-recipe" };
+  const reopened = replayClassicalResultReloadRecipe(replayRuntime, JSON.parse(JSON.stringify(recipe)))?.result;
+  if (!reopened) return { status: "replay-failed", recipe };
+
+  const original = project(r, result);
+  const restored = project(replayRuntime, reopened);
+  if (!original || !restored) return { status: "missing-analysis", recipe };
+  if (!sameInputs(original, restored)) return { status: "changed-analysis", recipe };
+  return { status: "verified", recipe };
 }

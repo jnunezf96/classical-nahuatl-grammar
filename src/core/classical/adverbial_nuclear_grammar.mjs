@@ -14,6 +14,7 @@ const ADVERBIAL_POTENTIAL_RECORDS = new WeakMap();
 const LEXICAL_ADVERBIAL_NNC_SOURCES = new WeakMap();
 const LEXICAL_ADVERBIAL_VNC_SOURCES = new WeakMap();
 const PRIMITIVE_ADVERBIAL_SOURCES = new WeakMap();
+const PRIMITIVE_ADVERBIAL_INPUTS = new WeakMap();
 const ISSUED_ADVERBIAL_FRAMES = new WeakSet();
 const EXACT_INCORPORATION_MATRICES = new WeakMap();
 const ISSUED_ADVERBIAL_BATCH_PLANS = new WeakSet();
@@ -1198,6 +1199,7 @@ function buildClassicalNahuatlPrimitiveAdverbialPotentialFrame(source = {}, targ
     nominalPredicateSourceFrame:nominal,typedSlotFrame,
     callerSuppliedAuthorityAccepted:false,formulaStringAuthority:false,surfaceStringAuthority:false});
   PRIMITIVE_ADVERBIAL_SOURCES.set(primitive,record);
+  PRIMITIVE_ADVERBIAL_INPUTS.set(primitive, Object.freeze({...source, predicateKind:kind, sourceStem:stem, verbClass}));
   return resolveClassicalNahuatlAdverbialPotential({stem,clauseKind:record.clauseKind},target,null,null,primitive);
 }
 
@@ -2764,6 +2766,9 @@ export function installClassicalNahuatlAdverbialNuclearGlobals(targetObject = gl
       buildClassicalNahuatlLexicalAdverbialPotentialFrame(source,target),
     buildClassicalNahuatlPrimitiveAdverbialPotentialFrame:source=>
       buildClassicalNahuatlPrimitiveAdverbialPotentialFrame(source,target),
+    getClassicalNahuatlPrimitiveAdverbialReloadInputs:frame=>
+      isClassicalNahuatlAdverbialPotentialFrame(frame)
+        ? PRIMITIVE_ADVERBIAL_INPUTS.get(frame.primitiveAdverbialSourceFrame) : undefined,
     isClassicalNahuatlPrimitiveAdverbialPotentialFrame:frame=>
       isClassicalNahuatlAdverbialPotentialFrame(frame)
       && frame.sourceInputMode === "owner-issued-primitive-adverbial-predicate-source",

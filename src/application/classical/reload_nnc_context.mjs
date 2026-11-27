@@ -13,7 +13,10 @@ export function reissueNncReloadSource(r,source) {
   // has an explicitly empty class and belongs to the general-use route.
   const legacyGeneralUse = source.sourceUse === undefined && source.sourceClass === ""
     && !source.embedStem && !source.matrixStem && source.supportiveInitialI === false;
-  return r.issueCanonicalNncSourceFrame(legacyGeneralUse ? {...source,sourceUse:"general-use"} : source);
+  const restored = r.buildClassicalNahuatlOrdinaryNncSourceFrame(
+    legacyGeneralUse ? {...source, sourceUse:"general-use"} : source,
+  );
+  return r.isClassicalNahuatlOrdinaryNncSourceFrame?.(restored) ? restored : null;
 }
 const DIRECT_NNC_CHOICES = [
   "subject", "animacy", "humanness", "stateAvailability", "naturalPossessionPolicy",

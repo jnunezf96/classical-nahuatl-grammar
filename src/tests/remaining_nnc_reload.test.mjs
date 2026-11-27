@@ -9,6 +9,7 @@ import {
 import {
   exportClassicalResultReloadRecipe,
   replayClassicalResultReloadRecipe,
+  inspectClassicalResultLink,
 } from "../application/classical/result_reload.mjs";
 const runtime = async () =>
   (
@@ -568,5 +569,46 @@ test("general-use noun links preserve their source scope and recover earlier lin
     assert.equal(reopened.result.sentenceSurface,result.sentenceSurface);
     assert.equal(reopened.result.sentenceFormulaDisplay,result.sentenceFormulaDisplay);
     assert.ok(reopened.result.sourceNncSlotFrame===reopened.noun.typedSlotFrame);
+  }
+});
+
+test("the shared link check verifies an adverbial with an ordinary compound noun parent", async () => {
+  const r = await runtime(), fresh = await runtime();
+  const {default: fixtures} = await import("./helpers/classical_lesson44_nominal_fixture_sources.js");
+  const fixture = fixtures.createNominalFixtureSource(r, "44.6-ixtlapal");
+  const result = r.requestClassicalAdverbialNncResult({adverbialPotentialFrame: fixture.potential});
+  assert.equal(result.authorizationStatus, "authorized");
+  const project = (_runtime, value) => ({
+    surface: value.sentenceSurface || value.wordSurface,
+    analysis: value.formulaRealization,
+    source: value.adverbialPotentialFrame?.canonicalSourceResult?.sourceFrame?.sourceConstituents,
+  });
+  assert.ok(project(r, result).surface);
+  assert.ok(project(r, result).analysis);
+  assert.equal(inspectClassicalResultLink(r, result, project, fresh).status, "verified");
+  const changedAnalysis = (runtime, value) => ({
+    ...project(runtime, value),
+    analysis: runtime === fresh ? "different analysis" : value.formulaRealization,
+  });
+  assert.equal(inspectClassicalResultLink(r, result, changedAnalysis, fresh).status, "changed-analysis");
+});
+
+test("primitive adverbial links preserve the exact initial and possessor choices", async () => {
+  const r = await runtime(), fresh = await runtime();
+  for (const possessor of ["1sg", "2sg"]) {
+    const adverbialPotentialFrame = r.buildClassicalNahuatlPrimitiveAdverbialPotentialFrame({
+      predicateKind: "active-action", sourceStem: "iyo-ā", verbClass: "C",
+      sourceValence: "intransitive", sourceInitialISelection: "supportive", possessor,
+    });
+    const result = r.requestClassicalAdverbialNncResult({adverbialPotentialFrame});
+    assert.equal(result.authorizationStatus, "authorized");
+    const project = (_runtime, value) => ({
+      surface: value.wordSurface,
+      analysis: value.formulaRealization,
+      source: value.adverbialPotentialFrame.primitiveAdverbialSourceFrame.nominalPredicateSourceFrame.possessor,
+    });
+    assert.equal(project(r, result).source, possessor);
+    assert.ok(project(r, result).analysis);
+    assert.equal(inspectClassicalResultLink(r, result, project, fresh).status, "verified");
   }
 });
