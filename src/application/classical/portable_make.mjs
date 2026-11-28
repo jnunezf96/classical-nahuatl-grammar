@@ -293,6 +293,11 @@ export function installPortableMake(runtime) {
       ? runtime.deriveClassicalNahuatlVncDerivationOperationFrame(...args) : null],
     ["vnc:derived-machinery", args => args.length === 3
       ? runtime.buildClassicalNahuatlDerivedVncMachineryFrame(...args) : null],
+    ['vnc:typed-application-binding', args => {
+      if (args.length !== 2) return null;
+      const binding = runtime.issueClassicalNahuatlVncTypedSourceApplicationBindingFrame(...args);
+      return binding?.bindingStatus === 'ready' ? binding : null;
+    }],
     ["vnc:denominal-parent-operation", args => args.length === 1
       && runtime.isClassicalNahuatlDenominalVncResultFrame(args[0]) ? args[0].operationFrame : null],
     ["vnc:analytical-source", args => args.length === 1

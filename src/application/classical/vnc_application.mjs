@@ -10407,6 +10407,18 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       const step = exportClassicalNahuatlVncApplicationRecipe(frame)?.steps?.at(-1);
       return step && Object.freeze({parent, step});
     }
+    function reissueLegacyVncParticipant(frame) {
+      if (frame?.kind !== "classical-nahuatl-participant-frame" || portableSourceIssuer(frame)) return frame;
+      const {role, requestedAgreement, person, number, animacy, humanness,
+        specificity, referenceId, impersonal} = frame;
+      const issued = buildClassicalNahuatlParticipantFrame({
+        role, agreement: requestedAgreement, person, number, animacy, humanness,
+        case: frame.case, specificity, referenceId, impersonal,
+      });
+      return Object.keys(frame).length === Object.keys(issued).length
+        && Object.keys(issued).every(key => issued[key] === frame[key]) ? issued : frame;
+    }
+
     function getClassicalNahuatlVncRecipeStepExecutionRequest(step = null, parent = null) {
       if (!step || typeof step !== "object" || Array.isArray(step)
         || Object.keys(step).some(key => !["operationId", "request"].includes(key))) return null;
@@ -10454,8 +10466,16 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         ? parent.resultFrame : parent;
       if (sourceResult && !isClassicalNahuatlVncApplicationIssuedResultFrame(sourceResult)
         && !isClassicalNahuatlVncSentenceResultFrame(sourceResult)) return null;
+      const request = {...step.request};
+      if (request.sourceSubjectFrame) {
+        request.sourceSubjectFrame = reissueLegacyVncParticipant(request.sourceSubjectFrame);
+      }
+      if (Array.isArray(request.sourceObjectRequests)) {
+        request.sourceObjectRequests = request.sourceObjectRequests.map(row => row?.participantFrame
+          ? {...row, participantFrame: reissueLegacyVncParticipant(row.participantFrame)} : row);
+      }
       return Object.freeze({ operationId, args: Object.freeze(
-        sourceResult ? [step.request, sourceResult] : [step.request]),
+        sourceResult ? [request, sourceResult] : [request]),
       });
     }
     function prepareClassicalNahuatlVncApplicationRecipeReplay(recipe = null) {
@@ -12225,6 +12245,10 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
           selectedInventory,
         }),
       );
+      if (bindingStatus === "ready") {
+        recordPortableSource(frame, "vnc:typed-application-binding",
+          [exactSourceMachineryFrame, frozenCallerSelections]);
+      }
       return frame;
     }
     function isClassicalNahuatlVncTypedSourceApplicationBindingFrame(

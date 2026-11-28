@@ -291,6 +291,9 @@ test('the live-base continuation owner reissues the three-stage verb request and
     subject: '1sg', mood: 'indicative', tense: 'present', derivationType: 'causative',
     causativeObjectKind: 'specific-projective', derivationOptionId: 'causative:type-two:hua:cochī-hua',
   });
+  const {exportClassicalResultReloadRecipe, replayClassicalResultReloadRecipe} =
+    await import('../application/classical/result_reload.mjs');
+  let legacyParent = null;
   let result = make('vnc:sentence-result', base);
   for (const kind of ['specific-projective', 'nonspecific-human']) {
     const binding = r.issueClassicalNahuatlVncContinuationBindingFrame('vnc:application', result, {
@@ -302,6 +305,7 @@ test('the live-base continuation owner reissues the three-stage verb request and
     const finite = make('vnc:application', ...binding.executionArgs);
     assert.match(m.requestFor(finite).serialized, /vnc-continuation/);
     result = make('vnc:sentence-result', finite);
+    if (kind === 'specific-projective') legacyParent = exportClassicalResultReloadRecipe(r, {result});
   }
   const fresh = await bootPreview();
   const recipient = fresh.classicalPortableMake;
@@ -317,6 +321,25 @@ test('the live-base continuation owner reissues the three-stage verb request and
   const objects = fresh.getClassicalNahuatlVncContinuationSourceConstituents(opened.vncApplicationFrame).sourceObjectRequests;
   assert.deepEqual(objects.map(object => [object.derivationalLevel, object.objectKind]),
     [[1, 'specific-projective'], [2, 'specific-projective'], [3, 'nonspecific-human']]);
+  assert.ok(legacyParent);
+  const restored = await bootPreview();
+  const parent = replayClassicalResultReloadRecipe(restored, JSON.parse(JSON.stringify(legacyParent)),
+    {recordPortableRequests: true})?.result;
+  assert.equal(parent?.sentenceSurfaceDisplay, 'Niccochītilia');
+  const continuation = restored.issueClassicalNahuatlVncContinuationBindingFrame('vnc:application', parent, {
+    subject: '1sg', mood: 'indicative', tense: 'present',
+    requestedDerivation: 'applicative', requestedVoice: 'active', applicativeObjectKind: 'nonspecific-human',
+    applicativeObjectPerson: '',
+  });
+  assert.equal(continuation?.bindingStatus, 'ready', continuation?.blockReason);
+  const restoredEngine = restored.classicalPortableMake;
+  const generated = restoredEngine.make({operationId: continuation.operationId, args: continuation.executionArgs})?.canonicalResult;
+  assert.ok(generated);
+  const address = restoredEngine.addressFor(generated);
+  const newReceiver = (await bootPreview()).classicalPortableMake;
+  const newResult = newReceiver.open(address)?.canonicalResult;
+  assert.ok(newResult);
+  assert.deepEqual(graph(newReceiver, newResult), graph(restoredEngine, generated));
 });
 
 test('authored verb machinery with participant and scope choices survives the typed workspace packet', async () => {
@@ -1738,7 +1761,7 @@ test('an exact continuation argument list retains its own choices when bindings 
 });
 
 test('the shared Make packet only accepts results with a portable request in the preview', async () => {
-  const {executeConstructionPacket} = await import('../ui/composition/construction_packet.mjs');
+  const {executeConstructionPacket, requirePortableMakeResult} = await import('../ui/composition/construction_packet.mjs');
   const canonicalResult = {};
   const applicationResult = {authorizationStatus: 'authorized', canonicalResult};
   const portable = createPortableMake(() => applicationResult);
@@ -1750,9 +1773,37 @@ test('the shared Make packet only accepts results with a portable request in the
     kind: 'clause', captures: [], choices: {},
     controller: {compose: () => applicationResult},
   };
+  const {readFileSync} = await import('node:fs');
+  const {runInNewContext} = await import('node:vm');
+  const renderer = readFileSync(new URL('../ui/rendering/rendering.mjs', import.meta.url), 'utf8');
+  const first = renderer.indexOf('    function composeClassicalClauseRelationFromUserAction');
+  const last = renderer.indexOf('    function continueClassicalCompositionAsSource', first);
+  assert.ok(first >= 0 && last > first);
+  let history = 0;
+  let cancelled = 0;
+  let accepted = null;
+  let published = null;
+  runtime.completeClassicalGrammarWorkspaceUserAction = () => history++;
+  runtime.cancelClassicalGrammarWorkspaceUserAction = () => cancelled++;
+  const directCompose = runInNewContext(renderer.slice(first, last) + '\ncomposeClassicalClauseRelationFromUserAction', {
+    targetObject: runtime,
+    requirePortableMakeResult,
+    ClassicalConstructionSession: {restore: result => { accepted = result; }},
+    scheduleClassicalVncReloadSave() { published = portable.addressFor(accepted); },
+    syncClassicalGrammarWorkspaceHistory() {},
+  });
   assert.equal(executeConstructionPacket(runtime, packet)?.blockReason, 'portable-make-request-required');
+  assert.equal(directCompose(packet.controller, {}).blockReason, 'portable-make-request-required');
+  assert.equal(cancelled, 1);
+  assert.equal(accepted, null);
+  assert.equal(published, null);
   assert.equal(portable.make({operationId: 'clause:fixture', args: []}), applicationResult);
   assert.equal(executeConstructionPacket(runtime, packet), applicationResult);
+  assert.equal(directCompose(packet.controller, {}), applicationResult);
+  assert.equal(history, 1);
+  assert.equal(accepted, canonicalResult);
+  assert.equal(published, portable.addressFor(canonicalResult));
+  assert.ok(published);
 });
 
 test('Make and replay reject an Owner that changes a prepared choice', () => {
@@ -1943,4 +1994,45 @@ test('Make and Share preserve shared literal arguments without merging equal cho
   const reopened = recipient.open(sender.addressFor(made))?.canonicalResult;
   assert.deepEqual(reopened, made);
   assert.equal(recipient.requestFor(reopened).serialized, sender.requestFor(made).serialized);
+});
+
+test('a legacy typed impersonal recipe can issue a portable continuation parent', async () => {
+  const {exportClassicalResultReloadRecipe, replayClassicalResultReloadRecipe} =
+    await import('../application/classical/result_reload.mjs');
+  const bootRuntime = async portableMakeEnabled => (await createRuntimeInstance({
+    portableMakeEnabled,
+    documentObject: {getElementById: () => null, addEventListener() {}},
+  })).runtimeObject;
+  const stock = await bootRuntime(false);
+  const source = stock.requestClassicalVncApplicationResult({
+    sourceStem: 'nemi', verbClass: 'B', sourceValence: 'intransitive',
+    subject: '3sg', mood: 'indicative', tense: 'present',
+  }).resultFrame.sourceMachineryFrame;
+  const request = {
+    requestedDerivation: 'direct', requestedVoice: 'impersonal',
+    nonactiveOptionId: 'tla-impersonal', tense: 'present',
+  };
+  const typed = stock.issueClassicalNahuatlVncTypedSourceApplicationBindingFrame(source, request);
+  const original = stock.executeClassicalGrammarApplicationRequest({
+    operationId: 'vnc:application', args: [typed],
+  })?.canonicalResult;
+  assert.ok(original);
+  const legacy = structuredClone(exportClassicalResultReloadRecipe(stock, {result: original}));
+  const step = legacy.nodes.at(-1).recipe.steps.at(-1);
+  step.operationId = 'vnc:typed-impersonal';
+  const {requestedDerivation, requestedVoice, nonactiveOptionId, subject, mood, tense} = typed.effectiveSelections;
+  step.request = {requestedDerivation, requestedVoice, nonactiveOptionId, subject, mood, tense};
+
+  const runtime = await bootRuntime(true);
+  const parent = replayClassicalResultReloadRecipe(runtime, legacy, {recordPortableRequests: true})?.result;
+  assert.ok(parent);
+  const sender = runtime.classicalPortableMake;
+  const sentence = sender.make({operationId: 'vnc:sentence-result', args: [parent]})?.canonicalResult;
+  assert.ok(sentence);
+  assert.match(sender.requestFor(parent).serialized, /vnc:typed-application-binding/);
+  const recipient = (await bootRuntime(true)).classicalPortableMake;
+  const reopened = recipient.open(sender.addressFor(sentence))?.canonicalResult;
+  assert.ok(reopened);
+  assert.equal(recipient.requestFor(reopened).serialized, sender.requestFor(sentence).serialized);
+  assert.equal(reopened.sentenceFormulaDisplay, sentence.sentenceFormulaDisplay);
 });

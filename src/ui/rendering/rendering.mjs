@@ -53,7 +53,7 @@ import {getBuildOperationGroup,getBuildOperationOrder,inventoryOptionReference,f
 import {projectFiniteVncExecution,projectOrderedVoiceExecution,projectOrdinaryNncExecution,projectFinalSourceExecution,isFinalSourceOperation,createIssuedBindingOperationScope,issueIssuedBindingOperationSnapshot,isCurrentIssuedBindingOperationSnapshot,captureIssuedBindingChoiceFrame,adoptIssuedBindingOperationCandidate,matchesIssuedBindingExecutionPacket} from '../composition/issued_binding_operation_transaction.mjs?supplementationSession=20261028-1&finalSourceSession=20261028-1&ownerDecision=20261031-1';
 import {createConstructionSession} from '../composition/construction_session.mjs?stemReload=20261024-2&v=20261012-position-12&acceptedBuild=20261023-1&operationPilot=20261027-1&ownerProtocol=20261028-1&acceptanceRecovery=20261028-1&issuedBinding=20261028-1&ownerDecision=20261031-1';
 import {projectConstructionValue} from '../composition/construction_position.mjs?stemReload=20261024-2&v=20261012-position-12&acceptedBuild=20261023-1&operationPilot=20261027-1&ownerProtocol=20261028-1&acceptanceRecovery=20261028-1&issuedBinding=20261028-1&ownerDecision=20261031-1';
-import {executeConstructionPacket, freezeConstructionData, getConstructionPacketOrigin, captureConstructionParents, matchesConstructionWitness, orderConstructionSlots, getConstructionFixedChoices, getConstructionLayerReadiness, getConstructionParticleHostInput} from '../composition/construction_packet.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1&interfaceRelease=1.2.36&choiceGuidance=20261027-2&supplementationSession=20261028-1&utteranceProjection=20261028-1&ownerDecision=20261031-1';
+import {executeConstructionPacket, requirePortableMakeResult, freezeConstructionData, getConstructionPacketOrigin, captureConstructionParents, matchesConstructionWitness, orderConstructionSlots, getConstructionFixedChoices, getConstructionLayerReadiness, getConstructionParticleHostInput} from '../composition/construction_packet.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1&interfaceRelease=1.2.36&choiceGuidance=20261027-2&supplementationSession=20261028-1&utteranceProjection=20261028-1&ownerDecision=20261031-1';
 import {resolveResultEditTarget} from '../composition/result_editing.mjs?choiceArchitecture=20261026-6&nucleusEdit=20261024-9&innerParticle=20261024-1&v=20261023-conjunction-1&interfaceRelease=1.2.36&choiceGuidance=20261027-2&supplementationSession=20261028-1&utteranceProjection=20261028-1';
 import {canRebuildResultEdit,getResultEditReorder} from '../composition/result_edit_rebuild.mjs?nucleusEdit=20261024-9&innerParticle=20261024-1&mixedInner=20261024-1&v=20261023-conjunct-edit-1&interfaceRelease=1.2.36&ownerDecision=20261031-1';
 import {getNativeGrammarControls, getWritingSourcePresentation, setChoiceDesignContext, setAppliedRoutePresentation} from '../composition/choice_design.mjs?clickFeedback=20261023-1&coreStem=20261023-1&v=20261022-reset-eligibility-1&writingSource=20261022-1&fixedChoices=20261022-1';
@@ -38865,13 +38865,17 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const token = targetObject.beginClassicalGrammarWorkspaceUserAction?.();
       let result = null;
       try {
-        result = controller.compose(selections);
+        result = requirePortableMakeResult(targetObject, controller.compose(selections));
         return result;
       } finally {
         if (result?.authorizationStatus === "authorized" && result.canonicalResult) {
           targetObject.completeClassicalGrammarWorkspaceUserAction?.(
             token, result.canonicalResult
           );
+          if (targetObject.classicalPortableMake) {
+            ClassicalConstructionSession.restore(result.canonicalResult);
+            scheduleClassicalVncReloadSave();
+          }
           syncClassicalGrammarWorkspaceHistory();
         } else {
           targetObject.cancelClassicalGrammarWorkspaceUserAction?.(token);

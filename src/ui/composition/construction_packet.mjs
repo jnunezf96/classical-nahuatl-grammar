@@ -53,17 +53,21 @@ export function getConstructionLayerReadiness(runtime,packet) {
   return previewConstructionPacket(runtime,packet)?.isCurrent?.()
     ? layers : {ready:false,blockReason:'conjunct-change-incompatible-with-retained-whole',recoveryKind:'result-edit'};
 }
-export function executeConstructionPacket(runtime, packet) {
-  const application = executePacket(runtime, packet);
+export function requirePortableMakeResult(runtime, application) {
   const portable = runtime.classicalPortableMake;
   if (portable && application?.authorizationStatus === 'authorized'
       && !portable.addressFor(application.canonicalResult)) {
     return Object.freeze({
       authorizationStatus: 'blocked',
       blockReason: 'portable-make-request-required',
+      canonicalResult: null,
     });
   }
   return application;
+}
+
+export function executeConstructionPacket(runtime, packet) {
+  return requirePortableMakeResult(runtime, executePacket(runtime, packet));
 }
 
 function executePacket(runtime, packet) {
