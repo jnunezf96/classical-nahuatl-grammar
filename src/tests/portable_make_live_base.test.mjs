@@ -1065,6 +1065,27 @@ test('changing an attached particle shares the rebuilt whole and its exact host'
   assert.equal(reopenedHost.sentenceFormulaDisplay, host.sentenceFormulaDisplay);
 });
 
+test('seeding a saved operand preserves a link for an interned Result', () => {
+  const host = Object.freeze({kind: 'host'});
+  const modifier = Object.freeze({kind: 'modifier'});
+  const engine = createPortableMake(({operationId, args}) => ({
+    authorizationStatus: 'authorized',
+    canonicalResult: operationId === 'test:host' ? host
+      : operationId === 'test:attach' ? modifier : args[0] === modifier ? host : null,
+  }));
+  const original = {operationId: 'test:host', args: []};
+  assert.equal(engine.make(original).canonicalResult, host);
+  assert.equal(engine.make({operationId: 'test:attach', args: [host]}).canonicalResult, modifier);
+  assert.equal(engine.make({
+    operationId: 'workspace:remove-result-part', args: [modifier, ['particleResultFrame']],
+  }).canonicalResult, host);
+  const link = engine.addressFor(host);
+  const request = engine.requestFor(host);
+  assert.equal(engine.seed(original).canonicalResult, host);
+  assert.equal(engine.requestFor(host), request);
+  assert.equal(engine.addressFor(host), link);
+});
+
 test('a conjunction edit replays the Owner request and retains its unchanged conjunct', async () => {
   const {executeConstructionPacket} = await import('../ui/composition/construction_packet.mjs');
   const {getResultEditTargets} = await import('../ui/composition/result_editing.mjs');

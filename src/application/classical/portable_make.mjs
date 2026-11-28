@@ -16,7 +16,7 @@ export function createPortableMake(execute, owner = {}) {
   // request for identity checks and its latest request for Share.
   const latest = new WeakMap();
 
-  function executeNode(compiled, address, localPlan = null) {
+  function executeNode(compiled, address, localPlan = null, seedOnly = false) {
     const projectedSources = new WeakMap();
     const replayPlan = materializePortableRequest(owner, compiled.serialized, compiled.dependencies, projectedSources);
     if (!replayPlan) return null;
@@ -41,12 +41,12 @@ export function createPortableMake(execute, owner = {}) {
     const removal = plan.request.operationId === 'workspace:remove-result-part';
     if (application?.authorizationStatus !== 'authorized' || !result) return null;
     const existing = accepted.get(result);
-    if (existing && !removal) {
+    if (existing && (!removal || seedOnly)) {
       const previous = existing;
       const sameRequest = previous.serialized === compiled.serialized
         && previous.dependencies.length === compiled.dependencies.length
         && previous.dependencies.every((dependency, index) => dependency === compiled.dependencies[index]);
-      if (sameRequest) latest.set(result, {compiled, address});
+      if (sameRequest && !seedOnly) latest.set(result, {compiled, address});
       return sameRequest ? application : null;
     }
     if (!existing) accepted.set(result, compiled);
@@ -58,7 +58,7 @@ export function createPortableMake(execute, owner = {}) {
     return application;
   }
 
-  function make(request, prepared = null) {
+  function make(request, prepared = null, seedOnly = false) {
     const typedBinding = request?.typedBinding;
     if (typedBinding && prepared && getPortablePreparedInput(prepared) !== typedBinding) return null;
     let plan;
@@ -85,7 +85,7 @@ export function createPortableMake(execute, owner = {}) {
     const entries = collectPortableRequestGraph(compiled);
     const address = encodePortableRequestGraph(entries);
     const localPlan = {request, prepared};
-    return address ? executeNode(compiled, address, localPlan) : null;
+    return address ? executeNode(compiled, address, localPlan, seedOnly) : null;
   }
 
   function compile(serialized, dependencies, inputs) {
@@ -113,7 +113,11 @@ export function createPortableMake(execute, owner = {}) {
   }
 
   return Object.freeze({
-    make, open,
+    make: (request, prepared) => make(request, prepared),
+    // Workspace restoration can supply new operands without replacing the
+    // request already established by the open Result URL.
+    seed: (request, prepared) => make(request, prepared, true),
+    open,
     requestFor: result => latest.get(result)?.compiled ?? null,
     addressFor: result => {
       const entry = latest.get(result);

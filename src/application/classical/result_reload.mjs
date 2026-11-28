@@ -413,11 +413,11 @@ export function replayClassicalResultReloadRecipe(runtime, recipe, {recordPortab
   const portable = recordPortableRequests ? runtime.classicalPortableMake : null;
   const r = portable ? Object.create(runtime, {
     executeClassicalGrammarApplicationRequest: {
-      value: (request, prepared) => portable.make(request, prepared)
+      value: (request, prepared) => portable.seed(request, prepared)
         ?? runtime.executeClassicalGrammarApplicationRequest(request, prepared),
     },
     executeClassicalGrammarTypedSourceOperationBindingFrame: {
-      value: binding => portable.make({typedBinding: binding})
+      value: binding => portable.seed({typedBinding: binding})
         ?? runtime.executeClassicalGrammarTypedSourceOperationBindingFrame(binding),
     },
     ...Object.fromEntries(Object.entries({
@@ -427,7 +427,7 @@ export function replayClassicalResultReloadRecipe(runtime, recipe, {recordPortab
       requestClassicalAdverbialNncResult: "nnc:adverbial",
       requestClassicalAdverbialAdjunctionResult: "clause:adverbial-adjunction",
     }).map(([method, operationId]) => [method, {
-      value: (...args) => portable.make({operationId, args})?.canonicalResult
+      value: (...args) => portable.seed({operationId, args})?.canonicalResult
         ?? runtime[method](...args),
     }])),
   }) : runtime;
