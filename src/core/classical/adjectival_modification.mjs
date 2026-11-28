@@ -1,3 +1,4 @@
+import {recordPortableSource} from '../../application/classical/portable_build_request.mjs';
 // Canonical multiple-nucleus adjectival modification (Andrews Lessons 40-43).
 //
 // Lessons 40 and 41 describe lexical/source classes and operations owned by
@@ -1979,6 +1980,7 @@ function buildIncorporationAnalysis(targetObject, source = {}) {
     lessonMetadataAuthority: false,
   }));
   ISSUED_INCORPORATION_ANALYSES.add(frame);
+  recordPortableSource(frame, 'nnc:fixed-modification-analysis', [{sequenceStatus: frame.sequenceStatus}]);
   return frame;
 }
 
@@ -2053,6 +2055,7 @@ function projectResultForIncorporation(
   });
   issue(targetObject, "incorporationFrames", frame);
   ISSUED_INCORPORATION_FRAMES.add(frame);
+  recordPortableSource(frame, 'nnc:fixed-modification-constituent', [result, incorporationAnalysis]);
   return frame;
 }
 

@@ -674,6 +674,9 @@ function issueClassicalNahuatlPatientiveEmbedConstituentFrame(
     surfaceStringAuthority: false,
   });
   ISSUED_PATIENTIVE_EMBED_CONSTITUENT_FRAMES.add(frame);
+  recordPortableSource(frame, 'nnc:patientive-constituent-bridge', [
+    captureFrame.canonicalNncGrammarFrame || captureFrame.canonicalPatientiveNncResult, 'embed',
+  ]);
   return frame;
 }
 
@@ -726,6 +729,9 @@ function issueClassicalNahuatlPatientiveMatrixConstituentFrame(
     surfaceStringAuthority: false,
   });
   ISSUED_PATIENTIVE_MATRIX_CONSTITUENT_FRAMES.add(frame);
+  recordPortableSource(frame, 'nnc:patientive-constituent-bridge', [
+    captureFrame.canonicalNncGrammarFrame || captureFrame.canonicalPatientiveNncResult, 'matrix',
+  ]);
   return frame;
 }
 

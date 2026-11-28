@@ -282,6 +282,19 @@ test('the nominal operation and accepted slot reissue through one forward chain'
   assert.equal(received.serialized, sent.serialized);
   assert.ok(reopened.sourceNncSlotFrame === received.dependencies[0].typedSlotFrame);
   assert.equal(reopened.sentenceSurface, sentence.sentenceSurface);
+  const localNoun = r.requestClassicalOrdinaryNncResult(source, operation);
+  assert.ok(localNoun);
+  const localSentence = make.make({operationId: 'nnc:sentence-surface', args: [
+    localNoun.typedSlotFrame, {sentenceType: 'assertion', polarity: 'positive'},
+  ]})?.canonicalResult;
+  assert.ok(localSentence);
+  const localRequest = make.requestFor(localSentence);
+  assert.match(localRequest.serialized, /grammar:internal-application-source/);
+  assert.match(localRequest.serialized, /grammar:accepted-continuation-source/);
+  assert.equal(localSentence.sourceNncSlotFrame, localNoun.typedSlotFrame);
+  const reopenedLocal = recipient.open(make.addressFor(localSentence))?.canonicalResult;
+  assert.ok(reopenedLocal);
+  assert.equal(recipient.requestFor(reopenedLocal).serialized, localRequest.serialized);
 });
 
 test('the live-base continuation owner reissues the three-stage verb request and object order', async () => {
@@ -651,14 +664,60 @@ test('nominal state slots and patientive cores carry their issuing requests', as
     canonicalPatientiveCoreSourceFrame: core,
     subject: '3sg', state: 'absolutive', animacy: 'animate', humanness: 'human',
   }]});
+  let patientive;
   for (const build of builds) {
     const result = sender.make(build)?.canonicalResult;
     assert.ok(result, build.operationId);
+    if (build.operationId === "nnc:deverbal-construction") patientive = result;
     const sent = sender.requestFor(result).serialized;
     assert.match(sent, /nnc:(state-slot|patientive-core-source)/);
     const reopened = receiver.open(sender.addressFor(result))?.canonicalResult;
     assert.ok(reopened, build.operationId);
     assert.equal(receiver.requestFor(reopened).serialized, sent);
+  }
+  const capture = runtime.captureClassicalNahuatlPatientiveNncResultForMatrixContinuation(patientive);
+  const patientiveBridge = runtime.issueClassicalNahuatlPatientiveMatrixConstituentFrame(capture);
+  assert.ok(patientiveBridge);
+  const future = sender.make({operationId: 'vnc:application', args: [{
+    sourceStem: 'maca', verbClass: 'A', sourceValence: 'specific-projective',
+    subject: '3sg', mood: 'indicative', tense: 'future', requestedVoice: 'active',
+    sourceObjectRequests: [
+      {objectId: 'human', objectKind: 'nonspecific-human', governor: 'directive', derivationalLevel: 1},
+      {objectId: 'nonhuman', objectKind: 'nonspecific-nonhuman', governor: 'applicative', derivationalLevel: 2},
+    ],
+  }]})?.canonicalResult;
+  assert.ok(future);
+  const agentive = sender.make({operationId: 'nnc:deverbal-construction', args: [{
+    constructionKind: 'predicate-nominalization', nominalizationKind: 'future-agentive',
+    canonicalVncResult: future, subject: '3sg', state: 'absolutive',
+    animacy: 'animate', humanness: 'human', numberConnector: 'qui',
+  }]})?.canonicalResult;
+  const restricted = runtime.captureClassicalNahuatlFutureAgentiveRestrictedEmbed(agentive);
+  assert.ok(restricted);
+  const constituents = [
+    {kind: 'patientive-nnc', stem: capture.sourceStem, nounClass: capture.sourceNounClass,
+      sourceClass: capture.sourceCompoundClass, resultFrame: patientive, bridgeFrame: patientiveBridge,
+      issuer: 'nnc:patientive-constituent-bridge'},
+    {kind: 'future-agentive-lexicalized-nnc', stem: restricted.stem, nounClass: restricted.nounClass,
+      sourceClass: restricted.sourceClass, resultFrame: agentive, bridgeFrame: restricted,
+      issuer: 'nnc:future-agentive-restricted-embed'},
+  ];
+  for (const {kind, stem, nounClass, sourceClass, resultFrame, bridgeFrame, issuer} of constituents) {
+    const affective = sender.make({operationId: 'grammar:nominal-construction', args: [{
+      constructionKind: 'affective-nnc', source: {
+        embedStem: stem, embedClass: nounClass, embedSourceClass: sourceClass,
+        embedConstituent: {kind, stem, resultFrame, bridgeFrame},
+      },
+      affectRoute: 'compound', affectiveMatrix: 'tzin', semanticReading: 'special-regard',
+      subject: '3sg', state: 'absolutive', animacy: 'animate',
+    }]})?.canonicalResult;
+    assert.ok(affective, kind);
+    const request = sender.requestFor(affective);
+    assert.ok(request.serialized.includes(issuer));
+    assert.ok(request.dependencies[0] === resultFrame);
+    const reopened = receiver.open(sender.addressFor(affective))?.canonicalResult;
+    assert.ok(reopened, kind);
+    assert.equal(receiver.requestFor(reopened).serialized, request.serialized);
   }
 });
 
@@ -1556,6 +1615,35 @@ test('clause modifier requests replay through the shared controller with exact o
     assert.ok(reopened, choices.relation);
     assert.equal(recipient.requestFor(reopened).serialized, sent.serialized);
   }
+  const head = noun('mich', 'in');
+  const modifier = noun('cal', 'tli-1');
+  const controller = runtime.createClassicalClauseRelationController();
+  controller.captureCurrentResult('principal', head);
+  controller.captureCurrentResult('adjoined', modifier);
+  const fixed = controller.compose({relation: 'adjectival-modification', topology: 'ordinary',
+    order: 'modifier-head-preposed', modifierAdjunctor: 'none'});
+  assert.equal(fixed.authorizationStatus, 'authorized', fixed.blockReason);
+  const analysis = runtime.buildClassicalNahuatlAdjectivalModificationIncorporationAnalysis({
+    sequenceStatus: 'lexicalized-concatenate',
+  });
+  const bridgeFrame = runtime.projectClassicalNahuatlAdjectivalModificationForIncorporation(fixed.canonicalResult, analysis);
+  assert.ok(bridgeFrame);
+  const stem = bridgeFrame.incorporatedStem;
+  const compound = make('grammar:nominal-construction', {
+    constructionKind: 'compound-nnc', structure: 'integrated', embedRole: 'association',
+    possessorOrientation: 'matrix', subject: '3sg', state: 'absolutive', animacy: 'animate',
+    source: {embedStem: stem, embedClass: 'zero', matrixStem: 'tēn', matrixClass: 'tli',
+      embedConstituent: {kind: 'adjectival-modification', stem, resultFrame: fixed.canonicalResult, bridgeFrame}},
+  });
+  assert.ok(compound);
+  const sent = sender.requestFor(compound);
+  assert.match(sent.serialized, /nnc:fixed-modification-constituent/);
+  assert.match(sent.serialized, /nnc:fixed-modification-analysis/);
+  const reopened = recipient.open(sender.addressFor(compound))?.canonicalResult;
+  assert.ok(reopened);
+  const received = recipient.requestFor(reopened);
+  assert.equal(received.serialized, sent.serialized);
+  assert.equal(recipient.requestFor(received.dependencies[0]).serialized, sender.requestFor(fixed.canonicalResult).serialized);
 });
 
 test('both adverbial particle ingress paths replay the Owner packet', async () => {
@@ -2097,6 +2185,19 @@ test('name reranking shares the prepared name and exact place operation together
   assert.ok(reopened.personalNameResult === received.dependencies[0]);
   assert.equal(recipient.requestFor(received.dependencies[0]).serialized,
     sender.requestFor(sent.dependencies[0]).serialized);
+  // The scalar Owner contract also handles a name built directly as an
+  // internal Source, without a distinct name-specific constructor entry.
+  const internalName = runtime.requestClassicalPersonalNameNncResult({sourceFrame: source, outerSubject: '3sg'});
+  assert.ok(internalName);
+  const direct = sender.make({operationId: 'nnc:personal-name', outputKind: 'sentence-operation', args: [{
+    personalNameResult: internalName, operation: 'god-name-to-place-name-embed', locativeMatrix: 'tlā-n',
+  }]})?.canonicalResult;
+  assert.ok(direct);
+  const directRequest = sender.requestFor(direct);
+  assert.match(directRequest.serialized, /grammar:internal-application-source/);
+  const reopenedDirect = recipient.open(sender.addressFor(direct))?.canonicalResult;
+  assert.ok(reopenedDirect);
+  assert.equal(recipient.requestFor(reopenedDirect).serialized, directRequest.serialized);
 });
 
 test('the application Owner supplies replay instructions for its internal continuation slots', async () => {
@@ -2267,4 +2368,44 @@ test('prepared relational Make reissues internally built nominal and verbal inpu
   const reopenedSentence = receiver.open(sender.addressFor(sentence))?.canonicalResult;
   assert.ok(reopenedSentence);
   assert.equal(receiver.requestFor(reopenedSentence).serialized, sender.requestFor(sentence).serialized);
+});
+
+test('the customary-agentive compound keeps its Owner-issued final vowel choice', async () => {
+  const boot = async () => (await createRuntimeInstance({
+    portableMakeEnabled: true,
+    documentObject: {getElementById: () => null, addEventListener() {}},
+  })).runtimeObject;
+  const runtime = await boot();
+  const sender = runtime.classicalPortableMake;
+  const make = (operationId, ...args) => sender.make({operationId, args})?.canonicalResult;
+  const verb = make('vnc:application', {
+    sourceStem: 'cochi', verbClass: 'B', sourceValence: 'intransitive', subject: '3sg',
+    mood: 'indicative', tense: 'customary-present', requestedVoice: 'active',
+  });
+  const parent = make('nnc:deverbal-construction', {
+    constructionKind: 'predicate-nominalization', nominalizationKind: 'customary-agentive-full',
+    canonicalVncResult: verb, subject: '3sg', state: 'absolutive', numberConnector: 'silent',
+  });
+  assert.ok(parent);
+  const bridgeFrame = runtime.buildClassicalNahuatlCustomaryAgentiveBoundaryConstituent(parent, {
+    useKind: 'compound-embed', finalIRealization: 'preserve',
+  });
+  assert.equal(bridgeFrame.authorizationStatus, 'authorized', bridgeFrame.blockReason);
+  const stem = bridgeFrame.selectedStem;
+  const compound = make('grammar:nominal-construction', {
+    constructionKind: 'compound-nnc', structure: 'integrated', embedRole: 'association',
+    possessorOrientation: 'matrix', subject: '3sg', state: 'absolutive', animacy: 'animate',
+    source: {embedStem: stem, embedClass: 'tl', embedSourceClass: 'tl-1-a', matrixStem: 'tēn', matrixClass: 'tli',
+      embedConstituent: {kind: 'customary-agentive-nnc', stem, resultFrame: parent, bridgeFrame}},
+  });
+  assert.ok(compound);
+  const sent = sender.requestFor(compound);
+  assert.match(sent.serialized, /nnc:customary-agentive-boundary/);
+  assert.match(sent.serialized, /"finalIRealization":"preserve"/);
+  assert.ok(sent.dependencies[0] === parent);
+  const recipient = (await boot()).classicalPortableMake;
+  const reopened = recipient.open(sender.addressFor(compound))?.canonicalResult;
+  assert.ok(reopened);
+  assert.equal(recipient.requestFor(reopened).serialized, sent.serialized);
+  assert.equal(reopened.wordSurface, compound.wordSurface);
 });

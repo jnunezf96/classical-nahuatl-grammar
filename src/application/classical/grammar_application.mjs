@@ -1,4 +1,4 @@
-import {recordPortablePreparedInput, recordPortableSource} from "./portable_build_request.mjs";
+import {hasPortableSource, recordPortablePreparedInput, recordPortableSource} from "./portable_build_request.mjs";
 import {CLASSICAL_NAHUATL_NNC_NOUNSTEM_REQUEST_KIND,CLASSICAL_NAHUATL_RELATIONAL_SOURCE_COMPOSITION_REQUEST_KIND,CLASSICAL_NAHUATL_RELATIONAL_SOURCE_COMPOSITION_STEM_NODE_KIND,CLASSICAL_NAHUATL_RELATIONAL_SOURCE_COMPOSITION_COMPOUND_NODE_KIND} from "../../core/classical/nnc_lessons45_47_closure.mjs?v=20261009-reader-42-8-234&interfaceRelease=1.2.36&huicContinuation=20261025-1&ownerDecision=20261031-1";
 import { getClassicalNahuatlNncPredicateBoundaryCarrier } from "../../core/classical/nnc_predicate_boundary.mjs";
 import {resolveOrdinaryNncActiveSelections,stageOrdinaryNncDependencies} from './participant_choice_coordination.mjs?ownerDecision=20261031-1';
@@ -10487,12 +10487,10 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
     );
   }
 
-  const internalSourceOperations = new Set([
-    "nnc:relational", "nnc:deverbal-construction", "vnc:application", "particle:result",
-  ]);
-
   function reissueClassicalGrammarInternalApplicationSource(operationId, args) {
-    return internalSourceOperations.has(operationId) && Array.isArray(args)
+    return typeof operationId === "string" && Array.isArray(args)
+      && Object.hasOwn(ROUTE_DEFINITIONS, operationId)
+      && getApplicationOutputContract(operationId, DEFAULT_APPLICATION_OUTPUT_KIND, targetObject)
       ? requestCanonicalResult(operationId, args) : null;
   }
 
@@ -10508,9 +10506,15 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
     });
     const result = application.canonicalResult;
     if (targetObject.classicalPortableMake && application.authorizationStatus === "authorized"
-      && outputKind === DEFAULT_APPLICATION_OUTPUT_KIND
-      && internalSourceOperations.has(operationId)) {
+      && outputKind === DEFAULT_APPLICATION_OUTPUT_KIND && result && typeof result === "object") {
       recordPortableSource(result, "grammar:internal-application-source", [operationId, args]);
+      if (hasPortableSource(result)) {
+        for (const {source, path} of getClassicalGrammarApplicationPortableContinuations(result)) {
+          if (!hasPortableSource(source) && !targetObject.classicalPortableMake.requestFor(source)) {
+            recordPortableSource(source, "grammar:accepted-continuation-source", [result, path, source.kind]);
+          }
+        }
+      }
     }
     return result;
   }

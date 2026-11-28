@@ -7315,6 +7315,7 @@ function buildClassicalNahuatlCustomaryAgentiveBoundaryConstituent(
     selectedRealization, selectedStem, standaloneNncAuthorized: false,
   });
   CUSTOMARY_AGENTIVE_BOUNDARY_CONSTITUENT_RECEIPTS.set(bridge, {result, facts, selectedRealization, selectedStem});
+  recordPortableSource(bridge, "nnc:customary-agentive-boundary", [result, {useKind, finalIRealization: selectedRealization}]);
   return bridge;
 }
 
@@ -7804,6 +7805,7 @@ function captureFutureAgentiveRestrictedEmbed(result, target) {
   });
   FUTURE_RESTRICTED_EMBED_RECEIPTS.set(result, receipt);
   ISSUED_FUTURE_RESTRICTED_EMBEDS.add(receipt);
+  recordPortableSource(receipt, "nnc:future-agentive-restricted-embed", [result]);
   return receipt;
 }
 

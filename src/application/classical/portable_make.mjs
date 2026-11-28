@@ -229,6 +229,21 @@ export function installPortableMake(runtime) {
         ? runtime.buildClassicalNahuatlClauseCompositionSourceFrame(...args) : null],
     ["grammar:nominal-source", args => args.length === 1
         ? runtime.buildClassicalNahuatlNominalConstructionTypedSourceFrame(args[0]) : null],
+    ['nnc:customary-agentive-boundary', args => args.length === 2
+      ? runtime.buildClassicalNahuatlCustomaryAgentiveBoundaryConstituent(...args) : null],
+    ['nnc:future-agentive-restricted-embed', args => args.length === 1
+      ? runtime.captureClassicalNahuatlFutureAgentiveRestrictedEmbed(args[0]) : null],
+    ['nnc:fixed-modification-analysis', args => args.length === 1
+      ? runtime.buildClassicalNahuatlAdjectivalModificationIncorporationAnalysis(args[0]) : null],
+    ['nnc:fixed-modification-constituent', args => args.length === 2
+      ? runtime.projectClassicalNahuatlAdjectivalModificationForIncorporation(...args) : null],
+    ['nnc:patientive-constituent-bridge', args => {
+      if (args.length !== 2 || !['embed', 'matrix'].includes(args[1])) return null;
+      const capture = runtime.captureClassicalNahuatlPatientiveNncResultForMatrixContinuation(args[0]);
+      return args[1] === 'embed'
+        ? runtime.issueClassicalNahuatlPatientiveEmbedConstituentFrame(capture)
+        : runtime.issueClassicalNahuatlPatientiveMatrixConstituentFrame(capture);
+    }],
     ["nnc:adjectival-source-bridge", args => args.length === 2
         ? runtime.getClassicalNahuatlAdjectivalNncSourceConstituent(...args)?.bridgeFrame : null],
     ["nnc:contextual-flawed-subject-source", args => args.length === 2
