@@ -103,6 +103,15 @@ function executePacket(runtime, packet) {
     return runtime.captureClassicalGrammarApplicationResult?.(result.canonicalResult,'construction-position-make')?.applicationResult || null;
   }
   if((packet.preparedSentence||packet.preparedLayers)&&!arePreparedConstructionEnvelopesCurrent(runtime,packet))return null;
+  if (portable && packet.preparedName) {
+    const preparedName = packet.preparedName;
+    const name = preparedName.canonicalResult;
+    if (packet.operation !== 'nnc:personal-name'
+        || runtime.isClassicalGrammarPreparedApplicationRequest?.(preparedName) !== true
+        || packet.request?.args?.[0]?.personalNameResult !== name) return null;
+    const nameApplication = executeApplication(preparedName.request, preparedName);
+    if (nameApplication?.canonicalResult !== name) return null;
+  }
   if(packet.kind==='typed') {
     if(runtime.isClassicalGrammarTypedSourceOperationBindingFrame?.(packet.binding)!==true
       || packet.binding.exactSource!==packet.source)return null;

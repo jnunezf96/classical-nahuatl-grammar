@@ -2043,3 +2043,48 @@ test('a legacy typed impersonal recipe can issue a portable continuation parent'
   assert.equal(recipient.requestFor(reopened).serialized, sender.requestFor(sentence).serialized);
   assert.equal(reopened.sentenceFormulaDisplay, sentence.sentenceFormulaDisplay);
 });
+
+test('name reranking shares the prepared name and exact place operation together', async () => {
+  const {createConstructionSession} = await import('../ui/composition/construction_session.mjs');
+  const {createPersonalNameScope, issuePersonalNameSnapshot, projectPersonalNameExecution} =
+    await import('../ui/composition/personal_name_transaction.mjs');
+  const {executeConstructionPacket} = await import('../ui/composition/construction_packet.mjs');
+  const boot = async () => (await createRuntimeInstance({
+    portableMakeEnabled: true,
+    documentObject: {getElementById: () => null, addEventListener() {}},
+  })).runtimeObject;
+  const runtime = await boot();
+  const clause = runtime.buildPersonalNameInnerClauseFrame({
+    sourceFamily: 'absolutive-state-nnc', subjectPrefix: 'Ø', subjectConnector: 'Ø',
+    predicateMorphs: ['Xip', 'e'], numberPrefix: '⎕', numberSuffix: 'Ø',
+  });
+  const source = runtime.buildPersonalNameNncSourceFrame({
+    sourceFamily: 'absolutive-state-nnc', clauses: [clause], referentKind: 'god',
+  });
+  const ingress = {};
+  const sourceContext = {source, ingress, committed: true};
+  const scope = createPersonalNameScope({
+    owner: runtime, source, session: createConstructionSession({isSource: value => value === source}),
+    getIngress: () => ingress, getSourceContext: () => sourceContext,
+  });
+  const snapshot = issuePersonalNameSnapshot(scope, {
+    ingress, sourceContext, request: {sourceFrame: source, outerSubject: '3sg'},
+    sentence: {operation: 'god-name-to-place-name-embed', locativeMatrix: 'tlā-n'},
+  });
+  const packet = projectPersonalNameExecution(snapshot);
+  assert.ok(packet);
+  const made = executeConstructionPacket(runtime, packet)?.canonicalResult;
+  assert.ok(made);
+  const sender = runtime.classicalPortableMake;
+  const sent = sender.requestFor(made);
+  assert.ok(sent.dependencies[0] === snapshot.contract.namePreview);
+  assert.match(sent.serialized, /"outputKind":"sentence-operation"/);
+  const recipient = (await boot()).classicalPortableMake;
+  const reopened = recipient.open(sender.addressFor(made))?.canonicalResult;
+  assert.ok(reopened);
+  const received = recipient.requestFor(reopened);
+  assert.equal(received.serialized, sent.serialized);
+  assert.ok(reopened.personalNameResult === received.dependencies[0]);
+  assert.equal(recipient.requestFor(received.dependencies[0]).serialized,
+    sender.requestFor(sent.dependencies[0]).serialized);
+});
