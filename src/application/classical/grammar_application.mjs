@@ -1,4 +1,4 @@
-import {recordPortablePreparedInput} from "./portable_build_request.mjs";
+import {recordPortablePreparedInput, recordPortableSource} from "./portable_build_request.mjs";
 import {CLASSICAL_NAHUATL_NNC_NOUNSTEM_REQUEST_KIND,CLASSICAL_NAHUATL_RELATIONAL_SOURCE_COMPOSITION_REQUEST_KIND,CLASSICAL_NAHUATL_RELATIONAL_SOURCE_COMPOSITION_STEM_NODE_KIND,CLASSICAL_NAHUATL_RELATIONAL_SOURCE_COMPOSITION_COMPOUND_NODE_KIND} from "../../core/classical/nnc_lessons45_47_closure.mjs?v=20261009-reader-42-8-234&interfaceRelease=1.2.36&huicContinuation=20261025-1&ownerDecision=20261031-1";
 import { getClassicalNahuatlNncPredicateBoundaryCarrier } from "../../core/classical/nnc_predicate_boundary.mjs";
 import {resolveOrdinaryNncActiveSelections,stageOrdinaryNncDependencies} from './participant_choice_coordination.mjs?ownerDecision=20261031-1';
@@ -10487,16 +10487,32 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
     );
   }
 
+  const internalSourceOperations = new Set([
+    "nnc:relational", "nnc:deverbal-construction", "vnc:application", "particle:result",
+  ]);
+
+  function reissueClassicalGrammarInternalApplicationSource(operationId, args) {
+    return internalSourceOperations.has(operationId) && Array.isArray(args)
+      ? requestCanonicalResult(operationId, args) : null;
+  }
+
   function requestCanonicalResult(
     operationId,
     args = [],
     outputKind = DEFAULT_APPLICATION_OUTPUT_KIND,
   ) {
-    return executeClassicalGrammarApplicationRequest({
+    const application = executeClassicalGrammarApplicationRequest({
       operationId,
       outputKind,
       args,
-    }).canonicalResult;
+    });
+    const result = application.canonicalResult;
+    if (targetObject.classicalPortableMake && application.authorizationStatus === "authorized"
+      && outputKind === DEFAULT_APPLICATION_OUTPUT_KIND
+      && internalSourceOperations.has(operationId)) {
+      recordPortableSource(result, "grammar:internal-application-source", [operationId, args]);
+    }
+    return result;
   }
 
   function requestClassicalVncSentenceResultFrame(applicationFrame = null) {
@@ -11461,6 +11477,7 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
     prepareClassicalAdverbialNncParadigmPlan,
     projectClassicalAdverbialNncParadigmCoordinates,
     requestClassicalRelationalNncResult,
+    reissueClassicalGrammarInternalApplicationSource,
     prepareClassicalRelationalNncParadigmPlan,
     projectClassicalRelationalNncParadigmCoordinates,
     requestClassicalPlaceGentilicResult,

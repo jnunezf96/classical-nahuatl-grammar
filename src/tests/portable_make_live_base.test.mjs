@@ -177,6 +177,16 @@ test('the clause controller shares its prepared request and ordered Source roles
   assert.equal(replayedRequest.serialized, changedRequest.serialized);
   assert.equal(fresh.getClassicalNahuatlSupplementationClauseSourceFrame(replayedEdit.supplementClause),
     replayedRequest.dependencies[1]);
+  const marker = runtime.requestClassicalParticleResult('l3-in-tla');
+  assert.equal(controller.captureCurrentResult('marker', marker).authorizationStatus, 'authorized');
+  const condition = controller.compose({relation: 'condition', order: 'modifier-head', relationProfile: 'open'});
+  assert.equal(condition.authorizationStatus, 'authorized', condition.blockReason);
+  const conditionRequest = make.requestFor(condition.canonicalResult);
+  assert.match(conditionRequest.serialized, /grammar:internal-application-source/);
+  const reopenedCondition = fresh.classicalPortableMake.open(make.addressFor(condition.canonicalResult))?.canonicalResult;
+  assert.ok(reopenedCondition);
+  assert.equal(fresh.classicalPortableMake.requestFor(reopenedCondition).serialized, conditionRequest.serialized);
+  assert.equal(reopenedCondition.surface, condition.canonicalResult.surface);
 });
 
 test('the live-base typed Make contract reissues attested and quantitative Sources as a group', async () => {
@@ -2201,4 +2211,60 @@ test('a portable link anchors a matching local edit and opens independently of i
   assert.equal(auxiliary.restored.roots.principal, auxiliary.restored.roots.result);
   assert.notEqual(auxiliary.restored.roots.result, localResult);
   assert.equal(auxiliary.restored.roots.result.surface, accepted.surface);
+});
+
+test('prepared relational Make reissues internally built nominal and verbal inputs', async () => {
+  const {executeConstructionPacket} = await import('../ui/composition/construction_packet.mjs');
+  const boot = async () => (await createRuntimeInstance({
+    portableMakeEnabled: true,
+    documentObject: {getElementById: () => null, addEventListener() {}},
+  })).runtimeObject;
+  const runtime = await boot();
+  const base = {state: 'absolutive', subjectMode: 'normal', subjectId: '3sg'};
+  const nounstem = {
+    kind: 'classical-nahuatl-nnc-nounstem-request',
+    stemId: 'pan-surface-time', formation: 'option-two', nounConnector: 'tl',
+  };
+  const parent = runtime.requestClassicalRelationalNncResult({...base,
+    nounstem: {...nounstem, operation: 'associated-entity', sourceStem: 'cuauhtlah'},
+  });
+  assert.equal(parent?.authorizationStatus, 'authorized');
+  const verb = runtime.requestClassicalVncApplicationResult({
+    sourceStem: 'chōca', verbClass: 'A', sourceValence: 'intransitive',
+    subject: '1sg', mood: 'indicative', tense: 'imperfect', requestedVoice: 'active',
+  });
+  assert.equal(verb?.authorizationStatus, 'authorized');
+  const requests = [
+    {...base, nounstem: {...nounstem, operation: 'pertinency',
+      pertinencySourceKind: 'associated-entity', upstreamResult: parent}},
+    {state: 'possessive', possessorId: '1sg', subjectMode: 'adverbialized', subjectId: '3common',
+      nounstem: {kind: nounstem.kind, stemId: 'n-locative', operation: 'relational-nnc', formation: 'option-two',
+        sourceFormation: 'imperfect-active', upstreamResult: verb}},
+  ];
+  const operation = 'nnc:relational';
+  const sender = runtime.classicalPortableMake;
+  const receiver = (await boot()).classicalPortableMake;
+  for (const request of requests) {
+    const prepared = runtime.prepareClassicalGrammarApplicationRequest({operationId: operation, args: [request]});
+    assert.equal(prepared?.authorizationStatus, 'authorized', prepared?.blockReason);
+    const made = executeConstructionPacket(runtime, {
+      kind: 'request', operation, request: prepared.request, prepared,
+    })?.canonicalResult;
+    assert.ok(made);
+    const sent = sender.requestFor(made);
+    assert.match(sent.serialized, /grammar:internal-application-source/);
+    const reopened = receiver.open(sender.addressFor(made))?.canonicalResult;
+    assert.ok(reopened);
+    assert.equal(receiver.requestFor(reopened).serialized, sent.serialized);
+    assert.equal(reopened.formulaRealization, made.formulaRealization);
+  }
+  const sentenceBinding = runtime.issueClassicalNahuatlVncContinuationBindingFrame(
+    'vnc:sentence-result', verb, {punctuationMode: 'statement'},
+  );
+  assert.equal(sentenceBinding.bindingStatus, 'ready', sentenceBinding.blockReason);
+  const sentence = sender.make({operationId: sentenceBinding.operationId, args: sentenceBinding.executionArgs})?.canonicalResult;
+  assert.ok(sentence);
+  const reopenedSentence = receiver.open(sender.addressFor(sentence))?.canonicalResult;
+  assert.ok(reopenedSentence);
+  assert.equal(receiver.requestFor(reopenedSentence).serialized, sender.requestFor(sentence).serialized);
 });

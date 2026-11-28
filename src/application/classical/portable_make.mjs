@@ -293,6 +293,8 @@ export function installPortableMake(runtime) {
       ? runtime.deriveClassicalNahuatlVncDerivationOperationFrame(...args) : null],
     ["vnc:derived-machinery", args => args.length === 3
       ? runtime.buildClassicalNahuatlDerivedVncMachineryFrame(...args) : null],
+    ['grammar:internal-application-source', args => args.length === 2
+      ? runtime.reissueClassicalGrammarInternalApplicationSource(...args) : null],
     ['grammar:accepted-continuation-source', args => {
       if (args.length !== 3) return null;
       const [parent, field, kind] = args;
@@ -348,7 +350,8 @@ export function installPortableMake(runtime) {
   function issueContinuation(operationId, args, dependencies) {
     if (args.length !== 3) return null;
     const [parent] = args;
-    if (!dependencies.includes(parent)
+    if (portableSourceIssuer(parent) !== 'grammar:internal-application-source'
+      && !dependencies.includes(parent)
       && !dependencies.some(result => runtime.getClassicalGrammarApplicationPortableContinuations(result).some(entry => entry.source === parent)
         || [...resultProjections.values()].some(project => project(result) === parent))) return null;
     const binding = runtime.issueClassicalNahuatlVncContinuationBindingFrame(operationId, ...args);
