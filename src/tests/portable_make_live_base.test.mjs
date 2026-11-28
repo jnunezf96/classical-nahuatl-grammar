@@ -1783,7 +1783,7 @@ test('the shared Make packet only accepts results with a portable request in the
   const {readFileSync} = await import('node:fs');
   const {runInNewContext} = await import('node:vm');
   const renderer = readFileSync(new URL('../ui/rendering/rendering.mjs', import.meta.url), 'utf8');
-  const first = renderer.indexOf('    function composeClassicalClauseRelationFromUserAction');
+  const first = renderer.indexOf('    function acceptClassicalPortableResult');
   const last = renderer.indexOf('    function continueClassicalCompositionAsSource', first);
   assert.ok(first >= 0 && last > first);
   let history = 0;

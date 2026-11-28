@@ -38861,6 +38861,15 @@ export function createUiRenderingApi(targetObject = globalThis) {
       "clause-type": "classical-adverbial-clause-type",
     });
 
+    function acceptClassicalPortableResult(application) {
+      const checked = requirePortableMakeResult(targetObject, application);
+      if (targetObject.classicalPortableMake && checked?.authorizationStatus === "authorized") {
+        ClassicalConstructionSession.restore(checked.canonicalResult);
+        scheduleClassicalVncReloadSave();
+      }
+      return checked;
+    }
+
     function composeClassicalClauseRelationFromUserAction(controller, selections) {
       const token = targetObject.beginClassicalGrammarWorkspaceUserAction?.();
       let result = null;
@@ -38872,10 +38881,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           targetObject.completeClassicalGrammarWorkspaceUserAction?.(
             token, result.canonicalResult
           );
-          if (targetObject.classicalPortableMake) {
-            ClassicalConstructionSession.restore(result.canonicalResult);
-            scheduleClassicalVncReloadSave();
-          }
+          if (targetObject.classicalPortableMake) acceptClassicalPortableResult(result);
           syncClassicalGrammarWorkspaceHistory();
         } else {
           targetObject.cancelClassicalGrammarWorkspaceUserAction?.(token);
@@ -45231,11 +45237,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
           && typeof targetObject.executeClassicalGrammarApplicationRequest
             === "function"
         ) {
-          let applicationResult = targetObject
-            .executeClassicalGrammarApplicationRequest({
-              operationId: current.operationId,
-              args: frame.executionArgs,
-            });
+          const request = {operationId: current.operationId, args: frame.executionArgs};
+          const portable = targetObject.classicalPortableMake;
+          const applicationResult = portable
+            ? acceptClassicalPortableResult(portable.make(request))
+            : targetObject.executeClassicalGrammarApplicationRequest(request);
           const presented = renderClassicalCapabilityApplicationResultForReview(
             applicationResult, applicationResult?.operationId
           );
