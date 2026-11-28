@@ -45106,9 +45106,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
           && ownerMissingCaptureRoles.length === 0
           && unresolvedDecisionIds.length === 0
         ) {
-          ActiveClassicalClauseRelationResult = controller.compose({
-            ...readClassicalClauseSelections(),
-          });
+          const selections = {...readClassicalClauseSelections()};
+          ActiveClassicalClauseRelationResult = targetObject.classicalPortableMake
+            ? composeClassicalClauseRelationFromUserAction(controller, selections)
+            : controller.compose(selections);
           if (ActiveClassicalClauseRelationResult?.authorizationStatus !== "authorized") {
             ActiveClassicalGrammarResultBinding = Object.freeze({
               ...ActiveClassicalGrammarResultBinding,

@@ -5555,6 +5555,10 @@ export function createClassicalClauseRelationControllerGlobals(
           const application = runRetainedRelationApplication(operationId, request, previewOnly, previewLeases);
           return application?.canonicalResult || null;
         }
+        if (!previewOnly && targetObject.classicalPortableMake) {
+          const application = executeRelationApplication({operationId, args: [request]});
+          return application?.canonicalResult || null;
+        }
         if (!previewOnly) {
           const capability = {"clause:composition": "requestClassicalClauseCompositionResult",
             "clause:comparison": "requestClassicalComparisonResult",

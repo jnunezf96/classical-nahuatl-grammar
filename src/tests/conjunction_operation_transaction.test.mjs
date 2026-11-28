@@ -68,6 +68,16 @@ test('actual saved required-slot supply and principal replacement keep owner sou
  const owner=r.issueClassicalClauseRelationBindingFrame('clause:composition',left,['principal']),binding={family:'clause-relation',operationId:'clause:composition',exactResult:left,ownerBindingFrame:owner,bindingIds:owner.bindingIds,selectedBindingId:'conjunction:principal',requiredResultRoles:['adjoined']};
  const session=createConstructionSession({isSource:x=>[left,right,replacement].includes(x),isResult:()=>false});session.stage({source:left,route:{operation:'clause:composition'},operationContract:snapshot,ready:false});
  const ctx=vm.createContext({issueComparisonOperationSnapshot:a.issueClauseOperationSnapshot,isCurrentComparisonOperationSnapshot:a.isCurrentClauseOperationSnapshot,readComparisonOperationSelections:a.readClauseOperationSelections,ActiveClassicalGrammarResultBinding:binding,ActiveClassicalGrammarResultSourceCapture:null,issueClassicalClauseRelationCurrentDiscourseSourceContextFrame:()=>null,ClassicalClauseRelationStatusMessage:'',syncClassicalContinuationTarget(){},syncClassicalGrammarWorkspaceHistory(){},targetObject:{...r,document:{getElementById:()=>null}},ActiveClassicalGrammarCapabilityNavigator:r.getClassicalGrammarApplicationCapabilityNavigator(left),ClassicalConstructionSession:session,ClassicalComparisonTransitionDraft:null,ClassicalClauseRelationSelections:selections,getClassicalClauseRelationControllerForRendering:()=>c,getClassicalResultEditProposal:()=>null,PendingClassicalOrdinaryGrammarBinding:null,PendingClassicalResultEdit:null,getActiveClassicalGrammarTypedSourceOperationBinding:()=>null,syncClassicalPositionFixedChoices(){},ClassicalPositionSources:new WeakSet(),getConstructionLayerReadiness:()=>({ready:true}),hasCurrentClauseProjection:()=>false,getClassicalOwnerIssuedResultProjection:x=>({canonicalResult:x}),getClassicalMissingSourceSlots:()=>[],ClassicalWritingSourceMode:false,freezeConstructionData:x=>x});
+ // This fixture only supplies a clause snapshot. Other Source families have no input here.
+ for(const family of ['ParticleOperation','PersonalName','Denominal','PlaceGentilic','VerbalDerivation','DerivedFormation','NominalOperation','IssuedBinding']){
+  ctx[`readClassical${family}Snapshot`]=()=>null;
+ }
+ Object.assign(ctx,{
+  isFinalSourceOperation:()=>false,
+  isParticleOperation:()=>false,
+  isDerivedFormationOperation:()=>false,
+  getOwnerOperationDecisionControls:()=>[],
+ });
  ctx.getActiveClassicalGrammarResultBinding=()=>ctx.ActiveClassicalGrammarResultBinding;
  ctx.enterClassicalGrammarResultBindingChoice=(id,options)=>{assert.equal(options.allowExecution,false);return c.applyBindingFrame(ctx.ActiveClassicalGrammarResultBinding.ownerBindingFrame,id).authorizationStatus==='authorized';};
  for(const name of ['getClassicalComparisonOperationSnapshot','readClassicalClauseSelections','readClassicalClauseContract','readClassicalConstructionProposal','canClassicalSavedResultFillBinding','supplyClassicalGrammarWorkspaceResultToBinding']){const start=code.indexOf(`    function ${name}(`);vm.runInContext(code.slice(start,code.indexOf('\n    function ',start+20)),ctx);}

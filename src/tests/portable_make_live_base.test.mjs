@@ -1001,6 +1001,13 @@ test('a conjunction edit replays the Owner request and retains its unchanged con
     return sender.make({typedBinding})?.canonicalResult;
   });
   assert.ok(nouns.every(Boolean));
+  const controller = runtime.createClassicalClauseRelationController();
+  controller.captureCurrentResult('principal', nouns[0]);
+  controller.captureCurrentResult('adjoined', nouns[1]);
+  const composed = controller.compose({relation: 'correlative-conjunction',
+    correlationType: 'standard', correlativePattern: 'ahzo-ahzo'});
+  assert.equal(composed.authorizationStatus, 'authorized', composed.blockReason);
+  assert.ok(sender.addressFor(composed.canonicalResult));
   const root = make('clause:composition', {
     operationKind: 'conjunction',
     conjuncts: nouns.map((noun, i) => runtime.buildClassicalNahuatlClauseCompositionSourceFrame(noun, {referenceId: `edit-${i}`})),
