@@ -665,12 +665,13 @@ export function restoreClassicalGrammarWorkspaceHistoryReloadState(runtime, save
       || JSON.stringify(Object.keys(legacyRoots).sort()) !== JSON.stringify(legacyRows.map(row => row.nodeId).sort())) return false;
     const linkedAddress = linkedResult && portable.addressFor(linkedResult);
     const restored = new Map(linkedAddress ? [[linkedAddress, linkedResult]] : []);
+    const replay = portable.createHistoryReplay(linkedResult);
     roots = Object.assign(Object.create(null), legacyRoots);
     try {
       for (const row of saved.nodes) {
         const address = row.portableAddress;
         if (!address) continue;
-        const result = restored.get(address) || portable.open(address)?.canonicalResult;
+        const result = restored.get(address) || replay(address)?.canonicalResult;
         if (!result) return false;
         restored.set(address, result);
         roots[row.nodeId] = result;

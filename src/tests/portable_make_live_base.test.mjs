@@ -1067,6 +1067,7 @@ test('changing an attached particle shares the rebuilt whole and its exact host'
   assert.equal(fromHistory.canonicalResult, linked);
   assert.equal(historyEngine.addressFor(fromHistory.canonicalResult), sender.addressFor(removed));
   const undone = historyRuntime.undoClassicalGrammarWorkspaceHistory();
+  assert.equal(undone.canonicalResult, linked);
   assert.equal(historyEngine.addressFor(undone.canonicalResult), originalHostAddress);
 
   const removalRecipient = (await bootPreview()).classicalPortableMake;

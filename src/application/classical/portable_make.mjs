@@ -16,6 +16,7 @@ export function createPortableMake(execute, owner = {}) {
   // request for identity checks and its latest request for Share.
   const latest = new WeakMap();
   const addresses = new WeakMap();
+  const applications = new WeakMap();
 
   function remember(result, compiled, address) {
     const entry = {compiled, address};
@@ -57,11 +58,15 @@ export function createPortableMake(execute, owner = {}) {
       const sameRequest = previous.serialized === compiled.serialized
         && previous.dependencies.length === compiled.dependencies.length
         && previous.dependencies.every((dependency, index) => dependency === compiled.dependencies[index]);
-      if (sameRequest && !seedOnly) remember(result, compiled, address);
+      if (sameRequest) {
+        applications.set(compiled, application);
+        if (!seedOnly) remember(result, compiled, address);
+      }
       return sameRequest ? application : null;
     }
     if (!existing) accepted.set(result, compiled);
     remember(result, compiled, address);
+    applications.set(compiled, application);
     if (!existing) {
       markPortableResult(result);
       owner.recordAcceptedSources?.(result, value => accepted.has(value));
@@ -103,19 +108,33 @@ export function createPortableMake(execute, owner = {}) {
     return Object.freeze({serialized, dependencies: Object.freeze(dependencies), inputs: Object.freeze(inputs)});
   }
 
-  function open(address) {
+  function open(address, replayed = null) {
     const entries = decodePortableRequestGraph(address);
     if (!entries) return null;
     try {
       const results = [];
       const requests = [];
+      const reused = new Set();
       let application = null;
       for (const [serialized, refs] of entries) {
-        const compiled = compile(serialized, refs.map(ref => results[ref]), refs.map(ref => requests[ref]));
-        application = executeNode(compiled, results.length === entries.length - 1 ? address : null);
+        const inputs = refs.map(ref => requests[ref]);
+        const prior = replayed?.get(serialized)?.find(request =>
+          !reused.has(request) && request.inputs.length === inputs.length && request.inputs.every((input, index) => input === inputs[index]));
+        const compiled = prior ?? compile(serialized, refs.map(ref => results[ref]), inputs);
+        const nodeAddress = results.length === entries.length - 1 ? address : null;
+        application = prior ? applications.get(prior) : executeNode(compiled, nodeAddress);
         if (!application) return null;
+        if (prior) {
+          reused.add(prior);
+          if (nodeAddress) remember(application.canonicalResult, prior, nodeAddress);
+        }
         results.push(application.canonicalResult);
         requests.push(compiled);
+      }
+      if (replayed) {
+        for (const request of requests) {
+          if (!reused.has(request)) indexReplayRequest(replayed, request);
+        }
       }
       return application;
     } catch {
@@ -123,12 +142,36 @@ export function createPortableMake(execute, owner = {}) {
     }
   }
 
+  function indexReplayRequest(replayed, request) {
+    const candidates = replayed.get(request.serialized);
+    if (candidates) candidates.push(request);
+    else replayed.set(request.serialized, [request]);
+  }
+
+  // History links can contain the same earlier Make node. Replay those links
+  // together so a removal and its original Result keep their exact identity.
+  function createHistoryReplay(linkedResult) {
+    const replayed = new Map();
+    const visited = new Set();
+    const linked = latest.get(linkedResult)?.compiled;
+    const remaining = linked ? [linked] : [];
+    while (remaining.length) {
+      const request = remaining.pop();
+      if (visited.has(request)) continue;
+      visited.add(request);
+      indexReplayRequest(replayed, request);
+      for (const input of request.inputs) remaining.push(input);
+    }
+    return address => open(address, replayed);
+  }
+
   return Object.freeze({
     make: (request, prepared) => make(request, prepared),
     // Workspace restoration can supply new operands without replacing the
     // request already established by the open Result URL.
     seed: (request, prepared) => make(request, prepared, true),
-    open,
+    open: address => open(address),
+    createHistoryReplay,
     selectAddress(result, address) {
       const entry = addresses.get(result)?.get(address);
       if (!entry) return false;
