@@ -85,14 +85,17 @@ export function materializePortableRequest(owner, serialized, dependencies) {
     (id, args) => owner.issuePortableSource?.(id, args));
   if (!plan) return null;
   const {operationId, inputIssuer, args} = plan;
-  if (inputIssuer === 'typed-source-binding' || inputIssuer === 'typed-issued-source-binding') {
+  if (['typed-source-binding', 'typed-issued-source-binding', 'prepared-typed-source-binding'].includes(inputIssuer)) {
     if (args.length !== 2 || (inputIssuer === 'typed-source-binding'
       && (dependencies.length !== 1 || dependencies[0] !== args[0]))) return null;
     const typedBinding = owner.issuePortableTypedBinding(operationId, ...args);
-    return typedBinding?.operationId === operationId ? {request: {operationId, typedBinding}} : null;
+    if (typedBinding?.operationId !== operationId) return null;
+    if (inputIssuer !== 'prepared-typed-source-binding') return {request: {operationId, typedBinding}};
+    const prepared = owner.preparePortableBinding(typedBinding);
+    return prepared?.request.operationId === operationId ? {request: prepared.request, prepared} : null;
   }
-  if (inputIssuer === 'prepared-application') {
-    const prepared = owner.reissuePortablePreparation(plan);
+  if (inputIssuer === 'prepared-application' || inputIssuer === 'prepared-vnc-continuation') {
+    const prepared = owner.reissuePortablePreparation(plan, dependencies);
     return prepared?.request.operationId === operationId ? {request: prepared.request, prepared} : null;
   }
   const request = Object.hasOwn(plan, 'inputIssuer')

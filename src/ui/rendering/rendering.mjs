@@ -49837,19 +49837,26 @@ export function createUiRenderingApi(targetObject = globalThis) {
     }
 
     let lastAddressedResult;
+    const restoredLegacyResultAddresses = new WeakMap();
     function updateClassicalResultLink(browserWindow, exactResult) {
       if (!browserWindow?.location?.href || !browserWindow.history || lastAddressedResult === exactResult) return;
       lastAddressedResult = exactResult;
       if (targetObject.classicalPortableMake) {
         const url = new URL(browserWindow.location.href);
         const address = exactResult && targetObject.classicalPortableMake.addressFor(exactResult);
-        const published = writePortableResultUrl(url, address);
+        const legacy = exactResult && !address && restoredLegacyResultAddresses.get(exactResult);
+        const published = !legacy && writePortableResultUrl(url, address);
+        if (legacy) {
+          url.search = legacy.search;
+          url.hash = legacy.hash;
+        }
         if (url.href !== browserWindow.location.href) {
           browserWindow.history.replaceState(browserWindow.history.state, "", url.href);
         }
         const panel = targetObject.document.getElementById("classical-result-panel");
-        if (panel) panel.dataset.classicalResultLinkStatus = published ? "verified" : "missing-portable-request";
-        if (exactResult && !published) setClassicalWholeCanvasActionStatus("This Result’s link could not be saved.");
+        if (panel) panel.dataset.classicalResultLinkStatus = published ? "verified"
+          : legacy ? "legacy-restored" : "missing-portable-request";
+        if (exactResult && !published && !legacy) setClassicalWholeCanvasActionStatus("This Result’s link could not be saved.");
         return;
       }
       const publish = (compact, recipe = null) => {
@@ -50020,6 +50027,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
           CLASSICAL_VNC_RELOAD_SESSION_KEY) || "null");
       } catch { saved = null; }
       const prefix = "#result-v1=";
+      const retainValidatedLegacyAddress = roots => {
+        if (targetObject.classicalPortableMake && roots.result) {
+          restoredLegacyResultAddresses.set(roots.result, address);
+        }
+      };
       if (address?.searchParams.has("r") && !address.hash.startsWith(prefix)
         && saved?.url !== address.href) {
         let recipe;
@@ -50028,7 +50040,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           recipe = isCompactResultAddress(r) ? compactRecipe : translateClassicalConstructionLink(targetObject, r);
         }
         catch { /* Unsupported constructions never replace the accepted Result. */ }
-        if (recipe && restoreClassicalMixedReloadSession({ recipe })) return true;
+        if (recipe && restoreClassicalMixedReloadSession({ recipe }, retainValidatedLegacyAddress)) return true;
         setClassicalWholeCanvasActionStatus("This construction link could not be reopened.");
         return false;
       }
@@ -50039,7 +50051,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
             recipe = JSON.parse(decodeURIComponent(address.hash.slice(prefix.length)));
           }
         } catch { /* A malformed address has no authority. */ }
-        if (!recipe || !restoreClassicalMixedReloadSession({ recipe })) {
+        if (!recipe || !restoreClassicalMixedReloadSession({ recipe }, retainValidatedLegacyAddress)) {
           setClassicalWholeCanvasActionStatus("This Result link could not be reopened.");
           return false;
         }

@@ -80,7 +80,7 @@ export function executeConstructionPacket(runtime,packet) {
   if(packet.kind==='typed') {
     if(runtime.isClassicalGrammarTypedSourceOperationBindingFrame?.(packet.binding)!==true
       || packet.binding.exactSource!==packet.source)return null;
-    application=portable ? portable.make({typedBinding: packet.binding})
+    application=portable ? portable.make({typedBinding: packet.binding}, packet.prepared || null)
       : runtime.executeClassicalGrammarTypedSourceOperationBindingFrame(packet.binding);
   } else application=executeApplication(packet.request,packet.prepared || null);
   if(application?.authorizationStatus!=='authorized')return application;

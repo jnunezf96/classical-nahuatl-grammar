@@ -7773,6 +7773,7 @@ function buildLexicalizedPresentNncSource(result, target) {
   });
   LEXICALIZED_PRESENT_NNC_SOURCES.set(result, source);
   LEXICALIZED_PRESENT_NNC_PARENTS.set(source, parent);
+  recordPortableSource(source, "nnc:lexicalized-present-source", [result]);
   return source;
 }
 

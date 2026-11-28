@@ -524,7 +524,7 @@ test('an older noun link supplies a portable parent for a new Make', async () =>
     kind: 'classical-grammar-result-reload-recipe', version: 1,
     nodes: [{
       type: 'nnc:source-build', source: {stem: 'pil', sourceClass: 'tli-1'},
-      choices: {state: 'absolutive', subject: '3sg', animacy: 'animate', humanness: 'human'},
+      choices: {state: 'absolutive', subject: '3sg'},
     }],
     roots: {result: 0},
   };
@@ -693,6 +693,7 @@ test('prepared finite Make replays from the retained typed or continuation bindi
   const parent = make.make(typed.request, typed)?.canonicalResult;
   assert.ok(parent);
   assert.equal(parent, typed.canonicalResult);
+  assert.match(make.requestFor(parent).serialized, /prepared-typed-source-binding/);
   const sentenceBinding = runtime.issueClassicalNahuatlVncContinuationBindingFrame(
     'vnc:sentence-result', parent, {punctuationMode: 'statement'},
   );
@@ -702,7 +703,7 @@ test('prepared finite Make replays from the retained typed or continuation bindi
   assert.ok(result);
   assert.equal(result, sentence.canonicalResult);
   const sent = make.requestFor(result);
-  assert.match(sent.serialized, /vnc-continuation/);
+  assert.match(sent.serialized, /prepared-vnc-continuation/);
   const opened = recipient.open(make.addressFor(result))?.canonicalResult;
   assert.ok(opened);
   const received = recipient.requestFor(opened);
@@ -773,6 +774,9 @@ test('the shared Make packet replays a prepared finite sentence and its adverbia
     return [request.serialized, request.dependencies.map(parent => tree(engine, parent))];
   };
   assert.deepEqual(tree(recipient, opened), tree(sender, made));
+  const [sentence] = sender.requestFor(made).dependencies;
+  const [finite] = sender.requestFor(sentence).dependencies;
+  assert.match(sender.requestFor(finite).serialized, /prepared-typed-source-binding/);
 });
 
 test('typed relational composition choices survive a portable Make', async () => {
@@ -986,7 +990,6 @@ test('a conjunction edit replays the Owner request and retains its unchanged con
 });
 
 test('two-nucleus edits replay the whole, role and replacement without storing the internal relation', async () => {
-  const {buildDoubleNucleusEditRequest} = await import('../application/classical/double_nucleus_edit.mjs');
   const bootPreview = async () => (await createRuntimeInstance({
     portableMakeEnabled: true,
     documentObject: {getElementById: () => null, addEventListener() {}},
@@ -1010,12 +1013,18 @@ test('two-nucleus edits replay the whole, role and replacement without storing t
     subject: '1pl', state: 'possessive', possessor: '3pl', animacy: 'animate',
   });
   assert.ok(whole);
-  const replacement = noun('zenāchacuīcuēhua');
-  const edit = buildDoubleNucleusEditRequest(runtime, whole, 'supplement', replacement);
-  assert.ok(edit);
-  const made = make('nnc:deverbal-construction', edit);
+  const {executeConstructionPacket} = await import('../ui/composition/construction_packet.mjs');
+  const changes = {state: 'possessive', possessor: '1sg'};
+  const made = executeConstructionPacket(runtime, {
+    kind: 'result-edit', operation: 'nnc:ordinary',
+    edit: {action: 'change', intent: 'change', root: whole, target: supplement, path: ['children', 0]},
+    inner: {kind: 'request', operation: 'nnc:ordinary', source: supplement,
+      request: {operationId: 'nnc:ordinary', args: [supplement, changes]}},
+  })?.canonicalResult;
   assert.ok(made);
   const sent = sender.requestFor(made);
+  const replacement = made.sourceFrame.supplementNncResult;
+  assert.equal(replacement.operationFrame.possessor, '1sg');
   assert.deepEqual(sent.dependencies, [whole, replacement]);
   const recipient = (await bootPreview()).classicalPortableMake;
   const opened = recipient.open(sender.addressFor(made))?.canonicalResult;
@@ -1208,4 +1217,201 @@ test('an exact adverbial Source reissues its earlier compound noun', async () =>
   assert.equal(received.serialized, sent.serialized);
   assert.equal(reopened.adverbialPotentialFrame.canonicalSourceResult, received.dependencies[0]);
   assert.equal(reopened.wordSurface, result.wordSurface);
+});
+
+test('lexicalized present-agentive Make preserves the exact grammatical ancestry', async () => {
+  const bootPreview = async () => (await createRuntimeInstance({
+    portableMakeEnabled: true,
+    documentObject: {getElementById: () => null, addEventListener() {}},
+  })).runtimeObject;
+  const runtime = await bootPreview();
+  const sender = runtime.classicalPortableMake;
+  const make = (operationId, ...args) => sender.make({operationId, args})?.canonicalResult;
+  const compound = make('vnc:derivational-operation', {
+    sourceStem: 'tōna', verbClass: 'A', sourceValence: 'intransitive', objectKind: 'none', subject: '3sg',
+    mood: 'indicative', tense: 'present', requestedDerivation: 'direct', requestedVoice: 'active',
+    lateOperation: 'compound', lateVariant: 'connective-t', compoundMatrixStem: 'ya-uh', compoundMatrixClass: 'B',
+    sourceObjectRequests: [], sentenceOptions: {outsidePrefixes: []},
+  });
+  assert.ok(compound);
+  const parent = make('nnc:deverbal-construction', {
+    constructionKind: 'predicate-nominalization', nominalizationKind: 'present-agentive',
+    canonicalVncResult: compound, subject: '3sg', state: 'absolutive', animacy: 'animate',
+  });
+  assert.ok(parent);
+  const source = runtime.buildClassicalNahuatlLexicalizedPresentNncSourceFrame(parent);
+  const typedBinding = runtime.issueClassicalGrammarTypedSourceOperationBindingFrame(
+    runtime.getClassicalGrammarApplicationCapabilityNavigator(source), 'nnc:ordinary', {
+      state: 'absolutive', subject: '3sg', animacy: 'animate', humanness: 'nonhuman',
+    },
+  );
+  const made = sender.make({typedBinding})?.canonicalResult;
+  assert.ok(made);
+  const sent = sender.requestFor(made);
+  assert.match(sent.serialized, /nnc:lexicalized-present-source/);
+  assert.deepEqual(sent.dependencies, [parent]);
+  const recipient = await bootPreview();
+  const reopened = recipient.classicalPortableMake.open(sender.addressFor(made))?.canonicalResult;
+  assert.ok(reopened);
+  const received = recipient.classicalPortableMake.requestFor(reopened);
+  assert.equal(received.serialized, sent.serialized);
+  assert.equal(recipient.getClassicalNahuatlLexicalizedPresentNncSourceParent(reopened.sourceFrame).canonicalResult,
+    received.dependencies[0]);
+});
+
+test('portable requests preserve shared ancestry and repeated operand roles', async () => {
+  const {decodePortableRequestGraph} = await import('../application/classical/portable_request_graph.mjs');
+  const execute = ({operationId, args}) => ({
+    authorizationStatus: 'authorized',
+    canonicalResult: {operationId, args},
+  });
+  const sender = createPortableMake(execute);
+  const make = (operationId, ...args) => sender.make({operationId, args})?.canonicalResult;
+  const source = make('test:source', 'choice');
+  const first = make('test:branch', source, 'first');
+  const second = make('test:branch', source, 'second');
+  const sent = make('test:whole', {principal: first, supplement: second, repeated: first});
+  const address = sender.addressFor(sent);
+  assert.equal(decodePortableRequestGraph(address).length, 4);
+
+  const recipient = createPortableMake(execute);
+  const received = recipient.open(address)?.canonicalResult;
+  assert.ok(received);
+  const [{principal, supplement, repeated}] = received.args;
+  assert.equal(principal, repeated);
+  assert.equal(principal.args[0], supplement.args[0]);
+  assert.notEqual(principal, supplement);
+  assert.deepEqual(recipient.requestFor(received).dependencies, [principal, supplement]);
+  assert.equal(recipient.requestFor(received).serialized, sender.requestFor(sent).serialized);
+});
+
+test('a restored older address stays tied to its exact Result when portability is unavailable', async () => {
+  const {readFileSync} = await import('node:fs');
+  const {runInNewContext} = await import('node:vm');
+  const {writePortableResultUrl} = await import('../application/classical/portable_result_url.mjs');
+  const source = readFileSync(new URL('../ui/rendering/rendering.mjs', import.meta.url), 'utf8');
+  const begin = source.indexOf('    let lastAddressedResult;');
+  const end = source.indexOf('      const publish = (compact, recipe = null) => {', begin);
+  assert.ok(begin >= 0 && end > begin);
+  const panel = {dataset: {}};
+  const location = {href: 'https://example.test/#classical/v1/vnc/_'};
+  const browser = {location, history: {replaceState(_state, _title, href) { location.href = href; }}};
+  const warnings = [];
+  const {updateClassicalResultLink, restoredLegacyResultAddresses} = runInNewContext(
+    source.slice(begin, end) + '\n }\n({updateClassicalResultLink, restoredLegacyResultAddresses})', {
+      URL, writePortableResultUrl,
+      setClassicalWholeCanvasActionStatus: message => warnings.push(message),
+      targetObject: {classicalPortableMake: {addressFor: () => null}, document: {getElementById: () => panel}},
+    },
+  );
+  const savedResult = {};
+  const oldUrl = new URL('https://example.test/?r=sgr2/example');
+  restoredLegacyResultAddresses.set(savedResult, oldUrl);
+  updateClassicalResultLink(browser, savedResult);
+  assert.equal(location.href, oldUrl.href);
+  assert.equal(panel.dataset.classicalResultLinkStatus, 'legacy-restored');
+  assert.deepEqual(warnings, []);
+
+  updateClassicalResultLink(browser, {});
+  assert.equal(new URL(location.href).searchParams.has('r'), false);
+  assert.equal(panel.dataset.classicalResultLinkStatus, 'missing-portable-request');
+  assert.equal(warnings.length, 1);
+});
+
+test('an explicit zero cardinal choice stays distinct from the default request', async () => {
+  const bootPreview = async () => (await createRuntimeInstance({
+    portableMakeEnabled: true,
+    documentObject: {getElementById: () => null, addEventListener() {}},
+  })).runtimeObject;
+  const runtime = await bootPreview();
+  const sender = runtime.classicalPortableMake;
+  const recipient = (await bootPreview()).classicalPortableMake;
+  const source = runtime.buildClassicalNahuatlNominalConstructionTypedSourceFrame({value: 3});
+  const navigator = runtime.getClassicalGrammarApplicationCapabilityNavigator(source);
+  const common = {countKind: 'ordinary', classifier: 'basic', animacy: 'animate', subject: '1pl'};
+  const addresses = [];
+  for (const selection of [common, {...common, ordinaryNumberVariant: 'zero'}]) {
+    const typedBinding = runtime.issueClassicalGrammarTypedSourceOperationBindingFrame(
+      navigator, 'grammar:nominal-construction', selection,
+    );
+    assert.equal(typedBinding?.bindingStatus, 'ready', typedBinding?.blockReason);
+    const made = sender.make({typedBinding})?.canonicalResult;
+    assert.ok(made);
+    const address = sender.addressFor(made);
+    addresses.push(address);
+    const opened = recipient.open(address)?.canonicalResult;
+    assert.ok(opened);
+    assert.equal(recipient.requestFor(opened).serialized, sender.requestFor(made).serialized);
+  }
+  assert.notEqual(addresses[0], addresses[1]);
+});
+
+test('prepared relational Make reissues its typed Source with constituted choices', async () => {
+  const bootPreview = async () => (await createRuntimeInstance({
+    portableMakeEnabled: true,
+    documentObject: {getElementById: () => null, addEventListener() {}},
+  })).runtimeObject;
+  const runtime = await bootPreview();
+  const sender = runtime.classicalPortableMake;
+  const source = runtime.buildClassicalNahuatlRelationalNncTypedSourceFrame({
+    state: 'possessive', possessorId: '1sg', subjectMode: 'adverbialized', subjectId: '3common',
+    nounstem: {
+      kind: 'classical-nahuatl-nnc-nounstem-request', stemId: 'tloc-proximity', formation: 'option-one',
+      operation: 'relational-nnc', sourceKind: 'possessor', sourceFormation: 'plain-nounstem',
+      sourceVoice: 'active', sourceMode: 'whole-stem', sourceStem: 'tloc', sourceMatrixStem: 'tloc',
+      affective: 'none',
+    },
+  });
+  const binding = runtime.issueClassicalGrammarTypedSourceOperationBindingFrame(
+    runtime.getClassicalGrammarApplicationCapabilityNavigator(source), 'nnc:relational', {},
+  );
+  assert.equal(binding?.bindingStatus, 'ready', binding?.blockReason);
+  const prepared = runtime.prepareClassicalGrammarApplicationRequest(binding);
+  assert.ok(prepared);
+  const result = sender.make(prepared.request, prepared)?.canonicalResult;
+  assert.equal(result, prepared.canonicalResult);
+  const sent = sender.requestFor(result).serialized;
+  assert.match(sent, /nnc:relational-source/);
+  const recipient = (await bootPreview()).classicalPortableMake;
+  const reopened = recipient.open(sender.addressFor(result))?.canonicalResult;
+  assert.ok(reopened);
+  assert.equal(recipient.requestFor(reopened).serialized, sent);
+  assert.equal(reopened.sourceFrame.possessorId, '1sg');
+});
+
+test('conflicting Result URL carriers cannot select a legacy fallback', async () => {
+  const {readPortableResultUrl, writePortableResultUrl} = await import('../application/classical/portable_result_url.mjs');
+  const runtime = createPortableMake(() => ({authorizationStatus: 'authorized', canonicalResult: {}}));
+  const result = runtime.make({operationId: 'test:url', args: []})?.canonicalResult;
+  const address = runtime.addressFor(result);
+  const url = new URL('https://example.test/#classical/v1/vnc/_');
+  assert.equal(writePortableResultUrl(url, address), true);
+  assert.ok(runtime.open(readPortableResultUrl(url)));
+  const conflicts = [
+    `?r=sgr2/old&r=${address}`,
+    `?r=${address}#result-v1=older`,
+    `?r=${address}#r-data=another-payload`,
+    '?r=84/p2/',
+  ];
+  for (const suffix of conflicts) {
+    const request = readPortableResultUrl(new URL('https://example.test/' + suffix));
+    assert.equal(request, '84/p2/');
+    assert.equal(runtime.open(request), null);
+  }
+});
+
+test('a typed Make cannot commit before its request can be reissued', () => {
+  const typedBinding = {operationId: 'test:typed'};
+  let executions = 0;
+  const sender = createPortableMake(() => {
+    executions++;
+    return {authorizationStatus: 'authorized', canonicalResult: {}};
+  }, {
+    describePortableTypedBinding: () => ({
+      operationId: 'test:typed', inputIssuer: 'typed-issued-source-binding', args: ['source', {}],
+    }),
+    issuePortableTypedBinding: () => null,
+  });
+  assert.equal(sender.make({typedBinding}), null);
+  assert.equal(executions, 0);
 });

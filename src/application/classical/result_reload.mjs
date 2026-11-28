@@ -420,6 +420,16 @@ export function replayClassicalResultReloadRecipe(runtime, recipe, {recordPortab
       value: binding => portable.make({typedBinding: binding})
         ?? runtime.executeClassicalGrammarTypedSourceOperationBindingFrame(binding),
     },
+    ...Object.fromEntries(Object.entries({
+      requestClassicalVncSentenceResultFrame: "vnc:sentence-result",
+      requestClassicalOrdinaryNncResult: "nnc:ordinary",
+      requestClassicalNominalConstructionResult: "grammar:nominal-construction",
+      requestClassicalAdverbialNncResult: "nnc:adverbial",
+      requestClassicalAdverbialAdjunctionResult: "clause:adverbial-adjunction",
+    }).map(([method, operationId]) => [method, {
+      value: (...args) => portable.make({operationId, args})?.canonicalResult
+        ?? runtime[method](...args),
+    }])),
   }) : runtime;
   if (!exact(recipe, ["kind", "version", "nodes", "roots"]) || recipe.kind !== KIND
     || recipe.version !== 1 || !Array.isArray(recipe.nodes) || !recipe.nodes.length

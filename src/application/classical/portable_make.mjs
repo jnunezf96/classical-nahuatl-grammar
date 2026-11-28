@@ -13,8 +13,11 @@ export function createPortableMake(execute, owner = {}) {
   const accepted = new WeakMap();
 
   function executeNode(compiled, address, localPlan = null) {
-    const plan = localPlan ?? materializePortableRequest(owner, compiled.serialized, compiled.dependencies);
-    if (!plan) return null;
+    const replayPlan = materializePortableRequest(owner, compiled.serialized, compiled.dependencies);
+    if (!replayPlan) return null;
+    // The staged plan retains the sender's exact Owner-issued identities.
+    // Validate the reissued plan before the sender commits a shareable Result.
+    const plan = localPlan ?? replayPlan;
     const application = execute(plan.request, plan.prepared ?? null);
     const result = application?.canonicalResult;
     if (application?.authorizationStatus !== 'authorized' || !result) return null;
@@ -33,9 +36,10 @@ export function createPortableMake(execute, owner = {}) {
   }
 
   function make(request, prepared = null) {
-    const plan = request?.typedBinding
-      ? owner.describePortableTypedBinding?.(request.typedBinding)
-      : prepared ? owner.describePortablePreparation?.(request, prepared)
+    const typedBinding = request?.typedBinding;
+    if (typedBinding && prepared && getPortablePreparedInput(prepared) !== typedBinding) return null;
+    const plan = prepared ? owner.describePortablePreparation?.(typedBinding ? prepared.request : request, prepared)
+      : typedBinding ? owner.describePortableTypedBinding?.(typedBinding)
         : describePortableContinuation(request) ?? request;
     if (!plan) return null;
     const dependencies = [];
@@ -52,7 +56,7 @@ export function createPortableMake(execute, owner = {}) {
     const compiled = Object.freeze({serialized, dependencies: Object.freeze(dependencies)});
     const entries = collectPortableRequestGraph(compiled, value => accepted.get(value)?.compiled);
     const address = encodePortableRequestGraph(entries);
-    const localPlan = prepared || request.typedBinding ? {request, prepared} : null;
+    const localPlan = prepared || typedBinding ? {request, prepared} : null;
     return address ? executeNode(compiled, address, localPlan) : null;
   }
 
@@ -177,6 +181,8 @@ export function installPortableMake(runtime) {
       ? runtime.buildClassicalNahuatlPrimitiveAdverbialPotentialFrame(args[0]) : null],
     ["nnc:lexical-adverbial-source", args => args.length === 1
       ? runtime.buildClassicalNahuatlLexicalAdverbialPotentialFrame(args[0]) : null],
+    ["nnc:lexicalized-present-source", args => args.length === 1
+      ? runtime.buildClassicalNahuatlLexicalizedPresentNncSourceFrame(args[0]) : null],
     ["nnc:lexicalized-double-nucleus-source", args => args.length === 1
         ? runtime.resolveClassicalNahuatlLexicalizedNncSourceFrame(args[0]) : null],
     ["nnc:personal-name-inner-clause", args => args.length === 1
@@ -265,6 +271,15 @@ export function installPortableMake(runtime) {
     ['sentence:supplementation-envelope', args => args.length === 2
       ? runtime.buildClassicalNahuatlSupplementationClauseEnvelope(...args) : null],
   ]);
+  function issueContinuation(operationId, args, dependencies) {
+    if (args.length !== 3) return null;
+    const [parent] = args;
+    if (!dependencies.includes(parent)
+      && !dependencies.some(result => verbalNucleus(result) === parent)) return null;
+    const binding = runtime.issueClassicalNahuatlVncContinuationBindingFrame(operationId, ...args);
+    return binding?.bindingStatus === 'ready' ? binding : null;
+  }
+
   return createPortableMake((request, prepared) => request.typedBinding
     ? runtime.executeClassicalGrammarTypedSourceOperationBindingFrame(request.typedBinding)
     : runtime.executeClassicalGrammarApplicationRequest(request, prepared), {
@@ -305,23 +320,33 @@ export function installPortableMake(runtime) {
         args: [binding.exactSource, binding.callerSelections]};
     },
     reissuePortableInternalInputs({inputIssuer, ...request}, dependencies) {
-      if (inputIssuer !== 'vnc-continuation' || request.args.length !== 3) return null;
-      const [parent] = request.args;
-      if (!dependencies.includes(parent) && !dependencies.some(result => verbalNucleus(result) === parent)) return null;
-      const binding = runtime.issueClassicalNahuatlVncContinuationBindingFrame(request.operationId, ...request.args);
-      return binding?.bindingStatus === 'ready' ? {...request, args: binding.executionArgs} : null;
+      if (inputIssuer !== 'vnc-continuation') return null;
+      const binding = issueContinuation(request.operationId, request.args, dependencies);
+      return binding ? {...request, args: binding.executionArgs} : null;
     },
     describePortablePreparation(request, prepared) {
       if (runtime.isClassicalGrammarPreparedApplicationRequest(prepared) !== true
           || prepared.request !== request) return null;
       const binding = getPortablePreparedInput(prepared);
       if (runtime.isClassicalGrammarTypedSourceOperationBindingFrame(binding) === true) {
-        return this.describePortableTypedBinding(binding);
+        const plan = this.describePortableTypedBinding(binding);
+        return plan?.inputIssuer === 'typed-issued-source-binding'
+          ? {...plan, inputIssuer: 'prepared-typed-source-binding'} : plan;
       }
-      return describePortableContinuation(request) ?? {...request, inputIssuer: 'prepared-application'};
+      const continuation = describePortableContinuation(request);
+      return continuation
+        ? {...continuation, inputIssuer: 'prepared-vnc-continuation'}
+        : {...request, inputIssuer: 'prepared-application'};
     },
-    reissuePortablePreparation({inputIssuer, ...request}) {
-      return runtime.prepareClassicalGrammarApplicationRequest(request);
+    reissuePortablePreparation({inputIssuer, ...request}, dependencies) {
+      if (inputIssuer !== 'prepared-vnc-continuation') {
+        return runtime.prepareClassicalGrammarApplicationRequest(request);
+      }
+      const binding = issueContinuation(request.operationId, request.args, dependencies);
+      return binding ? runtime.prepareClassicalGrammarApplicationRequest(binding) : null;
+    },
+    preparePortableBinding(binding) {
+      return runtime.prepareClassicalGrammarApplicationRequest(binding);
     },
     issuePortableTypedBinding(operation, source, choices) {
       const navigator = runtime.getClassicalGrammarApplicationCapabilityNavigator(source);
