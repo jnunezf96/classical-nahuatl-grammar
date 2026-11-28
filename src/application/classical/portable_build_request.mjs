@@ -7,8 +7,9 @@ const issuerMarker = '$issue';
 const sourceMarker = '$source';
 const absentMarker = '$undefined';
 const bareRecordMarker = '$record';
+const literalReferenceMarker = '$literal';
 const reservedFields = new Set([
-  marker, issuerMarker, sourceMarker, absentMarker, bareRecordMarker,
+  marker, issuerMarker, sourceMarker, absentMarker, bareRecordMarker, literalReferenceMarker,
   '__proto__', 'constructor', 'prototype', 'authorizationStatus',
 ]);
 // Owner records use the classical namespace. The few request schemas in
@@ -50,6 +51,12 @@ export function recordPortableSource(input, issuer, args) {
 export const hasPortableSource = value => sourceInstructions.has(value);
 export const portableSourceIssuer = value => sourceInstructions.get(value)?.operationId ?? null;
 
+function rememberLiteral(input, output, context) {
+  if (context.decoding) context.literals.push(output);
+  else context.literalIndexes.set(input, context.literalIndexes.size);
+  return output;
+}
+
 function copy(value, context, depth = 0) {
   if (depth > maxRequestDepth) throw new TypeError('Request is too deeply nested');
   if (value === undefined) return {[absentMarker]: true};
@@ -68,13 +75,16 @@ function copy(value, context, depth = 0) {
     context.onSource(value);
     return {[issuerMarker]: [index, instruction.operationId, args]};
   }
+  const literalIndex = context.literalIndexes?.get(value);
+  if (literalIndex !== undefined) return {[literalReferenceMarker]: literalIndex};
   if (Array.isArray(value)) {
     if (Reflect.ownKeys(value).length !== value.length + 1) throw new TypeError('Invalid choice list');
-    return Array.from({length: value.length}, (_, index) => {
+    const items = Array.from({length: value.length}, (_, index) => {
       const field = Object.getOwnPropertyDescriptor(value, index);
       if (!field?.enumerable || !Object.hasOwn(field, 'value')) throw new TypeError('Invalid choice item');
       return copy(field.value, context, depth + 1);
     });
+    return rememberLiteral(value, items, context);
   }
   const prototype = Object.getPrototypeOf(value);
   if (prototype !== Object.prototype && prototype !== null) throw new TypeError('Unsupported choice record');
@@ -87,7 +97,16 @@ function copy(value, context, depth = 0) {
     const record = fields[bareRecordMarker].value;
     if (!record || Object.getPrototypeOf(record) !== Object.prototype
       || Object.keys(record).some(key => reservedFields.has(key))) throw new TypeError('Invalid choice record');
-    return Object.assign(Object.create(null), copy(record, context, depth));
+    const output = Object.assign(Object.create(null), copy(record, context, depth));
+    context.literals[context.literals.length - 1] = output;
+    return output;
+  }
+  if (context.decoding && keys.length === 1 && keys[0] === literalReferenceMarker) {
+    const index = fields[literalReferenceMarker].value;
+    if (!Number.isSafeInteger(index) || index < 0 || index >= context.literals.length) {
+      throw new TypeError('Invalid choice reference');
+    }
+    return context.literals[index];
   }
   if (keys.length === 1 && keys[0] === marker && context.resolve) {
     const index = fields[marker].value;
@@ -124,13 +143,13 @@ function copy(value, context, depth = 0) {
     }
     return [key, copy(field.value, context, depth + 1)];
   }));
-  return prototype === null ? {[bareRecordMarker]: result} : result;
+  return rememberLiteral(value, prototype === null ? {[bareRecordMarker]: result} : result, context);
 }
 
 export function encodePortableBuildRequest(request, reference, onSource, projectedSources) {
   try {
     const describe = onSource && (value => projectedSources?.get(value) ?? sourceInstructions.get(value));
-    const encoded = copy(request, {reference, describe, onSource, sourceIndexes: new Map()});
+    const encoded = copy(request, {reference, describe, onSource, sourceIndexes: new Map(), literalIndexes: new Map()});
     if (typeof encoded?.operationId !== 'string' || !Array.isArray(encoded.args)) return null;
     const serialized = JSON.stringify(encoded);
     return serialized.length <= maxPayloadBytes ? serialized : null;
@@ -142,7 +161,7 @@ export function encodePortableBuildRequest(request, reference, onSource, project
 export function decodePortableBuildRequest(serialized, resolve, issue) {
   try {
     if (typeof serialized !== 'string' || serialized.length > maxPayloadBytes) return null;
-    const request = copy(JSON.parse(serialized), {resolve, issue, issuedSources: [], decoding: true});
+    const request = copy(JSON.parse(serialized), {resolve, issue, issuedSources: [], literals: [], decoding: true});
     return typeof request?.operationId === 'string' && Array.isArray(request.args)
       ? request : null;
   } catch {

@@ -6,9 +6,18 @@ import {rebuildResultEdit,requiresResultEditPreview,canRebuildResultEdit} from '
 
 // Freeze request containers while retaining the exact opaque owner frames.
 export function freezeConstructionData(value) {
-  if(!value || typeof value!=='object' || Object.isFrozen(value))return value;
-  if(Array.isArray(value))return Object.freeze(value.map(freezeConstructionData));
-  return Object.freeze(Object.fromEntries(Object.entries(value).map(([key,item])=>[key,freezeConstructionData(item)])));
+  const snapshots = new WeakMap();
+  const freeze = input => {
+    if (!input || typeof input !== 'object' || Object.isFrozen(input)) return input;
+    if (snapshots.has(input)) return snapshots.get(input);
+    const snapshot = Array.isArray(input) ? input.map(freeze)
+      : Object.fromEntries(Object.entries(input).map(([key, item]) => [key, freeze(item)]));
+    if (Object.getPrototypeOf(input) === null) Object.setPrototypeOf(snapshot, null);
+    Object.freeze(snapshot);
+    snapshots.set(input, snapshot);
+    return snapshot;
+  };
+  return freeze(value);
 }
 
 const origins=new WeakMap();

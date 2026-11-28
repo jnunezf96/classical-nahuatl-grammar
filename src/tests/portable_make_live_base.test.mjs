@@ -1918,3 +1918,29 @@ test('the shared request codec preserves grammar labels and requires issuance fo
     ...request, args: [{kind: 'owner-defined-constituent', authorizationStatus: 'authorized'}],
   }), null);
 });
+
+test('Make and Share preserve shared literal arguments without merging equal choices', async () => {
+  const {executeConstructionPacket, freezeConstructionData} = await import('../ui/composition/construction_packet.mjs');
+  const operationId = 'test:shared-literals';
+  const createEngine = () => createPortableMake(({args: [first, second, third, fourth]}) => ({
+    authorizationStatus: 'authorized',
+    canonicalResult: {
+      sameRecord: first === second,
+      distinctRecords: first !== third,
+      sameList: first.items === third.items && first.items === fourth,
+      bare: Object.getPrototypeOf(first) === null,
+    },
+  }));
+  const list = ['possessive', '3sg'];
+  const shared = Object.assign(Object.create(null), {items: list});
+  const sender = createEngine();
+  const made = executeConstructionPacket({classicalPortableMake: sender}, freezeConstructionData({
+    kind: 'request', operation: operationId,
+    request: {operationId, args: [shared, shared, {items: list}, list]},
+  }))?.canonicalResult;
+  assert.deepEqual(made, {sameRecord: true, distinctRecords: true, sameList: true, bare: true});
+  const recipient = createEngine();
+  const reopened = recipient.open(sender.addressFor(made))?.canonicalResult;
+  assert.deepEqual(reopened, made);
+  assert.equal(recipient.requestFor(reopened).serialized, sender.requestFor(made).serialized);
+});
