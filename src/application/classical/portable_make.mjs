@@ -294,11 +294,14 @@ export function installPortableMake(runtime) {
     ["vnc:derived-machinery", args => args.length === 3
       ? runtime.buildClassicalNahuatlDerivedVncMachineryFrame(...args) : null],
     ['grammar:accepted-continuation-source', args => {
-      if (args.length !== 3 || !Array.isArray(args[1]) || !args[1].length) return null;
-      const [parent, path, kind] = args;
-      const projection = runtime.getClassicalGrammarApplicationPortableContinuations(parent)
-        .find(entry => entry.path.length === path.length
-          && entry.path.every((field, index) => field === path[index]));
+      if (args.length !== 3) return null;
+      const [parent, field, kind] = args;
+      const projections = runtime.getClassicalGrammarApplicationPortableContinuations(parent);
+      // Early preview links used the Owner's traversal index for this Source.
+      const projection = Array.isArray(field) && field.length
+        ? projections.find(entry => entry.path.length === field.length
+          && entry.path.every((key, index) => key === field[index]))
+        : Number.isSafeInteger(field) && field >= 0 ? projections[field] : null;
       return projection?.source.kind === kind ? projection.source : null;
     }],
     ['vnc:typed-application-binding', args => {

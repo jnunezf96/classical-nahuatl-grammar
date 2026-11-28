@@ -2124,4 +2124,19 @@ test('the application Owner supplies replay instructions for its internal contin
   assert.equal(receiver.requestFor(reopened).serialized, sent.serialized);
   const [parent] = receiver.requestFor(reopened).dependencies;
   assert.equal(receiver.requestFor(parent).serialized, sender.requestFor(verb).serialized);
+  const {decodePortableRequestGraph, encodePortableRequestGraph} =
+    await import('../application/classical/portable_request_graph.mjs');
+  const entries = decodePortableRequestGraph(sender.addressFor(diagram));
+  const withField = field => {
+    const modified = structuredClone(entries);
+    const root = modified.at(-1);
+    const request = JSON.parse(root[0]);
+    request.args[0].$issue[2][1] = field;
+    root[0] = JSON.stringify(request);
+    return encodePortableRequestGraph(modified);
+  };
+  const previousLink = withField(slots.indexOf(projection));
+  const olderRecipient = (await boot()).classicalPortableMake;
+  assert.ok(olderRecipient.open(previousLink)?.canonicalResult);
+  assert.equal(olderRecipient.open(withField([...path, 'unissued'])), null);
 });
