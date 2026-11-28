@@ -5,7 +5,7 @@ const chunkLength = 72;
 
 export function encodePortableRequestGraph(entries) {
   if (!validGraph(entries)) return null;
-  const suffix = encodeBuildRequestSuffix(entries);
+  const suffix = encodeBuildRequestSuffix(entries.map(([request, refs]) => [JSON.parse(request), refs]));
   if (!suffix) return null;
   const chunks = [];
   for (let index = 0; index < suffix.length; index += chunkLength) {
@@ -19,7 +19,12 @@ export function decodePortableRequestGraph(address) {
   const chunks = address.slice(version.length).split('/');
   if (chunks.length > 1 && chunks.some((chunk, index) =>
     !chunk || (index < chunks.length - 1 ? chunk.length !== chunkLength : chunk.length > chunkLength))) return null;
-  const entries = decodeBuildRequestSuffix(chunks.join(''));
+  const wire = decodeBuildRequestSuffix(chunks.join(''));
+  if (!wire?.every(entry => Array.isArray(entry) && entry.length === 2)) return null;
+  // Early p2 links wrapped each request in an extra JSON string.
+  const entries = wire.map(([request, refs]) => [
+    typeof request === 'string' ? request : JSON.stringify(request), refs,
+  ]);
   return validGraph(entries) ? entries : null;
 }
 
@@ -90,15 +95,15 @@ export function materializePortableRequest(owner, serialized, dependencies) {
       && (dependencies.length !== 1 || dependencies[0] !== args[0]))) return null;
     const typedBinding = owner.issuePortableTypedBinding(operationId, ...args);
     if (typedBinding?.operationId !== operationId) return null;
-    if (inputIssuer !== 'prepared-typed-source-binding') return {request: {operationId, typedBinding}};
+    if (inputIssuer !== 'prepared-typed-source-binding') return {request: {operationId, typedBinding}, inputIssuer};
     const prepared = owner.preparePortableBinding(typedBinding);
-    return prepared?.request.operationId === operationId ? {request: prepared.request, prepared} : null;
+    return prepared?.request.operationId === operationId ? {request: prepared.request, prepared, inputIssuer} : null;
   }
   if (inputIssuer === 'prepared-application' || inputIssuer === 'prepared-vnc-continuation') {
     const prepared = owner.reissuePortablePreparation(plan, dependencies);
-    return prepared?.request.operationId === operationId ? {request: prepared.request, prepared} : null;
+    return prepared?.request.operationId === operationId ? {request: prepared.request, prepared, inputIssuer} : null;
   }
   const request = Object.hasOwn(plan, 'inputIssuer')
     ? owner.reissuePortableInternalInputs(plan, dependencies) : plan;
-  return request?.operationId === operationId ? {request} : null;
+  return request?.operationId === operationId ? {request, inputIssuer} : null;
 }

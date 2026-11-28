@@ -15,8 +15,20 @@ export function createPortableMake(execute, owner = {}) {
   function executeNode(compiled, address, localPlan = null) {
     const replayPlan = materializePortableRequest(owner, compiled.serialized, compiled.dependencies);
     if (!replayPlan) return null;
+    if (localPlan || (replayPlan.inputIssuer !== undefined
+      && replayPlan.inputIssuer !== 'typed-source-binding' && owner.describeReissuedPlan)) {
+      const verified = replayPlan.inputIssuer === undefined
+        ? replayPlan.request
+        : owner.describeReissuedPlan?.(replayPlan);
+      if (!verified && owner.describeReissuedPlan) return null;
+      const serialized = encodePortableBuildRequest(verified, value => {
+        const index = compiled.dependencies.indexOf(value);
+        return index === -1 ? undefined : index;
+      }, () => {});
+      if (verified && serialized !== compiled.serialized) return null;
+    }
     // The staged plan retains the sender's exact Owner-issued identities.
-    // Validate the reissued plan before the sender commits a shareable Result.
+    // The same reissue check guards both new Make and link replay.
     const plan = localPlan ?? replayPlan;
     const application = execute(plan.request, plan.prepared ?? null);
     const result = application?.canonicalResult;
@@ -38,9 +50,14 @@ export function createPortableMake(execute, owner = {}) {
   function make(request, prepared = null) {
     const typedBinding = request?.typedBinding;
     if (typedBinding && prepared && getPortablePreparedInput(prepared) !== typedBinding) return null;
-    const plan = prepared ? owner.describePortablePreparation?.(typedBinding ? prepared.request : request, prepared)
-      : typedBinding ? owner.describePortableTypedBinding?.(typedBinding)
-        : describePortableContinuation(request) ?? request;
+    let plan;
+    try {
+      plan = prepared ? owner.describePortablePreparation?.(typedBinding ? prepared.request : request, prepared)
+        : typedBinding ? owner.describePortableTypedBinding?.(typedBinding)
+          : describePortableContinuation(request) ?? request;
+    } catch {
+      return null;
+    }
     if (!plan) return null;
     const dependencies = [];
     const serialized = encodePortableBuildRequest(plan, value => {
@@ -56,7 +73,7 @@ export function createPortableMake(execute, owner = {}) {
     const compiled = Object.freeze({serialized, dependencies: Object.freeze(dependencies)});
     const entries = collectPortableRequestGraph(compiled, value => accepted.get(value)?.compiled);
     const address = encodePortableRequestGraph(entries);
-    const localPlan = prepared || typedBinding ? {request, prepared} : null;
+    const localPlan = {request, prepared};
     return address ? executeNode(compiled, address, localPlan) : null;
   }
 
@@ -96,12 +113,19 @@ export function installPortableMake(runtime) {
     if (runtime.isClassicalNahuatlOrdinaryNncResult?.(result)
         || runtime.isClassicalNahuatlPronominalNncResult?.(result)
         || runtime.isClassicalNahuatlAttestedNncCellResult?.(result)) return result.typedSlotFrame;
+    if (runtime.isClassicalNahuatlRelationalResult?.(result) === true
+      && runtime.isClassicalNahuatlNncSlotFrame?.(result.nncSlotFrame) === true) return result.nncSlotFrame;
     const slot = result?.canonicalResult?.nncSlotFrame;
     if (runtime.isClassicalNahuatlNominalConstructionResult?.(result)
         && runtime.isClassicalNahuatlIssuedNominalConstructionNncSlotFrame?.(slot)) return slot;
     if (runtime.isClassicalNahuatlDeverbalNncGrammarFrame?.(result)
         && runtime.isClassicalNahuatlIssuedDeverbalNncSlotFrame?.(slot)) return slot;
     return null;
+  }
+
+  function nominalSentence(result) {
+    const sentence = result?.sentenceFrame;
+    return runtime.isClassicalNahuatlIssuedNncSentenceSurfaceFrame?.(sentence) === true ? sentence : null;
   }
 
   function verbalNucleus(result) {
@@ -150,6 +174,7 @@ export function installPortableMake(runtime) {
       ? runtime.buildClassicalNahuatlPatientiveCoreSourceFrame(args[0]) : null],
     ['nnc:double-nucleus-replacement', args => args.length === 3
       ? buildDoubleNucleusEditRequest(runtime, ...args) : null],
+    ['nnc:accepted-result-sentence', args => args.length === 1 ? nominalSentence(args[0]) : null],
     ['nnc:accepted-result-slot', args => args.length === 1 ? nominalSlot(args[0]) : null],
     ['vnc:accepted-finite-machinery', args => args.length === 1 ? finiteMachinery(args[0]) : null],
     ['vnc:accepted-result-slot', args => {
@@ -288,6 +313,10 @@ export function installPortableMake(runtime) {
       if (slot && !hasPortableSource(slot)) {
         recordPortableSource(slot, 'nnc:accepted-result-slot', [result]);
       }
+      const sentence = nominalSentence(result);
+      if (sentence && !hasPortableSource(sentence)) {
+        recordPortableSource(sentence, 'nnc:accepted-result-sentence', [result]);
+      }
       const nucleus = verbalNucleus(result);
       if (nucleus && !hasPortableSource(nucleus)) {
         recordPortableSource(nucleus, 'vnc:accepted-result-nucleus', [result]);
@@ -318,6 +347,11 @@ export function installPortableMake(runtime) {
       if (!binding.exactSource) return null;
       return {operationId: binding.operationId, inputIssuer: 'typed-issued-source-binding',
         args: [binding.exactSource, binding.callerSelections]};
+    },
+    describeReissuedPlan({request, prepared}) {
+      if (prepared) return this.describePortablePreparation(request, prepared);
+      if (request.typedBinding) return this.describePortableTypedBinding(request.typedBinding);
+      return describePortableContinuation(request);
     },
     reissuePortableInternalInputs({inputIssuer, ...request}, dependencies) {
       if (inputIssuer !== 'vnc-continuation') return null;

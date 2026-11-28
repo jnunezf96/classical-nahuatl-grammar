@@ -45229,7 +45229,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           let applicationResult = targetObject
             .executeClassicalGrammarApplicationRequest({
               operationId: current.operationId,
-              args: [...frame.executionArgs],
+              args: frame.executionArgs,
             });
           const presented = renderClassicalCapabilityApplicationResultForReview(
             applicationResult, applicationResult?.operationId
@@ -48011,7 +48011,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
             ? targetObject.issueClassicalNahuatlVncContinuationBindingFrame?.("vnc:sentence-result", nucleus,
                 getClassicalVncContinuationBindingSelections({operationId: "vnc:sentence-result"})) : null;
           application = sentence?.bindingStatus === "ready" && sentence.exactInputResult === nucleus
-            ? targetObject.executeClassicalGrammarApplicationRequest?.({operationId: "vnc:sentence-result", args: [...sentence.executionArgs]}) : null;
+            ? targetObject.executeClassicalGrammarApplicationRequest?.({operationId: "vnc:sentence-result", args: sentence.executionArgs}) : null;
           if (application) application = applyClassicalSelectedSentenceLayers(application,
             targetObject.document?.getElementById?.("classical-capability-operation-plan-status"));
         }
@@ -48225,7 +48225,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           applicationResult = sentenceBinding?.bindingStatus === "ready"
             && sentenceBinding.exactInputResult === nucleus
             ? targetObject.executeClassicalGrammarApplicationRequest({
-                operationId: "vnc:sentence-result", args: [...sentenceBinding.executionArgs],
+                operationId: "vnc:sentence-result", args: sentenceBinding.executionArgs,
               }) : null;
           applicationResult = applicationResult
             ? applyClassicalSelectedSentenceLayers(applicationResult,
@@ -50099,7 +50099,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
           if (!result) {
             const request = targetObject.getClassicalNahuatlVncRecipeStepExecutionRequest?.(step, parent);
             if (!request) return null;
-            result = targetObject.executeClassicalGrammarApplicationRequest(request);
+            result = targetObject.classicalPortableMake?.make(request)
+              ?? targetObject.executeClassicalGrammarApplicationRequest(request);
           }
           if (!targetObject.isClassicalGrammarApplicationResult?.(result)
             || result.authorizationStatus !== "authorized"

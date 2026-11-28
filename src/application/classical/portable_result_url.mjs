@@ -4,12 +4,13 @@ const requestTargetLimit = 7500;
 
 export function readPortableResultUrl(url) {
   const values = url?.searchParams.getAll('r') ?? [];
-  if (!values.some(value => value.startsWith(prefix))) return null;
+  const hasPortableFragment = url?.hash.startsWith(fragment) ?? false;
+  if (!hasPortableFragment && !values.some(value => value.startsWith(prefix))) return null;
   // Keep invalid portable addresses in the portable decoder, where the bare
   // prefix fails validation. An older recipe or saved session must never win.
   if (values.length !== 1 || /^#(?:result-v1=|result-data=)/.test(url.hash)) return prefix;
   const [value] = values;
-  if (!url.hash.startsWith(fragment)) return value;
+  if (!hasPortableFragment) return value;
   return value === prefix ? prefix + url.hash.slice(fragment.length) : prefix;
 }
 

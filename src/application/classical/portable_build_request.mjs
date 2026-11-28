@@ -178,9 +178,11 @@ export function decodeBuildRequestSuffix(suffix) {
 
 
 const continuationBindings = new WeakMap();
+const continuationBindingsByArgs = new WeakMap();
 
 export function recordPortableContinuation(binding) {
   if (binding?.bindingStatus !== 'ready') return;
+  continuationBindingsByArgs.set(binding.executionArgs, binding);
   for (const argument of binding.executionArgs) {
     if (!argument || typeof argument !== 'object') continue;
     const bindings = continuationBindings.get(argument) ?? new Set();
@@ -189,21 +191,30 @@ export function recordPortableContinuation(binding) {
   }
 }
 
-export function describePortableContinuation(request) {
-  if (!Array.isArray(request?.args)) return null;
-  for (const argument of request.args) {
-    for (const binding of continuationBindings.get(argument) ?? []) {
-      if (binding.operationId === request.operationId
-          && binding.executionArgs.length === request.args.length
-          && binding.executionArgs.every((value, index) => value === request.args[index])) {
-        return {...request, inputIssuer: 'vnc-continuation',
-          args: [binding.exactInputResult, binding.callerSelections, binding.additionalResultFrames]};
-      }
-    }
-  }
-  return null;
+function describeContinuationBinding(request, binding) {
+  return {...request, inputIssuer: 'vnc-continuation',
+    args: [binding.exactInputResult, binding.callerSelections, binding.additionalResultFrames]};
 }
 
+export function describePortableContinuation(request) {
+  if (!Array.isArray(request?.args)) return null;
+  const exact = continuationBindingsByArgs.get(request.args);
+  if (exact?.operationId === request.operationId) return describeContinuationBinding(request, exact);
+
+  // Some request wrappers copy the argument list. Use its members only when
+  // they identify one binding unambiguously.
+  let match;
+  for (const argument of request.args) {
+    for (const binding of continuationBindings.get(argument) ?? []) {
+      if (binding.operationId !== request.operationId
+          || binding.executionArgs.length !== request.args.length
+          || !binding.executionArgs.every((value, index) => value === request.args[index])) continue;
+      if (match && match !== binding) throw new TypeError('Ambiguous continuation binding');
+      match = binding;
+    }
+  }
+  return match ? describeContinuationBinding(request, match) : null;
+}
 
 const preparedInputs = new WeakMap();
 
