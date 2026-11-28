@@ -49965,7 +49965,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
               mixedHistoryRoots = undefined;
             }
           }
-          if (mixedRecipe) {
+          // A portable Result already supplies the edit root and its internal
+          // Sources. Save the draft even when the old workspace graph cannot.
+          if (mixedRecipe || (edit && targetObject.classicalPortableMake?.addressFor(current))) {
             browserWindow?.sessionStorage?.setItem(CLASSICAL_VNC_RELOAD_SESSION_KEY,
               JSON.stringify({ version: 2, url: browserWindow.location.href, recipe: mixedRecipe, history: mixedHistory, historySelection, historyGraphRoots: mixedHistoryRoots,
                 bindingOperands: bindingOperands.map(({role,root})=>({role,root})),
@@ -50025,10 +50027,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const address = browserWindow?.location?.href
         ? new URL(url || browserWindow.location.href, browserWindow.location.href) : null;
       const portableAddress = readPortableResultUrl(address);
-      if (portableAddress) {
-        const application = targetObject.classicalPortableMake?.open(portableAddress);
-        if (application?.canonicalResult && restoreClassicalMixedReloadSession({}, undefined,
-          {result: application.canonicalResult})) return true;
+      const portableResult = portableAddress ? targetObject.classicalPortableMake?.open(portableAddress)?.canonicalResult : null;
+      if (portableAddress && !portableResult) {
         setClassicalWholeCanvasActionStatus("This portable Result link could not be reopened.");
         return false;
       }
@@ -50037,6 +50037,18 @@ export function createUiRenderingApi(targetObject = globalThis) {
         saved = JSON.parse(browserWindow?.sessionStorage?.getItem(
           CLASSICAL_VNC_RELOAD_SESSION_KEY) || "null");
       } catch { saved = null; }
+      if (portableResult) {
+        // A matching workspace may restore the owner's pending choices. The
+        // accepted Result always comes from the URL, even without storage.
+        if (saved?.version === 2 && saved.url === address.href && saved.edit) {
+          const target = resolveResultEditTarget(targetObject, portableResult, saved.edit.path);
+          if (target && restoreClassicalMixedReloadSession(saved, undefined,
+            {result: portableResult, source: target.node})) return true;
+        }
+        if (restoreClassicalMixedReloadSession({}, undefined, {result: portableResult})) return true;
+        setClassicalWholeCanvasActionStatus("This portable Result link could not be reopened.");
+        return false;
+      }
       const prefix = "#result-v1=";
       const retainValidatedLegacyAddress = roots => {
         if (targetObject.classicalPortableMake && roots.result) {

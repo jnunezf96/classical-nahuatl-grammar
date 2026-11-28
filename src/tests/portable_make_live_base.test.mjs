@@ -2140,3 +2140,55 @@ test('the application Owner supplies replay instructions for its internal contin
   assert.ok(olderRecipient.open(previousLink)?.canonicalResult);
   assert.equal(olderRecipient.open(withField([...path, 'unissued'])), null);
 });
+
+test('a portable link anchors a matching local edit and opens independently of it', async () => {
+  const {readFileSync} = await import('node:fs');
+  const {runInNewContext} = await import('node:vm');
+  const {readPortableResultUrl, writePortableResultUrl} =
+    await import('../application/classical/portable_result_url.mjs');
+  const engine = createPortableMake(({args: [surface]}) => ({
+    authorizationStatus: 'authorized', canonicalResult: {surface, child: {}},
+  }));
+  const accepted = engine.make({operationId: 'test:result', args: ['same result']}).canonicalResult;
+  const url = new URL('https://example.test/');
+  writePortableResultUrl(url, engine.addressFor(accepted));
+  const renderer = readFileSync(new URL('../ui/rendering/rendering.mjs', import.meta.url), 'utf8');
+  const start = renderer.indexOf('    function restoreClassicalVncReloadSession');
+  const end = renderer.indexOf('      const prefix = "#result-v1=";', start);
+  assert.ok(start >= 0 && end > start);
+
+  const edit = {version: 1, path: ['child']};
+  const run = (href, saved) => {
+    let restored;
+    const restore = runInNewContext(renderer.slice(start, end) + '\n}\nrestoreClassicalVncReloadSession', {
+      URL, readPortableResultUrl, classicalVncReloadPersistenceReady: false,
+      CLASSICAL_VNC_RELOAD_SESSION_KEY: 'workspace',
+      targetObject: {classicalPortableMake: engine, window: {
+        location: {href}, sessionStorage: {getItem: () => {
+          if (!saved) throw new Error('Storage unavailable');
+          return JSON.stringify(saved);
+        }},
+      }},
+      resolveResultEditTarget: (_runtime, result, path) => path[0] === 'child' ? {node: result.child} : null,
+      restoreClassicalMixedReloadSession: (draft, _callback, roots) => {
+        restored = {draft, roots};
+        return true;
+      },
+      setClassicalWholeCanvasActionStatus() {},
+    });
+    return {ok: restore(), restored};
+  };
+  const matched = run(url.href, {version: 2, url: url.href, edit, recipe: {result: 'untrusted'}});
+  assert.equal(matched.ok, true);
+  assert.equal(matched.restored.draft.edit.path[0], 'child');
+  assert.equal(matched.restored.roots.source, matched.restored.roots.result.child);
+  assert.equal(matched.restored.roots.result.surface, accepted.surface);
+
+  for (const saved of [null, {version: 2, url: 'https://another.example/', edit}]) {
+    const reopened = run(url.href, saved);
+    assert.equal(reopened.ok, true);
+    assert.equal(reopened.restored.draft.edit, undefined);
+    assert.equal(reopened.restored.roots.result.surface, accepted.surface);
+  }
+  assert.equal(run('https://example.test/?r=84/p2/', {version: 2, url: url.href, edit}).ok, false);
+});
