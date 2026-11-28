@@ -8520,6 +8520,11 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
     ) {
       return null;
     }
+    if (frame.exactSource !== applicationResult.canonicalResult) {
+      recordInternalPortableResult(applicationResult.canonicalResult,
+        "grammar:internal-typed-application-source",
+        [frame.operationId, frame.exactSource, frame.callerSelections], true);
+    }
     return applicationResult;
   }
 
@@ -10058,20 +10063,8 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
         result,
         Object.freeze(registeredContinuationResults),
       );
-      // An Owner can issue an operand before it becomes a workspace Result.
-      // Keep the exact scalar execution inputs at that issuance boundary.
-      const portable = targetObject.classicalPortableMake;
-      if (portable && authorizationStatus === "authorized"
-        && outputKind === DEFAULT_APPLICATION_OUTPUT_KIND
-        && !hasPortableSource(canonicalResult) && !portable.requestFor(canonicalResult)) {
-        recordPortableSource(canonicalResult, "grammar:internal-application-source", [operationId, args]);
-        if (hasPortableSource(canonicalResult)) {
-          for (const {source, path} of getClassicalGrammarApplicationPortableContinuations(canonicalResult)) {
-            if (!hasPortableSource(source) && !portable.requestFor(source)) {
-              recordPortableSource(source, "grammar:accepted-continuation-source", [canonicalResult, path, source.kind]);
-            }
-          }
-        }
+      if (authorizationStatus === "authorized" && outputKind === DEFAULT_APPLICATION_OUTPUT_KIND) {
+        recordInternalPortableResult(canonicalResult, "grammar:internal-application-source", [operationId, args]);
       }
     }
     const exactInstanceContinuationFacts =
@@ -10500,6 +10493,19 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
       && capture.storedAnswerAuthority === false
       && Object.isFrozen(capture)
     );
+  }
+
+  // An Owner can issue an operand before it becomes a workspace Result.
+  function recordInternalPortableResult(result, issuer, args, preferTyped = false) {
+    const portable = targetObject.classicalPortableMake;
+    if (!portable || portable.requestFor(result) || (!preferTyped && hasPortableSource(result))) return;
+    recordPortableSource(result, issuer, args);
+    if (!hasPortableSource(result)) return;
+    for (const {source, path} of getClassicalGrammarApplicationPortableContinuations(result)) {
+      if (!hasPortableSource(source) && !portable.requestFor(source)) {
+        recordPortableSource(source, "grammar:accepted-continuation-source", [result, path, source.kind]);
+      }
+    }
   }
 
   function reissueClassicalGrammarInternalApplicationSource(operationId, args) {

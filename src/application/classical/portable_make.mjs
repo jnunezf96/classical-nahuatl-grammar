@@ -212,6 +212,12 @@ export function installPortableMake(runtime) {
     return runtime.isClassicalNahuatlVncSlotFrame?.(slot) === true ? slot : null;
   }
 
+  function issuePortableTypedBinding(operation, source, choices) {
+    const navigator = runtime.getClassicalGrammarApplicationCapabilityNavigator(source);
+    const binding = runtime.issueClassicalGrammarTypedSourceOperationBindingFrame(navigator, operation, choices);
+    return binding?.bindingStatus === 'ready' ? binding : null;
+  }
+
   const sourceIssuers = new Map([
     ['vnc:application-source-machinery', args => args.length === 1
       ? runtime.evaluateClassicalNahuatlVncApplication(args[0])?.resultFrame?.sourceMachineryFrame : null],
@@ -306,6 +312,8 @@ export function installPortableMake(runtime) {
       ? runtime.selectClassicalNahuatlNegativeParticleFrame(args[0]) : null],
     ["orthography:transcription-operation", args => args.length === 2
         ? runtime.issueClassicalNahuatlTranscriptionBindingFrame(...args)?.executionArgs[1] : null],
+    ["particle:internal-result", args => args.length === 2
+      ? runtime.buildClassicalNahuatlParticleResultFrame(...args) : null],
     ["particle:source", args => args.length === 1 && typeof args[0] === "string"
         ? runtime.buildClassicalNahuatlParticleSourceFrame(args[0]) : null],
     ["vnc:compound-predicate-source", args => args.length === 1
@@ -327,6 +335,10 @@ export function installPortableMake(runtime) {
       ? runtime.deriveClassicalNahuatlVncDerivationOperationFrame(...args) : null],
     ["vnc:derived-machinery", args => args.length === 3
       ? runtime.buildClassicalNahuatlDerivedVncMachineryFrame(...args) : null],
+    ['grammar:internal-typed-application-source', args => {
+      const binding = args.length === 3 && issuePortableTypedBinding(...args);
+      return binding ? runtime.executeClassicalGrammarTypedSourceOperationBindingFrame(binding)?.canonicalResult : null;
+    }],
     ['grammar:internal-application-source', args => args.length === 2
       ? runtime.reissueClassicalGrammarInternalApplicationSource(...args) : null],
     ['grammar:accepted-continuation-source', args => {
@@ -384,7 +396,7 @@ export function installPortableMake(runtime) {
   function issueContinuation(operationId, args, dependencies) {
     if (args.length !== 3) return null;
     const [parent] = args;
-    if (portableSourceIssuer(parent) !== 'grammar:internal-application-source'
+    if (!['grammar:internal-application-source', 'grammar:internal-typed-application-source'].includes(portableSourceIssuer(parent))
       && !dependencies.includes(parent)
       && !dependencies.some(result => runtime.getClassicalGrammarApplicationPortableContinuations(result).some(entry => entry.source === parent)
         || [...resultProjections.values()].some(project => project(result) === parent))) return null;
@@ -476,10 +488,6 @@ export function installPortableMake(runtime) {
     preparePortableBinding(binding) {
       return runtime.prepareClassicalGrammarApplicationRequest(binding);
     },
-    issuePortableTypedBinding(operation, source, choices) {
-      const navigator = runtime.getClassicalGrammarApplicationCapabilityNavigator(source);
-      const binding = runtime.issueClassicalGrammarTypedSourceOperationBindingFrame(navigator, operation, choices);
-      return binding?.bindingStatus === 'ready' ? binding : null;
-    },
+    issuePortableTypedBinding,
   });
 }

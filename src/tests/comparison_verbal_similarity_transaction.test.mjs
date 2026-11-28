@@ -1,6 +1,10 @@
 import test from 'node:test';import assert from 'node:assert/strict';
 import {createRuntimeInstance} from '../runtime/create_runtime.mjs';import {createConstructionSession} from '../ui/composition/construction_session.mjs';import * as a from '../ui/composition/comparison_operation_transaction.mjs';
-const r=(await createRuntimeInstance({documentObject:{getElementById:()=>null,addEventListener(){}}})).runtimeObject;
+const boot = async () => (await createRuntimeInstance({
+  portableMakeEnabled: true,
+  documentObject: {getElementById: () => null, addEventListener() {}},
+})).runtimeObject;
+const r = await boot();
 const noun=subject=>{const s=r.buildClassicalNahuatlOrdinaryNncSourceFrame({stem:'tlāca',sourceClass:'tl-1-a'});return r.executeClassicalGrammarApplicationRequest({operationId:'nnc:ordinary',args:[s,r.buildClassicalNahuatlOrdinaryNncOperationFrame(s,{subject,state:'absolutive'})]}).canonicalResult;};
 const standard=noun('3sg'),wrong=noun('2sg');
 const imperfect=r.resolveClassicalNahuatlImperfectiveVncSourceFrame({enteredStem:'nēnehuilia',valence:'specific-projective'});
@@ -12,3 +16,17 @@ for(const i of [0,1])test(`${routes[i]} exact VNC source and owner role through 
 test('resemblance person disagreement blocks owner preview and execution, then restores exact standard',()=>{const{c,s}=setup(0);assert.ok(s);const step=(x,intent)=>a.transitionComparisonOperationSnapshot(x,intent,x.contract.currentChoiceFrame);c.captureCurrentResult('adjoined',wrong);const blocked=a.issueComparisonOperationSnapshot(c,s.selections,resemblance);assert.equal(blocked.contract.authorizationStatus,'blocked');assert.equal(c.preview(blocked.selections),null);assert.equal(c.compose(blocked.selections).authorizationStatus,'blocked');assert.equal(r.evaluateClassicalNahuatlComparison({routeId:routes[0],slots:{principal:r.buildClassicalComparisonSourceUnit({sourceResult:resemblance}),standard:r.buildClassicalComparisonSourceUnit({sourceResult:wrong})}}).authorizationStatus,'blocked');assert.equal(step(blocked,{type:'capture',role:'adjoined',result:{...standard}}).authorizationStatus,'blocked');const back=step(blocked,{type:'capture',role:'adjoined',result:standard}).snapshot;assert.equal(back.contract.authorizationStatus,'authorized');assert.equal(step(blocked,{type:'set-choice',key:'sentenceType',value:'none'}).authorizationStatus,'blocked');assert.equal(back.source,resemblance);});
 test('ihui optional topic removal and exact recovery retain genuine principal',()=>{const{c,s}=setup(1);assert.ok(s);const step=(x,intent)=>a.transitionComparisonOperationSnapshot(x,intent,x.contract.currentChoiceFrame);const no=step(s,{type:'clear-capture',role:'adjoined'}).snapshot;assert.equal(no.contract.authorizationStatus,'authorized');const made=c.compose(no.selections).canonicalResult;assert.equal(made.selectedResult,'Nihui.');assert.equal(r.getClassicalComparisonCanonicalSourceResult(made.operationFrame.sourceSlots.principal),ihui);const yes=step(no,{type:'capture',role:'adjoined',result:standard}).snapshot;assert.equal(yes.contract.authorizationStatus,'authorized');assert.equal(yes.source,ihui);const wrongPrincipal=r.evaluateClassicalNahuatlComparison({routeId:routes[1],slots:{principal:r.buildClassicalComparisonSourceUnit({sourceResult:resemblance})}});assert.equal(wrongPrincipal.authorizationStatus,'blocked');});
 test('route switch requires authentic owner validated ihui replacement at current frame',()=>{const{c,s}=setup(0);const switched=a.transitionComparisonOperationSnapshot(s,{type:'set-choice',key:'comparisonRoute',value:routes[1]},s.contract.currentChoiceFrame).snapshot;assert.equal(switched.contract.authorizationStatus,'blocked');assert.equal(c.preview(switched.selections),null);assert.equal(c.compose(switched.selections).authorizationStatus,'blocked');const owner=r.issueClassicalClauseRelationBindingFrame('clause:comparison',resemblance,['principal']);const prepare=(source,frame=switched.contract.currentChoiceFrame)=>c.prepareComparisonAnchorReplacement(owner,'comparison:principal','principal',source,switched.selections,frame);assert.equal(prepare(resemblance),null);assert.equal(prepare({...ihui}),null);assert.equal(prepare(ihui,s.contract.currentChoiceFrame),null);assert.ok(prepare(ihui));});
+
+test('the exact comparison request reissues its internal typed verb in a fresh runtime', async () => {
+  const {c, s} = setup(0);
+  const result = c.compose(s.selections).canonicalResult;
+  assert.ok(result);
+  const sender = r.classicalPortableMake;
+  const request = sender.requestFor(result);
+  assert.match(request.serialized, /grammar:internal-typed-application-source/);
+  const recipient = (await boot()).classicalPortableMake;
+  const reopened = recipient.open(sender.addressFor(result))?.canonicalResult;
+  assert.ok(reopened);
+  assert.equal(recipient.requestFor(reopened).serialized, request.serialized);
+  assert.equal(reopened.selectedResult, result.selectedResult);
+});

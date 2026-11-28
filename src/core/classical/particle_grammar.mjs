@@ -2086,6 +2086,9 @@ l50-ma-tel-za-yeh|although it may be only; at least|restrictive concession; form
           surface: writtenSurface
         })
       );
+      if (internalCapability === null) {
+        recordPortableSource(issued, "particle:internal-result", [sourceFrame, options]);
+      }
       return issued;
     }
     function getClassicalNahuatlParticleReloadInputs(frame = null) {
