@@ -1,3 +1,4 @@
+import {recordPortableSource} from '../../application/classical/portable_build_request.mjs';
 import {snapshotGrammarInputs} from "../input_snapshot.mjs";
 import {reduplicate} from "./reduplicative_realization.mjs";
 import {CLASSICAL_NAHUATL_VNC_SEMANTIC_MOODS, CLASSICAL_NAHUATL_VNC_SEMANTIC_TENSES_BY_MOOD} from "./vnc_layer_evaluator.mjs?andrewsRelease=20261024-1&ownerDecision=20261031-2";
@@ -1212,6 +1213,7 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
       lexicalAnalysis, ordinaryNncAuthorized: false, ordinaryNounClassClaimed: false,
       typedGrammarAuthority: true, callerSuppliedAuthorityAccepted: false,
       formulaStringAuthority: false, surfaceStringAuthority: false});
+    recordPortableSource(frame, "vnc:bound-nominal-source", [{nounStem: stem, sourceInitialISelection: initialI}]);
     issuedBoundNominalSources.add(frame);boundNominalSourceCache.set(cacheKey, frame);return frame;
   }
   function isClassicalNahuatlBoundNominalSourceFrame(frame = null) {
@@ -1289,6 +1291,7 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
       sourceStem:record.stem,sourceRank:"nounstem",sourceClass:analysis.coarseNounClass,sourceKind:"nounstem",
       actualBasalUnit:"nnc",canonicalSourceStemRecord:record,sourceAnalysis:analysis,canonicalNncSourceFrame:nominal,
       originalPickerRank:"vnc",explicitRankCorrection:true,independentVncUseLicensed:false,grammarAuthority:false});
+    recordPortableSource(frame, "vnc:nominal-rank-corrected-source", [request]);
     correctedNominalSources.set(record,frame);correctedNominalContexts.set(frame,{record,analysis,nominal});return frame;
   }
   function isClassicalNahuatlNominalRankCorrectedSourceFrame(frame=null) {
@@ -1375,6 +1378,7 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
       typedGrammarAuthority: true, callerSuppliedAuthorityAccepted: false,
     });
     verbalStemPreparations.set(frame, {exactSource, operationId, stemShape});
+    recordPortableSource(frame, 'vnc:denominal-stem-preparation', [exactSource, selection]);
     cache.set(cacheKey, frame); return frame;
   }
   function isClassicalNahuatlDenominalVerbalStemPreparation(frame = null) {
@@ -2871,7 +2875,11 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
       formulaStringAuthority: false,
       surfaceStringAuthority: false,
     });
-    if (authorized) {issuedResultFrames.add(frame);reloadInputs.set(frame,snapshotGrammarInputs(request,new Set([request.canonicalNncResult,request.canonicalNncSourceFrame,request.canonicalBoundNominalSourceFrame,request.canonicalNominalRankCorrectionFrame,request.verbalStemPreparationFrame,request.sourceOperationFrame].filter(Boolean))));}
+    if (authorized) {
+      issuedResultFrames.add(frame);
+      recordPortableSource(operationFrame, "vnc:denominal-parent-operation", [frame]);
+      reloadInputs.set(frame,snapshotGrammarInputs(request,new Set([request.canonicalNncResult,request.canonicalNncSourceFrame,request.canonicalBoundNominalSourceFrame,request.canonicalNominalRankCorrectionFrame,request.verbalStemPreparationFrame,request.sourceOperationFrame].filter(Boolean))));
+    }
     return frame;
   }
 

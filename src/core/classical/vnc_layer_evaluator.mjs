@@ -1,3 +1,4 @@
+import { recordPortableSource } from '../../application/classical/portable_build_request.mjs';
 // Canonical modern ESM module.
 import { getFrequentativeDestockalConstitution } from "./frequentative_destockal_structure.mjs";
 
@@ -3748,6 +3749,7 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
       if (issuedRecord.authorizationStatus === "authorized" && !issuedRecord.blockReason
         && normalizeClassicalNahuatlVncSlotStem(typedSourceStem) === issuedRecord.sourceStem) {
         CLASSICAL_NAHUATL_LESSON20_ISSUED_NONACTIVE_RECORDS.add(issuedRecord);
+        recordPortableSource(issuedRecord, "vnc:nonactive-stem-source", [typedSourceStem, optionRead.values]);
       }
       return issuedRecord;
     }
@@ -3973,6 +3975,7 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         sourceStem:record.stem,sourceValence:record.defaultSourceValence,sourceRank:analysis.sourceRank,sourceClass:analysis.sourceClass,
         canonicalSourceStemRecord:record,sourceAnalysis:analysis,sourceLexemeId:request.sourceLexemeId || "",
         independentFiniteUseLicensed:false,grammarAuthority:false,formulaStringAuthority:false,surfaceStringAuthority:false});
+      recordPortableSource(source, "vnc:restricted-containing-source", [request]);
       restrictedContainingSources.set(record,source);restrictedContainingSourceContexts.set(source,Object.freeze({record,analysis}));return source;
     }
     function isClassicalNahuatlRestrictedContainingVncSourceFrame(source = null) {

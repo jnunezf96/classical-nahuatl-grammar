@@ -1,3 +1,4 @@
+import {recordPortableSource} from './portable_build_request.mjs';
 import {buildClassicalNahuatlParticipantFrame} from '../../core/classical/participant_frame.mjs?ownerDecision=20261031-2';
 
 // Selected attested nominal cells carry only the lexical analysis actually supplied.
@@ -20,7 +21,9 @@ export function createAttestedNncCellApi(target) {
   const source=freeze({kind:sourceKind,version:1,authorizationStatus:'authorized',blockReason:'',sourceUse:'attested-cell',stem:citation,sourceStem:citation,sourceRank:spec.sourceRank,
    citation:spec.citation,selectedCellAnalysis:spec,ordinaryNounParadigmAuthorized:false,finiteVncAuthorized:false,ordinaryClassClaimed:false,primitiveVerbClassClaimed:false,
    internalAnalysisClaimed:spec.sourceRank==='analyzed-possessed-singular-cell',sourceAuthority:'attested-lexical-cell',sourceRefs:spec.sourceRefs,typedSourceAuthority:true,callerSuppliedAuthorityAccepted:false,formulaStringAuthority:false,surfaceStringAuthority:false});
-  sourceContexts.set(source,spec);cache.set(citation,source);return source;
+  sourceContexts.set(source,spec);cache.set(citation,source);
+  recordPortableSource(source, 'nnc:attested-cell-source', [{enteredStem: citation, sourceUse: 'attested-cell'}]);
+  return source;
  }
  function isClassicalNahuatlAttestedNncCellSourceFrame(source){const s=source&&sourceContexts.get(source);return Boolean(s&&Object.isFrozen(source)&&source.selectedCellAnalysis===s&&source.stem===s.citation&&source.sourceRank===s.sourceRank&&source.ordinaryNounParadigmAuthorized===false);}
  function issueClassicalNahuatlAttestedNncCellBindingFrame(exactSourceFrame,selections={}) {
@@ -71,7 +74,9 @@ export function createAttestedPlaceApi(){
  const keys=(v,k)=>v&&typeof v==='object'&&!Array.isArray(v)&&Reflect.ownKeys(v).every(x=>typeof x==='string'&&k.includes(x)&&!Object.getOwnPropertyDescriptor(v,x)?.get);
  const blocked=reason=>Object.freeze({kind:'classical-nahuatl-attested-place-result-frame',authorizationStatus:'blocked',blockReason:reason});
  function resolveClassicalNahuatlAttestedPlaceSourceFrame(q={}){if(!keys(q,['enteredStem','sourceUse'])||q.sourceUse!=='attested-place'||String(q.enteredStem||'').normalize('NFC').trim().toLowerCase()!=='teticpac')return null;if(cached)return cached;
-  cached=freeze({kind:'classical-nahuatl-attested-place-source-frame',version:1,authorizationStatus:'authorized',blockReason:'',sourceRank:'opaque-social-place-nnc',sourceUse:'attested-place',stem:'Teticpac',sourceStem:'Teticpac',citation:'Teticpac',sourceSection:'48.1',sourceRefs:['48.1:19931-20001;original509'],internalAnalysisClaimed:false,ordinaryNounParadigmAuthorized:false,finiteVncAuthorized:false,referenceKind:'unique-socially-designated-place',typedSourceAuthority:true,callerSuppliedAuthorityAccepted:false,formulaStringAuthority:false,surfaceStringAuthority:false});sources.add(cached);return cached;}
+  cached=freeze({kind:'classical-nahuatl-attested-place-source-frame',version:1,authorizationStatus:'authorized',blockReason:'',sourceRank:'opaque-social-place-nnc',sourceUse:'attested-place',stem:'Teticpac',sourceStem:'Teticpac',citation:'Teticpac',sourceSection:'48.1',sourceRefs:['48.1:19931-20001;original509'],internalAnalysisClaimed:false,ordinaryNounParadigmAuthorized:false,finiteVncAuthorized:false,referenceKind:'unique-socially-designated-place',typedSourceAuthority:true,callerSuppliedAuthorityAccepted:false,formulaStringAuthority:false,surfaceStringAuthority:false});sources.add(cached);
+  recordPortableSource(cached, 'nnc:attested-place-source', [{enteredStem: 'Teticpac', sourceUse: 'attested-place'}]);
+  return cached;}
  function isClassicalNahuatlAttestedPlaceSourceFrame(s){return Boolean(s&&sources.has(s)&&Object.isFrozen(s)&&s.sourceRank==='opaque-social-place-nnc'&&s.referenceKind==='unique-socially-designated-place');}
  function issueClassicalNahuatlAttestedPlaceBindingFrame(s,q={}) {
   if(!isClassicalNahuatlAttestedPlaceSourceFrame(s))return null;
@@ -97,7 +102,9 @@ export function createAttestedPrincipalCollocationApi(){
  const sources=new WeakSet(),bindings=new WeakMap(),results=new WeakMap();let source=null;
  const freeze=v=>{if(v&&typeof v==='object'&&!Object.isFrozen(v)){Object.values(v).forEach(freeze);Object.freeze(v);}return v;};
  const keys=(v,k)=>v&&typeof v==='object'&&!Array.isArray(v)&&Reflect.ownKeys(v).every(x=>typeof x==='string'&&k.includes(x)&&!Object.getOwnPropertyDescriptor(v,x)?.get);
- function resolveClassicalNahuatlAttestedPrincipalCollocationSourceFrame(q={}){if(!keys(q,['enteredStem','sourceUse'])||q.sourceUse!=='attested-collocation'||String(q.enteredStem||'').normalize('NFC').trim().replace(/\s+/gu,' ').toLowerCase()!=='achi īc')return null;if(source)return source;source=freeze({kind:'classical-nahuatl-attested-principal-collocation-source-frame',version:1,authorizationStatus:'authorized',blockReason:'',sourceUse:'attested-collocation',sourceRank:'attested-principal-collocation',stem:'achi īc',sourceStem:'achi īc',citation:'achi īc',constituents:['achi','īc'],lexicalSense:'makes-or-would-make-sense',grammaticalSubjectAnalysis:'unclaimed',ordinaryNounParadigmAuthorized:false,finiteVncAuthorized:false,internalGenealogyClaimed:false,sourceRefs:['46.9Note2:18996-19004;original485'],writingQualification:{selectedAnalyticalWitness:'achi īc',proseOrdinarySpelling:'achic',proseRule:'always-written-with-elision',freeWritingVariantsLicensed:false},typedSourceAuthority:true,callerSuppliedAuthorityAccepted:false,formulaStringAuthority:false,surfaceStringAuthority:false});sources.add(source);return source;}
+ function resolveClassicalNahuatlAttestedPrincipalCollocationSourceFrame(q={}){if(!keys(q,['enteredStem','sourceUse'])||q.sourceUse!=='attested-collocation'||String(q.enteredStem||'').normalize('NFC').trim().replace(/\s+/gu,' ').toLowerCase()!=='achi īc')return null;if(source)return source;source=freeze({kind:'classical-nahuatl-attested-principal-collocation-source-frame',version:1,authorizationStatus:'authorized',blockReason:'',sourceUse:'attested-collocation',sourceRank:'attested-principal-collocation',stem:'achi īc',sourceStem:'achi īc',citation:'achi īc',constituents:['achi','īc'],lexicalSense:'makes-or-would-make-sense',grammaticalSubjectAnalysis:'unclaimed',ordinaryNounParadigmAuthorized:false,finiteVncAuthorized:false,internalGenealogyClaimed:false,sourceRefs:['46.9Note2:18996-19004;original485'],writingQualification:{selectedAnalyticalWitness:'achi īc',proseOrdinarySpelling:'achic',proseRule:'always-written-with-elision',freeWritingVariantsLicensed:false},typedSourceAuthority:true,callerSuppliedAuthorityAccepted:false,formulaStringAuthority:false,surfaceStringAuthority:false});sources.add(source);
+  recordPortableSource(source, 'clause:attested-collocation-source', [{enteredStem: 'achi īc', sourceUse: 'attested-collocation'}]);
+  return source;}
  function isClassicalNahuatlAttestedPrincipalCollocationSourceFrame(s){return Boolean(s&&sources.has(s)&&Object.isFrozen(s)&&s.sourceRank==='attested-principal-collocation'&&s.grammaticalSubjectAnalysis==='unclaimed');}
  function issueClassicalNahuatlAttestedPrincipalCollocationBindingFrame(s,q={}) {
   if(!isClassicalNahuatlAttestedPrincipalCollocationSourceFrame(s))return null;

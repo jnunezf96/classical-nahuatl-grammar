@@ -1,3 +1,4 @@
+import {recordPortableSource} from '../../application/classical/portable_build_request.mjs';
 // Canonical modern ESM module.
 
 export const CLASSICAL_RESULT_OUTPUT_SCOPE_VERSION = 1;
@@ -57,7 +58,7 @@ export function buildClassicalResultOutputScopeSelectionFrame(value = "", option
   const recognized = Boolean(normalizedValue);
   const blocked = explicit && !recognized;
   const outputScope = recognized ? normalizedValue : blocked ? "" : "single";
-  return Object.freeze({
+  const frame = Object.freeze({
     kind: "classical-result-output-scope-selection-frame",
     version: CLASSICAL_RESULT_OUTPUT_SCOPE_VERSION,
     role,
@@ -72,6 +73,8 @@ export function buildClassicalResultOutputScopeSelectionFrame(value = "", option
     presentationScopeCannotAuthorizeGrammar: true,
     roleSpecificParadigmBuildersRemainSeparate: true,
   });
+  if (!blocked) recordPortableSource(frame, "grammar:output-scope-selection", [value, options]);
+  return frame;
 }
 
 export function validateClassicalResultOutputScopeSelection(value = "", options = {}) {

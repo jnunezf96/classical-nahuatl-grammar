@@ -45,6 +45,10 @@ export function getConstructionLayerReadiness(runtime,packet) {
     ? layers : {ready:false,blockReason:'conjunct-change-incompatible-with-retained-whole',recoveryKind:'result-edit'};
 }
 export function executeConstructionPacket(runtime,packet) {
+  const portable = runtime.classicalPortableMake;
+  const executeApplication = (request, prepared = null) => portable
+    ? portable.make(request, prepared)
+    : runtime.executeClassicalGrammarApplicationRequest(request, prepared);
   let application;
   if(packet.kind==='result-edit') {
     const edit=packet.edit;
@@ -76,17 +80,18 @@ export function executeConstructionPacket(runtime,packet) {
   if(packet.kind==='typed') {
     if(runtime.isClassicalGrammarTypedSourceOperationBindingFrame?.(packet.binding)!==true
       || packet.binding.exactSource!==packet.source)return null;
-    application=runtime.executeClassicalGrammarTypedSourceOperationBindingFrame(packet.binding);
-  } else application=runtime.executeClassicalGrammarApplicationRequest(packet.request,packet.prepared || null);
+    application=portable ? portable.make({typedBinding: packet.binding})
+      : runtime.executeClassicalGrammarTypedSourceOperationBindingFrame(packet.binding);
+  } else application=executeApplication(packet.request,packet.prepared || null);
   if(application?.authorizationStatus!=='authorized')return application;
   origins.set(packet,application);
   if(packet.preparedSentence){
     if(packet.preparedSentence.host!==application.canonicalResult)return null;
-    application=runtime.executeClassicalGrammarApplicationRequest(packet.preparedSentence.prepared.request,packet.preparedSentence.prepared);
+    application=executeApplication(packet.preparedSentence.prepared.request,packet.preparedSentence.prepared);
     if(application?.authorizationStatus!=='authorized')return application;
   }
   if(packet.sentenceOptions) {
-    if(packet.operation==='nnc:ordinary')application=runtime.executeClassicalGrammarApplicationRequest({
+    if(packet.operation==='nnc:ordinary')application=executeApplication({
       operationId:'nnc:sentence-surface',args:[application.canonicalResult.typedSlotFrame,packet.sentenceOptions]});
     else if(packet.operation==='grammar:nominal-construction') {
       const nominal=application.canonicalResult;
@@ -95,26 +100,32 @@ export function executeConstructionPacket(runtime,packet) {
         || runtime.getClassicalNahuatlNominalNncSentenceContext?.(slot)?.authorizationStatus!=='authorized')return null;
       // The scoped nominal nucleus is a constituent, never an accepted positive
       // intermediate. The sentence owner validates its exact issued slot/context.
-      application=runtime.executeClassicalGrammarApplicationRequest({
+      application=executeApplication({
         operationId:'nnc:sentence-surface',args:[slot,packet.sentenceOptions]});
     }
     else if(packet.operation==='vnc:application') {
       const binding=runtime.issueClassicalNahuatlVncContinuationBindingFrame('vnc:sentence-result',application.canonicalResult,packet.sentenceOptions);
       if(binding?.bindingStatus!=='ready')return null;
-      application=runtime.executeClassicalGrammarApplicationRequest({operationId:'vnc:sentence-result',args:binding.executionArgs});
+      application=executeApplication({operationId:'vnc:sentence-result',args:binding.executionArgs});
     }
   }
   if(packet.preparedLayers){
     if(!arePreparedConstructionLayersCurrent(runtime,packet.preparedLayers,application?.canonicalResult))return null;
-    for(const layer of packet.preparedLayers){application=runtime.executeClassicalGrammarApplicationRequest(layer.prepared.request,layer.prepared);if(application?.authorizationStatus!=='authorized')return application;}
+    for(const layer of packet.preparedLayers){application=executeApplication(layer.prepared.request,layer.prepared);if(application?.authorizationStatus!=='authorized')return application;}
   }
   for(const layer of packet.layers || []) {
     if(application?.authorizationStatus!=='authorized')return application;
     const host=application.canonicalResult;
     const hostInput=getConstructionParticleHostInput(runtime,layer.operationId,host);
     if(!hostInput)return null;
-    const particle=runtime.requestClassicalParticleResult(layer.particleId);
-    application=runtime.executeClassicalGrammarApplicationRequest({operationId:layer.operationId,args:[{
+    const particle = portable
+      ? executeApplication({
+        operationId: 'particle:result',
+        args: [runtime.buildClassicalNahuatlParticleSourceFrame(layer.particleId), {}],
+      })?.canonicalResult
+      : runtime.requestClassicalParticleResult(layer.particleId);
+    if (!particle) return null;
+    application=executeApplication({operationId:layer.operationId,args:[{
       particleResultFrame:particle,
       ...hostInput,
       ...(layer.operationId==='sentence:particle-adjunction' ? {honorificized:layer.honorificized,speakerGender:layer.speakerGender} : {}),

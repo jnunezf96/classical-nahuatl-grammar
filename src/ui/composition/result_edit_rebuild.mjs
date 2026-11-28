@@ -202,27 +202,30 @@ function particleReplacementOptions(runtime,entry,role,replacement) {
 }
 
 function reissue(runtime, entry, role, replacement) {
+  const execute = request => runtime.classicalPortableMake
+    ? runtime.classicalPortableMake.make(request)
+    : runtime.executeClassicalGrammarApplicationRequest?.(request);
   if(entry.kind==='double-nucleus'){
     const request=buildDoubleNucleusEditRequest(runtime,entry.exact,role,replacement);
     if(!request)return null;
-    const application=runtime.executeClassicalGrammarApplicationRequest?.({operationId:'nnc:deverbal-construction',args:[request]});
+    const application=execute({operationId:'nnc:deverbal-construction',args:[request]});
     return application?.authorizationStatus==='authorized'?application.canonicalResult:null;
   }
   if (entry.kind === 'conjunction') {
     const request = runtime.buildClassicalNahuatlConjunctReplacementRequest(entry.exact,role === 'sharedSupplement' ? role : Number(role),replacement);
     if (!request) return null;
-    const application = runtime.executeClassicalGrammarApplicationRequest?.({operationId:'clause:composition',args:[request]});
+    const application = execute({operationId:'clause:composition',args:[request]});
     return application?.authorizationStatus === 'authorized' ? application.canonicalResult : null;
   }
   if (entry.kind === 'supplementation') {
     const request=runtime.buildClassicalNahuatlSupplementationReplacementRequest(entry.exact,role,replacement);
     if (!request) return null;
-    const result=runtime.executeClassicalGrammarApplicationRequest?.({operationId:'sentence:supplementation',args:[request]});
+    const result=execute({operationId:'sentence:supplementation',args:[request]});
     return result?.authorizationStatus === 'authorized' ? result.canonicalResult : null;
   }
   const options=particleReplacementOptions(runtime,entry,role,replacement);
   if (!options) return null;
-  const application = runtime.executeClassicalGrammarApplicationRequest?.({operationId:entry.operation,args:[options]});
+  const application = execute({operationId:entry.operation,args:[options]});
   return application?.authorizationStatus === 'authorized' ? application.canonicalResult : null;
 }
 

@@ -1,3 +1,4 @@
+import {recordPortableSource} from './portable_build_request.mjs';
 import {CLASSICAL_NNC_EDITABLE_SENTENCE_TYPES,CLASSICAL_NNC_SENTENCE_POLARITIES,normalizeClassicalNahuatlNncSentenceType} from '../../core/classical/nnc_layer_evaluator.mjs?ownerDecision=20261031-2';
 import {createAttestedNncCellApi, createAttestedPlaceApi, createAttestedPrincipalCollocationApi} from './attested_source_cells.mjs?ownerDecision=20261031-2';
 import { analyzeQuantitiveInternalReduplication, deriveQuantitiveInternalReduplication } from '../../core/classical/quantitive_internal_reduplication.mjs';
@@ -1695,6 +1696,7 @@ export function createClassicalNahuatlNncApplicationModule(
       documentaryExampleAuthority: false,
     });
     if (frame.authorizationStatus === "authorized") {
+      recordPortableSource(frame, "nnc:ordinary-source", [source]);
       issuedSourceReceipts.set(frame, Object.freeze({
         sourceSignature: getSourceSignature(frame),
         lexicalEntry,
@@ -2690,6 +2692,7 @@ export function createClassicalNahuatlNncApplicationModule(
       surfaceStringAuthority: false,
     });
     if (frame.authorizationStatus === "authorized") {
+      recordPortableSource(frame, "nnc:ordinary-operation", [sourceFrame, selections]);
       issuedOperationReceipts.set(frame, Object.freeze({
         sourceFrame,
         selectedPredicateOption,
@@ -3930,6 +3933,7 @@ export function createClassicalNahuatlNncApplicationModule(
       documentaryExampleAuthority: false,
     });
     if (frame.authorizationStatus === "authorized") {
+      recordPortableSource(frame, "nnc:pronominal-source", [source]);
       issuedPronominalSourceReceipts.set(frame, Object.freeze({
         sourceSignature: getPronominalSourceSignature(frame),
         lexicalEntry,
@@ -4314,6 +4318,7 @@ export function createClassicalNahuatlNncApplicationModule(
       operationSignature: getPronominalOperationSignature(frame),
     }));
     if (frame.authorizationStatus === "authorized") {
+      recordPortableSource(frame, "nnc:pronominal-operation", [sourceFrame, selections]);
       issuedPronominalOperationReceipts.set(frame, Object.freeze({
         sourceFrame,
         derivedSourceFrame,

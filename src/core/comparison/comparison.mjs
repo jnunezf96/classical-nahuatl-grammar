@@ -1,3 +1,4 @@
+import {recordPortableSource} from '../../application/classical/portable_build_request.mjs';
 // Canonical Classical Nahuatl similarity/comparison grammar.
 //
 // Production owns semantic routes, typed source units, operation ordering,
@@ -1089,6 +1090,7 @@ export function createComparisonApi(targetObject = globalThis, installationConte
         sourceTypedSlots.set(frame, baseUnitKind === "nnc" ? nncSlotFrame : vncSlotFrame);
       }
       sourceCanonicalResults.set(frame, canonicalResult);
+      recordPortableSource(frame, "clause:comparison-source", [sourceRequest]);
       return frame;
     }
     // Read only the opaque parent retained by this exact owner-issued wrapper.

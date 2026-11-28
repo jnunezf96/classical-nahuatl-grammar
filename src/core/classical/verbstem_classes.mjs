@@ -1,3 +1,4 @@
+import { recordPortableSource } from "../../application/classical/portable_build_request.mjs";
 // Canonical modern ESM module.
 
 import {
@@ -7899,7 +7900,11 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
       };
     }
     function buildClassicalNahuatlVerbstemClassFrame(stem = "", options = {}) {
-      return buildClassicalNahuatlVerbstemClassFrameInternal(stem, options);
+      const frame = buildClassicalNahuatlVerbstemClassFrameInternal(stem, options);
+      if (frame?.authorizationStatus === "authorized") {
+        recordPortableSource(frame, "vnc:verbstem-class-source", [stem, options]);
+      }
+      return frame;
     }
     // Reuse the actual lower-input construction, stopping before Lesson 11
     // application. The private mode is never a caller-supplied bypass flag.

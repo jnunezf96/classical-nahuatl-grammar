@@ -1,3 +1,4 @@
+import {recordPortableSource} from "../../../application/classical/portable_build_request.mjs";
 // Canonical modern ESM module.
 import {isClassicalNahuatlParticipantFrame} from "../../classical/participant_frame.mjs?ownerDecision=20261031-2";
 
@@ -1820,10 +1821,14 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
         surfaceStringAuthority: false,
         callerSuppliedSurfaceAccepted: false
       };
-      return freezeClassicalNahuatlClauseConjunction({
+      const frame = freezeClassicalNahuatlClauseConjunction({
         ...projection,
         canonicalSignature: signClassicalNahuatlClauseConjunction(projection, "clause-conjunction-operation-request")
       });
+      if (projection.operationKindLicensed && projection.operationOptionsLicensed && projection.requestAuthorityLicensed) {
+        recordPortableSource(frame, "clause:conjunction-operation", [request]);
+      }
+      return frame;
     }
     function isClassicalNahuatlClauseConjunctionOperationRequest(request = null) {
       if (
@@ -2100,13 +2105,15 @@ export function createConjunctionClauseGlobals(targetObject = globalThis, instal
         });
       }
       if (!isClassicalNahuatlClauseCompositionNode(next)) return null;
-      return buildClassicalNahuatlClauseConjunctionOperationRequest({
+      const request = buildClassicalNahuatlClauseConjunctionOperationRequest({
         operationKind: original.operationKind,
         conjuncts: original.conjuncts.map((node, position) => position === index ? next : node),
         sharedSupplement: index === "sharedSupplement" ? next : original.sharedSupplement,
         ...(original.conjunctorResult ? {conjunctorResult: original.conjunctorResult} : {}),
         options: original.options,
       });
+      recordPortableSource(request, "clause:conjunction-replacement", [parent, index, replacement]);
+      return request;
     }
     function evaluateClassicalNahuatlClauseConjunctionRequest(request = {}) {
       const operationRequest = isClassicalNahuatlClauseConjunctionOperationRequest(request)

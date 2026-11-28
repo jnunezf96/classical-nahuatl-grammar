@@ -1,3 +1,4 @@
+import {portableSourceIssuer, recordPortableContinuation, recordPortableSource} from './portable_build_request.mjs';
 // Canonical modern ESM module.
 import { isForbiddenClassicalGrammarAuthorityKey } from "../../core/concepts/classical_grammar_foundation.mjs?v=20260811-lesson1-multigroup-024";
 
@@ -10245,7 +10246,14 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         );
       }
       if (!continuationSourceResultOrDependencies) {
-        return sharedService.evaluate(request);
+        const application = sharedService.evaluate(request);
+        const machinery = application?.resultFrame?.sourceMachineryFrame;
+        const machineryIssuer = machinery ? portableSourceIssuer(machinery) : null;
+        if (application?.authorizationStatus === "authorized" && machinery
+          && (!machineryIssuer || machineryIssuer === "vnc:verbstem-class-source")) {
+          recordPortableSource(machinery, "vnc:application-source-machinery", [request]);
+        }
+        return application;
       }
       const dependencySource =
         continuationSourceResultOrDependencies
@@ -11099,6 +11107,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       if(imperfectiveSources.has(record))return imperfectiveSources.get(record);
       const frame=Object.freeze({kind:"classical-nahuatl-imperfective-vnc-source-frame",sourceStem:record.stem,sourceValence:analysis.sourceValence || record.defaultSourceValence,sourceRank:analysis.sourceRank || "full-imperfective-verbstem",
         perfectiveClassStatus:analysis.perfectiveClassStatus,canonicalSourceStemRecord:record,sourceAnalysis:analysis,grammarAuthority:false});
+      recordPortableSource(frame, "vnc:imperfective-source", [request]);
       imperfectiveSources.set(record,frame);imperfectiveSourceContexts.set(frame,Object.freeze({record,analysis}));return frame;
     }
     function isClassicalNahuatlImperfectiveVncSourceFrame(frame=null) {
@@ -11296,6 +11305,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       const source=Object.freeze({kind:"classical-nahuatl-preformed-vnc-source-frame",sourceStem:record.stem,
         sourceValence:record.defaultSourceValence,canonicalSourceStemRecord:record,formationAnalysis:analysis,
         sourceRank:"preformed-verbstem",grammarAuthority:false,formulaStringAuthority:false,surfaceStringAuthority:false});
+      recordPortableSource(source, "vnc:preformed-source", [request]);
       preformedVncSources.set(record,source);preformedVncSourceContexts.set(source,Object.freeze({record,analysis}));return source;
     }
     function isClassicalNahuatlPreformedVncSourceFrame(source = null) {
@@ -11427,6 +11437,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       if (r.isClassicalNahuatlNonactiveCarrierSourceFrame?.(prior) === true) return prior;
       const record = r.deriveClassicalNahuatlNonactiveStemRecord(analysis.sourceStem,{sourceValence:analysis.sourceValence,optionId:analysis.optionId});
       if (r.isClassicalNahuatlNonactiveCarrierSourceFrame?.(record) !== true || record.nonactiveStem !== lexical.stem) return null;
+      recordPortableSource(record, "vnc:nonactive-carrier-source", [request]);
       nonactiveCarrierSources.set(lexical,record);return record;
     }
     function issueNonactiveCarrierBinding(source, selections = {}) {
@@ -13014,10 +13025,12 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       operationId = "", exactInputResult = null,
       callerSelections = {}, additionalResults = {},
     ) {
-      return runClassicalNahuatlVncApplicationValidationTransaction(() =>
+      const binding = runClassicalNahuatlVncApplicationValidationTransaction(() =>
         issueClassicalNahuatlVncContinuationBindingFrameInternal(
           operationId, exactInputResult, callerSelections, additionalResults,
         ));
+      recordPortableContinuation(binding);
+      return binding;
     }
     function issueClassicalNahuatlVncContinuationBindingFrameInternal(
       operationId = "",

@@ -1,3 +1,4 @@
+import { recordPortableSource } from '../../../application/classical/portable_build_request.mjs';
 import {
   buildClassicalNahuatlParticipantFrame,
   isClassicalNahuatlParticipantFrame,
@@ -474,6 +475,7 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
       callerSuppliedFormulaAuthority: false,
       callerSuppliedSurfaceAuthority: false,
     });
+    recordPortableSource(frame, "nnc:personal-name-inner-clause", [request]);
     issuedClauses.add(frame);
     return frame;
   }
@@ -547,6 +549,7 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
       callerSuppliedFormulaAuthority: false,
       callerSuppliedSurfaceAuthority: false,
     });
+    recordPortableSource(frame, "nnc:personal-name-source", [request]);
     issuedSources.add(frame);
     return frame;
   }
@@ -590,6 +593,7 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
       typedFrameAuthority: true, callerSuppliedFormulaAuthority: false,
       callerSuppliedSurfaceAuthority: false,
     });
+    recordPortableSource(source, "nnc:quoted-name-source", [request]);
     issuedOpaqueQuotedSources.set(source, receipt);
     issuedSources.add(source);
     if (designation) quotedDesignationSourcesByCitation.set(quotedCitation, source);

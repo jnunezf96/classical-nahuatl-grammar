@@ -1,3 +1,4 @@
+import {recordPortableSource} from "../../application/classical/portable_build_request.mjs";
 import { capitalizeClassicalNahuatlNncSentenceInitial } from "./nnc_layer_evaluator.mjs?v=20260928-reader-evidence-cache-790&andrewsRelease=20261024-1&ownerDecision=20261031-2";
 
 // Canonical Lesson 44 adverbial-nuclear grammar contribution.
@@ -2762,21 +2763,33 @@ export function installClassicalNahuatlAdverbialNuclearGlobals(targetObject = gl
     getClassicalNahuatlLcm,
     isClassicalNahuatlLcm,
     listClassicalNahuatlLesson44SourceRecords,
-    buildClassicalNahuatlLexicalAdverbialPotentialFrame:source=>
-      buildClassicalNahuatlLexicalAdverbialPotentialFrame(source,target),
-    buildClassicalNahuatlPrimitiveAdverbialPotentialFrame:source=>
-      buildClassicalNahuatlPrimitiveAdverbialPotentialFrame(source,target),
+    buildClassicalNahuatlLexicalAdverbialPotentialFrame(source) {
+      const potential = buildClassicalNahuatlLexicalAdverbialPotentialFrame(source, target);
+      if (potential.authorizationStatus === "authorized") {
+        recordPortableSource(potential, "nnc:lexical-adverbial-source", [source]);
+      }
+      return potential;
+    },
+    buildClassicalNahuatlPrimitiveAdverbialPotentialFrame(source) {
+      const potential = buildClassicalNahuatlPrimitiveAdverbialPotentialFrame(source, target);
+      if (potential.authorizationStatus === "authorized") {
+        recordPortableSource(potential, "nnc:primitive-adverbial-source", [source]);
+      }
+      return potential;
+    },
     getClassicalNahuatlPrimitiveAdverbialReloadInputs:frame=>
       isClassicalNahuatlAdverbialPotentialFrame(frame)
         ? PRIMITIVE_ADVERBIAL_INPUTS.get(frame.primitiveAdverbialSourceFrame) : undefined,
     isClassicalNahuatlPrimitiveAdverbialPotentialFrame:frame=>
       isClassicalNahuatlAdverbialPotentialFrame(frame)
       && frame.sourceInputMode === "owner-issued-primitive-adverbial-predicate-source",
-    resolveClassicalNahuatlAdverbialPotential:
-      source => resolveClassicalNahuatlAdverbialPotential(
-        source,
-        target,
-      ),
+    resolveClassicalNahuatlAdverbialPotential(source) {
+      const potential = resolveClassicalNahuatlAdverbialPotential(source, target);
+      if (potential.authorizationStatus === "authorized") {
+        recordPortableSource(potential, "nnc:resolved-adverbial-source", [source]);
+      }
+      return potential;
+    },
     resolveClassicalNahuatlAdverbialExactSource:
       source => resolveClassicalNahuatlAdverbialExactSource(
         source,

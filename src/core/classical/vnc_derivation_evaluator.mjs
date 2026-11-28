@@ -1,3 +1,4 @@
+import { recordPortableSource } from '../../application/classical/portable_build_request.mjs';
 // Canonical modern ESM module.
 
 import {
@@ -3202,6 +3203,7 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
         sourceRank:analysis.sourceRank,sourceClass:analysis.sourceClass,sourceValence:record.defaultSourceValence,
         sourceAnalysis:analysis,canonicalSourceStemRecord:record,independentFiniteUseLicensed:false,
         grammarAuthority:false,formulaStringAuthority:false,surfaceStringAuthority:false});
+      recordPortableSource(source, "vnc:analytical-source", [request]);
       analyticalVncSources.set(record,source);analyticalVncSourceRecords.set(source,record);return source;
     }
     function isClassicalNahuatlAnalyticalVncSourceFrame(source = null) {
@@ -8150,7 +8152,11 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
         && areClassicalNahuatlVncDerivationValuesEqual(rebuilt, frame));
     }
     function deriveClassicalNahuatlVncDerivationOperationFrame(sourceMachineryFrame = null, options = {}) {
-      return deriveClassicalNahuatlVncDerivationOperationFrameInternal(sourceMachineryFrame, options, 0, createClassicalNahuatlVncDerivationValidationContext());
+      const frame = deriveClassicalNahuatlVncDerivationOperationFrameInternal(sourceMachineryFrame, options, 0, createClassicalNahuatlVncDerivationValidationContext());
+      if (frame?.authorizationStatus === "authorized") {
+        recordPortableSource(frame, "vnc:derivation-operation", [sourceMachineryFrame, options]);
+      }
+      return frame;
     }
     function getComparableClassicalNahuatlVncDerivationOperationFrame(frame = {}) {
       return Object.fromEntries(Object.entries(frame).filter(([key]) => ![
@@ -8578,7 +8584,11 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
       return derivedFrame;
     }
     function buildClassicalNahuatlDerivedVncMachineryFrame(sourceMachineryFrame = null, operationFrame = null, options = {}) {
-      return buildClassicalNahuatlDerivedVncMachineryFrameInternal(sourceMachineryFrame, operationFrame, options, 0, createClassicalNahuatlVncDerivationValidationContext());
+      const frame = buildClassicalNahuatlDerivedVncMachineryFrameInternal(sourceMachineryFrame, operationFrame, options, 0, createClassicalNahuatlVncDerivationValidationContext());
+      if (frame?.authorizationStatus === "authorized") {
+        recordPortableSource(frame, "vnc:derived-machinery", [sourceMachineryFrame, operationFrame, options]);
+      }
+      return frame;
     }
     function isCanonicalClassicalNahuatlDerivedVncMachineryFrame(frame = null, depth = 0, validationContext = null) {
       if (!frame || !classicalNahuatlIssuedDerivedVncMachineryFrames.has(frame) || frame.kind !== "classical-nahuatl-vnc-derived-machinery-frame" || frame.version !== CLASSICAL_NAHUATL_VNC_DERIVATION_VERSION || frame.authorizationStatus !== "authorized" || depth > CLASSICAL_NAHUATL_VNC_DERIVATION_MAX_VALIDATION_DEPTH || frame.typedFrameAuthority !== true || frame.formulaArtifactAuthority !== false || frame.surfaceArtifactAuthority !== false || frame.callerSuppliedAuthorityAccepted !== false) {

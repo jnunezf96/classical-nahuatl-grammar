@@ -407,7 +407,20 @@ export function exportClassicalResultReloadRecipe(r, roots = {}, normalizePrimit
   } catch { return null; }
 }
 
-export function replayClassicalResultReloadRecipe(r, recipe) {
+// Translate supported legacy builds while their original requests are still
+// available. Continuations can then refer to the translated Results directly.
+export function replayClassicalResultReloadRecipe(runtime, recipe, {recordPortableRequests = false} = {}) {
+  const portable = recordPortableRequests ? runtime.classicalPortableMake : null;
+  const r = portable ? Object.create(runtime, {
+    executeClassicalGrammarApplicationRequest: {
+      value: (request, prepared) => portable.make(request, prepared)
+        ?? runtime.executeClassicalGrammarApplicationRequest(request, prepared),
+    },
+    executeClassicalGrammarTypedSourceOperationBindingFrame: {
+      value: binding => portable.make({typedBinding: binding})
+        ?? runtime.executeClassicalGrammarTypedSourceOperationBindingFrame(binding),
+    },
+  }) : runtime;
   if (!exact(recipe, ["kind", "version", "nodes", "roots"]) || recipe.kind !== KIND
     || recipe.version !== 1 || !Array.isArray(recipe.nodes) || !recipe.nodes.length
     || recipe.nodes.length > MAX_RESULT_LINK_NODES || !recipe.roots || Array.isArray(recipe.roots)
@@ -604,7 +617,7 @@ export function replayClassicalResultReloadRecipe(r, recipe) {
         const navigator = r.getClassicalGrammarApplicationCapabilityNavigator(source);
         const binding = r.issueClassicalGrammarTypedSourceOperationBindingFrame(navigator,"nnc:ordinary",node.choices);
         result = r.executeClassicalGrammarTypedSourceOperationBindingFrame(binding)?.canonicalResult;
-      } else if (node?.type === "nnc:ordinary" && exact(node, ["type", "source", "choices"])
+      } else if (["nnc:ordinary", "nnc:source-build"].includes(node?.type) && exact(node, ["type", "source", "choices"])
         && plain(node.source, NNC_RELOAD_SOURCE_KEYS) && plain(node.choices, [...NNC_KEYS, "humanness"])) {
         const source = reissueNncReloadSource(r,node.source);
         if (Object.hasOwn(node.choices, "animacy")) {

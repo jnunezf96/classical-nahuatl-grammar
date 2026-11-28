@@ -1,3 +1,4 @@
+import {readPortableResultUrl, writePortableResultUrl} from '../../application/classical/portable_result_url.mjs';
 import {getOwnerOperationDecisionControls,projectOwnerOperationChoice,projectOwnerOperationDecision,findOwnerOperationControlChoice,isOwnerOperationChoiceAllowed,projectOwnerOperationChoiceMove,projectOwnerOperationControlMove,readOwnerOperationControlValue,syncOwnerOperationDecisionControls as projectOwnerOperationDecisionControls,restoreOwnerOperationDecisionControls,readOwnerOperationControlIntent} from '../composition/owner_operation_protocol.mjs?issuedBinding=20261028-1&ownerDecision=20261031-1';
 import {getClassicalNahuatlVncLateVariantOptions} from "../../core/classical/vnc_late_operation_ui_contract.mjs?futureObject=20261024-3&v=20261001-reader-27-2-copy-i-1&interfaceRelease=1.2.36&lateVariantInventory=20261028-1&ownerDecision=20261029-12";
 import {isNuclearSentenceOperation,createNuclearSentenceScope,issueNuclearSentenceSnapshot,projectNuclearSentenceExecution,isCurrentNuclearSentenceSnapshot,captureNuclearSentenceChoiceFrame,retainNuclearSentenceBinding} from '../composition/nuclear_sentence_transaction.mjs?ownerDecision=20261031-1';
@@ -259,8 +260,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
       },
       onAccepted: application => {
         const result = application.canonicalResult;
-        const recipe = exportClassicalResultReloadRecipe(targetObject, { result });
-        ClassicalAcceptedLinkRecipes.set(result, recipe === null ? null : JSON.stringify(recipe));
+        if (!targetObject.classicalPortableMake) {
+          const recipe = exportClassicalResultReloadRecipe(targetObject, { result });
+          ClassicalAcceptedLinkRecipes.set(result, recipe === null ? null : JSON.stringify(recipe));
+        }
         scheduleClassicalVncReloadSave();
       },
       onChange: () => {
@@ -49675,8 +49678,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
         : "Whole Result and conjunct edit restored. Changes remain pending until Make Result.");
       return true;
     }
-    function restoreClassicalMixedReloadSession(saved, onReplayed = () => {}) {
-      const roots = replayClassicalResultReloadRecipe(targetObject, saved.recipe);
+    function restoreClassicalMixedReloadSession(saved, onReplayed = () => {},
+      roots = replayClassicalResultReloadRecipe(targetObject, saved.recipe, {recordPortableRequests: true})) {
       const reloadStatus = targetObject.document.getElementById("classical-grammar-workspace-history");
       if (reloadStatus) reloadStatus.dataset.classicalReloadStatus = roots ? "mixed-reissued" : "mixed-replay-rejected";
       const resultCapture = roots?.result
@@ -49837,6 +49840,18 @@ export function createUiRenderingApi(targetObject = globalThis) {
     function updateClassicalResultLink(browserWindow, exactResult) {
       if (!browserWindow?.location?.href || !browserWindow.history || lastAddressedResult === exactResult) return;
       lastAddressedResult = exactResult;
+      if (targetObject.classicalPortableMake) {
+        const url = new URL(browserWindow.location.href);
+        const address = exactResult && targetObject.classicalPortableMake.addressFor(exactResult);
+        const published = writePortableResultUrl(url, address);
+        if (url.href !== browserWindow.location.href) {
+          browserWindow.history.replaceState(browserWindow.history.state, "", url.href);
+        }
+        const panel = targetObject.document.getElementById("classical-result-panel");
+        if (panel) panel.dataset.classicalResultLinkStatus = published ? "verified" : "missing-portable-request";
+        if (exactResult && !published) setClassicalWholeCanvasActionStatus("This Result’s link could not be saved.");
+        return;
+      }
       const publish = (compact, recipe = null) => {
         if (ClassicalConstructionSession.position.accepted.result !== exactResult) return;
         const previous = browserWindow.location.href;
@@ -49989,13 +50004,21 @@ export function createUiRenderingApi(targetObject = globalThis) {
     function restoreClassicalVncReloadSession({ url = "", compactRecipe = null } = {}) {
       classicalVncReloadPersistenceReady = true;
       const browserWindow = targetObject.document?.defaultView || targetObject.window;
+      const address = browserWindow?.location?.href
+        ? new URL(url || browserWindow.location.href, browserWindow.location.href) : null;
+      const portableAddress = readPortableResultUrl(address);
+      if (portableAddress) {
+        const application = targetObject.classicalPortableMake?.open(portableAddress);
+        if (application?.canonicalResult && restoreClassicalMixedReloadSession({}, undefined,
+          {result: application.canonicalResult})) return true;
+        setClassicalWholeCanvasActionStatus("This portable Result link could not be reopened.");
+        return false;
+      }
       let saved;
       try {
         saved = JSON.parse(browserWindow?.sessionStorage?.getItem(
           CLASSICAL_VNC_RELOAD_SESSION_KEY) || "null");
       } catch { saved = null; }
-      const address = browserWindow?.location?.href
-        ? new URL(url || browserWindow.location.href, browserWindow.location.href) : null;
       const prefix = "#result-v1=";
       if (address?.searchParams.has("r") && !address.hash.startsWith(prefix)
         && saved?.url !== address.href) {

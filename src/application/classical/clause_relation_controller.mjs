@@ -1240,6 +1240,11 @@ export function createClassicalClauseRelationControllerGlobals(
       retainedRelationPreparation.cursor = 0;
       retainedRelationPreparation.last = null;
     }
+    function executeRelationApplication(request, prepared = null) {
+      return targetObject.classicalPortableMake
+        ? targetObject.classicalPortableMake.make(request, prepared)
+        : targetObject.executeClassicalGrammarApplicationRequest(request, prepared);
+    }
     function runRetainedRelationApplication(operationId, request, previewOnly, previewLeases, exactArguments = []) {
       const record = retainedRelationPreparation;
       const index = record.cursor++;
@@ -1252,7 +1257,7 @@ export function createClassicalClauseRelationControllerGlobals(
       record.last = preparation;
       const result = previewOnly
         ? targetObject.previewClassicalGrammarApplicationRequest?.(preparation.request, preparation)
-        : targetObject.executeClassicalGrammarApplicationRequest(preparation.request, preparation);
+        : executeRelationApplication(preparation.request, preparation);
       if (previewOnly && result) previewLeases.push(result);
       return result;
     }
@@ -5017,7 +5022,7 @@ export function createClassicalClauseRelationControllerGlobals(
         const applicationRequest = {operationId: "sentence:supplementation", args: [request, ...exactCapturedResults]};
         const applicationResult = previewOnly
           ? targetObject.previewClassicalGrammarApplicationRequest?.(applicationRequest)
-          : targetObject.executeClassicalGrammarApplicationRequest(applicationRequest);
+          : executeRelationApplication(applicationRequest);
         if (previewOnly && applicationResult) previewLeases.push(applicationResult);
         return (previewOnly ? targetObject.isClassicalGrammarApplicationPreview?.(applicationResult)
           : targetObject.isClassicalGrammarApplicationResult(applicationResult))

@@ -1,3 +1,4 @@
+import {installPortableMake} from '../application/classical/portable_make.mjs';
 import { installClassicalNahuatlVncApplicationGlobals } from "../application/classical/vnc_application.mjs?participantChoices=20261026-2&deverbalReload=20261024-8&futureObject=20261024-3&vncEdit=20261023-6&v=20261011-reader-42-8-272&repair=position-model-20261012-24&audit=20261013-source-facts-1&caseMeta=20261013-1&admonitiveChoice=20261021-5&nominalReload=20261024-4&andrewsRelease=20261024-1&interfaceRelease=1.2.36&complexReload=20261027-1&ownerDecision=20261031-2";
 import { installClassicalNahuatlNncApplicationGlobals } from "../application/classical/nnc_application.mjs?possessorSubject=20261026-1&participantChoices=20261026-1&nncReinflection=20261023-1&v=20261011-reader-42-8-271&acceptedContext=20261022-1&dependentCompletion=20261022-1&interfaceRelease=1.2.36&coyoteWalking=20261025-1&ownerDecision=20261031-2";
 import { installClassicalGrammarApplicationGlobals } from "../application/classical/grammar_application.mjs?participantChoices=20261026-1&nncReinflection=20261023-1&repeatConjunct=20261023-1&v=20261012-position-raw-compound-2&audit=20261013-source-facts-1&subjectTransition=20261021-29&makePreview=20261022-1&nominalReload=20261024-4&andrewsRelease=20261024-1&interfaceRelease=1.2.36&negativeAttachment=20261025-1&supplementationSession=20261028-1&ownerDecision=20261031-2";
@@ -974,6 +975,9 @@ export async function createRuntimeInstance({
             privateCapabilities: Object.freeze(privateCapabilities),
             overwrittenCapabilities: Object.freeze(overwrittenCapabilities),
         }));
+    }
+    if (options.portableMakeEnabled === true) {
+        Object.defineProperty(runtimeObject, "classicalPortableMake", {value: installPortableMake(runtimeObject)});
     }
     const exposedKeys = Reflect.ownKeys(runtimeObject).filter((key) => !initialKeys.has(key));
     const exposedDescriptors = cloneDescriptorMap(runtimeObject, exposedKeys);

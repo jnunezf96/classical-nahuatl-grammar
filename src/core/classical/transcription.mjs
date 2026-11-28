@@ -1,3 +1,4 @@
+import { recordPortableSource } from '../../application/classical/portable_build_request.mjs';
 // Canonical modern ESM module.
 
 import {
@@ -5161,6 +5162,7 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
           contextualRealizations: contextResolution.contexts
         })
       );
+      recordPortableSource(sourceFrame, "orthography:transcription-source", [specification]);
       return sourceFrame;
     }
     function isClassicalNahuatlTranscriptionSourceFrame(frame = null) {
@@ -5506,7 +5508,9 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
         exactApplicationResult:application,morphParts:Object.freeze(parts),
         sourceAuthority:"original-grammar-morph-parts",generationAuthority:false});
       issuedWritingContexts.add(context);
-      return attachWritingContext(source,context);
+      const writingSource = attachWritingContext(source,context);
+      recordPortableSource(writingSource, "orthography:application-writing-source", [application.canonicalResult, phonologicalParts]);
+      return writingSource;
     }
     function issueClassicalNahuatlWritingSourceFromParticleGroup(parents = []) {
       if (!Array.isArray(parents) || parents.length!==2 || !parents.every((source,index)=>
@@ -5518,7 +5522,9 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
         parentSources:Object.freeze(Array.from(parents)),sourceSection:"2.14",
         sourceAuthority:"actual-fixed-lexical-group",generationAuthority:false});
       issuedWritingContexts.add(context);
-      return attachWritingContext(source,context);
+      const writingSource = attachWritingContext(source,context);
+      recordPortableSource(writingSource, "orthography:particle-group-writing-source", [parents]);
+      return writingSource;
     }
     function getTranscriptionWritingChoices(source) {
       const choices=[Object.freeze({value:"ordinary",label:"Ordinary writing",ruleId:"",dependencies:Object.freeze([])})];
@@ -5564,6 +5570,7 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
         operation=Object.freeze({kind:"classical-nahuatl-transcription-operation-frame",exactSourceFrame:source,
           writingVariant:variant});
         issuedTranscriptionOperations.set(operation,Object.freeze({source,context:source.writingContext || null,selected}));
+        recordPortableSource(operation, "orthography:transcription-operation", [source, {writingVariant: variant}]);
       }
       const frame=Object.freeze({kind:"classical-nahuatl-transcription-binding-frame",exactSourceFrame:source,
         authorizationStatus:ready?"authorized":"blocked",bindingStatus:ready?"ready":"rejected",

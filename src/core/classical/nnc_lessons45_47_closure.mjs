@@ -1,3 +1,4 @@
+import {recordPortableSource} from '../../application/classical/portable_build_request.mjs';
 // Canonical Lessons 45-47 relational-NNC grammar.
 //
 // The lesson numbers are evidence indexes. Runtime authority comes from the
@@ -2864,7 +2865,11 @@ export function createClassicalNahuatlNncClosureApi(targetObject = globalThis) {
   }
 
   function buildClassicalNahuatlSelectedImperfectPredicateSourceFrame(request = {}) {
-    return issueSelectedImperfectPredicateSource(request);
+    const source = issueSelectedImperfectPredicateSource(request);
+    if (source?.authorizationStatus === "authorized") {
+      recordPortableSource(source, "nnc:selected-imperfect-source", [request]);
+    }
+    return source;
   }
 
   function resolveClassicalNahuatlSelectedImperfectPredicateSourceFrame(request = {}) {
@@ -2876,7 +2881,11 @@ export function createClassicalNahuatlNncClosureApi(targetObject = globalThis) {
     const enteredStem = String(request.enteredStem || "").normalize("NFC").trim()
       .replace(/^\(([\p{L}\p{M}-]+)\)$/u, "$1");
     const analysis = SELECTED_IMPERFECT_PREDICATE_SOURCE_ANALYSES.find(record => record.enteredStems.includes(enteredStem));
-    return analysis ? issueSelectedImperfectPredicateSource(analysis.declaration, analysis) : null;
+    const source = analysis ? issueSelectedImperfectPredicateSource(analysis.declaration, analysis) : null;
+    if (source?.authorizationStatus === "authorized") {
+      recordPortableSource(source, "nnc:resolved-imperfect-source", [request]);
+    }
+    return source;
   }
 
   function isClassicalNahuatlSelectedImperfectPredicateSourceFrame(frame) {
@@ -2911,6 +2920,7 @@ export function createClassicalNahuatlNncClosureApi(targetObject = globalThis) {
       finerOrdinarySubclassAsserted:false,exactResultIdentityPreserved:true,
       callerSuppliedAuthorityAccepted:false,formulaStringAuthority:false,surfaceStringAuthority:false});
     predicateNounSources.set(result,nounSource);predicateNounSourceParents.set(nounSource,parent);
+    recordPortableSource(nounSource, 'nnc:relational-predicate-source', [result]);
     return nounSource;
   }
   function getClassicalNahuatlRelationalPredicateNounSourceParent(source) {
@@ -2922,6 +2932,7 @@ export function createClassicalNahuatlNncClosureApi(targetObject = globalThis) {
     const frame = freeze({kind:"classical-nahuatl-relational-nnc-typed-source-frame",version:1,authorizationStatus:"authorized",
       familyId:"relational-nnc-source",sourceFrame:built.sourceFrame,typedSourceAuthority:true,callerSuppliedAuthorityAccepted:false});
     typedSources.set(frame,built);
+    recordPortableSource(frame, 'nnc:relational-source', [request]);
     return frame;
   }
   function isClassicalNahuatlRelationalNncTypedSourceFrame(frame) {

@@ -1,3 +1,4 @@
+import { recordPortableSource } from '../../application/classical/portable_build_request.mjs';
 // Canonical modern ESM module.
 
 export function createClassicalNahuatlSourceStemInventoryApi() {
@@ -771,6 +772,7 @@ export function createClassicalNahuatlSourceStemInventoryApi() {
       });
       if (!blockReason) {
         issuedCanonicalSourceSelectionFrames.add(frame);
+        recordPortableSource(frame, "vnc:canonical-source-selection", [requestObject]);
       }
       return frame;
     }

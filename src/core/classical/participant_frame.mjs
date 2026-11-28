@@ -1,3 +1,4 @@
+import {recordPortableSource} from '../../application/classical/portable_build_request.mjs';
 // Canonical participant features shared by Classical NNC, VNC, and clause grammar.
 
 const PERSON_VALUES = new Set(["1", "2", "3", "unspecified"]);
@@ -196,7 +197,7 @@ export function buildClassicalNahuatlParticipantFrame(options = {}) {
   const morphologicalAgreement = category === "3common" || category === "impersonal"
     ? "3sg"
     : category;
-  return Object.freeze({
+  const frame = Object.freeze({
     kind: "classical-nahuatl-participant-frame",
     version: 1,
     role,
@@ -220,6 +221,8 @@ export function buildClassicalNahuatlParticipantFrame(options = {}) {
       && animacy === "animate"
       && humanness === "unspecified",
   });
+  recordPortableSource(frame, "grammar:participant-source", [options]);
+  return frame;
 }
 
 export function isClassicalNahuatlParticipantFrame(frame = null) {

@@ -1,3 +1,4 @@
+import {recordPortableSource} from "../../application/classical/portable_build_request.mjs";
 import {CLASSICAL_NAHUATL_VNC_LATE_CHOICE_CONTROLS,createClassicalLateChoicePresentation,getClassicalNahuatlVncLateVariantOptions,getClassicalNahuatlVncLateOperationUiControlOptions} from "./vnc_late_operation_ui_contract.mjs?lateVariantInventory=20261028-1&ownerDecision=20261029-12";
 import {getCompoundNonactiveScopeDomain,getCompoundEventOrderDomain} from './compound_choice_contract.mjs?eventOrder=20261028-1';
 // Canonical Andrews-only closure for Lessons 27, 28, 29, and 33.
@@ -887,6 +888,7 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
       formulaStringAuthority: false,
       surfaceStringAuthority: false,
     });
+    if (authorized) recordPortableSource(frame, "vnc:compound-predicate-source", [request]);
     issuedCompoundPredicateSources.add(frame);
     return frame;
   }
@@ -955,6 +957,9 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
       surfaceStringAuthority: false,
       grammarAuthority: false,
     });
+    if (ready) {
+      recordPortableSource(frame, "vnc:compound-predicate-binding", [exactSourceFrame, frame.callerSelections]);
+    }
     compoundPredicateBindingRequests.set(frame, ownerRequest);
     return frame;
   }

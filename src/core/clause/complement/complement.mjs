@@ -1,3 +1,4 @@
+import {recordPortableSource} from '../../../application/classical/portable_build_request.mjs';
 // Canonical modern ESM module.
 import {areClassicalNahuatlPersonNumberFeaturesCompatible} from "../../sentence/supplementation.mjs?andrewsRelease=20261024-1&supplementationSession=20261028-1&utteranceProjection=20261028-1&ownerDecision=20261031-2";
 
@@ -1396,6 +1397,7 @@ export function createComplementClauseGlobals(targetObject = globalThis, install
         canonicalSignature: signClassicalNahuatlClauseComposition(projection, "clause-composition-source")
       });
       issuedClassicalNahuatlClauseCompositionSourceFrames.add(result);
+      recordPortableSource(result, 'clause:composition-source', [sourceFrame, options]);
       return result;
     }
     function isClassicalNahuatlClauseCompositionSourceFrame(frame = null) {
@@ -1452,10 +1454,14 @@ export function createComplementClauseGlobals(targetObject = globalThis, install
         surfaceStringAuthority: false,
         callerSuppliedSurfaceAccepted: false
       };
-      return freezeClassicalNahuatlClauseComposition({
+      const frame = freezeClassicalNahuatlClauseComposition({
         ...projection,
         canonicalSignature: signClassicalNahuatlClauseComposition(projection, "clause-complementation-operation-request")
       });
+      if (projection.operationKindLicensed && projection.operationOptionsLicensed && projection.requestAuthorityLicensed) {
+        recordPortableSource(frame, "clause:complement-operation", [request]);
+      }
+      return frame;
     }
     function isClassicalNahuatlClauseComplementationOperationRequest(request = null) {
       if (

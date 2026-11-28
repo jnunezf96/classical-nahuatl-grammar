@@ -1,3 +1,4 @@
+import {recordPortableSource} from '../../application/classical/portable_build_request.mjs';
 import {
   buildClassicalNahuatlParticipantFrame,
   isClassicalNahuatlParticipantFrame,
@@ -624,6 +625,7 @@ export function createClassicalNahuatlSupplementationApi(
     lexicalizedNncSources.set(source, Object.freeze({principal, supplement,
       principalSubject: eyeContact, supplementSubject: fishContact,
       principalPossessor: possessorContact}));
+    recordPortableSource(source, "nnc:lexicalized-double-nucleus-source", [{enteredStem: source.sourceStem, sourceUse: source.sourceUse}]);
     lexicalizedDoubleNucleusSource = source; return source;
   }
   function isClassicalNahuatlLexicalizedNncSourceFrame(source = null) {
@@ -771,12 +773,14 @@ export function createClassicalNahuatlSupplementationApi(
       restoredStateAuthority: false,
       lessonMetadataAuthority: false,
     };
-    return issueFrame(issuedDiscourseSourceContextFrames, {
+    const frame = issueFrame(issuedDiscourseSourceContextFrames, {
       ...projection,
       canonicalSignature: authorized
         ? signValue(projection, "discourse-source-context")
         : "",
     });
+    if (authorized) recordPortableSource(frame, "sentence:discourse-source-context", [request]);
+    return frame;
   }
 
   function isClassicalNahuatlDiscourseSourceContextFrame(frame = null) {
@@ -1380,12 +1384,17 @@ export function createClassicalNahuatlSupplementationApi(
       surfaceStringAuthority: false,
       lessonMetadataAuthority: false,
     };
-    return issueFrame(issuedContextRecords, {
+    const frame = issueFrame(issuedContextRecords, {
       ...projection,
       canonicalSignature: authorized
         ? signValue(projection, "supplementation-context")
         : "",
     });
+    if (authorized) {
+      const {kind: contextKind, ...inputs} = request;
+      recordPortableSource(frame, "sentence:supplementation-context", [contextKind, inputs]);
+    }
+    return frame;
   }
 
   function isClassicalNahuatlSupplementationContextRecord(frame = null) {
@@ -1910,6 +1919,11 @@ export function createClassicalNahuatlSupplementationApi(
     const envelope = buildUncachedClassicalNahuatlSupplementationClauseEnvelope(
       sourceFrame, optionsSnapshot ? optionsSnapshot.options : options,
     );
+    if (envelope.authorizationStatus === "authorized") {
+      recordPortableSource(envelope, "sentence:supplementation-envelope", [
+        sourceFrame, optionsSnapshot ? optionsSnapshot.options : options,
+      ]);
+    }
     if (reusableSource && envelope.authorizationStatus === "authorized"
       && isDeeplyImmutableDataGraph(envelope)) {
       const validator = reusableEnvelopeSourceValidators.find(name => targetObject[name]?.(sourceFrame) === true);
@@ -5583,10 +5597,12 @@ export function createClassicalNahuatlSupplementationApi(
         options = {...options, [continuationKey]: [replacement]};
       }
     }
-    return buildClassicalNahuatlSupplementationOperationRequest({operationKind: "relation",
+    const request = buildClassicalNahuatlSupplementationOperationRequest({operationKind: "relation",
       principalClause: key === "principalClause" ? next : inputs.principalClause,
       supplementClause: key === "supplementClause" ? next : inputs.supplementClause,
       options});
+    recordPortableSource(request, "sentence:supplementation-replacement", [parent, role, replacement]);
+    return request;
   }
 
   function isClassicalNahuatlSupplementationFrame(frame = null) {
@@ -7036,13 +7052,17 @@ export function createClassicalNahuatlSupplementationApi(
       lessonMetadataAuthority: false,
       callerSuppliedSurfaceAccepted: false,
     };
-    return issueFrame(issuedOperationRequests, {
+    const frame = issueFrame(issuedOperationRequests, {
       ...projection,
       canonicalSignature: signValue(
         projection,
         "supplementation-operation-request"
       ),
     });
+    if (projection.operationKindLicensed && projection.operationOptionsLicensed && projection.requestAuthorityLicensed) {
+      recordPortableSource(frame, "sentence:supplementation-operation", [request]);
+    }
+    return frame;
   }
 
   function isClassicalNahuatlSupplementationOperationRequest(

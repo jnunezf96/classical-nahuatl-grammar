@@ -1,3 +1,4 @@
+import {recordPortableSource} from '../../application/classical/portable_build_request.mjs';
 // Canonical modern ESM module.
 
 export function createClassicalNahuatlParticlesApi(
@@ -1247,6 +1248,7 @@ l50-ma-tel-za-yeh|although it may be only; at least|restrictive concession; form
         callerSuppliedSurfaceAuthority: false,
         callerSuppliedFormulaAuthority: false
       });
+      if (authorized) recordPortableSource(frame, "particle:negative-selection-source", [request]);
       issuedNegativeParticleSelectionFrames.set(frame, Object.freeze({
         authorized,
         sourceFrame: frame.sourceFrame,
@@ -1459,6 +1461,7 @@ l50-ma-tel-za-yeh|although it may be only; at least|restrictive concession; form
         sourceFrame,
         Object.freeze({ particleId, constituents })
       );
+      recordPortableSource(sourceFrame, 'particle:source', [requested]);
       return sourceFrame;
     }
     function isClassicalNahuatlParticleSourceFrame(frame = null) {

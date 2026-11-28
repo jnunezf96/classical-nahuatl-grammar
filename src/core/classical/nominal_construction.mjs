@@ -1,3 +1,4 @@
+import {recordPortableSource} from '../../application/classical/portable_build_request.mjs';
 import { reduplicate } from "./reduplicative_realization.mjs";
 import { getClassicalNahuatlNncPredicateBoundaryCarrier } from "./nnc_predicate_boundary.mjs";
 import { pluralizeClassicalNahuatlLesson16InternalStem } from "./pronominal_internal_plural.mjs";
@@ -1013,9 +1014,12 @@ function issueClassicalNahuatlContextualFlawedSubjectSourceFrame(
     callerSuppliedAuthorityAccepted: false, formulaStringAuthority: false,
     surfaceStringAuthority: false,
   });
-  if (!blockReason) CONTEXTUAL_FLAWED_SUBJECT_SOURCES.set(frame, {
-    canonicalNncSourceFrame, negativeParticleSelectionFrame,
-  });
+  if (!blockReason) {
+    CONTEXTUAL_FLAWED_SUBJECT_SOURCES.set(frame, {canonicalNncSourceFrame, negativeParticleSelectionFrame});
+    recordPortableSource(frame, "nnc:contextual-flawed-subject-source", [
+      canonicalNncSourceFrame, negativeParticleSelectionFrame,
+    ]);
+  }
   return frame;
 }
 
@@ -1542,6 +1546,7 @@ function getClassicalNahuatlAdjectivalNncSourceConstituent(parent, options = {},
     classMembershipClaimed:useShape !== "source-root", lexicalSpellingPreservesProductiveParent:true,
     formulaStringAuthority:false, surfaceStringAuthority:false, callerSuppliedAuthorityAccepted:false});
   ISSUED_ADJECTIVAL_SOURCE_CONSTITUENTS.add(bridgeFrame);
+  recordPortableSource(bridgeFrame, 'nnc:adjectival-source-bridge', [parent, options]);
   return Object.freeze({kind:useShape === "source-root" ? "adjectival-root-nnc" : "adjectival-general-use-nnc",
     stem,nounClass:useShape === "source-root" ? "" : "tl",
     sourceClass:useShape === "source-root" ? "root-only" : "tl-1-a",
@@ -12260,6 +12265,7 @@ function buildClassicalNahuatlNominalConstructionTypedSourceFrame(source = {}, t
       authorizationStatus:"authorized",value,sourceRank:"cardinal-number",sourceInputMode:"positive-integer",
       standaloneNncAuthorized:false,ordinaryNounParadigmAuthorized:false,sourceStringAuthority:false,
       callerSuppliedAuthorityAccepted:false,formulaStringAuthority:false,surfaceStringAuthority:false});
+    recordPortableSource(frame, 'grammar:nominal-source', [{value}]);
     CARDINAL_NUMERIC_SOURCE_FRAMES.add(frame);CARDINAL_NUMERIC_SOURCE_CACHE.set(value,frame);return frame;
   }
   if (!source || typeof source !== "object" || Array.isArray(source)
@@ -12288,6 +12294,7 @@ function buildClassicalNahuatlNominalConstructionTypedSourceFrame(source = {}, t
     allowedStateValues:RAW_COMPOUND_SOURCE_STATES,referentialAnimacy:"any",embedClassClaimed:false,
     standaloneNncAuthorized:false,classDependentInflectionAuthorized:false,typedSourceAuthority:true,
     callerSuppliedAuthorityAccepted:false,formulaStringAuthority:false,surfaceStringAuthority:false});
+  recordPortableSource(frame, 'grammar:nominal-source', [source]);
   ISSUED_RAW_COMPOUND_SOURCE_FRAMES.add(frame);
   return frame;
 }

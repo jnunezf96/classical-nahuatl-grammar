@@ -1,3 +1,5 @@
+import {recordPortableSource} from "./portable_build_request.mjs";
+
 // Request assembly over privately retained owner inputs. This adapter adds no
 // grammatical relation and never accepts an application Result.
 export function getDoubleNucleusEditChildren(runtime, exact) {
@@ -32,7 +34,9 @@ export function buildDoubleNucleusEditRequest(runtime,parent,role,replacement) {
   const relation=runtime.evaluateClassicalNahuatlSupplementationOperation?.(relationRequest);
   if(runtime.isClassicalNahuatlSupplementationFrame?.(relation)!==true
     ||relation.authorizationStatus!=='authorized')return null;
-  return {...inputs,source:{...inputs.source,
+  const request = {...inputs,source:{...inputs.source,
     [role==='principal'?'principalNncResult':'supplementNncResult']:replacement,
     canonicalSupplementationResult:relation}};
+  recordPortableSource(request, "nnc:double-nucleus-replacement", [parent, role, replacement]);
+  return request;
 }

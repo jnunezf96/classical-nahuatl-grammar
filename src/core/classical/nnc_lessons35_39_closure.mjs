@@ -1,3 +1,4 @@
+import {recordPortableSource} from "../../application/classical/portable_build_request.mjs";
 // Canonical Andrews-only nominalization and deverbal closure for Lessons 35-39.
 //
 // Production owns executable grammar only. Canvas source spans, dispositions,
@@ -5748,6 +5749,7 @@ function buildPatientiveCoreSource(request = {}, target = globalThis) {
     formulaStringAuthority:false,surfaceStringAuthority:false});
   ISSUED_PATIENTIVE_CORE_SOURCES.add(frame);
   PATIENTIVE_CORE_RELOAD_INPUTS.set(frame, deepFreeze(cloneDeverbalReloadInputs(request)));
+  recordPortableSource(frame, "nnc:patientive-core-source", [request]);
   return frame;
 }
 

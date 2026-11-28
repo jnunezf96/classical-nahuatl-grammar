@@ -333,8 +333,12 @@ export async function bootstrapBrowserApp(options = {}) {
             validateEmbeddedStartupData(documentObject);
             documentObject.documentElement.dataset.classicalBootstrapPhase = "runtime";
             bindCacheCurrentPresentationInstallers();
+            const location = globalObject.location;
+            const portableMakeEnabled = ["localhost", "127.0.0.1", "[::1]"].includes(location?.hostname)
+                && new URLSearchParams(location.search).get("portable-preview") === "1";
             const runtimeInstance = await createRuntimeInstance({
                 globalObject,
+                portableMakeEnabled,
                 windowObject: globalObject.window || globalObject,
                 documentObject,
                 runtimeConfig,

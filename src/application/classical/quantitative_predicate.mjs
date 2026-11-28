@@ -1,3 +1,4 @@
+import {recordPortableSource} from './portable_build_request.mjs';
 // Whole quantitative Source material is a citation, not a nounstem analysis.
 // Its use declaration authorizes only the unchanged predicate and its reference.
 // No class, stem boundary, or absent morph is inferred from the cited spelling.
@@ -37,6 +38,7 @@ export function createClassicalQuantitativePredicateApi() {
       permittedUse:'unchanged-quantitative-predicate', ordinaryNounCapabilities:false,
       typedSourceAuthority:true,callerSuppliedAuthorityAccepted:false,formulaStringAuthority:false,surfaceStringAuthority:false});
     sources.add(frame);
+    recordPortableSource(frame, 'nnc:quantitative-source', [input]);
     return frame;
   }
   function isClassicalNahuatlQuantitativePredicateSourceFrame(frame) {
@@ -49,6 +51,7 @@ export function createClassicalQuantitativePredicateApi() {
       use:'unchanged-quantitative-predicate',referenceConstitution:sourceFrame.referenceConstitution,
       nounClass:'',classStatus:'unclaimed',decompositionStatus:'unclaimed',callerSuppliedAuthorityAccepted:false});
     operations.add(frame);
+    recordPortableSource(frame, 'nnc:quantitative-operation', [sourceFrame, selections]);
     return frame;
   }
   function isClassicalNahuatlQuantitativePredicateOperationFrame(frame) {

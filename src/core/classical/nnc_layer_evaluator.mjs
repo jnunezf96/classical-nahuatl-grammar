@@ -1,3 +1,4 @@
+import {recordPortableSource} from "../../application/classical/portable_build_request.mjs";
 export const CLASSICAL_NNC_SENTENCE_POLARITIES=Object.freeze(["positive","negative"]);
 export const CLASSICAL_NNC_SENTENCE_TYPE_ALIASES = Object.freeze({
         assertion: "assertion",
@@ -4852,6 +4853,7 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
       if (authorized) directNncSlotReloadInputs.set(nncSlotFrame, Object.freeze({
         state:"absolutive", stem:normalizedStem, options:Object.freeze({...options}),
       }));
+      if (authorized) recordPortableSource(nncSlotFrame, "nnc:state-slot", ["absolutive", stem, options]);
       return lesson12Frame;
     }
     function buildClassicalNahuatlPossessiveNncFrame(stem = "", options = {}) {
@@ -5011,6 +5013,7 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
       if (authorized) directNncSlotReloadInputs.set(nncSlotFrame, Object.freeze({
         state:"possessive", stem:normalizedStem, options:Object.freeze({...options}),
       }));
+      if (authorized) recordPortableSource(nncSlotFrame, "nnc:state-slot", ["possessive", stem, options]);
       return lesson13Frame;
     }
     function normalizeClassicalNahuatlSubclass(value = "") {

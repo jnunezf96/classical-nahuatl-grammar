@@ -1,3 +1,4 @@
+import {recordPortableSource} from "../../../application/classical/portable_build_request.mjs";
 import {getClassicalNahuatlParticipantReferenceChoiceOptions,getClassicalNahuatlParticipantAgreementValues} from "../../classical/participant_frame.mjs?v=20260823-passive-formation-continuity-238&ownerDecision=20261031-2";
 import {snapshotGrammarInputs} from "../../input_snapshot.mjs";
 // Canonical modern ESM module.
@@ -1442,7 +1443,11 @@ export function createPlaceGentilicNncApi(targetObject = globalThis, installatio
         embedCitation: analysis?.citation || "", matrixRank: "matrix-only-nominal-stem", matrixMeaning: "site",
         ordinaryNncAuthorized: false, finiteVncAuthorized: false,
         callerSuppliedAuthorityAccepted: false, grammarAuthority: false});
-      if (!blockReason) {issuedPlaceNominalSources.add(frame);placeNominalSourceCache.set(key, frame);}
+      if (!blockReason) {
+        issuedPlaceNominalSources.add(frame);
+        placeNominalSourceCache.set(key, frame);
+        recordPortableSource(frame, "nnc:place-nominal-source", [{embedStem, matrixStem}]);
+      }
       return frame;
     }
     function isClassicalNahuatlPlaceNominalSourceFrame(frame = null) {
