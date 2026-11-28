@@ -1,3 +1,4 @@
+import {resolveResultEditTarget} from '../../ui/composition/result_editing.mjs';
 import {buildDoubleNucleusEditRequest} from "./double_nucleus_edit.mjs";
 import {buildClassicalNahuatlParticipantFrame} from '../../core/classical/participant_frame.mjs?ownerDecision=20261031-2';
 import {buildClassicalResultOutputScopeSelectionFrame} from '../../core/output/scope.mjs';
@@ -11,6 +12,9 @@ import {
 
 export function createPortableMake(execute, owner = {}) {
   const accepted = new WeakMap();
+  // A workspace edit can return a previously issued Result. Retain its first
+  // request for identity checks and its latest request for Share.
+  const latest = new WeakMap();
 
   function executeNode(compiled, address, localPlan = null) {
     const projectedSources = new WeakMap();
@@ -34,18 +38,23 @@ export function createPortableMake(execute, owner = {}) {
     const plan = localPlan ?? replayPlan;
     const application = execute(plan.request, plan.prepared ?? null);
     const result = application?.canonicalResult;
+    const removal = plan.request.operationId === 'workspace:remove-result-part';
     if (application?.authorizationStatus !== 'authorized' || !result) return null;
     const existing = accepted.get(result);
-    if (existing) {
-      const previous = existing.compiled;
+    if (existing && !removal) {
+      const previous = existing;
       const sameRequest = previous.serialized === compiled.serialized
         && previous.dependencies.length === compiled.dependencies.length
         && previous.dependencies.every((dependency, index) => dependency === compiled.dependencies[index]);
+      if (sameRequest) latest.set(result, {compiled, address});
       return sameRequest ? application : null;
     }
-    accepted.set(result, {compiled, address});
-    markPortableResult(result);
-    owner.recordAcceptedSources?.(result, value => accepted.has(value));
+    if (!existing) accepted.set(result, compiled);
+    latest.set(result, {compiled, address});
+    if (!existing) {
+      markPortableResult(result);
+      owner.recordAcceptedSources?.(result, value => accepted.has(value));
+    }
     return application;
   }
 
@@ -72,11 +81,15 @@ export function createPortableMake(execute, owner = {}) {
       }
     });
     if (!serialized) return null;
-    const compiled = Object.freeze({serialized, dependencies: Object.freeze(dependencies)});
-    const entries = collectPortableRequestGraph(compiled, value => accepted.get(value)?.compiled);
+    const compiled = compile(serialized, dependencies, dependencies.map(value => latest.get(value).compiled));
+    const entries = collectPortableRequestGraph(compiled);
     const address = encodePortableRequestGraph(entries);
     const localPlan = {request, prepared};
     return address ? executeNode(compiled, address, localPlan) : null;
+  }
+
+  function compile(serialized, dependencies, inputs) {
+    return Object.freeze({serialized, dependencies: Object.freeze(dependencies), inputs: Object.freeze(inputs)});
   }
 
   function open(address) {
@@ -84,12 +97,14 @@ export function createPortableMake(execute, owner = {}) {
     if (!entries) return null;
     try {
       const results = [];
+      const requests = [];
       let application = null;
       for (const [serialized, refs] of entries) {
-        const compiled = Object.freeze({serialized, dependencies: Object.freeze(refs.map(ref => results[ref]))});
+        const compiled = compile(serialized, refs.map(ref => results[ref]), refs.map(ref => requests[ref]));
         application = executeNode(compiled, results.length === entries.length - 1 ? address : null);
         if (!application) return null;
         results.push(application.canonicalResult);
+        requests.push(compiled);
       }
       return application;
     } catch {
@@ -99,11 +114,11 @@ export function createPortableMake(execute, owner = {}) {
 
   return Object.freeze({
     make, open,
-    requestFor: result => accepted.get(result)?.compiled ?? null,
+    requestFor: result => latest.get(result)?.compiled ?? null,
     addressFor: result => {
-      const entry = accepted.get(result);
+      const entry = latest.get(result);
       return entry?.address ?? (entry ? encodePortableRequestGraph(
-        collectPortableRequestGraph(entry.compiled, value => accepted.get(value)?.compiled),
+        collectPortableRequestGraph(entry.compiled),
       ) : null);
     },
   });
@@ -373,9 +388,19 @@ export function installPortableMake(runtime) {
     return binding?.bindingStatus === 'ready' ? binding : null;
   }
 
-  return createPortableMake((request, prepared) => request.typedBinding
-    ? runtime.executeClassicalGrammarTypedSourceOperationBindingFrame(request.typedBinding)
-    : runtime.executeClassicalGrammarApplicationRequest(request, prepared), {
+  return createPortableMake((request, prepared) => {
+    if (request.operationId === 'workspace:remove-result-part') {
+      if (request.args.length !== 2) return null;
+      const [root, path] = request.args;
+      const remaining = resolveResultEditTarget(runtime, root, path)?.removableTo;
+      return remaining
+        ? runtime.captureClassicalGrammarApplicationResult?.(remaining, 'result-edit-make')?.applicationResult
+        : null;
+    }
+    return request.typedBinding
+      ? runtime.executeClassicalGrammarTypedSourceOperationBindingFrame(request.typedBinding)
+      : runtime.executeClassicalGrammarApplicationRequest(request, prepared);
+  }, {
     recordAcceptedSources(result, isAccepted) {
       for (const [issuer, project] of resultProjections) {
         const source = project(result);

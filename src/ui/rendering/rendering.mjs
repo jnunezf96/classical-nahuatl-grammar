@@ -49848,13 +49848,16 @@ export function createUiRenderingApi(targetObject = globalThis) {
     }
 
     let lastAddressedResult;
+    let lastPortableAddress;
     const restoredLegacyResultAddresses = new WeakMap();
     function updateClassicalResultLink(browserWindow, exactResult) {
-      if (!browserWindow?.location?.href || !browserWindow.history || lastAddressedResult === exactResult) return;
-      lastAddressedResult = exactResult;
+      if (!browserWindow?.location?.href || !browserWindow.history) return;
       if (targetObject.classicalPortableMake) {
         const url = new URL(browserWindow.location.href);
         const address = exactResult && targetObject.classicalPortableMake.addressFor(exactResult);
+        if (lastAddressedResult === exactResult && lastPortableAddress === address) return;
+        lastAddressedResult = exactResult;
+        lastPortableAddress = address;
         const legacy = exactResult && !address && restoredLegacyResultAddresses.get(exactResult);
         const published = !legacy && writePortableResultUrl(url, address);
         if (legacy) {
@@ -49870,6 +49873,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
         if (exactResult && !published && !legacy) setClassicalWholeCanvasActionStatus("This Result’s link could not be saved.");
         return;
       }
+      if (lastAddressedResult === exactResult) return;
+      lastAddressedResult = exactResult;
       const publish = (compact, recipe = null) => {
         if (ClassicalConstructionSession.position.accepted.result !== exactResult) return;
         const previous = browserWindow.location.href;

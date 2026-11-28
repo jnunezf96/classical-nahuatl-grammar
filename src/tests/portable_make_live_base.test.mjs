@@ -1038,6 +1038,7 @@ test('changing an attached particle shares the rebuilt whole and its exact host'
   assert.ok(received.dependencies.includes(reopened.canonicalInputFrame));
   assert.equal(reopened.particleResultFrame.particleId, 'l3-ca');
 
+  const originalHostAddress = sender.addressFor(host);
   const removal = resolveResultEditTarget(runtime, made, path);
   assert.equal(removal.removableTo, host);
   const removed = executeConstructionPacket(runtime, {
@@ -1045,9 +1046,22 @@ test('changing an attached particle shares the rebuilt whole and its exact host'
     edit: {action: 'remove', root: made, target: removal.node, path, remaining: host},
   })?.canonicalResult;
   assert.equal(removed, host);
-  const reopenedHost = recipient.open(sender.addressFor(removed))?.canonicalResult;
+  const removalRecipient = (await bootPreview()).classicalPortableMake;
+  const reopenedHost = removalRecipient.open(sender.addressFor(removed))?.canonicalResult;
   assert.ok(reopenedHost);
-  assert.equal(recipient.requestFor(reopenedHost).serialized, sender.requestFor(host).serialized);
+  const removalRequest = sender.requestFor(host);
+  assert.notEqual(sender.addressFor(host), originalHostAddress);
+  assert.match(removalRequest.serialized, /workspace:remove-result-part/);
+  assert.deepEqual(removalRequest.dependencies, [made]);
+  const receivedRemoval = removalRecipient.requestFor(reopenedHost);
+  assert.equal(receivedRemoval.serialized, removalRequest.serialized);
+  assert.equal(receivedRemoval.dependencies[0].particleResultFrame.particleId, 'l3-ca');
+  assert.equal(receivedRemoval.dependencies[0].canonicalInputFrame, reopenedHost);
+  const continued = make('sentence:particle-adjunction', {particleResultFrame: particle, nuclearResultFrame: host});
+  assert.ok(continued);
+  const reopenedContinuation = removalRecipient.open(sender.addressFor(continued))?.canonicalResult;
+  assert.ok(reopenedContinuation);
+  assert.equal(removalRecipient.requestFor(reopenedContinuation.canonicalInputFrame).serialized, removalRequest.serialized);
   assert.equal(reopenedHost.sentenceFormulaDisplay, host.sentenceFormulaDisplay);
 });
 

@@ -51,33 +51,32 @@ function validGraph(entries) {
   return true;
 }
 
-export function collectPortableRequestGraph(root, lookup) {
+export function collectPortableRequestGraph(root) {
   const entries = [];
   const indexes = new Map();
   const visiting = new Set();
-  const pending = [{value: root, request: root, next: 0, refs: []}];
+  const pending = [{request: root, next: 0, refs: []}];
   visiting.add(root);
   try {
     while (pending.length) {
       const frame = pending.at(-1);
-      if (frame.next === frame.request.dependencies.length) {
-        visiting.delete(frame.value);
+      const dependencies = frame.request.inputs;
+      if (frame.next === dependencies.length) {
+        visiting.delete(frame.request);
         const index = entries.push([frame.request.serialized, frame.refs]) - 1;
-        indexes.set(frame.value, index);
+        indexes.set(frame.request, index);
         pending.pop();
         continue;
       }
-      const value = frame.request.dependencies[frame.next];
+      const value = dependencies[frame.next];
       if (indexes.has(value)) {
         frame.refs.push(indexes.get(value));
         frame.next++;
         continue;
       }
       if (visiting.has(value)) return null;
-      const request = lookup(value);
-      if (!request) return null;
       visiting.add(value);
-      pending.push({value, request, next: 0, refs: []});
+      pending.push({request: value, next: 0, refs: []});
     }
     return entries;
   } catch {

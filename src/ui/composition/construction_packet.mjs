@@ -83,6 +83,9 @@ function executePacket(runtime, packet) {
     if(!target || target.node!==edit.target)return null;
     if(edit.action==='remove') {
       if(!target.removableTo || target.removableTo!==edit.remaining)return null;
+      if (portable) return executeApplication({
+        operationId: 'workspace:remove-result-part', args: [edit.root, edit.path],
+      });
       return runtime.captureClassicalGrammarApplicationResult?.(edit.remaining,'result-edit-make')?.applicationResult || null;
     }
     if(!packet.inner || packet.inner.kind==='result-edit'
