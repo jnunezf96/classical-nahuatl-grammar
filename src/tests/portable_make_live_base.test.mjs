@@ -2088,3 +2088,40 @@ test('name reranking shares the prepared name and exact place operation together
   assert.equal(recipient.requestFor(received.dependencies[0]).serialized,
     sender.requestFor(sent.dependencies[0]).serialized);
 });
+
+test('the application Owner supplies replay instructions for its internal continuation slots', async () => {
+  const {portableSourceIssuer} = await import('../application/classical/portable_build_request.mjs');
+  const boot = async () => (await createRuntimeInstance({
+    portableMakeEnabled: true,
+    documentObject: {getElementById: () => null, addEventListener() {}},
+  })).runtimeObject;
+  const runtime = await boot();
+  const sender = runtime.classicalPortableMake;
+  const verb = sender.make({operationId: 'vnc:application', args: [{
+    sourceStem: 'nemi', verbClass: 'B', sourceValence: 'intransitive',
+    subject: '3sg', mood: 'indicative', tense: 'present',
+  }]})?.canonicalResult;
+  assert.ok(verb);
+  const issuer = 'grammar:accepted-continuation-source';
+  const slots = runtime.getClassicalGrammarApplicationPortableContinuations(verb);
+  const projection = slots.find(({source}) => portableSourceIssuer(source) === issuer
+    && runtime.executeClassicalGrammarApplicationRequest({operationId: 'vnc:diagram', args: [source]})
+      ?.authorizationStatus === 'authorized');
+  assert.ok(projection);
+  const {source, path} = projection;
+  assert.equal(path.reduce((value, field) => value[field], verb), source);
+  const diagram = sender.make({operationId: 'vnc:diagram', args: [source]})?.canonicalResult;
+  assert.ok(diagram);
+  const sent = sender.requestFor(diagram);
+  assert.ok(sent.dependencies[0] === verb);
+  assert.ok(sent.serialized.includes(issuer));
+  assert.ok(sent.serialized.includes(JSON.stringify(path)));
+
+  const fresh = await boot();
+  const receiver = fresh.classicalPortableMake;
+  const reopened = receiver.open(sender.addressFor(diagram))?.canonicalResult;
+  assert.ok(reopened);
+  assert.equal(receiver.requestFor(reopened).serialized, sent.serialized);
+  const [parent] = receiver.requestFor(reopened).dependencies;
+  assert.equal(receiver.requestFor(parent).serialized, sender.requestFor(verb).serialized);
+});

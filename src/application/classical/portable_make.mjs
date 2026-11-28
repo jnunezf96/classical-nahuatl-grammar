@@ -45,7 +45,7 @@ export function createPortableMake(execute, owner = {}) {
     }
     accepted.set(result, {compiled, address});
     markPortableResult(result);
-    owner.recordAcceptedSources?.(result);
+    owner.recordAcceptedSources?.(result, value => accepted.has(value));
     return application;
   }
 
@@ -293,6 +293,14 @@ export function installPortableMake(runtime) {
       ? runtime.deriveClassicalNahuatlVncDerivationOperationFrame(...args) : null],
     ["vnc:derived-machinery", args => args.length === 3
       ? runtime.buildClassicalNahuatlDerivedVncMachineryFrame(...args) : null],
+    ['grammar:accepted-continuation-source', args => {
+      if (args.length !== 3 || !Array.isArray(args[1]) || !args[1].length) return null;
+      const [parent, path, kind] = args;
+      const projection = runtime.getClassicalGrammarApplicationPortableContinuations(parent)
+        .find(entry => entry.path.length === path.length
+          && entry.path.every((field, index) => field === path[index]));
+      return projection?.source.kind === kind ? projection.source : null;
+    }],
     ['vnc:typed-application-binding', args => {
       if (args.length !== 2) return null;
       const binding = runtime.issueClassicalNahuatlVncTypedSourceApplicationBindingFrame(...args);
@@ -338,7 +346,8 @@ export function installPortableMake(runtime) {
     if (args.length !== 3) return null;
     const [parent] = args;
     if (!dependencies.includes(parent)
-      && !dependencies.some(result => [...resultProjections.values()].some(project => project(result) === parent))) return null;
+      && !dependencies.some(result => runtime.getClassicalGrammarApplicationPortableContinuations(result).some(entry => entry.source === parent)
+        || [...resultProjections.values()].some(project => project(result) === parent))) return null;
     const binding = runtime.issueClassicalNahuatlVncContinuationBindingFrame(operationId, ...args);
     return binding?.bindingStatus === 'ready' ? binding : null;
   }
@@ -346,7 +355,7 @@ export function installPortableMake(runtime) {
   return createPortableMake((request, prepared) => request.typedBinding
     ? runtime.executeClassicalGrammarTypedSourceOperationBindingFrame(request.typedBinding)
     : runtime.executeClassicalGrammarApplicationRequest(request, prepared), {
-    recordAcceptedSources(result) {
+    recordAcceptedSources(result, isAccepted) {
       for (const [issuer, project] of resultProjections) {
         const source = project(result);
         if (source && !hasPortableSource(source)) recordPortableSource(source, issuer, [result]);
@@ -357,9 +366,16 @@ export function installPortableMake(runtime) {
           recordPortableSource(slot, verbalSlotIssuer, [result, coordinate]);
         }
       }
+      const continuations = runtime.getClassicalGrammarApplicationPortableContinuations(result);
+      for (const {source, path} of continuations) {
+        if (!isAccepted(source) && !hasPortableSource(source)) {
+          recordPortableSource(source, 'grammar:accepted-continuation-source', [result, path, source.kind]);
+        }
+      }
     },
     supportsPortableSource: issuer => sourceIssuers.has(issuer),
-    isPortableResultProjection: issuer => resultProjections.has(issuer) || issuer === verbalSlotIssuer,
+    isPortableResultProjection: issuer => resultProjections.has(issuer) || issuer === verbalSlotIssuer
+      || issuer === 'grammar:accepted-continuation-source',
     issuePortableSource(issuer, args) {
       const source = sourceIssuers.get(issuer)?.(args);
       return source?.authorizationStatus === 'authorized'

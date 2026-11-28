@@ -3617,6 +3617,7 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
   const issuedApplicationResultByContinuationResult = new WeakMap();
   const continuationUnitKindsByResult = new WeakMap();
   const continuationResultsByApplicationResult = new WeakMap();
+  const portableContinuationsByResult = new WeakMap();
   const rhymeFullPinByApplicationResult = new WeakMap();
   const rhymeFullPinByCanonicalResult = new WeakMap();
   const rhymeCalibrationByApplicationResult = new WeakMap();
@@ -4368,13 +4369,18 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
     value,
     found = new Map(),
     seen = new Set(),
+    paths = null,
+    path = [],
   ) {
     if (!value || typeof value !== "object" || seen.has(value)) {
       return found;
     }
     seen.add(value);
     const unitKinds = found.get(value) || getCanonicalContinuationUnitKinds(value);
-    if (unitKinds.length) found.set(value, unitKinds);
+    if (unitKinds.length) {
+      found.set(value, unitKinds);
+      if (paths && path?.length) paths.set(value, Object.freeze(path));
+    }
     Reflect.ownKeys(value).forEach(propertyKey => {
       let descriptor = null;
       try {
@@ -4390,10 +4396,16 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
           descriptor.value,
           found,
           seen,
+          paths,
+          paths && path && typeof propertyKey === "string" ? [...path, propertyKey] : null,
         );
       }
     });
     return found;
+  }
+
+  function getClassicalGrammarApplicationPortableContinuations(result) {
+    return portableContinuationsByResult.get(result) || [];
   }
 
   function getIssuedResultProvenance(value = null) {
@@ -9978,9 +9990,16 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
       const registeredContinuationResults = [];
       // The outer prepared Result was just recognized by its current owner.
       // Its route kinds are already registered; discover every inner node live.
-      collectOwnerIssuedContinuationResults(canonicalResult, preparation
-        ? new Map([[canonicalResult, continuationUnitKindsByResult.get(canonicalResult)]]) : new Map())
-        .forEach((unitKinds, continuationResult) => {
+      const portablePaths = targetObject.classicalPortableMake ? new Map() : null;
+      const ownerContinuations = collectOwnerIssuedContinuationResults(canonicalResult, preparation
+        ? new Map([[canonicalResult, continuationUnitKindsByResult.get(canonicalResult)]]) : new Map(),
+      new Set(), portablePaths);
+      if (portablePaths) {
+        portableContinuationsByResult.set(canonicalResult, Object.freeze(
+          [...portablePaths].map(([source, path]) => Object.freeze({source, path})),
+        ));
+      }
+      ownerContinuations.forEach((unitKinds, continuationResult) => {
           const existingProducer =
             issuedApplicationResultByCanonicalResult.get(
               continuationResult,
@@ -11378,6 +11397,7 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
     getClassicalGrammarApplicationRhymeOwnerProofObservations,
     isClassicalGrammarApplicationRhymeOwnerProofObservation,
     getClassicalGrammarApplicationRhymeContinuationProvenance,
+    getClassicalGrammarApplicationPortableContinuations,
     getClassicalGrammarApplicationNextOperationInventory,
     hasClassicalGrammarApplicationAvailableOperation,
     getClassicalGrammarApplicationCapabilityNavigator,
