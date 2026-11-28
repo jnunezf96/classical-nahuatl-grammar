@@ -13,19 +13,21 @@ export function createPortableMake(execute, owner = {}) {
   const accepted = new WeakMap();
 
   function executeNode(compiled, address, localPlan = null) {
-    const replayPlan = materializePortableRequest(owner, compiled.serialized, compiled.dependencies);
+    const projectedSources = new WeakMap();
+    const replayPlan = materializePortableRequest(owner, compiled.serialized, compiled.dependencies, projectedSources);
     if (!replayPlan) return null;
-    if (localPlan || (replayPlan.inputIssuer !== undefined
-      && replayPlan.inputIssuer !== 'typed-source-binding' && owner.describeReissuedPlan)) {
-      const verified = replayPlan.inputIssuer === undefined
-        ? replayPlan.request
-        : owner.describeReissuedPlan?.(replayPlan);
-      if (!verified && owner.describeReissuedPlan) return null;
+    const {inputIssuer} = replayPlan;
+    // The older typed alias is already checked against its exact dependency
+    // by the decoder. Current Owner plans must reproduce the original encoding.
+    if (inputIssuer === undefined
+        || (inputIssuer !== 'typed-source-binding' && owner.describeReissuedPlan)) {
+      const verified = inputIssuer === undefined
+        ? replayPlan.request : owner.describeReissuedPlan(replayPlan);
       const serialized = encodePortableBuildRequest(verified, value => {
         const index = compiled.dependencies.indexOf(value);
         return index === -1 ? undefined : index;
-      }, () => {});
-      if (verified && serialized !== compiled.serialized) return null;
+      }, () => {}, projectedSources);
+      if (serialized !== compiled.serialized) return null;
     }
     // The staged plan retains the sender's exact Owner-issued identities.
     // The same reissue check guards both new Make and link replay.
@@ -128,10 +130,31 @@ export function installPortableMake(runtime) {
     return runtime.isClassicalNahuatlIssuedNncSentenceSurfaceFrame?.(sentence) === true ? sentence : null;
   }
 
+  function denominalApplication(result) {
+    return runtime.isClassicalNahuatlDenominalVncResultFrame?.(result) === true
+      && runtime.isClassicalNahuatlVncApplicationFrame?.(result.canonicalVncFrame) === true
+      ? result.canonicalVncFrame : null;
+  }
+
+  function nominalVerbApplication(result) {
+    if (runtime.isClassicalNahuatlAdverbialNuclearResult?.(result) === true
+      && result.scope === 'incorporated-predicate') {
+      return nominalVerbApplication(result.canonicalResult);
+    }
+    if (runtime.isClassicalNahuatlDeverbalNncGrammarFrame?.(result) === true
+      && result.constructionKind === 'patientive-embed-continuation') {
+      return nominalVerbApplication(result.canonicalResult);
+    }
+    return runtime.isClassicalNahuatlNominalConstructionResult?.(result) === true
+      && runtime.isClassicalNahuatlVncApplicationFrame?.(result.canonicalResult) === true
+      ? result.canonicalResult : null;
+  }
+
   function verbalNucleus(result) {
-    return runtime.isClassicalNahuatlVncApplicationFrame?.(result) === true
-      && runtime.isClassicalNahuatlVncApplicationResultFrame?.(result.resultFrame) === true
-      ? result.resultFrame : null;
+    const application = denominalApplication(result) ?? nominalVerbApplication(result) ?? result;
+    return runtime.isClassicalNahuatlVncApplicationFrame?.(application) === true
+      && runtime.isClassicalNahuatlVncApplicationResultFrame?.(application.resultFrame) === true
+      ? application.resultFrame : null;
   }
 
   function verbalSlots(result) {
@@ -154,6 +177,22 @@ export function installPortableMake(runtime) {
     return finite?.machineryFrame ?? null;
   }
 
+  const resultProjections = new Map([
+    ['nnc:accepted-result-sentence', nominalSentence],
+    ['nnc:accepted-result-slot', nominalSlot],
+    ['vnc:accepted-finite-machinery', finiteMachinery],
+    ['vnc:accepted-nominal-verb-application', nominalVerbApplication],
+    ['vnc:accepted-denominal-application', denominalApplication],
+    ['vnc:accepted-result-nucleus', verbalNucleus],
+  ]);
+  const verbalSlotIssuer = 'vnc:accepted-result-slot';
+
+  function projectVerbalSlot(result, coordinate) {
+    const slots = verbalSlots(result);
+    const slot = Object.hasOwn(slots, coordinate) ? slots[coordinate] : null;
+    return runtime.isClassicalNahuatlVncSlotFrame?.(slot) === true ? slot : null;
+  }
+
   const sourceIssuers = new Map([
     ['vnc:application-source-machinery', args => args.length === 1
       ? runtime.evaluateClassicalNahuatlVncApplication(args[0])?.resultFrame?.sourceMachineryFrame : null],
@@ -174,16 +213,10 @@ export function installPortableMake(runtime) {
       ? runtime.buildClassicalNahuatlPatientiveCoreSourceFrame(args[0]) : null],
     ['nnc:double-nucleus-replacement', args => args.length === 3
       ? buildDoubleNucleusEditRequest(runtime, ...args) : null],
-    ['nnc:accepted-result-sentence', args => args.length === 1 ? nominalSentence(args[0]) : null],
-    ['nnc:accepted-result-slot', args => args.length === 1 ? nominalSlot(args[0]) : null],
-    ['vnc:accepted-finite-machinery', args => args.length === 1 ? finiteMachinery(args[0]) : null],
-    ['vnc:accepted-result-slot', args => {
-      if (args.length !== 2 || typeof args[1] !== 'string') return null;
-      const slots = verbalSlots(args[0]);
-      const slot = Object.hasOwn(slots, args[1]) ? slots[args[1]] : null;
-      return runtime.isClassicalNahuatlVncSlotFrame?.(slot) === true ? slot : null;
-    }],
-    ['vnc:accepted-result-nucleus', args => args.length === 1 ? verbalNucleus(args[0]) : null],
+    ...Array.from(resultProjections, ([issuer, project]) =>
+      [issuer, args => args.length === 1 ? project(args[0]) : null]),
+    [verbalSlotIssuer, args => args.length === 2 && typeof args[1] === 'string'
+      ? projectVerbalSlot(...args) : null],
     ["clause:comparison-source", args => args.length === 1
         ? runtime.buildClassicalComparisonSourceUnit(args[0]) : null],
     ["clause:conjunction-replacement", args => args.length === 3
@@ -300,7 +333,7 @@ export function installPortableMake(runtime) {
     if (args.length !== 3) return null;
     const [parent] = args;
     if (!dependencies.includes(parent)
-      && !dependencies.some(result => verbalNucleus(result) === parent)) return null;
+      && !dependencies.some(result => [...resultProjections.values()].some(project => project(result) === parent))) return null;
     const binding = runtime.issueClassicalNahuatlVncContinuationBindingFrame(operationId, ...args);
     return binding?.bindingStatus === 'ready' ? binding : null;
   }
@@ -309,29 +342,19 @@ export function installPortableMake(runtime) {
     ? runtime.executeClassicalGrammarTypedSourceOperationBindingFrame(request.typedBinding)
     : runtime.executeClassicalGrammarApplicationRequest(request, prepared), {
     recordAcceptedSources(result) {
-      const slot = nominalSlot(result);
-      if (slot && !hasPortableSource(slot)) {
-        recordPortableSource(slot, 'nnc:accepted-result-slot', [result]);
+      for (const [issuer, project] of resultProjections) {
+        const source = project(result);
+        if (source && !hasPortableSource(source)) recordPortableSource(source, issuer, [result]);
       }
-      const sentence = nominalSentence(result);
-      if (sentence && !hasPortableSource(sentence)) {
-        recordPortableSource(sentence, 'nnc:accepted-result-sentence', [result]);
-      }
-      const nucleus = verbalNucleus(result);
-      if (nucleus && !hasPortableSource(nucleus)) {
-        recordPortableSource(nucleus, 'vnc:accepted-result-nucleus', [result]);
-      }
-      const machinery = finiteMachinery(result);
-      if (machinery && !hasPortableSource(machinery)) {
-        recordPortableSource(machinery, 'vnc:accepted-finite-machinery', [result]);
-      }
-      for (const [coordinate, vncSlot] of Object.entries(verbalSlots(result))) {
-        if (runtime.isClassicalNahuatlVncSlotFrame?.(vncSlot) === true && !hasPortableSource(vncSlot)) {
-          recordPortableSource(vncSlot, 'vnc:accepted-result-slot', [result, coordinate]);
+      for (const coordinate of Object.keys(verbalSlots(result))) {
+        const slot = projectVerbalSlot(result, coordinate);
+        if (slot && !hasPortableSource(slot)) {
+          recordPortableSource(slot, verbalSlotIssuer, [result, coordinate]);
         }
       }
     },
     supportsPortableSource: issuer => sourceIssuers.has(issuer),
+    isPortableResultProjection: issuer => resultProjections.has(issuer) || issuer === verbalSlotIssuer,
     issuePortableSource(issuer, args) {
       const source = sourceIssuers.get(issuer)?.(args);
       return source?.authorizationStatus === 'authorized'

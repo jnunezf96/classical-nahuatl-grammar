@@ -85,9 +85,15 @@ export function collectPortableRequestGraph(root, lookup) {
   }
 }
 
-export function materializePortableRequest(owner, serialized, dependencies) {
+export function materializePortableRequest(owner, serialized, dependencies, projectedSources) {
   const plan = decodePortableBuildRequest(serialized, index => dependencies[index],
-    (id, args) => owner.issuePortableSource?.(id, args));
+    (id, args) => {
+      const source = owner.issuePortableSource?.(id, args);
+      if (source && owner.isPortableResultProjection?.(id)) {
+        projectedSources.set(source, {operationId: id, args});
+      }
+      return source;
+    });
   if (!plan) return null;
   const {operationId, inputIssuer, args} = plan;
   if (['typed-source-binding', 'typed-issued-source-binding', 'prepared-typed-source-binding'].includes(inputIssuer)) {

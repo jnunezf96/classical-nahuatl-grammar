@@ -11,17 +11,19 @@ const reservedFields = new Set([
   marker, issuerMarker, sourceMarker, absentMarker, bareRecordMarker,
   '__proto__', 'constructor', 'prototype', 'authorizationStatus',
 ]);
-const literalKinds = new Set([
+// Owner records use the classical namespace. The few request schemas in
+// that namespace carry authored data and are safe to encode as literals.
+const classicalLiteralKinds = new Set([
   'classical-nahuatl-nnc-nounstem-request',
   'classical-nahuatl-relational-source-composition-request',
   'classical-nahuatl-relational-source-composition-stem-node',
   'classical-nahuatl-relational-source-composition-compound-node',
-  'adjectival-root-nnc',
-  'adjectival-general-use-nnc',
-  'preterit-agentive-nnc',
-  'particle',
-  'nounstem',
 ]);
+
+function isLiteralKind(kind) {
+  return typeof kind === 'string'
+    && (!kind.startsWith('classical-') || classicalLiteralKinds.has(kind));
+}
 
 const sourceInstructions = new WeakMap();
 const issuedPortableResults = new WeakSet();
@@ -117,7 +119,7 @@ function copy(value, context, depth = 0) {
     const field = fields[key];
     if (typeof key !== 'string' || !field.enumerable || !Object.hasOwn(field, 'value')
         || reservedFields.has(key)
-        || (key === 'kind' && !literalKinds.has(field.value))) {
+        || (key === 'kind' && !isLiteralKind(field.value))) {
       throw new TypeError('Unsupported request field');
     }
     return [key, copy(field.value, context, depth + 1)];
@@ -125,9 +127,9 @@ function copy(value, context, depth = 0) {
   return prototype === null ? {[bareRecordMarker]: result} : result;
 }
 
-export function encodePortableBuildRequest(request, reference, onSource) {
+export function encodePortableBuildRequest(request, reference, onSource, projectedSources) {
   try {
-    const describe = onSource && (value => sourceInstructions.get(value));
+    const describe = onSource && (value => projectedSources?.get(value) ?? sourceInstructions.get(value));
     const encoded = copy(request, {reference, describe, onSource, sourceIndexes: new Map()});
     if (typeof encoded?.operationId !== 'string' || !Array.isArray(encoded.args)) return null;
     const serialized = JSON.stringify(encoded);

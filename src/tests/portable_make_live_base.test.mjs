@@ -1692,20 +1692,29 @@ test('prepared denominal Make reissues its stem preparation with the same nomina
   assert.notEqual(rebuiltPreparation, preparation);
   assert.equal(rebuiltPreparation.canonicalNncSourceFrame, reopened.sourceFrame.canonicalNncSourceFrame);
   assert.equal(reopened.surfaceRealization, made.surfaceRealization);
-  const binding = runtime.issueClassicalNahuatlVncContinuationBindingFrame(
-    'vnc:sentence-result', made, {punctuationMode: 'statement'},
-  );
-  assert.equal(binding?.bindingStatus, 'ready', binding?.blockReason);
-  const sentence = executeConstructionPacket(runtime, {
-    kind: 'request', operation: binding.operationId, source: made,
-    request: {operationId: binding.operationId, args: binding.executionArgs},
-  })?.canonicalResult;
-  assert.ok(sentence);
-  const reopenedSentence = recipient.open(sender.addressFor(sentence))?.canonicalResult;
-  assert.ok(reopenedSentence);
-  const receivedSentence = recipient.requestFor(reopenedSentence);
-  assert.equal(receivedSentence.serialized, sender.requestFor(sentence).serialized);
-  assert.equal(recipient.requestFor(receivedSentence.dependencies[0]).serialized, sent);
+  for (const [parent, issuer] of [
+    [made, null],
+    [made.canonicalVncFrame, 'vnc:accepted-denominal-application'],
+    [made.canonicalVncFrame.resultFrame, 'vnc:accepted-result-nucleus'],
+  ]) {
+    const binding = runtime.issueClassicalNahuatlVncContinuationBindingFrame(
+      'vnc:sentence-result', parent, {punctuationMode: 'statement'},
+    );
+    assert.equal(binding?.bindingStatus, 'ready', binding?.blockReason);
+    const sentence = executeConstructionPacket(runtime, {
+      kind: 'request', operation: binding.operationId, source: parent,
+      request: {operationId: binding.operationId, args: binding.executionArgs},
+    })?.canonicalResult;
+    assert.ok(sentence);
+    const reopenedSentence = recipient.open(sender.addressFor(sentence))?.canonicalResult;
+    assert.ok(reopenedSentence);
+    const receivedSentence = recipient.requestFor(reopenedSentence);
+    assert.equal(receivedSentence.serialized, sender.requestFor(sentence).serialized);
+    const [reopenedParent] = receivedSentence.dependencies;
+    assert.equal(recipient.requestFor(reopenedParent).serialized, sent);
+    if (issuer) assert.ok(receivedSentence.serialized.includes(issuer));
+    assert.equal(reopenedSentence.sentenceFormulaDisplay, sentence.sentenceFormulaDisplay);
+  }
 });
 
 test('an exact continuation argument list retains its own choices when bindings share arguments', async () => {
@@ -1792,6 +1801,15 @@ test('Owner-issued Source instructions and the shared replay registry agree', as
   const code = await readFile(new URL('../application/classical/portable_make.mjs', import.meta.url), 'utf8');
   const registry = code.slice(code.indexOf('const sourceIssuers = new Map(['), code.indexOf('  function issueContinuation'));
   const constructors = Array.from(registry.matchAll(/\[['"]([^'"]+)['"],\s*args\s*=>/g), match => match[1]);
+  const projections = code.slice(code.indexOf('const resultProjections = new Map(['),
+    code.indexOf('  const sourceIssuers = new Map(['));
+  const projectionIds = Array.from(projections.matchAll(/(?:\[|= )'((?:nnc|vnc):accepted-[^']+)'/g),
+    match => match[1]);
+  for (const issuer of projectionIds) {
+    assert.ok(!records.has(issuer), issuer);
+    records.add(issuer);
+    constructors.push(issuer);
+  }
   assert.ok(constructors.length > 0);
   assert.equal(new Set(constructors).size, constructors.length, 'Duplicate replay constructor ID');
   assert.deepEqual(new Set(constructors), records);
@@ -1802,4 +1820,101 @@ test('Owner-issued Source instructions and the shared replay registry agree', as
   for (const [, capability] of registry.matchAll(/\bruntime\.(\w+)(?:\?\.)?\(/g)) {
     assert.equal(typeof runtime[capability], 'function', capability);
   }
+});
+
+test('direct replay rejects a Source reissued with a different choice', async () => {
+  const {recordPortableSource} = await import('../application/classical/portable_build_request.mjs');
+  const issue = reading => {
+    const source = Object.freeze({reading});
+    recordPortableSource(source, 'test:source', [reading]);
+    return source;
+  };
+  let executions = 0;
+  const engine = reissue => createPortableMake(({args: [source]}) => {
+    executions++;
+    return {authorizationStatus: 'authorized', canonicalResult: {source}};
+  }, {issuePortableSource: (_issuer, [reading]) => issue(reissue(reading))});
+
+  const source = issue('subject');
+  const sender = engine(reading => reading);
+  const made = sender.make({operationId: 'test:direct', args: [source]})?.canonicalResult;
+  assert.equal(made?.source, source);
+  const address = sender.addressFor(made);
+  const recipient = engine(reading => reading);
+  assert.equal(recipient.open(address)?.canonicalResult.source.reading, 'subject');
+  assert.equal(engine(() => 'object').open(address), null);
+  assert.equal(executions, 2);
+});
+
+test('a nominally composed verbal matrix retains both exact inputs through Make and Share', async () => {
+  const {executeConstructionPacket} = await import('../ui/composition/construction_packet.mjs');
+  const bootPreview = async () => (await createRuntimeInstance({
+    portableMakeEnabled: true,
+    documentObject: {getElementById: () => null, addEventListener() {}},
+  })).runtimeObject;
+  const runtime = await bootPreview();
+  const sender = runtime.classicalPortableMake;
+  const make = (operationId, ...args) => sender.make({operationId, args})?.canonicalResult;
+  const nounSource = runtime.buildClassicalNahuatlOrdinaryNncSourceFrame({stem: 'pil', sourceClass: 'tli-1'});
+  const noun = make('nnc:ordinary', nounSource,
+    runtime.buildClassicalNahuatlOrdinaryNncOperationFrame(nounSource, {
+      state: 'absolutive', subject: '3sg', predicateFormation: 'source-stem', humanness: 'human',
+    }));
+  const finite = {subject: '3sg', mood: 'indicative', tense: 'present'};
+  const matrix = make('vnc:application', {...finite, sourceStem: 'caqui', verbClass: 'B',
+    sourceValence: 'specific-projective', objectKind: 'specific-projective', objectPerson: '3sg',
+    requestedDerivation: 'direct', requestedVoice: 'active'});
+  assert.ok(noun && matrix);
+  const operation = 'grammar:nominal-construction';
+  const request = {operationId: operation, args: [{...finite, constructionKind: 'nominal-embed-vnc',
+    relation: 'object', route: 'object', voice: 'active', embedReduplication: 'none',
+    matrixFormation: 'ordinary', matrixReduplication: 'none', orientation: 'not-applicable',
+    source: {
+      embedStem: 'pil', embedClass: 'tli', embedSourceClass: 'tli-1',
+      embedConstituent: {kind: 'ordinary-nnc', stem: 'pil', resultFrame: noun},
+      matrixStem: 'caqui', matrixValence: 'specific-projective', matrixVerbClass: 'B',
+      matrixConstituent: {kind: 'vnc-result', stem: 'caqui', resultFrame: matrix},
+    },
+  }]};
+  const made = executeConstructionPacket(runtime, {kind: 'request', operation, request})?.canonicalResult;
+  assert.ok(made);
+  const sent = sender.requestFor(made);
+  assert.ok(sent.dependencies[0] === noun && sent.dependencies[1] === matrix);
+  const recipient = (await bootPreview()).classicalPortableMake;
+  const reopened = recipient.open(sender.addressFor(made))?.canonicalResult;
+  assert.ok(reopened);
+  const received = recipient.requestFor(reopened);
+  assert.equal(received.serialized, sent.serialized);
+  assert.deepEqual(received.dependencies.map(dependency => recipient.requestFor(dependency).serialized),
+    sent.dependencies.map(dependency => sender.requestFor(dependency).serialized));
+  assert.equal(reopened.surfaceRealization, made.surfaceRealization);
+  const binding = runtime.issueClassicalNahuatlVncContinuationBindingFrame(
+    'vnc:sentence-result', made.canonicalResult, {punctuationMode: 'statement'},
+  );
+  assert.equal(binding?.bindingStatus, 'ready', binding?.blockReason);
+  const sentence = make('vnc:sentence-result', ...binding.executionArgs);
+  assert.ok(sentence);
+  const sharedSentence = sender.requestFor(sentence);
+  assert.ok(sharedSentence.serialized.includes('vnc:accepted-nominal-verb-application'));
+  assert.ok(sharedSentence.dependencies[0] === made);
+  const address = sender.addressFor(sentence);
+  for (const sentenceRecipient of [recipient, (await bootPreview()).classicalPortableMake]) {
+    const reopenedSentence = sentenceRecipient.open(address)?.canonicalResult;
+    assert.ok(reopenedSentence);
+    assert.equal(sentenceRecipient.requestFor(reopenedSentence).serialized, sharedSentence.serialized);
+    assert.equal(reopenedSentence.sentenceFormulaDisplay, sentence.sentenceFormulaDisplay);
+  }
+});
+
+test('the shared request codec preserves grammar labels and requires issuance for classical frames', async () => {
+  const {encodePortableBuildRequest, decodePortableBuildRequest} =
+    await import('../application/classical/portable_build_request.mjs');
+  const request = {operationId: 'test:grammar', args: [{kind: 'owner-defined-constituent', stem: 'pil'}]};
+  assert.deepEqual(decodePortableBuildRequest(encodePortableBuildRequest(request)), request);
+  assert.equal(encodePortableBuildRequest({
+    ...request, args: [{kind: 'classical-nahuatl-vnc-application-frame', stem: 'pil'}],
+  }), null);
+  assert.equal(encodePortableBuildRequest({
+    ...request, args: [{kind: 'owner-defined-constituent', authorizationStatus: 'authorized'}],
+  }), null);
 });
