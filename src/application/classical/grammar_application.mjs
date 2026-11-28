@@ -10058,6 +10058,21 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
         result,
         Object.freeze(registeredContinuationResults),
       );
+      // An Owner can issue an operand before it becomes a workspace Result.
+      // Keep the exact scalar execution inputs at that issuance boundary.
+      const portable = targetObject.classicalPortableMake;
+      if (portable && authorizationStatus === "authorized"
+        && outputKind === DEFAULT_APPLICATION_OUTPUT_KIND
+        && !hasPortableSource(canonicalResult) && !portable.requestFor(canonicalResult)) {
+        recordPortableSource(canonicalResult, "grammar:internal-application-source", [operationId, args]);
+        if (hasPortableSource(canonicalResult)) {
+          for (const {source, path} of getClassicalGrammarApplicationPortableContinuations(canonicalResult)) {
+            if (!hasPortableSource(source) && !portable.requestFor(source)) {
+              recordPortableSource(source, "grammar:accepted-continuation-source", [canonicalResult, path, source.kind]);
+            }
+          }
+        }
+      }
     }
     const exactInstanceContinuationFacts =
       authorizationStatus === "authorized" && canonicalResult
@@ -10504,19 +10519,7 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
       outputKind,
       args,
     });
-    const result = application.canonicalResult;
-    if (targetObject.classicalPortableMake && application.authorizationStatus === "authorized"
-      && outputKind === DEFAULT_APPLICATION_OUTPUT_KIND && result && typeof result === "object") {
-      recordPortableSource(result, "grammar:internal-application-source", [operationId, args]);
-      if (hasPortableSource(result)) {
-        for (const {source, path} of getClassicalGrammarApplicationPortableContinuations(result)) {
-          if (!hasPortableSource(source) && !targetObject.classicalPortableMake.requestFor(source)) {
-            recordPortableSource(source, "grammar:accepted-continuation-source", [result, path, source.kind]);
-          }
-        }
-      }
-    }
-    return result;
+    return application.canonicalResult;
   }
 
   function requestClassicalVncSentenceResultFrame(applicationFrame = null) {

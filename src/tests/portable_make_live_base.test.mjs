@@ -2361,9 +2361,10 @@ test('prepared relational Make reissues internally built nominal and verbal inpu
     kind: 'classical-nahuatl-nnc-nounstem-request',
     stemId: 'pan-surface-time', formation: 'option-two', nounConnector: 'tl',
   };
-  const parent = runtime.requestClassicalRelationalNncResult({...base,
-    nounstem: {...nounstem, operation: 'associated-entity', sourceStem: 'cuauhtlah'},
-  });
+  const parent = runtime.executeClassicalGrammarApplicationRequest({
+    operationId: 'nnc:relational',
+    args: [{...base, nounstem: {...nounstem, operation: 'associated-entity', sourceStem: 'cuauhtlah'}}],
+  })?.canonicalResult;
   assert.equal(parent?.authorizationStatus, 'authorized');
   const verb = runtime.requestClassicalVncApplicationResult({
     sourceStem: 'chōca', verbClass: 'A', sourceValence: 'intransitive',
