@@ -50040,10 +50040,20 @@ export function createUiRenderingApi(targetObject = globalThis) {
       if (portableResult) {
         // A matching workspace may restore the owner's pending choices. The
         // accepted Result always comes from the URL, even without storage.
-        if (saved?.version === 2 && saved.url === address.href && saved.edit) {
-          const target = resolveResultEditTarget(targetObject, portableResult, saved.edit.path);
-          if (target && restoreClassicalMixedReloadSession(saved, undefined,
-            {result: portableResult, source: target.node})) return true;
+        if (saved?.version === 2 && saved.url === address.href) {
+          if (saved.edit) {
+            const target = resolveResultEditTarget(targetObject, portableResult, saved.edit.path);
+            if (target && restoreClassicalMixedReloadSession(saved, undefined,
+              {result: portableResult, source: target.node})) return true;
+          } else if (saved.recipe) {
+            const localRoots = replayClassicalResultReloadRecipe(targetObject, saved.recipe,
+              {recordPortableRequests: true});
+            if (localRoots?.result) {
+              const roots = Object.fromEntries(Object.entries(localRoots).map(([role, exact]) =>
+                [role, exact === localRoots.result ? portableResult : exact]));
+              if (restoreClassicalMixedReloadSession(saved, undefined, roots)) return true;
+            }
+          }
         }
         if (restoreClassicalMixedReloadSession({}, undefined, {result: portableResult})) return true;
         setClassicalWholeCanvasActionStatus("This portable Result link could not be reopened.");

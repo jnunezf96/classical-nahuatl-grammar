@@ -2158,6 +2158,8 @@ test('a portable link anchors a matching local edit and opens independently of i
   assert.ok(start >= 0 && end > start);
 
   const edit = {version: 1, path: ['child']};
+  const localResult = {};
+  const localOperand = {};
   const run = (href, saved) => {
     let restored;
     const restore = runInNewContext(renderer.slice(start, end) + '\n}\nrestoreClassicalVncReloadSession', {
@@ -2169,6 +2171,8 @@ test('a portable link anchors a matching local edit and opens independently of i
           return JSON.stringify(saved);
         }},
       }},
+      replayClassicalResultReloadRecipe: (_runtime, recipe) => recipe?.local
+        ? {result: localResult, principal: localResult, adjoined: localOperand} : null,
       resolveResultEditTarget: (_runtime, result, path) => path[0] === 'child' ? {node: result.child} : null,
       restoreClassicalMixedReloadSession: (draft, _callback, roots) => {
         restored = {draft, roots};
@@ -2191,4 +2195,10 @@ test('a portable link anchors a matching local edit and opens independently of i
     assert.equal(reopened.restored.roots.result.surface, accepted.surface);
   }
   assert.equal(run('https://example.test/?r=84/p2/', {version: 2, url: url.href, edit}).ok, false);
+  const auxiliary = run(url.href, {version: 2, url: url.href, recipe: {local: true}});
+  assert.equal(auxiliary.ok, true);
+  assert.equal(auxiliary.restored.roots.adjoined, localOperand);
+  assert.equal(auxiliary.restored.roots.principal, auxiliary.restored.roots.result);
+  assert.notEqual(auxiliary.restored.roots.result, localResult);
+  assert.equal(auxiliary.restored.roots.result.surface, accepted.surface);
 });
