@@ -15,6 +15,17 @@ export function createPortableMake(execute, owner = {}) {
   // A workspace edit can return a previously issued Result. Retain its first
   // request for identity checks and its latest request for Share.
   const latest = new WeakMap();
+  const addresses = new WeakMap();
+
+  function remember(result, compiled, address) {
+    const entry = {compiled, address};
+    latest.set(result, entry);
+    if (address) {
+      const variants = addresses.get(result) ?? new Map();
+      variants.set(address, entry);
+      addresses.set(result, variants);
+    }
+  }
 
   function executeNode(compiled, address, localPlan = null, seedOnly = false) {
     const projectedSources = new WeakMap();
@@ -46,11 +57,11 @@ export function createPortableMake(execute, owner = {}) {
       const sameRequest = previous.serialized === compiled.serialized
         && previous.dependencies.length === compiled.dependencies.length
         && previous.dependencies.every((dependency, index) => dependency === compiled.dependencies[index]);
-      if (sameRequest && !seedOnly) latest.set(result, {compiled, address});
+      if (sameRequest && !seedOnly) remember(result, compiled, address);
       return sameRequest ? application : null;
     }
     if (!existing) accepted.set(result, compiled);
-    latest.set(result, {compiled, address});
+    remember(result, compiled, address);
     if (!existing) {
       markPortableResult(result);
       owner.recordAcceptedSources?.(result, value => accepted.has(value));
@@ -118,12 +129,21 @@ export function createPortableMake(execute, owner = {}) {
     // request already established by the open Result URL.
     seed: (request, prepared) => make(request, prepared, true),
     open,
+    selectAddress(result, address) {
+      const entry = addresses.get(result)?.get(address);
+      if (!entry) return false;
+      latest.set(result, entry);
+      return true;
+    },
     requestFor: result => latest.get(result)?.compiled ?? null,
     addressFor: result => {
       const entry = latest.get(result);
-      return entry?.address ?? (entry ? encodePortableRequestGraph(
-        collectPortableRequestGraph(entry.compiled),
-      ) : null);
+      if (!entry) return null;
+      if (!entry.address) {
+        const address = encodePortableRequestGraph(collectPortableRequestGraph(entry.compiled));
+        if (address) remember(result, entry.compiled, address);
+      }
+      return latest.get(result).address;
     },
   });
 }
@@ -420,7 +440,10 @@ export function installPortableMake(runtime) {
     recordAcceptedSources(result, isAccepted) {
       for (const [issuer, project] of resultProjections) {
         const source = project(result);
-        if (source && !hasPortableSource(source)) recordPortableSource(source, issuer, [result]);
+        if (source && (!hasPortableSource(source)
+          || portableSourceIssuer(source) === 'grammar:accepted-continuation-source')) {
+          recordPortableSource(source, issuer, [result]);
+        }
       }
       for (const coordinate of Object.keys(verbalSlots(result))) {
         const slot = projectVerbalSlot(result, coordinate);

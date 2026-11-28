@@ -49800,10 +49800,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
             : "";
       syncClassicalGrammarWorkspaceHistory();
     }
-    function restoreClassicalHistoryReloadState(saved, replayedRoots = null) {
+    function restoreClassicalHistoryReloadState(saved, replayedRoots = null, linkedResult = null) {
       const mapping = saved.historyGraphRoots;
       let sharedRoots = null;
-      if (mapping !== undefined) {
+      if (mapping !== undefined && replayedRoots !== null) {
         const nodes = saved.history?.nodes || [];
         if (!replayedRoots || !mapping || typeof mapping !== "object" || Array.isArray(mapping)
           || Object.keys(mapping).length !== nodes.length
@@ -49812,7 +49812,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         }
         sharedRoots = Object.fromEntries(nodes.map(node => [node.nodeId,replayedRoots[mapping[node.nodeId]]]));
       }
-      const restored = restoreClassicalGrammarWorkspaceHistoryReloadState(targetObject, saved.history, sharedRoots);
+      const restored = restoreClassicalGrammarWorkspaceHistoryReloadState(targetObject, saved.history, sharedRoots, linkedResult);
       showClassicalHistoryReloadNotice(restored || saved.history?.status === "unsupported"
         ? saved.history : saved.history ? {status: "rejected"} : null, true);
       const choices = saved.historySelection;
@@ -49931,7 +49931,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         updateClassicalResultLink(browserWindow, ClassicalConstructionSession.position.accepted.result);
         const history = exportClassicalGrammarWorkspaceHistoryReloadState(targetObject);
         const historySelection = getClassicalHistoryReloadSelection();
-        const historyEntries = ["supported", "partial"].includes(history?.status) ? history.nodes || [] : [];
+        const historyEntries = history?.version !== 3 && ["supported", "partial"].includes(history?.status) ? history.nodes || [] : [];
         const historyGraphRoots = Object.fromEntries(historyEntries.map((node,index)=>[node.nodeId,`historyEntry${index}`]));
         const historyRoots = Object.fromEntries(historyEntries.map(node=>[historyGraphRoots[node.nodeId],
           targetObject.recoverClassicalGrammarWorkspaceResult?.(node.nodeId)?.canonicalResult]));
@@ -49956,12 +49956,12 @@ export function createUiRenderingApi(targetObject = globalThis) {
         const bindingOperands = Object.entries(ActiveClassicalGrammarResultBinding?.additionalResults || {})
           .map(([role,result],i)=>({role,result,root:`bindingOperand${i}`}));
         const operandRoots=Object.fromEntries(bindingOperands.map(item=>[item.root,item.result]));
-        if (current && (edit || !recipe || Object.keys(captures).length || bindingOperands.length
+        if (current && (edit || !recipe || history?.version === 3 || Object.keys(captures).length || bindingOperands.length
           || supportsFutureObjectResultReload(targetObject,current)
           || supportsNominalCompoundResultReload(targetObject,current))) {
           const coreRoots = { result: current, source, ...captures, ...operandRoots };
           let mixedRecipe = exportClassicalResultReloadRecipe(targetObject, {...coreRoots, ...historyRoots});
-          let mixedHistory = history, mixedHistoryRoots = historyGraphRoots;
+          let mixedHistory = history, mixedHistoryRoots = history?.version === 3 ? undefined : historyGraphRoots;
           if (!mixedRecipe && Object.keys(historyRoots).length) {
             mixedRecipe = exportClassicalResultReloadRecipe(targetObject, coreRoots);
             if (mixedRecipe) {
@@ -49972,7 +49972,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           }
           // A portable Result already supplies the edit root and its internal
           // Sources. Save the draft even when the old workspace graph cannot.
-          if (mixedRecipe || (edit && targetObject.classicalPortableMake?.addressFor(current))) {
+          if (mixedRecipe || ((edit || history?.version === 3) && targetObject.classicalPortableMake?.addressFor(current))) {
             browserWindow?.sessionStorage?.setItem(CLASSICAL_VNC_RELOAD_SESSION_KEY,
               JSON.stringify({ version: 2, url: browserWindow.location.href, recipe: mixedRecipe, history: mixedHistory, historySelection, historyGraphRoots: mixedHistoryRoots,
                 bindingOperands: bindingOperands.map(({role,root})=>({role,root})),
@@ -50045,10 +50045,23 @@ export function createUiRenderingApi(targetObject = globalThis) {
       if (portableResult) {
         // A matching workspace may restore the owner's pending choices. The
         // accepted Result always comes from the URL, even without storage.
-        if (saved?.version === 2 && saved.url === address.href) {
+        let savedAddressMatches = false;
+        if (saved?.version === 2 && typeof saved.url === "string") {
+          try {
+            const savedAddress = new URL(saved.url);
+            savedAddressMatches = savedAddress.origin === address.origin
+              && savedAddress.pathname === address.pathname
+              && readPortableResultUrl(savedAddress) === portableAddress;
+          } catch { /* Ignore malformed local workspace data. */ }
+        }
+        if (savedAddressMatches) {
+          const restoreHistory = roots => {
+            if (saved.history) restoreClassicalHistoryReloadState(saved, roots, portableResult);
+          };
+          const restoreStandaloneHistory = () => restoreHistory(null);
           if (saved.edit) {
             const target = resolveResultEditTarget(targetObject, portableResult, saved.edit.path);
-            if (target && restoreClassicalMixedReloadSession(saved, undefined,
+            if (target && restoreClassicalMixedReloadSession(saved, restoreStandaloneHistory,
               {result: portableResult, source: target.node})) return true;
           } else if (saved.recipe) {
             const localRoots = replayClassicalResultReloadRecipe(targetObject, saved.recipe,
@@ -50056,9 +50069,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
             if (localRoots?.result) {
               const roots = Object.fromEntries(Object.entries(localRoots).map(([role, exact]) =>
                 [role, exact === localRoots.result ? portableResult : exact]));
-              if (restoreClassicalMixedReloadSession(saved, undefined, roots)) return true;
+              if (restoreClassicalMixedReloadSession(saved, restoreHistory, roots)) return true;
             }
           }
+          if (restoreClassicalMixedReloadSession({}, restoreStandaloneHistory, {result: portableResult})) return true;
         }
         if (restoreClassicalMixedReloadSession({}, undefined, {result: portableResult})) return true;
         setClassicalWholeCanvasActionStatus("This portable Result link could not be reopened.");

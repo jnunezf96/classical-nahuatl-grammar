@@ -182,7 +182,7 @@ test('the clause controller shares its prepared request and ordered Source roles
   const condition = controller.compose({relation: 'condition', order: 'modifier-head', relationProfile: 'open'});
   assert.equal(condition.authorizationStatus, 'authorized', condition.blockReason);
   const conditionRequest = make.requestFor(condition.canonicalResult);
-  assert.match(conditionRequest.serialized, /grammar:internal-application-source/);
+  assert.match(conditionRequest.serialized, /particle:internal-result/);
   const reopenedCondition = fresh.classicalPortableMake.open(make.addressFor(condition.canonicalResult))?.canonicalResult;
   assert.ok(reopenedCondition);
   assert.equal(fresh.classicalPortableMake.requestFor(reopenedCondition).serialized, conditionRequest.serialized);
@@ -1004,6 +1004,9 @@ test('changing an attached particle shares the rebuilt whole and its exact host'
     portableMakeEnabled: true,
     documentObject: {getElementById: () => null, addEventListener() {}},
   })).runtimeObject;
+  const {exportClassicalGrammarWorkspaceHistoryReloadState: exportHistory,
+    restoreClassicalGrammarWorkspaceHistoryReloadState: restoreHistory} =
+    await import('../application/classical/grammar_workspace_history.mjs');
   const runtime = await bootPreview();
   const sender = runtime.classicalPortableMake;
   const make = (operationId, ...args) => sender.make({operationId, args})?.canonicalResult;
@@ -1038,6 +1041,11 @@ test('changing an attached particle shares the rebuilt whole and its exact host'
   assert.ok(received.dependencies.includes(reopened.canonicalInputFrame));
   assert.equal(reopened.particleResultFrame.particleId, 'l3-ca');
 
+  const recordHistory = (result, operation) => runtime.completeClassicalGrammarWorkspaceUserAction(
+    runtime.beginClassicalGrammarWorkspaceUserAction(operation), result, {recordExistingResult: true},
+  );
+  const originalNode = recordHistory(host, 'vnc:sentence-result');
+  assert.ok(originalNode);
   const originalHostAddress = sender.addressFor(host);
   const removal = resolveResultEditTarget(runtime, made, path);
   assert.equal(removal.removableTo, host);
@@ -1046,6 +1054,21 @@ test('changing an attached particle shares the rebuilt whole and its exact host'
     edit: {action: 'remove', root: made, target: removal.node, path, remaining: host},
   })?.canonicalResult;
   assert.equal(removed, host);
+  const removalNode = recordHistory(removed, 'sentence:particle-adjunction');
+  assert.ok(removalNode);
+  const saved = exportHistory(runtime);
+  assert.equal(saved.version, 3);
+  const historyRuntime = await bootPreview();
+  const historyEngine = historyRuntime.classicalPortableMake;
+  const linked = historyEngine.open(sender.addressFor(removed))?.canonicalResult;
+  assert.ok(linked);
+  assert.equal(restoreHistory(historyRuntime, saved, null, linked), true);
+  const fromHistory = historyRuntime.continueClassicalGrammarWorkspaceFrom(removalNode.nodeId);
+  assert.equal(fromHistory.canonicalResult, linked);
+  assert.equal(historyEngine.addressFor(fromHistory.canonicalResult), sender.addressFor(removed));
+  const undone = historyRuntime.undoClassicalGrammarWorkspaceHistory();
+  assert.equal(historyEngine.addressFor(undone.canonicalResult), originalHostAddress);
+
   const removalRecipient = (await bootPreview()).classicalPortableMake;
   const reopenedHost = removalRecipient.open(sender.addressFor(removed))?.canonicalResult;
   assert.ok(reopenedHost);
@@ -1984,7 +2007,7 @@ test('Owner-issued Source instructions and the shared replay registry agree', as
     for (const entry of entries) {
       if (!entry.isFile() || !entry.name.endsWith('.mjs')) continue;
       const code = await readFile(entry.parentPath + '/' + entry.name, 'utf8');
-      for (const match of code.matchAll(/\brecordPortableSource\(\s*[^,\n]+,\s*['"]([^'"]+)['"]/g)) {
+      for (const match of code.matchAll(/\b(?:recordPortableSource|recordInternalPortableResult)\(\s*[^,\n]+,\s*['"]([^'"]+)['"]/g)) {
         records.add(match[1]);
       }
     }
@@ -2341,6 +2364,11 @@ test('a portable link anchors a matching local edit and opens independently of i
     assert.equal(reopened.restored.roots.result.surface, accepted.surface);
   }
   assert.equal(run('https://example.test/?r=84/p2/', {version: 2, url: url.href, edit}).ok, false);
+  const normalized = new URL(url);
+  normalized.hash = '#classical/v1/vnc/_/screen/output';
+  const normalizedReload = run(normalized.href, {version: 2, url: url.href, edit});
+  assert.equal(normalizedReload.ok, true);
+  assert.equal(normalizedReload.restored.draft.edit.path[0], 'child');
   const auxiliary = run(url.href, {version: 2, url: url.href, recipe: {local: true}});
   assert.equal(auxiliary.ok, true);
   assert.equal(auxiliary.restored.roots.adjoined, localOperand);

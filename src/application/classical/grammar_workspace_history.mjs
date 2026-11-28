@@ -20,6 +20,8 @@ export function createClassicalGrammarWorkspaceHistory({
   isClassicalGrammarApplicationResult = null,
   getClassicalGrammarApplicationCapabilityNavigator = null,
   isClassicalGrammarApplicationCapabilityNavigator = null,
+  portableAddressFor = () => null,
+  selectPortableAddress = () => false,
 } = {}) {
   if (
     typeof captureClassicalGrammarApplicationResult !== "function"
@@ -99,7 +101,8 @@ export function createClassicalGrammarWorkspaceHistory({
     if (newBranch) nextBranches.set(branchId,{branchId,anchorNodeId:"",label:independent?"Particle Result root":"Main",nodeIds:[]});
     const parent = parentNodeId ? nextRecords.get(parentNodeId) : null;
     nextRecords.set(nodeId,{nodeId,parentNodeId,branchId,depth:parent?parent.depth+1:1,sequence:nextSequence,
-      label:independent?applicationResult.operationId:String(options.label || "").trim(),capture,childrenIds:[]});
+      label:independent?applicationResult.operationId:String(options.label || "").trim(),capture,childrenIds:[],
+      portableAddress:portableAddressFor(capture.canonicalResult)});
     if(parent)parent.childrenIds.push(nodeId);
     nextBranches.get(branchId).nodeIds.push(nodeId);
     const token=Object.freeze({kind:"prepared-history-record",nodeId});
@@ -133,7 +136,7 @@ export function createClassicalGrammarWorkspaceHistory({
     let previousSequence = 0;
     for (const row of entries) {
       if (!row || Object.keys(row).some(key => ![
-        "nodeId", "parentNodeId", "branchId", "sequence", "label", "result",
+        "nodeId", "parentNodeId", "branchId", "sequence", "label", "result", "portableAddress",
       ].includes(key)) || !Number.isSafeInteger(row.sequence)
         || row.sequence <= previousSequence || row.sequence > 1000000
         || row.nodeId !== `history-${row.sequence}`
@@ -194,6 +197,7 @@ export function createClassicalGrammarWorkspaceHistory({
       depth: record.depth,
       sequence: record.sequence,
       label: record.label,
+      ...(record.portableAddress ? {portableAddress: record.portableAddress} : {}),
       operationId: record.capture.operationId,
       outputKind: record.capture.outputKind,
       capturedResultRole: record.capture.capturedResultRole,
@@ -214,6 +218,7 @@ export function createClassicalGrammarWorkspaceHistory({
     currentNodeId = record.nodeId;
     currentBranchId = record.branchId;
     revision += 1;
+    if (record.portableAddress) selectPortableAddress(record.capture.canonicalResult, record.portableAddress);
     return record.capture;
   }
 
@@ -235,6 +240,7 @@ export function createClassicalGrammarWorkspaceHistory({
     if (!parent) return null;
     currentNodeId = parent.nodeId;
     revision += 1;
+    if (parent.portableAddress) selectPortableAddress(parent.capture.canonicalResult, parent.portableAddress);
     return parent.capture;
   }
 
@@ -418,6 +424,8 @@ export function installClassicalGrammarWorkspaceHistoryGlobals(
   targetObject = globalThis,
 ) {
   const history = createClassicalGrammarWorkspaceHistory({
+    portableAddressFor: result => targetObject.classicalPortableMake?.addressFor(result),
+    selectPortableAddress: (result, address) => targetObject.classicalPortableMake?.selectAddress(result, address),
     captureClassicalGrammarApplicationResult:
       targetObject.captureClassicalGrammarApplicationResult,
     isClassicalGrammarApplicationResultCapture:
@@ -598,49 +606,89 @@ export function exportClassicalGrammarWorkspaceHistoryReloadState(runtime) {
       || !/^branch-[1-9]\d{0,5}$/.test(branch.branchId))) return unsupported();
   const nodes = snapshot.nodes.map(node => ({ nodeId: node.nodeId,
     parentNodeId: node.parentNodeId, branchId: node.branchId,
-    sequence: node.sequence, label: node.label }));
+    sequence: node.sequence, label: node.label,
+    ...(node.portableAddress ? {portableAddress: node.portableAddress} : {}) }));
   const roots = Object.fromEntries(snapshot.nodes.map(node => [node.nodeId,
     runtime.recoverClassicalGrammarWorkspaceResult(node.nodeId)?.canonicalResult]));
-  let recipe = nodes.length ? exportClassicalResultReloadRecipe(runtime, roots) : null;
-  if (!nodes.length || recipe) return { kind: HISTORY_RELOAD_KIND, version: 1, status: "supported",
+  const version = nodes.some(row => row.portableAddress) ? 3 : 1;
+  const legacyRows = rows => rows.filter(row => !row.portableAddress);
+  const exportLegacy = rows => {
+    const legacy = legacyRows(rows);
+    return legacy.length ? exportClassicalResultReloadRecipe(runtime,
+      Object.fromEntries(legacy.map(row => [row.nodeId, roots[row.nodeId]]))) : null;
+  };
+  let recipe = exportLegacy(nodes);
+  if (!legacyRows(nodes).length || recipe) return { kind: HISTORY_RELOAD_KIND, version, status: "supported",
     nodes, branches: snapshot.branches, currentNodeId: snapshot.currentNodeId,
     currentBranchId: snapshot.currentBranchId, recipe };
   // Preserve complete supported branches only. Never reconnect across a lost parent.
   const retained=[],omitted=[],kept=new Set();
   for(const row of nodes){
     const ancestorMissing=Boolean(row.parentNodeId&&!kept.has(row.parentNodeId));
-    if(ancestorMissing||!exportClassicalResultReloadRecipe(runtime,{result:roots[row.nodeId]})){
+    if(ancestorMissing||(!row.portableAddress&&!exportClassicalResultReloadRecipe(runtime,{result:roots[row.nodeId]}))){
       omitted.push({nodeId:row.nodeId,label:row.label,reason:ancestorMissing?'ancestor-unavailable':'unsupported-result'});
     }else{retained.push(row);kept.add(row.nodeId);}
   }
   const branches=snapshot.branches.filter(row=>(!row.anchorNodeId||kept.has(row.anchorNodeId))
     &&row.nodeIds.some(id=>kept.has(id))).map(row=>({...row,nodeIds:row.nodeIds.filter(id=>kept.has(id))}));
-  recipe=retained.length?exportClassicalResultReloadRecipe(runtime,Object.fromEntries(retained.map(row=>[row.nodeId,roots[row.nodeId]]))):null;
-  if(retained.length&&!recipe)return unsupported();
+  recipe=exportLegacy(retained);
+  if(legacyRows(retained).length&&!recipe)return unsupported();
   const selected=kept.has(snapshot.currentNodeId)&&branches.some(b=>b.branchId===snapshot.currentBranchId);
-  return {kind:HISTORY_RELOAD_KIND,version:2,status:'partial',nodes:retained,branches,omitted,
+  return {kind:HISTORY_RELOAD_KIND,version:version === 3 ? 3 : 2,status:'partial',nodes:retained,branches,omitted,
     currentNodeId:selected?snapshot.currentNodeId:'',currentBranchId:selected?snapshot.currentBranchId:'',recipe};
 }
 
-export function restoreClassicalGrammarWorkspaceHistoryReloadState(runtime, saved, sharedRoots = null) {
-  if (!saved || saved.kind !== HISTORY_RELOAD_KIND || ![1,2].includes(saved.version)
-    || !(saved.version===1&&saved.status==="supported"||saved.version===2&&saved.status==="partial") || Object.keys(saved).some(key => ![
+export function restoreClassicalGrammarWorkspaceHistoryReloadState(runtime, saved, sharedRoots = null, linkedResult = null) {
+  if (!saved || saved.kind !== HISTORY_RELOAD_KIND || ![1,2,3].includes(saved.version)
+    || !([1,3].includes(saved.version)&&saved.status==="supported"||[2,3].includes(saved.version)&&saved.status==="partial") || Object.keys(saved).some(key => ![
       "kind", "version", "status", "nodes", "branches", "currentNodeId", "currentBranchId", "recipe", "omitted",
     ].includes(key)) || !Array.isArray(saved.nodes) || saved.nodes.length > 128
     || !Array.isArray(saved.branches) || saved.branches.length > 128
     || typeof runtime.restoreClassicalGrammarWorkspaceHistory !== "function"
     || saved.nodes.some(row => !row || Object.keys(row).some(key => ![
-      "nodeId", "parentNodeId", "branchId", "sequence", "label",
+      "nodeId", "parentNodeId", "branchId", "sequence", "label", ...(saved.version === 3 ? ["portableAddress"] : []),
     ].includes(key)))) return false;
-  if(saved.version===2&&(!Array.isArray(saved.omitted)||saved.omitted.length>128||new Set(saved.omitted.map(row=>row?.nodeId)).size!==saved.omitted.length||saved.omitted.some(row=>!row
+  if(saved.status==="partial"&&(!Array.isArray(saved.omitted)||saved.omitted.length>128||new Set(saved.omitted.map(row=>row?.nodeId)).size!==saved.omitted.length||saved.omitted.some(row=>!row
     ||Object.keys(row).some(k=>!['nodeId','label','reason'].includes(k))
     ||!/^history-[1-9]\d{0,5}$/.test(row.nodeId)||typeof row.label!=='string'||row.label.length>200
     ||!['ancestor-unavailable','unsupported-result'].includes(row.reason)
     ||saved.nodes.some(n=>n.nodeId===row.nodeId))))return false;
-  const roots = sharedRoots || (saved.nodes.length ? replayClassicalResultReloadRecipe(runtime, saved.recipe) : {});
+  let roots;
+  const portable = runtime.classicalPortableMake;
+  if (saved.version === 3) {
+    if (!portable || saved.nodes.some(row => Object.hasOwn(row, "portableAddress")
+      && typeof row.portableAddress !== "string")) return false;
+    const legacyRows = saved.nodes.filter(row => !row.portableAddress);
+    const legacyRoots = legacyRows.length
+      ? replayClassicalResultReloadRecipe(runtime, saved.recipe, {recordPortableRequests: true}) : {};
+    if (!legacyRoots || !legacyRows.length && saved.recipe !== null
+      || JSON.stringify(Object.keys(legacyRoots).sort()) !== JSON.stringify(legacyRows.map(row => row.nodeId).sort())) return false;
+    const linkedAddress = linkedResult && portable.addressFor(linkedResult);
+    const restored = new Map(linkedAddress ? [[linkedAddress, linkedResult]] : []);
+    roots = Object.assign(Object.create(null), legacyRoots);
+    try {
+      for (const row of saved.nodes) {
+        const address = row.portableAddress;
+        if (!address) continue;
+        const result = restored.get(address) || portable.open(address)?.canonicalResult;
+        if (!result) return false;
+        restored.set(address, result);
+        roots[row.nodeId] = result;
+      }
+    } finally {
+      if (linkedAddress) portable.selectAddress(linkedResult, linkedAddress);
+    }
+  } else {
+    roots = sharedRoots || (saved.nodes.length ? replayClassicalResultReloadRecipe(runtime, saved.recipe,
+      {recordPortableRequests: true}) : {});
+  }
   if (!roots || !saved.nodes.length && saved.recipe !== null
     || JSON.stringify(Object.keys(roots).sort()) !== JSON.stringify(saved.nodes.map(row => row?.nodeId).sort())) return false;
-  const entries = saved.nodes.map(row => ({ ...row, result: roots[row.nodeId] }));
+  const entries = saved.nodes.map(row => {
+    const result = roots[row.nodeId];
+    const portableAddress = row.portableAddress ?? portable?.addressFor(result);
+    return {...row, result, ...(portableAddress ? {portableAddress} : {})};
+  });
   return runtime.restoreClassicalGrammarWorkspaceHistory(entries, saved.branches,
     { currentNodeId: saved.currentNodeId, currentBranchId: saved.currentBranchId });
 }
